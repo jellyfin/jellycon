@@ -18,21 +18,21 @@ class LoadMenuOptionsThread(threading.Thread):
     getString = None
 
     def __init__(self, *args):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         level = addonSettings.getSetting('logLevel')        
         self.logLevel = 0
         self.getString = self.addonSettings.getLocalizedString
         if(level != None):
             self.logLevel = int(level)           
     
-        xbmc.log("XBMB3C LoadMenuOptionsThread -> Log Level:" +  str(self.logLevel))
+        xbmc.log("MBCon LoadMenuOptionsThread -> Log Level:" +  str(self.logLevel))
         
         threading.Thread.__init__(self, *args)    
     
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("XBMB3C LoadMenuOptionsThread -> " + msg) 
+            xbmc.log("MBCon LoadMenuOptionsThread -> " + msg) 
     
     def run(self):
         try:

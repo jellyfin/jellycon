@@ -38,21 +38,21 @@ class ArtworkRotationThread(threading.Thread):
     currentFilteredIndex = {}
    
     def __init__(self, *args):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         self.getString = self.addonSettings.getLocalizedString
         level = addonSettings.getSetting('logLevel')        
         self.logLevel = 0
         if(level != None):
             self.logLevel = int(level)           
     
-        xbmc.log("XBMB3C BackgroundRotationThread -> Log Level:" +  str(self.logLevel))
+        xbmc.log("MBCon BackgroundRotationThread -> Log Level:" +  str(self.logLevel))
         
         threading.Thread.__init__(self, *args)    
     
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("XBMB3C BackgroundRotationThread -> " + msg)
+            xbmc.log("MBCon BackgroundRotationThread -> " + msg)
     
     def run(self):
         try:
@@ -78,7 +78,7 @@ class ArtworkRotationThread(threading.Thread):
         lastRun = datetime.today()
         itemLastRun = datetime.today()
         
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         
         backgroundRefresh = int(addonSettings.getSetting('backgroundRefresh'))
         if(backgroundRefresh < 10):
@@ -136,7 +136,7 @@ class ArtworkRotationThread(threading.Thread):
 
     def loadLastBackground(self):
         
-        __addon__       = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        __addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
         __addondir__    = xbmc.translatePath( __addon__.getAddonInfo('profile') )         
         
         lastDataPath = __addondir__ + "LastBgLinks.json"
@@ -180,7 +180,7 @@ class ArtworkRotationThread(threading.Thread):
         if(len(self.music_art_links) > 0):
             data["music"] = self.music_art_links[self.current_music_art]
 
-        __addon__       = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        __addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
         __addondir__    = xbmc.translatePath( __addon__.getAddonInfo('profile') )            
             
         lastDataPath = __addondir__ + "LastBgLinks.json"
@@ -232,10 +232,10 @@ class ArtworkRotationThread(threading.Thread):
             posterUrl = nextItem["poster"]
             actionUrl = nextItem["action"]
             
-            addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')               
+            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')               
             selectAction = addonSettings.getSetting('selectAction')
             if(selectAction == "1"):
-                actionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?id=" + nextItem["id"] + "&mode=17)"     
+                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=17)"     
             else:
                 actionUrl = nextItem["action"]
                 
@@ -252,7 +252,7 @@ class ArtworkRotationThread(threading.Thread):
         if(filterOnParent == None or filterOnParent == ""):
             filterOnParent = "empty"
         
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         backgroundRefresh = int(addonSettings.getSetting('backgroundRefresh'))
         if(backgroundRefresh < 10):
             backgroundRefresh = 10
@@ -341,7 +341,7 @@ class ArtworkRotationThread(threading.Thread):
     def updateCollectionArtLinks(self):
         self.logMsg("updateCollectionArtLinks Called")
         
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         
         mb3Host = addonSettings.getSetting('ipaddress')
         mb3Port = addonSettings.getSetting('port')    
@@ -386,8 +386,8 @@ class ArtworkRotationThread(threading.Thread):
             #####################################################################################################
             # Process collection item menu item
             timeNow = time.time()
-            contentUrl = "plugin://plugin.video.xbmb3c?mode=16&ParentId=" + item.get("Id") + "&CollectionType=" + collectionType + "&SessionId=(" + str(timeNow) + ")"
-            actionUrl = ("ActivateWindow(VideoLibrary, plugin://plugin.video.xbmb3c/?mode=21&ParentId=" + item.get("Id") + "&Name=" + name + ",return)").encode('utf-8')
+            contentUrl = "plugin://plugin.video.mbcon?mode=16&ParentId=" + item.get("Id") + "&CollectionType=" + collectionType + "&SessionId=(" + str(timeNow) + ")"
+            actionUrl = ("ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + item.get("Id") + "&Name=" + name + ",return)").encode('utf-8')
             xbmc.log("COLLECTION actionUrl: " + actionUrl)
             WINDOW.setProperty("xbmb3c_collection_menuitem_name_" + str(collection_count), name)
             WINDOW.setProperty("xbmb3c_collection_menuitem_action_" + str(collection_count), actionUrl)
@@ -436,12 +436,12 @@ class ArtworkRotationThread(threading.Thread):
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
                             url =  mb3Host + ":" + mb3Port + ',;' + id
                             url = urllib.quote(url)
-                            #actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + " ,return)"
-                            actionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
+                            #actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + " ,return)"
+                            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
 
                         elif(col_item.get("Type") == "Series"):
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
-                            actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.xbmb3c/?mode=21&ParentId=" + id + "&Name=" + name + ",return)"
+                            actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + id + "&Name=" + name + ",return)"
                         plot = col_item.get("Overview")
                         for backdrop in images:
                           
@@ -488,7 +488,7 @@ class ArtworkRotationThread(threading.Thread):
     def updateTypeArtLinks(self):
         self.logMsg("updateTypeArtLinks Called")
         
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         
         mb3Host = addonSettings.getSetting('ipaddress')
         mb3Port = addonSettings.getSetting('port')    
@@ -516,7 +516,7 @@ class ArtworkRotationThread(threading.Thread):
             plot = item.get("Overview")
             url =  mb3Host + ":" + mb3Port + ',;' + id
             url = urllib.quote(url)        
-            actionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
+            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
             if (images == None):
                 images = []
             index = 0
@@ -528,7 +528,7 @@ class ArtworkRotationThread(threading.Thread):
                 trailerItem = json.loads(jsonData)
                 trailerUrl = mb3Host + ":" + mb3Port + ',;' + trailerItem[0].get("Id")
                 trailerUrl = urllib.quote(trailerUrl) 
-                trailerActionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"
+                trailerActionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"
             
             for backdrop in images:
               
@@ -744,7 +744,7 @@ class ArtworkRotationThread(threading.Thread):
             
         self.logMsg("loadItemBackgroundLinks Called for id : " + id)
     
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         mb3Host = addonSettings.getSetting('ipaddress')
         mb3Port = addonSettings.getSetting('port')
         userName = addonSettings.getSetting('username')
@@ -777,7 +777,7 @@ class ArtworkRotationThread(threading.Thread):
         index = 0
         url =  mb3Host + ":" + mb3Port + ',;' + id
         url = urllib.quote(url)        
-        actionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
+        actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
         trailerActionUrl = None
         if item.get("LocalTrailerCount") != None and item.get("LocalTrailerCount") > 0:
             itemTrailerUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "/LocalTrailers?format=json"
@@ -785,7 +785,7 @@ class ArtworkRotationThread(threading.Thread):
             trailerItem = json.loads(jsonData)
             trailerUrl = mb3Host + ":" + mb3Port + ',;' + trailerItem[0].get("Id")
             trailerUrl = urllib.quote(trailerUrl) 
-            trailerActionUrl = "RunPlugin(plugin://plugin.video.xbmb3c/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"		
+            trailerActionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"		
       
         newBgLinks = []
         for backdrop in images:

@@ -220,7 +220,7 @@ class BackgroundSearchThread(threading.Thread):
         if(len(searchTerm) == 0):
             return
         
-        __settings__ = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        __settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
         port = __settings__.getSetting('port')
         host = __settings__.getSetting('ipaddress')
         server = host + ":" + port
@@ -254,7 +254,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.xbmb3c?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
             listItem.setProperty("ActionUrl", actionUrl)
             
             movieResultsList.addItem(listItem)    
@@ -290,7 +290,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.xbmb3c?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
             listItem.setProperty("ActionUrl", actionUrl)
             
             seriesResultsList.addItem(listItem) 
@@ -326,7 +326,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.xbmb3c?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
             listItem.setProperty("ActionUrl", actionUrl)
             
             episodeResultsList.addItem(listItem)                            

@@ -21,7 +21,7 @@ class DownloadUtils():
     getString = None
 
     def __init__(self, *args):
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         self.getString = self.addonSettings.getLocalizedString
         level = self.addonSettings.getSetting('logLevel')        
         self.logLevel = 0
@@ -30,7 +30,7 @@ class DownloadUtils():
 
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("XBMB3C DownloadUtils -> " + msg)
+            xbmc.log("MBCon DownloadUtils -> " + msg)
 
     def getUserId(self):
 
@@ -412,7 +412,7 @@ class DownloadUtils():
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
             xbmc.log (error)
-            xbmc.executebuiltin("XBMC.Notification(\"XBMB3C\": URL error: Unable to connect to server,)")
+            xbmc.executebuiltin("XBMC.Notification(\"MBCon\": URL error: Unable to connect to server,)")
             xbmcgui.Dialog().ok("",self.getString(30204))
             raise
         else:

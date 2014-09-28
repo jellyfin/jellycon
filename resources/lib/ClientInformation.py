@@ -7,5 +7,5 @@ class ClientInformation():
         return "%012X"%get_mac()
         
     def getVersion(self):
-        version = xbmcaddon.Addon(id="plugin.video.xbmb3c").getAddonInfo("version")
+        version = xbmcaddon.Addon(id="plugin.video.mbcon").getAddonInfo("version")
         return version

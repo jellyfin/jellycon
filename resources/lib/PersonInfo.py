@@ -22,7 +22,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         
-        __settings__ = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        __settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
         port = __settings__.getSetting('port')
         host = __settings__.getSetting('ipaddress')
         server = host + ":" + port
@@ -82,7 +82,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
         search_url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&format=json"
         search_url = urllib.quote(search_url)
         search_url = search_url.replace("PERSON_NAME", baseName)
-        self.pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.xbmb3c?mode=" + str(_MODE_GETCONTENT) + "&url=" + search_url + ")"         
+        self.pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_GETCONTENT) + "&url=" + search_url + ")"         
         
         otherItemsList = None
         try:
@@ -120,7 +120,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
                 
                 listItem = xbmcgui.ListItem(label=item_name, label2=type_info, iconImage=thumbPath, thumbnailImage=thumbPath)
                 
-                actionUrl = "plugin://plugin.video.xbmb3c?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+                actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
                 listItem.setProperty("ActionUrl", actionUrl)
                 
                 otherItemsList.addItem(listItem)

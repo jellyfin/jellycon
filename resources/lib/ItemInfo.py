@@ -23,7 +23,7 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         
-        __settings__ = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        __settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
         port = __settings__.getSetting('port')
         host = __settings__.getSetting('ipaddress')
         server = host + ":" + port         
@@ -65,10 +65,10 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
             
         url =  server + ',;' + id
         url = urllib.quote(url)
-        self.playUrl = "plugin://plugin.video.xbmb3c/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+        self.playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
             
-        self.peopleUrl = "XBMC.Container.Update(plugin://plugin.video.xbmb3c?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
-        #self.peopleUrl = "XBMC.RunPlugin(plugin://plugin.video.xbmb3c?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
+        self.peopleUrl = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
+        #self.peopleUrl = "XBMC.RunPlugin(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
         
         # all all the media stream info
         mediaList = self.getControl(3220)
@@ -130,7 +130,7 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
             baseName = baseName.replace("?", "_")
             baseName = baseName.replace("=", "_")
             
-            actionUrl = "plugin://plugin.video.xbmb3c?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
+            actionUrl = "plugin://plugin.video.mbcon?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
             
             if(tag != None and len(tag) > 0):
                 thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400)

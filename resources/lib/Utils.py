@@ -21,11 +21,11 @@ class PlayUtils():
 
     def getPlayUrl(self, server, id, result):
     
-      addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+      addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
       # if the path is local and depending on the video quality play we can direct play it do so-
-      xbmc.log("XBMB3C getPlayUrl")
+      xbmc.log("MBCon getPlayUrl")
       if self.isDirectPlay(result) == True:
-          xbmc.log("XBMB3C getPlayUrl -> Direct Play")
+          xbmc.log("MBCon getPlayUrl -> Direct Play")
           playurl = result.get("Path")
           if playurl != None:
             #We have a path to play so play it
@@ -55,16 +55,9 @@ class PlayUtils():
                   playurl = playurl + "&SubtitleStreamIndex=" + str(mediaSources[0].get('DefaultAudioStreamIndex')) 
   
             
-     # elif self.isNetworkQualitySufficient(result) == True:
-      #   xbmc.log("XBMB3C getPlayUrl -> Stream")
-          #No direct path but sufficient network so static stream   
-       #  if result.get("Type") == "Audio":
-        #    playurl = 'http://' + server + '/mediabrowser/Audio/' + id + '/stream?static=true&mediaSourceId=' + id
-         #else:
-          #  playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/stream?static=true&mediaSourceId=' + id   
       else:
           #No path or has a path but not sufficient network so transcode
-          xbmc.log("XBMB3C getPlayUrl -> Transcode")
+          xbmc.log("MBCon getPlayUrl -> Transcode")
           if result.get("Type") == "Audio":
             playurl = 'http://' + server + '/mediabrowser/Audio/' + id + '/stream.mp3'
           else:
@@ -98,20 +91,20 @@ class PlayUtils():
         if(mediaSources != None):
           if mediaSources[0].get('Bitrate') != None:
              if settingsVideoBitRate < int(mediaSources[0].get('Bitrate')):
-               xbmc.log("XBMB3C isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
+               xbmc.log("MBCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
                return False
              else:
-               xbmc.log("XBMB3C isNetworkQualitySufficient -> TRUE bit rate")   
+               xbmc.log("MBCon isNetworkQualitySufficient -> TRUE bit rate")   
                return True
            
         # Any thing else is ok
-        xbmc.log("XBMB3C isNetworkQualitySufficient -> TRUE default")
+        xbmc.log("MBCon isNetworkQualitySufficient -> TRUE default")
         return True
       
        
     # get the addon video quality
     def getVideoBitRate(self):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
         videoQuality = addonSettings.getSetting('videoBitRate')  
         if (videoQuality == "0"):
             return '664'

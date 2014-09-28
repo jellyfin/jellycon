@@ -107,12 +107,12 @@
     <string id="30128">Play Error</string>
     <string id="30129">This item is not playable</string>    
     <string id="30130">Local path detected</string>
-    <string id="30131">Your MB3 Server contains local paths.  Please change server paths to UNC or change XBMB3C setting 'Play from Stream' to true.  Path: </string>
+    <string id="30131">Your MB3 Server contains local paths.  Please change server paths to UNC or change MBCon setting 'Play from Stream' to true.  Path: </string>
     <string id="30132">Warning</string>
     <string id="30133">Debug logging enabled.</string>
     <string id="30134">This will affect performance.</string>
     <string id="30135">Error</string>
-    <string id="30136">XBMB3C service is not running</string>
+    <string id="30136">MBCon service is not running</string>
     <string id="30137">Please restart XBMC</string>
     <string id="30138">Search</string>
     

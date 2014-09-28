@@ -22,21 +22,14 @@ from random import randint
 import random
 import urllib2
 
-__cwd__ = xbmcaddon.Addon(id='plugin.video.xbmb3c').getAddonInfo('path')
-__addon__       = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+__cwd__ = xbmcaddon.Addon(id='plugin.video.mbcon').getAddonInfo('path')
+__addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
 __language__     = __addon__.getLocalizedString
 BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
 base_window = xbmcgui.Window( 10000 )
 
-from InfoUpdater import InfoUpdaterThread
-from NextUpItems import NextUpUpdaterThread
-from SuggestedItems import SuggestedUpdaterThread
-from RandomItems import RandomInfoUpdaterThread
 from ArtworkLoader import ArtworkRotationThread
-from ThemeMusic import ThemeMusicThread
-from RecentItems import RecentInfoUpdaterThread
-from InProgressItems import InProgressUpdaterThread
 from WebSocketClient import WebSocketThread
 from ClientInformation import ClientInformation
 from MenuLoad import LoadMenuOptionsThread
@@ -44,7 +37,7 @@ from MenuLoad import LoadMenuOptionsThread
 _MODE_BASICPLAY=12
 
 def getAuthHeader():
-    addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+    addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
     deviceName = addonSettings.getSetting('deviceName')
     deviceName = deviceName.replace("\"", "_") # might need to url encode this as it is getting added to the header and is user entered data
     clientInfo = ClientInformation()
@@ -53,80 +46,32 @@ def getAuthHeader():
     userid = xbmcgui.Window( 10000 ).getProperty("userid")
     authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
     headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}
-    xbmc.log("XBMB3C Authentication Header : " + str(headers))
+    xbmc.log("MBCon Authentication Header : " + str(headers))
     return headers 
 
 # start some worker threads
-
-newInProgressThread = None
-if __addon__.getSetting('useInProgressUpdater') == "true":
-    newInProgressThread = InProgressUpdaterThread()
-    newInProgressThread.start()
-else:
-    xbmc.log("XBMB3C Service InProgressUpdater Disabled")
-  
-newRecentInfoThread = None
-if __addon__.getSetting('useRecentInfoUpdater') == "true":
-    newRecentInfoThread = RecentInfoUpdaterThread()
-    newRecentInfoThread.start()
-else:
-    xbmc.log("XBMB3C Service RecentInfoUpdater Disabled")    
-
-newRandomInfoThread = None    
-if __addon__.getSetting('useRandomInfo') == "true":
-    newRandomInfoThread = RandomInfoUpdaterThread()
-    newRandomInfoThread.start()
-else:
-    xbmc.log("XBMB3C Service RandomInfo Disabled")        
-
-newNextUpThread = None
-if __addon__.getSetting('useNextUp') == "true":
-    newNextUpThread = NextUpUpdaterThread()
-    newNextUpThread.start()
-else:
-    xbmc.log("XBMB3C Service NextUp Disabled")    
-    
-newSuggestedThread = None
-if __addon__.getSetting('useSuggested') == "true":
-    newSuggestedThread = SuggestedUpdaterThread()
-    newSuggestedThread.start()
-else:
-    xbmc.log("XBMB3C Service Suggested Disabled")   
 
 newWebSocketThread = None
 if __addon__.getSetting('useWebSocketRemote') == "true":
     newWebSocketThread = WebSocketThread()
     newWebSocketThread.start()
 else:
-    xbmc.log("XBMB3C Service WebSocketRemote Disabled")
+    xbmc.log("MBCon Service WebSocketRemote Disabled")
 
 newMenuThread = None
 if __addon__.getSetting('useMenuLoader') == "true":
     newMenuThread = LoadMenuOptionsThread()
     newMenuThread.start()
 else:
-    xbmc.log("XBMB3C Service MenuLoader Disabled")
+    xbmc.log("MBCon Service MenuLoader Disabled")
 
 artworkRotationThread = None    
 if __addon__.getSetting('useBackgroundLoader') == "true":
     artworkRotationThread = ArtworkRotationThread()
     artworkRotationThread.start()
 else:
-    xbmc.log("XBMB3C Service BackgroundLoader Disabled")
-    
-newThemeMusicThread = None    
-if __addon__.getSetting('useThemeMusic') == "true":
-    newThemeMusicThread = ThemeMusicThread()
-    newThemeMusicThread.start()
-else:
-    xbmc.log("XBMB3C Service ThemeMusic Disabled")
+    xbmc.log("MBCon Service BackgroundLoader Disabled")
 
-newInfoThread = None    
-if __addon__.getSetting('useInfoLoader') == "true":
-    newInfoThread = InfoUpdaterThread()
-    newInfoThread.start()
-else:
-    xbmc.log("XBMB3C Service InfoLoader Disabled")
     
 def deleteItem (url):
     return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
@@ -147,22 +92,22 @@ def deleteItem (url):
         return 0
         
 def markWatched(url):
-    xbmc.log('XBMB3C Service -> Marking watched via: ' + url)
+    xbmc.log('MBCon Service -> Marking watched via: ' + url)
     resp = requests.post(url, data='', headers=getAuthHeader())
     
 def markUnWatched(url):
-    xbmc.log('XBMB3C Service -> Marking watched via: ' + url)
+    xbmc.log('MBCon Service -> Marking watched via: ' + url)
     resp = requests.delete(url, data='', headers=getAuthHeader())    
 
 def setPosition (url, method):
-    xbmc.log('XBMB3C Service -> Setting position via: ' + url)
+    xbmc.log('MBCon Service -> Setting position via: ' + url)
     if method == 'POST':
         resp = requests.post(url, data='', headers=getAuthHeader())
     elif method == 'DELETE':
         resp = requests.delete(url, data='', headers=getAuthHeader())
         
 def stopTranscoding(url):
-    xbmc.log('XBMB3C Service -> Stopping transcoding: ' + url)
+    xbmc.log('MBCon Service -> Stopping transcoding: ' + url)
     resp = requests.delete(url, data='', headers=getAuthHeader())    
 
         
@@ -177,14 +122,14 @@ def stopAll(played_information):
     if(len(played_information) == 0):
         return 
         
-    addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
-    xbmc.log ("XBMB3C Service -> played_information : " + str(played_information))
+    addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+    xbmc.log ("MBCon Service -> played_information : " + str(played_information))
     
     for item_url in played_information:
         data = played_information.get(item_url)
         if(data != None):
-            xbmc.log ("XBMB3C Service -> item_url  : " + item_url)
-            xbmc.log ("XBMB3C Service -> item_data : " + str(data))
+            xbmc.log ("MBCon Service -> item_url  : " + item_url)
+            xbmc.log ("MBCon Service -> item_data : " + str(data))
             
             watchedurl = data.get("watchedurl")
             positionurl = data.get("positionurl")
@@ -195,16 +140,16 @@ def stopAll(played_information):
             
             if(currentPossition != None and hasData(runtime) and hasData(positionurl) and hasData(watchedurl)):
                 runtimeTicks = int(runtime)
-                xbmc.log ("XBMB3C Service -> runtimeticks:" + str(runtimeTicks))
+                xbmc.log ("MBCon Service -> runtimeticks:" + str(runtimeTicks))
                 percentComplete = (currentPossition * 10000000) / runtimeTicks
                 markPlayedAt = float(addonSettings.getSetting("markPlayedAt")) / 100    
 
-                xbmc.log ("XBMB3C Service -> Percent Complete:" + str(percentComplete) + " Mark Played At:" + str(markPlayedAt))
+                xbmc.log ("MBCon Service -> Percent Complete:" + str(percentComplete) + " Mark Played At:" + str(markPlayedAt))
                 if (percentComplete > markPlayedAt):
                 
                     gotDeleted = 0
                     if(deleteurl != None and deleteurl != ""):
-                        xbmc.log ("XBMB3C Service -> Offering Delete:" + str(deleteurl))
+                        xbmc.log ("MBCon Service -> Offering Delete:" + str(deleteurl))
                         gotDeleted = deleteItem(deleteurl)
                         
                     if(gotDeleted == 0):
@@ -237,7 +182,7 @@ class Service( xbmc.Player ):
     played_information = {}
     
     def __init__( self, *args ):
-        xbmc.log("XBMB3C Service -> starting monitor service")
+        xbmc.log("MBCon Service -> starting monitor service")
         self.played_information = {}
         pass
     
@@ -246,7 +191,7 @@ class Service( xbmc.Player ):
         stopAll(self.played_information)
         
         currentFile = xbmc.Player().getPlayingFile()
-        xbmc.log("XBMB3C Service -> onPlayBackStarted" + currentFile)
+        xbmc.log("MBCon Service -> onPlayBackStarted" + currentFile)
         
         WINDOW = xbmcgui.Window( 10000 )
         watchedurl = WINDOW.getProperty(currentFile+"watchedurl")
@@ -279,27 +224,27 @@ class Service( xbmc.Player ):
             data["item_id"] = item_id
             self.played_information[currentFile] = data
             
-            xbmc.log("XBMB3C Service -> ADDING_FILE : " + currentFile)
-            xbmc.log("XBMB3C Service -> ADDING_FILE : " + str(self.played_information))
+            xbmc.log("MBCon Service -> ADDING_FILE : " + currentFile)
+            xbmc.log("MBCon Service -> ADDING_FILE : " + str(self.played_information))
 
             # reset in progress possition
             setPosition(positionurl + '/Progress?PositionTicks=0', 'POST')
 
     def onPlayBackEnded( self ):
         # Will be called when xbmc stops playing a file
-        xbmc.log("XBMB3C Service -> onPlayBackEnded")
+        xbmc.log("MBCon Service -> onPlayBackEnded")
         stopAll(self.played_information)
 
     def onPlayBackStopped( self ):
         # Will be called when user stops xbmc playing a file
-        xbmc.log("XBMB3C Service -> onPlayBackStopped")
+        xbmc.log("MBCon Service -> onPlayBackStopped")
         stopAll(self.played_information)
 
 monitor = Service()
 lastProgressUpdate = datetime.today()
 
-addonSettings = xbmcaddon.Addon(id='plugin.video.xbmb3c')
-if socket.gethostname() != None and socket.gethostname() != '' and addonSettings.getSetting("deviceName") == 'XBMB3C':
+addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+if socket.gethostname() != None and socket.gethostname() != '' and addonSettings.getSetting("deviceName") == 'MBCon':
     addonSettings.setSetting("deviceName", socket.gethostname())
 
 while not xbmc.abortRequested:
@@ -323,7 +268,7 @@ while not xbmc.abortRequested:
                 lastProgressUpdate = datetime.today()
             
         except Exception, e:
-            xbmc.log("XBMB3C Service -> Exception in Playback Monitor : " + str(e))
+            xbmc.log("MBCon Service -> Exception in Playback Monitor : " + str(e))
             pass
 
     xbmc.sleep(1000)
@@ -336,5 +281,5 @@ if(newWebSocketThread != None):
 # stop the image proxy
 keepServing = False
 
-xbmc.log("XBMB3C Service -> Service shutting down")
+xbmc.log("MBCon Service -> Service shutting down")
 

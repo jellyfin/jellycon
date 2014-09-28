@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon  id="plugin.video.xbmb3c" 
-        name="XBMB3C" 
-        version="0.9.546" 
-        provider-name="xnappo, null_pointer, im85288">
+<addon  id="plugin.video.mbcon" 
+        name="MBCon" 
+        version="0.0.1" 
+        provider-name="">
   <requires>
     <import addon="script.module.requests" version="1.1.0" />
     <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.simplejson" version="2.0.10"/>
   </requires>
-  <extension    point="xbmc.python.pluginsource"
-                library="default.py">
+  <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>executable video audio image</provides>
   </extension>
   <extension point="xbmc.service" library="service.py" start="startup">
@@ -18,10 +16,10 @@
     <platform>all</platform>
     <language>en</language>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>http://mediabrowser.tv/community/index.php?/forum/99-xbmb3c/</forum>
-    <website>http://mediabrowser.tv/</website>
-    <source>https://github.com/MediaBrowser/MediaBrowser.XBMC/</source>
-    <summary lang="en">Browse and play local video, music and photo media file managed by the Media Browser Server</summary>
-    <description lang="en">Browse and play local video, music and photo media file managed by the Media Browser Server</description>
+    <forum></forum>
+    <website></website>
+    <source></source>
+    <summary lang="en"></summary>
+    <description lang="en"></description>
   </extension>
 </addon>

@@ -1,29 +1,22 @@
 '''
-    @document   : default.py
-    @package    : XBMB3C add-on
-    @authors    : xnappo, null_pointer, im85288
-    @copyleft   : 2013, xnappo
-
     @license    : Gnu General Public License - see LICENSE.TXT
-    @description: XBMB3C XBMC add-on
 
-    This file is part of the XBMC XBMB3C Plugin.
-
-    XBMB3C Plugin is free software: you can redistribute it and/or modify
+    This is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 2 of the License, or
     (at your option) any later version.
 
-    XBMB3C Plugin is distributed in the hope that it will be useful,
+    This is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with XBMB3C Plugin.  If not, see <http://www.gnu.org/licenses/>.
+    along with software.  If not, see <http://www.gnu.org/licenses/>.
     
     Thanks to Hippojay for the PleXBMC plugin this is derived from
-
+    This software is derived form the XBMB3C addon
+    
 '''
 
 import struct
@@ -53,9 +46,9 @@ import StringIO
 import gzip
 import xml.etree.ElementTree as etree
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+__settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
 __cwd__ = __settings__.getAddonInfo('path')
-__addon__       = xbmcaddon.Addon(id='plugin.video.xbmb3c')
+__addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
 __addondir__    = xbmc.translatePath( __addon__.getAddonInfo('profile') ) 
 __language__     = __addon__.getLocalizedString
 
@@ -70,12 +63,12 @@ from ClientInformation import ClientInformation
 from PersonInfo import PersonInfo
 from SearchDialog import SearchDialog
 
-XBMB3C_VERSION = ClientInformation().getVersion()
+ADDON_VERSION = ClientInformation().getVersion()
 
-xbmc.log ("===== XBMB3C START =====")
+xbmc.log ("===== MBCon START =====")
 
-xbmc.log ("XBMB3C -> running Python: " + str(sys.version_info))
-xbmc.log ("XBMB3C -> running XBMB3C: " + str(XBMB3C_VERSION))
+xbmc.log ("MBCon -> running Python: " + str(sys.version_info))
+xbmc.log ("MBCon -> running MBCon: " + str(ADDON_VERSION))
 xbmc.log (xbmc.getInfoLabel( "System.BuildVersion" ))
 
 #Get the setting from the appropriate file.
@@ -110,14 +103,14 @@ def printDebug( msg, level = 1):
     if(logLevel >= level):
         if(logLevel == 2):
             try:
-                xbmc.log("XBMB3C " + str(level) + " -> " + inspect.stack()[1][3] + " : " + str(msg))
+                xbmc.log("MBCon " + str(level) + " -> " + inspect.stack()[1][3] + " : " + str(msg))
             except UnicodeEncodeError:
-                xbmc.log("XBMB3C " + str(level) + " -> " + inspect.stack()[1][3] + " : " + str(msg.encode('utf-8')))
+                xbmc.log("MBCon " + str(level) + " -> " + inspect.stack()[1][3] + " : " + str(msg.encode('utf-8')))
         else:
             try:
-                xbmc.log("XBMB3C " + str(level) + " -> " + str(msg))
+                xbmc.log("MBCon " + str(level) + " -> " + str(msg))
             except UnicodeEncodeError:
-                xbmc.log("XBMB3C " + str(level) + " -> " + str(msg.encode('utf-8')))
+                xbmc.log("MBCon " + str(level) + " -> " + str(msg.encode('utf-8')))
 
 
 def getAuthHeader():
@@ -128,7 +121,7 @@ def getAuthHeader():
     deviceName = deviceName.replace("\"", "_")
     authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
     headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}
-    xbmc.log("XBMB3C Authentication Header : " + str(headers))
+    xbmc.log("MBCon Authentication Header : " + str(headers))
     return headers 
             
 def getPlatform( ):
@@ -148,17 +141,17 @@ def getPlatform( ):
 
     return "Unknown"
 
-XBMB3C_PLATFORM=getPlatform()
-xbmc.log ("XBMB3C -> Platform: " + str(XBMB3C_PLATFORM))
+ADDON_PLATFORM = getPlatform()
+xbmc.log ("MBCon -> Platform: " + str(ADDON_PLATFORM))
 
 g_flatten = __settings__.getSetting('flatten')
-printDebug("XBMB3C -> Flatten is: " + g_flatten)
+printDebug("MBCon -> Flatten is: " + g_flatten)
 
-xbmc.log ("XBMB3C -> LogLevel:  " + str(logLevel))
+xbmc.log ("MBCon -> LogLevel:  " + str(logLevel))
 
 g_contextReplace=True
 
-g_loc = "special://home/addons/plugin.video.XBMB3C"
+g_loc = "special://home/addons/plugin.video.mbcon"
 
 #Create the standard header structure and load with a User Agent to ensure we get back a response.
 g_txheaders = {
@@ -341,7 +334,7 @@ def sortby ():
     newurl=re.sub("SortBy.*?&","SortBy="+ sortOptions[return_value] + "&",WINDOW.getProperty("currenturl"))
     WINDOW.setProperty("currenturl",newurl)
     u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.xbmb3c/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
+    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
 
 def genrefilter ():
     genreFilters=["","Action","Adventure","Animation","Crime","Comedy","Documentary","Drama","Fantasy","Foreign","History","Horror","Music","Musical","Mystery","Romance","Science%20Fiction","Short","Suspense","Thriller","Western"]
@@ -350,7 +343,7 @@ def genrefilter ():
     newurl=re.sub("Genres.*?&","Genres="+ genreFilters[return_value] + "&",WINDOW.getProperty("currenturl"))
     WINDOW.setProperty("currenturl",newurl)
     u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.xbmb3c/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
+    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
 
 def playall (startId):
     temp_list = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -392,7 +385,7 @@ def sortorder ():
         newurl=re.sub("SortOrder.*?&","SortOrder=Ascending&",WINDOW.getProperty("currenturl"))
     WINDOW.setProperty("currenturl",newurl)
     u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.xbmb3c/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
+    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
 
     
 def delete (url):
@@ -562,7 +555,7 @@ def addGUIItem( url, details, extraData, folder=True ):
       list.setProperty('NumEpisodes',extraData.get('NumEpisodes'))
     
     
-    pluginCastLink = "plugin://plugin.video.xbmb3c?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id'))
+    pluginCastLink = "plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id'))
     list.setProperty('CastPluginLink', pluginCastLink)
     list.setProperty('ItemGUID', extraData.get('guiid'))
     list.setProperty('id', extraData.get('id'))
@@ -577,7 +570,7 @@ def addContextMenu(details, extraData, folder):
     if watched != None:
         scriptToRun = PLUGINPATH + "/default.py"
         
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.xbmb3c?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id')) + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id')) + ")"
         commands.append(( __language__(30100), pluginCastLink))
         
         if extraData.get("playcount") == "0":
@@ -660,157 +653,9 @@ def displaySections( filter=None ):
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     xbmcplugin.endOfDirectory(pluginhandle,cacheToDisc=False)
         
-def skin( filter=None, shared=False ):
-    printDebug("== ENTER: skin() ==")
-    
-    checkServer()
-    
-    #Get the global host variable set in settings
-    WINDOW = xbmcgui.Window( 10000 )
-    sectionCount=0
-    usrMoviesCount=0
-    usrMusicCount=0
-    usrTVshowsCount=0
-    stdMoviesCount=0
-    stdTVshowsCount=0
-    stdMusicCount=0
-    stdPhotoCount=0
-    stdChannelsCount=0
-    stdPlaylistsCount=0
-    stdSearchCount=0
-    dirItems = []
-    
-    allSections = getCollections(getDetailsString())
-    
-    for section in allSections:
-    
-        details={'title' : section.get('title', 'Unknown') }
-
-        extraData={ 'fanart_image' : '' ,
-                    'type'         : "Video" ,
-                    'thumb'        : '' ,
-                    'token'        : section.get('token',None) }
-
-        mode=_MODE_MOVIES
-        window="VideoLibrary"
-
-        extraData['mode']=mode
-        modeurl="&mode=0"
-        s_url='http://%s%s' % (section['address'], section['path'])
-        murl= "?url="+urllib.quote(s_url)+modeurl
-        searchurl = "?url="+urllib.quote(s_url)+"&mode=2"
-
-        #Build that listing..
-        total = section.get('total')
-        if (total == None):
-            total = 0
-        WINDOW.setProperty("xbmb3c.%d.title"               % (sectionCount) , section.get('title', 'Unknown'))
-        WINDOW.setProperty("xbmb3c.%d.path"                % (sectionCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-        WINDOW.setProperty("xbmb3c.%d.collapsed.path"      % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('collapsed_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.type"                % (sectionCount) , section.get('section'))
-        WINDOW.setProperty("xbmb3c.%d.fanart"              % (sectionCount) , section.get('fanart_image'))
-        WINDOW.setProperty("xbmb3c.%d.recent.path"         % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('recent_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.unwatched.path"      % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('unwatched_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.inprogress.path"     % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('inprogress_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.genre.path"          % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('genre_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.nextepisodes.path"   % (sectionCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('nextepisodes_path', '')) + modeurl + ",return)")
-        WINDOW.setProperty("xbmb3c.%d.total" % (sectionCount) , str(total))
-        if section.get('sectype')=='movies':
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.title"         % (usrMoviesCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.path"          % (usrMoviesCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.type"          % (usrMoviesCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.content"       % (usrMoviesCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.recent.path"         % (usrMoviesCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('recent_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.unwatched.path"      % (usrMoviesCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('unwatched_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.inprogress.path"     % (usrMoviesCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('inprogress_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.movies.%d.genre.path"          % (usrMoviesCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('genre_path', '')) + modeurl + ",return)")
-            printDebug("xbmb3c.usr.movies.%d.title"  % (usrMoviesCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.usr.movies.%d.type"  % (usrMoviesCount) + "section is:" + section.get('section'))   
-            usrMoviesCount += 1
-        elif section.get('sectype')=='tvshows':
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.title"        % (usrTVshowsCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.path"         % (usrTVshowsCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.type"         % (usrTVshowsCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.content"       % (usrTVshowsCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.recent.path"         % (usrTVshowsCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('recent_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.unwatched.path"      % (usrTVshowsCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('unwatched_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.inprogress.path"     % (usrTVshowsCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('inprogress_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.genre.path"          % (usrTVshowsCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('genre_path', '')) + modeurl + ",return)")
-            WINDOW.setProperty("xbmb3c.usr.tvshows.%d.nextepisodes.path"   % (usrTVshowsCount) , "ActivateWindow(" + window + ",plugin://plugin.video.xbmb3c/?url=http://" + urllib.quote(section['address'] + section.get('nextepisodes_path', '')) + modeurl + ",return)")
-        
-            printDebug("xbmb3c.usr.tvshows.%d.title"  % (usrTVshowsCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.usr.tvshows.%d.type"  % (usrTVshowsCount) + "section is:" + section.get('section'))     
-            usrTVshowsCount +=1
-        elif section.get('sectype')=='music':
-            WINDOW.setProperty("xbmb3c.usr.music.%d.title"        % (usrMusicCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.usr.music.%d.path"         % (usrMusicCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.usr.music.%d.type"         % (usrMusicCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.usr.music.%d.content"       % (usrMusicCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.usr.music.%d.title"  % (usrMusicCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.usr.music.%d.type"  % (usrMusicCount) + "section is:" + section.get('section'))
-            usrMusicCount +=1   
-        elif section.get('sectype')=='std.movies':
-            WINDOW.setProperty("xbmb3c.std.movies.%d.title"         % (stdMoviesCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.movies.%d.path"          % (stdMoviesCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.movies.%d.type"          % (stdMoviesCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.movies.%d.content"       % (stdMoviesCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.movies.%d.title"  % (stdMoviesCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.movies.%d.type"  % (stdMoviesCount) + "section is:" + section.get('section'))
-            stdMoviesCount +=1
-        elif section.get('sectype')=='std.tvshows':
-            WINDOW.setProperty("xbmb3c.std.tvshows.%d.title"        % (stdTVshowsCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.tvshows.%d.path"         % (stdTVshowsCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.tvshows.%d.type"         % (stdTVshowsCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.tvshows.%d.content"       % (stdTVshowsCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.tvshows.%d.title"  % (stdTVshowsCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.tvshows.%d.type"  % (stdTVshowsCount) + "section is:" + section.get('section'))
-            stdTVshowsCount +=1    
-        elif section.get('sectype')=='std.music':
-            WINDOW.setProperty("xbmb3c.std.music.%d.title"        % (stdMusicCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.music.%d.path"         % (stdMusicCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.music.%d.type"         % (stdMusicCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.music.%d.content"       % (stdMusicCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.music.%d.title"  % (stdMusicCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.music.%d.type"  % (stdMusicCount) + "section is:" + section.get('section'))      
-            stdMusicCount +=1     
-        elif section.get('sectype')=='std.photo':
-            WINDOW.setProperty("xbmb3c.std.photo.%d.title"        % (stdPhotoCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.photo.%d.path"         % (stdPhotoCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.photo.%d.type"         % (stdPhotoCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.photo.%d.content"       % (stdPhotoCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.photo.%d.title"  % (stdPhotoCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.photo.%d.type"  % (stdPhotoCount) + "section is:" + section.get('section'))    
-            stdPhotoCount +=1
-        elif section.get('sectype')=='std.channels':
-            WINDOW.setProperty("xbmb3c.std.channels.%d.title"        % (stdChannelsCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.channels.%d.path"         % (stdChannelsCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.channels.%d.type"         % (stdChannelsCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.channels.%d.content"       % (stdChannelsCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.channels.%d.title"  % (stdChannelsCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.channels.%d.type"  % (stdChannelsCount) + "section is:" + section.get('section'))    
-            stdChannelsCount +=1
-        elif section.get('sectype')=='std.playlists':
-            WINDOW.setProperty("xbmb3c.std.playlists.%d.title"        % (stdPlaylistsCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.playlists.%d.path"         % (stdPlaylistsCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-            WINDOW.setProperty("xbmb3c.std.playlists.%d.type"         % (stdPlaylistsCount) , section.get('section'))
-            WINDOW.setProperty("xbmb3c.std.playlists.%d.content"       % (stdPlaylistsCount) , "plugin://plugin.video.xbmb3c/" + murl)
-            printDebug("xbmb3c.std.playlists.%d.title"  % (stdPlaylistsCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.playlists.%d.type"  % (stdPlaylistsCount) + "section is:" + section.get('section'))    
-            stdPlaylistsCount +=1
-        elif section.get('sectype')=='std.search':
-            WINDOW.setProperty("xbmb3c.std.search.%d.title"        % (stdSearchCount) , section.get('title', 'Unknown'))
-            WINDOW.setProperty("xbmb3c.std.search.%d.path"         % (stdSearchCount) , "ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + searchurl+",return)")
-            WINDOW.setProperty("xbmb3c.std.search.%d.type"         % (stdSearchCount) , section.get('section'))
-            printDebug("xbmb3c.std.search.%d.title"  % (stdSearchCount) + "title is:" + section.get('title', 'Unknown'))
-            printDebug("xbmb3c.std.search.%d.type"  % (stdSearchCount) + "section is:" + section.get('section'))    
-            stdSearchCount +=1           #printDebug("Building window properties index [" + str(sectionCount) + "] which is [" + section.get('title').encode('utf-8') + " section - " + section.get('section') + " total - " + str(total) + "]")
-        printDebug("PATH in use is: ActivateWindow("+window+",plugin://plugin.video.xbmb3c/" + murl+",return)")
-        sectionCount += 1
-
 def remove_html_tags( data ):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
-
 
 def PLAY( url, handle ):
     printDebug("== ENTER: PLAY ==")
@@ -1144,7 +989,7 @@ def get_params( paramstring ):
                             param[splitparams[0]]=splitparams[1]
                     elif (len(splitparams))==3:
                             param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
-    printDebug("XBMB3C -> Detected parameters: " + str(param), level=2)
+    printDebug("MBCon -> Detected parameters: " + str(param), level=2)
     return param
 
 def getCacheValidator (server,url):
@@ -2187,12 +2032,12 @@ def processStudios(url, results, progress, content):
             extraData['thumb'] = extraData['fanart_image']
 
         extraData['mode'] = _MODE_GETCONTENT
-        xbmc.log("XBMB3C - process studios nocode: " + tempTitle)
+        xbmc.log("MBCon - process studios nocode: " + tempTitle)
         tempTitle = tempTitle.replace(' ', '+')
-        xbmc.log("XBMB3C - process studios nocode spaces replaced: " + tempTitle)
+        xbmc.log("MBCon - process studios nocode spaces replaced: " + tempTitle)
         tempTitle2 = unicode(tempTitle,'utf-8')          
         u = 'http://' + server + '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=' + content + '&Studios=' + tempTitle2.encode('ascii','ignore') + '&format=json'
-        xbmc.log("XBMB3C - process studios: " + u)
+        xbmc.log("MBCon - process studios: " + u)
         dirItems.append(addGUIItem(u, details, extraData))
       
     return dirItems
@@ -2279,12 +2124,12 @@ def processPeople(url, results, progress, content):
             extraData['thumb'] = extraData['fanart_image']
 
         extraData['mode'] = _MODE_GETCONTENT
-        xbmc.log("XBMB3C - process people nocode: " + tempTitle)
+        xbmc.log("MBCon - process people nocode: " + tempTitle)
         tempTitle = tempTitle.replace(' ', '+')
-        xbmc.log("XBMB3C - process people nocode spaces replaced: " + tempTitle)
+        xbmc.log("MBCon - process people nocode spaces replaced: " + tempTitle)
         tempTitle2 = unicode(tempTitle,'utf-8')          
         u = 'http://' + server + '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=' + content + '&Person=' + tempTitle2.encode('ascii','ignore') + '&format=json'
-        xbmc.log("XBMB3C - process people: " + u)
+        xbmc.log("MBCon - process people: " + u)
         dirItems.append(addGUIItem(u, details, extraData))
       
     return dirItems
@@ -2379,7 +2224,7 @@ def setWindowHeading(url) :
 
 def getCastList(pluginName, handle, params):
 
-    printDebug ("XBMB3C Returning Cast List")
+    printDebug ("MBCon Returning Cast List")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
@@ -2422,7 +2267,7 @@ def getCastList(pluginName, handle, params):
         else:
             item = xbmcgui.ListItem(label=displayName)
             
-        actionUrl = "plugin://plugin.video.xbmb3c?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
+        actionUrl = "plugin://plugin.video.mbcon?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
         
         item.setProperty('IsPlayable', 'false')
         item.setProperty('IsFolder', 'false')
@@ -2432,7 +2277,7 @@ def getCastList(pluginName, handle, params):
         url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
         url = urllib.quote(url)
         url = url.replace("PERSON_NAME", baseName)
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.xbmb3c?mode=" + str(_MODE_GETCONTENT) + "&url=" + url + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_GETCONTENT) + "&url=" + url + ")"
         commands.append(( "Show Other Library Items", pluginCastLink))
         item.addContextMenuItems( commands, g_contextReplace )
         
@@ -2582,10 +2427,10 @@ def getWigetContent(pluginName, handle, params):
                 
         selectAction = __settings__.getSetting('selectAction')
         if(selectAction == "1"):
-            playUrl = "plugin://plugin.video.xbmb3c/?id=" + item_id + '&mode=' + str(_MODE_ITEM_DETAILS)
+            playUrl = "plugin://plugin.video.mbcon/?id=" + item_id + '&mode=' + str(_MODE_ITEM_DETAILS)
         else:
             url =  server + ',;' + item_id
-            playUrl = "plugin://plugin.video.xbmb3c/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+            playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
         
         itemTupple = (playUrl, list_item, False)
         listItems.append(itemTupple)
@@ -2624,7 +2469,7 @@ def showViewList(url, pluginhandle):
     viewTypes=['_MOVIES', '_BOXSETS', '_TRAILERS', '_SERIES', '_SEASONS', '_EPISODES', '_MUSICARTISTS', '_MUSICALBUMS', '_MUSICVIDEOS', '_MUSICTRACKS']
     if "SETVIEWS" in url:
         for viewCat in viewCats:
-            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.xbmb3c/?url=_SHOWVIEWS' + viewTypes[viewCats.index(viewCat)] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(viewCat, ''), isFolder=True)
+            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon/?url=_SHOWVIEWS' + viewTypes[viewCats.index(viewCat)] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(viewCat, ''), isFolder=True)
     elif "_SETVIEW_" in url:
         category=url.split('_')[2]
         viewNum=url.split('_')[3]
@@ -2639,13 +2484,13 @@ def showViewList(url, pluginhandle):
             xbmcgui.Dialog().ok(__language__(30135), __language__(30150))            
             sys.exit()
         root = tree.getroot()
-        xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.xbmb3c?url=_SETVIEW_'+ url.split('_')[2] + '_' + '' + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem('Clear Settings', 'test'))
+        xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + '' + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem('Clear Settings', 'test'))
         for view in root.iter('view'):
             if __settings__.getSetting(xbmc.getSkinDir()+ '_VIEW_'+ url.split('_')[2]) == view.attrib['value']:
                 name=view.attrib['id'] + " (Active)"
             else:
                 name=view.attrib['id']
-            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.xbmb3c?url=_SETVIEW_'+ url.split('_')[2] + '_' + view.attrib['value'] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(name, 'test'))
+            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + view.attrib['value'] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(name, 'test'))
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
     
 def checkService():
@@ -2656,44 +2501,44 @@ def checkService():
         timeStamp = xbmcgui.Window(10000).getProperty("XBMB3C_Service_Timestamp")
         loops = loops + 1
         if(loops == 40):
-            printDebug("XBMB3C Service Not Running, no time stamp, exiting", 0)
+            printDebug("MBCon Service Not Running, no time stamp, exiting", 0)
             xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
             sys.exit()
         xbmc.sleep(200)
         
-    printDebug ("XBMB3C Service Timestamp: " + timeStamp)
-    printDebug ("XBMB3C Current Timestamp: " + str(int(time.time())))
+    printDebug ("MBCon Service Timestamp: " + timeStamp)
+    printDebug ("MBCon Current Timestamp: " + str(int(time.time())))
     
     if((int(timeStamp) + 240) < int(time.time())):
-        printDebug("XBMB3C Service Not Running, time stamp to old, exiting", 0)
+        printDebug("MBCon Service Not Running, time stamp to old, exiting", 0)
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
         
 def checkServer():
-    printDebug ("XBMB3C checkServer Called")
+    printDebug ("MBCon checkServer Called")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
     
     if(len(host) != 0 and host != "<none>"):
-        printDebug ("XBMB3C server already set")
+        printDebug ("MBCon server already set")
         return
     
     serverInfo = getServerDetails()
     
     if(serverInfo == None):
-        printDebug ("XBMB3C getServerDetails failed")
+        printDebug ("MBCon getServerDetails failed")
         return
         
     index = serverInfo.find(":")
     
     if(index <= 0):
-        printDebug ("XBMB3C getServerDetails data not correct : " + serverInfo)
+        printDebug ("MBCon getServerDetails data not correct : " + serverInfo)
         return
     
     server_address = serverInfo[:index]
     server_port = serverInfo[index+1:]
-    printDebug ("XBMB3C detected server info " + server_address + " : " + server_port)
+    printDebug ("MBCon detected server info " + server_address + " : " + server_port)
     
     xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
 
@@ -2745,13 +2590,13 @@ def checkServer():
 if(logLevel == 2):
     xbmcgui.Dialog().ok(__language__(30132), __language__(30133), __language__(30134))
 
-printDebug( "XBMB3C -> Script argument date " + str(sys.argv))
+printDebug( "MBCon -> Script argument date " + str(sys.argv))
 xbmcVersionNum = getXbmcVersion()
 try:
     params=get_params(sys.argv[2])
 except:
     params={}
-printDebug( "XBMB3C -> Script params is " + str(params))
+printDebug( "MBCon -> Script params is " + str(params))
     #Check to see if XBMC is playing - we don't want to do anything if so
 #if xbmc.Player().isPlaying():
 #    printDebug ('Already Playing! Exiting...')
@@ -2838,10 +2683,10 @@ else:
     WINDOW.clearProperty("heading")
     #mode=_MODE_BASICPLAY
 
-    printDebug("XBMB3C -> Mode: "+str(mode))
-    printDebug("XBMB3C -> URL: "+str(param_url))
-    printDebug("XBMB3C -> Name: "+str(param_name))
-    printDebug("XBMB3C -> identifier: " + str(param_identifier))
+    printDebug("MBCon -> Mode: "+str(mode))
+    printDebug("MBCon -> URL: "+str(param_url))
+    printDebug("MBCon -> Name: "+str(param_name))
+    printDebug("MBCon -> identifier: " + str(param_identifier))
 
     #Run a function based on the mode variable that was passed in the URL
     if ( mode == None or mode == _MODE_SHOW_SECTIONS or param_url == None or len(param_url) < 1 ):
@@ -2891,7 +2736,7 @@ else:
 
 WINDOW = xbmcgui.Window( 10000 )
 WINDOW.clearProperty("MB3.Background.Item.FanArt")
-xbmc.log ("===== XBMB3C STOP =====")
+xbmc.log ("===== MBCon STOP =====")
 
 #clear done and exit.
 sys.modules.clear()
