@@ -462,15 +462,7 @@ class ArtworkRotationThread(threading.Thread):
                 self.loadItemBackgroundLinks(id)
 
             listOfBackgrounds = self.item_art_links.get(id)
-            
-            if listOfBackgrounds != None:
-
-                if listOfBackgrounds[0]["action"] != None and listOfBackgrounds[0]["action"] != "":
-                    action = listOfBackgrounds[0]["action"]
-                    WINDOW.setProperty("MB3.Action", action )
-                else:
-                    WINDOW.clearProperty("MB3.Action")
-                   
+                               
             if(listOfBackgrounds != None and len(listOfBackgrounds) > 0):
                 self.logMsg("setItemBackgroundLink Image " + str(self.current_item_art + 1) + " of " + str(len(listOfBackgrounds)), 1)
                 try: 
@@ -493,7 +485,6 @@ class ArtworkRotationThread(threading.Thread):
         else:
             self.logMsg("setItemBackgroundLink Resetting MB3.Background.Item.FanArt", 1)
             WINDOW.clearProperty("MB3.Background.Item.FanArt")
-            WINDOW.clearProperty("MB3.Action")
       
             
     def loadItemBackgroundLinks(self, id):
