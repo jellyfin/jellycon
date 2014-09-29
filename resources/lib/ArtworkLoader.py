@@ -23,16 +23,12 @@ downloadUtils = DownloadUtils()
 
 class ArtworkRotationThread(threading.Thread):
 
-    movie_art_links = []
-    tv_art_links = []
-    music_art_links = []
-    global_art_links = []
     item_art_links = {}
-    current_movie_art = 0
-    current_tv_art = 0
-    current_music_art = 0
+    current_item_art = 0;
+    
+    global_art_links = []
     current_global_art = 0
-    current_item_art = 0
+    
     linksLoaded = False
     logLevel = 0
     currentFilteredIndex = {}
@@ -154,31 +150,18 @@ class ArtworkRotationThread(threading.Thread):
             WINDOW.setProperty("MB3.Background.Global.FanArt.Poster", result.get("global")["poster"])
             self.logMsg("MB3.Background.Global.FanArt.Poster=" + result.get("global")["poster"], level=2)    
             WINDOW.setProperty("MB3.Background.Global.FanArt.Action", result.get("global")["action"])
-            self.logMsg("MB3.Background.Global.FanArt.Action=" + result.get("global")["action"], level=2)             
-
-        if(result.get("movie") != None):
-            self.logMsg("Setting Movie Last : " + str(result.get("movie")), level=2)
-            WINDOW.setProperty("MB3.Background.Movie.FanArt", result.get("movie")["url"])      
+            self.logMsg("MB3.Background.Global.FanArt.Action=" + result.get("global")["action"], level=2)
             
-        if(result.get("tv") != None):
-            self.logMsg("Setting TV Last : " + str(result.get("tv")), level=2)
-            WINDOW.setProperty("MB3.Background.TV.FanArt", result.get("tv")["url"])    
-
-        if(result.get("music") != None):
-            self.logMsg("Setting Music Last : " + str(result.get("music")), level=2)
-            WINDOW.setProperty("MB3.Background.Music.FanArt", result.get("music")["url"])   
 
     def saveLastBackground(self):
     
         data = {}
         if(len(self.global_art_links) > 0):
             data["global"] = self.global_art_links[self.current_global_art]
-        if(len(self.movie_art_links) > 0):
-            data["movie"] = self.movie_art_links[self.current_movie_art]
-        if(len(self.tv_art_links) > 0):
-            data["tv"] = self.tv_art_links[self.current_tv_art]
-        if(len(self.music_art_links) > 0):
-            data["music"] = self.music_art_links[self.current_music_art]
+        #if(len(self.movie_art_links) > 0):
+        #    data["movie"] = self.movie_art_links[self.current_movie_art]
+        #if(len(self.tv_art_links) > 0):
+        #    data["tv"] = self.tv_art_links[self.current_tv_art]
 
         __addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
         __addondir__    = xbmc.translatePath( __addon__.getAddonInfo('profile') )            
@@ -194,33 +177,6 @@ class ArtworkRotationThread(threading.Thread):
 
         WINDOW = xbmcgui.Window( 10000 )
         
-        if(len(self.movie_art_links) > 0):
-            self.logMsg("setBackgroundLink index movie_art_links " + str(self.current_movie_art + 1) + " of " + str(len(self.movie_art_links)), level=2)
-            artUrl =  self.movie_art_links[self.current_movie_art]["url"]
-            WINDOW.setProperty("MB3.Background.Movie.FanArt", artUrl)
-            self.logMsg("MB3.Background.Movie.FanArt=" + artUrl)
-            self.current_movie_art = self.current_movie_art + 1
-            if(self.current_movie_art == len(self.movie_art_links)):
-                self.current_movie_art = 0         
-        
-        if(len(self.tv_art_links) > 0):
-            self.logMsg("setBackgroundLink index tv_art_links " + str(self.current_tv_art + 1) + " of " + str(len(self.tv_art_links)), level=2)
-            artUrl =  self.tv_art_links[self.current_tv_art]["url"]
-            WINDOW.setProperty("MB3.Background.TV.FanArt", artUrl)
-            self.logMsg("MB3.Background.TV.FanArt=" + artUrl)
-            self.current_tv_art = self.current_tv_art + 1
-            if(self.current_tv_art == len(self.tv_art_links)):
-                self.current_tv_art = 0
-                
-        if(len(self.music_art_links) > 0):
-            self.logMsg("setBackgroundLink index music_art_links " + str(self.current_music_art + 1) + " of " + str(len(self.music_art_links)), level=2)
-            artUrl =  self.music_art_links[self.current_music_art]["url"] 
-            WINDOW.setProperty("MB3.Background.Music.FanArt", artUrl)
-            self.logMsg("MB3.Background.Music.FanArt=" + artUrl)
-            self.current_music_art = self.current_music_art + 1
-            if(self.current_music_art == len(self.music_art_links)):
-                self.current_music_art = 0
-            
         if(len(self.global_art_links) > 0):
             self.logMsg("setBackgroundLink index global_art_links " + str(self.current_global_art + 1) + " of " + str(len(self.global_art_links)), level=2)
             
@@ -307,14 +263,10 @@ class ArtworkRotationThread(threading.Thread):
         t1 = time.time()
         result01 = self.updateCollectionArtLinks()
         t2 = time.time()
-        result02 = self.updateTypeArtLinks()
-        t3 = time.time()
         diff = t2 - t1
-        xbmc.log("TIMEDIFF01 : " + str(diff))
-        diff = t3 - t2
-        xbmc.log("TIMEDIFF02 : " + str(diff))
+        xbmc.log("TIME_DIFF : " + str(diff))
         
-        if(result01 and result02):
+        if(result01):
             xbmc.log("BackgroundRotationThread Update Links Worked")
             self.linksLoaded = True
         else:
@@ -397,7 +349,7 @@ class ArtworkRotationThread(threading.Thread):
 
             #####################################################################################################
             # Process collection item backgrounds
-            collectionUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + item.get("Id") + "&IncludeItemTypes=Movie,Series,Episode,MusicArtist,Trailer,MusicVideo,Video&Fields=ParentId,Overview&Recursive=true&CollapseBoxSetItems=false&format=json"
+            collectionUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + item.get("Id") + "&IncludeItemTypes=Movie,Series&Fields=ParentId,Overview&Recursive=true&CollapseBoxSetItems=false&format=json"
    
             jsonData = downloadUtils.downloadUrl(collectionUrl, suppress=False, popup=1 ) 
             collectionResult = json.loads(jsonData)
@@ -432,7 +384,9 @@ class ArtworkRotationThread(threading.Thread):
                         # build poster image link
                         posterImage = ""
                         actionUrl = ""
-                        if(col_item.get("Type") == "Movie" or col_item.get("Type") == "Trailer" or col_item.get("Type") == "MusicVideo" or col_item.get("Type") == "Video"):
+                        
+                        if(col_item.get("Type") == "Movie" or col_item.get("Type") == "MusicVideo" or col_item.get("Type") == "Video"):
+                        
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
                             url =  mb3Host + ":" + mb3Port + ',;' + id
                             url = urllib.quote(url)
@@ -440,9 +394,11 @@ class ArtworkRotationThread(threading.Thread):
                             actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
 
                         elif(col_item.get("Type") == "Series"):
+                        
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
                             actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + id + "&Name=" + name + ",return)"
-                        plot = col_item.get("Overview")
+                            
+                            
                         for backdrop in images:
                           
                             info = {}
@@ -452,9 +408,9 @@ class ArtworkRotationThread(threading.Thread):
                             info["index"] = index
                             info["id"] = id
                             info["action"] = "None"
-                            info["plot"] = plot
                             info["parent"] = parentID
                             info["name"] = name
+                            
                             links.append(info)
                             index = index + 1   
 
@@ -468,11 +424,14 @@ class ArtworkRotationThread(threading.Thread):
             
         # build global link list
         final_global_art = []
+        art_items = {}
         
         for id in artLinks:
             item = artLinks.get(id)
             collections = item.get("collections")
             links = item.get("links")
+            
+            art_items[id] = links
             
             for link_item in links:
                 link_item["collections"] = collections
@@ -481,191 +440,12 @@ class ArtworkRotationThread(threading.Thread):
         
         self.global_art_links = final_global_art
         random.shuffle(self.global_art_links)
-        self.logMsg("Background Global Art Links : " + str(len(self.global_art_links)))        
+        self.logMsg("Background Global Art Links : " + str(len(self.global_art_links)))
+        
+        self.item_art_links = art_items
         
         return True
-        
-    def updateTypeArtLinks(self):
-        self.logMsg("updateTypeArtLinks Called")
-        
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-        
-        mb3Host = addonSettings.getSetting('ipaddress')
-        mb3Port = addonSettings.getSetting('port')    
-        userName = addonSettings.getSetting('username')     
-        
-        # get the user ID
-        userid = downloadUtils.getUserId()
-        self.logMsg("updateTypeArtLinks UserID : " + userid)
 
-        # load Movie BG
-        moviesUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items?Fields=ParentId,Overview&CollapseBoxSetItems=false&Recursive=true&IncludeItemTypes=Movie&format=json"
-
-        jsonData = downloadUtils.downloadUrl(moviesUrl, suppress=False, popup=1 ) 
-        result = json.loads(jsonData)
-
-        result = result.get("Items")
-        if(result == None):
-            result = []   
-
-        for item in result:
-            images = item.get("BackdropImageTags")
-            id = item.get("Id")
-            parentID = item.get("ParentId")
-            name = item.get("Name")
-            plot = item.get("Overview")
-            url =  mb3Host + ":" + mb3Port + ',;' + id
-            url = urllib.quote(url)        
-            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
-            if (images == None):
-                images = []
-            index = 0
-            
-            trailerActionUrl = None
-            if item.get("LocalTrailerCount") != None and item.get("LocalTrailerCount") > 0:
-                itemTrailerUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "/LocalTrailers?format=json"
-                jsonData = downloadUtils.downloadUrl(itemTrailerUrl, suppress=False, popup=1 ) 
-                trailerItem = json.loads(jsonData)
-                trailerUrl = mb3Host + ":" + mb3Port + ',;' + trailerItem[0].get("Id")
-                trailerUrl = urllib.quote(trailerUrl) 
-                trailerActionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"
-            
-            for backdrop in images:
-              
-              info = {}
-              info["url"] = downloadUtils.getArtwork(item, "Backdrop", index=str(index))
-              info["index"] = index
-              info["id"] = id
-              info["plot"] = plot
-              info["action"] = actionUrl
-              info["trailer"] = trailerActionUrl
-              info["parent"] = parentID
-              info["name"] = name
-              self.logMsg("BG Movie Image Info : " + str(info), level=2)
-              
-              if (info not in self.movie_art_links):
-                  self.movie_art_links.append(info)
-              index = index + 1
-        
-        random.shuffle(self.movie_art_links)
-        self.logMsg("Background Movie Art Links : " + str(len(self.movie_art_links)))
-
-        # load TV BG links
-        tvUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items?Fields=ParentId,Overview&CollapseBoxSetItems=false&Recursive=true&IncludeItemTypes=Series&format=json"
-
-        jsonData = downloadUtils.downloadUrl(tvUrl, suppress=False, popup=1 ) 
-        result = json.loads(jsonData)        
-        
-        result = result.get("Items")
-        if(result == None):
-            result = []   
-
-        for item in result:
-            images = item.get("BackdropImageTags")
-            id = item.get("Id")
-            parentID = item.get("ParentId")
-            name = item.get("Name")
-            plot = item.get("Overview")
-            if (images == None):
-                images = []
-            index = 0
-            for backdrop in images:
-              
-              info = {}
-              info["url"] = downloadUtils.getArtwork(item, "Backdrop", index=str(index))
-              info["index"] = index
-              info["id"] = id
-              info["action"] = "None"
-              info["trailer"] = "None"
-              info["plot"] = plot
-              info["parent"] = parentID
-              info["name"] = name
-              self.logMsg("BG TV Image Info : " + str(info), level=2)
-              
-              if (info not in self.tv_art_links):
-                  self.tv_art_links.append(info)    
-              index = index + 1
-              
-        random.shuffle(self.tv_art_links)
-        self.logMsg("Background Tv Art Links : " + str(len(self.tv_art_links)))
-
-        # load music BG links
-        musicUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items?Fields=ParentId,Overview&CollapseBoxSetItems=false&Recursive=true&IncludeItemTypes=MusicArtist&format=json"
-        
-        jsonData = downloadUtils.downloadUrl(musicUrl, suppress=False, popup=1 ) 
-        result = json.loads(jsonData)        
-        
-        result = result.get("Items")
-        if(result == None):
-            result = []   
-
-        for item in result:
-            images = item.get("BackdropImageTags")
-            id = item.get("Id")
-            parentID = item.get("ParentId")
-            name = item.get("Name")
-            plot = item.get("Overview")
-            if (images == None):
-                images = []
-            index = 0
-            for backdrop in images:
-              
-              info = {}
-              info["url"] = downloadUtils.getArtwork(item, "Backdrop", index=str(index))
-              info["index"] = index
-              info["id"] = id
-              info["action"] = "None"
-              info["trailer"] = "None"
-              info["plot"] = plot
-              info["parent"] = parentID
-              info["name"] = name
-              self.logMsg("BG Music Image Info : " + str(info), level=2)
-
-              if (info not in self.music_art_links):
-                  self.music_art_links.append(info)
-              index = index + 1
-              
-        random.shuffle(self.music_art_links)
-        self.logMsg("Background Music Art Links : " + str(len(self.music_art_links)))
-        
-        #
-        # build a map indexed by id that contains a list of BG art for each item
-        # this is used for selected item BG rotation
-        #
-        self.item_art_links = {}
-        
-        # add movie BG links
-        for bg_item in self.movie_art_links:
-            item_id = bg_item["id"]
-            if(self.item_art_links.get(item_id) != None):
-                self.item_art_links[item_id].append(bg_item)
-            else:
-                bg_list = []
-                bg_list.append(bg_item)
-                self.item_art_links[item_id] = bg_list
-                
-        # add TV BG links
-        for bg_item in self.tv_art_links:
-            item_id = bg_item["id"]
-            if(self.item_art_links.get(item_id) != None):
-                self.item_art_links[item_id].append(bg_item)
-            else:
-                bg_list = []
-                bg_list.append(bg_item)
-                self.item_art_links[item_id] = bg_list 
-
-        # add music BG links
-        for bg_item in self.music_art_links:
-            item_id = bg_item["id"]
-            if(self.item_art_links.get(item_id) != None):
-                self.item_art_links[item_id].append(bg_item)
-            else:
-                bg_list = []
-                bg_list.append(bg_item)
-                self.item_art_links[item_id] = bg_list
-        
-        
-        return True
         
     def setItemBackgroundLink(self):
     
@@ -676,39 +456,21 @@ class ArtworkRotationThread(threading.Thread):
         if id != None and id != "":    
     
             listOfBackgrounds = self.item_art_links.get(id)
-            listOfData = self.item_art_links.get(xbmc.getInfoLabel('ListItem.Property(id)'))
             
             # if for some reson the item is not in the cache try to load it now
             if(listOfBackgrounds == None or len(listOfBackgrounds) == 0):
                 self.loadItemBackgroundLinks(id)
-            if(listOfData == None or len(listOfData) == 0):
-                self.loadItemBackgroundLinks(xbmc.getInfoLabel('ListItem.Property(id)'))
-                
-            
+
             listOfBackgrounds = self.item_art_links.get(id)
-            listOfData = self.item_art_links.get(xbmc.getInfoLabel('ListItem.Property(id)'))
             
             if listOfBackgrounds != None:
-                if listOfData != None:
-                    if listOfData[0]["plot"] != "" and listOfData[0]["plot"] != None:
-                        plot=listOfData[0]["plot"]
-                        plot=plot.encode("utf-8")
-                        WINDOW.setProperty("MB3.Plot", plot )
-                else:
-                    WINDOW.clearProperty("MB3.Plot")                            
 
                 if listOfBackgrounds[0]["action"] != None and listOfBackgrounds[0]["action"] != "":
-                    action=listOfBackgrounds[0]["action"]
+                    action = listOfBackgrounds[0]["action"]
                     WINDOW.setProperty("MB3.Action", action )
                 else:
                     WINDOW.clearProperty("MB3.Action")
-                    
-                if listOfBackgrounds[0].get("trailer") != None and listOfBackgrounds[0]["trailer"] != "":
-                    trailerAction=listOfBackgrounds[0]["trailer"]
-                    WINDOW.setProperty("MB3.TrailerAction", trailerAction )
-                else:
-                    WINDOW.clearProperty("MB3.TrailerAction")
-                    
+                   
             if(listOfBackgrounds != None and len(listOfBackgrounds) > 0):
                 self.logMsg("setItemBackgroundLink Image " + str(self.current_item_art + 1) + " of " + str(len(listOfBackgrounds)), 1)
                 try: 
@@ -731,9 +493,7 @@ class ArtworkRotationThread(threading.Thread):
         else:
             self.logMsg("setItemBackgroundLink Resetting MB3.Background.Item.FanArt", 1)
             WINDOW.clearProperty("MB3.Background.Item.FanArt")
-            WINDOW.clearProperty("MB3.Plot") 
             WINDOW.clearProperty("MB3.Action")
-            WINDOW.clearProperty("MB3.TrailerAction") 
       
             
     def loadItemBackgroundLinks(self, id):
@@ -762,42 +522,35 @@ class ArtworkRotationThread(threading.Thread):
 
         #for item in result:
         images = item.get("BackdropImageTags")
-        plot = item.get("Overview")
         id = item.get("Id")
         urlid = id
         parentID = item.get("ParentId")
         origid = id
         name = item.get("Name")
+        
         if (images == None or images == []):
-          images = item.get("ParentBackdropImageTags")
-          urlid = item.get("ParentBackdropItemId")
-          if (images == None):
-            images = []
+            images = item.get("ParentBackdropImageTags")
+            urlid = item.get("ParentBackdropItemId")
+            if (images == None):
+                images = []
             
         index = 0
         url =  mb3Host + ":" + mb3Port + ',;' + id
         url = urllib.quote(url)        
         actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
-        trailerActionUrl = None
-        if item.get("LocalTrailerCount") != None and item.get("LocalTrailerCount") > 0:
-            itemTrailerUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "/LocalTrailers?format=json"
-            jsonData = downloadUtils.downloadUrl(itemTrailerUrl, suppress=False, popup=1 ) 
-            trailerItem = json.loads(jsonData)
-            trailerUrl = mb3Host + ":" + mb3Port + ',;' + trailerItem[0].get("Id")
-            trailerUrl = urllib.quote(trailerUrl) 
-            trailerActionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + trailerUrl + ")"		
-      
+        posterImage = downloadUtils.getArtwork(item, "Primary")
+        
         newBgLinks = []
         for backdrop in images:
             info = {}
             info["url"] = downloadUtils.getArtwork(item, "Backdrop", index=str(index))
-            info["plot"] = plot
+            info["poster"] = posterImage
             info["action"] = actionUrl
-            info["trailer"] = trailerActionUrl
             info["index"] = index
             info["id"] = urlid
             info["parent"] = parentID
             info["name"] = name
+            
             self.logMsg("BG Item Image Info : " + str(info), level=2)
             newBgLinks.append(info)
             index = index + 1
