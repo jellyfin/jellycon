@@ -56,6 +56,13 @@ BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'li
 sys.path.append(BASE_RESOURCE_PATH)
 PLUGINPATH = xbmc.translatePath( os.path.join( __cwd__) )
 
+ProfileCode = __settings__.getSetting('profile') == "true"
+
+if(ProfileCode):
+    xbmcgui.Dialog().ok(__language__(30201), __language__(30202), __language__(30203))
+    pr = cProfile.Profile()
+    pr.enable()
+    
 from DownloadUtils import DownloadUtils
 from ItemInfo import ItemInfo
 from Utils import PlayUtils
@@ -102,7 +109,11 @@ downloadUtils = DownloadUtils()
 def printDebug( msg, level = 1):
     if(logLevel >= level):
         if(logLevel == 2):
-            xbmc.log("MBCon " + str(level) + " -> " + inspect.stack()[1][3] + " : " + str(msg))
+            stackline = ""
+            stack = inspect.stack()
+            for frame in stack: 
+                stackline = stackline + "." + frame[3]        
+            xbmc.log("MBCon " + str(level) + " -> (" + stackline + ") : " + str(msg))
         else:
             xbmc.log("MBCon " + str(level) + " -> " + str(msg))
 
@@ -1841,42 +1852,10 @@ else:
         displaySections()
 
     elif mode == _MODE_GETCONTENT:
-        if __settings__.getSetting('profile') == "true":
-        
-            xbmcgui.Dialog().ok(__language__(30201), __language__(30202), __language__(30203))
-            
-            pr = cProfile.Profile()
-            pr.enable()
-            getContent(param_url)
-            pr.disable()
-            ps = pstats.Stats(pr)
-            
-            fileTimeStamp = time.strftime("%Y-%m-%d %H-%M-%S")
-            tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").tab"
-            f = open(tabFileName, 'wb')
-            f.write("NumbCalls\tTotalTime\tCumulativeTime\tFunctionName\tFileName\r\n")
-            for (key, value) in ps.stats.items():
-                (filename, count, func_name) = key
-                (ccalls, ncalls, total_time, cumulative_time, callers) = value
-                try:
-                    f.write(str(ncalls) + "\t" + "{:10.4f}".format(total_time) + "\t" + "{:10.4f}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-                except ValueError:
-                    f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-            f.close()
-            
-        else:
-            getContent(param_url)
+        getContent(param_url)
 
     elif mode == _MODE_BASICPLAY:
         PLAY(param_url, pluginhandle)
-    elif mode == _MODE_SEARCH:
-        searchString=urllib.quote(xbmcgui.Dialog().input(__language__(30138)))
-        printDebug("Search String : " + searchString)
-        if searchString == "":
-            sys.exit()
-        param_url=param_url.replace("Search/Hints?","Search/Hints?SearchTerm="+searchString + "&UserId=")
-        param_url=param_url + "&Fields=" + getDetailsString() + "&format=json"
-        getContent(param_url)
     elif mode == _MODE_SETVIEWS:
         showViewList(param_url, pluginhandle)
 
@@ -1884,5 +1863,24 @@ WINDOW = xbmcgui.Window( 10000 )
 WINDOW.clearProperty("MB3.Background.Item.FanArt")
 xbmc.log ("===== MBCon STOP =====")
 
+if(ProfileCode):
+    pr.disable()
+    ps = pstats.Stats(pr)
+    
+    fileTimeStamp = time.strftime("%Y-%m-%d %H-%M-%S")
+    tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").tab"
+    f = open(tabFileName, 'wb')
+    f.write("NumbCalls\tTotalTime\tCumulativeTime\tFunctionName\tFileName\r\n")
+    for (key, value) in ps.stats.items():
+        (filename, count, func_name) = key
+        (ccalls, ncalls, total_time, cumulative_time, callers) = value
+        try:
+            f.write(str(ncalls) + "\t" + "{:10.4f}".format(total_time) + "\t" + "{:10.4f}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
+        except ValueError:
+            f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
+    f.close()
+    
 #clear done and exit.
-sys.modules.clear()
+sys.modules.clear()    
+
+

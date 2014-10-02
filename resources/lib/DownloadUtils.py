@@ -9,6 +9,7 @@ import hashlib
 import StringIO
 import gzip
 import sys
+import inspect
 import json as json
 from random import randrange
 from uuid import getnode as get_mac
@@ -47,7 +48,6 @@ class DownloadUtils():
             error = "Get User unable to connect to " + host + ":" + port + " : " + str(msg)
             xbmc.log (error)
             return ""
-
 
         self.logMsg("GETUSER_JSONDATA_01:" + str(jsonData))
 
@@ -199,7 +199,7 @@ class DownloadUtils():
             server=url.split('/')[serversplit]
             urlPath="/"+"/".join(url.split('/')[urlsplit:])
 
-            self.logMsg("url = " + url)
+            self.logMsg("DOWNLOAD_URL = " + url)
             self.logMsg("server = "+str(server), level=2)
             self.logMsg("urlPath = "+str(urlPath), level=2)
             conn = httplib.HTTPConnection(server, timeout=20)
@@ -217,19 +217,18 @@ class DownloadUtils():
             if int(data.status) == 200:
                 retData = data.read()
                 contentType = data.getheader('content-encoding')
-                self.logMsg("Data Len Before : " + str(len(retData)))
+                self.logMsg("Data Len Before : " + str(len(retData)), level=2)
                 if(contentType == "gzip"):
                     retData = StringIO.StringIO(retData)
                     gzipper = gzip.GzipFile(fileobj=retData)
                     link = gzipper.read()
                 else:
                     link = retData
-
-                self.logMsg("Data Len After : " + str(len(link)))
-                self.logMsg("====== 200 returned =======")
-                self.logMsg("Content-Type : " + str(contentType))
-                self.logMsg(link)
-                self.logMsg("====== 200 finished ======")
+                self.logMsg("Data Len After : " + str(len(link)), level=2)
+                self.logMsg("====== 200 returned =======", level=2)
+                self.logMsg("Content-Type : " + str(contentType), level=2)
+                self.logMsg(link, level=2)
+                self.logMsg("====== 200 finished ======", level=2)
 
             elif ( int(data.status) == 301 ) or ( int(data.status) == 302 ):
                 try: conn.close()
@@ -238,7 +237,7 @@ class DownloadUtils():
 
             elif int(data.status) >= 400:
                 error = "HTTP response error: " + str(data.status) + " " + str(data.reason)
-                xbmc.log (error)
+                xbmc.log(error)
                 if suppress is False:
                     if popup == 0:
                         xbmc.executebuiltin("XBMC.Notification(URL error: "+ str(data.reason) +",)")
@@ -252,7 +251,7 @@ class DownloadUtils():
                 link = ""
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
-            xbmc.log (error)
+            xbmc.log(error)
             xbmc.executebuiltin("XBMC.Notification(\"MBCon\": URL error: Unable to connect to server,)")
             xbmcgui.Dialog().ok("",self.getString(30204))
             raise
