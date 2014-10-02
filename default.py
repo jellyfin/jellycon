@@ -62,6 +62,7 @@ from Utils import PlayUtils
 from ClientInformation import ClientInformation
 from PersonInfo import PersonInfo
 from SearchDialog import SearchDialog
+from DisplayItems import DisplayItems
 
 ADDON_VERSION = ClientInformation().getVersion()
 
@@ -1448,15 +1449,17 @@ def showItemInfo(pluginName, handle, params):
     
     del infoPage
     
-def showSearch(pluginName, handle, params):    
+def showSearch(pluginName, handle, params):
     printDebug("showSearch Called" + str(params))
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-    
+       
     searchDialog = SearchDialog("SearchDialog.xml", __cwd__, "default", "720p")
-
     searchDialog.doModal()
-    
     del searchDialog
+    
+    #items = DisplayItems("DisplayItems.xml", __cwd__, "default", "720p")
+    #items.doModal()
+    #del items    
     
 def showPersonInfo(pluginName, handle, params):
     printDebug("showPersonInfo Called" + str(params))

@@ -158,10 +158,6 @@ class ArtworkRotationThread(threading.Thread):
         data = {}
         if(len(self.global_art_links) > 0):
             data["global"] = self.global_art_links[self.current_global_art]
-        #if(len(self.movie_art_links) > 0):
-        #    data["movie"] = self.movie_art_links[self.current_movie_art]
-        #if(len(self.tv_art_links) > 0):
-        #    data["tv"] = self.tv_art_links[self.current_tv_art]
 
         __addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
         __addondir__    = xbmc.translatePath( __addon__.getAddonInfo('profile') )            
@@ -311,7 +307,7 @@ class ArtworkRotationThread(threading.Thread):
         parentid = result.get("Id")
         self.logMsg("updateCollectionArtLinks ParentID : " + str(parentid), 2)
             
-        userRootPath = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentid + "&SortBy=SortName&Fields=CollectionType,Overview,RecursiveItemCount&format=json"
+        userRootPath = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentid + "&SortBy=SortName&Fields=CollectionType,RecursiveItemCount&format=json"
     
         jsonData = downloadUtils.downloadUrl(userRootPath, suppress=False, popup=1 ) 
         self.logMsg("updateCollectionArtLinks userRootPath : " + str(jsonData), 2)            
