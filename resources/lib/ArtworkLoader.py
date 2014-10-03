@@ -300,8 +300,12 @@ class ArtworkRotationThread(threading.Thread):
         self.logMsg("updateCollectionArtLinks UserID : " + userid)
         
         userUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/Root?format=json"
-        jsonData = downloadUtils.downloadUrl(userUrl, suppress=False, popup=1 )    
+        jsonData = downloadUtils.downloadUrl(userUrl, suppress=True, popup=0 )    
         self.logMsg("updateCollectionArtLinks UserData : " + str(jsonData), 2)
+        
+        if(len(jsonData) == 0):
+            return False
+            
         result = json.loads(jsonData)
         
         parentid = result.get("Id")
@@ -309,7 +313,7 @@ class ArtworkRotationThread(threading.Thread):
             
         userRootPath = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentid + "&SortBy=SortName&Fields=CollectionType,RecursiveItemCount&format=json"
     
-        jsonData = downloadUtils.downloadUrl(userRootPath, suppress=False, popup=1 ) 
+        jsonData = downloadUtils.downloadUrl(userRootPath, suppress=True, popup=0 ) 
         self.logMsg("updateCollectionArtLinks userRootPath : " + str(jsonData), 2)            
         result = json.loads(jsonData)
         result = result.get("Items")

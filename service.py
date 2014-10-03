@@ -27,90 +27,33 @@ __addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
 __language__     = __addon__.getLocalizedString
 BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
-base_window = xbmcgui.Window( 10000 )
 
 from ArtworkLoader import ArtworkRotationThread
 from WebSocketClient import WebSocketThread
 from ClientInformation import ClientInformation
 from MenuLoad import LoadMenuOptionsThread
+from DownloadUtils import DownloadUtils
 
 _MODE_BASICPLAY=12
 
-def getAuthHeader():
-    addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-    deviceName = addonSettings.getSetting('deviceName')
-    deviceName = deviceName.replace("\"", "_") # might need to url encode this as it is getting added to the header and is user entered data
-    clientInfo = ClientInformation()
-    txt_mac = clientInfo.getMachineId()
-    version = clientInfo.getVersion()  
-    userid = xbmcgui.Window( 10000 ).getProperty("userid")
-    authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-    headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}
-    xbmc.log("MBCon Authentication Header : " + str(headers))
-    return headers 
+downloadUtils = DownloadUtils()
+
+# auth the service
+try:
+    downloadUtils.authenticate()
+except Exception, e:
+    pass
 
 # start some worker threads
+newWebSocketThread = WebSocketThread()
+newWebSocketThread.start()
 
-newWebSocketThread = None
-if __addon__.getSetting('useWebSocketRemote') == "true":
-    newWebSocketThread = WebSocketThread()
-    newWebSocketThread.start()
-else:
-    xbmc.log("MBCon Service WebSocketRemote Disabled")
+newMenuThread = LoadMenuOptionsThread()
+newMenuThread.start()
 
-newMenuThread = None
-if __addon__.getSetting('useMenuLoader') == "true":
-    newMenuThread = LoadMenuOptionsThread()
-    newMenuThread.start()
-else:
-    xbmc.log("MBCon Service MenuLoader Disabled")
-
-artworkRotationThread = None    
-if __addon__.getSetting('useBackgroundLoader') == "true":
-    artworkRotationThread = ArtworkRotationThread()
-    artworkRotationThread.start()
-else:
-    xbmc.log("MBCon Service BackgroundLoader Disabled")
-
-    
-def deleteItem (url):
-    return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
-    if return_value:
-        xbmc.log('Deleting via URL: ' + url)
-        progress = xbmcgui.DialogProgress()
-        progress.create(__language__(30052), __language__(30053))
-        resp = requests.delete(url, data='', headers=getAuthHeader())
-        deleteSleep=0
-        while deleteSleep<10:
-            xbmc.sleep(1000)
-            deleteSleep=deleteSleep+1
-            progress.update(deleteSleep*10,__language__(30053))
-        progress.close()
-        xbmc.executebuiltin("Container.Refresh")
-        return 1
-    else:
-        return 0
-        
-def markWatched(url):
-    xbmc.log('MBCon Service -> Marking watched via: ' + url)
-    resp = requests.post(url, data='', headers=getAuthHeader())
-    
-def markUnWatched(url):
-    xbmc.log('MBCon Service -> Marking watched via: ' + url)
-    resp = requests.delete(url, data='', headers=getAuthHeader())    
-
-def setPosition (url, method):
-    xbmc.log('MBCon Service -> Setting position via: ' + url)
-    if method == 'POST':
-        resp = requests.post(url, data='', headers=getAuthHeader())
-    elif method == 'DELETE':
-        resp = requests.delete(url, data='', headers=getAuthHeader())
-        
-def stopTranscoding(url):
-    xbmc.log('MBCon Service -> Stopping transcoding: ' + url)
-    resp = requests.delete(url, data='', headers=getAuthHeader())    
-
-        
+artworkRotationThread = ArtworkRotationThread()
+artworkRotationThread.start()
+               
 def hasData(data):
     if(data == None or len(data) == 0 or data == "None"):
         return False
@@ -131,52 +74,32 @@ def stopAll(played_information):
             xbmc.log ("MBCon Service -> item_url  : " + item_url)
             xbmc.log ("MBCon Service -> item_data : " + str(data))
             
-            watchedurl = data.get("watchedurl")
-            positionurl = data.get("positionurl")
-            deleteurl = data.get("deleteurl")
-            runtime = data.get("runtime")
+            runtime = data.get("run_time")
             currentPossition = data.get("currentPossition")
             item_id = data.get("item_id")
             
-            if(currentPossition != None and hasData(runtime) and hasData(positionurl) and hasData(watchedurl)):
+            if(hasData(item_id) and hasData(runtime)):
                 runtimeTicks = int(runtime)
-                xbmc.log ("MBCon Service -> runtimeticks:" + str(runtimeTicks))
+                xbmc.log("MBCon Service -> runtimeticks: " + str(runtimeTicks))
                 percentComplete = (currentPossition * 10000000) / runtimeTicks
                 markPlayedAt = float(addonSettings.getSetting("markPlayedAt")) / 100    
 
-                xbmc.log ("MBCon Service -> Percent Complete:" + str(percentComplete) + " Mark Played At:" + str(markPlayedAt))
+                xbmc.log("MBCon Service -> Percent Complete:" + str(percentComplete) + " Mark Played At:" + str(markPlayedAt))
                 if (percentComplete > markPlayedAt):
                 
-                    gotDeleted = 0
-                    if(deleteurl != None and deleteurl != ""):
-                        xbmc.log ("MBCon Service -> Offering Delete:" + str(deleteurl))
-                        gotDeleted = deleteItem(deleteurl)
+                    xbmc.log("MBCon Service -> Marked Watched")
+                    newWebSocketThread.playbackStopped(item_id, str(0))
                         
-                    if(gotDeleted == 0):
-                        setPosition(positionurl + '/Progress?PositionTicks=0', 'POST')
-                        if(newWebSocketThread != None):
-                            newWebSocketThread.playbackStopped(item_id, str(0))
-                        markWatched(watchedurl)
                 else:
-                    #markUnWatched(watchedurl) # this resets the LastPlayedDate and that causes issues with sortby PlayedDate so I removed it for now
-                    if(newWebSocketThread != None):
-                        newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
-                    setPosition(positionurl + '?PositionTicks=' + str(int(currentPossition * 10000000)), 'DELETE')
                     
-    if(newNextUpThread != None):
-        newNextUpThread.updateNextUp()
-        
-    if(artworkRotationThread != None):
-        artworkRotationThread.updateActionUrls()
+                    xbmc.log("MBCon Service -> Set Position:" + str(int(currentPossition * 10000000)))
+                    newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
+       
+    artworkRotationThread.updateActionUrls()
         
     played_information.clear()
-
-    # stop transcoding - todo check we are actually transcoding?
-    clientInfo = ClientInformation()
-    txt_mac = clientInfo.getMachineId()
-    url = ("http://%s:%s/mediabrowser/Videos/ActiveEncodings" % (addonSettings.getSetting('ipaddress'), addonSettings.getSetting('port')))  
-    url = url + '?DeviceId=' + txt_mac
-    stopTranscoding(url)
+    
+    
 class Service( xbmc.Player ):
 
     played_information = {}
@@ -194,41 +117,25 @@ class Service( xbmc.Player ):
         xbmc.log("MBCon Service -> onPlayBackStarted" + currentFile)
         
         WINDOW = xbmcgui.Window( 10000 )
-        watchedurl = WINDOW.getProperty(currentFile+"watchedurl")
-        deleteurl = WINDOW.getProperty(currentFile+"deleteurl")
-        positionurl = WINDOW.getProperty(currentFile+"positionurl")
-        runtime = WINDOW.getProperty(currentFile+"runtimeticks")
-        item_id = WINDOW.getProperty(currentFile+"item_id")
+        item_id = WINDOW.getProperty("item_id")
+        run_time = WINDOW.getProperty("run_time")
         
         # reset all these so they dont get used is xbmc plays a none 
-        # xbmb3c MB item
-        # WINDOW.setProperty(currentFile+"watchedurl", "")
-        # WINDOW.setProperty(currentFile+"deleteurl", "")
-        # WINDOW.setProperty(currentFile+"positionurl", "")
-        # WINDOW.setProperty(currentFile+"runtimeticks", "")
-        # WINDOW.setProperty(currentFile+"item_id", "")
+        WINDOW.setProperty("item_id", "")
+        WINDOW.setProperty("run_time", "")
         
         if(item_id == None or len(item_id) == 0):
             return
         
-        if(newWebSocketThread != None):
-            newWebSocketThread.playbackStarted(item_id)
+        newWebSocketThread.playbackStarted(item_id)
         
-        if (watchedurl != "" and positionurl != ""):
+        data = {}
+        data["item_id"] = item_id
+        data["run_time"] = run_time
+        self.played_information[currentFile] = data
         
-            data = {}
-            data["watchedurl"] = watchedurl
-            data["deleteurl"] = deleteurl
-            data["positionurl"] = positionurl
-            data["runtime"] = runtime
-            data["item_id"] = item_id
-            self.played_information[currentFile] = data
-            
-            xbmc.log("MBCon Service -> ADDING_FILE : " + currentFile)
-            xbmc.log("MBCon Service -> ADDING_FILE : " + str(self.played_information))
-
-            # reset in progress possition
-            setPosition(positionurl + '/Progress?PositionTicks=0', 'POST')
+        xbmc.log("MBCon Service -> ADDING_FILE : " + currentFile)
+        xbmc.log("MBCon Service -> ADDING_FILE : " + str(self.played_information))
 
     def onPlayBackEnded( self ):
         # Will be called when xbmc stops playing a file
@@ -242,10 +149,6 @@ class Service( xbmc.Player ):
 
 monitor = Service()
 lastProgressUpdate = datetime.today()
-
-addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-if socket.gethostname() != None and socket.gethostname() != '' and addonSettings.getSetting("deviceName") == 'MBCon':
-    addonSettings.setSetting("deviceName", socket.gethostname())
 
 while not xbmc.abortRequested:
     if xbmc.Player().isPlaying():
@@ -263,8 +166,7 @@ while not xbmc.abortRequested:
             if(secDiff > 10):
                 if(monitor.played_information.get(currentFile) != None and monitor.played_information.get(currentFile).get("item_id") != None):
                     item_id =  monitor.played_information.get(currentFile).get("item_id")
-                    if(newWebSocketThread != None):
-                        newWebSocketThread.sendProgressUpdate(item_id, str(int(playTime * 10000000)))
+                    newWebSocketThread.sendProgressUpdate(item_id, str(int(playTime * 10000000)))
                 lastProgressUpdate = datetime.today()
             
         except Exception, e:
@@ -275,11 +177,6 @@ while not xbmc.abortRequested:
     xbmcgui.Window(10000).setProperty("XBMB3C_Service_Timestamp", str(int(time.time())))
     
 # stop the WebSocket client
-if(newWebSocketThread != None):
-    newWebSocketThread.stopClient()
-
-# stop the image proxy
-keepServing = False
+newWebSocketThread.stopClient()
 
 xbmc.log("MBCon Service -> Service shutting down")
-

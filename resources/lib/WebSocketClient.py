@@ -54,7 +54,7 @@ class WebSocketThread(threading.Thread):
     def playbackStopped(self, itemId, ticks):
         if(self.client != None):
             try:
-                self.logMsg("Sending Playback Stopped")
+                self.logMsg("Sending Playback Stopped : " + str(ticks))
                 messageData = {}
                 messageData["MessageType"] = "PlaybackStopped"
                 messageData["Data"] = itemId + "|" + str(ticks)
@@ -68,7 +68,7 @@ class WebSocketThread(threading.Thread):
     def sendProgressUpdate(self, itemId, ticks):
         if(self.client != None):
             try:
-                self.logMsg("Sending Progress Update")
+                self.logMsg("Sending Progress Update : " + str(ticks))
                 messageData = {}
                 messageData["MessageType"] = "PlaybackProgress"
                 messageData["Data"] = itemId + "|" + str(ticks) + "|false|false"

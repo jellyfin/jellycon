@@ -73,7 +73,10 @@ class DownloadUtils():
                 break
 
         if(secure):
-            self.authenticate('http://' + host + ":" + port + "/mediabrowser/Users/AuthenticateByName?format=json")
+            authOk = self.authenticate()
+            if(authOk == False):
+                return_value = xbmcgui.Dialog().ok(self.getString(30044), self.getString(30044))
+                sys.exit()
 
         if userid == "":
             return_value = xbmcgui.Dialog().ok(self.getString(30045),self.getString(30045))
@@ -89,7 +92,17 @@ class DownloadUtils():
     def getMachineId(self):
         return "%012X"%get_mac()
 
-    def authenticate(self, url):
+    def authenticate(self):
+    
+        self.addonSettings.setSetting('AccessToken', "")
+        
+        port = self.addonSettings.getSetting("port")
+        host = self.addonSettings.getSetting("ipaddress")
+        if(host == None or host == "" or port == None or port == ""):
+            return False
+            
+        url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/mediabrowser/Users/AuthenticateByName?format=json"
+    
         txt_mac = self.getMachineId()
         version = ClientInformation().getVersion()
 
@@ -99,17 +112,20 @@ class DownloadUtils():
         authString = "Mediabrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
         headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}    
         sha1 = hashlib.sha1(self.addonSettings.getSetting('password'))
+        
         resp = requests.post(url, data={'password':sha1.hexdigest(),'Username':self.addonSettings.getSetting('username')}, headers=headers)
-        code=str(resp.status_code)
+        code = str(resp.status_code)
         result = resp.json()
+        
         if result.get("AccessToken") != self.addonSettings.getSetting('AccessToken'):
             self.addonSettings.setSetting('AccessToken', result.get("AccessToken"))
-        if int(code) >= 200 and int(code)<300:
+            
+        if int(code) >= 200 and int(code) < 300:
             self.logMsg("User Authenticated")
+            return True
         else:
             self.logMsg("User NOT Authenticated")
-            return_value = xbmcgui.Dialog().ok(self.getString(30044), self.getString(30044))
-            sys.exit()            
+            return False
 
     def getArtwork(self, data, type, index = "0"):
 
@@ -188,6 +204,7 @@ class DownloadUtils():
         
     def downloadUrl(self, url, suppress=False, type="GET", popup=0 ):
         self.logMsg("== ENTER: getURL ==")
+        link = ""
         try:
             if url[0:4] == "http":
                 serversplit=2
@@ -196,23 +213,30 @@ class DownloadUtils():
                 serversplit=0
                 urlsplit=1
 
-            server=url.split('/')[serversplit]
-            urlPath="/"+"/".join(url.split('/')[urlsplit:])
+            server  =url.split('/')[serversplit]
+            urlPath = "/"+"/".join(url.split('/')[urlsplit:])
 
             self.logMsg("DOWNLOAD_URL = " + url)
             self.logMsg("server = "+str(server), level=2)
             self.logMsg("urlPath = "+str(urlPath), level=2)
             conn = httplib.HTTPConnection(server, timeout=20)
             #head = {"Accept-Encoding" : "gzip,deflate", "Accept-Charset" : "UTF-8,*"} 
-            if self.addonSettings.getSetting('AccessToken')==None:
-                self.addonSettings.setSetting('AccessToken','')
-            head = {"Accept-Encoding" : "gzip", "Accept-Charset" : "UTF-8,*", "X-MediaBrowser-Token" : self.addonSettings.getSetting('AccessToken')} 
+            if(self.addonSettings.getSetting('AccessToken') == None):
+                self.addonSettings.setSetting('AccessToken', '')
+                
+            authToken = self.addonSettings.getSetting('AccessToken')
+            if(authToken != None and authToken != ""):
+                head = {"Accept-Encoding" : "gzip", "Accept-Charset" : "UTF-8,*", "X-MediaBrowser-Token" : authToken}
+            else:
+                head = {"Accept-Encoding" : "gzip", "Accept-Charset" : "UTF-8,*"} 
+            self.logMsg("HEADERS : " + str(head), level=1)
+            
             #head = getAuthHeader()
             conn.request(method=type, url=urlPath, headers=head)
             #conn.request(method=type, url=urlPath)
             data = conn.getresponse()
             self.logMsg("GET URL HEADERS : " + str(data.getheaders()), level=2)
-            link = ""
+
             contentType = "none"
             if int(data.status) == 200:
                 retData = data.read()
@@ -252,9 +276,12 @@ class DownloadUtils():
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
             xbmc.log(error)
-            xbmc.executebuiltin("XBMC.Notification(\"MBCon\": URL error: Unable to connect to server,)")
-            xbmcgui.Dialog().ok("",self.getString(30204))
-            raise
+            if suppress is False:
+                if popup == 0:
+                    xbmc.executebuiltin("XBMC.Notification(\"MBCon\": URL error: Unable to connect to server,)")
+                else:
+                    xbmcgui.Dialog().ok("",self.getString(30204))
+                raise
         else:
             try: conn.close()
             except: pass

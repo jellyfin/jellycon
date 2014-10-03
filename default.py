@@ -654,12 +654,7 @@ def PLAY( url, handle ):
     
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
-   
-    id = urlParts[1]
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/mediabrowser/Users/" + userid + "/Items/" + id + "?format=json", suppress=False, popup=1 )     
-    printDebug("Play jsonData: " + jsonData)
-    result = json.loads(jsonData)
-    
+
     playurl = PlayUtils().getPlayUrl(server, id, result)
     printDebug("Play URL: " + playurl)    
     thumbPath = downloadUtils.getArtwork(result, "Primary")
@@ -672,25 +667,15 @@ def PLAY( url, handle ):
         xbmcgui.Dialog().ok(__language__(30128), __language__(30129))
         return
 
-    watchedurl = 'http://' + server + '/mediabrowser/Users/'+ userid + '/PlayedItems/' + id
-    positionurl = 'http://' + server + '/mediabrowser/Users/'+ userid + '/PlayingItems/' + id
-    deleteurl = 'http://' + server + '/mediabrowser/Items/' + id
-
-    # set the current playing info
+    # set the current playing item id
     WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty(playurl + "watchedurl", watchedurl)
-    WINDOW.setProperty(playurl + "positionurl", positionurl)
-    WINDOW.setProperty(playurl + "deleteurl", "")
-    
-    if result.get("Type")=="Episode" and __settings__.getSetting("offerDelete")=="true":
-        WINDOW.setProperty(playurl+"deleteurl", deleteurl)
-    
-    WINDOW.setProperty(playurl + "runtimeticks", str(result.get("RunTimeTicks")))
-    WINDOW.setProperty(playurl + "item_id", id)
+    WINDOW.setProperty("item_id", id)
+    WINDOW.setProperty("run_time", str(result.get("RunTimeTicks")))
     
     playlist.add(playurl, listItem)
 
     xbmc.Player().play(playlist)
+    
     #Set a loop to wait for positive confirmation of playback
     count = 0
     while not xbmc.Player().isPlaying():
@@ -1629,6 +1614,7 @@ def showParentContent(pluginName, handle, params):
 def showViewList(url, pluginhandle):
     viewCats=['Movies', 'BoxSets', 'Trailers', 'Series', 'Seasons', 'Episodes', 'Music Artists', 'Music Albums', 'Music Videos', 'Music Tracks']
     viewTypes=['_MOVIES', '_BOXSETS', '_TRAILERS', '_SERIES', '_SEASONS', '_EPISODES', '_MUSICARTISTS', '_MUSICALBUMS', '_MUSICVIDEOS', '_MUSICTRACKS']
+    
     if "SETVIEWS" in url:
         for viewCat in viewCats:
             xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon/?url=_SHOWVIEWS' + viewTypes[viewCats.index(viewCat)] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(viewCat, ''), isFolder=True)
@@ -1653,6 +1639,7 @@ def showViewList(url, pluginhandle):
             else:
                 name=view.attrib['id']
             xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + view.attrib['value'] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(name, 'test'))
+            
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
     
 def checkService():

@@ -24,55 +24,35 @@ class PlayUtils():
       addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
       # if the path is local and depending on the video quality play we can direct play it do so-
       xbmc.log("MBCon getPlayUrl")
-      if self.isDirectPlay(result) == True:
-          xbmc.log("MBCon getPlayUrl -> Direct Play")
-          playurl = result.get("Path")
-          if playurl != None:
-            #We have a path to play so play it
-            USER_AGENT = 'QuickTime/7.7.4'
-        
-            # If the file it is not a media stub
-            if (result.get("IsPlaceHolder") != True):
-              if (result.get("VideoType") == "Dvd"):
-                playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
-              elif (result.get("VideoType") == "BluRay"):
-                playurl = playurl + "/BDMV/index.bdmv"
-            if addonSettings.getSetting('smbusername') == '':
-              playurl = playurl.replace("\\\\", "smb://")
-            else:
-              playurl = playurl.replace("\\\\", "smb://" + addonSettings.getSetting('smbusername') + ':' + addonSettings.getSetting('smbpassword') + '@')
-            playurl = playurl.replace("\\", "/")
-        
-            if ("apple.com" in playurl):
-              playurl += '?|User-Agent=%s' % USER_AGENT
-            if addonSettings.getSetting('playFromStream') == "true":
-              playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/stream?static=true'
-              mediaSources = result.get("MediaSources")
-              if(mediaSources != None):
-                if mediaSources[0].get('DefaultAudioStreamIndex') != None:
-                  playurl = playurl + "&AudioStreamIndex=" +str(mediaSources[0].get('DefaultAudioStreamIndex'))
-                if mediaSources[0].get('DefaultSubtitleStreamIndex') != None:
-                  playurl = playurl + "&SubtitleStreamIndex=" + str(mediaSources[0].get('DefaultAudioStreamIndex')) 
+
+      playurl = result.get("Path")
+      if playurl != None:
+        #We have a path to play so play it
+        USER_AGENT = 'QuickTime/7.7.4'
+    
+        # If the file it is not a media stub
+        if (result.get("IsPlaceHolder") != True):
+          if (result.get("VideoType") == "Dvd"):
+            playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
+          elif (result.get("VideoType") == "BluRay"):
+            playurl = playurl + "/BDMV/index.bdmv"
+        if addonSettings.getSetting('smbusername') == '':
+          playurl = playurl.replace("\\\\", "smb://")
+        else:
+          playurl = playurl.replace("\\\\", "smb://" + addonSettings.getSetting('smbusername') + ':' + addonSettings.getSetting('smbpassword') + '@')
+        playurl = playurl.replace("\\", "/")
+    
+        if ("apple.com" in playurl):
+          playurl += '?|User-Agent=%s' % USER_AGENT
+        if addonSettings.getSetting('playFromStream') == "true":
+          playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/stream?static=true'
+          mediaSources = result.get("MediaSources")
+          if(mediaSources != None):
+            if mediaSources[0].get('DefaultAudioStreamIndex') != None:
+              playurl = playurl + "&AudioStreamIndex=" +str(mediaSources[0].get('DefaultAudioStreamIndex'))
+            if mediaSources[0].get('DefaultSubtitleStreamIndex') != None:
+              playurl = playurl + "&SubtitleStreamIndex=" + str(mediaSources[0].get('DefaultAudioStreamIndex')) 
   
-            
-      else:
-          #No path or has a path but not sufficient network so transcode
-          xbmc.log("MBCon getPlayUrl -> Transcode")
-          if result.get("Type") == "Audio":
-            playurl = 'http://' + server + '/mediabrowser/Audio/' + id + '/stream.mp3'
-          else:
-            txt_mac = downloadUtils.getMachineId()
-            playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/master.m3u8?mediaSourceId=' + id
-            playurl = playurl + '&videoCodec=h264'
-            playurl = playurl + '&AudioCodec=aac,ac3'
-            playurl = playurl + '&deviceId=' + txt_mac
-            playurl = playurl + '&VideoBitrate=' + str(int(self.getVideoBitRate()) * 1000)
-            mediaSources = result.get("MediaSources")
-            if(mediaSources != None):
-              if mediaSources[0].get('DefaultAudioStreamIndex') != None:
-                 playurl = playurl + "&AudioStreamIndex=" +str(mediaSources[0].get('DefaultAudioStreamIndex'))
-              if mediaSources[0].get('DefaultSubtitleStreamIndex') != None:
-                 playurl = playurl + "&SubtitleStreamIndex=" + str(mediaSources[0].get('DefaultAudioStreamIndex'))
       return playurl.encode('utf-8')
 
     # Works out if we are direct playing or not
