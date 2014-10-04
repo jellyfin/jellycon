@@ -152,7 +152,6 @@ class ArtworkRotationThread(threading.Thread):
             WINDOW.setProperty("MB3.Background.Global.FanArt.Action", result.get("global")["action"])
             self.logMsg("MB3.Background.Global.FanArt.Action=" + result.get("global")["action"], level=2)
             
-
     def saveLastBackground(self):
     
         data = {}

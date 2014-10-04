@@ -1694,7 +1694,7 @@ def checkServer():
     printDebug ("Getting user list")
     jsonData = None
     try:
-        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users?format=json")
+        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users?format=json", authenticate=False)
     except Exception, msg:
         error = "Get User unable to connect to " + server_address + ":" + server_port + " : " + str(msg)
         xbmc.log (error)
