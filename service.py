@@ -30,7 +30,6 @@ sys.path.append(BASE_RESOURCE_PATH)
 
 from ArtworkLoader import ArtworkRotationThread
 from WebSocketClient import WebSocketThread
-from ClientInformation import ClientInformation
 from MenuLoad import LoadMenuOptionsThread
 from DownloadUtils import DownloadUtils
 
@@ -79,22 +78,9 @@ def stopAll(played_information):
             item_id = data.get("item_id")
             
             if(hasData(item_id) and hasData(runtime)):
-                runtimeTicks = int(runtime)
-                xbmc.log("MBCon Service -> runtimeticks: " + str(runtimeTicks))
-                percentComplete = (currentPossition * 10000000) / runtimeTicks
-                markPlayedAt = float(addonSettings.getSetting("markPlayedAt")) / 100    
-
-                xbmc.log("MBCon Service -> Percent Complete:" + str(percentComplete) + " Mark Played At:" + str(markPlayedAt))
-                if (percentComplete > markPlayedAt):
+                xbmc.log("MBCon Service -> Set Position:" + str(int(currentPossition * 10000000)))
+                newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
                 
-                    xbmc.log("MBCon Service -> Marked Watched")
-                    newWebSocketThread.playbackStopped(item_id, str(0))
-                        
-                else:
-                    
-                    xbmc.log("MBCon Service -> Set Position:" + str(int(currentPossition * 10000000)))
-                    newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
-       
     artworkRotationThread.updateActionUrls()
         
     played_information.clear()
@@ -118,11 +104,9 @@ class Service( xbmc.Player ):
         
         WINDOW = xbmcgui.Window( 10000 )
         item_id = WINDOW.getProperty("item_id")
-        run_time = WINDOW.getProperty("run_time")
         
         # reset all these so they dont get used is xbmc plays a none 
         WINDOW.setProperty("item_id", "")
-        WINDOW.setProperty("run_time", "")
         
         if(item_id == None or len(item_id) == 0):
             return
@@ -131,7 +115,6 @@ class Service( xbmc.Player ):
         
         data = {}
         data["item_id"] = item_id
-        data["run_time"] = run_time
         self.played_information[currentFile] = data
         
         xbmc.log("MBCon Service -> ADDING_FILE : " + currentFile)
@@ -163,7 +146,7 @@ while not xbmc.abortRequested:
             # send update
             td = datetime.today() - lastProgressUpdate
             secDiff = td.seconds
-            if(secDiff > 10):
+            if(secDiff > 5):
                 if(monitor.played_information.get(currentFile) != None and monitor.played_information.get(currentFile).get("item_id") != None):
                     item_id =  monitor.played_information.get(currentFile).get("item_id")
                     newWebSocketThread.sendProgressUpdate(item_id, str(int(playTime * 10000000)))

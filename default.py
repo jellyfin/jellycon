@@ -668,9 +668,8 @@ def PLAY( url, handle ):
         return
 
     # set the current playing item id
-    WINDOW = xbmcgui.Window( 10000 )
+    WINDOW = xbmcgui.Window(10000)
     WINDOW.setProperty("item_id", id)
-    WINDOW.setProperty("run_time", str(result.get("RunTimeTicks")))
     
     playlist.add(playurl, listItem)
 
