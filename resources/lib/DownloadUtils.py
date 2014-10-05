@@ -9,10 +9,7 @@ import hashlib
 import StringIO
 import gzip
 import sys
-#import inspect
 import json as json
-#from random import randrange
-from uuid import getnode as get_mac
 from ClientInformation import ClientInformation
 
 class DownloadUtils():
@@ -32,9 +29,6 @@ class DownloadUtils():
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
             xbmc.log("MBCon DownloadUtils -> " + msg)
-
-    def getMachineId(self):
-        return "%012X"%get_mac()
 
     def getArtwork(self, data, type, index = "0"):
 
@@ -170,8 +164,9 @@ class DownloadUtils():
             
         url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/mediabrowser/Users/AuthenticateByName?format=json"
     
-        txt_mac = self.getMachineId()
-        version = ClientInformation().getVersion()
+        clientInfo = ClientInformation()
+        txt_mac = clientInfo.getMachineId()
+        version = clientInfo.getVersion()
 
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
@@ -196,8 +191,9 @@ class DownloadUtils():
             return ""
             
     def getAuthHeader(self):
-        txt_mac = self.getMachineId()
-        version = ClientInformation().getVersion()
+        clientInfo = ClientInformation()
+        txt_mac = clientInfo.getMachineId()
+        version = clientInfo.getVersion()
         
         userid = self.getUserId()
         
