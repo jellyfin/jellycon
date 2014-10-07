@@ -116,18 +116,7 @@ def printDebug( msg, level = 1):
             xbmc.log("MBCon " + str(level) + " -> (" + stackline + ") : " + str(msg))
         else:
             xbmc.log("MBCon " + str(level) + " -> " + str(msg))
-
-def getAuthHeader():
-    txt_mac = downloadUtils.getMachineId()
-    version = ClientInformation().getVersion()
-    userid = xbmcgui.Window( 10000 ).getProperty("userid")
-    deviceName = __settings__.getSetting('deviceName')
-    deviceName = deviceName.replace("\"", "_")
-    authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-    headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}
-    xbmc.log("MBCon Authentication Header : " + str(headers))
-    return headers 
-            
+           
 def getPlatform( ):
 
     if xbmc.getCondVisibility('system.platform.osx'):
@@ -290,26 +279,29 @@ def getCollections(detailsString):
     return collections
 
 def markWatched (url):
-    resp = requests.delete(url, data='', headers=getAuthHeader()) # mark unwatched first to reset any play position
-    resp = requests.post(url, data='', headers=getAuthHeader())
+    authHeaders = downloadUtils.getAuthHeader()
+    resp = requests.post(url, data='', headers=authHeaders)
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")  
     xbmc.executebuiltin("Container.Refresh")
 
 def markUnwatched (url):
-    resp = requests.delete(url, data='', headers=getAuthHeader())
+    authHeaders = downloadUtils.getAuthHeader()
+    resp = requests.delete(url, data='', headers=authHeaders)
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")      
     xbmc.executebuiltin("Container.Refresh")
 
 def markFavorite (url):
-    resp = requests.post(url, data='', headers=getAuthHeader())
+    authHeaders = downloadUtils.getAuthHeader()
+    resp = requests.post(url, data='', headers=authHeaders)
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
     xbmc.executebuiltin("Container.Refresh")
     
 def unmarkFavorite (url):
-    resp = requests.delete(url, data='', headers=getAuthHeader())
+    authHeaders = downloadUtils.getAuthHeader()
+    resp = requests.delete(url, data='', headers=authHeaders)
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
     xbmc.executebuiltin("Container.Refresh")
@@ -353,12 +345,9 @@ def delete (url):
         printDebug('Deleting via URL: ' + url)
         progress = xbmcgui.DialogProgress()
         progress.create(__language__(30052), __language__(30053))
-        resp = requests.delete(url, data='', headers=getAuthHeader())
+        authHeaders = downloadUtils.getAuthHeader()
+        resp = requests.delete(url, data='', headers=authHeaders)
         deleteSleep=0
-        while deleteSleep<10:
-            xbmc.sleep(1000)
-            deleteSleep=deleteSleep+1
-            progress.update(deleteSleep*10,__language__(30053))
         progress.close()
         xbmc.executebuiltin("Container.Refresh")
                

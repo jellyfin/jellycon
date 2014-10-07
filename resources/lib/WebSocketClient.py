@@ -12,6 +12,7 @@ import urllib
 import socket
 import websocket
 from ClientInformation import ClientInformation
+from DownloadUtils import DownloadUtils
 
 _MODE_BASICPLAY=12
 
@@ -214,16 +215,25 @@ class WebSocketThread(threading.Thread):
         if(self.logLevel >= 1):
             websocket.enableTrace(True)        
 
-        wsPort = self.getWebSocketPort(mb3Host, mb3Port);
+        #wsPort = self.getWebSocketPort(mb3Host, mb3Port);
+        wsPort = mb3Port
         self.logMsg("WebSocketPortNumber = " + str(wsPort))
-        if(wsPort == -1):
-            self.logMsg("Could not retrieve WebSocket port, can not run WebScoket Client")
-            return
+        #if(wsPort == -1):
+        #    self.logMsg("Could not retrieve WebSocket port, can not run WebScoket Client")
+        #    return
+            
+        #downloadUtils = DownloadUtils()
+        #authHeaders = downloadUtils.getAuthHeader()
+        #flatHeaders = []
+        #for header in authHeaders:
+        #    flatHeaders.append(header + ": " + authHeaders[header])
+        #self.logMsg("Flat Header : " + str(flatHeaders))
         
         # Make a call to /System/Info. WebSocketPortNumber is the port hosting the web socket.
         webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort) + "/mediabrowser"
         self.logMsg("WebSocket URL : " + webSocketUrl)
         self.client = websocket.WebSocketApp(webSocketUrl,
+                                    #header = flatHeaders,
                                     on_message = self.on_message,
                                     on_error = self.on_error,
                                     on_close = self.on_close)
