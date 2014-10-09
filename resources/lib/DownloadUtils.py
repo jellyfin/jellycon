@@ -4,7 +4,6 @@ import xbmcaddon
 import urllib
 import urllib2
 import httplib
-import requests
 import hashlib
 import StringIO
 import gzip
@@ -175,13 +174,18 @@ class DownloadUtils():
         headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}    
         sha1 = hashlib.sha1(self.addonSettings.getSetting('password'))
         
-        resp = requests.post(url, data={'password':sha1.hexdigest(),'Username':self.addonSettings.getSetting('username')}, headers=headers)
-        code = str(resp.status_code)
-        result = resp.json()
-        
-        accessToken = result.get("AccessToken")
-            
-        if int(code) >= 200 and int(code) < 300 and accessToken != None:
+        messageData = "username=" + self.addonSettings.getSetting('username') + "&password=" + sha1.hexdigest()
+
+        resp = self.downloadUrl(url, postBody=messageData, type="POST", authenticate=False)
+
+        accessToken = None
+        try:
+            result = json.loads(resp)
+            accessToken = result.get("AccessToken")
+        except:
+            pass
+
+        if(accessToken != None):
             self.logMsg("User Authenticated : " + accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
             return accessToken
@@ -190,19 +194,22 @@ class DownloadUtils():
             WINDOW.setProperty("AccessToken", "")
             return ""
             
-    def getAuthHeader(self):
+    def getAuthHeader(self, authenticate):
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getMachineId()
         version = clientInfo.getVersion()
         
-        userid = self.getUserId()
-        
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
         
-        authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+        #userid = self.getUserId()
+        #authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+        authString = "MediaBrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
         headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}
         
+        if(authenticate == False):
+            return headers
+
         authToken = self.authenticate()
         if(authToken != ""):
             headers["X-MediaBrowser-Token"] = authToken
@@ -210,7 +217,7 @@ class DownloadUtils():
         xbmc.log("MBCon Authentication Header : " + str(headers))
         return headers
     
-    def downloadUrl(self, url, suppress=False, type="GET", popup=0, authenticate=True):
+    def downloadUrl(self, url, suppress=False, postBody=None, type="GET", popup=0, authenticate=True):
         self.logMsg("== ENTER: getURL ==")
         link = ""
         try:
@@ -229,12 +236,16 @@ class DownloadUtils():
             self.logMsg("urlPath = "+str(urlPath), level=2)
             conn = httplib.HTTPConnection(server, timeout=20)
             
-            head = {}
-            if(authenticate):
-                head = self.getAuthHeader()
+            head = self.getAuthHeader(authenticate)
             self.logMsg("HEADERS : " + str(head), level=1)
 
-            conn.request(method=type, url=urlPath, headers=head)
+            if(postBody != None):
+                head["Content-Type"] = "application/x-www-form-urlencoded"
+                self.logMsg("POST DATA : " + postBody)
+                conn.request(method=type, url=urlPath, body=postBody, headers=head)
+            else:
+                conn.request(method=type, url=urlPath, headers=head)
+
             data = conn.getresponse()
             self.logMsg("GET URL HEADERS : " + str(data.getheaders()), level=2)
 

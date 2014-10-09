@@ -5,7 +5,6 @@ import urllib
 import httplib
 import os
 import time
-import requests
 import socket
 
 import threading
