@@ -72,12 +72,11 @@ def stopAll(played_information):
             xbmc.log ("MBCon Service -> item_url  : " + item_url)
             xbmc.log ("MBCon Service -> item_data : " + str(data))
             
-            runtime = data.get("run_time")
             currentPossition = data.get("currentPossition")
             item_id = data.get("item_id")
             
-            if(hasData(item_id) and hasData(runtime)):
-                xbmc.log("MBCon Service -> Set Position:" + str(int(currentPossition * 10000000)))
+            if(hasData(item_id)):
+                xbmc.log("MBCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
                 newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
                 
     artworkRotationThread.updateActionUrls()
