@@ -10,6 +10,7 @@ import xbmcaddon
 import xml.etree.ElementTree as xml
 import os
 import threading
+from datetime import datetime
 
 class LoadMenuOptionsThread(threading.Thread):
 
@@ -54,21 +55,29 @@ class LoadMenuOptionsThread(threading.Thread):
         except:
             lastModLast = 0;
         
+        lastRun = datetime.today()
+        
         while (xbmc.abortRequested == False):
             
-            favourites_file = os.path.join(xbmc.translatePath('special://profile'), "favourites.xml")
-            try:
-                lastMod = os.stat(favourites_file).st_mtime
-            except:
-                lastMod = 0;
+            td = datetime.today() - lastRun
+            secTotal = td.seconds
             
-            if(lastFavPath != favourites_file or lastModLast != lastMod):
-                self.loadMenuOptions(favourites_file)
+            if(secTotal > 10):
+            
+                favourites_file = os.path.join(xbmc.translatePath('special://profile'), "favourites.xml")
+                try:
+                    lastMod = os.stat(favourites_file).st_mtime
+                except:
+                    lastMod = 0;
                 
-            lastFavPath = favourites_file
-            lastModLast = lastMod
+                if(lastFavPath != favourites_file or lastModLast != lastMod):
+                    self.loadMenuOptions(favourites_file)
+                    
+                lastFavPath = favourites_file
+                lastModLast = lastMod
+                lastRun = datetime.today()
             
-            xbmc.sleep(3000)
+            xbmc.sleep(500)
                         
         self.logMsg("LoadMenuOptionsThread Exited")
 

@@ -88,7 +88,8 @@ class WebSocketThread(threading.Thread):
         if(self.client != None):
             self.logMsg("Stopping Client")
             self.keepRunning = False
-            self.client.keep_running = False            
+            self.client.keep_running = False
+            self.client.close()           
             self.logMsg("Stopping Client : KeepRunning set to False")
             '''
             try:

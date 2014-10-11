@@ -688,6 +688,13 @@ class WebSocket(object):
 
         reason: the reason to close. This must be string.
         """
+
+        try:
+            self.sock.shutdown(socket.SHUT_RDWR)
+        except:
+            pass
+            
+        '''
         if self.connected:
             if status < 0 or status >= ABNF.LENGTH_16:
                 raise ValueError("code is invalid range")
@@ -705,9 +712,11 @@ class WebSocket(object):
                 except:
                     pass
                 self.sock.settimeout(timeout)
+                print("SHUTDOWN ON SOCKET CALLED")
                 self.sock.shutdown(socket.SHUT_RDWR)
             except:
                 pass
+        '''        
         self._closeInternal()
 
     def _closeInternal(self):
@@ -817,7 +826,8 @@ class WebSocketApp(object):
         close websocket connection.
         """
         self.keep_running = False
-        self.sock.close()
+        if(self.sock != None):
+            self.sock.close()
 
     def _send_ping(self, interval):
         while True:
@@ -847,7 +857,7 @@ class WebSocketApp(object):
 
         try:
             self.sock = WebSocket(self.get_mask_key, sockopt=sockopt, sslopt=sslopt)
-            self.sock.settimeout(2)#default_timeout)
+            self.sock.settimeout(default_timeout)
             self.sock.connect(self.url, header=self.header)
             self._callback(self.on_open)
 

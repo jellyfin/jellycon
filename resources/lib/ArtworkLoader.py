@@ -121,7 +121,10 @@ class ArtworkRotationThread(threading.Thread):
                 itemLastRun = datetime.today()
                 last_id = current_id
                 
-            xbmc.sleep(1000)
+            if(xbmc.abortRequested == True):
+                break
+                
+            xbmc.sleep(500)
         
         try:
             self.saveLastBackground()
