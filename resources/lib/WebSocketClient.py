@@ -223,18 +223,18 @@ class WebSocketThread(threading.Thread):
         #    self.logMsg("Could not retrieve WebSocket port, can not run WebScoket Client")
         #    return
             
-        #downloadUtils = DownloadUtils()
-        #authHeaders = downloadUtils.getAuthHeader()
-        #flatHeaders = []
-        #for header in authHeaders:
-        #    flatHeaders.append(header + ": " + authHeaders[header])
-        #self.logMsg("Flat Header : " + str(flatHeaders))
+        downloadUtils = DownloadUtils()
+        authHeaders = downloadUtils.getAuthHeader()
+        flatHeaders = []
+        for header in authHeaders:
+            flatHeaders.append(header + ": " + authHeaders[header])
+        self.logMsg("Flat Header : " + str(flatHeaders))
         
         # Make a call to /System/Info. WebSocketPortNumber is the port hosting the web socket.
         webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort) + "/mediabrowser"
         self.logMsg("WebSocket URL : " + webSocketUrl)
         self.client = websocket.WebSocketApp(webSocketUrl,
-                                    #header = flatHeaders,
+                                    header = flatHeaders,
                                     on_message = self.on_message,
                                     on_error = self.on_error,
                                     on_close = self.on_close)

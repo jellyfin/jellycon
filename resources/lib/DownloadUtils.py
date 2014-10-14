@@ -194,28 +194,29 @@ class DownloadUtils():
             WINDOW.setProperty("AccessToken", "")
             return ""
             
-    def getAuthHeader(self, authenticate):
+    def getAuthHeader(self, authenticate=True):
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getMachineId()
         version = clientInfo.getVersion()
         
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
-        
-        #userid = self.getUserId()
-        #authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-        authString = "MediaBrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-        headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}
-        
-        if(authenticate == False):
-            return headers
 
-        authToken = self.authenticate()
-        if(authToken != ""):
-            headers["X-MediaBrowser-Token"] = authToken
+        if(authenticate == False):
+            authString = "MediaBrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}        
+            return headers
+        else:
+            userid = self.getUserId()
+            authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}        
                 
-        xbmc.log("MBCon Authentication Header : " + str(headers))
-        return headers
+            authToken = self.authenticate()
+            if(authToken != ""):
+                headers["X-MediaBrowser-Token"] = authToken
+                    
+            xbmc.log("MBCon Authentication Header : " + str(headers))
+            return headers
     
     def downloadUrl(self, url, suppress=False, postBody=None, type="GET", popup=0, authenticate=True):
         self.logMsg("== ENTER: getURL ==")
