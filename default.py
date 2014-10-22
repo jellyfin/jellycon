@@ -277,25 +277,41 @@ def getCollections(detailsString):
         
     return collections
 
-def markWatched (url):
+def markWatched(item_id):
+    printDebug("Mark Item Watched : " + item_id)
+    userId = downloadUtils.getUserId()
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", type="POST")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")  
     xbmc.executebuiltin("Container.Refresh")
 
-def markUnwatched (url):
+def markUnwatched(item_id):
+    printDebug("Mark Item UnWatched : " + item_id)
+    userId = downloadUtils.getUserId()
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, type="DELETE")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")      
     xbmc.executebuiltin("Container.Refresh")
 
-def markFavorite (url):
+def markFavorite(item_id):
+    printDebug("Add item to favourites : " + item_id)
+    userId = downloadUtils.getUserId()
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", type="POST")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
     xbmc.executebuiltin("Container.Refresh")
     
-def unmarkFavorite (url):
+def unmarkFavorite(item_id):
+    printDebug("Remove item from favourites : " + item_id)
+    userId = downloadUtils.getUserId()
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, type="DELETE")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
@@ -334,10 +350,12 @@ def sortorder ():
     xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
 
     
-def delete (url):
+def delete (item_id):
     return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
     if return_value:
-        printDebug('Deleting via URL: ' + url)
+        printDebug('Deleting Item : ' + item_id)
+        server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+        url = 'http://' + server + '/mediabrowser/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(__language__(30052), __language__(30053))
         downloadUtils.downloadUrl(url, type="DELETE")
@@ -504,24 +522,24 @@ def addGUIItem( url, details, extraData, folder=True ):
 def addContextMenu(details, extraData, folder):
     printDebug("Building Context Menus", level=2)
     commands = []
-    watched = extraData.get('watchedurl')
-    if watched != None:
+    item_id = extraData.get('id')
+    if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
         
         pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id')) + ")"
         commands.append(( __language__(30100), pluginCastLink))
         
         if extraData.get("playcount") == "0":
-            argsToPass = 'markWatched,' + extraData.get('watchedurl')
+            argsToPass = 'markWatched,' + extraData.get('id')
             commands.append(( __language__(30093), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
-            argsToPass = 'markUnwatched,' + extraData.get('watchedurl')
+            argsToPass = 'markUnwatched,' + extraData.get('id')
             commands.append(( __language__(30094), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         if extraData.get('favorite') != 'true':
-            argsToPass = 'markFavorite,' + extraData.get('favoriteurl')
+            argsToPass = 'markFavorite,' + extraData.get('id')
             commands.append(( __language__(30095), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
-            argsToPass = 'unmarkFavorite,' + extraData.get('favoriteurl')
+            argsToPass = 'unmarkFavorite,' + extraData.get('id')
             commands.append(( __language__(30096), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
             
         argsToPass = 'sortby'
@@ -540,7 +558,7 @@ def addContextMenu(details, extraData, folder):
         argsToPass = 'refresh'
         commands.append(( __language__(30042), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
-        argsToPass = 'delete,' + extraData.get('deleteurl')
+        argsToPass = 'delete,' + extraData.get('id')
         commands.append(( __language__(30043), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
         if  extraData.get('itemtype') == 'Trailer':
@@ -1188,11 +1206,13 @@ def processDirectory(url, results, progress):
             except TypeError:
                 tempDuration = "0"
                 RunTimeTicks = "0"
-        TotalSeasons     = 0 if item.get("ChildCount")==None else item.get("ChildCount")
-        TotalEpisodes    = 0 if item.get("RecursiveItemCount")==None else item.get("RecursiveItemCount")
-        WatchedEpisodes  = 0 if userData.get("UnplayedItemCount")==None else TotalEpisodes-userData.get("UnplayedItemCount")
-        UnWatchedEpisodes = 0 if userData.get("UnplayedItemCount")==None else userData.get("UnplayedItemCount")
-        NumEpisodes      = TotalEpisodes
+                
+        TotalSeasons = 0 if item.get("ChildCount") == None else item.get("ChildCount")
+        TotalEpisodes = 0 if item.get("RecursiveItemCount") == None else item.get("RecursiveItemCount")
+        WatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else TotalEpisodes-userData.get("UnplayedItemCount")
+        UnWatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else userData.get("UnplayedItemCount")
+        NumEpisodes = TotalEpisodes
+        
         # Populate the extraData list
         extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary") ,
                    'fanart_image' : downloadUtils.getArtwork(item, "Backdrop") ,
@@ -1222,10 +1242,7 @@ def processDirectory(url, results, progress):
                    'height'       : height,
                    'width'        : width,
                    'cast'         : cast,
-                   'favorite'     : favorite,
-                   'watchedurl'   : 'http://' + server + '/mediabrowser/Users/'+ userid + '/PlayedItems/' + id,
-                   'favoriteurl'  : 'http://' + server + '/mediabrowser/Users/'+ userid + '/FavoriteItems/' + id,
-                   'deleteurl'    : 'http://' + server + '/mediabrowser/Items/' + id,                   
+                   'favorite'     : favorite,             
                    'parenturl'    : url,
                    'resumetime'   : str(seekTime),
                    'totaltime'    : tempDuration,
@@ -1751,29 +1768,29 @@ if str(sys.argv[1]) == "skin":
 elif sys.argv[1] == "check_server":
      checkServer()
 elif sys.argv[1] == "update":
-    url=sys.argv[2]
-    libraryRefresh(url)
+    item_id = sys.argv[2]
+    libraryRefresh(item_id)
 elif sys.argv[1] == "markWatched":
-    url=sys.argv[2]
-    markWatched(url)
+    item_id = sys.argv[2]
+    markWatched(item_id)
 elif sys.argv[1] == "markUnwatched":
-    url=sys.argv[2]
-    markUnwatched(url)
+    item_id = sys.argv[2]
+    markUnwatched(item_id)
 elif sys.argv[1] == "markFavorite":
-    url=sys.argv[2]
-    markFavorite(url)
+    item_id = sys.argv[2]
+    markFavorite(item_id)
 elif sys.argv[1] == "unmarkFavorite":
-    url=sys.argv[2]
-    unmarkFavorite(url)    
+    item_id = sys.argv[2]
+    unmarkFavorite(item_id)
+elif sys.argv[1] == "delete":
+    item_id = sys.argv[2]
+    delete(item_id)    
 elif sys.argv[1] == "setting":
     __settings__.openSettings()
     WINDOW = xbmcgui.getCurrentWindowId()
     if WINDOW == 10000:
         printDebug("Currently in home - refreshing to allow new settings to be taken")
         xbmc.executebuiltin("XBMC.ActivateWindow(Home)")
-elif sys.argv[1] == "delete":
-    url=sys.argv[2]
-    delete(url)
 elif sys.argv[1] == "refresh":
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
