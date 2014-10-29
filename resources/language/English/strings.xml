@@ -18,7 +18,6 @@
     <string id="30022">Advanced</string>
     <string id="30024">Username:</string>
     <string id="30025">Password:</string>
-    <string id="30026">Use SIMPLEJSON instead of JSON</string>
     
     <string id="30030">Port Number:</string>
     <string id="30036">Number of recent Movies to show:</string>    
@@ -26,65 +25,14 @@
     <string id="30035">Number of recent Music Albums to show:</string>    
     <string id="30038">Mark watched at start of playback:</string>    
     <string id="30039">Set Season poster for episodes</string>
-
-    <string id="30040">Genre Filter ...</string>
-    <string id="30041">Play All from Here</string>
-    <string id="30042">Refresh</string>
-    <string id="30043">Delete</string>
-    <string id="30046">Add Movie to CouchPotato</string>
     
     <string id="30044">Incorrect Username/Password</string>
     <string id="30045">Username not found</string>
     
-    <string id="30052">Deleting</string>
     <string id="30053">Waiting for server to delete</string>
     
-    <string id="30059">Server Default</string>
-    <string id="30060">Title</string>
-    <string id="30061">Year</string>
-    <string id="30062">Premiere Date</string>
-    <string id="30063">Date Created</string>
-    <string id="30064">Critic Rating</string>
-    <string id="30065">Community Rating</string>
-    <string id="30066">Play Count</string>
-    <string id="30067">Budget</string>
-    
-    <string id="30068">Sort By</string>
-    
-    <string id="30069">None</string>
-    <string id="30070">Action</string>
-    <string id="30071">Adventure</string>
-    <string id="30072">Animation</string>
-    <string id="30073">Crime</string>
-    <string id="30074">Comedy</string>
-    <string id="30075">Documentary</string>
-    <string id="30076">Drama</string>
-    <string id="30077">Fantasy</string>
-    <string id="30078">Foreign</string>
-    <string id="30079">History</string>
-    <string id="30080">Horror</string>
-    <string id="30081">Music</string>
-    <string id="30082">Musical</string>
-    <string id="30083">Mystery</string>
-    <string id="30084">Romance</string>
-    <string id="30085">Science Fiction</string>
-    <string id="30086">Short</string>
-    <string id="30087">Suspense</string>
-    <string id="30088">Thriller</string>
-    <string id="30089">Western</string>
-    
-    <string id="30090">Genre Filter</string>
     <string id="30091">Confirm file delete?</string>
     <string id="30092">Delete this item? This action will delete media and associated data files.</string>
-    
-    <string id="30093">Mark Watched</string>
-    <string id="30094">Mark Unwatched</string>
-    <string id="30095">Add to Favorites</string>
-    <string id="30096">Remove from Favorites</string>
-    <string id="30097">Sort By ...</string>
-    <string id="30098">Sort Order Descending</string>
-    <string id="30099">Sort Order Ascending</string>
-    <string id="30100">Show People</string>
     
     <string id="30110">Interface</string>
     <string id="30111">Include Stream Info</string>
@@ -107,7 +55,7 @@
     <string id="30128">Play Error</string>
     <string id="30129">This item is not playable</string>    
     <string id="30130">Local path detected</string>
-    <string id="30131">Your MB3 Server contains local paths.  Please change server paths to UNC or change MBCon setting 'Play from Stream' to true.  Path: </string>
+    <string id="30131">Your MB3 Server contains local paths. Please change server paths to UNC or change MBCon setting 'Play from Stream' to true.  Path: </string>
     <string id="30132">Warning</string>
     <string id="30133">Debug logging enabled.</string>
     <string id="30134">This will affect performance.</string>
@@ -115,80 +63,22 @@
     <string id="30136">MBCon service is not running</string>
     <string id="30137">Please restart XBMC</string>
     <string id="30138">Search</string>
-    
-    <string id="30139">Enable Theme Music (Requires Restart)</string>
-    <string id="30140"> - Loop Theme Music</string>
-    <string id="30141">Enable Background Image (Requires Restart)</string>
-    <string id="30142">Services</string>
-    <string id="30143">Enable Info Loader (Requires Restart)</string>
-    <string id="30144">Enable Menu Loader (Requires Restart)</string>
-    <string id="30145">Enable WebSocket Remote (Requires Restart)</string>   
-    <string id="30146">Enable In Progress Loader (Requires Restart)</string>
-    <string id="30147">Enable Recent Info Loader (Requires Restart)</string>
-    <string id="30148">Enable Random Loader (Requires Restart)</string>
-    <string id="30149">Enable Next Up Loader (Requires Restart)</string>
-    
+       
     <string id="30150">Skin does not support setting views</string>
     <string id="30151">Select item action (Requires Restart)</string>
     
-    <string id="30152">Show Indicators</string>
-    <string id="30153">  - Show Watched Indicator</string>
-    <string id="30154">  - Show Unplayed Count Indicator</string>
-    <string id="30155">  - Show Played Percentage Indicator</string>
-    <string id="30156">Sort NextUp by Show Title</string>    
-    <string id="30157">Disable Enhanced Images (eg CoverArt)</string>
-    <string id="30158">Metadata</string>
     <string id="30159">Artwork</string>
-    <string id="30160">Video Quality</string>
     
-    <string id="30161">Enable Suggested Loader (Requires Restart)</string>
-    <string id="30162">Add Season Number</string>     
-    <string id="30163">Flatten Seasons</string>     
-    <string id="30164">Direct Play - HTTP</string>     
-    <string id="30165">Direct Play</string>     
-    <string id="30166">Transcoding</string>     
-    <string id="30167">Server Detection Succeeded</string>     
-    <string id="30168">Found server</string>     
-    <string id="30169">Address : </string>     
-    
-     
-    <string id="30170">All Movies</string>             
-    <string id="30171">All TV</string>                 
-    <string id="30172">All Music</string>              
-    <string id="30173">Channels</string>               
-    <string id="30174">Recently Added Movies</string>  
-    <string id="30175">Recently Added Episodes</string>
-    <string id="30176">Recently Added Albums</string>  
-    <string id="30177">In Progress Movies</string>     
-    <string id="30178">In Progress Episodes</string>   
-    <string id="30179">Next Episodes</string>          
-    <string id="30180">Favorite Movies</string>        
-    <string id="30181">Favorite Shows</string>         
-    <string id="30182">Favorite Episodes</string>      
-    <string id="30183">Frequent Played Albums</string> 
-    <string id="30184">Upcoming TV</string>            
-    <string id="30185">BoxSets</string>                
-    <string id="30186">Trailers</string>               
-    <string id="30187">Music Videos</string>           
-    <string id="30188">Photos</string>                 
-    <string id="30189">Unwatched Movies</string>       
-    <string id="30190">Movie Genres</string>           
-    <string id="30191">Movie Studios</string>          
-    <string id="30192">Movie Actors</string>           
-    <string id="30193">Unwatched Episodes</string>     
-    <string id="30194">TV Genres</string>              
-    <string id="30195">TV Networks</string>            
-    <string id="30196">TV Actors</string>              
-    <string id="30197">Playlists</string>              
-    <string id="30198">Search</string>              
-    <string id="30199">Set Views</string>              
-    
-    <string id="30200">Select User</string>              
-    <string id="30201">Profiling enabled.</string>              
-    <string id="30202">Please remember to turn off when finished testing.</string>              
-    <string id="30203">Error in ArtworkRotationThread</string>              
+    <string id="30162">Add Season Number</string>
+    <string id="30163">Flatten Seasons</string>
+    <string id="30167">Server Detection Succeeded</string>
+    <string id="30168">Found server</string>
+    <string id="30169">Address : </string> 
+               
+    <string id="30200">Select User</string>
+    <string id="30201">Profiling enabled.</string>        
+    <string id="30203">Error in ArtworkRotationThread</string>
     <string id="30204">Unable to connect to host</string>         
     <string id="30205">Error in LoadMenuOptionsThread</string>        
     
-
 </strings>

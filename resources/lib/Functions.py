@@ -18,6 +18,7 @@
     This software is derived form the XBMB3C addon
     
 '''
+#import ptvsd
 
 import struct
 import urllib
@@ -76,8 +77,70 @@ __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
 __cwd__ = __settings__.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join( __cwd__))
 
-genreList=[__language__(30069),__language__(30070),__language__(30071),__language__(30072),__language__(30073),__language__(30074),__language__(30075),__language__(30076),__language__(30077),__language__(30078),__language__(30079),__language__(30080),__language__(30081),__language__(30082),__language__(30083),__language__(30084),__language__(30085),__language__(30086),__language__(30087),__language__(30088),__language__(30089)]
-sortbyList=[__language__(30059),__language__(30060),__language__(30061),__language__(30062),__language__(30063),__language__(30064),__language__(30065),__language__(30066),__language__(30067)]
+genreFilters = [
+                "",
+                "Action",
+                "Adventure",
+                "Animation",
+                "Crime",
+                "Comedy",
+                "Documentary",
+                "Drama",
+                "Fantasy",
+                "Foreign",
+                "History",
+                "Horror",
+                "Music",
+                "Musical",
+                "Mystery",
+                "Romance",
+                "Science%20Fiction",
+                "Short",
+                "Suspense",
+                "Thriller",
+                "Western"]
+genreList=[
+                "None",
+                "Action",
+                "Adventure",
+                "Animation",
+                "Crime",
+                "Comedy",
+                "Documentary",
+                "Drama",
+                "Fantasy",
+                "Foreign",
+                "History",
+                "Horror",
+                "Music",
+                "Musical",
+                "Mystery",
+                "Romance",
+                "Science Fiction",
+                "Short", 
+                "Suspense",
+                "Thriller",
+                "Western"]
+
+sortByValues = [
+                "", 
+                "SortName",
+                "ProductionYear,SortName",
+                "PremiereDate,SortName",
+                "DateCreated,SortName",
+                "CriticRating,SortName",
+                "CommunityRating,SortName",
+                "PlayCount,SortName",
+                "Budget,SortName"]
+sortByList = [  "Server Default",
+                "Title",
+                "Year",
+                "Premier Date",
+                "Date Created",
+                "Critic Rating",
+                "Community Rating",
+                "Play Count",
+                "Budget"]
 
 logLevel = 0
 try:
@@ -90,6 +153,9 @@ xbmc.log ("MBCon -> LogLevel:  " + str(logLevel))
 downloadUtils = DownloadUtils()
 
 def mainEntryPoint():
+
+    
+
 
     ProfileCode = __settings__.getSetting('profile') == "true"
 
@@ -119,7 +185,6 @@ def mainEntryPoint():
 
     mode = int(params.get('mode', -1))
     WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("addshowname", "false")
 
     if sys.argv[1] == "check_server":
         checkServer()
@@ -165,6 +230,8 @@ def mainEntryPoint():
     elif mode == _MODE_SHOW_SEARCH:
         showSearch(sys.argv[0], int(sys.argv[1]), params)        
     elif mode == _MODE_SHOW_PARENT_CONTENT:
+        #ptvsd.enable_attach(secret = "shaun")
+        #ptvsd.wait_for_attach()
         checkService()
         checkServer()
         pluginhandle = int(sys.argv[1])
@@ -278,7 +345,7 @@ def getServerDetails():
 def getCollections(detailsString):
     printDebug("== ENTER: getCollections ==")
     
-    MB_server = __settings__.getSetting('ipaddress')+":"+__settings__.getSetting('port')
+    MB_server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
 
     userid = downloadUtils.getUserId()
     
@@ -312,15 +379,13 @@ def getCollections(detailsString):
     for item in result:
         if(item.get("RecursiveItemCount") != "0"):
             Name =(item.get("Name")).encode('utf-8')
-            if __settings__.getSetting(urllib.quote('sortbyfor'+Name)) == '':
-                __settings__.setSetting(urllib.quote('sortbyfor'+Name),'SortName')
-                __settings__.setSetting(urllib.quote('sortorderfor'+Name),'Ascending')
             
             total = str(item.get("RecursiveItemCount"))
             section = item.get("CollectionType")
             if (section == None):
               section = "movies"
-            collections.append( {'title'      : Name,
+            collections.append({
+                    'title'             : Name,
                     'address'           : MB_server ,
                     'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
                     'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
@@ -328,38 +393,32 @@ def getCollections(detailsString):
                     'sectype'           : section,
                     'section'           : section,
                     'guiid'             : item.get("Id"),
-                    'path'              : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&SortOrder='+__settings__.getSetting('sortorderfor'+urllib.quote(Name))+'&SortBy='+__settings__.getSetting('sortbyfor'+urllib.quote(Name))+'&Genres=&format=json'),
-                    'collapsed_path'    : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&SortOrder='+__settings__.getSetting('sortorderfor'+urllib.quote(Name))+'&SortBy='+__settings__.getSetting('sortbyfor'+urllib.quote(Name))+'&Genres=&format=json&CollapseBoxSetItems=true'),
-                    'recent_path'       : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&Limit=' + __settings__.getSetting("numRecentMovies") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsNotFolder&ExcludeLocationTypes=Virtual&format=json'),
-                    'inprogress_path'   : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") +'&Recursive=true&SortBy=DatePlayed&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsNotFolder,IsResumable&ExcludeLocationTypes=Virtual&format=json'),
-                    'genre_path'        : ('/mediabrowser/Genres?Userid=' + userid + '&parentId=' + item.get("Id") +'&SortBy=SortName&Fields=' + detailsString + '&SortOrder=Ascending&Recursive=true&format=json'),
-                    'nextepisodes_path' : ('/mediabrowser/Shows/NextUp/?Userid=' + userid + '&parentId=' + item.get("Id") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsNotFolder,IsUnplayed&IsVirtualUnaired=false&IsMissing=False&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&format=json'),
-                    'unwatched_path'    : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") +'&Recursive=true&SortBy=SortName&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsNotFolder,IsUnplayed&ExcludeLocationTypes=Virtual&format=json')})
+                    'path'              : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&SortOrder=Ascending&SortBy=SortName&Genres=&format=json')})
 
-            printDebug("Title " + Name)    
+            printDebug("Title " + Name)
     
     # Add standard nodes
-    collections.append({'title':__language__(30170), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=Movie&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30171), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=Series&format=json','thumb':'', 'poster':'', 'fanart_image':'' , 'guiid':''})
-    collections.append({'title':__language__(30172), 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=MusicArtist&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
-    collections.append({'title':__language__(30173), 'sectype' : 'std.channels', 'section' : 'channels' , 'address' : MB_server , 'path' : '/mediabrowser/Channels?' + userid +'&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
-    collections.append({'title':__language__(30174), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMovies") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30175), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentTV") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30176), 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMusic") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed&IncludeItemTypes=MusicAlbum&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30177), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30178), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30179), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Shows/NextUp/?Userid=' + userid + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30180), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=sortName&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsFavorite,IsNotFolder&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30181), 'sectype' : 'std.tvshows', 'section' : 'tvshows'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=sortName&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsFavorite&IncludeItemTypes=Series&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})    
-    collections.append({'title':__language__(30182), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsNotFolder,IsFavorite&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30183), 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMusic") + '&Recursive=true&SortBy=PlayCount&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsPlayed&IncludeItemTypes=MusicAlbum&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30184), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30185), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=SortName&Fields=' + detailsString + '&SortOrder=Ascending&IncludeItemTypes=BoxSet&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "All Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=Movie&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "All TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=Series&format=json','thumb':'', 'poster':'', 'fanart_image':'' , 'guiid':''})
+    collections.append({'title': "All Music", 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?&SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&IncludeItemTypes=MusicArtist&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
+    collections.append({'title': "Channels", 'sectype' : 'std.channels', 'section' : 'channels' , 'address' : MB_server , 'path' : '/mediabrowser/Channels?' + userid +'&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
+    collections.append({'title': "Recently Added Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMovies") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Recently Added Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentTV") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Recently Added Albums", 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMusic") +'&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed&IncludeItemTypes=MusicAlbum&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "In Progress Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "In Progress Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Next Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Shows/NextUp/?Userid=' + userid + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Favorite Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=sortName&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsFavorite,IsNotFolder&IncludeItemTypes=Movie&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Favorite Shows", 'sectype' : 'std.tvshows', 'section' : 'tvshows'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=sortName&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsFavorite&IncludeItemTypes=Series&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})    
+    collections.append({'title': "Favorite Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsNotFolder,IsFavorite&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Frequent Played Albums", 'sectype' : 'std.music', 'section' : 'music' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMusic") + '&Recursive=true&SortBy=PlayCount&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsPlayed&IncludeItemTypes=MusicAlbum&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Upcoming TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "BoxSets", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=SortName&Fields=' + detailsString + '&SortOrder=Ascending&IncludeItemTypes=BoxSet&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
 
-    collections.append({'title':__language__(30189), 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&Filters=IsUnplayed&IncludeItemTypes=Movie&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title':__language__(30193), 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=50&Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsUnplayed&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Unwatched Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?SortBy=SortName&Fields=' + detailsString + '&Recursive=true&SortOrder=Ascending&Filters=IsUnplayed&IncludeItemTypes=Movie&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Unwatched Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=50&Recursive=true&SortBy=DatePlayed&SortOrder=Descending&Fields=' + detailsString + '&Filters=IsUnplayed&IncludeItemTypes=Episode&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
         
-    collections.append({'title':__language__(30199), 'sectype' : 'std.setviews', 'section' : 'setviews'  , 'address' : 'SETVIEWS', 'path': 'SETVIEWS', 'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Set Views", 'sectype' : 'std.setviews', 'section' : 'setviews'  , 'address' : 'SETVIEWS', 'path': 'SETVIEWS', 'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
         
     return collections
 
@@ -404,39 +463,53 @@ def unmarkFavorite(item_id):
     xbmc.executebuiltin("Container.Refresh")
 
 def sortby ():
-    sortOptions=["", "SortName","ProductionYear,SortName","PremiereDate,SortName","DateCreated,SortName","CriticRating,SortName","CommunityRating,SortName","PlayCount,SortName","Budget,SortName"]
-    sortOptionsText=sortbyList
-    return_value=xbmcgui.Dialog().select(__language__(30068),sortOptionsText)
-    WINDOW = xbmcgui.Window( 10000 )
-    __settings__.setSetting('sortbyfor'+urllib.quote(WINDOW.getProperty("heading")),sortOptions[return_value]+',SortName')
-    newurl=re.sub("SortBy.*?&","SortBy="+ sortOptions[return_value] + "&",WINDOW.getProperty("currenturl"))
-    WINDOW.setProperty("currenturl",newurl)
-    u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
+    indexVal = __settings__.getSetting("SortByIndex")
+    sortByIndex = -1
+    if(indexVal != None and indexVal != ""):
+        sortByIndex = int(indexVal)
+    
+    displayList = []
+    current = 0
+    for item in sortByList:
+        if(current != sortByIndex):
+            displayList.append(item)
+        else:
+            displayList.append("[" + item + "]")
+        current = current + 1
 
-def genrefilter ():
-    WINDOW = xbmcgui.Window( 10000 )
-    genreFilters=["","Action","Adventure","Animation","Crime","Comedy","Documentary","Drama","Fantasy","Foreign","History","Horror","Music","Musical","Mystery","Romance","Science%20Fiction","Short","Suspense","Thriller","Western"]
-    genreFiltersText=genreList#["None","Action","Adventure","Animation","Crime","Comedy","Documentary","Drama","Fantasy","Foreign","History","Horror","Music","Musical","Mystery","Romance","Science Fiction","Short","Suspense","Thriller","Western"]
-    return_value=xbmcgui.Dialog().select(__language__(30090),genreFiltersText)
-    newurl=re.sub("Genres.*?&","Genres="+ genreFilters[return_value] + "&",WINDOW.getProperty("currenturl"))
-    WINDOW.setProperty("currenturl",newurl)
-    u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
+    return_value = xbmcgui.Dialog().select("Sort By", displayList)
+    __settings__.setSetting("SortByIndex", str(return_value))
+    xbmc.executebuiltin("Container.Refresh")
 
 def sortorder ():
-    WINDOW = xbmcgui.Window( 10000 )
-    if(__settings__.getSetting('sortorderfor'+urllib.quote(WINDOW.getProperty("heading")))=="Ascending"):
-        __settings__.setSetting('sortorderfor'+urllib.quote(WINDOW.getProperty("heading")),'Descending')
-        newurl=re.sub("SortOrder.*?&","SortOrder=Descending&",WINDOW.getProperty("currenturl"))
+    sortOrder = __settings__.getSetting("SortOrder")
+    if(sortOrder == None or sortOrder == "" or sortOrder == "Descending"):
+        sortOrder = "Ascending"
     else:
-        __settings__.setSetting('sortorderfor'+urllib.quote(WINDOW.getProperty("heading")),'Ascending')
-        newurl=re.sub("SortOrder.*?&","SortOrder=Ascending&",WINDOW.getProperty("currenturl"))
-    WINDOW.setProperty("currenturl",newurl)
-    u=urllib.quote(newurl)+'&mode=0'
-    xbmc.executebuiltin("Container.Update(plugin://plugin.video.mbcon/?url="+u+",\"replace\")")#, WINDOW.getProperty('currenturl')
-
+        sortOrder = "Descending"
+        
+    __settings__.setSetting("SortOrder", sortOrder)
+    xbmc.executebuiltin("Container.Refresh")
     
+def genrefilter ():
+    indexVal = __settings__.getSetting("GenreFilterIndex")
+    GenreFilterIndex = -1
+    if(indexVal != None and indexVal != ""):
+        GenreFilterIndex = int(indexVal)
+        
+    displayList = []
+    current = 0
+    for item in genreList:
+        if(current != GenreFilterIndex):
+            displayList.append(item)
+        else:
+            displayList.append("[" + item + "]")
+        current = current + 1
+    
+    return_value = xbmcgui.Dialog().select("Genre Filter", displayList)
+    __settings__.setSetting("GenreFilterIndex", str(return_value))
+    xbmc.executebuiltin("Container.Refresh")    
+
 def delete (item_id):
     return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
     if return_value:
@@ -490,28 +563,12 @@ def addGUIItem( url, details, extraData, folder=True ):
     thumbPath=str(extraData.get('thumb',''))
     
     addCounts = __settings__.getSetting('addCounts') == 'true'
+
+    listItemName = details.get('title','Unknown')
+    if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
+       listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"
     
-    WINDOW = xbmcgui.Window( 10000 )
-    if WINDOW.getProperty("addshowname") == "true":
-        if extraData.get('locationtype')== "Virtual":
-            listItemName = extraData.get('premieredate').decode("utf-8") + u" - " + details.get('SeriesName','').decode("utf-8") + u" - " + u"S" + details.get('season').decode("utf-8") + u"E" + details.get('title','Unknown').decode("utf-8")
-            if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-                listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"
-            list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
-        else:
-            if details.get('season') == None:
-                season = '0'
-            else:
-                season = details.get('season')
-            listItemName = details.get('SeriesName','').decode("utf-8") + u" - " + u"S" + season + u"E" + details.get('title','Unknown').decode("utf-8")
-            if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-                listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"
-            list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
-    else:
-        listItemName = details.get('title','Unknown')
-        if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-            listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"
-        list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
+    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
     printDebug("Setting thumbnail as " + thumbPath, level=2)
     
     # calculate percentage
@@ -547,7 +604,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     
     for artType in artTypes:
         imagePath=str(extraData.get(artType,''))
-        list=setArt(list,artType, imagePath)
+        list = setArt(list,artType, imagePath)
         printDebug( "Setting " + artType + " as " + imagePath, level=2)
     
     menuItems = addContextMenu(details, extraData, folder)
@@ -609,59 +666,64 @@ def addGUIItem( url, details, extraData, folder=True ):
 def addContextMenu(details, extraData, folder):
     printDebug("Building Context Menus", level=2)
     commands = []
-    WINDOW = xbmcgui.Window( 10000 )
+
     item_id = extraData.get('id')
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
         
         pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id')) + ")"
-        commands.append(( __language__(30100), pluginCastLink))
+        commands.append(("Show People", pluginCastLink))
         
+        # watched/unwatched
         if extraData.get("playcount") == "0":
             argsToPass = 'markWatched,' + extraData.get('id')
-            commands.append(( __language__(30093), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Mark Watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
             argsToPass = 'markUnwatched,' + extraData.get('id')
-            commands.append(( __language__(30094), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Mark Unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            
+        # favourite add/remove
         if extraData.get('favorite') != 'true':
             argsToPass = 'markFavorite,' + extraData.get('id')
-            commands.append(( __language__(30095), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Add to Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
             argsToPass = 'unmarkFavorite,' + extraData.get('id')
-            commands.append(( __language__(30096), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-            
-        argsToPass = 'sortby'
-        commands.append(( __language__(30097), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Remove from Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
-        if 'Ascending' in WINDOW.getProperty("currenturl"):
-            argsToPass = 'sortorder'
-            commands.append(( __language__(30098), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        # add sort by
+        sortByName = "Sort By []"
+        indexVal = __settings__.getSetting("SortByIndex")
+        if(indexVal != None and indexVal != ""):
+            sortByIndex = int(indexVal)
+            sortByName = "Sort By [" + sortByList[sortByIndex] + "]"
+        commands.append((sortByName, "XBMC.RunScript(" + scriptToRun + ", sortby)"))
+        
+        #  add sort order
+        sortOrder = __settings__.getSetting("SortOrder")
+        if 'Ascending' == sortOrder:
+            commands.append(("Sort Order [Ascending]", "XBMC.RunScript(" + scriptToRun + ", sortorder)"))
         else:
-            argsToPass = 'sortorder'
-            commands.append(( __language__(30099), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-            
-        argsToPass = 'genrefilter'
-        commands.append(( __language__(30040), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-                   
-        argsToPass = 'refresh'
-        commands.append(( __language__(30042), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Sort Order [Descending]", "XBMC.RunScript(" + scriptToRun + ", sortorder)"))
         
+        # add genre filter
+        genereFilterName = "Genre Filter []"
+        indexVal = __settings__.getSetting("GenreFilterIndex")
+        if(indexVal != None and indexVal != ""):
+            genereFilterIndex = int(indexVal)
+            genereFilterName = "Genre Filter [" + genreList[genereFilterIndex] + "]"        
+        commands.append((genereFilterName, "XBMC.RunScript(" + scriptToRun + ", genrefilter)"))
+        
+        # refresh
+        commands.append(("Refresh", "XBMC.RunScript(" + scriptToRun + ", refresh)"))
+        
+        # delete
         argsToPass = 'delete,' + extraData.get('id')
-        commands.append(( __language__(30043), "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        
-        if  extraData.get('itemtype') == 'Trailer':
-            commands.append(( __language__(30046),"XBMC.RunPlugin(%s)" % CP_ADD_URL % details.get('title')))
-            
+        commands.append(("Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+                    
     return(commands)
     
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks"
-    if(__settings__.getSetting('includeStreamInfo') == "true"):
-        detailsString += ",MediaStreams"
-    if(__settings__.getSetting('includePeople') == "true"):
-        detailsString += ",People"
-    if(__settings__.getSetting('includeOverview') == "true"):
-        detailsString += ",Overview"       
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks"  
     return (detailsString)
     
 def displaySections( pluginhandle, filter=None ):
@@ -837,12 +899,12 @@ def get_params( paramstring ):
     printDebug("MBCon -> Detected parameters: " + str(param), level=2)
     return param
 
-def getCacheValidator (server,url):
+def getCacheValidator(server, url):
     parsedserver,parsedport = server.split(':')
     userid = downloadUtils.getUserId()
     idAndOptions = url.split("ParentId=")
     id = idAndOptions[1].split("&")
-    jsonData = downloadUtils.downloadUrl("http://"+server+"/mediabrowser/Users/" + userid + "/Items/" +id[0]+"?format=json", suppress=False, popup=1 )
+    jsonData = downloadUtils.downloadUrl("http://"+server+"/mediabrowser/Users/" + userid + "/Items/" + id[0] + "?format=json", suppress=False, popup=1 )
     result = json.loads(jsonData)
     userData = result.get("UserData")
     printDebug ("RecursiveItemCount: " + str(result.get("RecursiveItemCount")))
@@ -854,17 +916,21 @@ def getCacheValidator (server,url):
         playedPercentage = userData.get("PlayedPercentage")
     
     playedTime = "{0:09.6f}".format(playedPercentage)
-    playedTime = playedTime.replace(".","-")
-    validatorString=""
+    playedTime = playedTime.replace(".", "-")
+    validatorString = ""
+    
+    validatorString = str(result.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
+    '''
     if result.get("RecursiveItemCount") != None:
-        if int(result.get("RecursiveItemCount"))<=25:
-            validatorString='nocache'
+        if int(result.get("RecursiveItemCount")) <= 25:
+            validatorString = 'nocache'
         else:
             validatorString = str(result.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
-        printDebug ("getCacheValidator : " + validatorString)
+        printDebug("getCacheValidator : " + validatorString)
+    '''   
     return validatorString
     
-def getAllMoviesCacheValidator(server,url):
+def getAllMoviesCacheValidator(server, url):
     parsedserver,parsedport = server.split(':')
     userid = downloadUtils.getUserId()
     jsonData = downloadUtils.downloadUrl("http://"+server+"/mediabrowser/Users/" + userid + "/Views?format=json", suppress=False, popup=1 )
@@ -889,8 +955,8 @@ def getAllMoviesCacheValidator(server,url):
             playedTime = playedTime.replace(".","-")
             
     if item.get("RecursiveItemCount") != None:
-        if int(item.get("RecursiveItemCount"))<=25:
-            validatorString='nocache'
+        if int(item.get("RecursiveItemCount")) <= 25:
+            validatorString = 'nocache'
         else:
             validatorString = "allmovies_" + str(item.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
         printDebug ("getAllMoviesCacheValidator : " + validatorString)
@@ -946,14 +1012,37 @@ def getContent(url, pluginhandle):
     printDebug("URL suffix: " + str(lastbit))
     printDebug("server: " + str(server))
     printDebug("URL: " + str(url))    
-    validator='nocache' #Don't cache special queries (recently added etc)
+    validator = 'nocache' #Don't cache special queries (recently added etc)
     if "Parent" in url:
-        validator = "_" + getCacheValidator(server,url)
+        validator = "_" + getCacheValidator(server, url)
     elif "&SortOrder=Ascending&IncludeItemTypes=Movie" in url:
-        validator = "_" + getAllMoviesCacheValidator(server,url)
+        validator = "_" + getAllMoviesCacheValidator(server, url)
+        
+    # sort by
+    if("SortBy=" in url == -1):
+        xbmcgui.Dialog().ok("WARNING", "SortBy not found in URL")
+    indexVal = __settings__.getSetting("SortByIndex")
+    if(indexVal != None and indexVal != ""):
+        sortByIndex = int(indexVal)
+        url = re.sub("SortBy.*?&", "SortBy=" + sortByValues[sortByIndex] + "&", url)
+    
+    # set the sort order
+    if("SortOrder=" in url == -1):
+        xbmcgui.Dialog().ok("WARNING", "SortOrder not found in URL")    
+    sortOrder = __settings__.getSetting("SortOrder")
+    if(sortOrder == None or sortOrder == ""):
+        sortOrder = "Ascending"    
+    url = re.sub("SortOrder.*?&", "SortOrder=" + sortOrder + "&", url)
+    
+    # genre filter
+    if("Genres=" in url == -1):
+        xbmcgui.Dialog().ok("WARNING", "Genres not found in URL")
+    indexVal = __settings__.getSetting("GenreFilterIndex")
+    if(indexVal != None and indexVal != ""):
+        GenreFilter = int(indexVal)
+        url = re.sub("Genres.*?&", "Genres=" + genreFilters[GenreFilter] + "&", url)
         
     # ADD VALIDATOR TO FILENAME TO DETERMINE IF CACHE IS FRESH
-    
     m = hashlib.md5()
     m.update(url)
     urlHash = m.hexdigest()
@@ -961,10 +1050,7 @@ def getContent(url, pluginhandle):
     jsonData = ""
     cacheDataPath = __addondir__ + urlHash + validator
     
-    if "NextUp" in url and __settings__.getSetting('sortNextUp') == "true":
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_TITLE)
-    else:
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
     result = None
     
     WINDOW = xbmcgui.Window( 10000 )
@@ -996,7 +1082,7 @@ def getContent(url, pluginhandle):
         if(dataLen == 0):
             result = None
     
-    # if there was no cache data for the cache data was not valid then try to load it again
+    # if there was no cache data or the cache data was not valid then try to load it again
     if(result == None):
         r = glob.glob(__addondir__ + urlHash + "*")
         for i in r:
@@ -1070,7 +1156,6 @@ def processDirectory(url, results, progress, pluginhandle):
     xbmcplugin.setContent(pluginhandle, 'movies')
 
     server = getServerFromURL(url)
-    setWindowHeading(url)
     
     detailsString = "Path,Genres,Studios,CumulativeRunTimeTicks"
     
@@ -1169,13 +1254,6 @@ def processDirectory(url, results, progress, pluginhandle):
         if item.get("LocationType") == "Virtual":
             airtime = item.get("AirTime")
             tempTitle = tempTitle + ' - ' + str(premieredate) + ' - ' + str(airtime)     
-
-        #Add show name to special TV collections RAL, NextUp etc
-        WINDOW = xbmcgui.Window( 10000 )
-        if (WINDOW.getProperty("addshowname") == "true" and item.get("SeriesName") != None):
-            tempTitle = item.get("SeriesName").encode('utf-8') + " - " + tempTitle
-        else:
-            tempTitle = tempTitle
 
         # Process MediaStreams
         channels = ''
@@ -1432,22 +1510,6 @@ def getXbmcVersion():
 
     return version        
     
-def setWindowHeading(url):
-    WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("addshowname", "false")
-    WINDOW.setProperty("currenturl", url)
-    if 'ParentId' in url:
-        dirUrl = url.replace('items?ParentId=','Items/')
-        splitUrl = dirUrl.split('&')
-        dirUrl = splitUrl[0] + '?format=json'
-        jsonData = downloadUtils.downloadUrl(dirUrl)
-        result = json.loads(jsonData)
-        for name in result:
-            title = name
-        WINDOW.setProperty("heading", title)
-    elif 'IncludeItemTypes=Episode' in url:
-        WINDOW.setProperty("addshowname", "true")
-
 def getCastList(pluginName, handle, params):
 
     printDebug ("MBCon Returning Cast List")
