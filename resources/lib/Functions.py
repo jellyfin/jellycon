@@ -56,6 +56,7 @@ from ClientInformation import ClientInformation
 from PersonInfo import PersonInfo
 from SearchDialog import SearchDialog
 from DisplayItems import DisplayItems
+from DataManager import DataManager
 
 _MODE_GETCONTENT=0
 _MODE_MOVIES=0
@@ -153,9 +154,6 @@ xbmc.log ("MBCon -> LogLevel:  " + str(logLevel))
 downloadUtils = DownloadUtils()
 
 def mainEntryPoint():
-
-    
-
 
     ProfileCode = __settings__.getSetting('profile') == "true"
 
@@ -263,7 +261,7 @@ def mainEntryPoint():
             showViewList(param_url, pluginhandle)
 
     WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.clearProperty("MB3.Background.Item.FanArt")
+    #WINDOW.clearProperty("MB3.Background.Item.FanArt")
     
     if(ProfileCode):
         pr.disable()
@@ -898,125 +896,12 @@ def get_params( paramstring ):
                             param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
     printDebug("MBCon -> Detected parameters: " + str(param), level=2)
     return param
-
-def getCacheValidator(server, url):
-    parsedserver,parsedport = server.split(':')
-    userid = downloadUtils.getUserId()
-    idAndOptions = url.split("ParentId=")
-    id = idAndOptions[1].split("&")
-    jsonData = downloadUtils.downloadUrl("http://"+server+"/mediabrowser/Users/" + userid + "/Items/" + id[0] + "?format=json", suppress=False, popup=1 )
-    result = json.loads(jsonData)
-    userData = result.get("UserData")
-    printDebug ("RecursiveItemCount: " + str(result.get("RecursiveItemCount")))
-    printDebug ("UnplayedItemCount: " + str(userData.get("UnplayedItemCount")))
-    printDebug ("PlayedPercentage: " + str(userData.get("PlayedPercentage")))
-    
-    playedPercentage = 0.0
-    if(userData.get("PlayedPercentage") != None):
-        playedPercentage = userData.get("PlayedPercentage")
-    
-    playedTime = "{0:09.6f}".format(playedPercentage)
-    playedTime = playedTime.replace(".", "-")
-    validatorString = ""
-    
-    validatorString = str(result.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
-    '''
-    if result.get("RecursiveItemCount") != None:
-        if int(result.get("RecursiveItemCount")) <= 25:
-            validatorString = 'nocache'
-        else:
-            validatorString = str(result.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
-        printDebug("getCacheValidator : " + validatorString)
-    '''   
-    return validatorString
-    
-def getAllMoviesCacheValidator(server, url):
-    parsedserver,parsedport = server.split(':')
-    userid = downloadUtils.getUserId()
-    jsonData = downloadUtils.downloadUrl("http://"+server+"/mediabrowser/Users/" + userid + "/Views?format=json", suppress=False, popup=1 )
-    alldata = json.loads(jsonData)
-    validatorString = ""
-    playedTime = ""
-    playedPercentage = 0.0
-    
-    userData = {}
-    result=alldata.get("Items")
-    for item in result:
-        if item.get("Name")=="Movies":
-            userData = item.get("UserData")
-            printDebug ("RecursiveItemCount: " + str(item.get("RecursiveItemCount")))
-            printDebug ("RecursiveUnplayedCount: " + str(userData.get("UnplayedItemCount")))
-            printDebug ("RecursiveUnplayedCount: " + str(userData.get("PlayedPercentage")))
-
-            if(userData.get("PlayedPercentage") != None):
-                playedPercentage = userData.get("PlayedPercentage")
-            
-            playedTime = "{0:09.6f}".format(playedPercentage)
-            playedTime = playedTime.replace(".","-")
-            
-    if item.get("RecursiveItemCount") != None:
-        if int(item.get("RecursiveItemCount")) <= 25:
-            validatorString = 'nocache'
-        else:
-            validatorString = "allmovies_" + str(item.get("RecursiveItemCount")) + "_" + str(userData.get("UnplayedItemCount")) + "_" + playedTime
-        printDebug ("getAllMoviesCacheValidator : " + validatorString)
-    return validatorString    
-    
-def getCacheValidatorFromData(result):
-    result = result.get("Items")
-    if(result == None):
-        result = []
-
-    itemCount = 0
-    unwatchedItemCount = 0
-    totalPlayedPercentage = 0
-    for item in result:
-        userData = item.get("UserData")
-        if(userData != None):
-            if(item.get("IsFolder") == False):
-                itemCount = itemCount + 1
-                if userData.get("Played") == False:
-                    unwatchedItemCount = unwatchedItemCount + 1
-                    itemPossition = userData.get("PlaybackPositionTicks")
-                    itemRuntime = item.get("RunTimeTicks")
-                    if(itemRuntime != None and itemPossition != None):
-                        itemPercent = float(itemPossition) / float(itemRuntime)
-                        totalPlayedPercentage = totalPlayedPercentage + itemPercent
-                else:
-                    totalPlayedPercentage = totalPlayedPercentage + 100
-            else:
-                itemCount = itemCount + item.get("RecursiveItemCount")
-                unwatchedItemCount = unwatchedItemCount + userData.get("UnplayedItemCount")
-                PlayedPercentage=userData.get("PlayedPercentage")
-                if PlayedPercentage==None:
-                    PlayedPercentage=0
-                totalPlayedPercentage = totalPlayedPercentage + (item.get("RecursiveItemCount") * PlayedPercentage)
-            
-    if(itemCount == 0):
-        totalPlayedPercentage = 0.0
-    else:
-        totalPlayedPercentage = totalPlayedPercentage / float(itemCount)
-        
-    playedTime = "{0:09.6f}".format(totalPlayedPercentage)
-    playedTime = playedTime.replace(".","-")
-    validatorString = "_" + str(itemCount) + "_" + str(unwatchedItemCount) + "_" + playedTime
-    printDebug ("getCacheValidatorFromData : " + validatorString)
-    return validatorString
-    
+       
 def getContent(url, pluginhandle):
 
     global viewType
     printDebug("== ENTER: getContent ==")
-    server=getServerFromURL(url)
-    lastbit=url.split('/')[-1]
-    printDebug("URL suffix: " + str(lastbit))
-    printDebug("server: " + str(server))
     printDebug("URL: " + str(url))    
-    validator = 'nocache' #Don't cache special queries (recently added etc)
-    if "Parent" in url:
-        validator = "_" + getCacheValidator(server, url)
-    elif "&SortOrder=Ascending&IncludeItemTypes=Movie" in url:
-        validator = "_" + getAllMoviesCacheValidator(server, url)
         
     # sort by
     if("SortBy=" in url == -1):
@@ -1041,89 +926,23 @@ def getContent(url, pluginhandle):
     if(indexVal != None and indexVal != ""):
         GenreFilter = int(indexVal)
         url = re.sub("Genres.*?&", "Genres=" + genreFilters[GenreFilter] + "&", url)
-        
-    # ADD VALIDATOR TO FILENAME TO DETERMINE IF CACHE IS FRESH
-    m = hashlib.md5()
-    m.update(url)
-    urlHash = m.hexdigest()
-   
-    jsonData = ""
-    cacheDataPath = __addondir__ + urlHash + validator
-    
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
-    result = None
-    
-    WINDOW = xbmcgui.Window( 10000 )
-    force_data_reload = WINDOW.getProperty("force_data_reload")
-    WINDOW.setProperty("force_data_reload", "false")
-    
+
+    # show a progress indicator if needed
     progress = None
     if(__settings__.getSetting('showLoadProgress') == "true"):
         progress = xbmcgui.DialogProgress()
-        progress.create(__language__(30121))
-        progress.update(0, __language__(30122))    
+        progress.create("Loading Content")
+        progress.update(0, "Retrieving Data")
     
-    # if a cached file exists use it
-    # if one does not exist then load data from the url
-    if(os.path.exists(cacheDataPath)) and validator != 'nocache' and force_data_reload != "true":
-        cachedfie = open(cacheDataPath, 'r')
-        jsonData = cachedfie.read()
-        cachedfie.close()
-        printDebug("Data Read From Cache : " + cacheDataPath)
-        if(progress != None):
-            progress.update(0, __language__(30123))  
-        try:
-            result = loadJasonData(jsonData)
-        except:
-            printDebug("Json load failed from cache data")
-            result = []
-        dataLen = len(result)
-        printDebug("Json Load Result : " + str(dataLen))
-        if(dataLen == 0):
-            result = None
+    # use the data manager to get the data
+    result = DataManager().GetContent(url)
     
-    # if there was no cache data or the cache data was not valid then try to load it again
-    if(result == None):
-        r = glob.glob(__addondir__ + urlHash + "*")
-        for i in r:
-            os.remove(i)
-        printDebug("No Cache Data, download data now")
-        if(progress != None):
-            progress.update(0, __language__(30124))
-        jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1 )
-        if(progress != None):
-            progress.update(0, __language__(30123))  
-        try:
-            result = loadJasonData(jsonData)
-        except:
-            xbmc.log("Json load failed from downloaded data")
-            result = []
-        dataLen = len(result)
-        printDebug("Json Load Result : " + str(dataLen))
-        if(dataLen > 0 and validator != 'nocache'):
-            cacheValidationString = getCacheValidatorFromData(result)
-            printDebug("getCacheValidator : " + validator)
-            printDebug("getCacheValidatorFromData : " + cacheValidationString)
-            if(validator == cacheValidationString):
-                printDebug("Validator String Match, Saving Cache Data")
-                cacheDataPath = __addondir__ + urlHash + cacheValidationString
-                printDebug("Saving data to cache : " + cacheDataPath)
-                cachedfie = open(cacheDataPath, 'w')
-                cachedfie.write(jsonData)
-                cachedfie.close()
-            elif("allmovies" in validator):
-                printDebug("All Movies Cache")
-                cacheDataPath = __addondir__ + urlHash + validator
-                printDebug("Saving data to cache : " + cacheDataPath)
-                cachedfie = open(cacheDataPath, 'w')
-                cachedfie.write(jsonData)
-                cachedfie.close()
-    if jsonData == "":
+    if result == None or len(result) == 0:
         if(progress != None):
             progress.close()
         return
     
-    printDebug("JSON DATA: " + str(result), level=2)
+    #printDebug("JSON DATA: " + str(result), level=2)
     
     dirItems = processDirectory(url, result, progress, pluginhandle)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)

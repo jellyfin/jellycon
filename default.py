@@ -37,6 +37,6 @@ Functions.mainEntryPoint()
 xbmc.log ("===== MBCon FINISHED =====")
     
 #clear done and exit.
-sys.modules.clear()
+#sys.modules.clear()
 
 
