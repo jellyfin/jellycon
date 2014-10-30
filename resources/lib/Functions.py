@@ -601,8 +601,8 @@ def addGUIItem( url, details, extraData, folder=True ):
     artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape', 'small_poster',  'medium_poster','small_fanartimage', 'medium_fanartimage', 'medium_landscape']
     
     for artType in artTypes:
-        imagePath=str(extraData.get(artType,''))
-        list = setArt(list,artType, imagePath)
+        imagePath = str(extraData.get(artType,''))
+        list = setArt(list, artType, imagePath)
         printDebug( "Setting " + artType + " as " + imagePath, level=2)
     
     menuItems = addContextMenu(details, extraData, folder)
@@ -1306,9 +1306,15 @@ def getLinkURL( url, pathData, server ):
     return url
 
 def setArt (list, name, path):
-    #if name=='thumb' or name=='fanart_image' or name=='small_poster' or name == "medium_landscape" or name=='medium_poster' or name=='small_fanartimage' or name=='medium_fanartimage':
-    #    list.setProperty(name, path)
-    #elif xbmcVersionNum >= 13:
+    if (name == 'thumb' or 
+        name == 'fanart_image' or 
+        name == 'small_poster' or 
+        name == "medium_landscape" or 
+        name == 'medium_poster' or 
+        name == 'small_fanartimage' or 
+        name == 'medium_fanartimage'):
+        list.setProperty(name, path)
+
     list.setArt({name:path})
     return list
         
