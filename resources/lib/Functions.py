@@ -598,7 +598,7 @@ def addGUIItem( url, details, extraData, folder=True ):
             list.setProperty('TotalTime', str(extraData.get('duration')))
             list.setProperty('ResumeTime', str(extraData.get('resumetime')))
     
-    artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape', 'small_poster',  'medium_poster','small_fanartimage', 'medium_fanartimage', 'medium_landscape']
+    artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape']
     
     for artType in artTypes:
         imagePath = str(extraData.get(artType,''))
@@ -851,7 +851,7 @@ def setListItemProps(server, id, listItem, result):
     eppNum = -1
     seasonNum = -1
         
-    setArt(listItem,'poster', downloadUtils.getArtwork(result, "Primary"))
+    setArt(listItem, 'poster', downloadUtils.getArtwork(result, "Primary"))
     
     listItem.setProperty('IsPlayable', 'true')
     listItem.setProperty('IsFolder', 'false')
@@ -1305,16 +1305,8 @@ def getLinkURL( url, pathData, server ):
 
     return url
 
-def setArt (list, name, path):
-    if (name == 'thumb' or 
-        name == 'fanart_image' or 
-        name == 'small_poster' or 
-        name == "medium_landscape" or 
-        name == 'medium_poster' or 
-        name == 'small_fanartimage' or 
-        name == 'medium_fanartimage'):
-        list.setProperty(name, path)
-
+def setArt(list, name, path):
+    list.setProperty(name, path)
     list.setArt({name:path})
     return list
         
