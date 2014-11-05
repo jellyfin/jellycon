@@ -144,11 +144,13 @@ class CacheManagerThread(threading.Thread):
             cachedfie.close()
 
             # we need to refresh but will wait until the main function has finished
-            while(self.dataManager.canRefreshNow == False):
-                xbmc.log("Cache_Data_Manager: Not finished yet")
+            loops = 0
+            while(self.dataManager.canRefreshNow == False and loops < 200):
+                #xbmc.log("Cache_Data_Manager: Not finished yet")
                 xbmc.sleep(100)
+                loops = loops + 1
             
-            xbmc.log("Cache_Data_Manager: Sending container refresh")
+            xbmc.log("Cache_Data_Manager: Sending container refresh (" + str(loops) + ")")
             xbmc.executebuiltin("Container.Refresh")
 
         xbmc.log("Cache_Data_Manager: CacheManagerThread Exited")
