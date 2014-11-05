@@ -152,6 +152,7 @@ except:
 xbmc.log ("MBCon -> LogLevel:  " + str(logLevel))
 
 downloadUtils = DownloadUtils()
+dataManager = DataManager()
 
 def mainEntryPoint():
 
@@ -262,6 +263,8 @@ def mainEntryPoint():
 
     WINDOW = xbmcgui.Window( 10000 )
     #WINDOW.clearProperty("MB3.Background.Item.FanArt")
+    
+    dataManager.canRefreshNow = True
     
     if(ProfileCode):
         pr.disable()
@@ -935,7 +938,7 @@ def getContent(url, pluginhandle):
         progress.update(0, "Retrieving Data")
     
     # use the data manager to get the data
-    result = DataManager().GetContent(url)
+    result = dataManager.GetContent(url)
     
     if result == None or len(result) == 0:
         if(progress != None):

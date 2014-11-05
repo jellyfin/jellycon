@@ -12,6 +12,11 @@ from DownloadUtils import DownloadUtils
 
 class DataManager():
 
+    cacheDataResult = None
+    dataUrl = None
+    cacheDataPath = None
+    canRefreshNow = False
+        
     def getCacheValidatorFromData(self, result):
         result = result.get("Items")
         if(result == None):
@@ -90,8 +95,11 @@ class DataManager():
             result = self.loadJasonData(jsonData)
             
             # start a worker thread to process the cache validity
+            self.cacheDataResult = result
+            self.dataUrl = url
+            self.cacheDataPath = cacheDataPath
             actionThread = CacheManagerThread()
-            actionThread.setCacheData(result, url, cacheDataPath)
+            actionThread.setCacheData(self)
             actionThread.start()
 
             xbmc.log("Cache_Data_Manager: Returning Cached Result")
@@ -104,40 +112,43 @@ class DataManager():
             cachedfie.write(jsonData)
             cachedfie.close()
             result = self.loadJasonData(jsonData)
-            xbmc.log("Cache_Data_Manager: Returning Loaded Result")            
+            self.cacheManagerFinished = True
+            xbmc.log("Cache_Data_Manager: Returning Loaded Result")        
             return result
         
         
 class CacheManagerThread(threading.Thread):
 
-    cacheDataResult = None
-    dataUrl = None
-    cacheDataPath = None
+    dataManager = None
     
-    def setCacheData(self, cacheData, url, path):
-        self.cacheDataResult = cacheData
-        self.dataUrl = url
-        self.cacheDataPath = path
+    def setCacheData(self, data):
+        self.dataManager = data
     
     def run(self):
     
-        dataManager = DataManager()
         xbmc.log("Cache_Data_Manager: CacheManagerThread Started")
         
-        cacheValidatorString = dataManager.getCacheValidatorFromData(self.cacheDataResult)
+        cacheValidatorString = self.dataManager.getCacheValidatorFromData(self.dataManager.cacheDataResult)
         xbmc.log("Cache_Data_Manager: Cache Validator String (" + cacheValidatorString + ")")
         
-        jsonData = DownloadUtils().downloadUrl(self.dataUrl, suppress=False, popup=1)
-        loadedResult = dataManager.loadJasonData(jsonData)
-        loadedValidatorString = dataManager.getCacheValidatorFromData(loadedResult)
+        jsonData = DownloadUtils().downloadUrl(self.dataManager.dataUrl, suppress=False, popup=1)
+        loadedResult = self.dataManager.loadJasonData(jsonData)
+        loadedValidatorString = self.dataManager.getCacheValidatorFromData(loadedResult)
         xbmc.log("Cache_Data_Manager: loaded Validator String (" + loadedValidatorString + ")")
         
         # if they dont match then save the data and trigger a content reload
         if(cacheValidatorString != loadedValidatorString):
             xbmc.log("Cache_Data_Manager: CacheManagerThread Saving new cache data and reloading container")
-            cachedfie = open(self.cacheDataPath, 'w')
+            cachedfie = open(self.dataManager.cacheDataPath, 'w')
             cachedfie.write(jsonData)
             cachedfie.close()
+
+            # we need to refresh but will wait until the main function has finished
+            while(self.dataManager.canRefreshNow == False):
+                xbmc.log("Cache_Data_Manager: Not finished yet")
+                xbmc.sleep(100)
+            
+            xbmc.log("Cache_Data_Manager: Sending container refresh")
             xbmc.executebuiltin("Container.Refresh")
 
         xbmc.log("Cache_Data_Manager: CacheManagerThread Exited")
