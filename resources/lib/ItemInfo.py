@@ -257,7 +257,7 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
             actionUrl = "plugin://plugin.video.mbcon?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
             
             if(tag != None and len(tag) > 0):
-                thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400)
+                thumbPath = self.downloadUtils.imageUrl(id, "Primary", 0, 400, 400)
                 listItem = xbmcgui.ListItem(label=displayName, label2=role, iconImage=thumbPath, thumbnailImage=thumbPath)
             else:
                 listItem = xbmcgui.ListItem(label=displayName, label2=role)
