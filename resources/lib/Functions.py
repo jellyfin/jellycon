@@ -1406,6 +1406,12 @@ def showItemInfo(pluginName, handle, params):
     infoPage.setId(params.get("id"))
     infoPage.doModal()
     
+    if(infoPage.containerNeedsRefresh):
+        printDebug("showItemInfo Sending container refresh")
+        #WINDOW = xbmcgui.Window( 10000 )
+        #WINDOW.setProperty("force_data_reload", "true")  
+        xbmc.executebuiltin("Container.Refresh")        
+    
     del infoPage
     
 def showSearch(pluginName, handle, params):

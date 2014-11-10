@@ -84,15 +84,16 @@
             <aspectratio>stretch</aspectratio>
         </control>
         
+        <!-- streams details list -->
         <control type="list" id="3220">
             <left>30</left>
             <top>380</top>
             <width>240</width>
             <height>120</height>
-            <onleft>3002</onleft>
+            <onleft>-</onleft>
             <onright>3221</onright>
             <onup>3235</onup>
-            <ondown>3002</ondown>
+            <ondown>3100</ondown>
             <pagecontrol>3221</pagecontrol>
             <scrolltime>200</scrolltime>
             <itemlayout height="20">
@@ -169,10 +170,12 @@
             <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
             <onleft>3220</onleft>
             <onright>3226</onright>
+            <ondown>3100</ondown>
             <showonepage>false</showonepage>
             <orientation>vertical</orientation>
         </control>
         
+        <!-- item details list -->
         <control type="list" id="3226">
             <left>310</left>
             <top>380</top>
@@ -181,7 +184,7 @@
             <onleft>3221</onleft>
             <onright>3235</onright>
             <onup>3235</onup>
-            <ondown>3002</ondown>
+            <ondown>3100</ondown>
             <pagecontrol>-</pagecontrol>
             <scrolltime>200</scrolltime>
             <itemlayout height="20">
@@ -264,6 +267,7 @@
         </control>        
         -->
         
+        <!-- overview -->
         <control type="textbox" id="3223">
             <left>320</left>
             <top>100</top>
@@ -287,11 +291,13 @@
             <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
             <onleft>3226</onleft>
             <onup>-</onup>
+            <ondown>3226</ondown>
             <onright>3230</onright>
             <showonepage>false</showonepage>
             <orientation>vertical</orientation>
         </control>          
         
+        <!-- cast list -->
         <control type="list" id="3230">
             <left>760</left>
             <top>100</top>
@@ -300,7 +306,7 @@
             <onleft>3235</onleft>
             <onright>3231</onright>
             <onup>-</onup>
-            <ondown>-</ondown>
+            <ondown>3100</ondown>
             <pagecontrol>3231</pagecontrol>
             <scrolltime>200</scrolltime>
             <itemlayout height="60">
@@ -392,24 +398,62 @@
             <textureslidernib>ScrollBarNib.png</textureslidernib>
             <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
             <onleft>3230</onleft>
+            <ondown>3100</ondown>
             <onright>-</onright>
             <showonepage>false</showonepage>
             <orientation>vertical</orientation>
         </control>        
         
-		<control type="button" id="3002">
-			<left>30</left>
-			<top>520</top>
-			<width>150</width>
-			<height>40</height>
-			<align>center</align>
-			<label>Play</label>
-			<font>font13</font>
-            <onleft>-</onleft>
-            <onright>3220</onright>
-            <onup>3220</onup>
-		</control>      
+        <!-- action buttons -->
+        <control type="group" id="3100">
+            <left>30</left>
+            <top>520</top>
+            <height>50</height>
+            <control type="button" id="3002">
+                <left>0</left>
+                <width>150</width>
+                <height>40</height>
+                <align>center</align>
+                <label>Play</label>
+                <font>font13</font>
+                <onleft>-</onleft>
+                <onright>3004</onright>
+                <onup>3226</onup>
+            </control>
+            <control type="button" id="3004">
+                <left>160</left>
+                <width>150</width>
+                <height>40</height>
+                <align>center</align>
+                <label>(+) Watched</label>
+                <font>font13</font>
+                <onleft>3002</onleft>
+                <onright>3005</onright>
+                <onup>3226</onup>
+            </control>         
+            <control type="button" id="3005">
+                <left>320</left>
+                <width>150</width>
+                <height>40</height>
+                <align>center</align>
+                <label>(-) Favorite</label>
+                <font>font13</font>
+                <onleft>3004</onleft>
+                <onright>3006</onright>
+                <onup>3226</onup>
+            </control>    
+            <control type="button" id="3006">
+                <left>480</left>
+                <width>150</width>
+                <height>40</height>
+                <align>center</align>
+                <label>Reset Play</label>
+                <font>font13</font>
+                <onleft>3005</onleft>
+                <onright>-</onright>
+                <onup>3226</onup>
+            </control>              
+        </control>
 
-        
 	</controls>
 </window>
