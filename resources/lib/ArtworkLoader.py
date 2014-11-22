@@ -277,7 +277,7 @@ class ArtworkRotationThread(threading.Thread):
         WINDOW = xbmcgui.Window( 10000 )
         
         for x in range(0, 10):
-            contentUrl = WINDOW.getProperty("xbmb3c_collection_menuitem_content_" + str(x))
+            contentUrl = WINDOW.getProperty("mbcon_collection_menuitem_content_" + str(x))
             if(contentUrl != None):
                 index = contentUrl.find("SessionId=(")
                 if(index > -1):
@@ -285,8 +285,8 @@ class ArtworkRotationThread(threading.Thread):
                     index2 = contentUrl.find(")", index+1)
                     timeNow = time.time()
                     newContentUrl = contentUrl[:index] + str(timeNow) + contentUrl[index2:]
-                    xbmc.log("xbmb3c_collection_menuitem_content_" + str(x) + "=" + newContentUrl)
-                    WINDOW.setProperty("xbmb3c_collection_menuitem_content_" + str(x), newContentUrl)
+                    xbmc.log("mbcon_collection_menuitem_content_" + str(x) + "=" + newContentUrl)
+                    WINDOW.setProperty("mbcon_collection_menuitem_content_" + str(x), newContentUrl)
     
     def updateCollectionArtLinks(self):
         self.logMsg("updateCollectionArtLinks Called")
@@ -343,10 +343,10 @@ class ArtworkRotationThread(threading.Thread):
             contentUrl = "plugin://plugin.video.mbcon?mode=16&ParentId=" + item.get("Id") + "&CollectionType=" + collectionType + "&SessionId=(" + str(timeNow) + ")"
             actionUrl = ("ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + item.get("Id") + "&Name=" + name + ",return)").encode('utf-8')
             xbmc.log("COLLECTION actionUrl: " + actionUrl)
-            WINDOW.setProperty("xbmb3c_collection_menuitem_name_" + str(collection_count), name)
-            WINDOW.setProperty("xbmb3c_collection_menuitem_action_" + str(collection_count), actionUrl)
-            WINDOW.setProperty("xbmb3c_collection_menuitem_collection_" + str(collection_count), name)
-            WINDOW.setProperty("xbmb3c_collection_menuitem_content_" + str(collection_count), contentUrl)
+            WINDOW.setProperty("mbcon_collection_menuitem_name_" + str(collection_count), name)
+            WINDOW.setProperty("mbcon_collection_menuitem_action_" + str(collection_count), actionUrl)
+            WINDOW.setProperty("mbcon_collection_menuitem_collection_" + str(collection_count), name)
+            WINDOW.setProperty("mbcon_collection_menuitem_content_" + str(collection_count), contentUrl)
             #####################################################################################################
 
             #####################################################################################################

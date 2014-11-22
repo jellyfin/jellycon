@@ -1635,10 +1635,10 @@ def showViewList(url, pluginhandle):
     
 def checkService():
 
-    timeStamp = xbmcgui.Window(10000).getProperty("XBMB3C_Service_Timestamp")
+    timeStamp = xbmcgui.Window(10000).getProperty("mbcon_Service_Timestamp")
     loops = 0
     while(timeStamp == ""):
-        timeStamp = xbmcgui.Window(10000).getProperty("XBMB3C_Service_Timestamp")
+        timeStamp = xbmcgui.Window(10000).getProperty("mbcon_Service_Timestamp")
         loops = loops + 1
         if(loops == 40):
             printDebug("MBCon Service Not Running, no time stamp, exiting", 0)

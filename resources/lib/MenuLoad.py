@@ -93,9 +93,9 @@ class LoadMenuOptionsThread(threading.Thread):
         except Exception, e:
             self.logMsg("LoadMenuOptionsThread -> Error Parsing favourites.xml : " + str(e), level=0)
             for x in range(0, 10):
-                WINDOW.setProperty("xbmb3c_menuitem_name_" + str(x), "")
-                WINDOW.setProperty("xbmb3c_menuitem_action_" + str(x), "")
-                WINDOW.setProperty("xbmb3c_menuitem_collection_" + str(x), "")
+                WINDOW.setProperty("mbcon_menuitem_name_" + str(x), "")
+                WINDOW.setProperty("mbcon_menuitem_action_" + str(x), "")
+                WINDOW.setProperty("mbcon_menuitem_collection_" + str(x), "")
             return
         
         for child in rootElement.findall('favourite'):
@@ -103,21 +103,21 @@ class LoadMenuOptionsThread(threading.Thread):
             action = child.text
         
             if(len(name) > 1 and name[0:1] != '-'):
-                WINDOW.setProperty("xbmb3c_menuitem_name_" + str(menuItem), name)
-                WINDOW.setProperty("xbmb3c_menuitem_action_" + str(menuItem), action)
-                WINDOW.setProperty("xbmb3c_menuitem_collection_" + str(menuItem), name)
-                self.logMsg("xbmb3c_menuitem_name_" + str(menuItem) + " : " + name)
-                self.logMsg("xbmb3c_menuitem_action_" + str(menuItem) + " : " + action)
-                self.logMsg("xbmb3c_menuitem_collection_" + str(menuItem) + " : " + name)   
+                WINDOW.setProperty("mbcon_menuitem_name_" + str(menuItem), name)
+                WINDOW.setProperty("mbcon_menuitem_action_" + str(menuItem), action)
+                WINDOW.setProperty("mbcon_menuitem_collection_" + str(menuItem), name)
+                self.logMsg("mbcon_menuitem_name_" + str(menuItem) + " : " + name)
+                self.logMsg("mbcon_menuitem_action_" + str(menuItem) + " : " + action)
+                self.logMsg("mbcon_menuitem_collection_" + str(menuItem) + " : " + name)   
 
                 menuItem = menuItem + 1             
             
         for x in range(menuItem, menuItem+10):
-                WINDOW.setProperty("xbmb3c_menuitem_name_" + str(x), "")
-                WINDOW.setProperty("xbmb3c_menuitem_action_" + str(x), "")
-                self.logMsg("xbmb3c_menuitem_name_" + str(x) + " : ")
-                self.logMsg("xbmb3c_menuitem_action_" + str(x) + " : ")
-                self.logMsg("xbmb3c_menuitem_collection_" + str(x) + " : ")
+                WINDOW.setProperty("mbcon_menuitem_name_" + str(x), "")
+                WINDOW.setProperty("mbcon_menuitem_action_" + str(x), "")
+                self.logMsg("mbcon_menuitem_name_" + str(x) + " : ")
+                self.logMsg("mbcon_menuitem_action_" + str(x) + " : ")
+                self.logMsg("mbcon_menuitem_collection_" + str(x) + " : ")
                 
 
             

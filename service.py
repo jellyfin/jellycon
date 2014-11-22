@@ -155,7 +155,7 @@ while not xbmc.abortRequested:
             pass
 
     xbmc.sleep(1000)
-    xbmcgui.Window(10000).setProperty("XBMB3C_Service_Timestamp", str(int(time.time())))
+    xbmcgui.Window(10000).setProperty("mbcon_Service_Timestamp", str(int(time.time())))
     
 # stop the WebSocket client
 newWebSocketThread.stopClient()
