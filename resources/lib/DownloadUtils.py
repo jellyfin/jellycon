@@ -235,7 +235,15 @@ class DownloadUtils():
             self.logMsg("DOWNLOAD_URL = " + url)
             self.logMsg("server = "+str(server), level=2)
             self.logMsg("urlPath = "+str(urlPath), level=2)
-            conn = httplib.HTTPConnection(server, timeout=20)
+            
+            # check the server details
+            tokens = server.split(':')
+            host = tokens[0]
+            port = tokens[1]
+            if(host == "<none>" or host == "" or port == ""):
+                return ""
+            
+            conn = httplib.HTTPConnection(server, timeout=40)
             
             head = self.getAuthHeader(authenticate)
             self.logMsg("HEADERS : " + str(head), level=1)
