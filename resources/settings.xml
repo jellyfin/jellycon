@@ -6,28 +6,23 @@
 		<setting type="sep" />
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
-	</category>
-	<category label="30015"> <!-- Network -->
+        <setting id="deviceName" type="text" label="30016" default="MBCon" visible="true" enable="true" />
+        <setting type="sep" />
 		<setting id="smbusername" type="text" label="30007" default="" visible="true" enable="true" />
 		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" visible="true" enable="true" />
-		<setting id="deviceName" type="text" label="30016" default="MBCon" visible="true" enable="true" />
 	</category>
-	<category label="30110"> <!-- Interface -->
-		<setting id="selectAction" type="enum" label="30151" values="Play|Info" default="0" />
+	<category label="30110">
+		<setting id="selectAction" type="enum" label="30151" values="Play|Info" default="1" />
 		<setting id="resumeJumpBack" type="number" label="30114" default="10" visible="true" enable="true" />
 		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />
 		<setting id="addSeasonNumber" type="bool" label="30162" default="false" visible="true" enable="true" />        
 		<setting id="addEpisodeNumber" type="bool" label="30119" default="true" visible="true" enable="true" />
 		<setting id="addResumePercent" type="bool" label="30118" default="true" visible="true" enable="true" />
-        <setting id="flattenSeasons" type="bool" label="30163" default="false" visible="true" enable="true" />
-		<setting id="autoEnterSingle" type="bool" label="30001" default="true" visible="true" enable="true" />
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
-	</category>
-	<category label="30159"> <!-- Artwork -->
 		<setting id="backgroundRefresh" type="number" label="30117" default="30" visible="true" enable="true" />
 	</category>
 	<category label="30022"> <!-- Advanced -->
-		<setting id="logLevel" type="enum" label="30004" values="None(0)|Info(1)|Debug(2)" default="0" />
+		<setting id="logLevel" type="enum" label="30004" values="None|Info|Debug" default="0" />
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
 	</category>
 </settings>

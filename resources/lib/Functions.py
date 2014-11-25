@@ -985,11 +985,6 @@ def processDirectory(url, results, progress, pluginhandle):
     result = results.get("Items")
     if(result == None):
         result = []
-    if len(result) == 1 and __settings__.getSetting('autoEnterSingle') == "true":
-        if result[0].get("Type") == "Season":
-            jsonData = downloadUtils.downloadUrl("http://" + server + "/mediabrowser/Users/" + userid + "/items?ParentId=" + result[0].get("Id") + '&IsVirtualUnAired=false&IsMissing=false&Fields=' + detailsString + '&SortBy=SortName&format=json', suppress=False, popup=1 )
-            results = json.loads(jsonData)
-            result=results.get("Items")
     item_count = len(result)
     current_item = 1;
         
@@ -1249,10 +1244,7 @@ def processDirectory(url, results, progress, pluginhandle):
             SortByTemp = __settings__.getSetting('sortby')
             if SortByTemp == '' and not (item_type == 'Series' or item_type == 'Season' or item_type == 'BoxSet' or item_type == 'MusicAlbum' or item_type == 'MusicArtist'):
                 SortByTemp = 'SortName'
-            if item_type=='Series' and __settings__.getSetting('flattenSeasons')=='true':
-                u = 'http://' + server + '/mediabrowser/Users/'+ userid + '/items?ParentId=' +id +'&IncludeItemTypes=Episode&Recursive=true&IsVirtualUnAired=false&IsMissing=false&Fields=' + detailsString + '&SortBy=SortName'+'&format=json'
-            else:
-                u = 'http://' + server + '/mediabrowser/Users/'+ userid + '/items?ParentId=' +id +'&IsVirtualUnAired=false&IsMissing=false&Fields=' + detailsString + '&SortBy='+SortByTemp+'&format=json'
+            u = 'http://' + server + '/mediabrowser/Users/'+ userid + '/items?ParentId=' +id +'&IsVirtualUnAired=false&IsMissing=false&Fields=' + detailsString + '&SortBy='+SortByTemp+'&format=json'
             if (item.get("RecursiveItemCount") != 0):
                 dirItems.append(addGUIItem(u, details, extraData))
         else:
