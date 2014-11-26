@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon  id="plugin.video.mbcon" 
         name="MBCon" 
-        version="0.0.2" 
-        provider-name="">
+        version="0.0.3" 
+        provider-name="null_pointer">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="skin.confluence_mbcon" version="0.0.2"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>executable video audio image</provides>
@@ -16,9 +15,9 @@
     <platform>all</platform>
     <language>en</language>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum></forum>
-    <website></website>
-    <source></source>
+    <forum>http://mediabrowser.tv/community/</forum>
+    <website>http://mediabrowser.tv/community/</website>
+    <source>https://github.com/faush01/MBCon</source>
     <summary lang="en">Media Browser Connector (MBCon)</summary>
     <description lang="en">Media Browser Connector is a test addon for connection to Media Browser Server</description>
   </extension>
