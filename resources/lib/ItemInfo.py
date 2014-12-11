@@ -7,10 +7,6 @@ import json as json
 import urllib
 from DownloadUtils import DownloadUtils
 
-_MODE_BASICPLAY=12
-_MODE_CAST_LIST=14
-_MODE_PERSON_DETAILS=15
-
 class ItemInfo(xbmcgui.WindowXMLDialog):
 
     id = ""
@@ -187,10 +183,10 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
             
         url =  server + ',;' + id
         url = urllib.quote(url)
-        self.playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+        self.playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=PLAY'
             
-        self.peopleUrl = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
-        #self.peopleUrl = "XBMC.RunPlugin(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + id + ")"
+        self.peopleUrl = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + id + ")"
+        #self.peopleUrl = "XBMC.RunPlugin(plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + id + ")"
         
         # all all the media stream info
         mediaList = self.getControl(3220)
@@ -254,7 +250,7 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
             baseName = baseName.replace("?", "_")
             baseName = baseName.replace("=", "_")
             
-            actionUrl = "plugin://plugin.video.mbcon?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
+            actionUrl = "plugin://plugin.video.mbcon?mode=PERSON_DETAILS&name=" + baseName
             
             if(tag != None and len(tag) > 0):
                 thumbPath = self.downloadUtils.imageUrl(id, "Primary", 0, 400, 400)

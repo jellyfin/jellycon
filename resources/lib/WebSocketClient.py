@@ -14,8 +14,6 @@ import websocket
 from ClientInformation import ClientInformation
 from DownloadUtils import DownloadUtils
 
-_MODE_BASICPLAY=12
-
 class WebSocketThread(threading.Thread):
 
     logLevel = 0
@@ -139,7 +137,7 @@ class WebSocketThread(threading.Thread):
                 else:
                     url  += ",;" + str(startPositionTicks)
                     
-                playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+                playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=PLAY'
                 playUrl = playUrl.replace("\\\\","smb://")
                 playUrl = playUrl.replace("\\","/")                
                 
@@ -180,6 +178,33 @@ class WebSocketThread(threading.Thread):
             messageString = json.dumps(messageData)
             self.logMsg("Opened : " + str(messageString))
             ws.send(messageString)
+            '''
+            downloadUtils = DownloadUtils()
+            
+            # get session ID
+            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            mb3Host = addonSettings.getSetting('ipaddress')
+            mb3Port = addonSettings.getSetting('port')
+            
+            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions?DeviceId=" + machineId + "&format=json"
+            self.logMsg("Session URL : " + url);
+            jsonData = downloadUtils.downloadUrl(url)
+            self.logMsg("Session JsonData : " + jsonData)
+            result = json.loads(jsonData)
+            self.logMsg("Session JsonData : " + str(result))
+            sessionId = result[0].get("Id")
+            self.logMsg("Session Id : " + str(sessionId))
+            
+            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play"
+            postData = {}
+            postData["Id"] = sessionId;
+            postData["PlayableMediaTypes"] = "Video";
+            stringdata = json.dumps(postData)
+            self.logMsg("Capabilities URL : " + url);
+            self.logMsg("Capabilities Data : " + stringdata)
+            #downloadUtils.downloadUrl(url, postBody=stringdata, type="POST")
+            '''
+            
         except Exception, e:
             self.logMsg("Exception : " + str(e), level=0)                
         

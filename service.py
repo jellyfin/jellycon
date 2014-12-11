@@ -32,8 +32,6 @@ from WebSocketClient import WebSocketThread
 from MenuLoad import LoadMenuOptionsThread
 from DownloadUtils import DownloadUtils
 
-_MODE_BASICPLAY=12
-
 downloadUtils = DownloadUtils()
 
 # auth the service

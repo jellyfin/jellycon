@@ -16,8 +16,6 @@ import random
 import time
 from DownloadUtils import DownloadUtils
 
-_MODE_BASICPLAY=12
-
 #define our global download utils
 downloadUtils = DownloadUtils()
 
@@ -189,7 +187,7 @@ class ArtworkRotationThread(threading.Thread):
             addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')               
             selectAction = addonSettings.getSetting('selectAction')
             if(selectAction == "1"):
-                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=17)"     
+                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=ITEM_DETAILS"     
             else:
                 actionUrl = nextItem["action"]
                 
@@ -313,7 +311,10 @@ class ArtworkRotationThread(threading.Thread):
         parentid = result.get("Id")
         self.logMsg("updateCollectionArtLinks ParentID : " + str(parentid), 2)
             
-        userRootPath = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentid + "&SortBy=SortName&Fields=CollectionType,RecursiveItemCount&format=json"
+        userRootPath = ("http://" + mb3Host + ":" + mb3Port + 
+            "/mediabrowser/Users/" + userid + 
+            "/items?ParentId=" + parentid + 
+            "&SortBy=SortName&Fields=CollectionType,RecursiveItemCount&format=json")
     
         jsonData = downloadUtils.downloadUrl(userRootPath, suppress=True, popup=0 ) 
         self.logMsg("updateCollectionArtLinks userRootPath : " + str(jsonData), 2)            
@@ -340,8 +341,8 @@ class ArtworkRotationThread(threading.Thread):
             #####################################################################################################
             # Process collection item menu item
             timeNow = time.time()
-            contentUrl = "plugin://plugin.video.mbcon?mode=16&ParentId=" + item.get("Id") + "&CollectionType=" + collectionType + "&SessionId=(" + str(timeNow) + ")"
-            actionUrl = ("ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + item.get("Id") + "&Name=" + name + ",return)").encode('utf-8')
+            contentUrl = "plugin://plugin.video.mbcon?mode=WIDGET_CONTENT&ParentId=" + item.get("Id") + "&CollectionType=" + collectionType + "&SessionId=(" + str(timeNow) + ")"
+            actionUrl = ("ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=PARENT_CONTENT&ParentId=" + item.get("Id") + "&Name=" + name + ",return)").encode('utf-8')
             xbmc.log("COLLECTION actionUrl: " + actionUrl)
             WINDOW.setProperty("mbcon_collection_menuitem_name_" + str(collection_count), name)
             WINDOW.setProperty("mbcon_collection_menuitem_action_" + str(collection_count), actionUrl)
@@ -351,7 +352,10 @@ class ArtworkRotationThread(threading.Thread):
 
             #####################################################################################################
             # Process collection item backgrounds
-            collectionUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/items?ParentId=" + item.get("Id") + "&IncludeItemTypes=Movie,Series&Fields=ParentId,Overview&Recursive=true&CollapseBoxSetItems=false&format=json"
+            collectionUrl = ("http://" + mb3Host + ":" + mb3Port + 
+                "/mediabrowser/Users/" + userid + 
+                "/items?ParentId=" + item.get("Id") + 
+                "&IncludeItemTypes=Movie,Series&Fields=ParentId&Recursive=true&CollapseBoxSetItems=false&format=json")
    
             jsonData = downloadUtils.downloadUrl(collectionUrl, suppress=False, popup=1 ) 
             collectionResult = json.loads(jsonData)
@@ -392,13 +396,13 @@ class ArtworkRotationThread(threading.Thread):
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
                             url =  mb3Host + ":" + mb3Port + ',;' + id
                             url = urllib.quote(url)
-                            #actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + " ,return)"
-                            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
+                            #actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=PLAY&url=" + url + " ,return)"
+                            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=PLAY&url=" + url + ")"
 
                         elif(col_item.get("Type") == "Series"):
                         
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
-                            actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=21&ParentId=" + id + "&Name=" + name + ",return)"
+                            actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=PARENT_CONTENT&ParentId=" + id + "&Name=" + name + ",return)"
                             
                             
                         for backdrop in images:
@@ -503,7 +507,7 @@ class ArtworkRotationThread(threading.Thread):
         userName = addonSettings.getSetting('username')
                    
         userid = downloadUtils.getUserId()
-        itemUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "?Fields=ParentId,Overview&format=json"
+        itemUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "?Fields=ParentId&format=json"
         
         jsonData = downloadUtils.downloadUrl(itemUrl, suppress=False, popup=1 ) 
         item = json.loads(jsonData)
@@ -530,7 +534,7 @@ class ArtworkRotationThread(threading.Thread):
         index = 0
         url =  mb3Host + ":" + mb3Port + ',;' + id
         url = urllib.quote(url)        
-        actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=" + str(_MODE_BASICPLAY) + "&url=" + url + ")"
+        actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=PLAY&url=" + url + ")"
         posterImage = downloadUtils.getArtwork(item, "Primary")
         
         newBgLinks = []

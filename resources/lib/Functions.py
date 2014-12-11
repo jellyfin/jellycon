@@ -58,19 +58,6 @@ from SearchDialog import SearchDialog
 from DisplayItems import DisplayItems
 from DataManager import DataManager
 
-_MODE_GETCONTENT=0
-_MODE_MOVIES=0
-_MODE_SEARCH=2
-_MODE_SETVIEWS=3
-_MODE_SHOW_SECTIONS=4
-_MODE_BASICPLAY=12
-_MODE_CAST_LIST=14
-_MODE_PERSON_DETAILS=15
-_MODE_WIDGET_CONTENT=16
-_MODE_ITEM_DETAILS=17
-_MODE_SHOW_SEARCH=18
-_MODE_SHOW_PARENT_CONTENT=21
-
 __settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
 __language__ = __addon__.getLocalizedString
@@ -182,7 +169,7 @@ def mainEntryPoint():
     if param_url and ( param_url.startswith('http') or param_url.startswith('file') ):
         param_url = urllib.unquote(param_url)
 
-    mode = int(params.get('mode', -1))
+    mode = params.get("mode", None)
     WINDOW = xbmcgui.Window( 10000 )
 
     if sys.argv[1] == "check_server":
@@ -218,17 +205,17 @@ def mainEntryPoint():
         sortorder()
     elif sys.argv[1] == "genrefilter":
         genrefilter()
-    elif mode == _MODE_CAST_LIST:
+    elif mode == "CAST_LIST":
         getCastList(sys.argv[0], int(sys.argv[1]), params)
-    elif mode == _MODE_PERSON_DETAILS:    
+    elif mode == "PERSON_DETAILS":    
         showPersonInfo(sys.argv[0], int(sys.argv[1]), params)    
-    elif mode == _MODE_WIDGET_CONTENT:
+    elif mode == "WIDGET_CONTENT":
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
-    elif mode == _MODE_ITEM_DETAILS:
+    elif mode == "ITEM_DETAILS":
         showItemInfo(sys.argv[0], int(sys.argv[1]), params)    
-    elif mode == _MODE_SHOW_SEARCH:
+    elif mode == "SHOW_SEARCH":
         showSearch(sys.argv[0], int(sys.argv[1]), params)        
-    elif mode == _MODE_SHOW_PARENT_CONTENT:
+    elif mode == "PARENT_CONTENT":
         #ptvsd.enable_attach(secret = "shaun")
         #ptvsd.wait_for_attach()
         checkService()
@@ -244,22 +231,21 @@ def mainEntryPoint():
 
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.clearProperty("heading")
-        #mode=_MODE_BASICPLAY
 
         printDebug("MBCon -> Mode: " + str(mode))
         printDebug("MBCon -> URL: " + str(param_url))
 
         #Run a function based on the mode variable that was passed in the URL
-        if ( mode == None or mode == _MODE_SHOW_SECTIONS or param_url == None or len(param_url) < 1 ):
-            displaySections(pluginhandle)
-
-        elif mode == _MODE_GETCONTENT:
+        #if ( mode == None or param_url == None or len(param_url) < 1 ):
+        #    displaySections(pluginhandle)
+        if mode == "GET_CONTENT":
             getContent(param_url, pluginhandle)
-
-        elif mode == _MODE_BASICPLAY:
+        elif mode == "PLAY":
             PLAY(param_url, pluginhandle)
-        elif mode == _MODE_SETVIEWS:
+        elif mode == "SETVIEWS":
             showViewList(param_url, pluginhandle)
+        else:
+            displaySections(pluginhandle)
 
     WINDOW = xbmcgui.Window( 10000 )
     #WINDOW.clearProperty("MB3.Background.Item.FanArt")
@@ -384,7 +370,7 @@ def getCollections(detailsString):
             total = str(item.get("RecursiveItemCount"))
             section = item.get("CollectionType")
             if (section == None):
-              section = "movies"
+                section = "movies"
             collections.append({
                     'title'             : Name,
                     'address'           : MB_server ,
@@ -531,7 +517,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     printDebug("Passed details: " + str(details), level=2)
     printDebug("Passed extraData: " + str(extraData), level=2)
     #printDebug("urladdgui:" + str(url))
-    if details.get('title','') == '':
+    if details.get('title', '') == '':
         return
 
     if extraData.get('mode',None) is None:
@@ -543,22 +529,15 @@ def addGUIItem( url, details, extraData, folder=True ):
     selectAction = __settings__.getSetting('selectAction')
 
     #Create the URL to pass to the item
-    if 'mediabrowser/Videos' in url:
-        if(selectAction == "1"):
-            u = sys.argv[0] + "?id=" + extraData.get('id') + "&mode=" + str(_MODE_ITEM_DETAILS)
-        else:
-            u = sys.argv[0] + "?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
-    elif 'mediabrowser/Search' in url:
-        u = sys.argv[0]+"?url=" + url + '&mode=' + str(_MODE_SEARCH)
-    elif 'SETVIEWS' in url:
-        u = sys.argv[0]+"?url=" + url + '&mode=' + str(_MODE_SETVIEWS)     
-    elif url.startswith('http') or url.startswith('file'):
-        u = sys.argv[0]+"?url="+urllib.quote(url)+mode
+    if 'SETVIEWS' in url:
+        u = sys.argv[0] + "?url=" + url + '&mode=SETVIEWS'
+    elif url.startswith('http'):
+        u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
         if(selectAction == "1"):
-            u = sys.argv[0] + "?id=" + extraData.get('id') + "&mode=" + str(_MODE_ITEM_DETAILS)
+            u = sys.argv[0] + "?id=" + extraData.get('id') + "&mode=ITEM_DETAILS"
         else:
-            u = sys.argv[0]+"?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+            u = sys.argv[0] + "?url=" + url + '&mode=PLAY'
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -656,7 +635,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     if extraData.get('NumEpisodes')!=None:
         list.setProperty('NumEpisodes',extraData.get('NumEpisodes'))
     
-    pluginCastLink = "plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id'))
+    pluginCastLink = "plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + str(extraData.get('id'))
     list.setProperty('CastPluginLink', pluginCastLink)
     list.setProperty('ItemGUID', extraData.get('guiid'))
     list.setProperty('id', extraData.get('id'))
@@ -672,7 +651,7 @@ def addContextMenu(details, extraData, folder):
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
         
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_CAST_LIST) + "&id=" + str(extraData.get('id')) + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + str(extraData.get('id')) + ")"
         commands.append(("Show People", pluginCastLink))
         
         # watched/unwatched
@@ -743,7 +722,7 @@ def displaySections( pluginhandle, filter=None ):
     for collection in collections:
         details = {'title' : collection.get('title', 'Unknown') }
         path = collection['path']
-        extraData['mode'] = _MODE_MOVIES
+        extraData['mode'] = "GET_CONTENT"
         extraData['thumb'] = collection['thumb']
         extraData['poster'] = collection['poster']
         extraData['fanart_image'] = collection['fanart_image']
@@ -762,6 +741,9 @@ def remove_html_tags( data ):
 
 def PLAY( url, handle ):
     printDebug("== ENTER: PLAY ==")
+    
+    #playData = json.loads(url)
+    
     url=urllib.unquote(url)
     
     urlParts = url.split(',;')
@@ -947,10 +929,10 @@ def getContent(url, pluginhandle):
     
     #printDebug("JSON DATA: " + str(result), level=2)
     
-    dirItems = processDirectory(url, result, progress, pluginhandle)
+    dirItems,viewType = processDirectory(url, result, progress, pluginhandle)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     
-    if("viewType" in globals()):
+    if(viewType != None and len(viewType) > 0):
         viewNum = __settings__.getSetting(xbmc.getSkinDir() + '_VIEW' + viewType)
         printDebug("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum), level=1)
         if viewNum != "":
@@ -968,8 +950,7 @@ def loadJasonData(jsonData):
     return json.loads(jsonData)
     
 def processDirectory(url, results, progress, pluginhandle):
-    global viewType
-    cast=['None']
+    cast = ['None']
     printDebug("== ENTER: processDirectory ==")
     parsed = urlparse(url)
     parsedserver,parsedport=parsed.netloc.split(':')
@@ -987,7 +968,8 @@ def processDirectory(url, results, progress, pluginhandle):
         result = []
     item_count = len(result)
     current_item = 1;
-        
+    viewType = ""
+    
     for item in result:
     
         if(progress != None):
@@ -1020,7 +1002,6 @@ def processDirectory(url, results, progress, pluginhandle):
             if item.get("ParentIndexNumber") < 10:
                 tempSeason = "0" + tempSeason
       
-        viewType=""
         if item.get("Type") == "Movie":
             xbmcplugin.setContent(pluginhandle, 'movies')
             viewType = "_MOVIES"
@@ -1099,9 +1080,9 @@ def processDirectory(url, results, progress, pluginhandle):
                     channels = mediaStream.get("Channels")
                 
         # Process People
-        director=''
-        writer=''
-        cast=[]
+        director = ''
+        writer = ''
+        cast = []
         people = item.get("People")
         if(people != None):
             for person in people:
@@ -1238,7 +1219,7 @@ def processDirectory(url, results, progress, pluginhandle):
         if extraData['thumb'] == '':
             extraData['thumb'] = extraData['fanart_image']
 
-        extraData['mode'] = _MODE_GETCONTENT
+        extraData['mode'] = "GET_CONTENT"
         
         if isFolder == True:
             SortByTemp = __settings__.getSetting('sortby')
@@ -1248,10 +1229,10 @@ def processDirectory(url, results, progress, pluginhandle):
             if (item.get("RecursiveItemCount") != 0):
                 dirItems.append(addGUIItem(u, details, extraData))
         else:
-            u = server+',;'+id
+            u = server + ',;' + id
             dirItems.append(addGUIItem(u, details, extraData, folder=False))
 
-    return dirItems
+    return dirItems, viewType
     
 def getServerFromURL( url ):
     '''
@@ -1367,7 +1348,7 @@ def getCastList(pluginName, handle, params):
         else:
             item = xbmcgui.ListItem(label=displayName)
             
-        actionUrl = "plugin://plugin.video.mbcon?mode=" + str(_MODE_PERSON_DETAILS) +"&name=" + baseName
+        actionUrl = "plugin://plugin.video.mbcon?mode=PERSON_DETAILS&name=" + baseName
         
         item.setProperty('IsPlayable', 'false')
         item.setProperty('IsFolder', 'false')
@@ -1377,7 +1358,7 @@ def getCastList(pluginName, handle, params):
         url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
         url = urllib.quote(url)
         url = url.replace("PERSON_NAME", baseName)
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_GETCONTENT) + "&url=" + url + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=GET_CONTENT&url=" + url + ")"
         commands.append(( "Show Other Library Items", pluginCastLink))
         item.addContextMenuItems( commands, True )
         
@@ -1557,10 +1538,10 @@ def getWigetContent(pluginName, handle, params):
                 
         selectAction = __settings__.getSetting('selectAction')
         if(selectAction == "1"):
-            playUrl = "plugin://plugin.video.mbcon/?id=" + item_id + '&mode=' + str(_MODE_ITEM_DETAILS)
+            playUrl = "plugin://plugin.video.mbcon/?id=" + item_id + '&mode=ITEM_DETAILS'
         else:
             url =  server + ',;' + item_id
-            playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=' + str(_MODE_BASICPLAY)
+            playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=PLAY'
         
         itemTupple = (playUrl, list_item, False)
         listItems.append(itemTupple)
@@ -1598,30 +1579,38 @@ def showViewList(url, pluginhandle):
     viewCats=['Movies', 'BoxSets', 'Trailers', 'Series', 'Seasons', 'Episodes', 'Music Artists', 'Music Albums', 'Music Videos', 'Music Tracks']
     viewTypes=['_MOVIES', '_BOXSETS', '_TRAILERS', '_SERIES', '_SEASONS', '_EPISODES', '_MUSICARTISTS', '_MUSICALBUMS', '_MUSICVIDEOS', '_MUSICTRACKS']
     
+    skin_view_file = os.path.join(xbmc.translatePath('special://skin'), "views.xml")
+    try:
+        tree = etree.parse(skin_view_file)
+    except:
+        xbmcgui.Dialog().ok(__language__(30135), __language__(30150))
+        sys.exit()
+    root = tree.getroot()
+    
     if "SETVIEWS" in url:
         for viewCat in viewCats:
-            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon/?url=_SHOWVIEWS' + viewTypes[viewCats.index(viewCat)] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(viewCat, ''), isFolder=True)
+            name = viewCat
+            type = viewTypes[viewCats.index(viewCat)]
+            current = __settings__.getSetting(xbmc.getSkinDir() + '_VIEW' + type)
+            for view in root.iter('view'):
+                #xbmc.log("VIEW_DATA : " + view.attrib['value'] + " " + view.attrib['id'] + " " + type + " " + current)
+                if current == view.attrib['value']:
+                    name = name + " (" + view.attrib['id'] + ")"
+                    break
+            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon/?url=_SHOWVIEWS' + viewTypes[viewCats.index(viewCat)] + '&mode=SETVIEWS', xbmcgui.ListItem(name, ''), isFolder=True)
     elif "_SETVIEW_" in url:
-        category=url.split('_')[2]
-        viewNum=url.split('_')[3]
-        __settings__.setSetting(xbmc.getSkinDir()+ '_VIEW_' +category,viewNum)
+        category = url.split('_')[2]
+        viewNum = url.split('_')[3]
+        __settings__.setSetting(xbmc.getSkinDir() + '_VIEW_' + category, viewNum)
         xbmc.executebuiltin("Container.Refresh")    
     else:
-        
-        skin_view_file = os.path.join(xbmc.translatePath('special://skin'), "views.xml")
-        try:
-            tree = etree.parse(skin_view_file)
-        except:
-            xbmcgui.Dialog().ok(__language__(30135), __language__(30150))            
-            sys.exit()
-        root = tree.getroot()
-        xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + '' + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem('Clear Settings', 'test'))
+        xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + '' + '&mode=SETVIEWS', xbmcgui.ListItem('Clear Settings', 'test'))
         for view in root.iter('view'):
-            if __settings__.getSetting(xbmc.getSkinDir()+ '_VIEW_'+ url.split('_')[2]) == view.attrib['value']:
-                name=view.attrib['id'] + " (Active)"
+            if __settings__.getSetting(xbmc.getSkinDir() + '_VIEW_' + url.split('_')[2]) == view.attrib['value']:
+                name = view.attrib['id'] + " (Active)"
             else:
-                name=view.attrib['id']
-            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + view.attrib['value'] + '&mode=' + str(_MODE_SETVIEWS), xbmcgui.ListItem(name, 'test'))
+                name = view.attrib['id']
+            xbmcplugin.addDirectoryItem(pluginhandle, 'plugin://plugin.video.mbcon?url=_SETVIEW_'+ url.split('_')[2] + '_' + view.attrib['value'] + '&mode=SETVIEWS', xbmcgui.ListItem(name, 'test'))
             
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
     
@@ -1678,7 +1667,7 @@ def checkServer():
     printDebug ("Getting user list")
     jsonData = None
     try:
-        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users?format=json", authenticate=False)
+        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users/Public?format=json", authenticate=False)
     except Exception, msg:
         error = "Get User unable to connect to " + server_address + ":" + server_port + " : " + str(msg)
         xbmc.log (error)

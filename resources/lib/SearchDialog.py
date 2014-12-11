@@ -7,8 +7,6 @@ import urllib
 from DownloadUtils import DownloadUtils
 import threading
 
-_MODE_ITEM_DETAILS=17
-
 class SearchDialog(xbmcgui.WindowXMLDialog):
 
     searchThread = None
@@ -254,7 +252,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=ITEM_DETAILS"
             listItem.setProperty("ActionUrl", actionUrl)
             
             movieResultsList.addItem(listItem)    
@@ -290,7 +288,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=ITEM_DETAILS"
             listItem.setProperty("ActionUrl", actionUrl)
             
             seriesResultsList.addItem(listItem) 
@@ -326,7 +324,7 @@ class BackgroundSearchThread(threading.Thread):
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
-            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+            actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=ITEM_DETAILS"
             listItem.setProperty("ActionUrl", actionUrl)
             
             episodeResultsList.addItem(listItem)                            

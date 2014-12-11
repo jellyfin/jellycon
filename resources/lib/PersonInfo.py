@@ -7,9 +7,6 @@ import json as json
 import urllib
 from DownloadUtils import DownloadUtils
 
-_MODE_GETCONTENT=0
-_MODE_ITEM_DETAILS=17
-
 class PersonInfo(xbmcgui.WindowXMLDialog):
 
     pluginCastLink = ""
@@ -82,7 +79,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
         search_url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&format=json"
         search_url = urllib.quote(search_url)
         search_url = search_url.replace("PERSON_NAME", baseName)
-        self.pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=" + str(_MODE_GETCONTENT) + "&url=" + search_url + ")"         
+        self.pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=GET_CONTENT&url=" + search_url + ")"         
         
         otherItemsList = None
         try:
@@ -120,7 +117,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
                 
                 listItem = xbmcgui.ListItem(label=item_name, label2=type_info, iconImage=thumbPath, thumbnailImage=thumbPath)
                 
-                actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=" + str(_MODE_ITEM_DETAILS)
+                actionUrl = "plugin://plugin.video.mbcon?id=" + item_id + "&mode=ITEM_DETAILS"
                 listItem.setProperty("ActionUrl", actionUrl)
                 
                 otherItemsList.addItem(listItem)
