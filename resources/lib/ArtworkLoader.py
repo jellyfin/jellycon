@@ -187,7 +187,7 @@ class ArtworkRotationThread(threading.Thread):
             addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')               
             selectAction = addonSettings.getSetting('selectAction')
             if(selectAction == "1"):
-                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=ITEM_DETAILS"     
+                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=ITEM_DETAILS)"
             else:
                 actionUrl = nextItem["action"]
                 
