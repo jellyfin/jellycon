@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="3301" type="dialog">
+	<defaultcontrol always="true">3010</defaultcontrol>
+    <zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<left>450</left>
+		<top>50</top>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+
+		<control type="image">
+			<left>0</left>
+			<top>0</top>
+			<width>380</width>
+			<height>500</height>
+			<texture border="40">DialogBack.png</texture>
+		</control>
+        
+		<control type="label">
+			<left>0</left>
+			<top>35</top>
+			<width>380</width>
+			<height>40</height>
+			<font>font16</font>
+            <label>Set Default Views</label>
+            <align>center</align>
+            <textcolor>blue</textcolor>
+		</control>         
+     
+		<control type="label">
+			<left>30</left>
+			<top>100</top>
+			<width>120</width>
+			<height>40</height>
+			<font>font14</font>
+            <label>Movies</label>
+		</control>      
+        <control type="button" id="3010">
+            <left>150</left>
+            <top>100</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>-</onup>
+            <ondown>3011</ondown>
+            <font>font14</font>
+        </control>
+        
+		<control type="label">
+			<left>30</left>
+			<top>160</top>
+			<width>120</width>
+			<height>40</height>
+			<font>font14</font>
+            <label>Box Sets</label>
+		</control>      
+        <control type="button" id="3011">
+            <left>150</left>
+            <top>160</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3010</onup>
+            <ondown>3012</ondown>
+            <font>font14</font>
+        </control>
+
+        <control type="label">
+			<left>30</left>
+			<top>220</top>
+			<width>120</width>
+			<height>40</height>
+			<font>font14</font>
+            <label>Series</label>
+		</control>      
+        <control type="button" id="3012">
+            <left>150</left>
+            <top>220</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3011</onup>
+            <ondown>3013</ondown>
+            <font>font14</font>
+        </control>  
+        
+        <control type="label">
+			<left>30</left>
+			<top>280</top>
+			<width>120</width>
+			<height>40</height>
+			<font>font14</font>
+            <label>Seasons</label>
+		</control>      
+        <control type="button" id="3013">
+            <left>150</left>
+            <top>280</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3012</onup>
+            <ondown>3014</ondown>
+            <font>font14</font>
+        </control>     
+
+        <control type="label">
+			<left>30</left>
+			<top>340</top>
+			<width>120</width>
+			<height>40</height>
+			<font>font14</font>
+            <label>Episodes</label>
+		</control>      
+        <control type="button" id="3014">
+            <left>150</left>
+            <top>340</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3013</onup>
+            <ondown>3110</ondown>
+            <font>font14</font>
+        </control>          
+        
+        <control type="button" id="3110">
+            <left>150</left>
+            <top>400</top>
+            <width>200</width>
+            <height>40</height>
+            <label>Save</label>
+            <onup>3014</onup>
+            <ondown>-</ondown>
+            <font>font14</font>
+        </control>       
+
+
+	</controls>
+</window>
