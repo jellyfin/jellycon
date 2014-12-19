@@ -616,24 +616,22 @@ def addGUIItem( url, details, extraData, folder=True ):
     
     list.setProperty('CriticRating', str(extraData.get('criticrating')))
     list.setProperty('ItemType', extraData.get('itemtype'))
+
     if extraData.get('totaltime') != None:
         list.setProperty('TotalTime', extraData.get('totaltime'))
-    if extraData.get('TotalSeasons')!=None:
+    if extraData.get('TotalSeasons') != None:
         list.setProperty('TotalSeasons',extraData.get('TotalSeasons'))
-    if extraData.get('TotalEpisodes')!=None:  
+    if extraData.get('TotalEpisodes') != None:  
         list.setProperty('TotalEpisodes',extraData.get('TotalEpisodes'))
-    if extraData.get('WatchedEpisodes')!=None:
+    if extraData.get('WatchedEpisodes') != None:
         list.setProperty('WatchedEpisodes',extraData.get('WatchedEpisodes'))
-    if extraData.get('UnWatchedEpisodes')!=None:
+    if extraData.get('UnWatchedEpisodes') != None:
         list.setProperty('UnWatchedEpisodes',extraData.get('UnWatchedEpisodes'))
-    if extraData.get('NumEpisodes')!=None:
+    if extraData.get('NumEpisodes') != None:
         list.setProperty('NumEpisodes',extraData.get('NumEpisodes'))
     
-    pluginCastLink = "plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + str(extraData.get('id'))
-    list.setProperty('CastPluginLink', pluginCastLink)
     list.setProperty('ItemGUID', extraData.get('guiid'))
     list.setProperty('id', extraData.get('id'))
-    list.setProperty('Video3DFormat', details.get('Video3DFormat'))
         
     return (u, list, folder)
 
@@ -1169,7 +1167,7 @@ def processDirectory(url, results, progress, pluginhandle):
         # Populate the extraData list
         extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary") ,
                    'fanart_image' : downloadUtils.getArtwork(item, "Backdrop") ,
-                   'poster'       : downloadUtils.getArtwork(item, "poster") , 
+                   'poster'       : downloadUtils.getArtwork(item, "Primary") , 
                    'banner'       : downloadUtils.getArtwork(item, "Banner") ,
                    'clearlogo'    : downloadUtils.getArtwork(item, "Logo") ,
                    'discart'      : downloadUtils.getArtwork(item, "Disc") ,
@@ -1338,7 +1336,7 @@ def getCastList(pluginName, handle, params):
         baseName = baseName.replace("=", "_")
             
         if(tag != None):
-            thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400)
+            thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400, tag)
             item = xbmcgui.ListItem(label=displayName, iconImage=thumbPath, thumbnailImage=thumbPath)
         else:
             item = xbmcgui.ListItem(label=displayName)
@@ -1476,13 +1474,21 @@ def getWigetContent(pluginName, handle, params):
     for item in result:
         item_id = item.get("Id")
 
-        image_id = item_id
+        image = ""
         if item.get("Type") == "Episode":
             image_id = item.get("SeriesId")
-        
-        #image = downloadUtils.getArtwork(item, "Primary")
-        image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400)
-        fanart = downloadUtils.getArtwork(item, "Backdrop")
+            image_tag = item.get("SeriesPrimaryImageTag")
+            if(image_tag != None):
+                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
+        else:
+            image_id = item_id
+            imageTags = item.get("ImageTags")
+            if(imageTags != None and imageTags.get("Primary") != None):
+                image_tag = imageTags.get("Primary")
+                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
+     
+        #image = downloadUtils.getArtwork(item, "Primary", width=400, height=400)
+        #fanart = downloadUtils.getArtwork(item, "Backdrop")
         
         Duration = str(int(item.get("RunTimeTicks", "0"))/(10000000*60))
         
@@ -1512,7 +1518,7 @@ def getWigetContent(pluginName, handle, params):
         
         list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image)
         list_item.setInfo( type="Video", infoLabels={ "year":item.get("ProductionYear"), "duration":str(Duration), "plot":item.get("Overview"), "tvshowtitle":str(seriesName), "premiered":item.get("PremiereDate"), "rating":item.get("CommunityRating") } )
-        list_item.setProperty('fanart_image',fanart)
+        #list_item.setProperty('fanart_image',fanart)
         
         # add count
         list_item.setProperty("item_index", str(itemCount))

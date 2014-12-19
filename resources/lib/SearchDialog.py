@@ -239,16 +239,20 @@ class BackgroundSearchThread(threading.Thread):
             item = []
             
         for item in items:
-            xbmc.log(str(item))
+            #xbmc.log("Search_Result_Item : " + str(item))
         
             item_id = item.get("ItemId")
             item_name = item.get("Name")
             item_type = item.get("Type")
+            item_Tag = item.get("PrimaryImageTag")
             
             typeLabel = "Movie"
             
-            thumbPath = downloadUtils.imageUrl(item_id, "Primary", 0, 200, 200)
-            xbmc.log(thumbPath)
+            thumbPath = ""
+            if(item_Tag != None):
+                thumbPath = downloadUtils.imageUrl(item_id, "Primary", 0, 200, 200, item_Tag)
+                
+            #xbmc.log(thumbPath)
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
@@ -271,11 +275,12 @@ class BackgroundSearchThread(threading.Thread):
             item = []
             
         for item in items:
-            xbmc.log(str(item))
+            #xbmc.log(str(item))
         
             item_id = item.get("ItemId")
             item_name = item.get("Name")
             item_type = item.get("Type")
+            item_Tag = item.get("PrimaryImageTag")
             
             typeLabel = ""
             image_id = ""
@@ -283,8 +288,11 @@ class BackgroundSearchThread(threading.Thread):
             image_id = item.get("ItemId")
             typeLabel = "Series"                  
                     
-            thumbPath = downloadUtils.imageUrl(image_id, "Primary", 0, 200, 200)
-            xbmc.log(thumbPath)
+            thumbPath = ""
+            if(item_Tag != None):
+                thumbPath = downloadUtils.imageUrl(item_id, "Primary", 0, 200, 200, item_Tag)
+                
+            #xbmc.log(thumbPath)
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             
@@ -307,20 +315,25 @@ class BackgroundSearchThread(threading.Thread):
             item = []
             
         for item in items:
-            xbmc.log(str(item))
+            #xbmc.log(str(item))
         
             item_id = item.get("ItemId")
             item_name = item.get("Name")
             item_type = item.get("Type")
+            item_Tag = item.get("PrimaryImageTag")
             
             image_id = item.get("ThumbImageItemId")
+            image_tag = item.get("ThumbImageTag")
+            
             season = item.get("ParentIndexNumber")
             eppNum = item.get("IndexNumber")
             typeLabel = "S" + str(season).zfill(2) + "E" + str(eppNum).zfill(2)
-                    
-            thumbPath = downloadUtils.imageUrl(image_id, "Primary", 0, 200, 200)
             
-            xbmc.log(thumbPath)
+            thumbPath = ""
+            if(image_tag != None):
+                thumbPath = downloadUtils.imageUrl(image_id, "Primary", 0, 200, 200, image_tag)
+            
+            #xbmc.log(thumbPath)
             
             listItem = xbmcgui.ListItem(label=item_name, label2=typeLabel, iconImage=thumbPath, thumbnailImage=thumbPath)
             

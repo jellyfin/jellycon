@@ -94,26 +94,39 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
                 item_name = item.get("Name")
                 
                 type_info = ""
-                image_id = item_id
+                image_id = None
+                image_Tag = None
                 item_type = item.get("Type")
                 
                 if(item_type == "Season"):
                     image_id = item.get("SeriesId")
+                    image_Tag = item.get("SeriesPrimaryImageTag")
                     season = item.get("IndexNumber")
                     type_info = "Season " + str(season).zfill(2)
                 elif(item_type == "Series"):
                     image_id = item.get("Id")
+                    imageTags = item.get("ImageTags")
+                    if(imageTags != None and imageTags.get("Primary") != None):
+                        image_Tag = imageTags.get("Primary")
                     type_info = "Series"                  
                 elif(item_type == "Movie"):
                     image_id = item.get("Id")
+                    imageTags = item.get("ImageTags")
+                    if(imageTags != None and imageTags.get("Primary") != None):
+                        image_Tag = imageTags.get("Primary")                    
                     type_info = "Movie"    
                 elif(item_type == "Episode"):
                     image_id = item.get("SeriesId")
+                    image_Tag = item.get("SeriesPrimaryImageTag")
                     season = item.get("ParentIndexNumber")
                     eppNum = item.get("IndexNumber")
                     type_info = "S" + str(season).zfill(2) + "E" + str(eppNum).zfill(2)
                 
-                thumbPath = downloadUtils.imageUrl(image_id, "Primary", 0, 200, 200)
+                thumbPath = ""
+                if(image_Tag != None):
+                    thumbPath = downloadUtils.imageUrl(image_id, "Primary", 0, 200, 200, image_Tag)
+                    
+                #thumbPath = downloadUtils.getArtwork(item, "Primary", width=200, height=200)
                 
                 listItem = xbmcgui.ListItem(label=item_name, label2=type_info, iconImage=thumbPath, thumbnailImage=thumbPath)
                 

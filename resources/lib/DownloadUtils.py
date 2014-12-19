@@ -29,16 +29,10 @@ class DownloadUtils():
         if(self.logLevel >= level):
             xbmc.log("MBCon DownloadUtils -> " + msg)
 
-    def getArtwork(self, data, type, index = "0"):
+    def getArtwork(self, data, type, index = "0", width = 10000, height = 10000):
 
         id = data.get("Id")
-
-        if type == "poster" and data.get("Type") == "Episode" and self.addonSettings.getSetting('useSeasonPoster')=='true': # Change the Id to the Season to get the season poster
-            id = data.get("SeasonId")
-            
-        if type == "poster" or type == "tvshow.poster": # Now that the Ids are right, change type to MB3 name
-            type="Primary"
-            
+        '''
         if data.get("Type") == "Season":  # For seasons: primary (poster), thumb and banner get season art, rest series art
             if type != "Primary" and type != "Thumb" and type != "Banner":
                 id = data.get("SeriesId")
@@ -46,15 +40,34 @@ class DownloadUtils():
         if data.get("Type") == "Episode":  # For episodes: primary (episode thumb) gets episode art, rest series art. 
             if type != "Primary":
                 id = data.get("SeriesId")
-                
-        imageTag = "e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
+        '''
+        imageTag = ""
+        #"e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
 
-        if(data.get("ImageTags") != None and data.get("ImageTags").get(type) != None):
-            imageTag = data.get("ImageTags").get(type)   
+        itemType = data.get("Type")
+        
+        # for episodes always use the parent BG
+        if(itemType == "Episode" and type == "Backdrop"):
+            id = data.get("ParentBackdropItemId")
+            bgItemTags = data.get("ParentBackdropImageTags")
+            if(bgItemTags != None and len(bgItemTags) > 0):
+                imageTag = bgItemTags[0]
+        elif(type == "Backdrop"):
+            BGTags = data.get("BackdropImageTags")
+            if(BGTags != None and len(BGTags) > 0):
+                bgIndex = int(index)
+                imageTag = data.get("BackdropImageTags")[bgIndex]
+                #self.logMsg("Background Image Tag:" + imageTag, level=1)        
+        else:
+            if(data.get("ImageTags") != None and data.get("ImageTags").get(type) != None):
+                imageTag = data.get("ImageTags").get(type)
+                #self.logMsg("Image Tag:" + imageTag, level=1)
+
+        if(imageTag == "" or imageTag == None):
+            #self.logMsg("No Image Tag", level=1)
+            return ""            
 
         query = ""
-        height = "10000"
-        width = "10000"
         played = "0"
 
         # use the local image proxy server that is made available by this addons service
@@ -62,9 +75,10 @@ class DownloadUtils():
         host = self.addonSettings.getSetting('ipaddress')
         server = host + ":" + port
         
-        artwork = "http://" + server + "/mediabrowser/Items/" + str(id) + "/Images/" + type + "/" + index + "/" + imageTag + "/original/" + height + "/" + width + "/" + played + "?" + query
-        if self.addonSettings.getSetting('disableCoverArt')=='true':
-            artwork = artwork + "&EnableImageEnhancers=false"
+        artwork = ( "http://" + server + "/mediabrowser/Items/" + str(id) + 
+                    "/Images/" + type + 
+                    "/" + index + "/" + imageTag + "/original/" + 
+                    str(height) + "/" + str(width) + "/" + played + "?" + query)
         
         self.logMsg("getArtwork : " + artwork, level=2)
         
@@ -76,15 +90,26 @@ class DownloadUtils():
                 ):
             artwork = ''
         '''
+        
         return artwork
 
-    def imageUrl(self, id, type, index, width, height):
+    def imageUrl(self, id, type, index, width, height, tag):
+    
+        # CCurlFile::Stat - Failed:
     
         port = self.addonSettings.getSetting('port')
         host = self.addonSettings.getSetting('ipaddress')
         server = host + ":" + port
         
-        return "http://" + server + "/mediabrowser/Items/" + str(id) + "/Images/" + type + "/" + str(index) + "/e3ab56fe27d389446754d0fb04910a34/original/" + str(height) + "/" + str(width) + "/0"
+        # test tag e3ab56fe27d389446754d0fb04910a34
+        
+        imgeUrl = ( "http://" + server + "/mediabrowser/Items/" + 
+                    str(id) + "/Images/" + type + 
+                    "/" + str(index) + 
+                    "/" + str(tag) + "/original/" + 
+                    str(height) + "/" + str(width) + "/0")
+        
+        return imgeUrl
         
     def getUserId(self):
 
