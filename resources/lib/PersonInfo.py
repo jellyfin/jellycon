@@ -64,7 +64,7 @@ class PersonInfo(xbmcgui.WindowXMLDialog):
         #get other movies
         encoded = name.encode("utf-8")
         encoded = urllib.quote(encoded)
-        url = "http://" + server + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=" + encoded + "&format=json"
+        url = "http://" + server + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=" + encoded + "&format=json&IsMissing=false"
         xbmc.log("URL: " + url)
         jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1 )
         otherMovieResult = json.loads(jsonData)

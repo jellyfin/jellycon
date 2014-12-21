@@ -33,12 +33,12 @@ class SearchDialog(xbmcgui.WindowXMLDialog):
         ACTION_PARENT_DIR = 9
         
         if action == ACTION_PREVIOUS_MENU or action.getId() == 92:
-            searchTerm = self.getControl(3010).getLabel()
+            searchTerm = self.getControl(3010).getText()
             if(len(searchTerm) == 0):
                 self.close()
             else:
                 searchTerm = searchTerm[:-1]
-                self.getControl(3010).setLabel(searchTerm)
+                self.getControl(3010).setText(searchTerm)
                 self.searchThread.setSearch(searchTerm)
     
         #self.getControl(3010).setLabel(str(action.getButtonCode()))
@@ -51,57 +51,57 @@ class SearchDialog(xbmcgui.WindowXMLDialog):
     def onClick(self, controlID):
 
         if(controlID == 3020):
-            self.addCharacter("A")
+            self.addCharacter("a")
         elif(controlID == 3021):
-            self.addCharacter("B")
+            self.addCharacter("b")
         elif(controlID == 3022):
-            self.addCharacter("C")
+            self.addCharacter("c")
         elif(controlID == 3023):
-            self.addCharacter("D")
+            self.addCharacter("d")
         elif(controlID == 3024):
-            self.addCharacter("E")
+            self.addCharacter("e")
         elif(controlID == 3025):
-            self.addCharacter("F")
+            self.addCharacter("f")
         elif(controlID == 3026):
-            self.addCharacter("G")
+            self.addCharacter("g")
         elif(controlID == 3027):
-            self.addCharacter("H")
+            self.addCharacter("h")
         elif(controlID == 3028):
-            self.addCharacter("I")
+            self.addCharacter("i")
         elif(controlID == 3029):
-            self.addCharacter("J")
+            self.addCharacter("j")
         elif(controlID == 3030):
-            self.addCharacter("K")
+            self.addCharacter("k")
         elif(controlID == 3031):
-            self.addCharacter("L")
+            self.addCharacter("l")
         elif(controlID == 3032):
-            self.addCharacter("M")
+            self.addCharacter("m")
         elif(controlID == 3033):
-            self.addCharacter("N")
+            self.addCharacter("n")
         elif(controlID == 3034):
-            self.addCharacter("O")
+            self.addCharacter("o")
         elif(controlID == 3035):
-            self.addCharacter("P")
+            self.addCharacter("p")
         elif(controlID == 3036):
-            self.addCharacter("Q")
+            self.addCharacter("q")
         elif(controlID == 3037):
-            self.addCharacter("R")
+            self.addCharacter("r")
         elif(controlID == 3038):
-            self.addCharacter("S")
+            self.addCharacter("s")
         elif(controlID == 3039):
-            self.addCharacter("T")
+            self.addCharacter("t")
         elif(controlID == 3040):
-            self.addCharacter("U")
+            self.addCharacter("u")
         elif(controlID == 3041):
-            self.addCharacter("V")
+            self.addCharacter("v")
         elif(controlID == 3042):
-            self.addCharacter("W")
+            self.addCharacter("w")
         elif(controlID == 3043):
-            self.addCharacter("X")
+            self.addCharacter("x")
         elif(controlID == 3044):
-            self.addCharacter("Y")
+            self.addCharacter("y")
         elif(controlID == 3045):
-            self.addCharacter("Z")
+            self.addCharacter("z")
         elif(controlID == 3046):
             self.addCharacter("0")    
         elif(controlID == 3047):
@@ -123,25 +123,28 @@ class SearchDialog(xbmcgui.WindowXMLDialog):
         elif(controlID == 3055):
             self.addCharacter("9")  
         elif(controlID == 3056):
-            searchTerm = self.getControl(3010).getLabel()
+            searchTerm = self.getControl(3010).getText()
             searchTerm = searchTerm[:-1]
-            self.getControl(3010).setLabel(searchTerm)
+            self.getControl(3010).setText(searchTerm)
             self.searchThread.setSearch(searchTerm)
         elif(controlID == 3057):
             self.addCharacter(" ")
         elif(controlID == 3058):
-            self.getControl(3010).setLabel("")
+            self.getControl(3010).setText("")
             self.searchThread.setSearch("")
             
+        elif(controlID == 3010):
+            searchTerm = self.getControl(3010).getText()
+            self.searchThread.setSearch(searchTerm)            
+            
         elif(controlID == 3110):
-        
             #xbmc.executebuiltin("Dialog.Close(all,true)")
             itemList = self.getControl(3110)
             item = itemList.getSelectedItem()
             action = item.getProperty("ActionUrl")
             xbmc.executebuiltin("RunPlugin(" + action + ")")
+            
         elif(controlID == 3111):
-        
             #xbmc.executebuiltin("Dialog.Close(all,true)")
             itemList = self.getControl(3111)
             item = itemList.getSelectedItem()
@@ -158,9 +161,9 @@ class SearchDialog(xbmcgui.WindowXMLDialog):
         pass
 
     def addCharacter(self, char):
-        searchTerm = self.getControl(3010).getLabel()
+        searchTerm = self.getControl(3010).getText()
         searchTerm = searchTerm + char
-        self.getControl(3010).setLabel(searchTerm)
+        self.getControl(3010).setText(searchTerm)
         self.searchThread.setSearch(searchTerm)
         
 class BackgroundSearchThread(threading.Thread):
@@ -306,7 +309,7 @@ class BackgroundSearchThread(threading.Thread):
         #
         search = urllib.quote(searchTerm)
         url = "http://" + server + "/mediabrowser/Search/Hints?SearchTerm=" + search + "&Limit=10&IncludeItemTypes=Episode&format=json"
-        jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1 ) 
+        jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1) 
         result = json.loads(jsonData)
             
         items = result.get("SearchHints")

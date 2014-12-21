@@ -450,7 +450,7 @@
                 <label>Reset Play</label>
                 <font>font13</font>
                 <onleft>3005</onleft>
-                <onright>-</onright>
+                <onright>3230</onright>
                 <onup>3226</onup>
             </control>              
         </control>
