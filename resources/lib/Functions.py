@@ -536,14 +536,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
     
-    addCounts = __settings__.getSetting('addCounts') == 'true'
-
     listItemName = details.get('title','Unknown')
-    if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-       listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"
-    
-    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
-    printDebug("Setting thumbnail as " + thumbPath, level=2)
     
     # calculate percentage
     cappedPercentage = None
@@ -556,19 +549,25 @@ def addGUIItem( url, details, extraData, folder=True ):
             if(cappedPercentage == 0):
                 cappedPercentage = 10
             if(cappedPercentage == 100):
-                cappedPercentage = 90
-            list.setProperty("complete_percentage", str(cappedPercentage))          
-     
-    # add resume percentage text to titles
+                cappedPercentage = 90    
+    
     addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
     if (addResumePercent and details.get('title') != None and cappedPercentage != None):
-        details['title'] = details.get('title') + " (" + str(cappedPercentage) + "%)"
+        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
     
-    #Set the properties of the item, such as summary, name, season, etc
-    #list.setInfo( type=extraData.get('type','Video'), infoLabels=details )
+    addCounts = __settings__.getSetting('addCounts') == 'true'
+    if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
+       listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"   
+ 
+    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
+    printDebug("Setting thumbnail as " + thumbPath, level=2)
     
-    #For all end items    
-    if ( not folder):
+    # calculate percentage
+    if (cappedPercentage != None):
+        list.setProperty("complete_percentage", str(cappedPercentage))          
+         
+    #For all end items
+    if(not folder):
         #list.setProperty('IsPlayable', 'true')
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))

@@ -50,19 +50,19 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         self.defaultView = loadSkinDefaults()
             
         # set default values
-        name = self.getNameById(self.defaultView["Movies"])
+        name = self.getNameById(self.defaultView.get("Movies"))
         self.getControl(3010).setLabel(name)
         
-        name = self.getNameById(self.defaultView["BoxSets"])
+        name = self.getNameById(self.defaultView.get("BoxSets"))
         self.getControl(3011).setLabel(name)    
 
-        name = self.getNameById(self.defaultView["Series"])
+        name = self.getNameById(self.defaultView.get("Series"))
         self.getControl(3012).setLabel(name) 
 
-        name = self.getNameById(self.defaultView["Seasons"])
+        name = self.getNameById(self.defaultView.get("Seasons"))
         self.getControl(3013).setLabel(name) 
 
-        name = self.getNameById(self.defaultView["Episodes"])
+        name = self.getNameById(self.defaultView.get("Episodes"))
         self.getControl(3014).setLabel(name)         
         
     def onFocus(self, controlId):      
@@ -72,11 +72,14 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         pass
     
     def getNameById(self, viewId):
+        if(viewId == None):
+            return "None"
+            
         for name, id in self.viewData.iteritems():
             if id == viewId:
                 return name
             
-        return ""
+        return "None"
     
     def getNextViewName(self, current):
         keys = list(self.viewData.keys())
@@ -97,11 +100,11 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
             
         elif(controlID == 3110):
         
-            self.defaultView["Movies"] = self.viewData[self.getControl(3010).getLabel()]
-            self.defaultView["BoxSets"] = self.viewData[self.getControl(3011).getLabel()]
-            self.defaultView["Series"] = self.viewData[self.getControl(3012).getLabel()]
-            self.defaultView["Seasons"] = self.viewData[self.getControl(3013).getLabel()]
-            self.defaultView["Episodes"] = self.viewData[self.getControl(3014).getLabel()]
+            self.setViewId("Movies", 3010)
+            self.setViewId("BoxSets", 3011)
+            self.setViewId("Series", 3012)
+            self.setViewId("Seasons", 3013)
+            self.setViewId("Episodes", 3014)
         
             __addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
             __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
@@ -115,3 +118,10 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         
         pass
         
+    def setViewId(self, viewName, labelId):
+        viewId = self.viewData.get(self.getControl(labelId).getLabel())
+        if(viewId == None):
+            return
+        else:
+            self.defaultView[viewName] = viewId
+            
