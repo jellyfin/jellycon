@@ -137,13 +137,15 @@ try:
 except:
     pass
     
-xbmc.log ("MBCon -> LogLevel:  " + str(logLevel))
+#xbmc.log("MBCon -> LogLevel:  " + str(logLevel))
 
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 def mainEntryPoint():
    
+    printDebug("===== MBCon START =====")
+    
     ProfileCode = __settings__.getSetting('profile') == "true"
 
     if(ProfileCode):
@@ -152,10 +154,9 @@ def mainEntryPoint():
         pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    xbmc.log ("MBCon -> running Python: " + str(sys.version_info))
-    xbmc.log ("MBCon -> running MBCon: " + str(ADDON_VERSION))
-    xbmc.log (xbmc.getInfoLabel( "System.BuildVersion" ))
-
+    printDebug("MBCon -> running Python: " + str(sys.version_info))
+    printDebug("MBCon -> running MBCon: " + str(ADDON_VERSION))
+    printDebug(xbmc.getInfoLabel( "System.BuildVersion" ))
     printDebug( "MBCon -> Script argument date " + str(sys.argv))
 
     try:
@@ -163,7 +164,7 @@ def mainEntryPoint():
     except:
         params = {}
         
-    printDebug( "MBCon -> Script params is " + str(params))
+    printDebug("MBCon -> Script params is " + str(params))
 
     param_url = params.get('url', None)
 
@@ -270,6 +271,9 @@ def mainEntryPoint():
                 f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
         f.close()    
 
+    printDebug("===== MBCon FINISHED =====")
+    
+    
 def printDebug( msg, level = 1):
     if(logLevel >= level):
         if(logLevel == 2):

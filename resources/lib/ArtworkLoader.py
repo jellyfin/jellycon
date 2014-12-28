@@ -260,13 +260,13 @@ class ArtworkRotationThread(threading.Thread):
         result01 = self.updateCollectionArtLinks()
         t2 = time.time()
         diff = t2 - t1
-        xbmc.log("TIME_DIFF : " + str(diff))
+        self.logMsg("TIME_DIFF : " + str(diff))
         
         if(result01):
-            xbmc.log("BackgroundRotationThread Update Links Worked")
+            self.logMsg("BackgroundRotationThread Update Links Worked")
             self.linksLoaded = True
         else:
-            xbmc.log("BackgroundRotationThread Update Links Failed")
+            self.logMsg("BackgroundRotationThread Update Links Failed")
             self.linksLoaded = False
             
         

@@ -117,7 +117,7 @@ class DownloadUtils():
         userid = WINDOW.getProperty("userid")
 
         if(userid != None and userid != ""):
-            xbmc.log("MBCon DownloadUtils -> Returning saved UserID : " + userid)
+            self.logMsg("MBCon DownloadUtils -> Returning saved UserID : " + userid)
             return userid
     
         port = self.addonSettings.getSetting('port')
@@ -178,7 +178,7 @@ class DownloadUtils():
 
         token = WINDOW.getProperty("AccessToken")
         if(token != None and token != ""):
-            xbmc.log("MBCon DownloadUtils -> Returning saved AccessToken : " + token)
+            self.logMsg("MBCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
         
         port = self.addonSettings.getSetting("port")
@@ -240,7 +240,7 @@ class DownloadUtils():
             if(authToken != ""):
                 headers["X-MediaBrowser-Token"] = authToken
                     
-            xbmc.log("MBCon Authentication Header : " + str(headers))
+            self.logMsg("MBCon Authentication Header : " + str(headers))
             return headers
     
     def downloadUrl(self, url, suppress=False, postBody=None, type="GET", popup=0, authenticate=True):

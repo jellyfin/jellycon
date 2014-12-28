@@ -173,7 +173,7 @@ class BackgroundSearchThread(threading.Thread):
     searchString = ""
 
     def __init__(self, *args):
-        xbmc.log("BackgroundSearchThread Init")
+        #xbmc.log("BackgroundSearchThread Init")
         threading.Thread.__init__(self, *args)
 
     def setSearch(self, searchFor):
@@ -186,7 +186,7 @@ class BackgroundSearchThread(threading.Thread):
         self.searchDialog = searchDialog
         
     def run(self):
-        xbmc.log("BackgroundSearchThread Started")     
+        #xbmc.log("BackgroundSearchThread Started")     
         
         lastSearchString = ""
         
@@ -198,7 +198,7 @@ class BackgroundSearchThread(threading.Thread):
 
             xbmc.sleep(2000)
 
-        xbmc.log("BackgroundSearchThread Exited")
+        #xbmc.log("BackgroundSearchThread Exited")
         
     def doSearch(self, searchTerm):
 

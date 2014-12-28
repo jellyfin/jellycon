@@ -32,9 +32,7 @@ sys.path.append(BASE_RESOURCE_PATH)
 
 import Functions
 
-xbmc.log ("===== MBCon START =====")
 Functions.mainEntryPoint()
-xbmc.log ("===== MBCon FINISHED =====")
     
 #clear done and exit.
 #sys.modules.clear()
