@@ -23,12 +23,23 @@
 			<top>20</top>
 			<width>1000</width>
 			<height>560</height>
+			<texture background="true">$INFO[Window(Home).Property(MB3.Background.Global.FanArt)]</texture>
+			<include>VisibleFadeEffect</include>            
+            <colordiffuse>FF444444</colordiffuse>
+		</control>      
+
+        <!--
+		<control type="image">
+			<left>20</left>
+			<top>20</top>
+			<width>1000</width>
+			<height>560</height>
 			<texture>$INFO[Skin.CurrentTheme,special://skin/backgrounds/,.jpg]</texture>
 			<visible>![Skin.HasSetting(UseCustomBackground) + !IsEmpty(Skin.String(CustomBackgroundPath))]</visible>
 			<include>VisibleFadeEffect</include>            
             <colordiffuse>FF444444</colordiffuse>
 		</control>    
-    
+        -->
         <!--
         <control type="image">
             <left>25</left>

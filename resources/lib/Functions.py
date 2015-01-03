@@ -534,7 +534,7 @@ def addContextMenu(details, extraData, folder):
     return(commands)
     
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks"  
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams"  
     return (detailsString)
     
 def displaySections( pluginhandle, filter=None ):
