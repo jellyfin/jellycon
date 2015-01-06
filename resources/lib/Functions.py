@@ -1291,20 +1291,34 @@ def getWigetContent(pluginName, handle, params):
     listItems = []
     for item in result:
         item_id = item.get("Id")
-
+        #xbmc.log(str(item))
         image = ""
         if item.get("Type") == "Episode":
+            '''
             image_id = item.get("SeriesId")
             image_tag = item.get("SeriesPrimaryImageTag")
             if(image_tag != None):
                 image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
+            '''
+            image_id = item_id
+            imageTags = item.get("ImageTags")
+            if(imageTags != None and imageTags.get("Primary") != None):
+                image_tag = imageTags.get("Primary")
+                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)            
         else:
+            '''
             image_id = item_id
             imageTags = item.get("ImageTags")
             if(imageTags != None and imageTags.get("Primary") != None):
                 image_tag = imageTags.get("Primary")
                 image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-     
+            '''
+            image_id = item_id
+            imageTags = item.get("BackdropImageTags")
+            if(imageTags != None and len(imageTags) > 0):
+                image_tag = imageTags[0]
+                image = downloadUtils.imageUrl(image_id, "Backdrop", 0, 400, 400, image_tag)
+            
         #image = downloadUtils.getArtwork(item, "Primary", width=400, height=400)
         #fanart = downloadUtils.getArtwork(item, "Backdrop")
         
