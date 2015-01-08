@@ -110,7 +110,7 @@ def mainEntryPoint():
     WINDOW = xbmcgui.Window( 10000 )
 
     if sys.argv[1] == "check_server":
-        checkServer()
+        checkServer(1)
     elif sys.argv[1] == "markWatched":
         item_id = sys.argv[2]
         markWatched(item_id)
@@ -1435,13 +1435,13 @@ def checkService():
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
         
-def checkServer():
+def checkServer(force=0):
     printDebug ("MBCon checkServer Called")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
     
-    if(len(host) != 0 and host != "<none>"):
+    if(force == 0 and len(host) != 0 and host != "<none>"):
         printDebug ("MBCon server already set")
         return
     
