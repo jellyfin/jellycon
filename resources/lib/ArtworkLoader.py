@@ -68,7 +68,11 @@ class ArtworkRotationThread(threading.Thread):
         
         last_id = ""
         self.updateArtLinks()
-        #self.setBackgroundLink(filterOnParent_Last)
+        
+        # if no saved background art then set a new one
+        if(WINDOW.getProperty("MB3.Background.Global.FanArt") == None or WINDOW.getProperty("MB3.Background.Global.FanArt") == ""):
+            self.setBackgroundLink(filterOnParent_Last)
+            
         lastRun = datetime.today()
         itemLastRun = datetime.today()
         
@@ -82,47 +86,53 @@ class ArtworkRotationThread(threading.Thread):
         lastUserName = addonSettings.getSetting('username')
 
         while (xbmc.abortRequested == False):
-            td = datetime.today() - lastRun
-            td2 = datetime.today() - itemLastRun
-            secTotal = td.seconds
-            secTotal2 = td2.seconds
-            
-            userName = addonSettings.getSetting('username')  
-            self.logMsg("Server details string : (" + userName + ") (" + lastUserName + ")", level=2)
-            
-            Collection = WINDOW.getProperty("MB3.Background.Collection")
-            if(secTotal > backgroundRefresh or filterOnParent_Last != Collection or userName != lastUserName):
-                lastUserName = userName
-                if(self.linksLoaded == False):
-                    self.updateArtLinks()
-                lastRun = datetime.today()
-                filterOnParent_Last = Collection
-                backgroundRefresh = int(addonSettings.getSetting('backgroundRefresh'))
-                self.setBackgroundLink(Collection)
-                if(backgroundRefresh < 10):
-                    backgroundRefresh = 10
-            
-            # update item BG every 7 seconds
-            if(secTotal2 > itemBackgroundRefresh):
-                self.setItemBackgroundLink()
-                itemLastRun = datetime.today()
+        
+            # only do stuff if not playing
+            if(xbmc.Player().isPlaying() == False):
+                td = datetime.today() - lastRun
+                td2 = datetime.today() - itemLastRun
+                secTotal = td.seconds
+                secTotal2 = td2.seconds
                 
-            # update item BG on selected item changes
-            if xbmc.getInfoLabel('ListItem.Property(id)') != None:
-                current_id = xbmc.getInfoLabel('ListItem.Property(id)')
-            elif xbmc.getInfoLabel('ListItem.Property(ItemGUID)') != None:
-                current_id=xbmc.getInfoLabel('ListItem.Property(ItemGUID)')
-            else:                               
-                current_id = ''
-            if current_id != last_id:
-                self.setItemBackgroundLink()
-                itemLastRun = datetime.today()
-                last_id = current_id
+                userName = addonSettings.getSetting('username')  
+                self.logMsg("Server details string : (" + userName + ") (" + lastUserName + ")", level=2)
+                
+                Collection = WINDOW.getProperty("MB3.Background.Collection")
+                if(secTotal > backgroundRefresh or filterOnParent_Last != Collection or userName != lastUserName):
+                    lastUserName = userName
+                    if(self.linksLoaded == False):
+                        self.updateArtLinks()
+                    lastRun = datetime.today()
+                    filterOnParent_Last = Collection
+                    backgroundRefresh = int(addonSettings.getSetting('backgroundRefresh'))
+                    self.setBackgroundLink(Collection)
+                    if(backgroundRefresh < 10):
+                        backgroundRefresh = 10
+                
+                # update item BG every 7 seconds
+                if(secTotal2 > itemBackgroundRefresh):
+                    self.setItemBackgroundLink()
+                    itemLastRun = datetime.today()
+                    
+                # update item BG on selected item changes
+                if xbmc.getInfoLabel('ListItem.Property(id)') != None:
+                    current_id = xbmc.getInfoLabel('ListItem.Property(id)')
+                elif xbmc.getInfoLabel('ListItem.Property(ItemGUID)') != None:
+                    current_id=xbmc.getInfoLabel('ListItem.Property(ItemGUID)')
+                else:                               
+                    current_id = ''
+                if current_id != last_id:
+                    self.setItemBackgroundLink()
+                    itemLastRun = datetime.today()
+                    last_id = current_id
                 
             if(xbmc.abortRequested == True):
                 break
                 
             xbmc.sleep(500)
+            
+            if(xbmc.abortRequested == True):
+                break            
         
         try:
             self.saveLastBackground()
