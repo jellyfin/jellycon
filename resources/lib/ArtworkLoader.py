@@ -183,13 +183,6 @@ class ArtworkRotationThread(threading.Thread):
             backGroundUrl = nextItem["url"]
             posterUrl = nextItem["poster"]
             actionUrl = nextItem["action"]
-            
-            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')               
-            selectAction = addonSettings.getSetting('selectAction')
-            if(selectAction == "1"):
-                actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + nextItem["id"] + "&mode=ITEM_DETAILS)"
-            else:
-                actionUrl = nextItem["action"]
                 
             WINDOW.setProperty("MB3.Background.Global.FanArt", backGroundUrl)
             self.logMsg("MB3.Background.Global.FanArt=" + backGroundUrl)
@@ -404,7 +397,11 @@ class ArtworkRotationThread(threading.Thread):
                             posterImage = downloadUtils.getArtwork(col_item, "Primary")
                             actionUrl = "ActivateWindow(VideoLibrary, plugin://plugin.video.mbcon/?mode=PARENT_CONTENT&ParentId=" + id + "&Name=" + name + ",return)"
                             
-                            
+                        # action is show info
+                        selectAction = addonSettings.getSetting('selectAction')
+                        if(selectAction == "1"):
+                            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + id + "&mode=ITEM_DETAILS)"   
+
                         for backdrop in images:
                           
                             info = {}
@@ -413,7 +410,6 @@ class ArtworkRotationThread(threading.Thread):
                             info["action"] = actionUrl
                             info["index"] = index
                             info["id"] = id
-                            info["action"] = "None"
                             info["parent"] = parentID
                             info["name"] = name
                             
@@ -536,6 +532,11 @@ class ArtworkRotationThread(threading.Thread):
         url = urllib.quote(url)        
         actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?mode=PLAY&url=" + url + ")"
         posterImage = downloadUtils.getArtwork(item, "Primary")
+             
+        # action is show info
+        selectAction = addonSettings.getSetting('selectAction')
+        if(selectAction == "1"):
+            actionUrl = "RunPlugin(plugin://plugin.video.mbcon/?id=" + id + "&mode=ITEM_DETAILS)"   
         
         newBgLinks = []
         for backdrop in images:
