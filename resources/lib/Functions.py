@@ -1325,11 +1325,10 @@ def getWigetContent(pluginName, handle, params):
         Duration = str(int(item.get("RunTimeTicks", "0"))/(10000000*60))
         
         name = item.get("Name")
+        episodeDetails = ""
         printDebug("WIDGET_DATE_NAME: " + name, 2)
         
-        seriesName = ''
-        if(item.get("SeriesName") != None):
-            seriesName = item.get("SeriesName").encode('utf-8')   
+        if(item.get("Type") == "Episode" and item.get("SeriesName") != None):
 
             eppNumber = "X"
             tempEpisodeNumber = "00"
@@ -1346,10 +1345,12 @@ def getWigetContent(pluginName, handle, params):
             else:
               tempSeasonNumber = str(seasonNumber)                  
                   
-            name =  tempSeasonNumber + "x" + tempEpisodeNumber + "-" + name
+            episodeDetails =  tempSeasonNumber + "x" + tempEpisodeNumber + "-" + name
+            name = item.get("SeriesName")
         
         list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image)
-        list_item.setInfo( type="Video", infoLabels={ "year":item.get("ProductionYear"), "duration":str(Duration), "plot":item.get("Overview"), "tvshowtitle":str(seriesName), "premiered":item.get("PremiereDate"), "rating":item.get("CommunityRating") } )
+        list_item.setLabel2(episodeDetails)
+        #list_item.setInfo( type="Video", infoLabels={ "year":item.get("ProductionYear"), "duration":str(Duration), "plot":item.get("Overview"), "tvshowtitle":str(seriesName), "premiered":item.get("PremiereDate"), "rating":item.get("CommunityRating") } )
         #list_item.setProperty('fanart_image',fanart)
         
         # add count
