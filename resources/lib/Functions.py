@@ -1331,21 +1331,21 @@ def getWigetContent(pluginName, handle, params):
         if(item.get("Type") == "Episode" and item.get("SeriesName") != None):
 
             eppNumber = "X"
-            tempEpisodeNumber = "00"
+            tempEpisodeNumber = "0"
             if(item.get("IndexNumber") != None):
                 eppNumber = item.get("IndexNumber")
-                if eppNumber < 10:
-                  tempEpisodeNumber = "0" + str(eppNumber)
-                else:
-                  tempEpisodeNumber = str(eppNumber)     
+                #if eppNumber < 10:
+                #  tempEpisodeNumber = "0" + str(eppNumber)
+                #else:
+                tempEpisodeNumber = str(eppNumber)     
 
             seasonNumber = item.get("ParentIndexNumber")
-            if seasonNumber < 10:
-              tempSeasonNumber = "0" + str(seasonNumber)
-            else:
-              tempSeasonNumber = str(seasonNumber)                  
+            #if seasonNumber < 10:
+            #  tempSeasonNumber = "0" + str(seasonNumber)
+            #else:
+            tempSeasonNumber = str(seasonNumber)                  
                   
-            episodeDetails =  tempSeasonNumber + "x" + tempEpisodeNumber + "-" + name
+            episodeDetails =  "s" + tempSeasonNumber + "e" + tempEpisodeNumber + " " + name
             name = item.get("SeriesName")
         
         list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image)
