@@ -178,7 +178,7 @@ class WebSocketThread(threading.Thread):
             messageString = json.dumps(messageData)
             self.logMsg("Opened : " + str(messageString))
             ws.send(messageString)
-            '''
+            
             downloadUtils = DownloadUtils()
             
             # get session ID
@@ -202,76 +202,56 @@ class WebSocketThread(threading.Thread):
             stringdata = json.dumps(postData)
             self.logMsg("Capabilities URL : " + url);
             self.logMsg("Capabilities Data : " + stringdata)
-            #downloadUtils.downloadUrl(url, postBody=stringdata, type="POST")
-            '''
+            downloadUtils.downloadUrl(url, postBody=stringdata, type="POST")
             
         except Exception, e:
             self.logMsg("Exception : " + str(e), level=0)                
         
-    def getWebSocketPort(self, host, port):
-        
-        userUrl = "http://" + host + ":" + port + "/mediabrowser/System/Info?format=json"
-        
-        try:
-            requesthandle = urllib.urlopen(userUrl, proxies={})
-            jsonData = requesthandle.read()
-            requesthandle.close()              
-        except Exception, e:
-            self.logMsg("WebSocketThread getWebSocketPort urlopen : " + str(e) + " (" + userUrl + ")", level=0)
-            return -1
-
-        try:
-            result = json.loads(jsonData)
-        except Exception, e:
-            self.logMsg("WebSocketThread getWebSocketPort jsonload : " + str(e) + " (" + jsonData + ")", level=2)
-            return -1
-
-        wsPort = result.get("WebSocketPortNumber")
-        if(wsPort != None):
-            return wsPort
-        else:
-            return -1
-
     def run(self):
     
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-        mb3Host = addonSettings.getSetting('ipaddress')
-        mb3Port = addonSettings.getSetting('port')
+        while(self.keepRunning and xbmc.abortRequested == False):
         
-        if(self.logLevel >= 1):
-            websocket.enableTrace(True)        
-
-        #wsPort = self.getWebSocketPort(mb3Host, mb3Port);
-        wsPort = mb3Port
-        self.logMsg("WebSocketPortNumber = " + str(wsPort))
-        #if(wsPort == -1):
-        #    self.logMsg("Could not retrieve WebSocket port, can not run WebScoket Client")
-        #    return
+            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            mb3Host = addonSettings.getSetting('ipaddress')
+            mb3Port = addonSettings.getSetting('port')
             
-        downloadUtils = DownloadUtils()
-        authHeaders = downloadUtils.getAuthHeader()
-        flatHeaders = []
-        for header in authHeaders:
-            flatHeaders.append(header + ": " + authHeaders[header])
-        self.logMsg("Flat Header : " + str(flatHeaders))
-        
-        # Make a call to /System/Info. WebSocketPortNumber is the port hosting the web socket.
-        webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort) + "/mediabrowser"
-        self.logMsg("WebSocket URL : " + webSocketUrl)
-        self.client = websocket.WebSocketApp(webSocketUrl,
-                                    header = flatHeaders,
-                                    on_message = self.on_message,
-                                    on_error = self.on_error,
-                                    on_close = self.on_close)
-                                    
-        self.client.on_open = self.on_open
-        
-        while(self.keepRunning):
-            self.logMsg("Client Starting")
-            self.client.run_forever()
-            if(self.keepRunning):
+            if(self.logLevel >= 1):
+                websocket.enableTrace(True)             
+            
+            if(mb3Host != None and len(mb3Host) > 0):
+
+                try:
+                
+                    wsPort = mb3Port
+                    self.logMsg("WebSocketPortNumber = " + str(wsPort))
+                        
+                    downloadUtils = DownloadUtils()
+                    authHeaders = downloadUtils.getAuthHeader()
+                    flatHeaders = []
+                    for header in authHeaders:
+                        flatHeaders.append(header + ": " + authHeaders[header])
+                    self.logMsg("Flat Header : " + str(flatHeaders))
+                    
+                    # Make a call to /System/Info. WebSocketPortNumber is the port hosting the web socket.
+                    webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort) + "/mediabrowser"
+                    self.logMsg("WebSocket URL : " + webSocketUrl)
+                    self.client = websocket.WebSocketApp(webSocketUrl,
+                                                header = flatHeaders,
+                                                on_message = self.on_message,
+                                                on_error = self.on_error,
+                                                on_close = self.on_close)
+                                                
+                    self.client.on_open = self.on_open
+                
+                    self.logMsg("Client Starting")
+                    if(self.keepRunning):
+                        self.client.run_forever()
+                except:
+                    self.logMsg("Error thrown in Web Socket Setup")
+            
+            if(self.keepRunning and xbmc.abortRequested == False):
                 self.logMsg("Client Needs To Restart")
-                xbmc.sleep(10000)
+                xbmc.sleep(5000)
             
         self.logMsg("Thread Exited")
         

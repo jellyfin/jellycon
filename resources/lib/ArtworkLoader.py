@@ -16,9 +16,6 @@ import random
 import time
 from DownloadUtils import DownloadUtils
 
-#define our global download utils
-downloadUtils = DownloadUtils()
-
 class ArtworkRotationThread(threading.Thread):
 
     item_art_links = {}
@@ -298,6 +295,8 @@ class ArtworkRotationThread(threading.Thread):
         mb3Port = addonSettings.getSetting('port')    
         userName = addonSettings.getSetting('username')    
         
+        downloadUtils = DownloadUtils()
+        
         # get the user ID       
         userid = downloadUtils.getUserId()
         self.logMsg("updateCollectionArtLinks UserID : " + userid)
@@ -512,6 +511,8 @@ class ArtworkRotationThread(threading.Thread):
         mb3Port = addonSettings.getSetting('port')
         userName = addonSettings.getSetting('username')
                    
+        downloadUtils = DownloadUtils()
+        
         userid = downloadUtils.getUserId()
         itemUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "?Fields=ParentId&format=json"
         

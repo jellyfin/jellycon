@@ -128,7 +128,7 @@ class DownloadUtils():
 
         jsonData = None
         try:
-            jsonData = self.downloadUrl(host + ":" + port + "/mediabrowser/Users/Public?format=json", authenticate=False)
+            jsonData = self.downloadUrl(host + ":" + port + "/mediabrowser/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception, msg:
             error = "Get User unable to connect to " + host + ":" + port + " : " + str(msg)
             xbmc.log (error)
@@ -201,7 +201,7 @@ class DownloadUtils():
         
         messageData = "username=" + self.addonSettings.getSetting('username') + "&password=" + sha1.hexdigest()
 
-        resp = self.downloadUrl(url, postBody=messageData, type="POST", authenticate=False)
+        resp = self.downloadUrl(url, postBody=messageData, type="POST", suppress=True, authenticate=False)
 
         accessToken = None
         try:
