@@ -18,6 +18,8 @@ from DownloadUtils import DownloadUtils
 
 class ArtworkRotationThread(threading.Thread):
 
+    item_details_store = {}
+    
     item_art_links = {}
     current_item_art = 0;
     
@@ -120,6 +122,7 @@ class ArtworkRotationThread(threading.Thread):
                     current_id = ''
                 if current_id != last_id:
                     self.setItemBackgroundLink()
+                    self.setItemDetailsProps()
                     itemLastRun = datetime.today()
                     last_id = current_id
                 
@@ -357,7 +360,7 @@ class ArtworkRotationThread(threading.Thread):
             collectionUrl = ("http://" + mb3Host + ":" + mb3Port + 
                 "/mediabrowser/Users/" + userid + 
                 "/items?ParentId=" + item.get("Id") + 
-                "&IncludeItemTypes=Movie,Series&Fields=ParentId&Recursive=true&CollapseBoxSetItems=false&format=json")
+                "&IncludeItemTypes=Movie,Series&Fields=ParentId,Overview&Recursive=true&CollapseBoxSetItems=false&format=json")
    
             jsonData = downloadUtils.downloadUrl(collectionUrl, suppress=False, popup=1 ) 
             collectionResult = json.loads(jsonData)
@@ -371,6 +374,12 @@ class ArtworkRotationThread(threading.Thread):
                 id = col_item.get("Id")
                 name = col_item.get("Name")
                 images = col_item.get("BackdropImageTags")
+                
+                # store item info
+                itemData = ItemInfoData()
+                itemData.Name = col_item.get("Name")
+                itemData.Plot = col_item.get("Overview")
+                self.item_details_store[id] = itemData
                 
                 if(images != None and len(images) > 0):
                     stored_item = artLinks.get(id)
@@ -450,14 +459,33 @@ class ArtworkRotationThread(threading.Thread):
                 #xbmc.log("COLLECTION_DATA GROUPS " + str(link_item))
         
         self.global_art_links = final_global_art
-        random.shuffle(self.global_art_links)
-        self.logMsg("Background Global Art Links : " + str(len(self.global_art_links)))
-        
+        random.shuffle(self.global_art_links)       
         self.item_art_links = art_items
+        
+        self.logMsg("Background Global Art Links : " + str(len(self.global_art_links)))
+        self.logMsg("Background Item Data Store Size : " + str(len(self.item_details_store)))        
         
         return True
 
+    def setItemDetailsProps(self):
+        id = xbmc.getInfoLabel('ListItem.Property(ItemGUID)')
+        self.logMsg("setItemDetailsProps ItemGUID : " + id, 0)
         
+        if id != None and id != "":
+            WINDOW = xbmcgui.Window( 10000 )
+            itemData = self.item_details_store.get(id)
+            
+            if(itemData != None):
+            
+                WINDOW.setProperty("MB3.Selected.Item.Name", itemData.Name)
+                WINDOW.setProperty("MB3.Selected.Item.Plot", itemData.Plot)
+                #self.logMsg("MB3.Selected.Item.Name=" + itemData.Name, 0)
+            else:
+                #self.logMsg("MB3.Selected.Item.Name Cleared", 0)
+                WINDOW.clearProperty("MB3.Selected.Item.Name")
+                WINDOW.clearProperty("MB3.Selected.Item.Plot")
+                
+                
     def setItemBackgroundLink(self):
     
         id = xbmc.getInfoLabel('ListItem.Property(ItemGUID)')
@@ -514,7 +542,7 @@ class ArtworkRotationThread(threading.Thread):
         downloadUtils = DownloadUtils()
         
         userid = downloadUtils.getUserId()
-        itemUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "?Fields=ParentId&format=json"
+        itemUrl = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Users/" + userid + "/Items/" + id + "?Fields=ParentId,Overview&format=json"
         
         jsonData = downloadUtils.downloadUrl(itemUrl, suppress=False, popup=1 ) 
         item = json.loads(jsonData)
@@ -567,5 +595,12 @@ class ArtworkRotationThread(threading.Thread):
         if(len(newBgLinks) > 0):
             self.item_art_links[origid] = newBgLinks
            
+        #store item info
+        itemData = ItemInfoData()
+        itemData.Name = item.get("Name")
+        itemData.Plot = item.get("Overview")
+        self.item_details_store[id] = itemData
     
-    
+class ItemInfoData:
+    Name = ""
+    Plot = ""

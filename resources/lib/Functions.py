@@ -416,7 +416,7 @@ def addGUIItem( url, details, extraData, folder=True ):
                 cappedPercentage = 10
             if(cappedPercentage == 100):
                 cappedPercentage = 90    
-    
+       
     addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
     if (addResumePercent and details.get('title') != None and cappedPercentage != None):
         listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
@@ -425,6 +425,9 @@ def addGUIItem( url, details, extraData, folder=True ):
     if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
        listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"   
  
+    # update title with new name, this sets the new name in the deailts that are later passed to video info
+    details['title'] = listItemName
+    
     list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
     printDebug("Setting thumbnail as " + thumbPath, level=2)
     
@@ -534,8 +537,9 @@ def addContextMenu(details, extraData, folder):
     return(commands)
     
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams"  
-    return (detailsString)
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams"
+    #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
+    return detailsString
     
 def displaySections( pluginhandle, filter=None ):
     printDebug("== ENTER: displaySections() ==")
@@ -780,7 +784,7 @@ def processDirectory(url, results, progress, pluginhandle):
 
     server = getServerFromURL(url)
     
-    detailsString = "Path,Genres,Studios,CumulativeRunTimeTicks"
+    detailsString = getDetailsString()
     
     dirItems = []
     result = results.get("Items")
