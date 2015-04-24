@@ -75,10 +75,13 @@ class DownloadUtils():
         host = self.addonSettings.getSetting('ipaddress')
         server = host + ":" + port
         
+        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, type, index, width, height, imageTag, query)
+        '''
         artwork = ( "http://" + server + "/mediabrowser/Items/" + str(id) + 
                     "/Images/" + type + 
                     "/" + index + "/" + imageTag + "/original/" + 
                     str(height) + "/" + str(width) + "/" + played + "?" + query)
+        '''
         
         self.logMsg("getArtwork : " + artwork, level=2)
         
@@ -93,7 +96,7 @@ class DownloadUtils():
         
         return artwork
 
-    def imageUrl(self, id, type, index, width, height, tag):
+    def imageUrl(self, id, type, index, width, height, imageTag):
     
         # CCurlFile::Stat - Failed:
     
@@ -101,15 +104,17 @@ class DownloadUtils():
         host = self.addonSettings.getSetting('ipaddress')
         server = host + ":" + port
         
-        # test tag e3ab56fe27d389446754d0fb04910a34
+        # test imageTag e3ab56fe27d389446754d0fb04910a34
         
-        imgeUrl = ( "http://" + server + "/mediabrowser/Items/" + 
+        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s" % (server, id, type, index, width, height, imageTag)
+        '''
+        artwork = ( "http://" + server + "/mediabrowser/Items/" + 
                     str(id) + "/Images/" + type + 
                     "/" + str(index) + 
-                    "/" + str(tag) + "/original/" + 
+                    "/" + str(imageTag) + "/original/" + 
                     str(height) + "/" + str(width) + "/0")
-        
-        return imgeUrl
+        '''
+        return artwork
         
     def getUserId(self):
 

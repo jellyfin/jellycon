@@ -1482,7 +1482,7 @@ def checkServer(force=0):
     if(jsonData == False):
         return
 
-    printDebug("jsonData : " + str(jsonData), level=2)
+    printDebug("jsonData : " + str(jsonData), level=1)
     result = json.loads(jsonData)
     
     names = []
@@ -1490,7 +1490,7 @@ def checkServer(force=0):
     for user in result:
         config = user.get("Configuration")
         if(config != None):
-            if(config.get("IsHidden") == False):
+            if(config.get("IsHidden") == None or config.get("IsHidden") == False):
                 name = user.get("Name")
                 userList.append(name)
                 if(user.get("HasPassword") == True):
