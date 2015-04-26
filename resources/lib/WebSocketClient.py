@@ -195,7 +195,7 @@ class WebSocketThread(threading.Thread):
             sessionId = result[0].get("Id")
             self.logMsg("Session Id : " + str(sessionId))
             
-            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play"
+            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play&SupportsMediaControl=True"
             postData = {}
             postData["Id"] = sessionId;
             postData["PlayableMediaTypes"] = "Video";
