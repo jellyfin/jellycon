@@ -875,7 +875,7 @@ def processDirectory(url, results, progress, pluginhandle):
         height = ''
         width = ''
         aspectratio = '1:1'
-        aspectfloat = 1.85
+        aspectfloat = 0.0
         mediaStreams = item.get("MediaStreams")
         if(mediaStreams != None):
             for mediaStream in mediaStreams:
