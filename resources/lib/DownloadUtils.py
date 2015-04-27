@@ -24,6 +24,10 @@ class DownloadUtils():
         self.logLevel = 0
         if(level != None):
             self.logLevel = int(level)
+            
+        port = self.addonSettings.getSetting('port')
+        host = self.addonSettings.getSetting('ipaddress')
+        self.server = host + ":" + port
 
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
@@ -68,20 +72,8 @@ class DownloadUtils():
             return ""            
 
         query = ""
-        played = "0"
-
-        # use the local image proxy server that is made available by this addons service
-        port = self.addonSettings.getSetting('port')
-        host = self.addonSettings.getSetting('ipaddress')
-        server = host + ":" + port
         
-        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, type, index, width, height, imageTag, query)
-        '''
-        artwork = ( "http://" + server + "/mediabrowser/Items/" + str(id) + 
-                    "/Images/" + type + 
-                    "/" + index + "/" + imageTag + "/original/" + 
-                    str(height) + "/" + str(width) + "/" + played + "?" + query)
-        '''
+        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (self.server, id, type, index, width, height, imageTag, query)
         
         self.logMsg("getArtwork : " + artwork, level=2)
         
