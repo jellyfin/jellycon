@@ -147,12 +147,15 @@ class ItemInfo(xbmcgui.WindowXMLDialog):
                 runTimeTicks = float(item.get("RunTimeTicks", "0"))
                 if(runTimeTicks > 0):
                     percentage = int((playBackTicks / runTimeTicks) * 100.0)
+                    cappedPercentage = percentage
+                    '''
                     cappedPercentage = percentage - (percentage % 10)
                     if(cappedPercentage == 0):
                         cappedPercentage = 10
                     if(cappedPercentage == 100):
                         cappedPercentage = 90        
-        
+                    '''
+                    
         # set matched button text
         if(itemPlayed):
             self.getControl(3004).setLabel("Watched")

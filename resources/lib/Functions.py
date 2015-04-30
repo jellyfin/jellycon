@@ -411,20 +411,43 @@ def addGUIItem( url, details, extraData, folder=True ):
         if(duration > 0):
             resume = float(extraData.get('resumetime')) / 60.0
             percentage = int((resume / duration) * 100.0)
+            cappedPercentage = percentage
+            '''
             cappedPercentage = percentage - (percentage % 10)
             if(cappedPercentage == 0):
                 cappedPercentage = 10
             if(cappedPercentage == 100):
-                cappedPercentage = 90    
+                cappedPercentage = 90
+            '''
+                
+    if (extraData.get('TotalEpisodes') != None and extraData.get('TotalEpisodes') != "0"):
+        totalItems = int(extraData.get('TotalEpisodes'))
+        watched = int(extraData.get('WatchedEpisodes'))
+        percentage = int((float(watched) / float(totalItems)) * 100.0)
+        cappedPercentage = percentage       
+        if(cappedPercentage == 0):
+            cappedPercentage = None
+        if(cappedPercentage == 100):
+            cappedPercentage = None
+            
+        '''
+        cappedPercentage = percentage - (percentage % 10)
+        if(cappedPercentage == 0): 
+            cappedPercentage = 10
+        if(cappedPercentage == 100):
+            cappedPercentage = 90        
+        '''
        
-    addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
-    if (addResumePercent and details.get('title') != None and cappedPercentage != None):
-        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
-    
+    countsAdded = False
     addCounts = __settings__.getSetting('addCounts') == 'true'
     if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-       listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"   
- 
+        countsAdded = True
+        listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"          
+       
+    addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
+    if(countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
+        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
+    
     # update title with new name, this sets the new name in the deailts that are later passed to video info
     details['title'] = listItemName
     
@@ -984,7 +1007,7 @@ def processDirectory(url, results, progress, pluginhandle):
                 
         TotalSeasons = 0 if item.get("ChildCount") == None else item.get("ChildCount")
         TotalEpisodes = 0 if item.get("RecursiveItemCount") == None else item.get("RecursiveItemCount")
-        WatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else TotalEpisodes-userData.get("UnplayedItemCount")
+        WatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else TotalEpisodes - userData.get("UnplayedItemCount")
         UnWatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else userData.get("UnplayedItemCount")
         NumEpisodes = TotalEpisodes
         
