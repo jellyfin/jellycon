@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon  id="plugin.video.mbcon" 
+<addon  id="plugin.video.embycon" 
         name="MBCon" 
         version="1.0.2" 
         provider-name="null_pointer">

@@ -3,7 +3,7 @@
 	<category label="30014"> <!-- MediaBrowser -->
 		<setting id="ipaddress" type="text" label="30000" default="&lt;none&gt;" visible="true" enable="true" />
 		<setting id="port" type="text" label="30030" default="8096" visible="true" enable="true" />
-        <setting label="Detect Server" type="action" action="RunScript(plugin.video.mbcon,check_server)"/>
+        <setting label="Detect Server" type="action" action="RunScript(plugin.video.embycon,check_server)"/>
 		<setting type="sep" />
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
@@ -13,7 +13,6 @@
 		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" visible="true" enable="true" />
 	</category>
 	<category label="30110">
-		<setting id="selectAction" type="enum" label="30151" values="Play|Info" default="1" />
 		<setting id="resumeJumpBack" type="number" label="30114" default="10" visible="true" enable="true" />
 		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />
 		<setting id="addSeasonNumber" type="bool" label="30162" default="false" visible="true" enable="true" />        

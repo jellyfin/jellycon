@@ -21,7 +21,7 @@ class WebSocketThread(threading.Thread):
     keepRunning = True
     
     def __init__(self, *args):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         level = addonSettings.getSetting('logLevel')        
         self.logLevel = 0
         if(level != None):
@@ -127,7 +127,7 @@ class WebSocketThread(threading.Thread):
                 startPositionTicks = data.get("StartPositionTicks")
                 self.logMsg("Playing Media With ID : " + itemIds[0])
                 
-                addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+                addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
                 mb3Host = addonSettings.getSetting('ipaddress')
                 mb3Port = addonSettings.getSetting('port')                   
                 
@@ -137,7 +137,7 @@ class WebSocketThread(threading.Thread):
                 else:
                     url  += ",;" + str(startPositionTicks)
                     
-                playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=PLAY'
+                playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
                 playUrl = playUrl.replace("\\\\","smb://")
                 playUrl = playUrl.replace("\\","/")                
                 
@@ -170,7 +170,7 @@ class WebSocketThread(threading.Thread):
             messageData = {}
             messageData["MessageType"] = "Identity"
             
-            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
             deviceName = addonSettings.getSetting('deviceName')
             deviceName = deviceName.replace("\"", "_")
         
@@ -182,7 +182,7 @@ class WebSocketThread(threading.Thread):
             downloadUtils = DownloadUtils()
             
             # get session ID
-            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
             mb3Host = addonSettings.getSetting('ipaddress')
             mb3Port = addonSettings.getSetting('port')
             
@@ -211,7 +211,7 @@ class WebSocketThread(threading.Thread):
     
         while(self.keepRunning and xbmc.abortRequested == False):
         
-            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
             mb3Host = addonSettings.getSetting('ipaddress')
             mb3Port = addonSettings.getSetting('port')
             

@@ -21,7 +21,7 @@ class PlayUtils():
 
     def getPlayUrl(self, server, id, result):
     
-      addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+      addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
       # if the path is local and depending on the video quality play we can direct play it do so-
       xbmc.log("MBCon getPlayUrl")
 
@@ -84,7 +84,7 @@ class PlayUtils():
        
     # get the addon video quality
     def getVideoBitRate(self):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         videoQuality = addonSettings.getSetting('videoBitRate')  
         if (videoQuality == "0"):
             return '664'

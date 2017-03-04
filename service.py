@@ -21,15 +21,13 @@ from random import randint
 import random
 import urllib2
 
-__cwd__ = xbmcaddon.Addon(id='plugin.video.mbcon').getAddonInfo('path')
-__addon__       = xbmcaddon.Addon(id='plugin.video.mbcon')
+__cwd__ = xbmcaddon.Addon(id='plugin.video.embycon').getAddonInfo('path')
+__addon__       = xbmcaddon.Addon(id='plugin.video.embycon')
 __language__     = __addon__.getLocalizedString
 BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
 
-from ArtworkLoader import ArtworkRotationThread
 from WebSocketClient import WebSocketThread
-from MenuLoad import LoadMenuOptionsThread
 from DownloadUtils import DownloadUtils
 
 downloadUtils = DownloadUtils()
@@ -44,12 +42,7 @@ except Exception, e:
 newWebSocketThread = WebSocketThread()
 newWebSocketThread.start()
 
-newMenuThread = LoadMenuOptionsThread()
-newMenuThread.start()
-
-artworkRotationThread = ArtworkRotationThread()
-artworkRotationThread.start()
-               
+              
 def hasData(data):
     if(data == None or len(data) == 0 or data == "None"):
         return False
@@ -61,7 +54,7 @@ def stopAll(played_information):
     if(len(played_information) == 0):
         return 
         
-    addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
     xbmc.log ("MBCon Service -> played_information : " + str(played_information))
     
     for item_url in played_information:
@@ -76,8 +69,6 @@ def stopAll(played_information):
             if(hasData(item_id)):
                 xbmc.log("MBCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
                 newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
-                
-    artworkRotationThread.updateActionUrls()
         
     played_information.clear()
     

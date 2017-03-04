@@ -14,7 +14,7 @@ def loadSkinDefaults():
     defaultViewData = {}
     # load current default views
     # add a hash of xbmc.getSkinDir() to file name to make it skin specific
-    __addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
+    __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
     __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
     view_list_path = os.path.join(__addondir__, "default_views.json")
     if os.path.exists(view_list_path):
@@ -106,7 +106,7 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
             self.setViewId("Seasons", 3013)
             self.setViewId("Episodes", 3014)
         
-            __addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
+            __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
             __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
             view_list_path = os.path.join(__addondir__, "default_views.json")
             dataFile = open(view_list_path, 'w')

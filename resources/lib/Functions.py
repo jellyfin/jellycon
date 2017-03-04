@@ -50,17 +50,13 @@ import xbmcaddon
 import xbmc
 
 from DownloadUtils import DownloadUtils
-from ItemInfo import ItemInfo
 from Utils import PlayUtils
 from ClientInformation import ClientInformation
-from PersonInfo import PersonInfo
-from SearchDialog import SearchDialog
-from DisplayItems import DisplayItems
 from DataManager import DataManager
 import DefaultViews
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
-__addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
+__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __language__ = __addon__.getLocalizedString
 __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
 __cwd__ = __settings__.getAddonInfo('path')
@@ -138,16 +134,8 @@ def mainEntryPoint():
         xbmc.executebuiltin("Container.Refresh")    
     elif sys.argv[1] == "showsetviews":
         showSetViews()
-    elif mode == "CAST_LIST":
-        getCastList(sys.argv[0], int(sys.argv[1]), params)
-    elif mode == "PERSON_DETAILS":    
-        showPersonInfo(sys.argv[0], int(sys.argv[1]), params)    
     elif mode == "WIDGET_CONTENT":
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
-    elif mode == "ITEM_DETAILS":
-        showItemInfo(sys.argv[0], int(sys.argv[1]), params)    
-    elif mode == "SHOW_SEARCH":
-        showSearch(sys.argv[0], int(sys.argv[1]), params)        
     elif mode == "PARENT_CONTENT":
         #ptvsd.enable_attach(secret = "shaun")
         #ptvsd.wait_for_attach()
@@ -385,19 +373,13 @@ def addGUIItem( url, details, extraData, folder=True ):
     else:
         mode="&mode=%s" % extraData['mode']
     
-    # play or show info
-    selectAction = __settings__.getSetting('selectAction')
-
     #Create the URL to pass to the item
     if 'SETVIEWS' in url:
         u = sys.argv[0] + "?url=" + url + '&mode=SETVIEWS'
     elif url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        if(selectAction == "1"):
-            u = sys.argv[0] + "?id=" + extraData.get('id') + "&mode=ITEM_DETAILS"
-        else:
-            u = sys.argv[0] + "?url=" + url + '&mode=PLAY'
+        u = sys.argv[0] + "?url=" + url + '&mode=PLAY'
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -534,7 +516,7 @@ def addContextMenu(details, extraData, folder):
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
         
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=CAST_LIST&id=" + str(extraData.get('id')) + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=CAST_LIST&id=" + str(extraData.get('id')) + ")"
         commands.append(("Show People", pluginCastLink))
         
         # watched/unwatched
@@ -1188,7 +1170,7 @@ def getCastList(pluginName, handle, params):
         else:
             item = xbmcgui.ListItem(label=displayName)
             
-        actionUrl = "plugin://plugin.video.mbcon?mode=PERSON_DETAILS&name=" + baseName
+        actionUrl = "plugin://plugin.video.embycon?mode=PERSON_DETAILS&name=" + baseName
         
         item.setProperty('IsPlayable', 'false')
         item.setProperty('IsFolder', 'false')
@@ -1198,7 +1180,7 @@ def getCastList(pluginName, handle, params):
         url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
         url = urllib.quote(url)
         url = url.replace("PERSON_NAME", baseName)
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.mbcon?mode=GET_CONTENT&url=" + url + ")"
+        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=GET_CONTENT&url=" + url + ")"
         commands.append(( "Show Other Library Items", pluginCastLink))
         item.addContextMenuItems( commands, True )
         
@@ -1210,56 +1192,12 @@ def getCastList(pluginName, handle, params):
     xbmcplugin.addDirectoryItems(handle, listItems)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
-def showItemInfo(pluginName, handle, params):    
-    printDebug("showItemInfo Called" + str(params))
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-    
-    infoPage = ItemInfo("ItemInfo.xml", __cwd__, "default", "720p")
-    
-    infoPage.setId(params.get("id"))
-    infoPage.doModal()
-    
-    if(infoPage.containerNeedsRefresh):
-        printDebug("showItemInfo Sending container refresh")
-        #WINDOW = xbmcgui.Window( 10000 )
-        #WINDOW.setProperty("force_data_reload", "true")  
-        xbmc.executebuiltin("Container.Refresh")        
-    
-    del infoPage
-    
-def showSearch(pluginName, handle, params):
-    printDebug("showSearch Called" + str(params))
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-       
-    searchDialog = SearchDialog("SearchDialog.xml", __cwd__, "default", "720p")
-    searchDialog.doModal()
-    del searchDialog
-    
-    #items = DisplayItems("DisplayItems.xml", __cwd__, "default", "720p")
-    #items.doModal()
-    #del items   
-
 def showSetViews():
     printDebug("showSetViews Called")
        
     defaultViews = DefaultViews.DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
     defaultViews.doModal()
     del defaultViews
-    
-def showPersonInfo(pluginName, handle, params):
-    printDebug("showPersonInfo Called" + str(params))
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-    infoPage = PersonInfo("PersonInfo.xml", __cwd__, "default", "720p")
-    
-    infoPage.setPersonName(params.get("name"))
-    infoPage.doModal()
-    
-    if(infoPage.showMovies == True):
-        xbmc.log("RUNNING_PLUGIN: " + infoPage.pluginCastLink)
-        xbmc.executebuiltin(infoPage.pluginCastLink)    
-    
-    del infoPage
         
 def getWigetContent(pluginName, handle, params):
     printDebug("getWigetContent Called" + str(params))
@@ -1406,12 +1344,8 @@ def getWigetContent(pluginName, handle, params):
                         cappedPercentage = 90
                     list_item.setProperty("complete_percentage", str(cappedPercentage))
                 
-        selectAction = __settings__.getSetting('selectAction')
-        if(selectAction == "1"):
-            playUrl = "plugin://plugin.video.mbcon/?id=" + item_id + '&mode=ITEM_DETAILS'
-        else:
-            url =  server + ',;' + item_id
-            playUrl = "plugin://plugin.video.mbcon/?url=" + url + '&mode=PLAY'
+        url =  server + ',;' + item_id
+        playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
         
         itemTupple = (playUrl, list_item, False)
         listItems.append(itemTupple)

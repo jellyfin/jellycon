@@ -18,7 +18,7 @@ class DownloadUtils():
     getString = None
 
     def __init__(self, *args):
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         self.getString = self.addonSettings.getLocalizedString
         level = self.addonSettings.getSetting('logLevel')        
         self.logLevel = 0

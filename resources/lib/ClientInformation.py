@@ -13,7 +13,7 @@ class ClientInformation():
         
         if(clientId == None or clientId == ""):
             xbmc.log("CLIENT_ID - > No Client ID in WINDOW")
-            addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+            addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
             clientId = addonSettings.getSetting("client_id")
         
             if(clientId == None or clientId == ""):
@@ -30,5 +30,5 @@ class ClientInformation():
         return clientId
         
     def getVersion(self):
-        version = xbmcaddon.Addon(id="plugin.video.mbcon").getAddonInfo("version")
+        version = xbmcaddon.Addon(id="plugin.video.embycon").getAddonInfo("version")
         return version

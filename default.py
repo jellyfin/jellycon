@@ -25,7 +25,7 @@ import xbmcplugin
 import xbmcgui
 import xbmcaddon
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
+__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __cwd__ = __settings__.getAddonInfo('path')
 BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)

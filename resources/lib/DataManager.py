@@ -19,8 +19,8 @@ class DataManager():
     logLevel = 0
         
     def __init__(self, *args):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         level = addonSettings.getSetting('logLevel')        
         self.logLevel = 0
         if(level != None):
@@ -59,7 +59,7 @@ class DataManager():
                     self.logMsg(itemString, level=2)
                     dataHashString = dataHashString + itemString
                 else:
-                    itemCount = itemCount + item.get("RecursiveItemCount")
+                    itemCount = itemCount + item.get("RecursiveItemCount", 0)
                     unwatchedItemCount = unwatchedItemCount + userData.get("UnplayedItemCount")
                     PlayedPercentage = userData.get("PlayedPercentage")
                     if PlayedPercentage == None:
@@ -90,7 +90,7 @@ class DataManager():
         urlHash = m.hexdigest()
         
         # build cache data path
-        __addon__ = xbmcaddon.Addon(id='plugin.video.mbcon')
+        __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
         __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
         if not os.path.exists(os.path.join(__addondir__, "cache")):
             os.makedirs(os.path.join(__addondir__, "cache"))
@@ -141,8 +141,8 @@ class CacheManagerThread(threading.Thread):
     logLevel = 0
     
     def __init__(self, *args):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+        self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         level = addonSettings.getSetting('logLevel')        
         self.logLevel = 0
         if(level != None):
