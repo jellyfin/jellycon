@@ -442,7 +442,7 @@ def addGUIItem( url, details, extraData, folder=True ):
          
     #For all end items
     if(not folder):
-        #list.setProperty('IsPlayable', 'true')
+        list.setProperty('IsPlayable', 'true')
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))
             list.setProperty('ResumeTime', str(extraData.get('resumetime')))
@@ -625,8 +625,8 @@ def PLAY( url, handle ):
             if resume_result == -1:
                 return
     
-    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    playlist.clear()
+    #playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    #playlist.clear()
 
     playurl = PlayUtils().getPlayUrl(server, id, result)
     printDebug("Play URL: " + playurl)    
@@ -644,9 +644,13 @@ def PLAY( url, handle ):
     WINDOW = xbmcgui.Window(10000)
     WINDOW.setProperty("item_id", id)
     
-    playlist.add(playurl, listItem)
+    #playlist.add(playurl, listItem)
 
-    xbmc.Player().play(playlist)
+    #xbmc.Player().play(playlist)
+    
+    #xbmc.Player().play(playurl, listItem)
+    
+    xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listItem)
     
     #Set a loop to wait for positive confirmation of playback
     count = 0
