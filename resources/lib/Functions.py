@@ -542,7 +542,7 @@ def addContextMenu(details, extraData, folder):
     return(commands)
     
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams"
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview"
     #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
     return detailsString
     
