@@ -433,7 +433,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     # update title with new name, this sets the new name in the deailts that are later passed to video info
     details['title'] = listItemName
     
-    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
+    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
     printDebug("Setting thumbnail as " + thumbPath, level=2)
     
     # calculate percentage
