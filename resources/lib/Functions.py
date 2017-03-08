@@ -205,13 +205,13 @@ def getServerDetails():
 
     printDebug("Getting Server Details from Network")
 
-    MESSAGE = "who is MediaBrowserServer?"
+    MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(6.0)
     
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 20)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 5)
     
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
@@ -221,17 +221,18 @@ def getServerDetails():
     xbmc.log("Sending UDP Data : " + MESSAGE);
     sock.sendto(MESSAGE, MULTI_GROUP)
 
-    try:
-        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-        xbmc.log("Received Response : " + data)
-        if(data[0:18] == "MediaBrowserServer"):
-            xbmc.log("Found Server : " + data[19:])
-            return data[19:]
-    except:
-        xbmc.log("No UDP Response")
-        pass
+    servers = []
     
-    return None
+    while True:
+        try:
+            data, addr = sock.recvfrom(1024) # buffer size
+            servers.append(json.loads(data))       
+        except Exception as e:
+            xbmc.log("Read UPD responce: %s" % e)
+            break        
+
+    xbmc.log("Found Servers: %s" % servers)
+    return servers
    
 def getCollections(detailsString):
     printDebug("== ENTER: getCollections ==")
@@ -1415,7 +1416,7 @@ def checkServer(force=0):
     
     serverInfo = getServerDetails()
     
-    if(serverInfo == None):
+    if(len(serverInfo) == 0):
         printDebug ("MBCon getServerDetails failed")
         return
         
