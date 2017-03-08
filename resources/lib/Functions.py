@@ -68,14 +68,14 @@ try:
 except:
     pass
     
-#xbmc.log("MBCon -> LogLevel:  " + str(logLevel))
+#xbmc.log("EmbyCon -> LogLevel:  " + str(logLevel))
 
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 def mainEntryPoint():
    
-    printDebug("===== MBCon START =====")
+    printDebug("===== EmbyCon START =====")
     
     ProfileCode = __settings__.getSetting('profile') == "true"
 
@@ -85,17 +85,17 @@ def mainEntryPoint():
         pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    printDebug("MBCon -> running Python: " + str(sys.version_info))
-    printDebug("MBCon -> running MBCon: " + str(ADDON_VERSION))
+    printDebug("EmbyCon -> running Python: " + str(sys.version_info))
+    printDebug("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
     printDebug(xbmc.getInfoLabel( "System.BuildVersion" ))
-    printDebug( "MBCon -> Script argument date " + str(sys.argv))
+    printDebug( "EmbyCon -> Script argument date " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
     except:
         params = {}
         
-    printDebug("MBCon -> Script params is " + str(params))
+    printDebug("EmbyCon -> Script params is " + str(params))
 
     param_url = params.get('url', None)
 
@@ -153,8 +153,8 @@ def mainEntryPoint():
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.clearProperty("heading")
 
-        printDebug("MBCon -> Mode: " + str(mode))
-        printDebug("MBCon -> URL: " + str(param_url))
+        printDebug("EmbyCon -> Mode: " + str(mode))
+        printDebug("EmbyCon -> URL: " + str(param_url))
 
         #Run a function based on the mode variable that was passed in the URL
         #if ( mode == None or param_url == None or len(param_url) < 1 ):
@@ -188,7 +188,7 @@ def mainEntryPoint():
                 f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
         f.close()    
 
-    printDebug("===== MBCon FINISHED =====")
+    printDebug("===== EmbyCon FINISHED =====")
     
 def printDebug( msg, level = 1):
     if(logLevel >= level):
@@ -197,9 +197,9 @@ def printDebug( msg, level = 1):
             stack = inspect.stack()
             for frame in stack: 
                 stackline = stackline + "." + frame[3]        
-            xbmc.log("MBCon " + str(level) + " -> (" + stackline + ") : " + str(msg))
+            xbmc.log("EmbyCon " + str(level) + " -> (" + stackline + ") : " + str(msg))
         else:
-            xbmc.log("MBCon " + str(level) + " -> " + str(msg))
+            xbmc.log("EmbyCon " + str(level) + " -> " + str(msg))
 
 def getServerDetails():
 
@@ -724,7 +724,7 @@ def get_params( paramstring ):
                             param[splitparams[0]]=splitparams[1]
                     elif (len(splitparams))==3:
                             param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
-    printDebug("MBCon -> Detected parameters: " + str(param), level=2)
+    printDebug("EmbyCon -> Detected parameters: " + str(param), level=2)
     return param
        
 def getContent(url, pluginhandle):
@@ -741,7 +741,7 @@ def getContent(url, pluginhandle):
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)    
     
     WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("MBConContent", "true")
+    WINDOW.setProperty("EmbyConContent", "true")
         
     # show a progress indicator if needed
     progress = None
@@ -1131,7 +1131,7 @@ def getXbmcVersion():
     
 def getCastList(pluginName, handle, params):
 
-    printDebug ("MBCon Returning Cast List")
+    printDebug ("EmbyCon Returning Cast List")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
@@ -1385,50 +1385,50 @@ def showParentContent(pluginName, handle, params):
         
 def checkService():
 
-    timeStamp = xbmcgui.Window(10000).getProperty("mbcon_Service_Timestamp")
+    timeStamp = xbmcgui.Window(10000).getProperty("EmbyCon_Service_Timestamp")
     loops = 0
     while(timeStamp == ""):
-        timeStamp = xbmcgui.Window(10000).getProperty("mbcon_Service_Timestamp")
+        timeStamp = xbmcgui.Window(10000).getProperty("EmbyCon_Service_Timestamp")
         loops = loops + 1
         if(loops == 40):
-            printDebug("MBCon Service Not Running, no time stamp, exiting", 0)
+            printDebug("EmbyCon Service Not Running, no time stamp, exiting", 0)
             xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
             sys.exit()
         xbmc.sleep(200)
         
-    printDebug ("MBCon Service Timestamp: " + timeStamp)
-    printDebug ("MBCon Current Timestamp: " + str(int(time.time())))
+    printDebug ("EmbyCon Service Timestamp: " + timeStamp)
+    printDebug ("EmbyCon Current Timestamp: " + str(int(time.time())))
     
     if((int(timeStamp) + 240) < int(time.time())):
-        printDebug("MBCon Service Not Running, time stamp to old, exiting", 0)
+        printDebug("EmbyCon Service Not Running, time stamp to old, exiting", 0)
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
         
 def checkServer(force=0):
-    printDebug ("MBCon checkServer Called")
+    printDebug ("EmbyCon checkServer Called")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
     
     if(force == 0 and len(host) != 0 and host != "<none>"):
-        printDebug ("MBCon server already set")
+        printDebug ("EmbyCon server already set")
         return
     
     serverInfo = getServerDetails()
     
     if(len(serverInfo) == 0):
-        printDebug ("MBCon getServerDetails failed")
+        printDebug ("EmbyCon getServerDetails failed")
         return
         
     index = serverInfo.find(":")
     
     if(index <= 0):
-        printDebug ("MBCon getServerDetails data not correct : " + serverInfo)
+        printDebug ("EmbyCon getServerDetails data not correct : " + serverInfo)
         return
     
     server_address = serverInfo[:index]
     server_port = serverInfo[index+1:]
-    printDebug ("MBCon detected server info " + server_address + " : " + server_port)
+    printDebug ("EmbyCon detected server info " + server_address + " : " + server_port)
     
     xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
 

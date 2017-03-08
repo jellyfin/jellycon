@@ -27,13 +27,13 @@ class WebSocketThread(threading.Thread):
         if(level != None):
             self.logLevel = int(level)           
     
-        xbmc.log("MBCon WebSocketThread -> Log Level:" +  str(self.logLevel))
+        xbmc.log("EmbyCon WebSocketThread -> Log Level:" +  str(self.logLevel))
         
         threading.Thread.__init__(self, *args)
     
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("MBCon WebSocketThread -> " + msg)    
+            xbmc.log("EmbyCon WebSocketThread -> " + msg)    
     
     def playbackStarted(self, itemId):
         if(self.client != None):

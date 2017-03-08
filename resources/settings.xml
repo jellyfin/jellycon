@@ -7,7 +7,7 @@
 		<setting type="sep" />
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
-        <setting id="deviceName" type="text" label="30016" default="MBCon" visible="true" enable="true" />
+        <setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
         <setting type="sep" />
 		<setting id="smbusername" type="text" label="30007" default="" visible="true" enable="true" />
 		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" visible="true" enable="true" />

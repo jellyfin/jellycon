@@ -23,7 +23,7 @@ class PlayUtils():
     
       addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
       # if the path is local and depending on the video quality play we can direct play it do so-
-      xbmc.log("MBCon getPlayUrl")
+      xbmc.log("EmbyCon getPlayUrl")
 
       playurl = result.get("Path")
       if playurl != None:
@@ -71,14 +71,14 @@ class PlayUtils():
         if(mediaSources != None):
           if mediaSources[0].get('Bitrate') != None:
              if settingsVideoBitRate < int(mediaSources[0].get('Bitrate')):
-               xbmc.log("MBCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
+               xbmc.log("EmbyCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
                return False
              else:
-               xbmc.log("MBCon isNetworkQualitySufficient -> TRUE bit rate")   
+               xbmc.log("EmbyCon isNetworkQualitySufficient -> TRUE bit rate")   
                return True
            
         # Any thing else is ok
-        xbmc.log("MBCon isNetworkQualitySufficient -> TRUE default")
+        xbmc.log("EmbyCon isNetworkQualitySufficient -> TRUE default")
         return True
       
        

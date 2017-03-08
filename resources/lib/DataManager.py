@@ -28,7 +28,7 @@ class DataManager():
         
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("MBCon DataManager -> " + msg)
+            xbmc.log("EmbyCon DataManager -> " + msg)
 
     def getCacheValidatorFromData(self, result):
         result = result.get("Items")
@@ -152,7 +152,7 @@ class CacheManagerThread(threading.Thread):
 
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("MBCon CacheManagerThread -> " + msg)
+            xbmc.log("EmbyCon CacheManagerThread -> " + msg)
             
     def setCacheData(self, data):
         self.dataManager = data

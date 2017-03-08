@@ -31,7 +31,7 @@ class DownloadUtils():
 
     def logMsg(self, msg, level = 1):
         if(self.logLevel >= level):
-            xbmc.log("MBCon DownloadUtils -> " + msg)
+            xbmc.log("EmbyCon DownloadUtils -> " + msg)
 
     def getArtwork(self, data, type, index = "0", width = 10000, height = 10000):
 
@@ -114,7 +114,7 @@ class DownloadUtils():
         userid = WINDOW.getProperty("userid")
 
         if(userid != None and userid != ""):
-            self.logMsg("MBCon DownloadUtils -> Returning saved UserID : " + userid)
+            self.logMsg("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
             return userid
     
         port = self.addonSettings.getSetting('port')
@@ -175,7 +175,7 @@ class DownloadUtils():
 
         token = WINDOW.getProperty("AccessToken")
         if(token != None and token != ""):
-            self.logMsg("MBCon DownloadUtils -> Returning saved AccessToken : " + token)
+            self.logMsg("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
         
         port = self.addonSettings.getSetting("port")
@@ -237,7 +237,7 @@ class DownloadUtils():
             if(authToken != ""):
                 headers["X-MediaBrowser-Token"] = authToken
                     
-            self.logMsg("MBCon Authentication Header : " + str(headers))
+            self.logMsg("EmbyCon Authentication Header : " + str(headers))
             return headers
     
     def downloadUrl(self, url, suppress=False, postBody=None, type="GET", popup=0, authenticate=True):
@@ -321,7 +321,7 @@ class DownloadUtils():
             xbmc.log(error)
             if suppress is False:
                 if popup == 0:
-                    xbmc.executebuiltin("XBMC.Notification(\"MBCon\": URL error: Unable to connect to server,)")
+                    xbmc.executebuiltin("XBMC.Notification(\"EmbyCon\": URL error: Unable to connect to server,)")
                 else:
                     xbmcgui.Dialog().ok("",self.getString(30204))
                 raise
