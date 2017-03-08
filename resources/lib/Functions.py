@@ -445,7 +445,7 @@ def addGUIItem( url, details, extraData, folder=True ):
         list.setProperty('IsPlayable', 'true')
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))
-            list.setProperty('ResumeTime', str(extraData.get('resumetime')))
+            list.setProperty('ResumeTime', str(int(extraData.get('resumetime')) / 60))
     
     artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape']
     
@@ -976,8 +976,7 @@ def processDirectory(url, results, progress, pluginhandle):
                  'playcount'    : str(playCount),
                  #'aired'       : episode.get('originallyAvailableAt','') ,
                  'TVShowTitle'  :  item.get("SeriesName"),
-                 'season'       : tempSeason,
-                 'Video3DFormat' : item.get("Video3DFormat"),
+                 'season'       : tempSeason
                  }
                  
         try:
