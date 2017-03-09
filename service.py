@@ -16,19 +16,24 @@ import mimetypes
 from threading import Thread
 from urlparse import parse_qs
 from urllib import urlretrieve
+import logging
 
 from random import randint
 import random
 import urllib2
 
-__cwd__ = xbmcaddon.Addon(id='plugin.video.embycon').getAddonInfo('path')
-__addon__       = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__     = __addon__.getLocalizedString
-BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
+addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+addonPath = addonSettings.getAddonInfo('path')
+BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( addonPath, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
 
 from websocketclient import WebSocketThread
 from downloadutils import DownloadUtils
+import loghandler
+
+log_level = addonSettings.getSetting('logLevel')  
+loghandler.config(int(log_level))
+log = logging.getLogger("EmbyCon.service")
 
 downloadUtils = DownloadUtils()
 
@@ -55,19 +60,19 @@ def stopAll(played_information):
         return 
         
     addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-    xbmc.log ("EmbyCon Service -> played_information : " + str(played_information))
+    log.info("EmbyCon Service -> played_information : " + str(played_information))
     
     for item_url in played_information:
         data = played_information.get(item_url)
         if(data != None):
-            xbmc.log ("EmbyCon Service -> item_url  : " + item_url)
-            xbmc.log ("EmbyCon Service -> item_data : " + str(data))
+            log.info("EmbyCon Service -> item_url  : " + item_url)
+            log.info("EmbyCon Service -> item_data : " + str(data))
             
             currentPossition = data.get("currentPossition")
             item_id = data.get("item_id")
             
             if(hasData(item_id)):
-                xbmc.log("EmbyCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
+                log.info("EmbyCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
                 newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
         
     played_information.clear()
@@ -78,7 +83,7 @@ class Service( xbmc.Player ):
     played_information = {}
     
     def __init__( self, *args ):
-        xbmc.log("EmbyCon Service -> starting monitor service")
+        log.info("EmbyCon Service -> starting monitor service")
         self.played_information = {}
         pass
     
@@ -87,7 +92,7 @@ class Service( xbmc.Player ):
         stopAll(self.played_information)
         
         currentFile = xbmc.Player().getPlayingFile()
-        xbmc.log("EmbyCon Service -> onPlayBackStarted" + currentFile)
+        log.info("EmbyCon Service -> onPlayBackStarted" + currentFile)
         
         WINDOW = xbmcgui.Window( 10000 )
         item_id = WINDOW.getProperty("item_id")
@@ -104,17 +109,17 @@ class Service( xbmc.Player ):
         data["item_id"] = item_id
         self.played_information[currentFile] = data
         
-        xbmc.log("EmbyCon Service -> ADDING_FILE : " + currentFile)
-        xbmc.log("EmbyCon Service -> ADDING_FILE : " + str(self.played_information))
+        log.info("EmbyCon Service -> ADDING_FILE : " + currentFile)
+        log.info("EmbyCon Service -> ADDING_FILE : " + str(self.played_information))
 
     def onPlayBackEnded( self ):
         # Will be called when xbmc stops playing a file
-        xbmc.log("EmbyCon Service -> onPlayBackEnded")
+        log.info("EmbyCon Service -> onPlayBackEnded")
         stopAll(self.played_information)
 
     def onPlayBackStopped( self ):
         # Will be called when user stops xbmc playing a file
-        xbmc.log("EmbyCon Service -> onPlayBackStopped")
+        log.info("EmbyCon Service -> onPlayBackStopped")
         stopAll(self.played_information)
 
 monitor = Service()
@@ -140,7 +145,7 @@ while not xbmc.abortRequested:
                 lastProgressUpdate = datetime.today()
             
         except Exception, e:
-            xbmc.log("EmbyCon Service -> Exception in Playback Monitor : " + str(e))
+            log.error("EmbyCon Service -> Exception in Playback Monitor : " + str(e))
             pass
 
     xbmc.sleep(1000)
@@ -149,4 +154,4 @@ while not xbmc.abortRequested:
 # stop the WebSocket client
 newWebSocketThread.stopClient()
 
-xbmc.log("EmbyCon Service -> Service shutting down")
+log.info("EmbyCon Service -> Service shutting down")

@@ -7,7 +7,10 @@ import xbmcgui
 import xbmcaddon
 import json as json
 import urllib
+import logging
 from downloadutils import DownloadUtils
+
+log = logging.getLogger("EmbyCon." + __name__)
 
 def loadSkinDefaults():
 
@@ -33,14 +36,14 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
       
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
-        xbmc.log("WINDOW INITIALISED")
+        log.info("WINDOW INITIALISED")
 
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         
         # load skin views
         skin_view_file = os.path.join(xbmc.translatePath('special://skin'), "views.xml")
-        xbmc.log("Loading Skin View List From : " + skin_view_file)
+        log.info("Loading Skin View List From : " + skin_view_file)
         if os.path.exists(skin_view_file):
             data = etree.parse(skin_view_file).getroot()
             for view in data.iter("view"):

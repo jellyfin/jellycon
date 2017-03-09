@@ -9,29 +9,23 @@ import StringIO
 import gzip
 import sys
 import json as json
+import logging
 from clientinfo import ClientInformation
+
+log = logging.getLogger("EmbyCon." + __name__)
 
 class DownloadUtils():
 
-    logLevel = 0
     addonSettings = None
     getString = None
 
     def __init__(self, *args):
         self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         self.getString = self.addonSettings.getLocalizedString
-        level = self.addonSettings.getSetting('logLevel')        
-        self.logLevel = 0
-        if(level != None):
-            self.logLevel = int(level)
             
         port = self.addonSettings.getSetting('port')
         host = self.addonSettings.getSetting('ipaddress')
         self.server = host + ":" + port
-
-    def logMsg(self, msg, level = 1):
-        if(self.logLevel >= level):
-            xbmc.log("EmbyCon DownloadUtils -> " + msg)
 
     def getArtwork(self, data, type, index = "0", width = 10000, height = 10000):
 
@@ -61,21 +55,21 @@ class DownloadUtils():
             if(BGTags != None and len(BGTags) > 0):
                 bgIndex = int(index)
                 imageTag = data.get("BackdropImageTags")[bgIndex]
-                #self.logMsg("Background Image Tag:" + imageTag, level=1)        
+                log.debug("Background Image Tag:" + imageTag)        
         else:
             if(data.get("ImageTags") != None and data.get("ImageTags").get(type) != None):
                 imageTag = data.get("ImageTags").get(type)
-                #self.logMsg("Image Tag:" + imageTag, level=1)
+                log.debug("Image Tag:" + imageTag)
 
         if(imageTag == "" or imageTag == None):
-            #self.logMsg("No Image Tag", level=1)
+            log.debug("No Image Tag")
             return ""            
 
         query = ""
         
         artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (self.server, id, type, index, width, height, imageTag, query)
         
-        self.logMsg("getArtwork : " + artwork, level=2)
+        log.debug("getArtwork : " + artwork)
         
         '''
         # do not return non-existing images
@@ -114,44 +108,44 @@ class DownloadUtils():
         userid = WINDOW.getProperty("userid")
 
         if(userid != None and userid != ""):
-            self.logMsg("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
+            log.info("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
             return userid
     
         port = self.addonSettings.getSetting('port')
         host = self.addonSettings.getSetting('ipaddress')
         userName = self.addonSettings.getSetting('username')
 
-        self.logMsg("Looking for user name: " + userName)
+        log.info("Looking for user name: " + userName)
 
         jsonData = None
         try:
             jsonData = self.downloadUrl(host + ":" + port + "/mediabrowser/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception, msg:
             error = "Get User unable to connect to " + host + ":" + port + " : " + str(msg)
-            xbmc.log (error)
+            log.error(error)
             return ""
 
-        self.logMsg("GETUSER_JSONDATA_01:" + str(jsonData))
+        log.info("GETUSER_JSONDATA_01:" + str(jsonData))
 
         result = []
 
         try:
             result = json.loads(jsonData)
         except Exception, e:
-            self.logMsg("jsonload : " + str(e) + " (" + jsonData + ")", level=1)
+            log.info("jsonload : " + str(e) + " (" + jsonData + ")")
             return ""           
 
-        self.logMsg("GETUSER_JSONDATA_02:" + str(result))
+        log.info("GETUSER_JSONDATA_02:" + str(result))
 
         userid = ""
         secure = False
         for user in result:
             if(user.get("Name") == userName):
                 userid = user.get("Id")
-                self.logMsg("Username Found:" + user.get("Name"))
+                log.info("Username Found:" + user.get("Name"))
                 if(user.get("HasPassword") == True):
                     secure = True
-                    self.logMsg("Username Is Secure (HasPassword=True)")
+                    log.info("Username Is Secure (HasPassword=True)")
                 break
 
         if(secure):
@@ -163,7 +157,7 @@ class DownloadUtils():
         if userid == "":
             return_value = xbmcgui.Dialog().ok(self.getString(30045),self.getString(30045))
 
-        self.logMsg("userid : " + userid)
+        log.info("userid : " + userid)
 
         WINDOW.setProperty("userid", userid)
 
@@ -175,7 +169,7 @@ class DownloadUtils():
 
         token = WINDOW.getProperty("AccessToken")
         if(token != None and token != ""):
-            self.logMsg("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
+            log.info("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
         
         port = self.addonSettings.getSetting("port")
@@ -208,11 +202,11 @@ class DownloadUtils():
             pass
 
         if(accessToken != None):
-            self.logMsg("User Authenticated : " + accessToken)
+            log.info("User Authenticated : " + accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
             return accessToken
         else:
-            self.logMsg("User NOT Authenticated")
+            log.info("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
             return ""
             
@@ -237,11 +231,11 @@ class DownloadUtils():
             if(authToken != ""):
                 headers["X-MediaBrowser-Token"] = authToken
                     
-            self.logMsg("EmbyCon Authentication Header : " + str(headers))
+            log.info("EmbyCon Authentication Header : " + str(headers))
             return headers
     
     def downloadUrl(self, url, suppress=False, postBody=None, type="GET", popup=0, authenticate=True):
-        self.logMsg("== ENTER: getURL ==")
+        log.info("downloadUrl")
         link = ""
         try:
             if url[0:4] == "http":
@@ -254,9 +248,9 @@ class DownloadUtils():
             server = url.split('/')[serversplit]
             urlPath = "/"+"/".join(url.split('/')[urlsplit:])
 
-            self.logMsg("DOWNLOAD_URL = " + url)
-            self.logMsg("server = "+str(server), level=2)
-            self.logMsg("urlPath = "+str(urlPath), level=2)
+            log.info("DOWNLOAD_URL = " + url)
+            log.debug("server = "+str(server))
+            log.debug("urlPath = "+str(urlPath))
             
             # check the server details
             tokens = server.split(':')
@@ -268,34 +262,34 @@ class DownloadUtils():
             conn = httplib.HTTPConnection(server, timeout=40)
             
             head = self.getAuthHeader(authenticate)
-            self.logMsg("HEADERS : " + str(head), level=1)
+            log.info("HEADERS : " + str(head))
 
             if(postBody != None):
                 head["Content-Type"] = "application/x-www-form-urlencoded"
-                self.logMsg("POST DATA : " + postBody)
+                log.info("POST DATA : " + postBody)
                 conn.request(method=type, url=urlPath, body=postBody, headers=head)
             else:
                 conn.request(method=type, url=urlPath, headers=head)
 
             data = conn.getresponse()
-            self.logMsg("GET URL HEADERS : " + str(data.getheaders()), level=2)
+            log.debug("GET URL HEADERS : " + str(data.getheaders()))
 
             contentType = "none"
             if int(data.status) == 200:
                 retData = data.read()
                 contentType = data.getheader('content-encoding')
-                self.logMsg("Data Len Before : " + str(len(retData)), level=2)
+                log.debug("Data Len Before : " + str(len(retData)))
                 if(contentType == "gzip"):
                     retData = StringIO.StringIO(retData)
                     gzipper = gzip.GzipFile(fileobj=retData)
                     link = gzipper.read()
                 else:
                     link = retData
-                self.logMsg("Data Len After : " + str(len(link)), level=2)
-                self.logMsg("====== 200 returned =======", level=2)
-                self.logMsg("Content-Type : " + str(contentType), level=2)
-                self.logMsg(link, level=2)
-                self.logMsg("====== 200 finished ======", level=2)
+                log.debug("Data Len After : " + str(len(link)))
+                log.debug("====== 200 returned =======")
+                log.debug("Content-Type : " + str(contentType))
+                log.debug(link)
+                log.debug("====== 200 finished ======")
 
             elif ( int(data.status) == 301 ) or ( int(data.status) == 302 ):
                 try: conn.close()
@@ -304,13 +298,13 @@ class DownloadUtils():
 
             elif int(data.status) >= 400:
                 error = "HTTP response error: " + str(data.status) + " " + str(data.reason)
-                xbmc.log(error)
+                log.error(error)
                 if suppress is False:
                     if popup == 0:
                         xbmc.executebuiltin("XBMC.Notification(URL error: "+ str(data.reason) +",)")
                     else:
                         xbmcgui.Dialog().ok(self.getString(30135),server)
-                xbmc.log (error)
+                log.error(error)
                 try: conn.close()
                 except: pass
                 return ""
@@ -318,7 +312,7 @@ class DownloadUtils():
                 link = ""
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
-            xbmc.log(error)
+            log.error(error)
             if suppress is False:
                 if popup == 0:
                     xbmc.executebuiltin("XBMC.Notification(\"EmbyCon\": URL error: Unable to connect to server,)")

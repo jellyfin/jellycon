@@ -213,7 +213,7 @@ def getServerDetails():
             data, addr = sock.recvfrom(1024) # buffer size
             servers.append(json.loads(data))       
         except Exception as e:
-            xbmc.log("Read UPD responce: %s" % e)
+            log.error("Read UPD responce: %s" % e)
             break        
 
     log.info("Found Servers: %s" % servers)

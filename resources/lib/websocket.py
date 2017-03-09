@@ -72,7 +72,7 @@ STATUS_INVALID_EXTENSION = 1010
 STATUS_UNEXPECTED_CONDITION = 1011
 STATUS_TLS_HANDSHAKE_ERROR = 1015
 
-logger = logging.getLogger()
+logger = logging.getLogger("EmbyCon." + __name__)
 
 
 class WebSocketException(Exception):
@@ -107,10 +107,10 @@ def enableTrace(tracable):
     """
     global traceEnabled
     traceEnabled = tracable
-    if tracable:
-        if not logger.handlers:
-            logger.addHandler(logging.StreamHandler())
-        logger.setLevel(logging.DEBUG)
+    #if tracable:
+    #    if not logger.handlers:
+    #        logger.addHandler(logging.StreamHandler())
+    #    logger.setLevel(logging.DEBUG)
 
 
 def setdefaulttimeout(timeout):

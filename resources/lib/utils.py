@@ -12,9 +12,11 @@ from datetime import datetime
 from downloadutils import DownloadUtils
 import urllib
 import sys
+import logging
 
 #define our global download utils
 downloadUtils = DownloadUtils()
+log = logging.getLogger("EmbyCon." + __name__)
 
 ###########################################################################
 class PlayUtils():
@@ -23,7 +25,7 @@ class PlayUtils():
     
       addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
       # if the path is local and depending on the video quality play we can direct play it do so-
-      xbmc.log("EmbyCon getPlayUrl")
+      log.info("EmbyCon getPlayUrl")
 
       playurl = result.get("Path")
       if playurl != None:
@@ -71,14 +73,14 @@ class PlayUtils():
         if(mediaSources != None):
           if mediaSources[0].get('Bitrate') != None:
              if settingsVideoBitRate < int(mediaSources[0].get('Bitrate')):
-               xbmc.log("EmbyCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
+               log.info("EmbyCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
                return False
              else:
-               xbmc.log("EmbyCon isNetworkQualitySufficient -> TRUE bit rate")   
+               log.info("EmbyCon isNetworkQualitySufficient -> TRUE bit rate")   
                return True
            
         # Any thing else is ok
-        xbmc.log("EmbyCon isNetworkQualitySufficient -> TRUE default")
+        log.info("EmbyCon isNetworkQualitySufficient -> TRUE default")
         return True
       
        
