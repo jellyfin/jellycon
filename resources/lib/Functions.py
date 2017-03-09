@@ -20,6 +20,7 @@
 '''
 #import ptvsd
 
+import logging
 import struct
 import urllib
 import glob
@@ -62,20 +63,14 @@ __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
 __cwd__ = __settings__.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join( __cwd__))
 
-logLevel = 0
-try:
-    logLevel = int(__settings__.getSetting('logLevel'))   
-except:
-    pass
-    
-#xbmc.log("EmbyCon -> LogLevel:  " + str(logLevel))
+log = logging.getLogger("EmbyCon." + __name__)
 
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 def mainEntryPoint():
    
-    printDebug("===== EmbyCon START =====")
+    log.info("===== EmbyCon START =====")
     
     ProfileCode = __settings__.getSetting('profile') == "true"
 
@@ -85,17 +80,17 @@ def mainEntryPoint():
         pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    printDebug("EmbyCon -> running Python: " + str(sys.version_info))
-    printDebug("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
-    printDebug(xbmc.getInfoLabel( "System.BuildVersion" ))
-    printDebug( "EmbyCon -> Script argument date " + str(sys.argv))
+    log.info("EmbyCon -> running Python: " + str(sys.version_info))
+    log.info("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
+    log.info(xbmc.getInfoLabel( "System.BuildVersion" ))
+    log.info( "EmbyCon -> Script argument date " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
     except:
         params = {}
         
-    printDebug("EmbyCon -> Script params is " + str(params))
+    log.info("EmbyCon -> Script params = " + str(params))
 
     param_url = params.get('url', None)
 
@@ -126,7 +121,7 @@ def mainEntryPoint():
         __settings__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
-            printDebug("Currently in home - refreshing to allow new settings to be taken")
+            log.info("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("XBMC.ActivateWindow(Home)")
     elif sys.argv[1] == "refresh":
         WINDOW = xbmcgui.Window( 10000 )
@@ -153,8 +148,8 @@ def mainEntryPoint():
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.clearProperty("heading")
 
-        printDebug("EmbyCon -> Mode: " + str(mode))
-        printDebug("EmbyCon -> URL: " + str(param_url))
+        log.info("EmbyCon -> Mode: " + str(mode))
+        log.info("EmbyCon -> URL: " + str(param_url))
 
         #Run a function based on the mode variable that was passed in the URL
         #if ( mode == None or param_url == None or len(param_url) < 1 ):
@@ -188,22 +183,11 @@ def mainEntryPoint():
                 f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
         f.close()    
 
-    printDebug("===== EmbyCon FINISHED =====")
-    
-def printDebug( msg, level = 1):
-    if(logLevel >= level):
-        if(logLevel == 2):
-            stackline = ""
-            stack = inspect.stack()
-            for frame in stack: 
-                stackline = stackline + "." + frame[3]        
-            xbmc.log("EmbyCon " + str(level) + " -> (" + stackline + ") : " + str(msg))
-        else:
-            xbmc.log("EmbyCon " + str(level) + " -> " + str(msg))
+    log.info("===== EmbyCon FINISHED =====")
 
 def getServerDetails():
 
-    printDebug("Getting Server Details from Network")
+    log.info("Getting Server Details from Network")
 
     MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
@@ -217,8 +201,8 @@ def getServerDetails():
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
     
-    xbmc.log("MutliGroup       : " + str(MULTI_GROUP));
-    xbmc.log("Sending UDP Data : " + MESSAGE);
+    log.info("MutliGroup       : " + str(MULTI_GROUP));
+    log.info("Sending UDP Data : " + MESSAGE);
     sock.sendto(MESSAGE, MULTI_GROUP)
 
     servers = []
@@ -231,11 +215,11 @@ def getServerDetails():
             xbmc.log("Read UPD responce: %s" % e)
             break        
 
-    xbmc.log("Found Servers: %s" % servers)
+    log.info("Found Servers: %s" % servers)
     return servers
    
 def getCollections(detailsString):
-    printDebug("== ENTER: getCollections ==")
+    log.info("== ENTER: getCollections ==")
     
     MB_server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
 
@@ -248,18 +232,18 @@ def getCollections(detailsString):
         jsonData = downloadUtils.downloadUrl(MB_server + "/mediabrowser/Users/" + userid + "/Items/Root?format=json")
     except Exception, msg:
         error = "Get connect : " + str(msg)
-        xbmc.log (error)
+        log.error(error)
         return {}        
     
-    printDebug("jsonData : " + jsonData, level=2)
+    log.debug("jsonData : " + jsonData)
     result = json.loads(jsonData)
     
     parentid = result.get("Id")
-    printDebug("parentid : " + parentid)
+    log.info("parentid : " + parentid)
        
     htmlpath = ("http://%s/mediabrowser/Users/" % MB_server)
     jsonData = downloadUtils.downloadUrl(htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
-    printDebug("jsonData : " + jsonData, level=2)
+    log.debug("jsonData : " + jsonData)
     collections=[]
 
     if jsonData is False:
@@ -270,7 +254,7 @@ def getCollections(detailsString):
     
     for item in result:
         if(item.get("RecursiveItemCount") != "0"):
-            Name =(item.get("Name")).encode('utf-8')
+            Name = (item.get("Name")).encode('utf-8')
             
             total = str(item.get("RecursiveItemCount"))
             section = item.get("CollectionType")
@@ -287,7 +271,7 @@ def getCollections(detailsString):
                     'guiid'             : item.get("Id"),
                     'path'              : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
 
-            printDebug("Title " + Name)
+            log.info("Title " + Name)
     
     # Add standard nodes
     collections.append({'title': "All Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
@@ -307,7 +291,7 @@ def getCollections(detailsString):
     return collections
 
 def markWatched(item_id):
-    printDebug("Mark Item Watched : " + item_id)
+    log.info("Mark Item Watched : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
     url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
@@ -317,7 +301,7 @@ def markWatched(item_id):
     xbmc.executebuiltin("Container.Refresh")
 
 def markUnwatched(item_id):
-    printDebug("Mark Item UnWatched : " + item_id)
+    log.info("Mark Item UnWatched : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
     url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
@@ -327,7 +311,7 @@ def markUnwatched(item_id):
     xbmc.executebuiltin("Container.Refresh")
 
 def markFavorite(item_id):
-    printDebug("Add item to favourites : " + item_id)
+    log.info("Add item to favourites : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
     url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
@@ -337,7 +321,7 @@ def markFavorite(item_id):
     xbmc.executebuiltin("Container.Refresh")
     
 def unmarkFavorite(item_id):
-    printDebug("Remove item from favourites : " + item_id)
+    log.info("Remove item from favourites : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
     url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
@@ -349,7 +333,7 @@ def unmarkFavorite(item_id):
 def delete (item_id):
     return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
     if return_value:
-        printDebug('Deleting Item : ' + item_id)
+        log.info('Deleting Item : ' + item_id)
         server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
         url = 'http://' + server + '/mediabrowser/Items/' + item_id
         progress = xbmcgui.DialogProgress()
@@ -362,10 +346,10 @@ def addGUIItem( url, details, extraData, folder=True ):
 
     url = url.encode('utf-8')
 
-    printDebug("Adding GuiItem for [%s]" % details.get('title','Unknown'), level=2)
-    printDebug("Passed details: " + str(details), level=2)
-    printDebug("Passed extraData: " + str(extraData), level=2)
-    #printDebug("urladdgui:" + str(url))
+    log.debug("Adding GuiItem for [%s]" % details.get('title','Unknown'))
+    log.debug("Passed details: " + str(details))
+    log.debug("Passed extraData: " + str(extraData))
+
     if details.get('title', '') == '':
         return
 
@@ -435,7 +419,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     details['title'] = listItemName
     
     list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
-    printDebug("Setting thumbnail as " + thumbPath, level=2)
+    log.debug("Setting thumbnail as " + thumbPath)
     
     # calculate percentage
     if (cappedPercentage != None):
@@ -453,7 +437,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     for artType in artTypes:
         imagePath = str(extraData.get(artType,''))
         list = setArt(list, artType, imagePath)
-        printDebug( "Setting " + artType + " as " + imagePath, level=2)
+        log.debug( "Setting " + artType + " as " + imagePath)
     
     menuItems = addContextMenu(details, extraData, folder)
     if(len(menuItems) > 0):
@@ -510,7 +494,6 @@ def addGUIItem( url, details, extraData, folder=True ):
     return (u, list, folder)
 
 def addContextMenu(details, extraData, folder):
-    printDebug("Building Context Menus", level=2)
     commands = []
 
     item_id = extraData.get('id')
@@ -548,7 +531,7 @@ def getDetailsString():
     return detailsString
     
 def displaySections( pluginhandle, filter=None ):
-    printDebug("== ENTER: displaySections() ==")
+    log.info("== ENTER: displaySections() ==")
     xbmcplugin.setContent(pluginhandle, 'files')
 
     dirItems = []
@@ -569,7 +552,7 @@ def displaySections( pluginhandle, filter=None ):
         extraData['fanart_image'] = collection['fanart_image']
         extraData['guiid'] = collection['guiid']
         s_url = 'http://%s%s' % ( collection['address'], path)
-        printDebug("addGUIItem:" + str(s_url) + str(details) + str(extraData))
+        log.info("addGUIItem:" + str(s_url) + str(details) + str(extraData))
         dirItems.append(addGUIItem(s_url, details, extraData))
         
     #All XML entries have been parsed and we are ready to allow the user to browse around.  So end the screen listing.
@@ -581,21 +564,21 @@ def remove_html_tags( data ):
     return p.sub('', data)
 
 def PLAY( url, handle ):
-    printDebug("== ENTER: PLAY ==")
+    log.info("== ENTER: PLAY ==")
     
     #playData = json.loads(url)
     
     url=urllib.unquote(url)
     
     urlParts = url.split(',;')
-    xbmc.log("PLAY ACTION URL PARTS : " + str(urlParts))
+    log.info("PLAY ACTION URL PARTS : " + str(urlParts))
     server = urlParts[0]
     id = urlParts[1]
     autoResume = 0
     
     if(len(urlParts) > 2):
         autoResume = int(urlParts[2])
-        xbmc.log("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
+        log.info("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
     
     ip,port = server.split(':')
     userid = downloadUtils.getUserId()
@@ -630,7 +613,7 @@ def PLAY( url, handle ):
     #playlist.clear()
 
     playurl = PlayUtils().getPlayUrl(server, id, result)
-    printDebug("Play URL: " + playurl)    
+    log.info("Play URL: " + playurl)    
     thumbPath = downloadUtils.getArtwork(result, "Primary")
     listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
     
@@ -656,7 +639,7 @@ def PLAY( url, handle ):
     #Set a loop to wait for positive confirmation of playback
     count = 0
     while not xbmc.Player().isPlaying():
-        printDebug( "Not playing yet...sleep for 1 sec")
+        log.info( "Not playing yet...sleep for 1 sec")
         count = count + 1
         if count >= 10:
             return
@@ -703,7 +686,7 @@ def setListItemProps(server, id, listItem, result):
     return
     
 def get_params( paramstring ):
-    printDebug("Parameter string: " + paramstring, level=2)
+    log.debug("Parameter string: " + paramstring)
     param={}
     if len(paramstring) >= 2:
             params=paramstring
@@ -724,13 +707,13 @@ def get_params( paramstring ):
                             param[splitparams[0]]=splitparams[1]
                     elif (len(splitparams))==3:
                             param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
-    printDebug("EmbyCon -> Detected parameters: " + str(param), level=2)
+    log.debug("EmbyCon -> Detected parameters: " + str(param))
     return param
        
 def getContent(url, pluginhandle):
 
-    printDebug("== ENTER: getContent ==")
-    printDebug("URL: " + str(url))
+    log.info("== ENTER: getContent ==")
+    log.info("URL: " + str(url))
     
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
@@ -758,21 +741,17 @@ def getContent(url, pluginhandle):
             progress.close()
         return
     
-    #printDebug("JSON DATA: " + str(result), level=2)
-    
     dirItems, viewType = processDirectory(url, result, progress, pluginhandle)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     
     if(viewType != None and len(viewType) > 0):
         defaultData = DefaultViews.loadSkinDefaults()
         viewNum = defaultData.get(viewType)
-        printDebug("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum), level=1)
+        log.info("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum))
         if viewNum != None and viewNum != "":
             xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
             
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
-                   
-
     
     if(progress != None):
         progress.update(100, __language__(30125))
@@ -785,11 +764,11 @@ def loadJasonData(jsonData):
     
 def processDirectory(url, results, progress, pluginhandle):
     cast = ['None']
-    printDebug("== ENTER: processDirectory ==")
+    log.info("== ENTER: processDirectory ==")
     parsed = urlparse(url)
     parsedserver,parsedport=parsed.netloc.split(':')
     userid = downloadUtils.getUserId()
-    printDebug("Processing secondary menus")
+
     xbmcplugin.setContent(pluginhandle, 'movies')
 
     server = getServerFromURL(url)
@@ -1078,31 +1057,31 @@ def getLinkURL( url, pathData, server ):
         @ input: url, XML data and PM server address
         @ return: Usable http URL
     '''
-    printDebug("== ENTER: getLinkURL ==")
-    path=pathData.get('key','')
-    printDebug("Path is " + path)
+    log.info("== ENTER: getLinkURL ==")
+    path = pathData.get('key','')
+    log.info("Path is: " + path)
 
     if path == '':
-        printDebug("Empty Path")
+        log.error("Empty Path")
         return
 
     #If key starts with http, then return it
     if path[0:4] == "http":
-        printDebug("Detected http link")
+        log.info("Detected http link")
         return path
 
     #If key starts with a / then prefix with server address
     elif path[0] == '/':
-        printDebug("Detected base path link")
+        log.info("Detected base path link")
         return 'http://%s%s' % ( server, path )
 
     elif path[0:5] == "rtmp:":
-        printDebug("Detected  link")
+        log.info("Detected  link")
         return path
 
     #Any thing else is assumed to be a relative path and is built on existing url
     else:
-        printDebug("Detected relative link")
+        log.info("Detected relative link")
         return "%s/%s" % ( url, path )
 
     return url
@@ -1122,16 +1101,16 @@ def getXbmcVersion():
         result = result.get("result")
         versionData = result.get("version")
         version = float(str(versionData.get("major")) + "." + str(versionData.get("minor")))
-        printDebug("Version : " + str(version) + " - " + str(versionData), level=0)
+        log.info("Version : " + str(version) + " - " + str(versionData))
     except:
         version = 0.0
-        printDebug("Version Error : RAW Version Data : " + str(result), level=0)
+        log.error("Version Error : RAW Version Data : " + str(result))
 
     return version        
     
 def getCastList(pluginName, handle, params):
 
-    printDebug ("EmbyCon Returning Cast List")
+    log.info("EmbyCon Returning Cast List")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
@@ -1142,7 +1121,7 @@ def getCastList(pluginName, handle, params):
     
     # get the cast list for an item
     jsonData = downloadUtils.downloadUrl("http://" + server + "/mediabrowser/Users/" + userid + "/Items/" + params.get("id") + "?format=json", suppress=False, popup=1 )    
-    printDebug("CastList(Items) jsonData: " + jsonData, 2)
+    log.debug("CastList(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 
     people = result.get("People")
@@ -1197,14 +1176,14 @@ def getCastList(pluginName, handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 def showSetViews():
-    printDebug("showSetViews Called")
+    log.info("showSetViews Called")
        
     defaultViews = DefaultViews.DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
     defaultViews.doModal()
     del defaultViews
         
 def getWigetContent(pluginName, handle, params):
-    printDebug("getWigetContent Called" + str(params))
+    log.info("getWigetContent Called" + str(params))
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
@@ -1215,7 +1194,7 @@ def getWigetContent(pluginName, handle, params):
     parentId = params.get("ParentId")
     
     if(type == None):
-        printDebug("getWigetContent No Type")
+        log.error("getWigetContent No Type")
         return
     
     userid = downloadUtils.getUserId()
@@ -1247,11 +1226,11 @@ def getWigetContent(pluginName, handle, params):
             "&IsMissing=False"
             "&format=json")
         
-    printDebug("WIDGET_DATE_URL: " + itemsUrl, 2)
+    log.debug("WIDGET_DATE_URL: " + itemsUrl)
     
     # get the recent items
     jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False, popup=1 )
-    printDebug("Recent(Items) jsonData: " + jsonData, 2)
+    log.debug("Recent(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
     
     result = result.get("Items")
@@ -1262,7 +1241,7 @@ def getWigetContent(pluginName, handle, params):
     listItems = []
     for item in result:
         item_id = item.get("Id")
-        #xbmc.log(str(item))
+
         image = ""
         if item.get("Type") == "Episode":
             '''
@@ -1297,7 +1276,7 @@ def getWigetContent(pluginName, handle, params):
         
         name = item.get("Name")
         episodeDetails = ""
-        printDebug("WIDGET_DATE_NAME: " + name, 2)
+        log.debug("WIDGET_DATE_NAME: " + name)
         
         if(item.get("Type") == "Episode" and item.get("SeriesName") != None):
 
@@ -1358,7 +1337,7 @@ def getWigetContent(pluginName, handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
     
 def showParentContent(pluginName, handle, params):
-    printDebug("showParentContent Called" + str(params), 2)
+    log.info("showParentContent Called: " + str(params))
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
@@ -1379,7 +1358,7 @@ def showParentContent(pluginName, handle, params):
         "&Fields=" + detailsString +
         "&format=json")
     
-    printDebug("showParentContent Content Url : " + str(contentUrl), 2)
+    log.info("showParentContent Content Url : " + str(contentUrl))
     
     getContent(contentUrl, handle)
         
@@ -1391,61 +1370,61 @@ def checkService():
         timeStamp = xbmcgui.Window(10000).getProperty("EmbyCon_Service_Timestamp")
         loops = loops + 1
         if(loops == 40):
-            printDebug("EmbyCon Service Not Running, no time stamp, exiting", 0)
+            log.error("EmbyCon Service Not Running, no time stamp, exiting")
             xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
             sys.exit()
         xbmc.sleep(200)
         
-    printDebug ("EmbyCon Service Timestamp: " + timeStamp)
-    printDebug ("EmbyCon Current Timestamp: " + str(int(time.time())))
+    log.info("EmbyCon Service Timestamp: " + timeStamp)
+    log.info("EmbyCon Current Timestamp: " + str(int(time.time())))
     
     if((int(timeStamp) + 240) < int(time.time())):
-        printDebug("EmbyCon Service Not Running, time stamp to old, exiting", 0)
+        log.error("EmbyCon Service Not Running, time stamp to old, exiting")
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
         
 def checkServer(force=0):
-    printDebug ("EmbyCon checkServer Called")
+    log.info("EmbyCon checkServer Called")
     
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
     
     if(force == 0 and len(host) != 0 and host != "<none>"):
-        printDebug ("EmbyCon server already set")
+        log.info("EmbyCon server already set")
         return
     
     serverInfo = getServerDetails()
     
     if(len(serverInfo) == 0):
-        printDebug ("EmbyCon getServerDetails failed")
+        log.info("EmbyCon getServerDetails failed")
         return
         
     index = serverInfo.find(":")
     
     if(index <= 0):
-        printDebug ("EmbyCon getServerDetails data not correct : " + serverInfo)
+        log.error("EmbyCon getServerDetails data not correct : " + serverInfo)
         return
     
     server_address = serverInfo[:index]
     server_port = serverInfo[index+1:]
-    printDebug ("EmbyCon detected server info " + server_address + " : " + server_port)
+    log.info("EmbyCon detected server info " + server_address + " : " + server_port)
     
     xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
 
     # get a list of users
-    printDebug ("Getting user list")
+    log.info("Getting user list")
     jsonData = None
     try:
         jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users/Public?format=json", authenticate=False)
     except Exception, msg:
         error = "Get User unable to connect to " + server_address + ":" + server_port + " : " + str(msg)
-        xbmc.log (error)
+        log.error(error)
         return ""
     
     if(jsonData == False):
         return
 
-    printDebug("jsonData : " + str(jsonData), level=1)
+    log.debug("jsonData : " + str(jsonData))
     result = json.loads(jsonData)
     
     names = []
@@ -1460,13 +1439,13 @@ def checkServer(force=0):
                     name = name + " (Secure)"
                 names.append(name)
 
-    printDebug ("User List : " + str(names))
-    printDebug ("User List : " + str(userList))
+    log.info("User List : " + str(names))
+    log.info("User List : " + str(userList))
     return_value = xbmcgui.Dialog().select(__language__(30200), names)
     
     if(return_value > -1):
         selected_user = userList[return_value]
-        printDebug("Setting Selected User : " + selected_user)
+        log.info("Setting Selected User : " + selected_user)
         if __settings__.getSetting("port") != server_port:
             __settings__.setSetting("port", server_port)
         if __settings__.getSetting("ipaddress") != server_address:        
