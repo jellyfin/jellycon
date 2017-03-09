@@ -8,7 +8,7 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from DownloadUtils import DownloadUtils
+from downloadutils import DownloadUtils
 
 class DataManager():
 

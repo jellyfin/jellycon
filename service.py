@@ -27,8 +27,8 @@ __language__     = __addon__.getLocalizedString
 BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
 
-from WebSocketClient import WebSocketThread
-from DownloadUtils import DownloadUtils
+from websocketclient import WebSocketThread
+from downloadutils import DownloadUtils
 
 downloadUtils = DownloadUtils()
 

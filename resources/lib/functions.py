@@ -50,11 +50,12 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from DownloadUtils import DownloadUtils
-from Utils import PlayUtils
-from ClientInformation import ClientInformation
-from DataManager import DataManager
-import DefaultViews
+from downloadutils import DownloadUtils
+from utils import PlayUtils
+from clientinfo import ClientInformation
+from datamanager import DataManager
+from views import DefaultViews, loadSkinDefaults
+
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -745,7 +746,7 @@ def getContent(url, pluginhandle):
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     
     if(viewType != None and len(viewType) > 0):
-        defaultData = DefaultViews.loadSkinDefaults()
+        defaultData = loadSkinDefaults()
         viewNum = defaultData.get(viewType)
         log.info("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum))
         if viewNum != None and viewNum != "":

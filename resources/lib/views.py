@@ -7,7 +7,7 @@ import xbmcgui
 import xbmcaddon
 import json as json
 import urllib
-from DownloadUtils import DownloadUtils
+from downloadutils import DownloadUtils
 
 def loadSkinDefaults():
 

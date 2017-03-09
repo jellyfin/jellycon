@@ -11,8 +11,8 @@ import threading
 import urllib
 import socket
 import websocket
-from ClientInformation import ClientInformation
-from DownloadUtils import DownloadUtils
+from clientinfo import ClientInformation
+from downloadutils import DownloadUtils
 
 class WebSocketThread(threading.Thread):
 

@@ -9,7 +9,7 @@ import xbmcaddon
 import json
 import threading
 from datetime import datetime
-from DownloadUtils import DownloadUtils
+from downloadutils import DownloadUtils
 import urllib
 import sys
 

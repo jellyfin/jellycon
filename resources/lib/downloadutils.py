@@ -9,7 +9,7 @@ import StringIO
 import gzip
 import sys
 import json as json
-from ClientInformation import ClientInformation
+from clientinfo import ClientInformation
 
 class DownloadUtils():
 
