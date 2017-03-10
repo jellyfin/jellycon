@@ -15,7 +15,7 @@
 			<top>0</top>
 			<width>380</width>
 			<height>500</height>
-			<texture border="40">DialogBack.png</texture>
+			<texture border="40">bg.png</texture>
 		</control>
         
 		<control type="label">
@@ -38,6 +38,8 @@
             <label>Movies</label>
 		</control>      
         <control type="button" id="3010">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
             <left>150</left>
             <top>100</top>
             <width>200</width>
@@ -47,7 +49,7 @@
             <ondown>3011</ondown>
             <font>font14</font>
         </control>
-        
+       
 		<control type="label">
 			<left>30</left>
 			<top>160</top>
@@ -57,6 +59,8 @@
             <label>Box Sets</label>
 		</control>      
         <control type="button" id="3011">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>150</left>
             <top>160</top>
             <width>200</width>
@@ -76,6 +80,8 @@
             <label>Series</label>
 		</control>      
         <control type="button" id="3012">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>150</left>
             <top>220</top>
             <width>200</width>
@@ -95,6 +101,8 @@
             <label>Seasons</label>
 		</control>      
         <control type="button" id="3013">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>150</left>
             <top>280</top>
             <width>200</width>
@@ -114,6 +122,8 @@
             <label>Episodes</label>
 		</control>      
         <control type="button" id="3014">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>150</left>
             <top>340</top>
             <width>200</width>
@@ -125,6 +135,8 @@
         </control>          
         
         <control type="button" id="3110">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>150</left>
             <top>400</top>
             <width>200</width>
@@ -134,7 +146,6 @@
             <ondown>-</ondown>
             <font>font14</font>
         </control>       
-
 
 	</controls>
 </window>

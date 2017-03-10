@@ -118,7 +118,7 @@ def mainEntryPoint():
     elif sys.argv[1] == "delete":
         item_id = sys.argv[2]
         delete(item_id)    
-    elif sys.argv[1] == "setting":
+    elif mode == "setting":
         __settings__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
@@ -128,7 +128,7 @@ def mainEntryPoint():
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.setProperty("force_data_reload", "true")    
         xbmc.executebuiltin("Container.Refresh")    
-    elif sys.argv[1] == "showsetviews":
+    elif mode == "showsetviews":
         showSetViews()
     elif mode == "WIDGET_CONTENT":
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
@@ -592,7 +592,11 @@ def displaySections( pluginhandle, filter=None ):
         
     #All XML entries have been parsed and we are ready to allow the user to browse around.  So end the screen listing.
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-    xbmcplugin.endOfDirectory(pluginhandle,cacheToDisc=False)
+    
+    li = xbmcgui.ListItem("Set Views", path="plugin://plugin.video.embycon/?mode=showsetviews")
+    xbmcplugin.addDirectoryItem(handle=pluginhandle, url="plugin://plugin.video.embycon/?mode=showsetviews", listitem=li, isFolder=False)
+    
+    xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
         
 def remove_html_tags( data ):
     p = re.compile(r'<.*?>')
@@ -1213,7 +1217,7 @@ def getCastList(pluginName, handle, params):
 def showSetViews():
     log.info("showSetViews Called")
        
-    defaultViews = DefaultViews.DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
+    defaultViews = DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
     defaultViews.doModal()
     del defaultViews
         

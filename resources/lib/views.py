@@ -41,13 +41,21 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         
-        # load skin views
-        skin_view_file = os.path.join(xbmc.translatePath('special://skin'), "views.xml")
-        log.info("Loading Skin View List From : " + skin_view_file)
-        if os.path.exists(skin_view_file):
-            data = etree.parse(skin_view_file).getroot()
-            for view in data.iter("view"):
-                self.viewData[view.attrib["id"]] = view.attrib["value"]
+        # load skin views               
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+        addonPath = addonSettings.getAddonInfo('path')
+        skin_view_file = os.path.join(addonPath, "resources", "data", "skin_views.json")
+        log.info("Loading skin views form: " + skin_view_file)
+        dataFile = open(skin_view_file, 'r')
+        jsonData = dataFile.read()
+        dataFile.close()
+        defaultViewData = json.loads(jsonData)                
+        log.info("Loaded skin views: " + str(defaultViewData))
+        skin_used = xbmc.getSkinDir()
+        log.info("Current skin: " + skin_used)
+        skin_views = defaultViewData.get(skin_used, None)
+        log.info("Current skin views: " + str(skin_views))
+        self.viewData = skin_views
         
         # load current default views            
         self.defaultView = loadSkinDefaults()
