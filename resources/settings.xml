@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-	<category label="30014"> <!-- MediaBrowser -->
+	<category label="30014">
 		<setting id="ipaddress" type="text" label="30000" default="&lt;none&gt;" visible="true" enable="true" />
 		<setting id="port" type="text" label="30030" default="8096" visible="true" enable="true" />
         <setting label="Detect Server" type="action" action="RunScript(plugin.video.embycon,check_server)"/>

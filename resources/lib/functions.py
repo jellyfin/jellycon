@@ -230,7 +230,7 @@ def getCollections(detailsString):
         return {}
     
     try:
-        jsonData = downloadUtils.downloadUrl(MB_server + "/mediabrowser/Users/" + userid + "/Items/Root?format=json")
+        jsonData = downloadUtils.downloadUrl(MB_server + "/emby/Users/" + userid + "/Items/Root?format=json")
     except Exception, msg:
         error = "Get connect : " + str(msg)
         log.error(error)
@@ -242,7 +242,7 @@ def getCollections(detailsString):
     parentid = result.get("Id")
     log.info("parentid : " + parentid)
        
-    htmlpath = ("http://%s/mediabrowser/Users/" % MB_server)
+    htmlpath = ("http://%s/emby/Users/" % MB_server)
     jsonData = downloadUtils.downloadUrl(htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
     log.debug("jsonData : " + jsonData)
     collections=[]
@@ -270,24 +270,24 @@ def getCollections(detailsString):
                     'sectype'           : section,
                     'section'           : section,
                     'guiid'             : item.get("Id"),
-                    'path'              : ('/mediabrowser/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
+                    'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
 
             log.info("Title " + Name)
     
     # Add standard nodes
-    collections.append({'title': "All Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "All TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'' , 'guiid':''})
-    collections.append({'title': "Channels", 'sectype' : 'std.channels', 'section' : 'channels' , 'address' : MB_server , 'path' : '/mediabrowser/Channels/' + userid +'&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
-    collections.append({'title': "Recently Added Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMovies") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Recently Added Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentTV") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "In Progress Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "In Progress Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Next Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Shows/NextUp/?Userid=' + userid + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Favorite Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Favorite Shows", 'sectype' : 'std.tvshows', 'section' : 'tvshows'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})    
-    collections.append({'title': "Favorite Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsNotFolder,IsFavorite&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Upcoming TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "BoxSets", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/mediabrowser/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "All Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "All TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'' , 'guiid':''})
+    collections.append({'title': "Channels", 'sectype' : 'std.channels', 'section' : 'channels' , 'address' : MB_server , 'path' : '/emby/Channels/' + userid +'&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
+    collections.append({'title': "Recently Added Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMovies") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Recently Added Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentTV") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "In Progress Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "In Progress Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Next Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Shows/NextUp/?Userid=' + userid + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Favorite Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Favorite Shows", 'sectype' : 'std.tvshows', 'section' : 'tvshows'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})    
+    collections.append({'title': "Favorite Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsNotFolder,IsFavorite&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "Upcoming TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
+    collections.append({'title': "BoxSets", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
        
     return collections
 
@@ -295,7 +295,7 @@ def markWatched(item_id):
     log.info("Mark Item Watched : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
+    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", type="POST")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")  
@@ -305,7 +305,7 @@ def markUnwatched(item_id):
     log.info("Mark Item UnWatched : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/mediabrowser/Users/" + userId + "/PlayedItems/" + item_id
+    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, type="DELETE")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")      
@@ -315,7 +315,7 @@ def markFavorite(item_id):
     log.info("Add item to favourites : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
+    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", type="POST")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
@@ -325,7 +325,7 @@ def unmarkFavorite(item_id):
     log.info("Remove item from favourites : " + item_id)
     userId = downloadUtils.getUserId()
     server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/mediabrowser/Users/" + userId + "/FavoriteItems/" + item_id
+    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, type="DELETE")
     WINDOW = xbmcgui.Window( 10000 )
     WINDOW.setProperty("force_data_reload", "true")    
@@ -336,7 +336,7 @@ def delete (item_id):
     if return_value:
         log.info('Deleting Item : ' + item_id)
         server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-        url = 'http://' + server + '/mediabrowser/Items/' + item_id
+        url = 'http://' + server + '/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(__language__(30052), __language__(30053))
         downloadUtils.downloadUrl(url, type="DELETE")
@@ -587,7 +587,7 @@ def PLAY( url, handle ):
     resume = 0
     
     id = urlParts[1]
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/mediabrowser/Users/" + userid + "/Items/" + id + "?format=json", suppress=False, popup=1 )     
+    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json", suppress=False, popup=1 )     
     result = json.loads(jsonData)
     
     if(autoResume != 0):
@@ -1026,7 +1026,7 @@ def processDirectory(url, results, progress, pluginhandle):
         extraData['mode'] = "GET_CONTENT"
         
         if isFolder == True:
-            u = ('http://' + server + '/mediabrowser/Users/' + 
+            u = ('http://' + server + '/emby/Users/' + 
                 userid + 
                 '/items?ParentId=' + id + 
                 '&IsVirtualUnAired=false&IsMissing=false&Fields=' + 
@@ -1121,7 +1121,7 @@ def getCastList(pluginName, handle, params):
     resume = 0
     
     # get the cast list for an item
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/mediabrowser/Users/" + userid + "/Items/" + params.get("id") + "?format=json", suppress=False, popup=1 )    
+    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + params.get("id") + "?format=json", suppress=False, popup=1 )    
     log.debug("CastList(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 
@@ -1161,7 +1161,7 @@ def getCastList(pluginName, handle, params):
         
         commands = []
         detailsString = getDetailsString()
-        url = "http://" + host + ":" + port + "/mediabrowser/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
+        url = "http://" + host + ":" + port + "/emby/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
         url = urllib.quote(url)
         url = url.replace("PERSON_NAME", baseName)
         pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=GET_CONTENT&url=" + url + ")"
@@ -1201,7 +1201,7 @@ def getWigetContent(pluginName, handle, params):
     userid = downloadUtils.getUserId()
     
     if(type == "recent"):
-        itemsUrl = ("http://" + server + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentId +
+        itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/items?ParentId=" + parentId +
             "&Limit=10"
             "&SortBy=DateCreated"
             "&Fields=Path"
@@ -1214,7 +1214,7 @@ def getWigetContent(pluginName, handle, params):
             "&IsMissing=False"
             "&format=json")
     elif(type == "active"):
-        itemsUrl = ("http://" + server + "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentId +
+        itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/items?ParentId=" + parentId +
             "&Limit=10"
             "&SortBy=DatePlayed"
             "&Fields=Path"
@@ -1351,7 +1351,7 @@ def showParentContent(pluginName, handle, params):
     
     contentUrl = (
         "http://" + server +
-        "/mediabrowser/Users/" + userid + "/items?ParentId=" + parentId +
+        "/emby/Users/" + userid + "/items?ParentId=" + parentId +
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
@@ -1416,7 +1416,7 @@ def checkServer(force=0):
     log.info("Getting user list")
     jsonData = None
     try:
-        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/mediabrowser/Users/Public?format=json", authenticate=False)
+        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/emby/Users/Public?format=json", authenticate=False)
     except Exception, msg:
         error = "Get User unable to connect to " + server_address + ":" + server_port + " : " + str(msg)
         log.error(error)

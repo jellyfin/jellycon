@@ -179,7 +179,7 @@ class WebSocketThread(threading.Thread):
             mb3Host = addonSettings.getSetting('ipaddress')
             mb3Port = addonSettings.getSetting('port')
             
-            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions?DeviceId=" + machineId + "&format=json"
+            url = "http://" + mb3Host + ":" + mb3Port + "/emby/Sessions?DeviceId=" + machineId + "&format=json"
             log.info("Session URL : " + url);
             jsonData = downloadUtils.downloadUrl(url)
             log.info("Session JsonData : " + jsonData)
@@ -188,7 +188,7 @@ class WebSocketThread(threading.Thread):
             sessionId = result[0].get("Id")
             log.info("Session Id : " + str(sessionId))
             
-            url = "http://" + mb3Host + ":" + mb3Port + "/mediabrowser/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play&SupportsMediaControl=True"
+            url = "http://" + mb3Host + ":" + mb3Port + "/emby/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play&SupportsMediaControl=True"
             postData = {}
             postData["Id"] = sessionId;
             postData["PlayableMediaTypes"] = "Video";
@@ -228,7 +228,7 @@ class WebSocketThread(threading.Thread):
                     log.info("Flat Header : " + str(flatHeaders))
                     
                     # Make a call to /System/Info. WebSocketPortNumber is the port hosting the web socket.
-                    webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort) + "/mediabrowser"
+                    webSocketUrl = "ws://" +  mb3Host + ":" + str(wsPort)
                     log.info("WebSocket URL : " + webSocketUrl)
                     self.client = websocket.WebSocketApp(webSocketUrl,
                                                 header = flatHeaders,

@@ -67,7 +67,7 @@ class DownloadUtils():
 
         query = ""
         
-        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (self.server, id, type, index, width, height, imageTag, query)
+        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (self.server, id, type, index, width, height, imageTag, query)
         
         log.debug("getArtwork : " + artwork)
         
@@ -92,9 +92,9 @@ class DownloadUtils():
         
         # test imageTag e3ab56fe27d389446754d0fb04910a34
         
-        artwork = "http://%s/mediabrowser/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s" % (server, id, type, index, width, height, imageTag)
+        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s" % (server, id, type, index, width, height, imageTag)
         '''
-        artwork = ( "http://" + server + "/mediabrowser/Items/" + 
+        artwork = ( "http://" + server + "/emby/Items/" + 
                     str(id) + "/Images/" + type + 
                     "/" + str(index) + 
                     "/" + str(imageTag) + "/original/" + 
@@ -119,7 +119,7 @@ class DownloadUtils():
 
         jsonData = None
         try:
-            jsonData = self.downloadUrl(host + ":" + port + "/mediabrowser/Users/Public?format=json", suppress=True, authenticate=False)
+            jsonData = self.downloadUrl(host + ":" + port + "/emby/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception, msg:
             error = "Get User unable to connect to " + host + ":" + port + " : " + str(msg)
             log.error(error)
@@ -177,7 +177,7 @@ class DownloadUtils():
         if(host == None or host == "" or port == None or port == ""):
             return ""
             
-        url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/mediabrowser/Users/AuthenticateByName?format=json"
+        url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/emby/Users/AuthenticateByName?format=json"
     
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getMachineId()
@@ -218,19 +218,25 @@ class DownloadUtils():
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
 
+        headers = {}
+        headers["Accept-encoding"] = "gzip"
+        headers["Accept-Charset"] = "UTF-8,*"
+        
         if(authenticate == False):
             authString = "MediaBrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}        
+            headers["Authorization"] = authString
+            headers['X-Emby-Authorization'] = authString            
             return headers
         else:
             userid = self.getUserId()
             authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            headers = {"Accept-encoding": "gzip", "Accept-Charset" : "UTF-8,*", "Authorization" : authString}        
+            headers["Authorization"] = authString
+            headers['X-Emby-Authorization'] = authString        
                 
             authToken = self.authenticate()
             if(authToken != ""):
                 headers["X-MediaBrowser-Token"] = authToken
-                    
+            
             log.info("EmbyCon Authentication Header : " + str(headers))
             return headers
     

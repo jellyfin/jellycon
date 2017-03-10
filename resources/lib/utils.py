@@ -47,7 +47,7 @@ class PlayUtils():
         if ("apple.com" in playurl):
           playurl += '?|User-Agent=%s' % USER_AGENT
         if addonSettings.getSetting('playFromStream') == "true":
-          playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/stream?static=true'
+          playurl = 'http://' + server + '/emby/Videos/' + id + '/stream?static=true'
           mediaSources = result.get("MediaSources")
           if(mediaSources != None):
             if mediaSources[0].get('DefaultAudioStreamIndex') != None:
