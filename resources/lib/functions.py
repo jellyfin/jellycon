@@ -257,38 +257,72 @@ def getCollections(detailsString):
         if(item.get("RecursiveItemCount") != "0"):
             Name = (item.get("Name")).encode('utf-8')
             
-            total = str(item.get("RecursiveItemCount"))
-            section = item.get("CollectionType")
-            if (section == None):
-                section = "movies"
             collections.append({
                     'title'             : Name,
                     'address'           : MB_server ,
                     'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
                     'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
                     'poster'            : downloadUtils.getArtwork(item,"Primary") ,
-                    'sectype'           : section,
-                    'section'           : section,
                     'guiid'             : item.get("Id"),
                     'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
 
             log.info("Title " + Name)
     
     # Add standard nodes
-    collections.append({'title': "All Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json' ,'thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "All TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'' , 'guiid':''})
-    collections.append({'title': "Channels", 'sectype' : 'std.channels', 'section' : 'channels' , 'address' : MB_server , 'path' : '/emby/Channels/' + userid +'&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':'' })   
-    collections.append({'title': "Recently Added Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentMovies") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Recently Added Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Limit=' + __settings__.getSetting("numRecentTV") + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "In Progress Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "In Progress Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Next Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Shows/NextUp/?Userid=' + userid + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Favorite Movies", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Favorite Shows", 'sectype' : 'std.tvshows', 'section' : 'tvshows'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})    
-    collections.append({'title': "Favorite Episodes", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&Filters=IsNotFolder,IsFavorite&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "Upcoming TV", 'sectype' : 'std.tvshows', 'section' : 'tvshows' , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-    collections.append({'title': "BoxSets", 'sectype' : 'std.movies', 'section' : 'movies'  , 'address' : MB_server , 'path' : '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json','thumb':'', 'poster':'', 'fanart_image':'', 'guiid':''})
-       
+    itemData = {}
+    itemData['address'] = MB_server
+    itemData['title'] = "All Movies" 
+    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    collections.append(itemData)
+    
+    itemData = {}
+    itemData['address'] = MB_server
+    itemData['title'] = "BoxSets" 
+    itemData['path'] =  '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
+    collections.append(itemData)    
+    
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "All TV" 
+    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
+    collections.append(itemData)    
+
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "Recently Added Movies" 
+    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(itemData)    
+    
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "Recently Added Episodes" 
+    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(itemData) 
+    
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "In Progress Movies" 
+    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(itemData) 
+
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "In Progress Episodes" 
+    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(itemData) 
+
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "Next Episodes" 
+    itemData['path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(itemData)     
+    
+    itemData = {}
+    itemData['address'] = MB_server    
+    itemData['title'] = "Upcoming TV" 
+    itemData['path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(itemData)    
+
     return collections
 
 def markWatched(item_id):
@@ -542,16 +576,16 @@ def displaySections( pluginhandle, filter=None ):
                   'thumb'        : '' }
     
     # Add collections
-    detailsString=getDetailsString()
+    detailsString = getDetailsString()
     collections = getCollections(detailsString)
     for collection in collections:
         details = {'title' : collection.get('title', 'Unknown') }
         path = collection['path']
         extraData['mode'] = "GET_CONTENT"
-        extraData['thumb'] = collection['thumb']
-        extraData['poster'] = collection['poster']
-        extraData['fanart_image'] = collection['fanart_image']
-        extraData['guiid'] = collection['guiid']
+        extraData['thumb'] = collection.get('thumb', '')
+        extraData['poster'] = collection.get('poster', '')
+        extraData['fanart_image'] = collection.get('fanart_image', '')
+        extraData['guiid'] = collection.get('guiid', '')
         s_url = 'http://%s%s' % ( collection['address'], path)
         log.info("addGUIItem:" + str(s_url) + str(details) + str(extraData))
         dirItems.append(addGUIItem(s_url, details, extraData))
