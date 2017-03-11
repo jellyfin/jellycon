@@ -139,6 +139,12 @@ def mainEntryPoint():
         checkServer()
         pluginhandle = int(sys.argv[1])
         showParentContent(sys.argv[0], int(sys.argv[1]), params)
+    elif mode == "SHOW_CONTENT":
+        #plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
+        checkService()
+        checkServer()
+        pluginhandle = int(sys.argv[1])
+        showContent(sys.argv[0], int(sys.argv[1]), params)        
     else:
         
         checkService()
@@ -1444,6 +1450,32 @@ def getWigetContent(pluginName, handle, params):
     
     xbmcplugin.addDirectoryItems(handle, listItems)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+    
+def showContent(pluginName, handle, params):
+    log.info("showContent Called: " + str(params))
+    
+    port = __settings__.getSetting('port')
+    host = __settings__.getSetting('ipaddress')
+    server = host + ":" + port
+    
+    item_type = params.get("item_type")
+    detailsString = getDetailsString()
+    userid = downloadUtils.getUserId()
+    
+    
+    contentUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
+        "?format=json"
+        "&ImageTypeLimit=1"
+        "&IsMissing=False"
+        "&Fields=" + getDetailsString() + ""
+        "&Recursive=true"
+        "&IsVirtualUnaired=false"
+        "&IsMissing=False"
+        "&IncludeItemTypes=" + item_type)    
+
+    log.info("showContent Content Url : " + str(contentUrl))
+    
+    getContent(contentUrl, handle)
     
 def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
