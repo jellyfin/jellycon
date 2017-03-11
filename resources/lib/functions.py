@@ -1228,46 +1228,73 @@ def getWigetContent(pluginName, handle, params):
     host = __settings__.getSetting('ipaddress')
     server = host + ":" + port    
     
-    collectionType = params.get("CollectionType")
     type = params.get("type")
-    parentId = params.get("ParentId")
-    
     if(type == None):
-        log.error("getWigetContent No Type")
+        log.error("getWigetContent type not set")
         return
     
     userid = downloadUtils.getUserId()
     
-    if(type == "recent"):
-        itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/items?ParentId=" + parentId +
-            "&Limit=10"
+    itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
+        "?Limit=20"
+        "&format=json"
+        "&ImageTypeLimit=1"
+        "&IsMissing=False"
+        "&Fields=" + getDetailsString())
+    
+    if(type == "recent_movies"):
+        itemsUrl += ("&Recursive=true"
             "&SortBy=DateCreated"
-            "&Fields=Path"
             "&SortOrder=Descending"
-            "&Filters=IsNotFolder,IsUnplayed"
-            "&IncludeItemTypes=Movie,Episode"
-            "&CollapseBoxSetItems=false"
+            "&Filters=IsUnplayed,IsNotFolder"
             "&IsVirtualUnaired=false"
-            "&Recursive=true"
             "&IsMissing=False"
-            "&format=json")
-    elif(type == "active"):
-        itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/items?ParentId=" + parentId +
-            "&Limit=10"
+            "&IncludeItemTypes=Movie")
+    elif(type == "inprogress_movies"):
+        itemsUrl += ("&Recursive=true"
             "&SortBy=DatePlayed"
-            "&Fields=Path"
             "&SortOrder=Descending"
-            "&Filters=IsResumable,IsNotFolder"
-            "&IncludeItemTypes=Movie,Episode"
-            "&CollapseBoxSetItems=false"
+            "&Filters=IsResumable"
             "&IsVirtualUnaired=false"
-            "&Recursive=true"
             "&IsMissing=False"
-            "&format=json")
-        
+            "&IncludeItemTypes=Movie")
+    elif(type == "random_movies"):
+        itemsUrl += ("&Recursive=true"
+            "&SortBy=Random"
+            "&SortOrder=Descending"
+            "&Filters=IsUnplayed,IsNotFolder"
+            "&IsVirtualUnaired=false"
+            "&IsMissing=False"
+            "&IncludeItemTypes=Movie")                
+    elif(type == "recent_episodes"):
+        itemsUrl += ("&Recursive=true"
+            "&SortBy=DateCreated"
+            "&SortOrder=Descending"
+            "&Filters=IsUnplayed,IsNotFolder"
+            "&IsVirtualUnaired=false"
+            "&IsMissing=False"
+            "&IncludeItemTypes=Episode")
+    elif(type == "inprogress_episodes"):
+        itemsUrl += ("&Recursive=true"
+            "&SortBy=DatePlayed"
+            "&SortOrder=Descending"
+            "&Filters=IsResumable"
+            "&IsVirtualUnaired=false"
+            "&IsMissing=False"
+            "&IncludeItemTypes=Episode")
+    elif(type == "nextup_episodes"):
+        itemsUrl = ("http://" + server + "/emby/Shows/NextUp"
+        "?Limit=20"
+        "&userid=" + userid + ""
+        "&Recursive=true"
+        "&format=json"
+        "&ImageTypeLimit=1"
+        "&Fields=" + getDetailsString())        
+  
+
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
     
-    # get the recent items
+    # get the items
     jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False, popup=1 )
     log.debug("Recent(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
@@ -1280,42 +1307,49 @@ def getWigetContent(pluginName, handle, params):
     listItems = []
     for item in result:
         item_id = item.get("Id")
-
+       
+        '''
         image = ""
         if item.get("Type") == "Episode":
-            '''
-            image_id = item.get("SeriesId")
-            image_tag = item.get("SeriesPrimaryImageTag")
-            if(image_tag != None):
-                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-            '''
+            #image_id = item.get("SeriesId")
+            #image_tag = item.get("SeriesPrimaryImageTag")
+            #if(image_tag != None):
+            #    image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
+            
             image_id = item_id
             imageTags = item.get("ImageTags")
             if(imageTags != None and imageTags.get("Primary") != None):
                 image_tag = imageTags.get("Primary")
                 image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)            
         else:
-            '''
-            image_id = item_id
-            imageTags = item.get("ImageTags")
-            if(imageTags != None and imageTags.get("Primary") != None):
-                image_tag = imageTags.get("Primary")
-                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-            '''
+            #image_id = item_id
+            #imageTags = item.get("ImageTags")
+            #if(imageTags != None and imageTags.get("Primary") != None):
+            #    image_tag = imageTags.get("Primary")
+            #    image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
+
             image_id = item_id
             imageTags = item.get("BackdropImageTags")
             if(imageTags != None and len(imageTags) > 0):
                 image_tag = imageTags[0]
                 image = downloadUtils.imageUrl(image_id, "Backdrop", 0, 400, 400, image_tag)
-            
+        '''
+        
+        image_id = item_id
+        imageTags = item.get("ImageTags")
+        if(imageTags != None and imageTags.get("Primary") != None):
+            image_tag = imageTags.get("Primary")
+            image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)  
+                
         #image = downloadUtils.getArtwork(item, "Primary", width=400, height=400)
-        #fanart = downloadUtils.getArtwork(item, "Backdrop")
-        
-        Duration = str(int(item.get("RunTimeTicks", "0"))/(10000000*60))
-        
+        fanart = downloadUtils.getArtwork(item, "Backdrop")
+               
         name = item.get("Name")
         episodeDetails = ""
         log.debug("WIDGET_DATE_NAME: " + name)
+        
+        title = item.get("Name")
+        tvshowtitle = ""
         
         if(item.get("Type") == "Episode" and item.get("SeriesName") != None):
 
@@ -1323,48 +1357,84 @@ def getWigetContent(pluginName, handle, params):
             tempEpisodeNumber = "0"
             if(item.get("IndexNumber") != None):
                 eppNumber = item.get("IndexNumber")
-                #if eppNumber < 10:
-                #  tempEpisodeNumber = "0" + str(eppNumber)
-                #else:
-                tempEpisodeNumber = str(eppNumber)     
+                if eppNumber < 10:
+                    tempEpisodeNumber = "0" + str(eppNumber)
+                else:
+                    tempEpisodeNumber = str(eppNumber)     
 
             seasonNumber = item.get("ParentIndexNumber")
-            #if seasonNumber < 10:
-            #  tempSeasonNumber = "0" + str(seasonNumber)
-            #else:
-            tempSeasonNumber = str(seasonNumber)                  
+            if seasonNumber < 10:
+                tempSeasonNumber = "0" + str(seasonNumber)
+            else:
+                tempSeasonNumber = str(seasonNumber)                  
                   
-            episodeDetails =  "s" + tempSeasonNumber + "e" + tempEpisodeNumber + " " + name
-            name = item.get("SeriesName")
-        
-        list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image)
-        list_item.setLabel2(episodeDetails)
-        #list_item.setInfo( type="Video", infoLabels={ "year":item.get("ProductionYear"), "duration":str(Duration), "plot":item.get("Overview"), "tvshowtitle":str(seriesName), "premiered":item.get("PremiereDate"), "rating":item.get("CommunityRating") } )
-        #list_item.setProperty('fanart_image',fanart)
+            episodeDetails =  "S" + tempSeasonNumber + "E" + tempEpisodeNumber
+            name = item.get("SeriesName") + " " + episodeDetails
+            tvshowtitle = episodeDetails
+            title = item.get("SeriesName")
+            
+        list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image, offscreen=True)
+        #list_item.setLabel2(episodeDetails)
+        list_item.setInfo( type="Video", infoLabels={ "title": title, "tvshowtitle": tvshowtitle } )
+        list_item.setProperty('fanart_image', fanart)
         
         # add count
         list_item.setProperty("item_index", str(itemCount))
         itemCount = itemCount + 1
 
-        # add progress percent
+        list_item.setProperty('IsPlayable', 'true')
         
+        totalTime = str(int(float(item.get("RunTimeTicks", "0")) / (10000000 * 60)))
+        list_item.setProperty('TotalTime', str(totalTime))
+        
+        # add stream info
+        # Process MediaStreams
+        channels = ''
+        videocodec = ''
+        audiocodec = ''
+        height = ''
+        width = ''
+        aspectratio = '1:1'
+        aspectfloat = 0.0
+        mediaStreams = item.get("MediaStreams")
+        if(mediaStreams != None):
+            for mediaStream in mediaStreams:
+                if(mediaStream.get("Type") == "Video"):
+                    videocodec = mediaStream.get("Codec")
+                    height = str(mediaStream.get("Height"))
+                    width = str(mediaStream.get("Width"))
+                    aspectratio = mediaStream.get("AspectRatio")
+                    if aspectratio != None and len(aspectratio) >= 3:
+                        try:
+                            aspectwidth,aspectheight = aspectratio.split(':')
+                            aspectfloat = float(aspectwidth) / float(aspectheight)
+                        except:
+                            aspectfloat = 1.85
+                if(mediaStream.get("Type") == "Audio"):
+                    audiocodec = mediaStream.get("Codec")
+                    channels = mediaStream.get("Channels")
+                    
+        list_item.addStreamInfo('video', {'duration': str(totalTime), 'aspect': str(aspectratio), 'codec': str(videocodec), 'width' : str(width), 'height' : str(height)})
+        list_item.addStreamInfo('audio', {'codec': str(audiocodec),'channels': str(channels)})     
+        
+        # add progress percent
         userData = item.get("UserData")
-        PlaybackPositionTicks = '100'
-        overlay = "0"
-        favorite = "false"
-        seekTime = 0
         if(userData != None):
             playBackTicks = float(userData.get("PlaybackPositionTicks"))
             if(playBackTicks != None and playBackTicks > 0):
                 runTimeTicks = float(item.get("RunTimeTicks", "0"))
                 if(runTimeTicks > 0):
+                
+                    playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
+                    list_item.setProperty('ResumeTime', str(playBackPos))
+                
                     percentage = int((playBackTicks / runTimeTicks) * 100.0)
-                    cappedPercentage = percentage - (percentage % 10)
-                    if(cappedPercentage == 0):
-                        cappedPercentage = 10
-                    if(cappedPercentage == 100):
-                        cappedPercentage = 90
-                    list_item.setProperty("complete_percentage", str(cappedPercentage))
+                    #cappedPercentage = percentage - (percentage % 10)
+                    #if(cappedPercentage == 0):
+                    #    cappedPercentage = 10
+                    #if(cappedPercentage == 100):
+                    #    cappedPercentage = 90
+                    list_item.setProperty("complete_percentage", str(percentage))
                 
         url =  server + ',;' + item_id
         playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
