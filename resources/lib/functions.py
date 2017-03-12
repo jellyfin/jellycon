@@ -84,13 +84,24 @@ def mainEntryPoint():
     log.info("EmbyCon -> running Python: " + str(sys.version_info))
     log.info("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
     log.info(xbmc.getInfoLabel( "System.BuildVersion" ))
-    log.info( "EmbyCon -> Script argument date " + str(sys.argv))
+    log.info( "EmbyCon -> Script argument data " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
     except:
         params = {}
-        
+    
+    if(len(params) == 0):
+        WINDOW = xbmcgui.Window( 10000 )
+        windowParams = WINDOW.getProperty("EmbyConParams")
+        log.info("windowParams : " + windowParams)
+        #WINDOW.clearProperty("EmbyConParams")
+        if(windowParams):
+            try:
+                params = get_params(windowParams)
+            except:
+                params = {}    
+    
     log.info("EmbyCon -> Script params = " + str(params))
 
     param_url = params.get('url', None)
