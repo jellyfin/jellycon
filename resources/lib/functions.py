@@ -34,7 +34,8 @@ import time
 import inspect
 import base64
 import random
-import datetime
+from datetime import datetime
+from datetime import timedelta
 from urlparse import urlparse
 import cProfile
 import pstats
@@ -384,7 +385,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     elif url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        u = sys.argv[0] + "?url=" + url + '&mode=PLAY'
+        u = sys.argv[0] + "?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -628,7 +629,7 @@ def PLAY( url, handle ):
         if userData.get("PlaybackPositionTicks") != 0:
             reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
             seekTime = reasonableTicks / 10000
-            displayTime = str(datetime.timedelta(seconds=seekTime))
+            displayTime = str(timedelta(seconds=seekTime))
             display_list = [ "Resume from " + displayTime, "Start from beginning"]
             resumeScreen = xbmcgui.Dialog()
             resume_result = resumeScreen.select('Resume', display_list)
@@ -1425,7 +1426,7 @@ def getWigetContent(pluginName, handle, params):
                     list_item.setProperty("complete_percentage", str(percentage))
                 
         url =  server + ',;' + item_id
-        playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
+        playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
         
         itemTupple = (playUrl, list_item, False)
         listItems.append(itemTupple)
