@@ -55,6 +55,7 @@ from utils import PlayUtils
 from clientinfo import ClientInformation
 from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
+from server_detect import checkServer
 
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -112,8 +113,8 @@ def mainEntryPoint():
     mode = params.get("mode", None)
     WINDOW = xbmcgui.Window( 10000 )
 
-    if sys.argv[1] == "check_server":
-        checkServer(1)
+    if mode == "CHANGE_USER":
+        checkServer(True)
     elif sys.argv[1] == "markWatched":
         item_id = sys.argv[2]
         markWatched(item_id)
@@ -139,7 +140,7 @@ def mainEntryPoint():
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.setProperty("force_data_reload", "true")    
         xbmc.executebuiltin("Container.Refresh")    
-    elif mode == "showsetviews":
+    elif mode == "SET_DEFAULT_VIEWS":
         showSetViews()
     elif mode == "WIDGET_CONTENT":
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
@@ -202,39 +203,6 @@ def mainEntryPoint():
         f.close()    
 
     log.info("===== EmbyCon FINISHED =====")
-
-def getServerDetails():
-
-    log.info("Getting Server Details from Network")
-
-    MESSAGE = "who is EmbyServer?"
-    MULTI_GROUP = ("<broadcast>", 7359)
-    
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(6.0)
-    
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 5)
-    
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
-    sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
-    
-    log.info("MutliGroup       : " + str(MULTI_GROUP));
-    log.info("Sending UDP Data : " + MESSAGE);
-    sock.sendto(MESSAGE, MULTI_GROUP)
-
-    servers = []
-    
-    while True:
-        try:
-            data, addr = sock.recvfrom(1024) # buffer size
-            servers.append(json.loads(data))       
-        except Exception as e:
-            log.error("Read UPD responce: %s" % e)
-            break        
-
-    log.info("Found Servers: %s" % servers)
-    return servers
    
 def getCollections(detailsString):
     log.info("== ENTER: getCollections ==")
@@ -483,6 +451,8 @@ def addGUIItem( url, details, extraData, folder=True ):
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))
             list.setProperty('ResumeTime', str(int(extraData.get('resumetime')) / 60))
+    
+    #StartPercent
     
     artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape']
     
@@ -1535,74 +1505,3 @@ def checkService():
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
         
-def checkServer(force=0):
-    log.info("EmbyCon checkServer Called")
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    
-    if(force == 0 and len(host) != 0 and host != "<none>"):
-        log.info("EmbyCon server already set")
-        return
-    
-    serverInfo = getServerDetails()
-    
-    if(len(serverInfo) == 0):
-        log.info("EmbyCon getServerDetails failed")
-        return
-        
-    index = serverInfo.find(":")
-    
-    if(index <= 0):
-        log.error("EmbyCon getServerDetails data not correct : " + serverInfo)
-        return
-    
-    server_address = serverInfo[:index]
-    server_port = serverInfo[index+1:]
-    log.info("EmbyCon detected server info " + server_address + " : " + server_port)
-    
-    xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
-
-    # get a list of users
-    log.info("Getting user list")
-    jsonData = None
-    try:
-        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/emby/Users/Public?format=json", authenticate=False)
-    except Exception, msg:
-        error = "Get User unable to connect to " + server_address + ":" + server_port + " : " + str(msg)
-        log.error(error)
-        return ""
-    
-    if(jsonData == False):
-        return
-
-    log.debug("jsonData : " + str(jsonData))
-    result = json.loads(jsonData)
-    
-    names = []
-    userList = []
-    for user in result:
-        config = user.get("Configuration")
-        if(config != None):
-            if(config.get("IsHidden") == None or config.get("IsHidden") == False):
-                name = user.get("Name")
-                userList.append(name)
-                if(user.get("HasPassword") == True):
-                    name = name + " (Secure)"
-                names.append(name)
-
-    log.info("User List : " + str(names))
-    log.info("User List : " + str(userList))
-    return_value = xbmcgui.Dialog().select(__language__(30200), names)
-    
-    if(return_value > -1):
-        selected_user = userList[return_value]
-        log.info("Setting Selected User : " + selected_user)
-        if __settings__.getSetting("port") != server_port:
-            __settings__.setSetting("port", server_port)
-        if __settings__.getSetting("ipaddress") != server_address:        
-            __settings__.setSetting("ipaddress", server_address)        
-        if __settings__.getSetting("username") != selected_user:          
-            __settings__.setSetting("username", selected_user)
-            
-         
