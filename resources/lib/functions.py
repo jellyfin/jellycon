@@ -1290,6 +1290,7 @@ def getWigetContent(pluginName, handle, params):
     if(result == None):
         result = []   
 
+    image = ""
     itemCount = 1
     listItems = []
     for item in result:

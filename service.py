@@ -43,11 +43,10 @@ try:
 except Exception, e:
     pass
 
-# start some worker threads
 newWebSocketThread = WebSocketThread()
+newWebSocketThread.setDaemon(True)
 newWebSocketThread.start()
-
-              
+    
 def hasData(data):
     if(data == None or len(data) == 0 or data == "None"):
         return False
@@ -124,24 +123,26 @@ class Service( xbmc.Player ):
 
 monitor = Service()
 lastProgressUpdate = datetime.today()
-
+            
 while not xbmc.abortRequested:
+    
     if xbmc.Player().isPlaying():
         try:
-        
-            playTime = xbmc.Player().getTime()
-            currentFile = xbmc.Player().getPlayingFile()
-            
-            if(monitor.played_information.get(currentFile) != None):
-                monitor.played_information[currentFile]["currentPossition"] = playTime
-            
             # send update
             td = datetime.today() - lastProgressUpdate
             secDiff = td.seconds
             if(secDiff > 5):
+            
+                playTime = xbmc.Player().getTime()
+                currentFile = xbmc.Player().getPlayingFile()
+                
+                if(monitor.played_information.get(currentFile) != None):
+                    monitor.played_information[currentFile]["currentPossition"] = playTime            
+            
                 if(monitor.played_information.get(currentFile) != None and monitor.played_information.get(currentFile).get("item_id") != None):
                     item_id =  monitor.played_information.get(currentFile).get("item_id")
                     newWebSocketThread.sendProgressUpdate(item_id, str(int(playTime * 10000000)))
+                    
                 lastProgressUpdate = datetime.today()
             
         except Exception, e:

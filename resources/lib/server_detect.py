@@ -117,9 +117,6 @@ def checkServer(force = False):
     return_value = xbmcgui.Dialog().select(__language__(30200), names)
     
     if(return_value > -1):
-    
-        WINDOW = xbmcgui.Window( 10000 )
-        userid = WINDOW.clearProperty("userid")
         
         selected_user = userList[return_value]
         log.info("Setting Selected User : " + selected_user)
@@ -129,6 +126,11 @@ def checkServer(force = False):
             __settings__.setSetting("ipaddress", server_address)        
         if __settings__.getSetting("username") != selected_user:          
             __settings__.setSetting("username", selected_user)
+        
+        WINDOW = xbmcgui.Window( 10000 )
+        WINDOW.clearProperty("userid")
+        WINDOW.clearProperty("AccessToken")
 
     xbmc.executebuiltin("ActivateWindow(Home)")
+    xbmc.executebuiltin("XBMC.ReloadSkin()")
                 
