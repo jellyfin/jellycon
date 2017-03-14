@@ -57,6 +57,7 @@ from clientinfo import ClientInformation
 from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
+from resume_dialog import ResumeDialog
 
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -630,9 +631,15 @@ def PLAY( url, handle ):
             reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
             seekTime = reasonableTicks / 10000
             displayTime = str(timedelta(seconds=seekTime))
-            display_list = [ "Resume from " + displayTime, "Start from beginning"]
-            resumeScreen = xbmcgui.Dialog()
-            resume_result = resumeScreen.select('Resume', display_list)
+            
+            resumeDialog = ResumeDialog("ResumeDialog.xml", __cwd__, "default", "720p")
+            resumeDialog.setResumeTime("Resume from " + displayTime)
+            resumeDialog.doModal()
+            resume_result = resumeDialog.getResumeAction()
+            del resumeDialog
+            
+            log.info("Resume Dialog Result: " + str(resume_result))
+            
             if resume_result == -1:
                 return
     
