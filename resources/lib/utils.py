@@ -9,21 +9,23 @@ import xbmcaddon
 import json
 import threading
 from datetime import datetime
-from DownloadUtils import DownloadUtils
+from downloadutils import DownloadUtils
 import urllib
 import sys
+import logging
 
 #define our global download utils
 downloadUtils = DownloadUtils()
+log = logging.getLogger("EmbyCon." + __name__)
 
 ###########################################################################
 class PlayUtils():
 
     def getPlayUrl(self, server, id, result):
     
-      addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+      addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
       # if the path is local and depending on the video quality play we can direct play it do so-
-      xbmc.log("MBCon getPlayUrl")
+      log.info("EmbyCon getPlayUrl")
 
       playurl = result.get("Path")
       if playurl != None:
@@ -45,7 +47,7 @@ class PlayUtils():
         if ("apple.com" in playurl):
           playurl += '?|User-Agent=%s' % USER_AGENT
         if addonSettings.getSetting('playFromStream') == "true":
-          playurl = 'http://' + server + '/mediabrowser/Videos/' + id + '/stream?static=true'
+          playurl = 'http://' + server + '/emby/Videos/' + id + '/stream?static=true'
           mediaSources = result.get("MediaSources")
           if(mediaSources != None):
             if mediaSources[0].get('DefaultAudioStreamIndex') != None:
@@ -71,20 +73,20 @@ class PlayUtils():
         if(mediaSources != None):
           if mediaSources[0].get('Bitrate') != None:
              if settingsVideoBitRate < int(mediaSources[0].get('Bitrate')):
-               xbmc.log("MBCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
+               log.info("EmbyCon isNetworkQualitySufficient -> FALSE bit rate - settingsVideoBitRate: " + str(settingsVideoBitRate) + " mediasource bitrate: " + str(mediaSources[0].get('Bitrate')))   
                return False
              else:
-               xbmc.log("MBCon isNetworkQualitySufficient -> TRUE bit rate")   
+               log.info("EmbyCon isNetworkQualitySufficient -> TRUE bit rate")   
                return True
            
         # Any thing else is ok
-        xbmc.log("MBCon isNetworkQualitySufficient -> TRUE default")
+        log.info("EmbyCon isNetworkQualitySufficient -> TRUE default")
         return True
       
        
     # get the addon video quality
     def getVideoBitRate(self):
-        addonSettings = xbmcaddon.Addon(id='plugin.video.mbcon')
+        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         videoQuality = addonSettings.getSetting('videoBitRate')  
         if (videoQuality == "0"):
             return '664'

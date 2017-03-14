@@ -9,7 +9,7 @@
     <string id="30008">Samba Password: </string>
     <string id="30010">Enable performance profiling</string>
 
-    <string id="30014">MediaBrowser</string>
+    <string id="30014">EmbyCon</string>
     <string id="30015">Network</string>    
     <string id="30016">Device Name</string>        
 
@@ -36,7 +36,7 @@
     <string id="30128">Play Error</string>
     <string id="30129">This item is not playable</string>    
     <string id="30135">Error</string>
-    <string id="30136">MBCon service is not running</string>
+    <string id="30136">EmbyCon service is not running</string>
     <string id="30137">Please restart XBMC</string>
        
     <string id="30150">Skin does not support setting views</string>

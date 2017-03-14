@@ -20,19 +20,27 @@
 '''
 
 import os
+import logging
 
 import xbmcplugin
 import xbmcgui
 import xbmcaddon
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.mbcon')
-__cwd__ = __settings__.getAddonInfo('path')
-BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) )
+addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+addonPath = addonSettings.getAddonInfo('path')
+BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( addonPath, 'resources', 'lib' ) )
 sys.path.append(BASE_RESOURCE_PATH)
 
-import Functions
+import loghandler
+import functions
 
-Functions.mainEntryPoint()
+log_level = addonSettings.getSetting('logLevel')  
+loghandler.config(int(log_level))
+log = logging.getLogger("EmbyCon.default")
+
+log.info("About to enter mainEntryPoint()")
+
+functions.mainEntryPoint()
     
 #clear done and exit.
 #sys.modules.clear()
