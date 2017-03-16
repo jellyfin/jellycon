@@ -18,32 +18,18 @@
     This software is derived form the XBMB3C addon
     
 '''
-#import ptvsd
 
 import logging
-import struct
 import urllib
-import glob
 import re
-import hashlib
-import httplib
-import socket
 import sys
 import os
 import time
-import inspect
-import base64
-import random
 from datetime import datetime
 from datetime import timedelta
 from urlparse import urlparse
 import cProfile
 import pstats
-import threading
-import hashlib
-import StringIO
-import gzip
-import xml.etree.ElementTree as etree
 import json as json
 
 import xbmcplugin
@@ -132,7 +118,7 @@ def mainEntryPoint():
     elif sys.argv[1] == "delete":
         item_id = sys.argv[2]
         delete(item_id)    
-    elif mode == "setting":
+    elif mode == "SHOW_SETTINGS":
         __settings__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
@@ -147,18 +133,14 @@ def mainEntryPoint():
     elif mode == "WIDGET_CONTENT":
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
-        #ptvsd.enable_attach(secret = "shaun")
-        #ptvsd.wait_for_attach()
         checkService()
         checkServer()
-        pluginhandle = int(sys.argv[1])
         showParentContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "SHOW_CONTENT":
         #plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
         checkService()
         checkServer()
-        pluginhandle = int(sys.argv[1])
-        showContent(sys.argv[0], int(sys.argv[1]), params)        
+        showContent(sys.argv[0], int(sys.argv[1]), params)
     else:
         
         checkService()
@@ -180,7 +162,7 @@ def mainEntryPoint():
         elif mode == "PLAY":
             PLAY(param_url, pluginhandle)
         else:
-            displaySections(pluginhandle)
+            displaySections()
 
     WINDOW = xbmcgui.Window( 10000 )
     #WINDOW.clearProperty("MB3.Background.Item.FanArt")
@@ -209,19 +191,19 @@ def mainEntryPoint():
 def getCollections(detailsString):
     log.info("== ENTER: getCollections ==")
     
-    MB_server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
 
     userid = downloadUtils.getUserId()
     
     if(userid == None or len(userid) == 0):
-        return {}
+        return []
     
     try:
-        jsonData = downloadUtils.downloadUrl(MB_server + "/emby/Users/" + userid + "/Items/Root?format=json")
+        jsonData = downloadUtils.downloadUrl(server + "/emby/Users/" + userid + "/Items/Root?format=json")
     except Exception, msg:
         error = "Get connect : " + str(msg)
         log.error(error)
-        return {}        
+        return []
     
     log.debug("jsonData : " + jsonData)
     result = json.loads(jsonData)
@@ -229,86 +211,86 @@ def getCollections(detailsString):
     parentid = result.get("Id")
     log.info("parentid : " + parentid)
        
-    htmlpath = ("http://%s/emby/Users/" % MB_server)
+    htmlpath = ("http://%s/emby/Users/" % server)
     jsonData = downloadUtils.downloadUrl(htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
     log.debug("jsonData : " + jsonData)
     collections=[]
 
-    if jsonData is False:
-        return {}
-
-    result = json.loads(jsonData)
-    result = result.get("Items")
+    result = []
+    try:
+        result = json.loads(jsonData)
+        result = result.get("Items")
+    except:
+        pass
     
     for item in result:
-        if(item.get("RecursiveItemCount") != "0"):
-            Name = (item.get("Name")).encode('utf-8')
-            
-            collections.append({
-                    'title'             : Name,
-                    'address'           : MB_server ,
-                    'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
-                    'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
-                    'poster'            : downloadUtils.getArtwork(item,"Primary") ,
-                    'guiid'             : item.get("Id"),
-                    'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
+        item_name = (item.get("Name")).encode('utf-8')
 
-            log.info("Title " + Name)
+        collections.append({
+                'title'             : item_name,
+                'address'           : server ,
+                #'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
+                #'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
+                #'poster'            : downloadUtils.getArtwork(item,"Primary") ,
+                #'guiid'             : item.get("Id"),
+                'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
+
+        log.info("Title: " + item_name)
     
     # Add standard nodes
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "All Movies" 
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "All Movies"
+    item_data['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
     
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "BoxSets" 
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
-    collections.append(itemData)    
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "BoxSets"
+    item_data['path'] =  '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
     
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "All TV" 
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
-    collections.append(itemData)    
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "All TV"
+    item_data['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
 
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "Recently Added Movies" 
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(itemData)    
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Recently Added Movies"
+    item_data['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
     
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "Recently Added Episodes" 
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData) 
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Recently Added Episodes"
+    item_data['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
     
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "In Progress Movies" 
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(itemData) 
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "In Progress Movies"
+    item_data['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
 
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "In Progress Episodes" 
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData) 
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "In Progress Episodes"
+    item_data['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
 
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "Next Episodes" 
-    itemData['path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)     
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Next Episodes"
+    item_data['path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
     
-    itemData = {}
-    itemData['address'] = MB_server    
-    itemData['title'] = "Upcoming TV" 
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)    
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Upcoming TV"
+    item_data['path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
 
     return collections
 
@@ -381,9 +363,7 @@ def addGUIItem( url, details, extraData, folder=True ):
         mode="&mode=%s" % extraData['mode']
     
     #Create the URL to pass to the item
-    if 'SETVIEWS' in url:
-        u = sys.argv[0] + "?url=" + url + '&mode=SETVIEWS'
-    elif url.startswith('http'):
+    if url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
         u = sys.argv[0] + "?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
@@ -554,39 +534,31 @@ def getDetailsString():
     #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
     return detailsString
     
-def displaySections( pluginhandle, filter=None ):
+def displaySections():
     log.info("== ENTER: displaySections() ==")
-    xbmcplugin.setContent(pluginhandle, 'files')
+    xbmcplugin.setContent(int(sys.argv[1]), 'files')
 
-    dirItems = []
-    userid = downloadUtils.getUserId()  
-    extraData = { 'fanart_image' : '' ,
-                  'type'         : "Video" ,
-                  'thumb'        : '' }
-    
     # Add collections
     detailsString = getDetailsString()
     collections = getCollections(detailsString)
     for collection in collections:
-        details = {'title' : collection.get('title', 'Unknown') }
-        path = collection['path']
-        extraData['mode'] = "GET_CONTENT"
-        extraData['thumb'] = collection.get('thumb', '')
-        extraData['poster'] = collection.get('poster', '')
-        extraData['fanart_image'] = collection.get('fanart_image', '')
-        extraData['guiid'] = collection.get('guiid', '')
-        s_url = 'http://%s%s' % ( collection['address'], path)
-        log.info("addGUIItem:" + str(s_url) + str(details) + str(extraData))
-        dirItems.append(addGUIItem(s_url, details, extraData))
-        
-    #All XML entries have been parsed and we are ready to allow the user to browse around.  So end the screen listing.
-    xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-    
-    li = xbmcgui.ListItem("Set Views", path="plugin://plugin.video.embycon/?mode=showsetviews")
-    xbmcplugin.addDirectoryItem(handle=pluginhandle, url="plugin://plugin.video.embycon/?mode=showsetviews", listitem=li, isFolder=False)
-    
-    xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
-        
+        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
+        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
+
+    addMenuDirectoryItem("Change User", "plugin://plugin.video.embycon/?mode=CHANGE_USER")
+    addMenuDirectoryItem("Show Settings", "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem("Set Default Views", "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def addMenuDirectoryItem(label, path, folder=True):
+    li = xbmcgui.ListItem(label, path=path)
+    #li.setThumbnailImage("special://home/addons/plugin.video.emby/icon.png")
+    #li.setArt({"fanart":"special://home/addons/plugin.video.emby/fanart.jpg"})
+    #li.setArt({"landscape":"special://home/addons/plugin.video.emby/fanart.jpg"})
+    xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
+
 def remove_html_tags( data ):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
