@@ -31,6 +31,7 @@ from urlparse import urlparse
 import cProfile
 import pstats
 import json as json
+import StringIO
 
 import xbmcplugin
 import xbmcgui
@@ -62,12 +63,13 @@ def mainEntryPoint():
    
     log.info("===== EmbyCon START =====")
     
-    ProfileCode = __settings__.getSetting('profile') == "true"
-
-    if(ProfileCode):
-        xbmcgui.Dialog().ok("Profiling Enabled", "Remember to turn off when you have finished testing")
-        pr = cProfile.Profile()
-        pr.enable()
+    profile_code = __settings__.getSetting('profile') == "true"
+    pr = None
+    if(profile_code):
+        return_value = xbmcgui.Dialog().yesno("Profiling Enabled", "Do you want to run profiling?")
+        if return_value:
+            pr = cProfile.Profile()
+            pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
     log.info("EmbyCon -> running Python: " + str(sys.version_info))
@@ -169,13 +171,25 @@ def mainEntryPoint():
     
     dataManager.canRefreshNow = True
     
-    if(ProfileCode):
+    if(pr):
         pr.disable()
-        ps = pstats.Stats(pr)
-        
+
+
         fileTimeStamp = time.strftime("%Y-%m-%d %H-%M-%S")
-        tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").tab"
+        tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").txt"
         f = open(tabFileName, 'wb')
+
+        s = StringIO.StringIO()
+        ps = pstats.Stats(pr, stream=s)
+        ps = ps.sort_stats('cumulative')
+        ps.print_stats()
+        ps.strip_dirs()
+        ps = ps.sort_stats('cumulative')
+        ps.print_stats()
+        f.write(s.getvalue())
+
+        '''
+        ps = pstats.Stats(pr)
         f.write("NumbCalls\tTotalTime\tCumulativeTime\tFunctionName\tFileName\r\n")
         for (key, value) in ps.stats.items():
             (filename, count, func_name) = key
@@ -184,7 +198,9 @@ def mainEntryPoint():
                 f.write(str(ncalls) + "\t" + "{:10.4f}".format(total_time) + "\t" + "{:10.4f}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
             except ValueError:
                 f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-        f.close()    
+        '''
+
+        f.close()
 
     log.info("===== EmbyCon FINISHED =====")
    
