@@ -7,10 +7,10 @@ import xbmcgui
 import xbmcaddon
 import json as json
 import urllib
-import logging
 from downloadutils import DownloadUtils
+from simple_logging import SimpleLogging
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 def loadSkinDefaults():
 

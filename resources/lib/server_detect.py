@@ -1,6 +1,5 @@
 
 
-import logging
 import socket
 import json as json
 from urlparse import urlparse
@@ -10,8 +9,10 @@ import xbmcgui
 import xbmc
 
 from downloadutils import DownloadUtils
+from simple_logging import SimpleLogging
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
+
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __language__ = __settings__.getLocalizedString
 downloadUtils = DownloadUtils()

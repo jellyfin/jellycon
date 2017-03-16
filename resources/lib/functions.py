@@ -19,7 +19,6 @@
     
 '''
 
-import logging
 import urllib
 import re
 import sys
@@ -45,7 +44,7 @@ from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
 from resume_dialog import ResumeDialog
-
+from simple_logging import SimpleLogging
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -54,7 +53,7 @@ __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
 __cwd__ = __settings__.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join( __cwd__))
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 downloadUtils = DownloadUtils()
 dataManager = DataManager()

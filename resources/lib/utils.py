@@ -12,11 +12,11 @@ from datetime import datetime
 from downloadutils import DownloadUtils
 import urllib
 import sys
-import logging
+from simple_logging import SimpleLogging
 
 #define our global download utils
 downloadUtils = DownloadUtils()
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 ###########################################################################
 class PlayUtils():

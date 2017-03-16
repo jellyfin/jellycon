@@ -4,9 +4,10 @@ import sys
 import xbmc
 import xbmcgui
 import xbmcaddon
-import logging
 
-log = logging.getLogger("EmbyCon." + __name__)
+from simple_logging import SimpleLogging
+
+log = SimpleLogging("EmbyCon." + __name__)
 
 class ResumeDialog(xbmcgui.WindowXMLDialog):
 

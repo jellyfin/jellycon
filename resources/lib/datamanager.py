@@ -2,7 +2,6 @@ import hashlib
 import os
 import threading
 import json as json
-import logging
 
 import xbmcplugin
 import xbmcgui
@@ -10,8 +9,9 @@ import xbmcaddon
 import xbmc
 
 from downloadutils import DownloadUtils
+from simple_logging import SimpleLogging
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 class DataManager():
 

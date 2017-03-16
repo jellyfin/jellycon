@@ -9,10 +9,10 @@ import StringIO
 import gzip
 import sys
 import json as json
-import logging
 from clientinfo import ClientInformation
+from simple_logging import SimpleLogging
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 class DownloadUtils():
 

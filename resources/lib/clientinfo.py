@@ -1,10 +1,11 @@
 from uuid import uuid4 as uuid4
-import logging
 import xbmcaddon
 import xbmc
 import xbmcgui
 
-log = logging.getLogger("EmbyCon." + __name__)
+from simple_logging import SimpleLogging
+
+log = SimpleLogging("EmbyCon." + __name__)
 
 class ClientInformation():
 

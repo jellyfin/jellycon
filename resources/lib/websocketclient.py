@@ -11,12 +11,12 @@ import threading
 import urllib
 import socket
 import websocket
-import logging
 
 from clientinfo import ClientInformation
 from downloadutils import DownloadUtils
+from simple_logging import SimpleLogging
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging("EmbyCon." + __name__)
 
 class WebSocketThread(threading.Thread):
 
