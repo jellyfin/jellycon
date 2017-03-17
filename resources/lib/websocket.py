@@ -42,9 +42,10 @@ import hashlib
 import base64
 import threading
 import time
-import logging
 import traceback
 import sys
+
+from simple_logging import SimpleLogging
 
 """
 websocket python client.
@@ -72,8 +73,7 @@ STATUS_INVALID_EXTENSION = 1010
 STATUS_UNEXPECTED_CONDITION = 1011
 STATUS_TLS_HANDSHAKE_ERROR = 1015
 
-logger = logging.getLogger("EmbyCon." + __name__)
-
+logger = SimpleLogging("EmbyCon." + __name__)
 
 class WebSocketException(Exception):
     """
@@ -96,22 +96,6 @@ class WebSocketTimeoutException(WebSocketException):
     pass
 
 default_timeout = None
-traceEnabled = False
-
-
-def enableTrace(tracable):
-    """
-    turn on/off the tracability.
-
-    tracable: boolean value. if set True, tracability is enabled.
-    """
-    global traceEnabled
-    traceEnabled = tracable
-    #if tracable:
-    #    if not logger.handlers:
-    #        logger.addHandler(logging.StreamHandler())
-    #    logger.setLevel(logging.DEBUG)
-
 
 def setdefaulttimeout(timeout):
     """
@@ -482,10 +466,10 @@ class WebSocket(object):
 
         header_str = "\r\n".join(headers)
         self._send(header_str)
-        if traceEnabled:
-            logger.debug("--- request header ---")
-            logger.debug(header_str)
-            logger.debug("-----------------------")
+
+        logger.debug("--- request header ---")
+        logger.debug(header_str)
+        logger.debug("-----------------------")
 
         status, resp_headers = self._read_headers()
         if status != 101:
@@ -520,16 +504,14 @@ class WebSocket(object):
     def _read_headers(self):
         status = None
         headers = {}
-        if traceEnabled:
-            logger.debug("--- response header ---")
+        logger.debug("--- response header ---")
 
         while True:
             line = self._recv_line()
             if line == "\r\n":
                 break
             line = line.strip()
-            if traceEnabled:
-                logger.debug(line)
+            logger.debug(line)
             if not status:
                 status_info = line.split(" ", 2)
                 status = int(status_info[1])
@@ -541,8 +523,7 @@ class WebSocket(object):
                 else:
                     raise WebSocketException("Invalid header")
 
-        if traceEnabled:
-            logger.debug("-----------------------")
+        logger.debug("-----------------------")
 
         return status, headers
 
@@ -561,8 +542,7 @@ class WebSocket(object):
             frame.get_mask_key = self.get_mask_key
         data = frame.format()
         length = len(data)
-        if traceEnabled:
-            logger.debug("send: " + repr(data))
+        logger.debug("send: " + repr(data))
         while data:
             l = self._send(data)
             data = data[l:]
@@ -811,6 +791,10 @@ class WebSocketApp(object):
         self.keep_running = keep_running
         self.get_mask_key = get_mask_key
         self.sock = None
+        self.timout = 30
+
+    def setTimeout(self, to):
+        self.timout = to
 
     def send(self, data, opcode=ABNF.OPCODE_TEXT):
         """
@@ -857,7 +841,7 @@ class WebSocketApp(object):
 
         try:
             self.sock = WebSocket(self.get_mask_key, sockopt=sockopt, sslopt=sslopt)
-            self.sock.settimeout(default_timeout)
+            self.sock.settimeout(self.timout)
             self.sock.connect(self.url, header=self.header)
             self._callback(self.on_open)
 
@@ -895,13 +879,12 @@ class WebSocketApp(object):
                 callback(self, *args)
             except Exception, e:
                 logger.error(e)
-                if logger.isEnabledFor(logging.DEBUG):
+                if logger.getLevel() == 2:
                     _, _, tb = sys.exc_info()
                     traceback.print_tb(tb)
 
 
 if __name__ == "__main__":
-    enableTrace(True)
     ws = create_connection("ws://echo.websocket.org/")
     print("Sending 'Hello, World'...")
     ws.send("Hello, World")

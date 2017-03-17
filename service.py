@@ -1,40 +1,15 @@
+# Gnu General Public License - see LICENSE.TXT
+
 import xbmc
 import xbmcgui
-import xbmcaddon
-import urllib
-import httplib
-import os
 import time
-import socket
-
-import threading
-import json
 from datetime import datetime
-import xml.etree.ElementTree as xml
 
-import mimetypes
-from threading import Thread
-from urlparse import parse_qs
-from urllib import urlretrieve
-import logging
+from resources.lib.websocketclient import WebSocketThread
+from resources.lib.downloadutils import DownloadUtils
+from resources.lib.simple_logging import SimpleLogging
 
-from random import randint
-import random
-import urllib2
-
-addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-addonPath = addonSettings.getAddonInfo('path')
-BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( addonPath, 'resources', 'lib' ) )
-sys.path.append(BASE_RESOURCE_PATH)
-
-from websocketclient import WebSocketThread
-from downloadutils import DownloadUtils
-import loghandler
-
-log_level = addonSettings.getSetting('logLevel')  
-loghandler.config(int(log_level))
-log = logging.getLogger("EmbyCon.service")
-
+log = SimpleLogging("EmbyCon.service")
 downloadUtils = DownloadUtils()
 
 # auth the service
@@ -58,7 +33,6 @@ def stopAll(played_information):
     if(len(played_information) == 0):
         return 
         
-    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
     log.info("EmbyCon Service -> played_information : " + str(played_information))
     
     for item_url in played_information:

@@ -8,8 +8,6 @@ import xbmcaddon
 
 import json
 import threading
-import urllib
-import socket
 import websocket
 
 from clientinfo import ClientInformation
@@ -207,12 +205,7 @@ class WebSocketThread(threading.Thread):
             addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
             mb3Host = addonSettings.getSetting('ipaddress')
             mb3Port = addonSettings.getSetting('port')
-            
-            addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-            logLevel = int(addonSettings.getSetting('logLevel'))              
-            if(logLevel == 2):
-                websocket.enableTrace(True)
-            
+
             if(mb3Host != None and len(mb3Host) > 0):
 
                 try:
@@ -237,10 +230,11 @@ class WebSocketThread(threading.Thread):
                                                 on_close = self.on_close)
                                                 
                     self.client.on_open = self.on_open
-                
+                    self.client.setTimeout(10)
+
                     log.info("Client Starting")
                     if(self.keepRunning):
-                        self.client.run_forever()
+                        self.client.run_forever(ping_interval=10)
                 except:
                     log.info("Error thrown in Web Socket Setup")
             
