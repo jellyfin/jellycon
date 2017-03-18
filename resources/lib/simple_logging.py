@@ -22,24 +22,24 @@ class SimpleLogging():
     def error(self, msg):
         if(self.level >= 0):
             try:
-                xbmc.log(self.format(msg))#, level=xbmc.LOGERROR)
+                xbmc.log(self.format(msg, "ERROR"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:
-                xbmc.log(self.format(msg).encode('utf-8'))#, level=xbmc.LOGERROR)
+                xbmc.log(self.format(msg, "ERROR").encode('utf-8'), level=xbmc.LOGNOTICE)
 
 
     def info(self, msg):
         if(self.level >= 1):
             try:
-                xbmc.log(self.format(msg))#, level=xbmc.LOGINFO)
+                xbmc.log(self.format(msg, "INFO"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:
-                xbmc.log(self.format(msg).encode('utf-8'))#, level=xbmc.LOGNOTICE)
+                xbmc.log(self.format(msg, "INFO").encode('utf-8'), level=xbmc.LOGNOTICE)
 
     def debug(self, msg):
         if(self.level >= 2):
             try:
-                xbmc.log(self.format(msg))#, level=xbmc.LOGDEBUG)
+                xbmc.log(self.format(msg, "DEBUG"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:
-                xbmc.log(self.format(msg).encode('utf-8'))#, level=xbmc.LOGDEBUG)
+                xbmc.log(self.format(msg, "DEBUG").encode('utf-8'), level=xbmc.LOGNOTICE)
 
-    def format(self, msg):
-        return self.name + " -> " + msg
+    def format(self, msg, levelValue):
+        return self.name + "(" + str(levelValue) + ") -> " + msg

@@ -55,6 +55,8 @@ PLUGINPATH = xbmc.translatePath(os.path.join( __cwd__))
 
 log = SimpleLogging("EmbyCon." + __name__)
 
+kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
+
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
@@ -73,8 +75,9 @@ def mainEntryPoint():
     ADDON_VERSION = ClientInformation().getVersion()
     log.info("EmbyCon -> running Python: " + str(sys.version_info))
     log.info("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
-    log.info(xbmc.getInfoLabel( "System.BuildVersion" ))
-    log.info( "EmbyCon -> Script argument data " + str(sys.argv))
+    log.info("Kodi BuildVersion: " + xbmc.getInfoLabel( "System.BuildVersion" ))
+    log.info("Kodi Version: " + str(kodi_version))
+    log.info("EmbyCon -> Script argument data: " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
@@ -434,8 +437,12 @@ def addGUIItem( url, details, extraData, folder=True ):
     
     # update title with new name, this sets the new name in the deailts that are later passed to video info
     details['title'] = listItemName
-    
-    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
+
+    if kodi_version > 17:
+        list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
+    else:
+        list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
+
     log.debug("Setting thumbnail as " + thumbPath)
     
     # calculate percentage
@@ -1355,8 +1362,12 @@ def getWigetContent(pluginName, handle, params):
             name = item.get("SeriesName") + " " + episodeDetails
             tvshowtitle = episodeDetails
             title = item.get("SeriesName")
-            
-        list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image, offscreen=True)
+
+        if kodi_version > 17:
+            list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image, offscreen=True)
+        else:
+            list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image)
+
         #list_item.setLabel2(episodeDetails)
         list_item.setInfo( type="Video", infoLabels={ "title": title, "tvshowtitle": tvshowtitle } )
         list_item.setProperty('fanart_image', fanart)
