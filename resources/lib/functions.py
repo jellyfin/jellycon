@@ -396,7 +396,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     if (extraData.get('resumetime') != None and int(extraData.get('resumetime')) > 0):
         duration = float(extraData.get('duration'))
         if(duration > 0):
-            resume = float(extraData.get('resumetime')) / 60.0
+            resume = float(extraData.get('resumetime'))
             percentage = int((resume / duration) * 100.0)
             cappedPercentage = percentage
             '''
@@ -454,7 +454,7 @@ def addGUIItem( url, details, extraData, folder=True ):
         list.setProperty('IsPlayable', 'true')
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))
-            list.setProperty('ResumeTime', str(int(extraData.get('resumetime')) / 60))
+            list.setProperty('ResumeTime', str(int(extraData.get('resumetime'))))
     
     #StartPercent
     
@@ -988,11 +988,11 @@ def processDirectory(url, results, progress, pluginhandle):
                  }
                  
         try:
-            tempDuration = str(int(item.get("RunTimeTicks", "0"))/(10000000*60))
+            tempDuration = str(int(item.get("RunTimeTicks", "0"))/(10000000))
             RunTimeTicks = str(item.get("RunTimeTicks", "0"))
         except TypeError:
             try:
-                tempDuration = str(int(item.get("CumulativeRunTimeTicks"))/(10000000*60))
+                tempDuration = str(int(item.get("CumulativeRunTimeTicks"))/(10000000))
                 RunTimeTicks = str(item.get("CumulativeRunTimeTicks"))
             except TypeError:
                 tempDuration = "0"
