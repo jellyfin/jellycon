@@ -249,13 +249,13 @@ def getCollections(detailsString):
         item_name = (item.get("Name")).encode('utf-8')
 
         collections.append({
-                'title'             : item_name,
-                'address'           : server ,
-                #'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
-                #'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
-                #'poster'            : downloadUtils.getArtwork(item,"Primary") ,
-                #'guiid'             : item.get("Id"),
-                'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
+                'title': item_name,
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item,"Primary"),
+                'path': ('/emby/Users/' + userid +
+                         '/items?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +
+                         '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
 
         log.info("Title: " + item_name)
     
@@ -637,7 +637,7 @@ def displaySections():
     for collection in collections:
         url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
         log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
+        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
 
     addMenuDirectoryItem("Movies (Genre)", "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
     addMenuDirectoryItem("Movies (A-Z)", "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
