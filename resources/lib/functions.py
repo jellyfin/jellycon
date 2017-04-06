@@ -121,7 +121,11 @@ def mainEntryPoint():
         unmarkFavorite(item_id)
     elif sys.argv[1] == "delete":
         item_id = sys.argv[2]
-        delete(item_id)    
+        delete(item_id)
+    elif mode == "MOVIE_ALPHA":
+        showMovieAlphaList()
+    elif mode == "MOVIE_GENRA":
+        showGenreList()
     elif mode == "SHOW_SETTINGS":
         __settings__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
@@ -238,9 +242,9 @@ def getCollections(detailsString):
     try:
         result = json.loads(jsonData)
         result = result.get("Items")
-    except:
-        pass
-    
+    except Exception as error:
+        log.error("Error parsing user collection: " + str(error))
+
     for item in result:
         item_name = (item.get("Name")).encode('utf-8')
 
@@ -555,7 +559,74 @@ def getDetailsString():
     detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview"
     #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
     return detailsString
-    
+
+
+def showGenreList():
+    log.info("== ENTER: showGenreList() ==")
+
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    userid = downloadUtils.getUserId()
+    detailsString = getDetailsString()
+
+    try:
+        jsonData = downloadUtils.downloadUrl(server + "/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId=" + userid + "&format=json")
+        log.info("GENRE_LIST_DATA : " + jsonData)
+    except Exception, msg:
+        error = "Get connect : " + str(msg)
+        log.error(error)
+
+    result = json.loads(jsonData)
+    result = result.get("Items")
+
+    collections = []
+
+    for genre in result:
+        item_data = {}
+        item_data['address'] = server
+        item_data['title'] = genre.get("Name")
+        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb")
+        item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&GenreIds=' + genre.get("Id") + '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+        collections.append(item_data)
+
+    for collection in collections:
+        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
+        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+def showMovieAlphaList():
+    log.info("== ENTER: showMovieAlphaList() ==")
+
+    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    userid = downloadUtils.getUserId()
+    detailsString = getDetailsString()
+
+    collections = []
+
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "#"
+    item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&NameLessThan=A&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
+
+    alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"]
+
+    for alphaName in alphaList:
+        item_data = {}
+        item_data['address'] = server
+        item_data['title'] = alphaName
+        item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&NameStartsWith=' + alphaName + '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+        collections.append(item_data)
+
+    for collection in collections:
+        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
+        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 def displaySections():
     log.info("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
@@ -568,14 +639,17 @@ def displaySections():
         log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
         addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
 
+    addMenuDirectoryItem("Movies (Genre)", "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
+    addMenuDirectoryItem("Movies (A-Z)", "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
     addMenuDirectoryItem("Change User", "plugin://plugin.video.embycon/?mode=CHANGE_USER")
     addMenuDirectoryItem("Show Settings", "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
     addMenuDirectoryItem("Set Default Views", "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def addMenuDirectoryItem(label, path, folder=True):
-    li = xbmcgui.ListItem(label, path=path)
+def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
+    li = xbmcgui.ListItem(label, path=path, thumbnailImage=thumbnail)
+    li.setThumbnailImage(thumbnail)
     #li.setThumbnailImage("special://home/addons/plugin.video.emby/icon.png")
     #li.setArt({"fanart":"special://home/addons/plugin.video.emby/fanart.jpg"})
     #li.setArt({"landscape":"special://home/addons/plugin.video.emby/fanart.jpg"})
