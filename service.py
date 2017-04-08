@@ -33,19 +33,19 @@ def stopAll(played_information):
     if(len(played_information) == 0):
         return 
         
-    log.info("EmbyCon Service -> played_information : " + str(played_information))
+    log.info("played_information : " + str(played_information))
     
     for item_url in played_information:
         data = played_information.get(item_url)
         if(data != None):
-            log.info("EmbyCon Service -> item_url  : " + item_url)
-            log.info("EmbyCon Service -> item_data : " + str(data))
+            log.info("item_url  : " + item_url)
+            log.info("item_data : " + str(data))
             
             currentPossition = data.get("currentPossition")
             item_id = data.get("item_id")
             
             if(hasData(item_id)):
-                log.info("EmbyCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
+                log.info("Playback Stopped at: " + str(int(currentPossition * 10000000)))
                 newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
         
     played_information.clear()

@@ -9,7 +9,7 @@
     <string id="30008">Samba Password: </string>
     <string id="30010">Enable performance profiling</string>
 
-    <string id="30014">EmbyCon</string>
+    <string id="30014">Emby</string>
     <string id="30015">Network</string>    
     <string id="30016">Device Name</string>        
 
@@ -50,6 +50,10 @@
     <string id="30200">Select User</string>
     <string id="30203">Error in ArtworkRotationThread</string>
     <string id="30204">Unable to connect to host</string>         
-    <string id="30205">Error in LoadMenuOptionsThread</string>        
+    <string id="30205">Error in LoadMenuOptionsThread</string>
+
+    <string id="30206">Playback Type</string>
+    <string id="30207">Playback</string>
+    <string id="30208">Playback Bitrate (Kbits)</string>
     
 </strings>

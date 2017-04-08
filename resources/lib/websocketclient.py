@@ -156,7 +156,7 @@ class WebSocketThread(threading.Thread):
     def on_open(self, ws):
         try:
             clientInfo = ClientInformation()
-            machineId = clientInfo.getMachineId()
+            machineId = clientInfo.getDeviceId()
             version = clientInfo.getVersion()
             messageData = {}
             messageData["MessageType"] = "Identity"

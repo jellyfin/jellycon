@@ -156,9 +156,6 @@ def mainEntryPoint():
         
         pluginhandle = int(sys.argv[1])
 
-        WINDOW = xbmcgui.Window( 10000 )
-        WINDOW.clearProperty("heading")
-
         log.info("EmbyCon -> Mode: " + str(mode))
         log.info("EmbyCon -> URL: " + str(param_url))
 
@@ -172,17 +169,14 @@ def mainEntryPoint():
         else:
             displaySections()
 
-    WINDOW = xbmcgui.Window( 10000 )
-    #WINDOW.clearProperty("MB3.Background.Item.FanArt")
-    
     dataManager.canRefreshNow = True
     
     if(pr):
         pr.disable()
 
 
-        fileTimeStamp = time.strftime("%Y-%m-%d %H-%M-%S")
-        tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").txt"
+        fileTimeStamp = time.strftime("%Y%m%d-%H%M%S")
+        tabFileName = __addondir__ + "profile(" + fileTimeStamp + ").txt"
         f = open(tabFileName, 'wb')
 
         s = StringIO.StringIO()
@@ -529,29 +523,27 @@ def addContextMenu(details, extraData, folder):
     item_id = extraData.get('id')
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
-        
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=CAST_LIST&id=" + str(extraData.get('id')) + ")"
-        commands.append(("Show People", pluginCastLink))
-        
+
         # watched/unwatched
-        if extraData.get("playcount") == "0":
-            argsToPass = 'markWatched,' + extraData.get('id')
-            commands.append(("Mark Watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'markUnwatched,' + extraData.get('id')
-            commands.append(("Mark Unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        #if extraData.get("playcount") == "0":
+        argsToPass = 'markWatched,' + extraData.get('id')
+        commands.append(("Emby: Mark Watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        #else:
+        argsToPass = 'markUnwatched,' + extraData.get('id')
+        commands.append(("Emby: Mark Unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
             
         # favourite add/remove
-        if extraData.get('favorite') != 'true':
-            argsToPass = 'markFavorite,' + extraData.get('id')
-            commands.append(("Add to Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'unmarkFavorite,' + extraData.get('id')
-            commands.append(("Remove from Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+
+        #if extraData.get('favorite') != 'true':
+        #    argsToPass = 'markFavorite,' + extraData.get('id')
+        #    commands.append(("Add to Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        #else:
+        #    argsToPass = 'unmarkFavorite,' + extraData.get('id')
+        #    commands.append(("Remove from Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
         # delete
         argsToPass = 'delete,' + extraData.get('id')
-        commands.append(("Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        commands.append(("Emby: Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
                     
     return(commands)
     

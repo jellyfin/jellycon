@@ -180,7 +180,7 @@ class DownloadUtils():
         url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/emby/Users/AuthenticateByName?format=json"
     
         clientInfo = ClientInformation()
-        txt_mac = clientInfo.getMachineId()
+        txt_mac = clientInfo.getDeviceId()
         version = clientInfo.getVersion()
 
         deviceName = self.addonSettings.getSetting('deviceName')
@@ -212,7 +212,7 @@ class DownloadUtils():
             
     def getAuthHeader(self, authenticate=True):
         clientInfo = ClientInformation()
-        txt_mac = clientInfo.getMachineId()
+        txt_mac = clientInfo.getDeviceId()
         version = clientInfo.getVersion()
         
         deviceName = self.addonSettings.getSetting('deviceName')
