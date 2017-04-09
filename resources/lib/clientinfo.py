@@ -1,3 +1,5 @@
+# Gnu General Public License - see LICENSE.TXT
+
 from uuid import uuid4 as uuid4
 import xbmcaddon
 import xbmc

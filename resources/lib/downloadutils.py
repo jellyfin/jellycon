@@ -1,3 +1,5 @@
+# Gnu General Public License - see LICENSE.TXT
+
 import xbmc
 import xbmcgui
 import xbmcaddon

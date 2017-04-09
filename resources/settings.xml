@@ -11,7 +11,7 @@
 
 	</category>
 	<category label="30207">
-		<setting id="playback_type" type="enum" label="30206" values="Path Direct|Http Direct|Http Transcode" default="0" />
+		<setting id="playback_type" type="enum" label="30206" values="File Direct Path|HTTP Direct Stream|HTTP Transcode" default="0" />
 		<setting id="playback_bitrate" type="slider" label="30208" default="6000" range="400,100,10000" option="int" visible="eq(-1,2)"/>
 		<setting id="resumeJumpBack" type="number" label="30114" default="10" visible="true" enable="true" />
         <setting type="sep" />

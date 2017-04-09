@@ -1,3 +1,4 @@
+# Gnu General Public License - see LICENSE.TXT
 
 import os
 import xml.etree.ElementTree as etree

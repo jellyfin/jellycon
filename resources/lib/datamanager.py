@@ -1,3 +1,5 @@
+# Gnu General Public License - see LICENSE.TXT
+
 import hashlib
 import os
 import threading

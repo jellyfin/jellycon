@@ -1,23 +1,4 @@
-'''
-    @license    : Gnu General Public License - see LICENSE.TXT
-
-    This is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
-
-    This is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with software.  If not, see <http://www.gnu.org/licenses/>.
-    
-    Thanks to Hippojay for the PleXBMC plugin this is derived from
-    This software is derived form the XBMB3C addon
-    
-'''
+# Gnu General Public License - see LICENSE.TXT
 
 import urllib
 import re
@@ -38,13 +19,14 @@ import xbmcaddon
 import xbmc
 
 from downloadutils import DownloadUtils
-from utils import PlayUtils
+from utils import PlayUtils, getDetailsString
 from clientinfo import ClientInformation
 from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
 from resume_dialog import ResumeDialog
 from simple_logging import SimpleLogging
+from menu_functions import displaySections, showMovieAlphaList, showGenreList
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -164,8 +146,6 @@ def mainEntryPoint():
         #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
             getContent(param_url, pluginhandle)
-        elif mode == "PLAY":
-            PLAY(param_url, pluginhandle)
         else:
             displaySections()
 
@@ -203,112 +183,6 @@ def mainEntryPoint():
         f.close()
 
     log.info("===== EmbyCon FINISHED =====")
-   
-def getCollections(detailsString):
-    log.info("== ENTER: getCollections ==")
-    
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-
-    userid = downloadUtils.getUserId()
-    
-    if(userid == None or len(userid) == 0):
-        return []
-    
-    try:
-        jsonData = downloadUtils.downloadUrl(server + "/emby/Users/" + userid + "/Items/Root?format=json")
-    except Exception, msg:
-        error = "Get connect : " + str(msg)
-        log.error(error)
-        return []
-    
-    log.debug("jsonData : " + jsonData)
-    result = json.loads(jsonData)
-    
-    parentid = result.get("Id")
-    log.info("parentid : " + parentid)
-       
-    htmlpath = ("http://%s/emby/Users/" % server)
-    jsonData = downloadUtils.downloadUrl(htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
-    log.debug("jsonData : " + jsonData)
-    collections=[]
-
-    result = []
-    try:
-        result = json.loads(jsonData)
-        result = result.get("Items")
-    except Exception as error:
-        log.error("Error parsing user collection: " + str(error))
-
-    for item in result:
-        item_name = (item.get("Name")).encode('utf-8')
-
-        collections.append({
-                'title': item_name,
-                'address': server,
-                'thumbnail': downloadUtils.getArtwork(item,"Primary"),
-                'path': ('/emby/Users/' + userid +
-                         '/items?ParentId=' + item.get("Id") +
-                         '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +
-                         '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
-
-        log.info("Title: " + item_name)
-    
-    # Add standard nodes
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "All Movies"
-    item_data['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-    
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "BoxSets"
-    item_data['path'] =  '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-    
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "All TV"
-    item_data['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "Recently Added Movies"
-    item_data['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-    
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "Recently Added Episodes"
-    item_data['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-    
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "In Progress Movies"
-    item_data['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "In Progress Episodes"
-    item_data['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "Next Episodes"
-    item_data['path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-    
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "Upcoming TV"
-    item_data['path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    return collections
 
 def markWatched(item_id):
     log.info("Mark Item Watched : " + item_id)
@@ -549,210 +423,6 @@ def addContextMenu(details, extraData, folder):
         commands.append(("Emby: Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
                     
     return(commands)
-    
-def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview"
-    #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
-    return detailsString
-
-
-def showGenreList():
-    log.info("== ENTER: showGenreList() ==")
-
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    userid = downloadUtils.getUserId()
-    detailsString = getDetailsString()
-
-    try:
-        jsonData = downloadUtils.downloadUrl(server + "/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId=" + userid + "&format=json")
-        log.info("GENRE_LIST_DATA : " + jsonData)
-    except Exception, msg:
-        error = "Get connect : " + str(msg)
-        log.error(error)
-
-    result = json.loads(jsonData)
-    result = result.get("Items")
-
-    collections = []
-
-    for genre in result:
-        item_data = {}
-        item_data['address'] = server
-        item_data['title'] = genre.get("Name")
-        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb")
-        item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&GenreIds=' + genre.get("Id") + '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-        collections.append(item_data)
-
-    for collection in collections:
-        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
-
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-
-def showMovieAlphaList():
-    log.info("== ENTER: showMovieAlphaList() ==")
-
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    userid = downloadUtils.getUserId()
-    detailsString = getDetailsString()
-
-    collections = []
-
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "#"
-    item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&NameLessThan=A&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"]
-
-    for alphaName in alphaList:
-        item_data = {}
-        item_data['address'] = server
-        item_data['title'] = alphaName
-        item_data['path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&NameStartsWith=' + alphaName + '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-        collections.append(item_data)
-
-    for collection in collections:
-        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
-
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def displaySections():
-    log.info("== ENTER: displaySections() ==")
-    xbmcplugin.setContent(int(sys.argv[1]), 'files')
-
-    # Add collections
-    detailsString = getDetailsString()
-    collections = getCollections(detailsString)
-    for collection in collections:
-        url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
-
-    addMenuDirectoryItem("Movies (Genre)", "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
-    addMenuDirectoryItem("Movies (A-Z)", "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
-    addMenuDirectoryItem("Change User", "plugin://plugin.video.embycon/?mode=CHANGE_USER")
-    addMenuDirectoryItem("Show Settings", "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    addMenuDirectoryItem("Set Default Views", "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
-
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
-    li = xbmcgui.ListItem(label, path=path, thumbnailImage=thumbnail)
-    li.setThumbnailImage(thumbnail)
-    #li.setThumbnailImage("special://home/addons/plugin.video.emby/icon.png")
-    #li.setArt({"fanart":"special://home/addons/plugin.video.emby/fanart.jpg"})
-    #li.setArt({"landscape":"special://home/addons/plugin.video.emby/fanart.jpg"})
-    xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
-
-def remove_html_tags( data ):
-    p = re.compile(r'<.*?>')
-    return p.sub('', data)
-
-def PLAY( url, handle ):
-    log.info("== ENTER: PLAY ==")
-    
-    #playData = json.loads(url)
-    
-    url=urllib.unquote(url)
-    
-    urlParts = url.split(',;')
-    log.info("PLAY ACTION URL PARTS : " + str(urlParts))
-    server = urlParts[0]
-    id = urlParts[1]
-    autoResume = 0
-    
-    if(len(urlParts) > 2):
-        autoResume = int(urlParts[2])
-        log.info("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
-    
-    ip,port = server.split(':')
-    userid = downloadUtils.getUserId()
-    seekTime = 0
-    resume = 0
-    
-    id = urlParts[1]
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json", suppress=False, popup=1 )     
-    result = json.loads(jsonData)
-    
-    if(autoResume != 0):
-        if(autoResume == -1):
-            resume_result = 1
-        else:
-            resume_result = 0
-            seekTime = (autoResume / 1000) / 10000
-    else:
-        userData = result.get("UserData")
-        resume_result = 0
-        
-        if userData.get("PlaybackPositionTicks") != 0:
-            reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
-            seekTime = reasonableTicks / 10000
-            displayTime = str(timedelta(seconds=seekTime))
-            
-            resumeDialog = ResumeDialog("ResumeDialog.xml", __cwd__, "default", "720p")
-            resumeDialog.setResumeTime("Resume from " + displayTime)
-            resumeDialog.doModal()
-            resume_result = resumeDialog.getResumeAction()
-            del resumeDialog
-            
-            log.info("Resume Dialog Result: " + str(resume_result))
-            
-            if resume_result == -1:
-                return
-    
-    #playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    #playlist.clear()
-
-    playurl = PlayUtils().getPlayUrl(server, id, result)
-    log.info("Play URL: " + playurl)    
-    thumbPath = downloadUtils.getArtwork(result, "Primary")
-    listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
-    
-    setListItemProps(server, id, listItem, result)
-
-    # Can not play virtual items
-    if (result.get("LocationType") == "Virtual"):
-        xbmcgui.Dialog().ok(__language__(30128), __language__(30129))
-        return
-
-    # set the current playing item id
-    WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("item_id", id)
-    
-    #playlist.add(playurl, listItem)
-
-    #xbmc.Player().play(playlist)
-    
-    #xbmc.Player().play(playurl, listItem)
-    
-    xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listItem)
-    
-    #Set a loop to wait for positive confirmation of playback
-    count = 0
-    while not xbmc.Player().isPlaying():
-        log.info( "Not playing yet...sleep for 1 sec")
-        count = count + 1
-        if count >= 10:
-            return
-        else:
-            time.sleep(1)
-            
-    if resume_result == 0:
-        jumpBackSec = int(__settings__.getSetting("resumeJumpBack"))
-        seekToTime = seekTime - jumpBackSec
-        while xbmc.Player().getTime() < (seekToTime - 5):
-            xbmc.Player().pause
-            xbmc.sleep(100)
-            xbmc.Player().seekTime(seekToTime)
-            xbmc.sleep(100)
-            xbmc.Player().play()
-    return
 
 def setListItemProps(server, id, listItem, result):
 
@@ -781,29 +451,31 @@ def setListItemProps(server, id, listItem, result):
     listItem.setInfo( "Video", infoLabels=details )
 
     return
-    
-def get_params( paramstring ):
+
+
+def get_params(paramstring):
     log.debug("Parameter string: " + paramstring)
-    param={}
+    param = {}
     if len(paramstring) >= 2:
-            params=paramstring
+        params = paramstring
 
-            if params[0] == "?":
-                cleanedparams=params[1:]
-            else:
-                cleanedparams=params
+        if params[0] == "?":
+            cleanedparams = params[1:]
+        else:
+            cleanedparams = params
 
-            if (params[len(params)-1]=='/'):
-                    params=params[0:len(params)-2]
+        if (params[len(params) - 1] == '/'):
+            params = params[0:len(params) - 2]
 
-            pairsofparams=cleanedparams.split('&')
-            for i in range(len(pairsofparams)):
-                    splitparams={}
-                    splitparams=pairsofparams[i].split('=')
-                    if (len(splitparams))==2:
-                            param[splitparams[0]]=splitparams[1]
-                    elif (len(splitparams))==3:
-                            param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
+        pairsofparams = cleanedparams.split('&')
+        for i in range(len(pairsofparams)):
+            splitparams = {}
+            splitparams = pairsofparams[i].split('=')
+            if (len(splitparams)) == 2:
+                param[splitparams[0]] = splitparams[1]
+            elif (len(splitparams)) == 3:
+                param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
+
     log.debug("EmbyCon -> Detected parameters: " + str(param))
     return param
        
@@ -856,9 +528,6 @@ def getContent(url, pluginhandle):
     
     return
 
-def loadJasonData(jsonData):
-    return json.loads(jsonData)
-    
 def processDirectory(url, results, progress, pluginhandle):
     cast = ['None']
     log.info("== ENTER: processDirectory ==")
@@ -1139,140 +808,15 @@ def processDirectory(url, results, progress, pluginhandle):
     return dirItems, viewType
     
 def getServerFromURL( url ):
-    '''
-    Simply split the URL up and get the server portion, sans port
-    @ input: url, woth or without protocol
-    @ return: the URL server
-    '''
     if url[0:4] == "http":
         return url.split('/')[2]
     else:
         return url.split('/')[0]
 
-def getLinkURL( url, pathData, server ):
-    '''
-        Investigate the passed URL and determine what is required to
-        turn it into a usable URL
-        @ input: url, XML data and PM server address
-        @ return: Usable http URL
-    '''
-    log.info("== ENTER: getLinkURL ==")
-    path = pathData.get('key','')
-    log.info("Path is: " + path)
-
-    if path == '':
-        log.error("Empty Path")
-        return
-
-    #If key starts with http, then return it
-    if path[0:4] == "http":
-        log.info("Detected http link")
-        return path
-
-    #If key starts with a / then prefix with server address
-    elif path[0] == '/':
-        log.info("Detected base path link")
-        return 'http://%s%s' % ( server, path )
-
-    elif path[0:5] == "rtmp:":
-        log.info("Detected  link")
-        return path
-
-    #Any thing else is assumed to be a relative path and is built on existing url
-    else:
-        log.info("Detected relative link")
-        return "%s/%s" % ( url, path )
-
-    return url
-
 def setArt(list, name, path):
     list.setProperty(name, path)
     list.setArt({name:path})
     return list
-        
-def getXbmcVersion():
-    version = 0.0
-    jsonData = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["version", "name"]}, "id": 1 }') 
-    
-    result = json.loads(jsonData)
-    
-    try:
-        result = result.get("result")
-        versionData = result.get("version")
-        version = float(str(versionData.get("major")) + "." + str(versionData.get("minor")))
-        log.info("Version : " + str(version) + " - " + str(versionData))
-    except:
-        version = 0.0
-        log.error("Version Error : RAW Version Data : " + str(result))
-
-    return version        
-    
-def getCastList(pluginName, handle, params):
-
-    log.info("EmbyCon Returning Cast List")
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port
-    userid = downloadUtils.getUserId()
-    seekTime = 0
-    resume = 0
-    
-    # get the cast list for an item
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + params.get("id") + "?format=json", suppress=False, popup=1 )    
-    log.debug("CastList(Items) jsonData: " + jsonData)
-    result = json.loads(jsonData)
-
-    people = result.get("People")
-    
-    if(people == None):
-        return
-    
-    listItems = []
-
-    for person in people:
-
-        displayName = person.get("Name")
-        if(person.get("Role") != None):
-            displayName = displayName + " (" + person.get("Role") + ")"
-            
-        tag = person.get("PrimaryImageTag")
-        id = person.get("Id")
-        
-        baseName = person.get("Name")
-        #urllib.quote(baseName)
-        baseName = baseName.replace(" ", "+")
-        baseName = baseName.replace("&", "_")
-        baseName = baseName.replace("?", "_")
-        baseName = baseName.replace("=", "_")
-            
-        if(tag != None):
-            thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400, tag)
-            item = xbmcgui.ListItem(label=displayName, iconImage=thumbPath, thumbnailImage=thumbPath)
-        else:
-            item = xbmcgui.ListItem(label=displayName)
-            
-        actionUrl = "plugin://plugin.video.embycon?mode=PERSON_DETAILS&name=" + baseName
-        
-        item.setProperty('IsPlayable', 'false')
-        item.setProperty('IsFolder', 'false')
-        
-        commands = []
-        detailsString = getDetailsString()
-        url = "http://" + host + ":" + port + "/emby/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
-        url = urllib.quote(url)
-        url = url.replace("PERSON_NAME", baseName)
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=GET_CONTENT&url=" + url + ")"
-        commands.append(( "Show Other Library Items", pluginCastLink))
-        item.addContextMenuItems( commands, True )
-        
-        itemTupple = (actionUrl, item, False)
-        listItems.append(itemTupple)
-        
-        
-    #listItems.sort()
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 def showSetViews():
     log.info("showSetViews Called")
