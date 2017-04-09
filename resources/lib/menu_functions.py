@@ -106,10 +106,10 @@ def displaySections():
 
 def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
     li = xbmcgui.ListItem(label, path=path, thumbnailImage=thumbnail)
-    li.setThumbnailImage(thumbnail)
-    #li.setThumbnailImage("special://home/addons/plugin.video.emby/icon.png")
-    #li.setArt({"fanart":"special://home/addons/plugin.video.emby/fanart.jpg"})
-    #li.setArt({"landscape":"special://home/addons/plugin.video.emby/fanart.jpg"})
+    if thumbnail:
+        li.setThumbnailImage(thumbnail)
+    else:
+        li.setThumbnailImage("special://home/addons/plugin.video.embycon/icon.png")
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
 
 def getCollections(detailsString):
