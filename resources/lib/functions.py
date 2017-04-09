@@ -827,7 +827,8 @@ def showSetViews():
         
 def getWigetContent(pluginName, handle, params):
     log.info("getWigetContent Called" + str(params))
-    
+
+    WINDOW = xbmcgui.Window(10000)
     port = __settings__.getSetting('port')
     host = __settings__.getSetting('ipaddress')
     server = host + ":" + port    
@@ -1044,11 +1045,14 @@ def getWigetContent(pluginName, handle, params):
                     #if(cappedPercentage == 100):
                     #    cappedPercentage = 90
                     list_item.setProperty("complete_percentage", str(percentage))
-                
-        url =  server + ',;' + item_id
-        playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
+
+        playurl = PlayUtils().getPlayUrl(item.get("Id"), item)
+        WINDOW.setProperty("playback_url_" + playurl, item.get("Id"))
+
+        #url =  server + ',;' + item_id
+        #playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
         
-        itemTupple = (playUrl, list_item, False)
+        itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
     
     xbmcplugin.addDirectoryItems(handle, listItems)
