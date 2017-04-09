@@ -65,13 +65,14 @@ class Service( xbmc.Player ):
         stopAll(self.played_information)
         
         currentFile = xbmc.Player().getPlayingFile()
-        log.info("EmbyCon Service -> onPlayBackStarted" + currentFile)
+        log.info("onPlayBackStarted" + currentFile)
         
         WINDOW = xbmcgui.Window( 10000 )
-        item_id = WINDOW.getProperty("item_id")
-        
+        item_id = WINDOW.getProperty("playback_url_" + currentFile)
+        log.info("item_id: " + item_id)
+
         # reset all these so they dont get used is xbmc plays a none 
-        WINDOW.setProperty("item_id", "")
+        #WINDOW.setProperty("item_id", "")
         
         if(item_id == None or len(item_id) == 0):
             return

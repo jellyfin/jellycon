@@ -21,7 +21,7 @@ log = SimpleLogging("EmbyCon." + __name__)
 
 ###########################################################################
 class PlayUtils():
-    def getPlayUrl(self, server, id, result):
+    def getPlayUrl(self, id, result):
         log.info("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")

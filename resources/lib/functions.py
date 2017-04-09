@@ -365,6 +365,7 @@ def delete (item_id):
 def addGUIItem( url, details, extraData, folder=True ):
 
     url = url.encode('utf-8')
+    WINDOW = xbmcgui.Window(10000)
 
     log.debug("Adding GuiItem for [%s]" % details.get('title','Unknown'))
     log.debug("Passed details: " + str(details))
@@ -382,7 +383,9 @@ def addGUIItem( url, details, extraData, folder=True ):
     if url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        u = sys.argv[0] + "?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
+        #u = sys.argv[0] + extraData.get('id') + "/media/file.mkv?url=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
+        u = PlayUtils().getPlayUrl(extraData.get("id"), extraData)
+        WINDOW.setProperty("playback_url_" + u, extraData.get("id"))
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -1112,6 +1115,8 @@ def processDirectory(url, results, progress, pluginhandle):
                    'UnWatchedEpisodes': str(UnWatchedEpisodes),
                    'NumEpisodes'  : str(NumEpisodes),
                    'itemtype'     : item_type}
+
+        extraData["Path"] = item.get("Path")
 
         if extraData['thumb'] == '':
             extraData['thumb'] = extraData['fanart_image']
