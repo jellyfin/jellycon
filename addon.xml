@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon  id="plugin.video.embycon" 
-        name="Emby Connector"
-        version="1.0.9"
+        name="EmbyCon"
+        version="1.0.10"
         provider-name="null_pointer">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -18,7 +18,7 @@
     <forum>https://emby.media/community/index.php?/forum/99-kodi/</forum>
     <website>https://emby.media/community/index.php?/forum/99-kodi/</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
-    <summary lang="en">Emby Connector Addon for Kodi</summary>
+    <summary lang="en">EmbyCon Addon for Kodi</summary>
     <description lang="en">A basic addon to allow you to view and play back your Emby Movie and TV Show collection.</description>
   </extension>
 </addon>
