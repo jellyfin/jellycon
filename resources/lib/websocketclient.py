@@ -121,52 +121,22 @@ class WebSocketThread(threading.Thread):
                 log.info("StartPositionTicks : " + str(startPositionTicks))
                 
                 addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+
                 server = addonSettings.getSetting('ipaddress') + ":" + addonSettings.getSetting('port')
-                userid = downloadUtils.getUserId()
-                item_id = itemIds[0]
+                mb3Host = addonSettings.getSetting('ipaddress')
+                mb3Port = addonSettings.getSetting('port')
 
-                downloadUrl = "http://" + server + "/emby/Users/" + userid + "/Items/" + item_id + "?format=json"
-                jsonData = downloadUtils.downloadUrl(
-                    downloadUrl,
-                    suppress=False,
-                    popup=1)
-                result = json.loads(jsonData)
+                url = mb3Host + ":" + mb3Port + ',;' + itemIds[0]
+                if (startPositionTicks == None):
+                    url += ",;" + "-1"
+                else:
+                    url += ",;" + str(startPositionTicks)
 
-                playurl = PlayUtils().getPlayUrl(item_id, result)
-                log.info("Websocket Play URL: " + playurl)
-                WINDOW = xbmcgui.Window(10000)
-                WINDOW.setProperty("playback_url_" + playurl, item_id)
+                playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
+                #playUrl = playUrl.replace("\\\\", "smb://")
+                #playUrl = playUrl.replace("\\", "/")
 
-                #thumbPath = downloadUtils.getArtwork(result, "Primary")
-                #listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
-
-                xbmc.Player().play(playurl)
-
-                if startPositionTicks == None or startPositionTicks == 0:
-                    return
-
-                # resume
-                count = 0
-                while not xbmc.Player().isPlaying():
-                    log.info("Not playing yet...sleep for 1 sec")
-                    count = count + 1
-                    if count >= 10:
-                        log.info("Waited for 10 seconds and noting is playing")
-                        return
-                    else:
-                        time.sleep(1)
-
-                seekTime = (startPositionTicks / 1000) / 10000
-                jumpBackSec = int(addonSettings.getSetting("resumeJumpBack"))
-                seekToTime = seekTime - jumpBackSec
-                log.info("Seeking to position: " + str(seekToTime))
-                while xbmc.Player().getTime() < (seekToTime - 5):
-                    xbmc.Player().pause
-                    xbmc.sleep(100)
-                    xbmc.Player().seekTime(seekToTime)
-                    xbmc.sleep(100)
-                    xbmc.Player().play()
-
+                xbmc.Player().play(playUrl)
 
         elif(messageType != None and messageType == "Playstate"):
             command = data.get("Command")
