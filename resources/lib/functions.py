@@ -146,6 +146,10 @@ def mainEntryPoint():
         #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
             getContent(param_url, pluginhandle)
+
+        elif mode == "PLAY":
+            PLAY(param_url, pluginhandle)
+
         else:
             displaySections()
 
@@ -257,9 +261,9 @@ def addGUIItem( url, details, extraData, folder=True ):
     if url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        #u = sys.argv[0] + extraData.get('id') + "/media/file.mkv?url=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
-        u = PlayUtils().getPlayUrl(extraData.get("id"), extraData)
-        WINDOW.setProperty("playback_url_" + u, extraData.get("id"))
+        u = sys.argv[0] + extraData.get('id') + "/media/file.mkv?url=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
+        #u = PlayUtils().getPlayUrl(extraData.get("id"), extraData)
+        #WINDOW.setProperty("playback_url_" + u, extraData.get("id"))
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -326,7 +330,7 @@ def addGUIItem( url, details, extraData, folder=True ):
          
     #For all end items
     if(not folder):
-        list.setProperty('IsPlayable', 'true')
+        #list.setProperty('IsPlayable', 'true')
         if extraData.get('type','video').lower() == "video":
             list.setProperty('TotalTime', str(extraData.get('duration')))
             list.setProperty('ResumeTime', str(int(extraData.get('resumetime'))))
@@ -700,11 +704,13 @@ def processDirectory(url, results, progress, pluginhandle):
             else:
                 overlay = "6"
                 watched = "false"
+
             if userData.get("IsFavorite") == True:
                 overlay = "5"
                 favorite = "true"
             else:
                 favorite = "false"
+
             if userData.get("PlaybackPositionTicks") != None:
                 PlaybackPositionTicks = str(userData.get("PlaybackPositionTicks"))
                 reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
@@ -1046,11 +1052,11 @@ def getWigetContent(pluginName, handle, params):
                     #    cappedPercentage = 90
                     list_item.setProperty("complete_percentage", str(percentage))
 
-        playurl = PlayUtils().getPlayUrl(item.get("Id"), item)
-        WINDOW.setProperty("playback_url_" + playurl, item.get("Id"))
+        #playurl = PlayUtils().getPlayUrl(item.get("Id"), item)
+        #WINDOW.setProperty("playback_url_" + playurl, item.get("Id"))
 
-        #url =  server + ',;' + item_id
-        #playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
+        url =  server + ',;' + item_id
+        playurl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
         
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
@@ -1130,4 +1136,103 @@ def checkService():
         log.error("EmbyCon Service Not Running, time stamp to old, exiting")
         xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
         sys.exit()
-        
+
+
+def PLAY(url, handle):
+    log.info("== ENTER: PLAY ==")
+
+    # playData = json.loads(url)
+
+    url = urllib.unquote(url)
+
+    urlParts = url.split(',;')
+    log.info("PLAY ACTION URL PARTS : " + str(urlParts))
+    server = urlParts[0]
+    id = urlParts[1]
+    autoResume = 0
+
+    if (len(urlParts) > 2):
+        autoResume = int(urlParts[2])
+        log.info("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
+
+    ip, port = server.split(':')
+    userid = downloadUtils.getUserId()
+    seekTime = 0
+    resume = 0
+
+    id = urlParts[1]
+    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
+                                         suppress=False, popup=1)
+    result = json.loads(jsonData)
+
+    if (autoResume != 0):
+        if (autoResume == -1):
+            resume_result = 1
+        else:
+            resume_result = 0
+            seekTime = (autoResume / 1000) / 10000
+    else:
+        userData = result.get("UserData")
+        resume_result = 0
+
+        if userData.get("PlaybackPositionTicks") != 0:
+            reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
+            seekTime = reasonableTicks / 10000
+            displayTime = str(timedelta(seconds=seekTime))
+
+            resumeDialog = ResumeDialog("ResumeDialog.xml", __cwd__, "default", "720p")
+            resumeDialog.setResumeTime("Resume from " + displayTime)
+            resumeDialog.doModal()
+            resume_result = resumeDialog.getResumeAction()
+            del resumeDialog
+
+            log.info("Resume Dialog Result: " + str(resume_result))
+
+            if resume_result == -1:
+                return
+
+    playurl = PlayUtils().getPlayUrl(id, result)
+    log.info("Play URL: " + playurl)
+    thumbPath = downloadUtils.getArtwork(result, "Primary")
+    listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
+
+    setListItemProps(server, id, listItem, result)
+
+    # Can not play virtual items
+    if (result.get("LocationType") == "Virtual"):
+        xbmcgui.Dialog().ok(__language__(30128), __language__(30129))
+        return
+
+    # set the current playing item id
+    WINDOW = xbmcgui.Window(10000)
+    WINDOW.setProperty("item_id", id)
+
+    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    playlist.clear()
+    playlist.add(playurl, listItem)
+    xbmc.Player().play(playlist)
+
+    #xbmc.Player().play(playurl, listItem)
+
+    #xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listItem)
+
+    # Set a loop to wait for positive confirmation of playback
+    count = 0
+    while not xbmc.Player().isPlaying():
+        log.info("Not playing yet...sleep for 1 sec")
+        count = count + 1
+        if count >= 10:
+            return
+        else:
+            time.sleep(1)
+
+    if resume_result == 0:
+        jumpBackSec = int(__settings__.getSetting("resumeJumpBack"))
+        seekToTime = seekTime - jumpBackSec
+        while xbmc.Player().getTime() < (seekToTime - 5):
+            xbmc.Player().pause
+            xbmc.sleep(100)
+            xbmc.Player().seekTime(seekToTime)
+            xbmc.sleep(100)
+            xbmc.Player().play()
+

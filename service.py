@@ -68,11 +68,13 @@ class Service(xbmc.Player):
         stopAll(self.played_information)
         
         current_playing_file = xbmc.Player().getPlayingFile()
-        log.info("onPlayBackStarted" + current_playing_file)
+        log.info("onPlayBackStarted: " + current_playing_file)
         
         window_handle = xbmcgui.Window(10000)
-        emby_item_id = window_handle.getProperty("playback_url_" + current_playing_file)
+        emby_item_id = window_handle.getProperty("item_id")
+        #emby_item_id = window_handle.getProperty("playback_url_" + current_playing_file)
         log.info("item_id: " + emby_item_id)
+        window_handle.setProperty("item_id", "")
 
         if emby_item_id is None or len(emby_item_id) == 0:
             return
