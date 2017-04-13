@@ -119,22 +119,14 @@ class WebSocketThread(threading.Thread):
                 startPositionTicks = data.get("StartPositionTicks")
                 log.info("Playing Media With ID : " + itemIds[0])
                 log.info("StartPositionTicks : " + str(startPositionTicks))
-                
-                addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
 
-                server = addonSettings.getSetting('ipaddress') + ":" + addonSettings.getSetting('port')
-                mb3Host = addonSettings.getSetting('ipaddress')
-                mb3Port = addonSettings.getSetting('port')
+                item_id = itemIds[0]
+                auto_resume = "0"
 
-                url = mb3Host + ":" + mb3Port + ',;' + itemIds[0]
-                if (startPositionTicks == None):
-                    url += ",;" + "-1"
-                else:
-                    url += ",;" + str(startPositionTicks)
+                if (startPositionTicks is not None):
+                    auto_resume = str(startPositionTicks)
 
-                playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY'
-                #playUrl = playUrl.replace("\\\\", "smb://")
-                #playUrl = playUrl.replace("\\", "/")
+                playUrl = "plugin://plugin.video.embycon/?item_id=" + item_id + "&auto_resume=" + auto_resume + "&mode=PLAY"
 
                 xbmc.Player().play(playUrl)
 

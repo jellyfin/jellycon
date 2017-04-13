@@ -148,7 +148,7 @@ def mainEntryPoint():
             getContent(param_url, pluginhandle)
 
         elif mode == "PLAY":
-            PLAY(param_url, pluginhandle)
+            PLAY(params, pluginhandle)
 
         else:
             displaySections()
@@ -243,7 +243,6 @@ def delete (item_id):
 def addGUIItem( url, details, extraData, folder=True ):
 
     url = url.encode('utf-8')
-    WINDOW = xbmcgui.Window(10000)
 
     log.debug("Adding GuiItem for [%s]" % details.get('title','Unknown'))
     log.debug("Passed details: " + str(details))
@@ -261,9 +260,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     if url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        u = sys.argv[0] + extraData.get('id') + "/media/file.mkv?url=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
-        #u = PlayUtils().getPlayUrl(extraData.get("id"), extraData)
-        #WINDOW.setProperty("playback_url_" + u, extraData.get("id"))
+        u = sys.argv[0] + "?item_id=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -808,7 +805,7 @@ def processDirectory(url, results, progress, pluginhandle):
             if (item.get("RecursiveItemCount") != 0):
                 dirItems.append(addGUIItem(u, details, extraData))
         else:
-            u = server + ',;' + id
+            u = id
             dirItems.append(addGUIItem(u, details, extraData, folder=False))
 
     return dirItems, viewType
@@ -1052,11 +1049,7 @@ def getWigetContent(pluginName, handle, params):
                     #    cappedPercentage = 90
                     list_item.setProperty("complete_percentage", str(percentage))
 
-        #playurl = PlayUtils().getPlayUrl(item.get("Id"), item)
-        #WINDOW.setProperty("playback_url_" + playurl, item.get("Id"))
-
-        url =  server + ',;' + item_id
-        playurl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
+        playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
         
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
@@ -1138,39 +1131,29 @@ def checkService():
         sys.exit()
 
 
-def PLAY(url, handle):
+def PLAY(params, handle):
     log.info("== ENTER: PLAY ==")
 
-    # playData = json.loads(url)
+    log.info("PLAY ACTION PARAMS : " + str(params))
+    id = params.get("item_id")
 
-    url = urllib.unquote(url)
+    autoResume = int(params.get("auto_resume", "0"))
+    log.info("AUTO_RESUME: " + str(autoResume))
 
-    urlParts = url.split(',;')
-    log.info("PLAY ACTION URL PARTS : " + str(urlParts))
-    server = urlParts[0]
-    id = urlParts[1]
-    autoResume = 0
-
-    if (len(urlParts) > 2):
-        autoResume = int(urlParts[2])
-        log.info("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
-
-    ip, port = server.split(':')
     userid = downloadUtils.getUserId()
     seekTime = 0
-    resume = 0
 
-    id = urlParts[1]
+    port = __settings__.getSetting('port')
+    host = __settings__.getSetting('ipaddress')
+    server = host + ":" + port
+
     jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
                                          suppress=False, popup=1)
     result = json.loads(jsonData)
 
-    if (autoResume != 0):
-        if (autoResume == -1):
-            resume_result = 1
-        else:
-            resume_result = 0
-            seekTime = (autoResume / 1000) / 10000
+    if autoResume != 0:
+        resume_result = 0
+        seekTime = (autoResume / 1000) / 10000
     else:
         userData = result.get("UserData")
         resume_result = 0
