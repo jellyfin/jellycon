@@ -5,7 +5,7 @@
 	<coordinates>
 		<system>1</system>
 		<left>450</left>
-		<top>250</top>
+		<top>280</top>
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
@@ -13,7 +13,7 @@
 		<control type="image">
 			<left>0</left>
 			<top>0</top>
-			<width>340</width>
+			<width>380</width>
 			<height>160</height>
 			<texture border="40">bg.png</texture>
 		</control>	
@@ -23,12 +23,13 @@
 			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
             <left>20</left>
             <top>30</top>
-            <width>300</width>
+            <width>340</width>
             <height>40</height>
             <label>-</label>
             <onup>-</onup>
             <ondown>3011</ondown>
             <font>font14</font>
+            <align>center</align>
         </control>
            
         <control type="button" id="3011">
@@ -36,12 +37,13 @@
 			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
             <left>20</left>
             <top>90</top>
-            <width>300</width>
+            <width>340</width>
             <height>40</height>
             <label>Start from beginning</label>
             <onup>3010</onup>
             <ondown>3012</ondown>
             <font>font14</font>
+            <align>center</align>
         </control>       
 
 	</controls>
