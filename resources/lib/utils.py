@@ -91,17 +91,15 @@ def getDetailsString():
     return detailsString
 
 def getChecksum(item):
-    # Use the etags checksum and userdata
     userdata = item['UserData']
-
-    checksum = "%s_%s_%s_%s_%s_%s" % (
+    checksum = "%s_%s_%s_%s_%s_%s_%s" % (
         item['Etag'],
         userdata['Played'],
         userdata['IsFavorite'],
         userdata.get('Likes', "-"),
         userdata['PlaybackPositionTicks'],
-        userdata.get('UnplayedItemCount', "-")#,
-        #userdata.get('LastPlayedDate', "-")
+        userdata.get('UnplayedItemCount', "-"),
+        userdata.get("PlayedPercentage", "-")
     )
 
     return checksum

@@ -40,42 +40,7 @@ class DataManager():
             item_hash_string = str(itemCount) + "_" + item.get("Name", "-") + "_" + item_hash_string + "|"
             log.debug("ITEM_HASH: " + item_hash_string)
             dataHashString += item_hash_string
-
             itemCount = itemCount + 1
-
-            '''
-            userData = item.get("UserData")
-            if(userData != None):
-
-                dataHashString += getChecksum(item)
-
-                
-                if(item.get("IsFolder") == False):
-                    itemCount = itemCount + 1
-                    itemPercent = 0.0
-                    if userData.get("Played") == False:
-                        unwatchedItemCount = unwatchedItemCount + 1
-                        
-                    # calc the percentage
-                    itemPercent = 0.0
-                    itemPossition = userData.get("PlaybackPositionTicks")
-                    itemRuntime = item.get("RunTimeTicks")
-                    if(itemRuntime != None and itemPossition != None):
-                        itemPercent = (float(itemPossition) / float(itemRuntime)) * 100
-                    
-                    itemString = str(itemCount) + "_" + item.get("Name", "name") + "_" + str(int(itemPercent)) + "-" + str(unwatchedItemCount) + "|"
-                    log.debug(itemString)
-                    dataHashString = dataHashString + itemString
-                else:
-                    itemCount = itemCount + item.get("RecursiveItemCount", 0)
-                    unwatchedItemCount = unwatchedItemCount + userData.get("UnplayedItemCount")
-                    PlayedPercentage = userData.get("PlayedPercentage")
-                    if PlayedPercentage == None:
-                        PlayedPercentage = 0
-                    itemString = str(itemCount) + "_" + item.get("Name", "name") + "_" + str(int(PlayedPercentage)) + "-" + str(unwatchedItemCount) + "|"
-                    log.debug(itemString)
-                    dataHashString = dataHashString + itemString
-            '''
 
         # hash the data
         dataHashString = dataHashString.encode("UTF-8")
