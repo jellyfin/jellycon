@@ -108,7 +108,6 @@ class WebSocketThread(threading.Thread):
         result = json.loads(message)
         
         messageType = result.get("MessageType")
-        playCommand = result.get("PlayCommand")
         data = result.get("Data")
         
         if(messageType != None and messageType == "Play" and data != None):

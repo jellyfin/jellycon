@@ -12,6 +12,7 @@ import xbmc
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
+from utils import getChecksum
 
 log = SimpleLogging("EmbyCon." + __name__)
 
@@ -35,8 +36,20 @@ class DataManager():
         dataHashString = "";
         
         for item in result:
+            item_hash_string = getChecksum(item)
+            item_hash_string = str(itemCount) + "_" + item.get("Name", "-") + "_" + item_hash_string + "|"
+            log.debug("ITEM_HASH: " + item_hash_string)
+            dataHashString += item_hash_string
+
+            itemCount = itemCount + 1
+
+            '''
             userData = item.get("UserData")
             if(userData != None):
+
+                dataHashString += getChecksum(item)
+
+                
                 if(item.get("IsFolder") == False):
                     itemCount = itemCount + 1
                     itemPercent = 0.0
@@ -62,7 +75,8 @@ class DataManager():
                     itemString = str(itemCount) + "_" + item.get("Name", "name") + "_" + str(int(PlayedPercentage)) + "-" + str(unwatchedItemCount) + "|"
                     log.debug(itemString)
                     dataHashString = dataHashString + itemString
-              
+            '''
+
         # hash the data
         dataHashString = dataHashString.encode("UTF-8")
         m = hashlib.md5()

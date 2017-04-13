@@ -86,6 +86,22 @@ def getKodiVersion():
     return version
 
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview"
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview,Etag"
     #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
     return detailsString
+
+def getChecksum(item):
+    # Use the etags checksum and userdata
+    userdata = item['UserData']
+
+    checksum = "%s_%s_%s_%s_%s_%s" % (
+        item['Etag'],
+        userdata['Played'],
+        userdata['IsFavorite'],
+        userdata.get('Likes', "-"),
+        userdata['PlaybackPositionTicks'],
+        userdata.get('UnplayedItemCount', "-")#,
+        #userdata.get('LastPlayedDate', "-")
+    )
+
+    return checksum
