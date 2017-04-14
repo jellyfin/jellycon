@@ -9,6 +9,7 @@ from datetime import datetime
 from resources.lib.websocketclient import WebSocketThread
 from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
+from resources.lib.play_utils import playFile
 
 log = SimpleLogging("EmbyCon.service")
 download_utils = DownloadUtils()
@@ -69,16 +70,14 @@ class Service(xbmc.Player):
         
         current_playing_file = xbmc.Player().getPlayingFile()
         log.info("onPlayBackStarted: " + current_playing_file)
-        
+
         window_handle = xbmcgui.Window(10000)
         emby_item_id = window_handle.getProperty("item_id")
-        #emby_item_id = window_handle.getProperty("playback_url_" + current_playing_file)
-        log.info("item_id: " + emby_item_id)
-        window_handle.setProperty("item_id", "")
 
+        # if we could not find the ID of the current item then return
         if emby_item_id is None or len(emby_item_id) == 0:
             return
-        
+
         websocket_thread.playbackStarted(emby_item_id)
         
         data = {}
@@ -102,7 +101,9 @@ monitor = Service()
 last_progress_update = datetime.today()
             
 while not xbmc.abortRequested:
-    
+
+    window_handle = xbmcgui.Window(10000)
+
     if xbmc.Player().isPlaying():
         try:
             # send update
@@ -128,6 +129,14 @@ while not xbmc.abortRequested:
         except Exception, e:
             log.error("Exception in Playback Monitor : " + str(e))
             pass
+
+    else:
+        emby_item_id = window_handle.getProperty("play_item_id")
+        emby_item_resume = window_handle.getProperty("play_item_resume")
+        if emby_item_id and emby_item_resume:
+            window_handle.clearProperty("play_item_id")
+            window_handle.clearProperty("play_item_resume")
+            playFile(emby_item_id, emby_item_resume)
 
     xbmc.sleep(1000)
     xbmcgui.Window(10000).setProperty("EmbyCon_Service_Timestamp", str(int(time.time())))

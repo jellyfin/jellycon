@@ -242,6 +242,7 @@ def delete (item_id):
                
 def addGUIItem( url, details, extraData, folder=True ):
 
+    WINDOW = xbmcgui.Window(10000)
     url = url.encode('utf-8')
 
     log.debug("Adding GuiItem for [%s]" % details.get('title','Unknown'))
@@ -260,7 +261,7 @@ def addGUIItem( url, details, extraData, folder=True ):
     if url.startswith('http'):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
     else:
-        u = sys.argv[0] + "?item_id=" + url + '&mode=PLAY'# + "&timestamp=" + str(datetime.today())
+        u = sys.argv[0] + "?item_id=" + url + '&mode=PLAY'
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -424,35 +425,6 @@ def addContextMenu(details, extraData, folder):
         commands.append(("Emby: Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
                     
     return(commands)
-
-def setListItemProps(server, id, listItem, result):
-
-    # set up item and item info
-    thumbID = id
-    eppNum = -1
-    seasonNum = -1
-        
-    setArt(listItem, 'poster', downloadUtils.getArtwork(result, "Primary"))
-    
-    listItem.setProperty('IsPlayable', 'true')
-    listItem.setProperty('IsFolder', 'false')
-    
-    # play info       
-    details = {
-             'title'        : result.get("Name", "Missing Name"),
-             'plot'         : result.get("Overview")
-             }
-             
-    if(eppNum > -1):
-        details["episode"] = str(eppNum)
-        
-    if(seasonNum > -1):
-        details["season"] = str(seasonNum)
-   
-    listItem.setInfo( "Video", infoLabels=details )
-
-    return
-
 
 def get_params(paramstring):
     log.debug("Parameter string: " + paramstring)
@@ -1137,85 +1109,14 @@ def PLAY(params, handle):
     log.info("PLAY ACTION PARAMS : " + str(params))
     id = params.get("item_id")
 
-    autoResume = int(params.get("auto_resume", "0"))
+    autoResume = int(params.get("auto_resume", "-1"))
     log.info("AUTO_RESUME: " + str(autoResume))
 
-    userid = downloadUtils.getUserId()
-    seekTime = 0
-
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port
-
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
-                                         suppress=False, popup=1)
-    result = json.loads(jsonData)
-
-    if autoResume != 0:
-        resume_result = 0
-        seekTime = (autoResume / 1000) / 10000
-    else:
-        userData = result.get("UserData")
-        resume_result = 0
-
-        if userData.get("PlaybackPositionTicks") != 0:
-            reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
-            seekTime = reasonableTicks / 10000
-            displayTime = str(timedelta(seconds=seekTime))
-
-            resumeDialog = ResumeDialog("ResumeDialog.xml", __cwd__, "default", "720p")
-            resumeDialog.setResumeTime("Resume from " + displayTime)
-            resumeDialog.doModal()
-            resume_result = resumeDialog.getResumeAction()
-            del resumeDialog
-
-            log.info("Resume Dialog Result: " + str(resume_result))
-
-            if resume_result == -1:
-                return
-
-    playurl = PlayUtils().getPlayUrl(id, result)
-    log.info("Play URL: " + playurl)
-    thumbPath = downloadUtils.getArtwork(result, "Primary")
-    listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
-
-    setListItemProps(server, id, listItem, result)
-
-    # Can not play virtual items
-    if (result.get("LocationType") == "Virtual"):
-        xbmcgui.Dialog().ok(__language__(30128), __language__(30129))
-        return
-
     # set the current playing item id
+    # set all the playback info, this will be picked up by the service
+    # the service will then start the playback
     WINDOW = xbmcgui.Window(10000)
     WINDOW.setProperty("item_id", id)
-
-    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    playlist.clear()
-    playlist.add(playurl, listItem)
-    xbmc.Player().play(playlist)
-
-    #xbmc.Player().play(playurl, listItem)
-
-    #xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listItem)
-
-    # Set a loop to wait for positive confirmation of playback
-    count = 0
-    while not xbmc.Player().isPlaying():
-        log.info("Not playing yet...sleep for 1 sec")
-        count = count + 1
-        if count >= 10:
-            return
-        else:
-            time.sleep(1)
-
-    if resume_result == 0:
-        jumpBackSec = int(__settings__.getSetting("resumeJumpBack"))
-        seekToTime = seekTime - jumpBackSec
-        while xbmc.Player().getTime() < (seekToTime - 5):
-            xbmc.Player().pause
-            xbmc.sleep(100)
-            xbmc.Player().seekTime(seekToTime)
-            xbmc.sleep(100)
-            xbmc.Player().play()
+    WINDOW.setProperty("play_item_id", id)
+    WINDOW.setProperty("play_item_resume", str(autoResume))
 
