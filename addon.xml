@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon  id="plugin.video.embycon" 
         name="EmbyCon"
-        version="1.1.0"
+        version="1.1.1"
         provider-name="null_pointer">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -15,10 +15,10 @@
     <platform>all</platform>
     <language>en</language>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>https://emby.media/community/index.php?/forum/99-kodi/</forum>
-    <website>https://emby.media/community/index.php?/forum/99-kodi/</website>
+    <forum>https://emby.media/community/index.php?/topic/46651-embycon/</forum>
+    <website>https://emby.media/community/index.php?/topic/46651-embycon/</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
-    <summary lang="en">EmbyCon Addon for Kodi</summary>
-    <description lang="en">A basic addon to allow you to view and play back your Emby Movie and TV Show collection.</description>
+    <summary lang="en">View and play your Emby media library.</summary>
+    <description lang="en">An addon to allow you to view and playback your Emby Movie and TV Show collection.</description>
   </extension>
 </addon>
