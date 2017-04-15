@@ -140,7 +140,12 @@ while not xbmc.abortRequested:
 
     xbmc.sleep(1000)
     xbmcgui.Window(10000).setProperty("EmbyCon_Service_Timestamp", str(int(time.time())))
-    
+
+# clear user and token when loggin off
+WINDOW = xbmcgui.Window(10000)
+WINDOW.clearProperty("userid")
+WINDOW.clearProperty("AccessToken")
+
 # stop the WebSocket client
 websocket_thread.stopClient()
 
