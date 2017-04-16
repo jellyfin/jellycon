@@ -7,7 +7,7 @@
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>executable video audio image</provides>
+        <provides>video</provides>
   </extension>
   <extension point="xbmc.service" library="service.py" start="login">
   </extension>
@@ -19,6 +19,6 @@
     <website>https://emby.media/community/index.php?/topic/46651-embycon/</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
     <summary lang="en">View and play your Emby media library.</summary>
-    <description lang="en">An addon to allow you to view and playback your Emby Movie and TV Show collection.</description>
+    <description lang="en">An addon to allow you to view and playback your Emby (www.emby.media) Movie and TV Show collection.</description>
   </extension>
 </addon>
