@@ -335,13 +335,16 @@ def addGUIItem( url, details, extraData, folder=True ):
     
     #StartPercent
     
-    artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape']
-    
+    artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape', 'tvshow.poster']
+    artLinks = {}
     for artType in artTypes:
-        imagePath = str(extraData.get(artType,''))
-        list = setArt(list, artType, imagePath)
-        log.debug( "Setting " + artType + " as " + imagePath)
-    
+        imagePath = extraData.get(artType, None)
+        if imagePath is not None and imagePath != "":
+            list.setProperty(artType, imagePath)
+            artLinks[artType] = imagePath
+            log.debug("Setting " + artType + " as " + imagePath)
+    list.setArt(artLinks)
+
     menuItems = addContextMenu(details, extraData, folder)
     if(len(menuItems) > 0):
         list.addContextMenuItems( menuItems, True )
@@ -368,8 +371,10 @@ def addGUIItem( url, details, extraData, folder=True ):
     videoInfoLabels["genre"] = extraData.get('genre')
     
     videoInfoLabels["episode"] = details.get('episode')
-    videoInfoLabels["season"] = details.get('season') 
-    
+    videoInfoLabels["season"] = details.get('season')
+
+    videoInfoLabels["mediatype"] = "video"
+
     list.setInfo('video', videoInfoLabels)
     
     list.addStreamInfo('video', {'duration': extraData.get('duration'), 'aspect': extraData.get('aspectratio'),'codec': extraData.get('videocodec'), 'width' : extraData.get('width'), 'height' : extraData.get('height')})
@@ -718,14 +723,14 @@ def processDirectory(url, results, progress, pluginhandle):
         NumEpisodes = TotalEpisodes
         
         # Populate the extraData list
-        extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary") ,
-                   'fanart_image' : downloadUtils.getArtwork(item, "Backdrop") ,
-                   'poster'       : downloadUtils.getArtwork(item, "Primary") , 
-                   'banner'       : downloadUtils.getArtwork(item, "Banner") ,
-                   'clearlogo'    : downloadUtils.getArtwork(item, "Logo") ,
-                   'discart'      : downloadUtils.getArtwork(item, "Disc") ,
-                   'clearart'     : downloadUtils.getArtwork(item, "Art") ,
-                   'landscape'    : downloadUtils.getArtwork(item, "Thumb") ,                
+        extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary"),
+                   'fanart_image' : downloadUtils.getArtwork(item, "Backdrop"),
+                   'poster'       : downloadUtils.getArtwork(item, "Primary"),
+                   'banner'       : downloadUtils.getArtwork(item, "Banner"),
+                   'clearlogo'    : downloadUtils.getArtwork(item, "Logo"),
+                   'discart'      : downloadUtils.getArtwork(item, "Disc"),
+                   'clearart'     : downloadUtils.getArtwork(item, "Art"),
+                   'landscape'    : downloadUtils.getArtwork(item, "Thumb"),
                    'id'           : id ,
                    'guiid'        : guiid ,
                    'mpaa'         : item.get("OfficialRating"),
@@ -762,6 +767,11 @@ def processDirectory(url, results, progress, pluginhandle):
 
         extraData["Path"] = item.get("Path")
 
+        if item.get("Type") == "Episode":
+            extraData["tvshow.poster"] = downloadUtils.getArtwork(item, "Primary", parent=True)
+            extraData["poster"] = None
+            extraData["banner"] = downloadUtils.getArtwork(item, "Banner", parent=True)
+
         if extraData['thumb'] == '':
             extraData['thumb'] = extraData['fanart_image']
 
@@ -787,11 +797,6 @@ def getServerFromURL( url ):
         return url.split('/')[2]
     else:
         return url.split('/')[0]
-
-def setArt(list, name, path):
-    list.setProperty(name, path)
-    list.setArt({name:path})
-    return list
 
 def showSetViews():
     log.info("showSetViews Called")

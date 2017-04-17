@@ -29,18 +29,22 @@ class DownloadUtils():
         host = self.addonSettings.getSetting('ipaddress')
         self.server = host + ":" + port
 
-    def getArtwork(self, data, type, index = "0", width = 10000, height = 10000):
+    def getArtwork(self, data, type, parent = False, index = "0", width = 10000, height = 10000):
 
         id = data.get("Id")
         '''
         if data.get("Type") == "Season":  # For seasons: primary (poster), thumb and banner get season art, rest series art
             if type != "Primary" and type != "Thumb" and type != "Banner":
                 id = data.get("SeriesId")
-                
+        '''
         if data.get("Type") == "Episode":  # For episodes: primary (episode thumb) gets episode art, rest series art. 
             if type != "Primary":
                 id = data.get("SeriesId")
-        '''
+
+        # for episodes and type primary and parent is required then use series ID
+        if data.get("Type") == "Episode" and parent == True:
+            id = data.get("SeriesId")
+
         imageTag = ""
         #"e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
 
@@ -63,9 +67,9 @@ class DownloadUtils():
                 imageTag = data.get("ImageTags").get(type)
                 log.debug("Image Tag:" + imageTag)
 
-        if(imageTag == "" or imageTag == None):
-            log.debug("No Image Tag")
-            return ""            
+        #if(imageTag == "" or imageTag == None):
+        #    log.debug("No Image Tag for request:" + type + " item:" + itemType + " parent:" + str(parent))
+        #    return ""
 
         query = ""
         
