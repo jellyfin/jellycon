@@ -55,11 +55,11 @@ def mainEntryPoint():
             pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    log.info("EmbyCon -> running Python: " + str(sys.version_info))
-    log.info("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
+    log.info("Running Python: " + str(sys.version_info))
+    log.info("Running EmbyCon: " + str(ADDON_VERSION))
     log.info("Kodi BuildVersion: " + xbmc.getInfoLabel( "System.BuildVersion" ))
     log.info("Kodi Version: " + str(kodi_version))
-    log.info("EmbyCon -> Script argument data: " + str(sys.argv))
+    log.info("Script argument data: " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
@@ -77,7 +77,7 @@ def mainEntryPoint():
             except:
                 params = {}    
     
-    log.info("EmbyCon -> Script params = " + str(params))
+    log.info("Script params = " + str(params))
 
     param_url = params.get('url', None)
 

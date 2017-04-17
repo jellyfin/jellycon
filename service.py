@@ -145,6 +145,7 @@ while not xbmc.abortRequested:
 WINDOW = xbmcgui.Window(10000)
 WINDOW.clearProperty("userid")
 WINDOW.clearProperty("AccessToken")
+WINDOW.clearProperty("EmbyConParams")
 
 # stop the WebSocket client
 websocket_thread.stopClient()
