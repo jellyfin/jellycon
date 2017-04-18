@@ -304,14 +304,14 @@ def addGUIItem( url, details, extraData, folder=True ):
        
     countsAdded = False
     addCounts = __settings__.getSetting('addCounts') == 'true'
-    if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
+    if addCounts and extraData.get('UnWatchedEpisodes') != "0":
         countsAdded = True
-        listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"          
+        listItemName = listItemName + " (" +  extraData.get('UnWatchedEpisodes') + ")"
        
     addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
     if(countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
-        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
-    
+        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"
+
     # update title with new name, this sets the new name in the deailts that are later passed to video info
     details['title'] = listItemName
 
