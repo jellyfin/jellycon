@@ -8,7 +8,6 @@
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
         <setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
-
 	</category>
 	<category label="30207">
 		<setting id="playback_type" type="enum" label="30206" values="File Direct Path|HTTP Direct Stream|HTTP Transcode" default="0" />
@@ -28,5 +27,6 @@
 	<category label="30022"> <!-- Advanced -->
 		<setting id="logLevel" type="enum" label="30004" values="None|Info|Debug" default="0" />
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
+		<setting id="cacheEmbyData" type="bool" label="30138" default="false" visible="true" enable="true" />
 	</category>
 </settings>

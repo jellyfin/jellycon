@@ -38,6 +38,7 @@
     <string id="30135">Error</string>
     <string id="30136">EmbyCon service is not running</string>
     <string id="30137">Please restart Kodi</string>
+    <string id="30138">Cache Emby Data Locally</string>
        
     <string id="30150">Skin does not support setting views</string>
     <string id="30151">Select item action (Requires Restart)</string>

@@ -57,14 +57,25 @@ class DataManager():
         return json.loads(jsonData)        
         
     def GetContent(self, url):
-    
+
+        __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+        use_cache_system = __addon__.getSetting('cacheEmbyData') == "true"
+
+        if use_cache_system == False:
+            # dont use cache system at all, just get the result and return
+            log.info("GetContent - Not using cache system")
+            jsonData = DownloadUtils().downloadUrl(url, suppress=False, popup=1)
+            result = self.loadJasonData(jsonData)
+            log.info("Returning Loaded Result")
+            return result
+
         #  first get the url hash
         m = hashlib.md5()
         m.update(url)
         urlHash = m.hexdigest()
         
         # build cache data path
-        __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+
         __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
         if not os.path.exists(os.path.join(__addondir__, "cache")):
             os.makedirs(os.path.join(__addondir__, "cache"))
@@ -74,10 +85,10 @@ class DataManager():
         
         # are we forcing a reload
         WINDOW = xbmcgui.Window( 10000 )
-        force_data_reload = WINDOW.getProperty("force_data_reload")
-        WINDOW.setProperty("force_data_reload", "false")
+        force_data_reload = WINDOW.getProperty("force_data_reload") == "true"
+        WINDOW.clearProperty("force_data_reload")
     
-        if(os.path.exists(cacheDataPath)) and force_data_reload != "true":
+        if os.path.exists(cacheDataPath) and not force_data_reload:
             # load data from cache if it is available and trigger a background
             # verification process to test cache validity   
             log.info("Loading Cached File")
