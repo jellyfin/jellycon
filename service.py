@@ -11,6 +11,12 @@ from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
 
+# clear user and token when logging in
+WINDOW = xbmcgui.Window(10000)
+WINDOW.clearProperty("userid")
+WINDOW.clearProperty("AccessToken")
+WINDOW.clearProperty("EmbyConParams")
+
 log = SimpleLogging("EmbyCon.service")
 download_utils = DownloadUtils()
 

@@ -10,12 +10,10 @@
         <setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
 	</category>
 	<category label="30207">
-		<setting id="playback_type" type="enum" label="30206" values="File Direct Path|HTTP Direct Stream|HTTP Transcode" default="0" />
+		<setting id="playback_type" type="enum" label="30206" values="File Direct Path|HTTP Direct Stream|HTTP Transcode" default="1" />
 		<setting id="playback_bitrate" type="slider" label="30208" default="6000" range="400,100,10000" option="int" visible="eq(-1,2)"/>
-		<setting id="resumeJumpBack" type="number" label="30114" default="10" visible="true" enable="true" />
-        <setting type="sep" />
-		<setting id="smbusername" type="text" label="30007" default="" visible="true" enable="true" />
-		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" visible="true" enable="true" />
+		<setting id="smbusername" type="text" label="30007" default="" enable="true" visible="eq(-2,0)"/>
+		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" enable="true" visible="eq(-3,0)"/>
 	</category>
 	<category label="30110">
 		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />
