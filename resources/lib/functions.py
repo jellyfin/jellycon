@@ -409,12 +409,12 @@ def addContextMenu(details, extraData, folder):
         scriptToRun = PLUGINPATH + "/default.py"
 
         # watched/unwatched
-        #if extraData.get("playcount") == "0":
-        argsToPass = 'markWatched,' + extraData.get('id')
-        commands.append(("Emby: Mark Watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        #else:
-        argsToPass = 'markUnwatched,' + extraData.get('id')
-        commands.append(("Emby: Mark Unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        if extraData.get("playcount") == "0":
+            argsToPass = 'markWatched,' + extraData.get('id')
+            commands.append(("Emby: Mark as watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        else:
+            argsToPass = 'markUnwatched,' + extraData.get('id')
+            commands.append(("Emby: Mark as unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
             
         # favourite add/remove
 
