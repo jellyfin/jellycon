@@ -164,9 +164,30 @@ def getCollections(detailsString):
     # Add standard nodes
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "All Movies"
+    item_data['title'] = "Movies - All"
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
+
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Movies - Recently Added"
+    item_data[
+        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
+
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Movies - In Progress"
+    item_data[
+        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    collections.append(item_data)
+
+    item_data = {}
+    item_data['address'] = server
+    item_data['title'] = "Movies - Favorites"
+    item_data[
+        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
@@ -178,42 +199,35 @@ def getCollections(detailsString):
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "All TV"
+    item_data['title'] = "TV Shows - All"
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Recently Added Movies"
+    item_data['title'] = "TV Shows - Favorites"
     item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Recently Added Episodes"
+    item_data['title'] = "Episodes - Recently Added"
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "In Progress Movies"
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(item_data)
-
-    item_data = {}
-    item_data['address'] = server
-    item_data['title'] = "In Progress Episodes"
+    item_data['title'] = "Episodes - In Progress"
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Next Episodes"
+    item_data['title'] = "Episodes - Next Up"
     item_data[
         'path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)

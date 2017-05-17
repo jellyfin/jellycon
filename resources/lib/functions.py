@@ -411,19 +411,18 @@ def addContextMenu(details, extraData, folder):
         # watched/unwatched
         if extraData.get("playcount") == "0":
             argsToPass = 'markWatched,' + extraData.get('id')
-            commands.append(("Emby: Mark as watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Emby: Mark watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
             argsToPass = 'markUnwatched,' + extraData.get('id')
-            commands.append(("Emby: Mark as unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append(("Emby: Mark unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
             
         # favourite add/remove
-
-        #if extraData.get('favorite') != 'true':
-        #    argsToPass = 'markFavorite,' + extraData.get('id')
-        #    commands.append(("Add to Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        #else:
-        #    argsToPass = 'unmarkFavorite,' + extraData.get('id')
-        #    commands.append(("Remove from Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        if extraData.get('favorite') != 'true':
+            argsToPass = 'markFavorite,' + extraData.get('id')
+            commands.append(("Emby: Set favourite", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        else:
+            argsToPass = 'unmarkFavorite,' + extraData.get('id')
+            commands.append(("Emby: Unset favourite", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
         # delete
         argsToPass = 'delete,' + extraData.get('id')
