@@ -50,6 +50,8 @@ class PlayUtils():
         # do direct http streaming playback
         elif playback_type == "1":
             playurl = "http://%s/emby/Videos/%s/stream?static=true" % (server, id)
+            user_token = downloadUtils.authenticate()
+            playurl = playurl + "&api_key=" + user_token
 
         # do transcode http streaming playback
         elif playback_type == "2":
@@ -57,11 +59,14 @@ class PlayUtils():
 
             clientInfo = ClientInformation()
             deviceId = clientInfo.getDeviceId()
-            bitrate = int(playback_bitrate) * 1000;
+            bitrate = int(playback_bitrate) * 1000
+            user_token = downloadUtils.authenticate()
 
             playurl = (
                 "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
                 % (server, id, id, deviceId, bitrate))
+
+            playurl = playurl + "&api_key=" + user_token
 
         log.info("Playback URL: " + playurl)
         return playurl.encode('utf-8')
