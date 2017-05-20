@@ -470,6 +470,26 @@ def getContent(url, pluginhandle, media_type):
     log.info("URL: " + str(url))
     log.info("MediaType: " + str(media_type))
 
+    # determine view type, map it from media type to view type
+    viewType = ""
+    media_type = str(media_type).lower().strip()
+    if media_type.startswith("movie"):
+        viewType = "Movies"
+        xbmcplugin.setContent(pluginhandle, 'movies')
+    elif media_type.startswith("boxset"):
+        viewType = "BoxSets"
+        xbmcplugin.setContent(pluginhandle, 'movies')
+    elif media_type == "tvshows":
+        viewType = "Series"
+        xbmcplugin.setContent(pluginhandle, 'tvshows')
+    elif media_type == "series":
+        viewType = "Seasons"
+        xbmcplugin.setContent(pluginhandle, 'seasons')
+    elif media_type == "season":
+        viewType = "Episodes"
+        xbmcplugin.setContent(pluginhandle, 'episodes')
+    log.info("ViewType: " + viewType)
+
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
@@ -496,9 +516,10 @@ def getContent(url, pluginhandle, media_type):
             progress.close()
         return
     
-    dirItems, viewType = processDirectory(url, result, progress, pluginhandle)
+    dirItems = processDirectory(url, result, progress, pluginhandle)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-    
+
+    # set the view mode based on what the user wanted for this view type
     if(viewType != None and len(viewType) > 0):
         defaultData = loadSkinDefaults()
         viewNum = defaultData.get(viewType)
@@ -533,8 +554,7 @@ def processDirectory(url, results, progress, pluginhandle):
         result = []
     item_count = len(result)
     current_item = 1
-    viewType = ""
-    
+
     for item in result:
     
         if(progress != None):
@@ -566,22 +586,8 @@ def processDirectory(url, results, progress, pluginhandle):
             tempSeason = str(item.get("ParentIndexNumber"))
             if item.get("ParentIndexNumber") < 10:
                 tempSeason = "0" + tempSeason
-      
-        if item.get("Type") == "Movie":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = "Movies"
-        elif item.get("Type") == "BoxSet":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = "BoxSets"
-        elif item.get("Type") == "Trailer":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = ""            
-        elif item.get("Type") == "Series":
-            xbmcplugin.setContent(pluginhandle, 'tvshows')
-            viewType = "Series"
-        elif item.get("Type") == "Season":
-            xbmcplugin.setContent(pluginhandle, 'seasons')
-            viewType = "Seasons"
+
+        if item.get("Type") == "Season":
             guiid = item.get("SeriesId")
         elif item.get("Type") == "Episode":
             prefix=''
@@ -594,8 +600,6 @@ def processDirectory(url, results, progress, pluginhandle):
                 prefix = prefix + str(tempEpisode)
             if prefix != '':
                 tempTitle = prefix + ' - ' + tempTitle
-            xbmcplugin.setContent(pluginhandle, 'episodes')
-            viewType = "Episodes"
             guiid = item.get("SeriesId")
         
         if(item.get("PremiereDate") != None):
@@ -798,7 +802,7 @@ def processDirectory(url, results, progress, pluginhandle):
             u = id
             dirItems.append(addGUIItem(u, details, extraData, folder=False))
 
-    return dirItems, viewType
+    return dirItems
     
 def getServerFromURL( url ):
     if url[0:4] == "http":
@@ -1050,7 +1054,6 @@ def showContent(pluginName, handle, params):
     server = host + ":" + port
     
     item_type = params.get("item_type")
-    detailsString = getDetailsString()
     userid = downloadUtils.getUserId()
     media_type = params.get("media_type", None)
     if not media_type:

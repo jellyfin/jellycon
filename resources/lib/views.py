@@ -32,7 +32,7 @@ def loadSkinDefaults():
 
 class DefaultViews(xbmcgui.WindowXMLDialog):
    
-    viewCats = ["Movies", "BoxSets", "Trailers", "Series", "Seasons", "Episodes"]
+    viewCats = ["Movies", "BoxSets", "Series", "Seasons", "Episodes"]
     viewData = {}
     defaultView = {}
       
