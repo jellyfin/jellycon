@@ -3,7 +3,7 @@
 	<category label="30014">
 		<setting id="ipaddress" type="text" label="30000" default="&lt;none&gt;" visible="true" enable="true" />
 		<setting id="port" type="text" label="30030" default="8096" visible="true" enable="true" />
-        <setting label="30011" type="action" action="RunScript(plugin.video.embycon,0,?mode=DETECT_SERVER)" option="close"/>
+        <setting label="30011" type="action" action="RunScript(plugin.video.embycon,0,?mode=DETECT_SERVER_USER)" option="close"/>
 		<setting type="sep" />
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />

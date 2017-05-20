@@ -91,6 +91,8 @@ def mainEntryPoint():
         checkServer(change_user=True, notify=False)
     elif mode == "DETECT_SERVER":
         checkServer(force=True, notify=True)
+    elif mode == "DETECT_SERVER_USER":
+        checkServer(force=True, change_user=True, notify=False)
     elif sys.argv[1] == "markWatched":
         item_id = sys.argv[2]
         markWatched(item_id)
