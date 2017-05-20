@@ -173,7 +173,7 @@ class WebSocketThread(threading.Thread):
             mb3Port = addonSettings.getSetting('port')
             
             url = "http://" + mb3Host + ":" + mb3Port + "/emby/Sessions?DeviceId=" + machineId + "&format=json"
-            log.info("Session URL : " + url);
+            log.info("Session URL : " + url)
             jsonData = downloadUtils.downloadUrl(url)
             log.info("Session JsonData : " + jsonData)
             result = json.loads(jsonData)
@@ -183,10 +183,10 @@ class WebSocketThread(threading.Thread):
             
             url = "http://" + mb3Host + ":" + mb3Port + "/emby/Sessions/Capabilities?Id=" + sessionId + "&PlayableMediaTypes=Video&SupportedCommands=Play&SupportsMediaControl=True"
             postData = {}
-            postData["Id"] = sessionId;
-            postData["PlayableMediaTypes"] = "Video";
+            postData["Id"] = sessionId
+            postData["PlayableMediaTypes"] = "Video"
             stringdata = json.dumps(postData)
-            log.info("Capabilities URL : " + url);
+            log.info("Capabilities URL : " + url)
             log.info("Capabilities Data : " + stringdata)
             downloadUtils.downloadUrl(url, postBody=stringdata, type="POST")
             

@@ -28,6 +28,14 @@ class PlayUtils():
         log.info("playback_type: " + playback_type)
         playurl = None
 
+        # check if strm file, will contain contain playback url
+        if result.get('MediaSources'):
+            source = result['MediaSources'][0]
+            if source.get('Container') == 'strm':
+                playurl = source.get('Path')
+                if playurl:
+                    return playurl
+
         # do direct path playback
         if playback_type == "0":
             playurl = result.get("Path")

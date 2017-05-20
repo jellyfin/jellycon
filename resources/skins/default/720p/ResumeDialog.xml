@@ -39,7 +39,7 @@
             <top>90</top>
             <width>340</width>
             <height>40</height>
-            <label>Start from beginning</label>
+            <label>-</label>
             <onup>3010</onup>
             <ondown>3012</ondown>
             <font>font14</font>

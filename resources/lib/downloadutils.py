@@ -24,7 +24,7 @@ class DownloadUtils():
     def __init__(self, *args):
         self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         self.getString = self.addonSettings.getLocalizedString
-            
+        self.addon_name = self.addonSettings.getAddonInfo('name')
         port = self.addonSettings.getSetting('port')
         host = self.addonSettings.getSetting('ipaddress')
         self.server = host + ":" + port
@@ -121,6 +121,8 @@ class DownloadUtils():
         host = self.addonSettings.getSetting('ipaddress')
         userName = self.addonSettings.getSetting('username')
 
+        if not userName:
+            return ""
         log.info("Looking for user name: " + userName)
 
         jsonData = None
@@ -154,11 +156,13 @@ class DownloadUtils():
                     log.info("Username Is Secure (HasPassword=True)")
                 break
 
-        if(secure):
+        if (secure) or (not userid):
             authOk = self.authenticate()
-            if(authOk == ""):
+            if (authOk == ""):
                 return_value = xbmcgui.Dialog().ok(self.getString(30044), self.getString(30044))
                 return ""
+            if not userid:
+                userid = WINDOW.getProperty("userid")
 
         if userid == "":
             return_value = xbmcgui.Dialog().ok(self.getString(30045),self.getString(30045))
@@ -201,19 +205,23 @@ class DownloadUtils():
         resp = self.downloadUrl(url, postBody=messageData, type="POST", suppress=True, authenticate=False)
 
         accessToken = None
+        userid = None
         try:
             result = json.loads(resp)
             accessToken = result.get("AccessToken")
+            userid = result["SessionInfo"].get("UserId")
         except:
             pass
 
         if(accessToken != None):
             log.info("User Authenticated : " + accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
+            WINDOW.setProperty("userid", userid)
             return accessToken
         else:
             log.info("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
+            WINDOW.setProperty("userid", "")
             return ""
             
     def getAuthHeader(self, authenticate=True):
@@ -313,7 +321,7 @@ class DownloadUtils():
                 log.error(error)
                 if suppress is False:
                     if popup == 0:
-                        xbmc.executebuiltin("XBMC.Notification(URL error: "+ str(data.reason) +",)")
+                        xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, self.getString(30200) % str(data.reason)))
                     else:
                         xbmcgui.Dialog().ok(self.getString(30135),server)
                 log.error(error)
@@ -327,7 +335,7 @@ class DownloadUtils():
             log.error(error)
             if suppress is False:
                 if popup == 0:
-                    xbmc.executebuiltin("XBMC.Notification(\"EmbyCon\": URL error: Unable to connect to server,)")
+                    xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, self.getString(30200) % self.getString(30201)))
                 else:
                     xbmcgui.Dialog().ok("",self.getString(30204))
                 raise

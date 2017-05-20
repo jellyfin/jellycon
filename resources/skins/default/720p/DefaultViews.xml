@@ -18,24 +18,24 @@
 			<texture border="40">bg.png</texture>
 		</control>
         
-		<control type="label">
+		<control type="label" id="3020">
 			<left>0</left>
 			<top>35</top>
 			<width>380</width>
 			<height>40</height>
 			<font>font16</font>
-            <label>Set Default Views</label>
+            <label>-</label>
             <align>center</align>
             <textcolor>blue</textcolor>
 		</control>         
      
-		<control type="label">
+		<control type="label" id="3021">
 			<left>30</left>
 			<top>100</top>
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>Movies</label>
+            <label>-</label>
 		</control>      
         <control type="button" id="3010">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -50,13 +50,13 @@
             <font>font14</font>
         </control>
        
-		<control type="label">
+		<control type="label" id="3022">
 			<left>30</left>
 			<top>160</top>
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>Box Sets</label>
+            <label>-</label>
 		</control>      
         <control type="button" id="3011">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -71,13 +71,13 @@
             <font>font14</font>
         </control>
 
-        <control type="label">
+        <control type="label" id="3023">
 			<left>30</left>
 			<top>220</top>
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>Series</label>
+            <label>-</label>
 		</control>      
         <control type="button" id="3012">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -92,13 +92,13 @@
             <font>font14</font>
         </control>  
         
-        <control type="label">
+        <control type="label" id="3024">
 			<left>30</left>
 			<top>280</top>
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>Seasons</label>
+            <label>-</label>
 		</control>      
         <control type="button" id="3013">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -113,13 +113,13 @@
             <font>font14</font>
         </control>     
 
-        <control type="label">
+        <control type="label" id="3025">
 			<left>30</left>
 			<top>340</top>
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>Episodes</label>
+            <label>-</label>
 		</control>      
         <control type="button" id="3014">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -141,7 +141,7 @@
             <top>400</top>
             <width>200</width>
             <height>40</height>
-            <label>Save</label>
+            <label>-</label>
             <onup>3014</onup>
             <ondown>-</ondown>
             <font>font14</font>

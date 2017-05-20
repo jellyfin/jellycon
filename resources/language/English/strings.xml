@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
-    <string id="30000">Server Address</string>
-    <string id="30030">Server Port:</string>      
-    <string id="30004">Log Level:</string>
+    <string id="30000">Server Address: </string>
+    <string id="30030">Server Port: </string>
+    <string id="30004">Log Level: </string>
     <string id="30005">Username: </string>
     <string id="30006">Password: </string>
     <string id="30007">Samba Username: </string>
     <string id="30008">Samba Password: </string>
     <string id="30010">Enable performance profiling</string>
+    <string id="30011">Detect Server</string>
+    <string id="30012">Change User</string>
 
     <string id="30014">Emby</string>
     <string id="30015">Network</string>    
@@ -21,6 +23,12 @@
     <string id="30045">Username not found</string>
     
     <string id="30053">Waiting for server to delete</string>
+
+    <string id="30060">%s (Secured)</string>
+    <string id="30061">%s (User-defined)</string>
+    <string id="30062">Hidden user (User-input)</string>
+    <string id="30063">N/A</string>
+
     <string id="30091">Confirm file delete?</string>
     <string id="30092">Delete this item? This action will delete media and associated data files.</string>
     
@@ -44,11 +52,16 @@
     <string id="30151">Select item action (Requires Restart)</string>
        
     <string id="30162">Add Season Number</string>
+    <string id="30166">Select Server</string>
     <string id="30167">Server Detection Succeeded</string>
     <string id="30168">Found server</string>
-    <string id="30169">Address : </string> 
-               
-    <string id="30200">Select User</string>
+    <string id="30169">Address: </string>
+
+    <string id="30180">Select User</string>
+
+    <string id="30200">URL error: %s</string>
+    <string id="30201">Unable to connect to server</string>
+    <string id="30202">Error Extracting Server host:port</string>
     <string id="30203">Error in ArtworkRotationThread</string>
     <string id="30204">Unable to connect to host</string>         
     <string id="30205">Error in LoadMenuOptionsThread</string>
@@ -56,5 +69,43 @@
     <string id="30206">Playback Type</string>
     <string id="30207">Playback</string>
     <string id="30208">Playback Bitrate (Kbits)</string>
-    
+    <string id="30209">File Direct Path</string>
+    <string id="30210">HTTP Direct Stream</string>
+    <string id="30211">HTTP Transcode</string>
+
+    <string id="30230">Set Default Views</string>
+    <string id="30231">Movies</string>
+    <string id="30232">BoxSets</string>
+    <string id="30233">Series</string>
+    <string id="30234">Seasons</string>
+    <string id="30235">Episodes</string>
+    <string id="30236">Save</string>
+    <string id="30237">Start from beginning</string>
+
+    <string id="30250">Unknown</string>
+    <string id="30251">Movies (Genre)</string>
+    <string id="30252">Movies (A-Z)</string>
+    <string id="30253">Change User</string>
+    <string id="30254">Show Settings</string>
+    <string id="30255">Set Default Views</string>
+    <string id="30256">Movies - All</string>
+    <string id="30257">Movies - Recently Added</string>
+    <string id="30258">Movies - In Progress</string>
+    <string id="30259">Movies - Favorites</string>
+    <string id="30260">BoxSets</string>
+    <string id="30261">TV Shows - All</string>
+    <string id="30262">TV Shows - Favorites</string>
+    <string id="30263">Episodes - Recently Added</string>
+    <string id="30264">Episodes - In Progress</string>
+    <string id="30265">Episodes - Next Up</string>
+    <string id="30266">Upcoming TV</string>
+
+    <string id="30270">Emby: Mark watched</string>
+    <string id="30271">Emby: Mark unwatched</string>
+    <string id="30272">Emby: Set favourite</string>
+    <string id="30273">Emby: Unset favourite</string>
+    <string id="30274">Emby: Delete</string>
+
+    <string id="30280">Missing Title</string>
+
 </strings>

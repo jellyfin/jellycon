@@ -5,7 +5,8 @@ import xbmcgui
 import xbmcaddon
 
 from datetime import timedelta
-import json as json
+import time
+import json
 
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
@@ -13,6 +14,8 @@ from resume_dialog import ResumeDialog
 from utils import PlayUtils
 
 log = SimpleLogging("EmbyCon." + __name__)
+__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __settings__.getLocalizedString
 downloadUtils = DownloadUtils()
 
 def playFile(id, auto_resume):
@@ -20,11 +23,10 @@ def playFile(id, auto_resume):
 
     userid = downloadUtils.getUserId()
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    addon_path = settings.getAddonInfo('path')
+    addon_path = __settings__.getAddonInfo('path')
 
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
+    port = __settings__.getSetting('port')
+    host = __settings__.getSetting('ipaddress')
     server = host + ":" + port
 
     jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
@@ -59,10 +61,9 @@ def playFile(id, auto_resume):
     playurl = PlayUtils().getPlayUrl(id, result)
     log.info("Play URL: " + playurl)
 
-    thumbPath = downloadUtils.getArtwork(result, "Primary")
-    listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
+    listItem = xbmcgui.ListItem(label=result.get("Name", __language__(30280)), path=playurl)
 
-    setListItemProps(id, listItem, result)
+    listItem = setListItemProps(id, listItem, result)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -82,7 +83,7 @@ def playFile(id, auto_resume):
             time.sleep(1)
 
     while xbmc.Player().getTime() < (seekTime - 5):
-        xbmc.Player().pause
+        xbmc.Player().pause()
         xbmc.sleep(100)
         xbmc.Player().seekTime(seekTime)
         xbmc.sleep(100)
@@ -95,16 +96,16 @@ def setListItemProps(id, listItem, result):
     eppNum = -1
     seasonNum = -1
 
-    primary_inage = downloadUtils.getArtwork(result, "Primary")
-    listItem.setProperty("poster", primary_inage)
-    listItem.setArt({"poster": primary_inage})
+    primary_image = downloadUtils.getArtwork(result, "Primary")
+    listItem.setProperty("poster", primary_image)
+    listItem.setArt({"poster": primary_image, "thumb": primary_image, "icon": primary_image})
 
     listItem.setProperty('IsPlayable', 'true')
     listItem.setProperty('IsFolder', 'false')
 
     # play info
     details = {
-        'title': result.get("Name", "Missing Name"),
+        'title': result.get("Name", __language__(30280)),
         'plot': result.get("Overview")
     }
 
@@ -116,4 +117,4 @@ def setListItemProps(id, listItem, result):
 
     listItem.setInfo("Video", infoLabels=details)
 
-    return
+    return listItem

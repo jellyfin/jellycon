@@ -12,13 +12,14 @@ from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 
 log = SimpleLogging("EmbyCon." + __name__)
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __addon__.getLocalizedString
 
 def loadSkinDefaults():
 
     defaultViewData = {}
     # load current default views
     # add a hash of xbmc.getSkinDir() to file name to make it skin specific
-    __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
     __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
     view_list_path = os.path.join(__addondir__, "default_views.json")
     if os.path.exists(view_list_path):
@@ -60,7 +61,15 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         
         # load current default views            
         self.defaultView = loadSkinDefaults()
-            
+
+        self.getControl(3110).setLabel(__language__(30236))
+        self.getControl(3020).setLabel(__language__(30230))
+        self.getControl(3021).setLabel(__language__(30231))
+        self.getControl(3022).setLabel(__language__(30232))
+        self.getControl(3023).setLabel(__language__(30233))
+        self.getControl(3024).setLabel(__language__(30234))
+        self.getControl(3025).setLabel(__language__(30235))
+
         # set default values
         name = self.getNameById(self.defaultView.get("Movies"))
         self.getControl(3010).setLabel(name)

@@ -88,7 +88,9 @@ def mainEntryPoint():
     WINDOW = xbmcgui.Window( 10000 )
 
     if mode == "CHANGE_USER":
-        checkServer(True)
+        checkServer(change_user=True, notify=False)
+    elif mode == "DETECT_SERVER":
+        checkServer(force=True, notify=True)
     elif sys.argv[1] == "markWatched":
         item_id = sys.argv[2]
         markWatched(item_id)
@@ -124,17 +126,17 @@ def mainEntryPoint():
         getWigetContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
         checkService()
-        checkServer()
+        checkServer(notify=False)
         showParentContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "SHOW_CONTENT":
         #plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
         checkService()
-        checkServer()
+        checkServer(notify=False)
         showContent(sys.argv[0], int(sys.argv[1]), params)
     else:
         
         checkService()
-        checkServer()
+        checkServer(notify=False)
         
         pluginhandle = int(sys.argv[1])
 
@@ -411,22 +413,22 @@ def addContextMenu(details, extraData, folder):
         # watched/unwatched
         if extraData.get("playcount") == "0":
             argsToPass = 'markWatched,' + extraData.get('id')
-            commands.append(("Emby: Mark watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append((__language__(30270), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
             argsToPass = 'markUnwatched,' + extraData.get('id')
-            commands.append(("Emby: Mark unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append((__language__(30271), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
             
         # favourite add/remove
         if extraData.get('favorite') != 'true':
             argsToPass = 'markFavorite,' + extraData.get('id')
-            commands.append(("Emby: Set favourite", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append((__language__(30272), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         else:
             argsToPass = 'unmarkFavorite,' + extraData.get('id')
-            commands.append(("Emby: Unset favourite", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+            commands.append((__language__(30273), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
         
         # delete
         argsToPass = 'delete,' + extraData.get('id')
-        commands.append(("Emby: Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
+        commands.append((__language__(30274), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
                     
     return(commands)
 
@@ -523,7 +525,7 @@ def processDirectory(url, results, progress, pluginhandle):
     if(result == None):
         result = []
     item_count = len(result)
-    current_item = 1;
+    current_item = 1
     viewType = ""
     
     for item in result:
@@ -536,7 +538,7 @@ def processDirectory(url, results, progress, pluginhandle):
         if(item.get("Name") != None):
             tempTitle = item.get("Name").encode('utf-8')
         else:
-            tempTitle = "Missing Title"
+            tempTitle = __language__(20280)
             
         id = str(item.get("Id")).encode('utf-8')
         guiid = id

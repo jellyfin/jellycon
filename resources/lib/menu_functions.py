@@ -17,11 +17,16 @@ log = SimpleLogging("EmbyCon." + __name__)
 downloadUtils = DownloadUtils()
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __settings__.getLocalizedString
 
 def showGenreList():
     log.info("== ENTER: showGenreList() ==")
 
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    host = __settings__.getSetting('ipaddress')
+    port = __settings__.getSetting('port')
+    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+        return
+    server = host + ":" + port
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
 
@@ -47,8 +52,8 @@ def showGenreList():
 
     for collection in collections:
         url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
+        log.info("addMenuDirectoryItem: " + collection.get('title', __language__(30250)) + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', __language__(30250)), url, thumbnail=collection.get("thumbnail"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -56,7 +61,11 @@ def showGenreList():
 def showMovieAlphaList():
     log.info("== ENTER: showMovieAlphaList() ==")
 
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+    host = __settings__.getSetting('ipaddress')
+    port = __settings__.getSetting('port')
+    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+        return
+    server = host + ":" + port
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
 
@@ -79,8 +88,8 @@ def showMovieAlphaList():
 
     for collection in collections:
         url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url)
+        log.info("addMenuDirectoryItem: " + collection.get('title', __language__(30250)) + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', __language__(30250)), url)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -88,19 +97,23 @@ def displaySections():
     log.info("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
 
+    host = __settings__.getSetting('ipaddress')
+    port = __settings__.getSetting('port')
+    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+        return
     # Add collections
     detailsString = getDetailsString()
     collections = getCollections(detailsString)
     for collection in collections:
         url = sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) + "&mode=GET_CONTENT"
-        log.info("addMenuDirectoryItem: " + collection.get('title', 'Unknown') + " " + str(url))
-        addMenuDirectoryItem(collection.get('title', 'Unknown'), url, thumbnail=collection.get("thumbnail"))
+        log.info("addMenuDirectoryItem: " + collection.get('title', __language__(30250)) + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', __language__(30250)), url, thumbnail=collection.get("thumbnail"))
 
-    addMenuDirectoryItem("Movies (Genre)", "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
-    addMenuDirectoryItem("Movies (A-Z)", "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
-    addMenuDirectoryItem("Change User", "plugin://plugin.video.embycon/?mode=CHANGE_USER")
-    addMenuDirectoryItem("Show Settings", "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    addMenuDirectoryItem("Set Default Views", "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
+    addMenuDirectoryItem(__language__(30251), "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
+    addMenuDirectoryItem(__language__(30252), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
+    addMenuDirectoryItem(__language__(30253), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
+    addMenuDirectoryItem(__language__(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem(__language__(30255), "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -115,8 +128,11 @@ def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
 def getCollections(detailsString):
     log.info("== ENTER: getCollections ==")
 
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-
+    host = __settings__.getSetting('ipaddress')
+    port = __settings__.getSetting('port')
+    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+        return []
+    server = host + ":" + port
     userid = downloadUtils.getUserId()
     if(userid == None or len(userid) == 0):
         return []
@@ -164,77 +180,77 @@ def getCollections(detailsString):
     # Add standard nodes
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Movies - All"
+    item_data['title'] = __language__(30256)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Movies - Recently Added"
+    item_data['title'] = __language__(30257)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Movies - In Progress"
+    item_data['title'] = __language__(30258)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Movies - Favorites"
+    item_data['title'] = __language__(30259)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "BoxSets"
+    item_data['title'] = __language__(30260)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "TV Shows - All"
+    item_data['title'] = __language__(30261)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "TV Shows - Favorites"
+    item_data['title'] = __language__(30262)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Episodes - Recently Added"
+    item_data['title'] = __language__(30263)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Episodes - In Progress"
+    item_data['title'] = __language__(30264)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Episodes - Next Up"
+    item_data['title'] = __language__(30265)
     item_data[
         'path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
-    item_data['title'] = "Upcoming TV"
+    item_data['title'] = __language__(30266)
     item_data[
         'path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
     collections.append(item_data)

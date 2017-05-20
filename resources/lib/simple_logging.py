@@ -5,7 +5,7 @@ import xbmcaddon
 
 class SimpleLogging():
 
-    level = 0;
+    level = 0
     name = ""
 
     def __init__(self, name):

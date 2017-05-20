@@ -33,7 +33,7 @@ class DataManager():
 
         itemCount = 0
         unwatchedItemCount = 0        
-        dataHashString = "";
+        dataHashString = ""
         
         for item in result:
             item_hash_string = getChecksum(item)
