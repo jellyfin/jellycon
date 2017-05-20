@@ -149,7 +149,11 @@ def mainEntryPoint():
         #if ( mode == None or param_url == None or len(param_url) < 1 ):
         #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
-            getContent(param_url, pluginhandle)
+            media_type = params.get("media_type", None)
+            if not media_type:
+                xbmcgui.Dialog().ok(__language__(30135), __language__(30139))
+            log.info("EmbyCon -> media_type: " + str(media_type))
+            getContent(param_url, pluginhandle, media_type)
 
         elif mode == "PLAY":
             PLAY(params, pluginhandle)
@@ -263,9 +267,9 @@ def addGUIItem( url, details, extraData, folder=True ):
     
     #Create the URL to pass to the item
     if url.startswith('http'):
-        u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
+        u = sys.argv[0] + "?url=" + urllib.quote(url) + mode + "&media_type=" + extraData["itemtype"]
     else:
-        u = sys.argv[0] + "?item_id=" + url + '&mode=PLAY'
+        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
 
     #Create the ListItem that will be displayed
     thumbPath=str(extraData.get('thumb',''))
@@ -460,18 +464,19 @@ def get_params(paramstring):
     log.debug("EmbyCon -> Detected parameters: " + str(param))
     return param
        
-def getContent(url, pluginhandle):
+def getContent(url, pluginhandle, media_type):
 
     log.info("== ENTER: getContent ==")
     log.info("URL: " + str(url))
-    
+    log.info("MediaType: " + str(media_type))
+
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)    
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
     
     WINDOW = xbmcgui.Window(10000)
     WINDOW.setProperty("EmbyConContent", "true")
@@ -1047,7 +1052,9 @@ def showContent(pluginName, handle, params):
     item_type = params.get("item_type")
     detailsString = getDetailsString()
     userid = downloadUtils.getUserId()
-    
+    media_type = params.get("media_type", None)
+    if not media_type:
+        xbmcgui.Dialog().ok(__language__(30135), __language__(30139))
     
     contentUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
         "?format=json"
@@ -1061,7 +1068,7 @@ def showContent(pluginName, handle, params):
 
     log.info("showContent Content Url : " + str(contentUrl))
     
-    getContent(contentUrl, handle)
+    getContent(contentUrl, handle, media_type)
     
 def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
@@ -1074,6 +1081,10 @@ def showParentContent(pluginName, handle, params):
     name = params.get("Name")
     detailsString = getDetailsString()
     userid = downloadUtils.getUserId()
+    media_type = params.get("media_type", None)
+
+    if not media_type:
+        xbmcgui.Dialog().ok(__language__(30135), __language__(30139))
     
     contentUrl = (
         "http://" + server +
@@ -1087,7 +1098,7 @@ def showParentContent(pluginName, handle, params):
     
     log.info("showParentContent Content Url : " + str(contentUrl))
     
-    getContent(contentUrl, handle)
+    getContent(contentUrl, handle, media_type)
         
 def checkService():
 
