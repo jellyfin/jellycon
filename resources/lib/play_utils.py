@@ -83,11 +83,11 @@ def playFile(id, auto_resume):
             time.sleep(1)
 
     while xbmc.Player().getTime() < (seekTime - 5):
-        xbmc.Player().pause()
+        #xbmc.Player().pause()
         xbmc.sleep(100)
         xbmc.Player().seekTime(seekTime)
         xbmc.sleep(100)
-        xbmc.Player().play()
+        #xbmc.Player().play()
 
 
 def setListItemProps(id, listItem, result):
