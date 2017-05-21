@@ -4,7 +4,7 @@
     <zorder>2</zorder>
 	<coordinates>
 		<system>1</system>
-		<left>450</left>
+		<left>315</left>
 		<top>50</top>
 	</coordinates>
 	<include>dialogeffect</include>
@@ -13,21 +13,32 @@
 		<control type="image">
 			<left>0</left>
 			<top>0</top>
-			<width>380</width>
+			<width>650</width>
 			<height>500</height>
 			<texture border="40">bg.png</texture>
 		</control>
         
 		<control type="label" id="3020">
-			<left>0</left>
-			<top>35</top>
+			<left>150</left>
+			<top>45</top>
 			<width>380</width>
 			<height>40</height>
 			<font>font16</font>
             <label>-</label>
-            <align>center</align>
+            <align>left</align>
             <textcolor>blue</textcolor>
-		</control>         
+		</control>
+
+		<control type="label" id="3019">
+			<left>400</left>
+			<top>45</top>
+			<width>380</width>
+			<height>40</height>
+			<font>font16</font>
+            <label>-</label>
+            <align>left</align>
+            <textcolor>blue</textcolor>
+		</control>
      
 		<control type="label" id="3021">
 			<left>30</left>
@@ -46,7 +57,21 @@
             <height>40</height>
             <label>-</label>
             <onup>-</onup>
+            <onright>3050</onright>
             <ondown>3011</ondown>
+            <font>font14</font>
+        </control>
+        <control type="button" id="3050">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>400</left>
+            <top>100</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>-</onup>
+            <onleft>3010</onleft>
+            <ondown>3051</ondown>
             <font>font14</font>
         </control>
        
@@ -67,7 +92,21 @@
             <height>40</height>
             <label>-</label>
             <onup>3010</onup>
+            <onright>3051</onright>
             <ondown>3012</ondown>
+            <font>font14</font>
+        </control>
+        <control type="button" id="3051">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>400</left>
+            <top>160</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3050</onup>
+            <onleft>3011</onleft>
+            <ondown>3052</ondown>
             <font>font14</font>
         </control>
 
@@ -88,9 +127,23 @@
             <height>40</height>
             <label>-</label>
             <onup>3011</onup>
+            <onright>3052</onright>
             <ondown>3013</ondown>
             <font>font14</font>
-        </control>  
+        </control>
+        <control type="button" id="3052">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>400</left>
+            <top>220</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3051</onup>
+            <onleft>3012</onleft>
+            <ondown>3053</ondown>
+            <font>font14</font>
+        </control>
         
         <control type="label" id="3024">
 			<left>30</left>
@@ -109,9 +162,23 @@
             <height>40</height>
             <label>-</label>
             <onup>3012</onup>
+            <onright>3053</onright>
             <ondown>3014</ondown>
             <font>font14</font>
-        </control>     
+        </control>
+        <control type="button" id="3053">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>400</left>
+            <top>280</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3052</onup>
+            <onleft>3013</onleft>
+            <ondown>3054</ondown>
+            <font>font14</font>
+        </control>
 
         <control type="label" id="3025">
 			<left>30</left>
@@ -130,9 +197,23 @@
             <height>40</height>
             <label>-</label>
             <onup>3013</onup>
+            <onright>3054</onright>
             <ondown>3110</ondown>
             <font>font14</font>
-        </control>          
+        </control>
+        <control type="button" id="3054">
+			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+			<texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>400</left>
+            <top>340</top>
+            <width>200</width>
+            <height>40</height>
+            <label>-</label>
+            <onup>3053</onup>
+            <onleft>3014</onleft>
+            <ondown>3110</ondown>
+            <font>font14</font>
+        </control>
         
         <control type="button" id="3110">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>

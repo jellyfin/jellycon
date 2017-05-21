@@ -17,7 +17,7 @@ __language__ = __addon__.getLocalizedString
 
 def loadSkinDefaults():
 
-    defaultViewData = {}
+    defaultData = {}
     # load current default views
     # add a hash of xbmc.getSkinDir() to file name to make it skin specific
     __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
@@ -26,16 +26,17 @@ def loadSkinDefaults():
         dataFile = open(view_list_path, 'r')
         jsonData = dataFile.read()
         dataFile.close()
-        defaultViewData = json.loads(jsonData)
+        defaultData = json.loads(jsonData)
 
-    return defaultViewData
+    return defaultData
 
 class DefaultViews(xbmcgui.WindowXMLDialog):
    
-    viewCats = ["Movies", "BoxSets", "Series", "Seasons", "Episodes"]
     viewData = {}
+    sortData = {"Title": "title", "Date": "date"}
     defaultView = {}
-      
+    defaultSort = {}
+
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
         log.info("WINDOW INITIALISED")
@@ -59,10 +60,13 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         log.info("Current skin views: " + str(skin_views))
         self.viewData = skin_views
         
-        # load current default views            
-        self.defaultView = loadSkinDefaults()
+        # load current default views
+        savedData = loadSkinDefaults()
+        self.defaultView = savedData.get("view", {})
+        self.defaultSort = savedData.get("sort", {})
 
         self.getControl(3110).setLabel(__language__(30236))
+        self.getControl(3019).setLabel(__language__(30238))
         self.getControl(3020).setLabel(__language__(30230))
         self.getControl(3021).setLabel(__language__(30231))
         self.getControl(3022).setLabel(__language__(30232))
@@ -71,28 +75,45 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         self.getControl(3025).setLabel(__language__(30235))
 
         # set default values
-        name = self.getNameById(self.defaultView.get("Movies"))
+        name = self.getViewNameById(self.defaultView.get("Movies"))
         self.getControl(3010).setLabel(name)
-        
-        name = self.getNameById(self.defaultView.get("BoxSets"))
-        self.getControl(3011).setLabel(name)    
-
-        name = self.getNameById(self.defaultView.get("Series"))
-        self.getControl(3012).setLabel(name) 
-
-        name = self.getNameById(self.defaultView.get("Seasons"))
-        self.getControl(3013).setLabel(name) 
-
-        name = self.getNameById(self.defaultView.get("Episodes"))
+        name = self.getViewNameById(self.defaultView.get("BoxSets"))
+        self.getControl(3011).setLabel(name)
+        name = self.getViewNameById(self.defaultView.get("Series"))
+        self.getControl(3012).setLabel(name)
+        name = self.getViewNameById(self.defaultView.get("Seasons"))
+        self.getControl(3013).setLabel(name)
+        name = self.getViewNameById(self.defaultView.get("Episodes"))
         self.getControl(3014).setLabel(name)         
-        
+
+        name = self.getSortNameById(self.defaultSort.get("Movies"))
+        self.getControl(3050).setLabel(name)
+        name = self.getSortNameById(self.defaultSort.get("BoxSets"))
+        self.getControl(3051).setLabel(name)
+        name = self.getSortNameById(self.defaultSort.get("Series"))
+        self.getControl(3052).setLabel(name)
+        name = self.getSortNameById(self.defaultSort.get("Seasons"))
+        self.getControl(3053).setLabel(name)
+        name = self.getSortNameById(self.defaultSort.get("Episodes"))
+        self.getControl(3054).setLabel(name)
+
     def onFocus(self, controlId):      
         pass
         
     def doAction(self, actionID):
         pass
-    
-    def getNameById(self, viewId):
+
+    def getSortNameById(self, sortId):
+        if (sortId == None):
+            return "None"
+
+        for name, id in self.sortData.iteritems():
+            if id == sortId:
+                return name
+
+        return "None"
+
+    def getViewNameById(self, viewId):
         if(viewId == None):
             return "None"
             
@@ -113,25 +134,47 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
         else:
             return keys[0]
 
+    def getNextSortName(self, current):
+        keys = list(self.sortData.keys())
+        if (current not in keys):
+            return keys[0]
+
+        index = keys.index(current)
+        if (index > -1 and index < len(keys) - 1):
+            return keys[index + 1]
+        else:
+            return keys[0]
+
     def onClick(self, controlID):
         
-        if(controlID >= 3010 and controlID <= 3014):
+        if controlID >= 3010 and controlID <= 3014:
             control = self.getControl(controlID)
-            control.setLabel(self.getNextViewName(control.getLabel())) 
-            
-        elif(controlID == 3110):
+            control.setLabel(self.getNextViewName(control.getLabel()))
+
+        elif controlID >= 3050 and controlID <= 3054:
+            control = self.getControl(controlID)
+            control.setLabel(self.getNextSortName(control.getLabel()))
+
+        elif controlID == 3110:
         
             self.setViewId("Movies", 3010)
             self.setViewId("BoxSets", 3011)
             self.setViewId("Series", 3012)
             self.setViewId("Seasons", 3013)
             self.setViewId("Episodes", 3014)
+
+            self.setSortId("Movies", 3050)
+            self.setSortId("BoxSets", 3051)
+            self.setSortId("Series", 3052)
+            self.setSortId("Seasons", 3053)
+            self.setSortId("Episodes", 3054)
         
             __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
             __addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
             view_list_path = os.path.join(__addondir__, "default_views.json")
             dataFile = open(view_list_path, 'w')
-            stringdata = json.dumps(self.defaultView)
+            defaults_data = {"view": self.defaultView, "sort": self.defaultSort}
+            stringdata = json.dumps(defaults_data)
             dataFile.write(stringdata)
             dataFile.close()        
 
@@ -145,4 +188,10 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
             return
         else:
             self.defaultView[viewName] = viewId
-            
+
+    def setSortId(self, sortName, labelId):
+        sortId = self.sortData.get(self.getControl(labelId).getLabel())
+        if(sortId == None):
+            return
+        else:
+            self.defaultSort[sortName] = sortId

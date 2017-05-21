@@ -490,17 +490,25 @@ def getContent(url, pluginhandle, media_type):
         xbmcplugin.setContent(pluginhandle, 'episodes')
     log.info("ViewType: " + viewType)
 
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
-    
-    WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("EmbyConContent", "true")
-        
+    defaultData = loadSkinDefaults()
+
+    # set the default sort order
+    defaultSortData = defaultData.get("sort", {})
+    sortName = defaultSortData.get(viewType)
+    log.info("SETTING_SORT : " + str(viewType) + " : " + str(sortName))
+    if sortName == "title":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+    elif sortName == "date":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+    else:
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
+
     # show a progress indicator if needed
     progress = None
     if(__settings__.getSetting('showLoadProgress') == "true"):
@@ -520,12 +528,11 @@ def getContent(url, pluginhandle, media_type):
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     # set the view mode based on what the user wanted for this view type
-    if(viewType != None and len(viewType) > 0):
-        defaultData = loadSkinDefaults()
-        viewNum = defaultData.get(viewType)
-        log.info("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum))
-        if viewNum != None and viewNum != "":
-            xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
+    defaultViewData = defaultData.get("view", {})
+    viewNum = defaultViewData.get(viewType)
+    log.info("SETTING_VIEW : " + str(viewType) + " : " + str(viewNum))
+    if viewNum is not None:
+        xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
             
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
     
@@ -539,7 +546,6 @@ def processDirectory(url, results, progress, pluginhandle):
     cast = ['None']
     log.info("== ENTER: processDirectory ==")
     parsed = urlparse(url)
-    parsedserver,parsedport=parsed.netloc.split(':')
     userid = downloadUtils.getUserId()
 
     xbmcplugin.setContent(pluginhandle, 'movies')
