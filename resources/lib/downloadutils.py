@@ -192,11 +192,12 @@ class DownloadUtils():
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getDeviceId()
         version = clientInfo.getVersion()
+        client = clientInfo.getClient()
 
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
 
-        authString = "Mediabrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+        authString = "Mediabrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
         headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}    
         sha1 = hashlib.sha1(self.addonSettings.getSetting('password'))
         
@@ -228,7 +229,8 @@ class DownloadUtils():
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getDeviceId()
         version = clientInfo.getVersion()
-        
+        client = clientInfo.getClient()
+
         deviceName = self.addonSettings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
 
@@ -237,13 +239,13 @@ class DownloadUtils():
         headers["Accept-Charset"] = "UTF-8,*"
         
         if(authenticate == False):
-            authString = "MediaBrowser Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            authString = "MediaBrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = authString            
             return headers
         else:
             userid = self.getUserId()
-            authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"XBMC\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = authString        
                 
