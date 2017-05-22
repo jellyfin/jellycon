@@ -153,6 +153,8 @@ class WebSocketThread(threading.Thread):
             clientInfo = ClientInformation()
             machineId = clientInfo.getDeviceId()
             version = clientInfo.getVersion()
+            client = clientInfo.getClient()
+
             messageData = {}
             messageData["MessageType"] = "Identity"
             
@@ -160,7 +162,7 @@ class WebSocketThread(threading.Thread):
             deviceName = addonSettings.getSetting('deviceName')
             deviceName = deviceName.replace("\"", "_")
         
-            messageData["Data"] = "XBMC|" + machineId + "|" + version + "|" + deviceName
+            messageData["Data"] = client + "|" + machineId + "|" + version + "|" + deviceName
             messageString = json.dumps(messageData)
             log.info("Opened : " + str(messageString))
             ws.send(messageString)

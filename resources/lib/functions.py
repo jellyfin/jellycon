@@ -117,7 +117,7 @@ def mainEntryPoint():
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
             log.info("Currently in home - refreshing to allow new settings to be taken")
-            xbmc.executebuiltin("XBMC.ActivateWindow(Home)")
+            xbmc.executebuiltin("ActivateWindow(Home)")
     elif sys.argv[1] == "refresh":
         WINDOW = xbmcgui.Window( 10000 )
         WINDOW.setProperty("force_data_reload", "true")    

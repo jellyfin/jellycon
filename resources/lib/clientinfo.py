@@ -39,3 +39,6 @@ class ClientInformation():
     def getVersion(self):
         version = xbmcaddon.Addon(id="plugin.video.embycon").getAddonInfo("version")
         return version
+
+    def getClient(self):
+        return 'Kodi EmbyCon'
