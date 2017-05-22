@@ -182,17 +182,20 @@ def getCollections(detailsString):
     for item in result:
         item_name = (item.get("Name")).encode('utf-8')
 
-        collections.append({
-            'title': item_name,
-            'address': server,
-            'thumbnail': downloadUtils.getArtwork(item, "Primary"),
-            'path': ('/emby/Users/' + userid +
-                     '/items?ParentId=' + item.get("Id") +
-                     '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +
-                     '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'),
-            'media_type': item['CollectionType']})
-
+        collection_type = item.get('CollectionType', None)
+        log.info("CollectionType: " + str(collection_type))
         log.info("Title: " + item_name)
+
+        if collection_type in ["tvshows", "movies", "boxsets"]:
+            collections.append({
+                'title': item_name,
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary"),
+                'path': ('/emby/Users/' + userid +
+                         '/items?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +
+                         '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'),
+                'media_type': collection_type})
 
     # Add standard nodes
     item_data = {}
