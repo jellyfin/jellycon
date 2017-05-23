@@ -14,25 +14,13 @@ from simple_logging import SimpleLogging
 
 log = SimpleLogging("EmbyCon." + __name__)
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __settings__.getLocalizedString
-__addon_name__ = __settings__.getAddonInfo('name')
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __addon__.getLocalizedString
+__addon_name__ = __addon__.getAddonInfo('name')
 downloadUtils = DownloadUtils()
 
-
-def testServer(host, port):
-    websocket_url = 'ws://%s:%s/' % (host, port)
-    websocket = WebSocket()
-    try:
-        websocket.connect(websocket_url)
-        websocket.close()
-        return True
-    except:
-        return False
-
-
 def getServerDetails():
-    log.info("Getting Server Details from Network")
+    log.debug("Getting Server Details from Network")
 
     MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
@@ -46,8 +34,8 @@ def getServerDetails():
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
     
-    log.info("MutliGroup       : " + str(MULTI_GROUP))
-    log.info("Sending UDP Data : " + MESSAGE)
+    log.debug("MutliGroup       : " + str(MULTI_GROUP))
+    log.debug("Sending UDP Data : " + MESSAGE)
     sock.sendto(MESSAGE, MULTI_GROUP)
 
     servers = []
@@ -60,74 +48,66 @@ def getServerDetails():
         log.error("Read UPD responce: %s" % e)
         # break
 
-    log.info("Found Servers: %s" % servers)
+    log.debug("Found Servers: %s" % servers)
     return servers
 
 
 def checkServer(force=False, change_user=False, notify=False):
-    log.info("checkServer Called")
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
+    log.debug("checkServer Called")
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
     serverUrl = ""
 
     if force is False:
+        # if not forcing use server details from settings
         if (len(host) != 0) and (host != "<none>") and (len(port) != 0):
-            log.info("detected server info in settings:  " + host + " : " + port)
+            log.debug("Server info from settings:  " + host + " : " + port)
             serverUrl = "http://%s:%s" % (host, port)
-        if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
-            __settings__.openSettings()
-            port = __settings__.getSetting('port')
-            host = __settings__.getSetting('ipaddress')
-            if (len(host) != 0) and (host != "<none>") and (len(port) != 0):
-                serverUrl = "http://%s:%s" % (host, port)
-            else:
-                return
+
+    # if the server is not set then try to detect it
     if serverUrl == "":
         serverInfo = getServerDetails()
+
         if (len(serverInfo) == 0):
-            log.info("getServerDetails failed")
-            success = False
-            if (len(host) != 0) and (host != "<none>") and (len(port) != 0):
-                log.info("testServer %s:%s" % (host, port))
-                success = testServer(host=host, port=port)
-            if success:
-                serverUrl = "http://%s:%s" % (host, port)
-            else:
-                xbmcgui.Dialog().ok(heading=__addon_name__, line1=__language__(30204))
-                xbmc.executebuiltin("ActivateWindow(Home)")
-                return
-        if serverUrl == "":
-            serverNames = []
-            for server in serverInfo:
-                serverNames.append(server.get("Name", __language__(30063)))
-            return_index = xbmcgui.Dialog().select(__language__(30166), serverNames)
+            # server detect failed
+            log.debug("getServerDetails failed")
+            return
 
-            if (return_index == -1):
-                xbmc.executebuiltin("ActivateWindow(Home)")
-                return
+        serverNames = []
+        for server in serverInfo:
+            serverNames.append(server.get("Name", __language__(30063)))
+        return_index = xbmcgui.Dialog().select(__language__(30166), serverNames)
 
-            serverUrl = serverInfo[return_index]["Address"]
-            log.info("Selected server: " + serverUrl)
+        if (return_index == -1):
+            xbmc.executebuiltin("ActivateWindow(Home)")
+            return
 
-    server_address = ""
-    server_port = ""
-    try:
+        serverUrl = serverInfo[return_index]["Address"]
+        log.debug("Selected server: " + serverUrl)
+
+        # parse the url
         url_bits = urlparse(serverUrl)
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
-    except Exception as error:
-        xbmcgui.Dialog().ok(heading=__addon_name__, line1=__language__(30202), line2=str(error))
-        log.error(str(error))
-    
-    log.info("detected server info " + server_address + " : " + server_port)
-    if notify:
-        xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
+        log.info("Detected server info " + server_address + " : " + server_port)
 
-    if change_user:
+        # save the server info
+        settings.setSetting("port", server_port)
+        settings.setSetting("ipaddress", server_address)
+
+        if notify:
+            xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
+
+    # we need to change the user
+    current_username = settings.getSetting("username")
+
+    # if asked or we have no current user then show user selection screen
+    if change_user or len(current_username) == 0:
         # get a list of users
         log.info("Getting user list")
-        jsonData = downloadUtils.downloadUrl(server_address + ":" + server_port + "/emby/Users/Public?format=json", authenticate=False)
+        jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData : " + str(jsonData))
         result = json.loads(jsonData)
@@ -148,19 +128,21 @@ def checkServer(force=False, change_user=False, notify=False):
                         secured.append(False)
                     names.append(name)
 
-        username = __settings__.getSetting("username")
-        if (len(username) > 0) and (not any(n == username for n in userList)):
-            names.insert(0, __language__(30061) % username)
-            userList.insert(0, username)
+        if (len(current_username) > 0) and (not any(n == current_username for n in userList)):
+            names.insert(0, __language__(30061) % current_username)
+            userList.insert(0, current_username)
             secured.insert(0, True)
+
         names.insert(0, __language__(30062))
         userList.insert(0, '')
         secured.insert(0, True)
-        log.info("User List : " + str(names))
-        log.info("User List : " + str(userList))
+        log.debug("User List : " + str(names))
+        log.debug("User List : " + str(userList))
+
         return_value = xbmcgui.Dialog().select(__language__(30180), names)
 
         if (return_value > -1):
+            log.debug("Selected User Index : " + str(return_value))
             if return_value == 0:
                 kb = xbmc.Keyboard()
                 kb.setHeading(__language__(30005))
@@ -171,26 +153,26 @@ def checkServer(force=False, change_user=False, notify=False):
                     selected_user = None
             else:
                 selected_user = userList[return_value]
+
+            log.debug("Selected User Name : " + str(selected_user))
+
             if selected_user:
-                log.info("Setting Selected User : " + selected_user)
-                if __settings__.getSetting("port") != server_port:
-                    __settings__.setSetting("port", server_port)
-                if __settings__.getSetting("ipaddress") != server_address:
-                    __settings__.setSetting("ipaddress", server_address)
-                if __settings__.getSetting("username") != selected_user:
-                    __settings__.setSetting("username", selected_user)
+                # we have a user so save it
+                log.debug("Saving Username : " + selected_user)
+                settings.setSetting("username", selected_user)
                 if secured[return_value] is True:
                     kb = xbmc.Keyboard()
                     kb.setHeading(__language__(30006))
                     kb.setHiddenInput(True)
                     kb.doModal()
                     if kb.isConfirmed():
-                        __settings__.setSetting('password', kb.getText())
+                        log.debug("Saving Password for Username : " + selected_user)
+                        settings.setSetting('password', kb.getText())
                 else:
-                    __settings__.setSetting('password', '')
+                    settings.setSetting('password', '')
 
         WINDOW = xbmcgui.Window(10000)
         WINDOW.clearProperty("userid")
         WINDOW.clearProperty("AccessToken")
 
-        xbmc.executebuiltin("Container.Refresh")
+        xbmc.executebuiltin("ActivateWindow(Home)")

@@ -14,8 +14,8 @@ from resume_dialog import ResumeDialog
 from utils import PlayUtils
 
 log = SimpleLogging("EmbyCon." + __name__)
-__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __settings__.getLocalizedString
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __addon__.getLocalizedString
 downloadUtils = DownloadUtils()
 
 def playFile(id, auto_resume):
@@ -23,10 +23,11 @@ def playFile(id, auto_resume):
 
     userid = downloadUtils.getUserId()
 
-    addon_path = __settings__.getAddonInfo('path')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    addon_path = settings.getAddonInfo('path')
 
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
     server = host + ":" + port
 
     jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
@@ -63,7 +64,7 @@ def playFile(id, auto_resume):
 
     listItem = xbmcgui.ListItem(label=result.get("Name", __language__(30280)), path=playurl)
 
-    listItem = setListItemProps(id, listItem, result)
+    listItem = setListItemProps(id, listItem, result, server)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -90,13 +91,13 @@ def playFile(id, auto_resume):
         #xbmc.Player().play()
 
 
-def setListItemProps(id, listItem, result):
+def setListItemProps(id, listItem, result, server):
     # set up item and item info
     thumbID = id
     eppNum = -1
     seasonNum = -1
 
-    primary_image = downloadUtils.getArtwork(result, "Primary")
+    primary_image = downloadUtils.getArtwork(result, "Primary", server=server)
     listItem.setProperty("poster", primary_image)
     listItem.setArt({"poster": primary_image, "thumb": primary_image, "icon": primary_image})
 

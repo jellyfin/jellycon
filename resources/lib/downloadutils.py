@@ -18,18 +18,14 @@ log = SimpleLogging("EmbyCon." + __name__)
 
 class DownloadUtils():
 
-    addonSettings = None
     getString = None
 
     def __init__(self, *args):
-        self.addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-        self.getString = self.addonSettings.getLocalizedString
-        self.addon_name = self.addonSettings.getAddonInfo('name')
-        port = self.addonSettings.getSetting('port')
-        host = self.addonSettings.getSetting('ipaddress')
-        self.server = host + ":" + port
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        self.getString = settings.getLocalizedString
+        self.addon_name = settings.getAddonInfo('name')
 
-    def getArtwork(self, data, type, parent = False, index = "0", width = 10000, height = 10000):
+    def getArtwork(self, data, type, parent = False, index = "0", width = 10000, height = 10000, server=None):
 
         id = data.get("Id")
         '''
@@ -73,7 +69,7 @@ class DownloadUtils():
 
         query = ""
         
-        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (self.server, id, type, index, width, height, imageTag, query)
+        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, type, index, width, height, imageTag, query)
         
         log.debug("getArtwork : " + artwork)
         
@@ -88,16 +84,9 @@ class DownloadUtils():
         
         return artwork
 
-    def imageUrl(self, id, type, index, width, height, imageTag):
-    
-        # CCurlFile::Stat - Failed:
-    
-        port = self.addonSettings.getSetting('port')
-        host = self.addonSettings.getSetting('ipaddress')
-        server = host + ":" + port
-        
+    def imageUrl(self, id, type, index, width, height, imageTag, server):
+
         # test imageTag e3ab56fe27d389446754d0fb04910a34
-        
         artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s" % (server, id, type, index, width, height, imageTag)
         '''
         artwork = ( "http://" + server + "/emby/Items/" + 
@@ -116,10 +105,11 @@ class DownloadUtils():
         if(userid != None and userid != ""):
             log.info("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
             return userid
-    
-        port = self.addonSettings.getSetting('port')
-        host = self.addonSettings.getSetting('ipaddress')
-        userName = self.addonSettings.getSetting('username')
+
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        port = settings.getSetting('port')
+        host = settings.getSetting('ipaddress')
+        userName = settings.getSetting('username')
 
         if not userName:
             return ""
@@ -181,27 +171,28 @@ class DownloadUtils():
         if(token != None and token != ""):
             log.info("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
-        
-        port = self.addonSettings.getSetting("port")
-        host = self.addonSettings.getSetting("ipaddress")
+
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        port = settings.getSetting("port")
+        host = settings.getSetting("ipaddress")
         if(host == None or host == "" or port == None or port == ""):
             return ""
             
-        url = "http://" + self.addonSettings.getSetting("ipaddress") + ":" + self.addonSettings.getSetting("port") + "/emby/Users/AuthenticateByName?format=json"
+        url = "http://" + host + ":" + port + "/emby/Users/AuthenticateByName?format=json"
     
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getDeviceId()
         version = clientInfo.getVersion()
         client = clientInfo.getClient()
 
-        deviceName = self.addonSettings.getSetting('deviceName')
+        deviceName = settings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
 
         authString = "Mediabrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
         headers = {'Accept-encoding': 'gzip', 'Authorization' : authString}    
-        sha1 = hashlib.sha1(self.addonSettings.getSetting('password'))
+        sha1 = hashlib.sha1(settings.getSetting('password'))
         
-        messageData = "username=" + self.addonSettings.getSetting('username') + "&password=" + sha1.hexdigest()
+        messageData = "username=" + settings.getSetting('username') + "&password=" + sha1.hexdigest()
 
         resp = self.downloadUrl(url, postBody=messageData, type="POST", suppress=True, authenticate=False)
 
@@ -231,7 +222,8 @@ class DownloadUtils():
         version = clientInfo.getVersion()
         client = clientInfo.getClient()
 
-        deviceName = self.addonSettings.getSetting('deviceName')
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        deviceName = settings.getSetting('deviceName')
         deviceName = deviceName.replace("\"", "_")
 
         headers = {}

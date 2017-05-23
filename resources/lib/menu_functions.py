@@ -16,14 +16,15 @@ from simple_logging import SimpleLogging
 log = SimpleLogging("EmbyCon." + __name__)
 downloadUtils = DownloadUtils()
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __settings__.getLocalizedString
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __addon__.getLocalizedString
 
 def showGenreList():
     log.info("== ENTER: showGenreList() ==")
 
-    host = __settings__.getSetting('ipaddress')
-    port = __settings__.getSetting('port')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    host = settings.getSetting('ipaddress')
+    port = settings.getSetting('port')
     if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
         return
     server = host + ":" + port
@@ -47,7 +48,7 @@ def showGenreList():
         item_data['address'] = server
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = "Movies"
-        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb")
+        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb", server=server)
         item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
                              '&Recursive=true&GenreIds=' + genre.get("Id") +
                              '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')
@@ -66,8 +67,9 @@ def showGenreList():
 def showMovieAlphaList():
     log.info("== ENTER: showMovieAlphaList() ==")
 
-    host = __settings__.getSetting('ipaddress')
-    port = __settings__.getSetting('port')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    host = settings.getSetting('ipaddress')
+    port = settings.getSetting('port')
     if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
         return
     server = host + ":" + port
@@ -112,8 +114,9 @@ def displaySections():
     log.info("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
 
-    host = __settings__.getSetting('ipaddress')
-    port = __settings__.getSetting('port')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    host = settings.getSetting('ipaddress')
+    port = settings.getSetting('port')
     if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
         return
     # Add collections
@@ -144,13 +147,19 @@ def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
 def getCollections(detailsString):
     log.info("== ENTER: getCollections ==")
 
-    host = __settings__.getSetting('ipaddress')
-    port = __settings__.getSetting('port')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    host = settings.getSetting('ipaddress')
+    port = settings.getSetting('port')
+
     if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+        log.info("No host or port set so returning []")
         return []
+
     server = host + ":" + port
     userid = downloadUtils.getUserId()
-    if(userid == None or len(userid) == 0):
+
+    if userid == None or len(userid) == 0:
+        log.info("No userid so returning []")
         return []
 
     try:
@@ -190,7 +199,7 @@ def getCollections(detailsString):
             collections.append({
                 'title': item_name,
                 'address': server,
-                'thumbnail': downloadUtils.getArtwork(item, "Primary"),
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('/emby/Users/' + userid +
                          '/items?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +

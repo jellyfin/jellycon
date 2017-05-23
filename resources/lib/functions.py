@@ -550,8 +550,11 @@ def processDirectory(url, results, progress, pluginhandle):
 
     xbmcplugin.setContent(pluginhandle, 'movies')
 
-    server = getServerFromURL(url)
-    
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
+    server = host + ":" + port
+
     detailsString = getDetailsString()
     
     dirItems = []
@@ -741,14 +744,14 @@ def processDirectory(url, results, progress, pluginhandle):
         NumEpisodes = TotalEpisodes
         
         # Populate the extraData list
-        extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary"),
-                   'fanart_image' : downloadUtils.getArtwork(item, "Backdrop"),
-                   'poster'       : downloadUtils.getArtwork(item, "Primary"),
-                   'banner'       : downloadUtils.getArtwork(item, "Banner"),
-                   'clearlogo'    : downloadUtils.getArtwork(item, "Logo"),
-                   'discart'      : downloadUtils.getArtwork(item, "Disc"),
-                   'clearart'     : downloadUtils.getArtwork(item, "Art"),
-                   'landscape'    : downloadUtils.getArtwork(item, "Thumb"),
+        extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary", server=server),
+                   'fanart_image' : downloadUtils.getArtwork(item, "Backdrop", server=server),
+                   'poster'       : downloadUtils.getArtwork(item, "Primary", server=server),
+                   'banner'       : downloadUtils.getArtwork(item, "Banner", server=server),
+                   'clearlogo'    : downloadUtils.getArtwork(item, "Logo", server=server),
+                   'discart'      : downloadUtils.getArtwork(item, "Disc", server=server),
+                   'clearart'     : downloadUtils.getArtwork(item, "Art", server=server),
+                   'landscape'    : downloadUtils.getArtwork(item, "Thumb", server=server),
                    'id'           : id ,
                    'guiid'        : guiid ,
                    'mpaa'         : item.get("OfficialRating"),
@@ -786,9 +789,9 @@ def processDirectory(url, results, progress, pluginhandle):
         extraData["Path"] = item.get("Path")
 
         if item.get("Type") == "Episode":
-            extraData["tvshow.poster"] = downloadUtils.getArtwork(item, "Primary", parent=True)
+            extraData["tvshow.poster"] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
             extraData["poster"] = None
-            extraData["banner"] = downloadUtils.getArtwork(item, "Banner", parent=True)
+            extraData["banner"] = downloadUtils.getArtwork(item, "Banner", parent=True, server=server)
 
         if extraData['thumb'] == '':
             extraData['thumb'] = extraData['fanart_image']
@@ -809,12 +812,6 @@ def processDirectory(url, results, progress, pluginhandle):
             dirItems.append(addGUIItem(u, details, extraData, folder=False))
 
     return dirItems
-    
-def getServerFromURL( url ):
-    if url[0:4] == "http":
-        return url.split('/')[2]
-    else:
-        return url.split('/')[0]
 
 def showSetViews():
     log.info("showSetViews Called")
@@ -941,12 +938,12 @@ def getWigetContent(pluginName, handle, params):
         
         image_id = item_id
         imageTags = item.get("ImageTags")
-        if(imageTags != None and imageTags.get("Primary") != None):
+        if imageTags != None and imageTags.get("Primary") != None:
             image_tag = imageTags.get("Primary")
-            image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)  
+            image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag, server)
                 
         #image = downloadUtils.getArtwork(item, "Primary", width=400, height=400)
-        fanart = downloadUtils.getArtwork(item, "Backdrop")
+        fanart = downloadUtils.getArtwork(item, "Backdrop", server=server)
                
         name = item.get("Name")
         episodeDetails = ""
