@@ -1132,16 +1132,16 @@ def PLAY(params, handle):
     log.info("== ENTER: PLAY ==")
 
     log.info("PLAY ACTION PARAMS : " + str(params))
-    id = params.get("item_id")
+    item_id = params.get("item_id")
 
-    autoResume = int(params.get("auto_resume", "-1"))
-    log.info("AUTO_RESUME: " + str(autoResume))
+    auto_resume = int(params.get("auto_resume", "-1"))
+    log.info("AUTO_RESUME: " + str(auto_resume))
 
     # set the current playing item id
     # set all the playback info, this will be picked up by the service
     # the service will then start the playback
-    WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("item_id", id)
-    WINDOW.setProperty("play_item_id", id)
-    WINDOW.setProperty("play_item_resume", str(autoResume))
+    home_window = xbmcgui.Window(10000)
+    home_window.setProperty("item_id", item_id)
+    home_window.setProperty("play_item_id", item_id)
+    home_window.setProperty("play_item_resume", str(auto_resume))
 

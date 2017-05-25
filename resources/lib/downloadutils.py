@@ -279,7 +279,15 @@ class DownloadUtils():
             log.info("HEADERS : " + str(head))
 
             if(postBody != None):
-                head["Content-Type"] = "application/x-www-form-urlencoded"
+                if isinstance(postBody, dict):
+                    content_type = "application/json"
+                    postBody = json.dumps(postBody)
+                else:
+                    content_type = "application/x-www-form-urlencoded"
+
+                head["Content-Type"] = content_type
+                log.info("Content-Type : " + content_type)
+
                 log.info("POST DATA : " + postBody)
                 conn.request(method=type, url=urlPath, body=postBody, headers=head)
             else:

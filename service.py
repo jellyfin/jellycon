@@ -3,19 +3,19 @@
 
 import xbmc
 import xbmcgui
+import xbmcaddon
 import time
 from datetime import datetime
 
-from resources.lib.websocketclient import WebSocketThread
 from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
 
 # clear user and token when logging in
-WINDOW = xbmcgui.Window(10000)
-WINDOW.clearProperty("userid")
-WINDOW.clearProperty("AccessToken")
-WINDOW.clearProperty("EmbyConParams")
+home_window = xbmcgui.Window(10000)
+home_window.clearProperty("userid")
+home_window.clearProperty("AccessToken")
+home_window.clearProperty("EmbyConParams")
 
 log = SimpleLogging("EmbyCon.service")
 download_utils = DownloadUtils()
@@ -26,16 +26,53 @@ try:
 except Exception, e:
     pass
 
-websocket_thread = WebSocketThread()
-websocket_thread.setDaemon(True)
-websocket_thread.start()
-
-
 def hasData(data):
     if data is None or len(data) == 0 or data == "None":
         return False
     else:
         return True
+
+def sendProgress():
+
+    playing_file = xbmc.Player().getPlayingFile()
+    play_data = monitor.played_information.get(playing_file)
+
+    if play_data is None:
+        return
+
+    log.info("Sending Progress Update")
+
+    play_time = xbmc.Player().getTime()
+    play_data["currentPossition"] = play_time
+
+    item_id = play_data.get("item_id")
+    if item_id is None:
+        return
+
+    ticks = int(play_time * 10000000)
+    paused = play_data.get("paused", False)
+    playback_type = play_data.get("playback_type")
+
+    postdata = {
+        'QueueableMediaTypes': "Video",
+        'CanSeek': True,
+        'ItemId': item_id,
+        'MediaSourceId': item_id,
+        'PositionTicks': ticks,
+        'IsPaused': paused,
+        'IsMuted': False,
+        'PlayMethod': playback_type
+    }
+
+    log.debug("Sending POST progress started: %s." % postdata)
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
+    server = host + ":" + port
+
+    url = "http://" + server + "/emby/Sessions/Playing/Progress"
+    download_utils.downloadUrl(url, postBody=postdata, type="POST")
 
 
 def stopAll(played_information):
@@ -56,8 +93,20 @@ def stopAll(played_information):
             
             if hasData(emby_item_id):
                 log.info("Playback Stopped at: " + str(int(current_possition * 10000000)))
-                websocket_thread.playbackStopped(emby_item_id, str(int(current_possition * 10000000)))
-        
+
+                settings = xbmcaddon.Addon(id='plugin.video.embycon')
+                port = settings.getSetting('port')
+                host = settings.getSetting('ipaddress')
+                server = host + ":" + port
+
+                url = "http://" + server + "/emby/Sessions/Playing/Stopped"
+                postdata = {
+                    'ItemId': emby_item_id,
+                    'MediaSourceId': emby_item_id,
+                    'PositionTicks': int(current_possition * 10000000)
+                }
+                download_utils.downloadUrl(url, postBody=postdata, type="POST")
+
     played_information.clear()
     
     
@@ -79,57 +128,90 @@ class Service(xbmc.Player):
 
         window_handle = xbmcgui.Window(10000)
         emby_item_id = window_handle.getProperty("item_id")
+        playback_type = window_handle.getProperty("PlaybackType_" + emby_item_id)
 
         # if we could not find the ID of the current item then return
         if emby_item_id is None or len(emby_item_id) == 0:
             return
 
-        websocket_thread.playbackStarted(emby_item_id)
-        
+        log.info("Sending Playback Started")
+        postdata = {
+            'QueueableMediaTypes': "Video",
+            'CanSeek': True,
+            'ItemId': emby_item_id,
+            'MediaSourceId': emby_item_id,
+            'PlayMethod': playback_type
+        }
+
+        log.debug("Sending POST play started: %s." % postdata)
+
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        port = settings.getSetting('port')
+        host = settings.getSetting('ipaddress')
+        server = host + ":" + port
+
+        url = "http://" + server + "/emby/Sessions/Playing"
+        download_utils.downloadUrl(url, postBody=postdata, type="POST")
+
         data = {}
         data["item_id"] = emby_item_id
+        data["paused"] = False
+        data["playback_type"] = playback_type
         self.played_information[current_playing_file] = data
         
         log.info("ADDING_FILE : " + current_playing_file)
         log.info("ADDING_FILE : " + str(self.played_information))
 
     def onPlayBackEnded(self):
-        # Will be called when xbmc stops playing a file
+        # Will be called when kodi stops playing a file
         log.info("EmbyCon Service -> onPlayBackEnded")
         stopAll(self.played_information)
 
     def onPlayBackStopped(self):
-        # Will be called when user stops xbmc playing a file
+        # Will be called when user stops kodi playing a file
         log.info("onPlayBackStopped")
         stopAll(self.played_information)
+
+    def onPlayBackPaused(self):
+        # Will be called when kodi pauses the video
+        log.info("onPlayBackPaused")
+        current_file = xbmc.Player().getPlayingFile()
+        play_data = monitor.played_information.get(current_file)
+
+        if play_data is not None:
+            play_data['paused'] = True
+            sendProgress()
+
+    def onPlayBackResumed(self):
+        # Will be called when kodi resumes the video
+        log.info("onPlayBackResumed")
+        current_file = xbmc.Player().getPlayingFile()
+        play_data = monitor.played_information.get(current_file)
+
+        if play_data is not None:
+            play_data['paused'] = False
+            sendProgress()
+
+    def onPlayBackSeek(self, time, seekOffset):
+        # Will be called when kodi seeks in video
+        log.info("onPlayBackSeek")
+        sendProgress()
+
 
 monitor = Service()
 last_progress_update = datetime.today()
             
 while not xbmc.abortRequested:
 
-    window_handle = xbmcgui.Window(10000)
+    home_window = xbmcgui.Window(10000)
 
     if xbmc.Player().isPlaying():
         try:
             # send update
             td = datetime.today() - last_progress_update
             sec_diff = td.seconds
-            if sec_diff > 5:
-            
-                play_time = xbmc.Player().getTime()
-                current_file = xbmc.Player().getPlayingFile()
-                
-                if monitor.played_information.get(current_file) is not None:
-
-                    monitor.played_information[current_file]["currentPossition"] = play_time
-            
-                if (monitor.played_information.get(current_file) is not None and
-                        monitor.played_information.get(current_file).get("item_id") is not None):
-
-                    item_id = monitor.played_information.get(current_file).get("item_id")
-                    websocket_thread.sendProgressUpdate(item_id, str(int(play_time * 10000000)))
-                    
+            if sec_diff > 10:
+                sendProgress()
                 last_progress_update = datetime.today()
             
         except Exception, e:
@@ -137,23 +219,20 @@ while not xbmc.abortRequested:
             pass
 
     else:
-        emby_item_id = window_handle.getProperty("play_item_id")
-        emby_item_resume = window_handle.getProperty("play_item_resume")
+        emby_item_id = home_window.getProperty("play_item_id")
+        emby_item_resume = home_window.getProperty("play_item_resume")
         if emby_item_id and emby_item_resume:
-            window_handle.clearProperty("play_item_id")
-            window_handle.clearProperty("play_item_resume")
+            home_window.clearProperty("play_item_id")
+            home_window.clearProperty("play_item_resume")
             playFile(emby_item_id, emby_item_resume)
 
     xbmc.sleep(1000)
     xbmcgui.Window(10000).setProperty("EmbyCon_Service_Timestamp", str(int(time.time())))
 
 # clear user and token when loggin off
-WINDOW = xbmcgui.Window(10000)
-WINDOW.clearProperty("userid")
-WINDOW.clearProperty("AccessToken")
-WINDOW.clearProperty("EmbyConParams")
-
-# stop the WebSocket client
-websocket_thread.stopClient()
+home_window = xbmcgui.Window(10000)
+home_window.clearProperty("userid")
+home_window.clearProperty("AccessToken")
+home_window.clearProperty("EmbyConParams")
 
 log.info("Service shutting down")

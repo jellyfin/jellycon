@@ -25,6 +25,7 @@ def playFile(id, auto_resume):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
+    playback_type = settings.getSetting("playback_type")
 
     port = settings.getSetting('port')
     host = settings.getSetting('ipaddress')
@@ -61,6 +62,15 @@ def playFile(id, auto_resume):
 
     playurl = PlayUtils().getPlayUrl(id, result)
     log.info("Play URL: " + playurl)
+
+    playback_type_string = "DirectPlay"
+    if playback_type == "1":
+        playback_type_string = "DirectStream"
+    elif playback_type == "2":
+        playback_type_string = "Transcode"
+
+    home_window = xbmcgui.Window(10000)
+    home_window.setProperty("PlaybackType_" + id, playback_type_string)
 
     listItem = xbmcgui.ListItem(label=result.get("Name", __language__(30280)), path=playurl)
 
