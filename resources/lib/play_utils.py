@@ -11,11 +11,12 @@ import json
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
 from resume_dialog import ResumeDialog
-from utils import PlayUtils
+from utils import PlayUtils, getArt
+from kodi_utils import HomeWindow
 
 log = SimpleLogging("EmbyCon." + __name__)
-__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __settings__.getLocalizedString
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__language__ = __addon__.getLocalizedString
 downloadUtils = DownloadUtils()
 
 def playFile(id, auto_resume):
@@ -23,10 +24,12 @@ def playFile(id, auto_resume):
 
     userid = downloadUtils.getUserId()
 
-    addon_path = __settings__.getAddonInfo('path')
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    addon_path = settings.getAddonInfo('path')
+    playback_type = settings.getSetting("playback_type")
 
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
     server = host + ":" + port
 
     jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
@@ -61,9 +64,18 @@ def playFile(id, auto_resume):
     playurl = PlayUtils().getPlayUrl(id, result)
     log.info("Play URL: " + playurl)
 
+    playback_type_string = "DirectPlay"
+    if playback_type == "1":
+        playback_type_string = "DirectStream"
+    elif playback_type == "2":
+        playback_type_string = "Transcode"
+
+    home_window = HomeWindow()
+    home_window.setProperty("PlaybackType_" + id, playback_type_string)
+
     listItem = xbmcgui.ListItem(label=result.get("Name", __language__(30280)), path=playurl)
 
-    listItem = setListItemProps(id, listItem, result)
+    listItem = setListItemProps(id, listItem, result, server)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -90,15 +102,17 @@ def playFile(id, auto_resume):
         #xbmc.Player().play()
 
 
-def setListItemProps(id, listItem, result):
+def setListItemProps(id, listItem, result, server):
     # set up item and item info
     thumbID = id
     eppNum = -1
     seasonNum = -1
 
-    primary_image = downloadUtils.getArtwork(result, "Primary")
-    listItem.setProperty("poster", primary_image)
-    listItem.setArt({"poster": primary_image, "thumb": primary_image, "icon": primary_image})
+    art = getArt(result, server=server)
+    listItem.setIconImage(art['thumb'])  # back compat
+    listItem.setProperty('fanart_image', art['fanart'])  # back compat
+    listItem.setProperty('discart', art['discart'])  # not avail to setArt
+    listItem.setArt(art)
 
     listItem.setProperty('IsPlayable', 'true')
     listItem.setProperty('IsFolder', 'false')

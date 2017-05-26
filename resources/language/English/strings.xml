@@ -47,6 +47,8 @@
     <string id="30136">EmbyCon service is not running</string>
     <string id="30137">Please restart Kodi</string>
     <string id="30138">Cache Emby Data Locally</string>
+    <string id="30139">No Media Type Set</string>
+
        
     <string id="30150">Skin does not support setting views</string>
     <string id="30151">Select item action (Requires Restart)</string>
@@ -73,7 +75,7 @@
     <string id="30210">HTTP Direct Stream</string>
     <string id="30211">HTTP Transcode</string>
 
-    <string id="30230">Set Default Views</string>
+    <string id="30230">Default View</string>
     <string id="30231">Movies</string>
     <string id="30232">BoxSets</string>
     <string id="30233">Series</string>
@@ -81,6 +83,7 @@
     <string id="30235">Episodes</string>
     <string id="30236">Save</string>
     <string id="30237">Start from beginning</string>
+    <string id="30238">Default Sort</string>
 
     <string id="30250">Unknown</string>
     <string id="30251">Movies (Genre)</string>
