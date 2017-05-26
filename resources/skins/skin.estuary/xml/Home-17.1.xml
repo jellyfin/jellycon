@@ -856,7 +856,7 @@
                         <!-- Start Emby Menu Items -->
 						<item>
 							<label>Emby Movies</label>
-							<onclick>SetProperty(EmbyConParams, mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies, 10000)</onclick>
+							<onclick>SetProperty(plugin.video.embycon-Params, mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies, 10000)</onclick>
 							<onclick>RunAddon(plugin.video.embycon)</onclick>
 							<property name="menu_id">$NUMBER[3000]</property>
 							<thumb>icons/sidemenu/movies.png</thumb>
@@ -864,7 +864,7 @@
 						</item>
 						<item>
 							<label>Emby TV Shows</label>
-							<onclick>SetProperty(EmbyConParams, mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows, 10000)</onclick>
+							<onclick>SetProperty(plugin.video.embycon-Params, mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows, 10000)</onclick>
 							<onclick>RunAddon(plugin.video.embycon)</onclick>                                
 							<property name="menu_id">$NUMBER[4000]</property>
 							<thumb>icons/sidemenu/tv.png</thumb>

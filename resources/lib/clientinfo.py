@@ -3,9 +3,9 @@
 from uuid import uuid4 as uuid4
 import xbmcaddon
 import xbmc
-import xbmcgui
 import xbmcvfs
 
+from kodi_utils import HomeWindow
 from simple_logging import SimpleLogging
 
 log = SimpleLogging("EmbyCon." + __name__)
@@ -14,7 +14,7 @@ class ClientInformation():
 
     def getDeviceId(self):
     
-        WINDOW = xbmcgui.Window( 10000 )
+        WINDOW = HomeWindow()
         client_id = WINDOW.getProperty("client_id")
 
         if client_id:

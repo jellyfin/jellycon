@@ -1,14 +1,12 @@
 # Gnu General Public License - see LICENSE.TXT
 
 import os
-import xml.etree.ElementTree as etree
-import sys
 import xbmc
 import xbmcgui
 import xbmcaddon
-import json as json
-import urllib
-from downloadutils import DownloadUtils
+
+import json
+
 from simple_logging import SimpleLogging
 
 log = SimpleLogging("EmbyCon." + __name__)

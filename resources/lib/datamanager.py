@@ -3,16 +3,15 @@
 import hashlib
 import os
 import threading
-import json as json
+import json
 
-import xbmcplugin
-import xbmcgui
 import xbmcaddon
 import xbmc
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from utils import getChecksum
+from kodi_utils import HomeWindow
 
 log = SimpleLogging("EmbyCon." + __name__)
 
@@ -84,7 +83,7 @@ class DataManager():
         log.info("Cache_Data_Manager:" + cacheDataPath)
         
         # are we forcing a reload
-        WINDOW = xbmcgui.Window( 10000 )
+        WINDOW = HomeWindow()
         force_data_reload = WINDOW.getProperty("force_data_reload") == "true"
         WINDOW.clearProperty("force_data_reload")
     
