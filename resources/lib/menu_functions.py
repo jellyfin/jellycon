@@ -191,10 +191,45 @@ def getCollections(detailsString):
                 'title': item_name,
                 'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid +
-                         '/items?ParentId=' + item.get("Id") +
-                         '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString +
-                         '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'),
+                'path': ('/emby/Users/' + userid + '/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields=' + detailsString +
+                         '&CollapseBoxSetItems=true' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+        if collection_type == "movies":
+            collections.append({
+                'title': item_name + __language__(30267),
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('/emby/Users/' + userid + '/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsResumable' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+            collections.append({
+                'title': item_name + __language__(30268),
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('/emby/Users/' + userid + '/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields=' + detailsString +
+                         '&SortBy=DateCreated' +
+                         '&SortOrder=Descending' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
                 'media_type': collection_type})
 
     # Add standard nodes
