@@ -85,6 +85,10 @@
     <string id="30237">Start from beginning</string>
     <string id="30238">Default Sort</string>
 
+    <string id="30247">Widgets</string>
+    <string id="30248">Emby - Movies</string>
+    <string id="30249">Emby - TV Shows</string>
+
     <string id="30250">Unknown</string>
     <string id="30251">Movies (Genre)</string>
     <string id="30252">Movies (A-Z)</string>
@@ -104,6 +108,7 @@
     <string id="30266">Upcoming TV</string>
     <string id="30267"> - In Progress</string>
     <string id="30268"> - Recently Added</string>
+    <string id="30269">Movies - Random</string>
 
     <string id="30270">Emby: Mark watched</string>
     <string id="30271">Emby: Mark unwatched</string>

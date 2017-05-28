@@ -132,6 +132,7 @@ def displaySections():
     addMenuDirectoryItem(__language__(30253), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
     addMenuDirectoryItem(__language__(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
     addMenuDirectoryItem(__language__(30255), "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
+    addMenuDirectoryItem(__language__(30247), "plugin://plugin.video.embycon/?mode=WIDGETS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -322,3 +323,17 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     return collections
+
+
+def showWidgets():
+    addMenuDirectoryItem(__language__(30248), 'plugin://plugin.video.embycon/?mode=SHOW_CONTENT&item_type=Movie&media_type=Movies')
+    addMenuDirectoryItem(__language__(30249), 'plugin://plugin.video.embycon/?mode=SHOW_CONTENT&item_type=Series&media_type=TVShows')
+
+    addMenuDirectoryItem(__language__(30257), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
+    addMenuDirectoryItem(__language__(30258), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
+    addMenuDirectoryItem(__language__(30269), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=random_movies')
+    addMenuDirectoryItem(__language__(30263), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
+    addMenuDirectoryItem(__language__(30264), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
+    addMenuDirectoryItem(__language__(30265), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))

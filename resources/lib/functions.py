@@ -23,7 +23,7 @@ from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
 from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -109,6 +109,8 @@ def mainEntryPoint():
         showMovieAlphaList()
     elif mode == "MOVIE_GENRA":
         showGenreList()
+    elif mode == "WIDGETS":
+        showWidgets()
     elif mode == "SHOW_SETTINGS":
         __settings__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
