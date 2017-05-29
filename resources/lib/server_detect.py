@@ -11,29 +11,30 @@ import xbmc
 from kodi_utils import HomeWindow
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
+from translation import i18n
 
-log = SimpleLogging("EmbyCon." + __name__)
+log = SimpleLogging(__name__)
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __addon__.getLocalizedString
 __addon_name__ = __addon__.getAddonInfo('name')
 downloadUtils = DownloadUtils()
+
 
 def getServerDetails():
     log.debug("Getting Server Details from Network")
 
     MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
-    
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(6.0)
-    
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 10) #timeout
-    
+
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 10)  # timeout
+
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
-    
+
     log.debug("MutliGroup       : " + str(MULTI_GROUP))
     log.debug("Sending UDP Data : " + MESSAGE)
     sock.sendto(MESSAGE, MULTI_GROUP)
@@ -77,8 +78,8 @@ def checkServer(force=False, change_user=False, notify=False):
 
         serverNames = []
         for server in serverInfo:
-            serverNames.append(server.get("Name", __language__(30063)))
-        return_index = xbmcgui.Dialog().select(__language__(30166), serverNames)
+            serverNames.append(server.get("Name", i18n('n/a')))
+        return_index = xbmcgui.Dialog().select(i18n('select_server'), serverNames)
 
         if (return_index == -1):
             xbmc.executebuiltin("ActivateWindow(Home)")
@@ -98,7 +99,8 @@ def checkServer(force=False, change_user=False, notify=False):
         settings.setSetting("ipaddress", server_address)
 
         if notify:
-            xbmcgui.Dialog().ok(__language__(30167), __language__(30168), __language__(30169) + server_address, __language__(30030) + server_port)
+            xbmcgui.Dialog().ok(i18n('server_detect_succeeded'), i18n('found_server'),
+                                i18n('address:') + server_address, i18n('server_port:') + server_port)
 
     # we need to change the user
     current_username = settings.getSetting("username")
@@ -123,29 +125,29 @@ def checkServer(force=False, change_user=False, notify=False):
                     user_list.append(name)
                     if (user.get("HasPassword") is True):
                         secured.append(True)
-                        name = __language__(30060) % name
+                        name = i18n('username_secured') % name
                     else:
                         secured.append(False)
                     names.append(name)
 
         if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
-            names.insert(0, __language__(30061) % current_username)
+            names.insert(0, i18n('username_userdefined') % current_username)
             user_list.insert(0, current_username)
             secured.insert(0, True)
 
-        names.insert(0, __language__(30062))
+        names.insert(0, i18n('username_userinput'))
         user_list.insert(0, '')
         secured.insert(0, True)
         log.debug("User List : " + str(names))
         log.debug("User List : " + str(user_list))
 
-        return_value = xbmcgui.Dialog().select(__language__(30180), names)
+        return_value = xbmcgui.Dialog().select(i18n('select_user'), names)
 
         if (return_value > -1):
             log.debug("Selected User Index : " + str(return_value))
             if return_value == 0:
                 kb = xbmc.Keyboard()
-                kb.setHeading(__language__(30005))
+                kb.setHeading(i18n('username:'))
                 kb.doModal()
                 if kb.isConfirmed():
                     selected_user = kb.getText()
@@ -162,7 +164,7 @@ def checkServer(force=False, change_user=False, notify=False):
                 settings.setSetting("username", selected_user)
                 if secured[return_value] is True:
                     kb = xbmc.Keyboard()
-                    kb.setHeading(__language__(30006))
+                    kb.setHeading(i18n('password:'))
                     kb.setHiddenInput(True)
                     kb.doModal()
                     if kb.isConfirmed():

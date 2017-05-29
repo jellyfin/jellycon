@@ -7,7 +7,7 @@ import json
 
 from simple_logging import SimpleLogging
 
-log = SimpleLogging("EmbyCon." + __name__)
+log = SimpleLogging(__name__)
 
 
 class HomeWindow():

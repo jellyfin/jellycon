@@ -3,16 +3,17 @@
 import xbmc
 import xbmcaddon
 
-class SimpleLogging():
 
+class SimpleLogging():
     level = 0
     name = ""
 
     def __init__(self, name):
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        prefix = settings.getAddonInfo('name')
         log_level = settings.getSetting('logLevel')
         self.level = int(log_level)
-        self.name = name
+        self.name = prefix + '.' + name
 
     def getLevel(self):
         return self.level
@@ -21,22 +22,21 @@ class SimpleLogging():
         return "LogLevel: " + str(self.level)
 
     def error(self, msg):
-        if(self.level >= 0):
+        if (self.level >= 0):
             try:
                 xbmc.log(self.format(msg, "ERROR"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:
                 xbmc.log(self.format(msg, "ERROR").encode('utf-8'), level=xbmc.LOGNOTICE)
 
-
     def info(self, msg):
-        if(self.level >= 1):
+        if (self.level >= 1):
             try:
                 xbmc.log(self.format(msg, "INFO"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:
                 xbmc.log(self.format(msg, "INFO").encode('utf-8'), level=xbmc.LOGNOTICE)
 
     def debug(self, msg):
-        if(self.level >= 2):
+        if (self.level >= 2):
             try:
                 xbmc.log(self.format(msg, "DEBUG"), level=xbmc.LOGNOTICE)
             except UnicodeEncodeError:

@@ -17,7 +17,7 @@ home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
 
-log = SimpleLogging("EmbyCon.service")
+log = SimpleLogging('service')
 download_utils = DownloadUtils()
 
 # auth the service
@@ -26,14 +26,15 @@ try:
 except Exception, e:
     pass
 
+
 def hasData(data):
     if data is None or len(data) == 0 or data == "None":
         return False
     else:
         return True
 
-def sendProgress():
 
+def sendProgress():
     playing_file = xbmc.Player().getPlayingFile()
     play_data = monitor.played_information.get(playing_file)
 
@@ -76,21 +77,20 @@ def sendProgress():
 
 
 def stopAll(played_information):
-
     if len(played_information) == 0:
         return
-        
+
     log.info("played_information : " + str(played_information))
-    
+
     for item_url in played_information:
         data = played_information.get(item_url)
         if data is not None:
             log.info("item_url  : " + item_url)
             log.info("item_data : " + str(data))
-            
+
             current_possition = data.get("currentPossition")
             emby_item_id = data.get("item_id")
-            
+
             if hasData(emby_item_id):
                 log.info("Playback Stopped at: " + str(int(current_possition * 10000000)))
 
@@ -108,21 +108,20 @@ def stopAll(played_information):
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
     played_information.clear()
-    
-    
-class Service(xbmc.Player):
 
+
+class Service(xbmc.Player):
     played_information = {}
-    
+
     def __init__(self, *args):
         log.info("Starting monitor service: " + str(args))
         self.played_information = {}
         pass
-    
+
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
         stopAll(self.played_information)
-        
+
         current_playing_file = xbmc.Player().getPlayingFile()
         log.info("onPlayBackStarted: " + current_playing_file)
 
@@ -158,7 +157,7 @@ class Service(xbmc.Player):
         data["paused"] = False
         data["playback_type"] = playback_type
         self.played_information[current_playing_file] = data
-        
+
         log.info("ADDING_FILE : " + current_playing_file)
         log.info("ADDING_FILE : " + str(self.played_information))
 
@@ -204,7 +203,7 @@ class Service(xbmc.Player):
 
 monitor = Service()
 last_progress_update = datetime.today()
-            
+
 while not xbmc.abortRequested:
 
     home_window = HomeWindow()
@@ -217,7 +216,7 @@ while not xbmc.abortRequested:
             if sec_diff > 10:
                 sendProgress()
                 last_progress_update = datetime.today()
-            
+
         except Exception, e:
             log.error("Exception in Playback Monitor : " + str(e))
             pass

@@ -8,12 +8,13 @@ import xbmcvfs
 from kodi_utils import HomeWindow
 from simple_logging import SimpleLogging
 
-log = SimpleLogging("EmbyCon." + __name__)
+log = SimpleLogging(__name__)
+__addon__ = xbmcaddon.Addon(id="plugin.video.embycon")
+
 
 class ClientInformation():
-
     def getDeviceId(self):
-    
+
         WINDOW = HomeWindow()
         client_id = WINDOW.getProperty("client_id")
 
@@ -35,9 +36,9 @@ class ClientInformation():
 
         WINDOW.setProperty("client_id", client_id)
         return client_id
-        
+
     def getVersion(self):
-        version = xbmcaddon.Addon(id="plugin.video.embycon").getAddonInfo("version")
+        version = __addon__.getAddonInfo("version")
         return version
 
     def getClient(self):

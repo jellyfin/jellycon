@@ -6,9 +6,10 @@ from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from clientinfo import ClientInformation
 
-#define our global download utils
+# define our global download utils
 downloadUtils = DownloadUtils()
-log = SimpleLogging("EmbyCon." + __name__)
+log = SimpleLogging(__name__)
+
 
 ###########################################################################
 class PlayUtils():
@@ -76,8 +77,9 @@ class PlayUtils():
 
 def getDetailsString():
     detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview,Etag"
-    #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
+    # detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
     return detailsString
+
 
 def getChecksum(item):
     userdata = item['UserData']
@@ -92,6 +94,7 @@ def getChecksum(item):
     )
 
     return checksum
+
 
 def getArt(item, server, widget=False):
     art = {
