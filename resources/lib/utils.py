@@ -1,6 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
-
+import xbmc
 import xbmcaddon
+import xbmcvfs
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -28,7 +29,15 @@ class PlayUtils():
         if result.get('MediaSources'):
             source = result['MediaSources'][0]
             if source.get('Container') == 'strm':
-                playurl = source.get('Path')
+                strm_path = xbmc.translatePath('special://temp/')
+                strm_file = xbmc.translatePath('special://temp/embycon.strm')
+                if not xbmcvfs.exists(strm_path):
+                    xbmcvfs.mkdirs(strm_path)
+                f = xbmcvfs.File(strm_file, mode='w')  # create a temp local .strm, required for inputstream(strm contains listitem properties and path)
+                contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
+                f.write(contents)
+                f.close()
+                playurl = strm_file if xbmcvfs.exists(strm_file) else None
                 if playurl:
                     return playurl
 
