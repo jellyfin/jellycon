@@ -124,7 +124,7 @@ def mainEntryPoint():
     elif mode == "SET_DEFAULT_VIEWS":
         showSetViews()
     elif mode == "WIDGET_CONTENT":
-        getWigetContent(sys.argv[0], int(sys.argv[1]), params)
+        getWigetContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
         checkService()
         checkServer(notify=False)
@@ -367,6 +367,11 @@ def addGUIItem(url, details, extraData, folder=True):
     if (len(menuItems) > 0):
         list_item.addContextMenuItems(menuItems, True)
 
+    # add cast
+    people = extraData.get('cast')
+    if people is not None:
+        list_item.setCast(people)
+
     # new way
     videoInfoLabels = {}
 
@@ -388,10 +393,25 @@ def addGUIItem(url, details, extraData, folder=True):
     videoInfoLabels["studio"] = extraData.get('studio')
     videoInfoLabels["genre"] = extraData.get('genre')
 
-    videoInfoLabels["episode"] = details.get('episode')
-    videoInfoLabels["season"] = details.get('season')
+    item_type = extraData.get('itemtype').lower()
+    mediatype = 'video'
 
-    videoInfoLabels["mediatype"] = "video"
+    if (item_type == 'movie') or (item_type == 'boxset'):
+        mediatype = 'movie'
+    elif (item_type == 'series'):
+        mediatype = 'tvshow'
+    elif (item_type == 'season'):
+        mediatype = 'season'
+    elif (item_type == 'episode'):
+        mediatype = 'episode'
+
+    videoInfoLabels["mediatype"] = mediatype
+
+    if mediatype == 'episode':
+        videoInfoLabels["episode"] = details.get('episode')
+
+    if (mediatype == 'season') or (mediatype == 'episode'):
+        videoInfoLabels["season"] = details.get('season')
 
     list_item.setInfo('video', videoInfoLabels)
 
@@ -679,11 +699,15 @@ def processDirectory(url, results, progress, pluginhandle):
                 if (person.get("Type") == "Writer"):
                     writer = person.get("Name")
                 if (person.get("Type") == "Actor"):
-                    Name = person.get("Name")
-                    Role = person.get("Role")
-                    if Role == None:
-                        Role = ''
-                    cast.append(Name)
+                    person_name = person.get("Name")
+                    person_role = person.get("Role")
+                    if person_role == None:
+                        person_role = ''
+                    person_id = person.get("Id")
+                    person_tag = person.get("PrimaryImageTag")
+                    person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                    person = {"name": person_name, "role": person_role, "thumbnail": person_thumbnail}
+                    cast.append(person)
 
         # Process Studios
         studio = ""
@@ -693,6 +717,7 @@ def processDirectory(url, results, progress, pluginhandle):
                 if studio == "":  # Just take the first one
                     temp = studio_string.get("Name")
                     studio = temp.encode('utf-8')
+
         # Process Genres
         genre = ""
         genres = item.get("Genres")
@@ -833,10 +858,9 @@ def showSetViews():
     del defaultViews
 
 
-def getWigetContent(pluginName, handle, params):
+def getWigetContent(handle, params):
     log.info("getWigetContent Called" + str(params))
 
-    home_window = HomeWindow()
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     port = settings.getSetting('port')
     host = settings.getSetting('ipaddress')
@@ -850,11 +874,10 @@ def getWigetContent(pluginName, handle, params):
     userid = downloadUtils.getUserId()
 
     itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
-                                                               "?Limit=20"
-                                                               "&format=json"
-                                                               "&ImageTypeLimit=1"
-                                                               "&IsMissing=False"
-                                                               "&Fields=" + getDetailsString())
+                "?Limit=20"
+                "&format=json"
+                "&ImageTypeLimit=1"
+                "&IsMissing=False")
 
     if (type == "recent_movies"):
         itemsUrl += ("&Recursive=true"
@@ -898,12 +921,11 @@ def getWigetContent(pluginName, handle, params):
                      "&IncludeItemTypes=Episode")
     elif (type == "nextup_episodes"):
         itemsUrl = ("http://" + server + "/emby/Shows/NextUp"
-                                         "?Limit=20"
-                                         "&userid=" + userid + ""
-                                                               "&Recursive=true"
-                                                               "&format=json"
-                                                               "&ImageTypeLimit=1"
-                                                               "&Fields=" + getDetailsString())
+                        "?Limit=20" 
+                        "&userid=" + userid + ""
+                        "&Recursive=true"
+                        "&format=json"
+                        "&ImageTypeLimit=1")
 
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
 
@@ -970,37 +992,6 @@ def getWigetContent(pluginName, handle, params):
         totalTime = str(int(float(item.get("RunTimeTicks", "0")) / (10000000 * 60)))
         list_item.setProperty('TotalTime', str(totalTime))
 
-        # add stream info
-        # Process MediaStreams
-        channels = ''
-        videocodec = ''
-        audiocodec = ''
-        height = ''
-        width = ''
-        aspectratio = '1:1'
-        aspectfloat = 0.0
-        mediaStreams = item.get("MediaStreams")
-        if (mediaStreams != None):
-            for mediaStream in mediaStreams:
-                if (mediaStream.get("Type") == "Video"):
-                    videocodec = mediaStream.get("Codec")
-                    height = str(mediaStream.get("Height"))
-                    width = str(mediaStream.get("Width"))
-                    aspectratio = mediaStream.get("AspectRatio")
-                    if aspectratio != None and len(aspectratio) >= 3:
-                        try:
-                            aspectwidth, aspectheight = aspectratio.split(':')
-                            aspectfloat = float(aspectwidth) / float(aspectheight)
-                        except:
-                            aspectfloat = 1.85
-                if (mediaStream.get("Type") == "Audio"):
-                    audiocodec = mediaStream.get("Codec")
-                    channels = mediaStream.get("Channels")
-
-        list_item.addStreamInfo('video', {'duration': str(totalTime), 'aspect': str(aspectratio),
-                                          'codec': str(videocodec), 'width': str(width), 'height': str(height)})
-        list_item.addStreamInfo('audio', {'codec': str(audiocodec), 'channels': str(channels)})
-
         # add progress percent
         userData = item.get("UserData")
         if (userData != None):
@@ -1012,14 +1003,9 @@ def getWigetContent(pluginName, handle, params):
                     list_item.setProperty('ResumeTime', str(playBackPos))
 
                     percentage = int((playBackTicks / runTimeTicks) * 100.0)
-                    # cappedPercentage = percentage - (percentage % 10)
-                    # if(cappedPercentage == 0):
-                    #    cappedPercentage = 10
-                    # if(cappedPercentage == 100):
-                    #    cappedPercentage = 90
                     list_item.setProperty("complete_percentage", str(percentage))
 
-        playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'  # + "&timestamp=" + str(datetime.today())
+        playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'
 
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
@@ -1047,8 +1033,7 @@ def showContent(pluginName, handle, params):
                   "?format=json"
                   "&ImageTypeLimit=1"
                   "&IsMissing=False"
-                  "&Fields=" + getDetailsString() +
-                  ""
+                  "&Fields=" + getDetailsString() + ""
                   "&Recursive=true"
                   "&IsVirtualUnaired=false"
                   "&IsMissing=False"
@@ -1067,6 +1052,10 @@ def showParentContent(pluginName, handle, params):
     host = settings.getSetting('ipaddress')
     server = host + ":" + port
 
+    show_collections = "false"
+    if settings.getSetting('show_collections') == "true":
+        show_collections = "true"
+
     parentId = params.get("ParentId")
     name = params.get("Name")
     detailsString = getDetailsString()
@@ -1082,7 +1071,7 @@ def showParentContent(pluginName, handle, params):
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
-        "&CollapseBoxSetItems=true" +
+        "&CollapseBoxSetItems=" + show_collections +
         "&Fields=" + detailsString +
         "&format=json")
 

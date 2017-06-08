@@ -2,7 +2,7 @@ import xbmcaddon
 from simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
-addon = xbmcaddon.Addon()
+addon = xbmcaddon.Addon(id='plugin.video.embycon')
 
 
 def i18n(string_id):

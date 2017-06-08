@@ -85,8 +85,23 @@ class PlayUtils():
 
 
 def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview,Etag"
-    # detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
+
+    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+    include_media = addonSettings.getSetting("include_media") == "true"
+    include_people = addonSettings.getSetting("include_people") == "true"
+    include_overwiew = addonSettings.getSetting("include_overview") == "true"
+
+    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,Etag"
+
+    if include_media:
+        detailsString += ",MediaStreams"
+
+    if include_people:
+        detailsString += ",People"
+
+    if include_overwiew:
+        detailsString += ",Overview"
+
     return detailsString
 
 

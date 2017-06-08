@@ -30,6 +30,9 @@ def showGenreList():
     server = host + ":" + port
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
+    show_collections = "false"
+    if settings.getSetting('show_collections') == "true":
+        show_collections = "true"
 
     try:
         jsonData = downloadUtils.downloadUrl(server + "/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId=" + userid + "&format=json")
@@ -51,7 +54,9 @@ def showGenreList():
         item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb", server=server)
         item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
                              '&Recursive=true&GenreIds=' + genre.get("Id") +
-                             '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')
+                             '&IncludeItemTypes=Movie' +
+                             '&CollapseBoxSetItems=' + show_collections +
+                             '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
     for collection in collections:
@@ -75,6 +80,9 @@ def showMovieAlphaList():
     server = host + ":" + port
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
+    show_collections = "false"
+    if settings.getSetting('show_collections') == "true":
+        show_collections = "true"
 
     collections = []
 
@@ -84,8 +92,12 @@ def showMovieAlphaList():
     item_data['media_type'] = "Movies"
     item_data['path'] = ('/emby/Users/' + userid +
                          '/Items?Fields=' + detailsString +
-                         '&Recursive=true&NameLessThan=A&IncludeItemTypes=Movie&' +
-                         'CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')
+                         '&Recursive=true' +
+                         '&NameLessThan=A' +
+                         '&IncludeItemTypes=Movie' +
+                         '&CollapseBoxSetItems=' + show_collections +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"]
@@ -97,9 +109,11 @@ def showMovieAlphaList():
         item_data['media_type'] = "Movies"
         item_data['path'] = ('/emby/Users/' + userid +
                              '/Items?Fields=' + detailsString +
-                             '&Recursive=true&NameStartsWith=' +
-                             alphaName + '&IncludeItemTypes=Movie&CollapseBoxSetItems=true&' +
-                             'ImageTypeLimit=1&format=json')
+                             '&Recursive=true' +
+                             '&NameStartsWith=' + alphaName +
+                             '&IncludeItemTypes=Movie' +
+                             '&CollapseBoxSetItems=' + show_collections +
+                             '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
     for collection in collections:
@@ -145,6 +159,9 @@ def getCollections(detailsString):
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     host = settings.getSetting('ipaddress')
     port = settings.getSetting('port')
+    show_collections = "false"
+    if settings.getSetting('show_collections') == "true":
+        show_collections = "true"
 
     if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
         log.info("No host or port set so returning []")
@@ -200,7 +217,43 @@ def getCollections(detailsString):
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
-                         '&CollapseBoxSetItems=true' +
+                         '&CollapseBoxSetItems=' + show_collections +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+        if collection_type == "tvshows":
+            collections.append({
+                'title': item_name + i18n('_in_progress'),
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('/emby/Users/' + userid + '/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&Limit=20' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsResumable' +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+            collections.append({
+                'title': item_name + i18n('_recently_added'),
+                'address': server,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('/emby/Users/' + userid + '/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&Limit=20' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields=' + detailsString +
+                         '&SortBy=DateCreated' +
+                         '&SortOrder=Descending' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -212,6 +265,7 @@ def getCollections(detailsString):
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('/emby/Users/' + userid + '/Items' +
                          '?ParentId=' + item.get("Id") +
+                         '&Limit=20' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -219,13 +273,13 @@ def getCollections(detailsString):
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
-
             collections.append({
                 'title': item_name + i18n('_recently_added'),
                 'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('/emby/Users/' + userid + '/Items' +
                          '?ParentId=' + item.get("Id") +
+                         '&Limit=20' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -241,88 +295,151 @@ def getCollections(detailsString):
     item_data['address'] = server
     item_data['title'] = i18n('movies_all')
     item_data['media_type'] = 'Movies'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Movie' +
+                         '&CollapseBoxSetItems=' + show_collections +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('movies_recently_added')
     item_data['media_type'] = 'Movies'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+                         '?Limit=20' +
+                         '&Recursive=true' +
+                         '&SortBy=DateCreated' +
+                         '&Fields=' + detailsString +
+                         '&SortOrder=Descending' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IncludeItemTypes=Movie' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('movies_in_progress')
     item_data['media_type'] = 'Movies'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+                         '?Limit=20' +
+                         '&Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsResumable' +
+                         '&IncludeItemTypes=Movie' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('movies_favorites')
     item_data['media_type'] = 'Movies'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+                         '&Recursive=true' +
+                         '&Filters=IsFavorite' +
+                         '&IncludeItemTypes=Movie' +
+                         '&CollapseBoxSetItems=' + show_collections +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('movies_boxsets')
     item_data['media_type'] = 'BoxSets'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&IncludeItemTypes=BoxSet' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('tvshows_all')
     item_data['media_type'] = 'tvshows'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Series' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('tvshows_favorites')
     item_data['media_type'] = 'tvshows'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&Filters=IsFavorite&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+                         '&Recursive=true' +
+                         '&Filters=IsFavorite' +
+                         '&IncludeItemTypes=Series' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('episodes_recently_added')
     item_data['media_type'] = 'Season'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Limit=20' +
+                         '&Recursive=true' +
+                         '&SortBy=DateCreated' +
+                         '&Fields=' + detailsString +
+                         '&SortOrder=Descending' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('episodes_in_progress')
     item_data['media_type'] = 'Episodes'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items?Limit=20' +
+                         '&Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsResumable' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('episodes_up_next')
     item_data['media_type'] = 'Episodes'
-    item_data[
-        'path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Shows/NextUp/?Userid=' + userid + '&Limit=20' +
+                         '&Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     item_data = {}
     item_data['address'] = server
     item_data['title'] = i18n('upcoming_tv')
     item_data['media_type'] = 'Episodes'
-    item_data[
-        'path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
+    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+                         '?Recursive=true' +
+                         '&SortBy=PremiereDate' +
+                         '&Fields=' + detailsString +
+                         '&SortOrder=Ascending' +
+                         '&Filters=IsUnplayed' +
+                         '&IsVirtualUnaired=true' +
+                         '&IsNotFolder' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
     collections.append(item_data)
 
     return collections

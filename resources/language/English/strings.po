@@ -210,6 +210,22 @@ msgctxt "#30180"
 msgid "Select User"
 msgstr ""
 
+msgctxt "#30181"
+msgid "Include Overview"
+msgstr ""
+
+msgctxt "#30182"
+msgid "Include Media Info"
+msgstr ""
+
+msgctxt "#30183"
+msgid "Include People"
+msgstr ""
+
+msgctxt "#30184"
+msgid "Show Movie Collections"
+msgstr ""
+
 msgctxt "#30200"
 msgid "URL error: %s"
 msgstr ""
