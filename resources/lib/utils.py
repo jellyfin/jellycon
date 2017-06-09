@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
-import xbmc
 import xbmcaddon
-import xbmcvfs
+
+import re
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -24,22 +24,6 @@ class PlayUtils():
         smb_password = addonSettings.getSetting('smbpassword')
         log.info("playback_type: " + playback_type)
         playurl = None
-
-        # check if strm file, will contain contain playback url
-        if result.get('MediaSources'):
-            source = result['MediaSources'][0]
-            if source.get('Container') == 'strm':
-                strm_path = xbmc.translatePath('special://temp/')
-                strm_file = xbmc.translatePath('special://temp/embycon.strm')
-                if not xbmcvfs.exists(strm_path):
-                    xbmcvfs.mkdirs(strm_path)
-                f = xbmcvfs.File(strm_file, mode='w')  # create a temp local .strm, required for inputstream(strm contains listitem properties and path)
-                contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
-                f.write(contents)
-                f.close()
-                playurl = strm_file if xbmcvfs.exists(strm_file) else None
-                if playurl:
-                    return playurl
 
         # do direct path playback
         if playback_type == "0":
@@ -82,6 +66,30 @@ class PlayUtils():
 
         log.info("Playback URL: " + playurl)
         return playurl.encode('utf-8')
+
+    def getStrmDetails(self, result):
+        playurl = None
+        listitem_props = []
+
+        source = result['MediaSources'][0]
+        contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
+
+        line_break = '\r'
+        if '\r\n' in contents:
+            line_break += '\n'
+
+        lines = contents.split(line_break)
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#KODIPROP:'):
+                match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
+                if match:
+                    listitem_props.append((match.group('item_property'), match.group('property_value')))
+            elif line != '':
+                playurl = line
+
+        log.info("Playback URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+        return playurl, listitem_props
 
 
 def getDetailsString():

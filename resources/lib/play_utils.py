@@ -61,8 +61,19 @@ def playFile(id, auto_resume):
             elif resume_result == -1:
                 return
 
-    playurl = PlayUtils().getPlayUrl(id, result)
-    log.info("Play URL: " + playurl)
+    listitem_props = []
+    playurl = None
+
+    # check if strm file, path will contain contain strm contents
+    if result.get('MediaSources'):
+        source = result['MediaSources'][0]
+        if source.get('Container') == 'strm':
+            playurl, listitem_props = PlayUtils().getStrmDetails(result)
+
+    if not playurl:
+        playurl = PlayUtils().getPlayUrl(id, result)
+
+    log.info("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
 
     playback_type_string = "DirectPlay"
     if playback_type == "1":
@@ -75,7 +86,7 @@ def playFile(id, auto_resume):
 
     listItem = xbmcgui.ListItem(label=result.get("Name", i18n('missing_title')), path=playurl)
 
-    listItem = setListItemProps(id, listItem, result, server)
+    listItem = setListItemProps(id, listItem, result, server, listitem_props)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -102,7 +113,7 @@ def playFile(id, auto_resume):
         # xbmc.Player().play()
 
 
-def setListItemProps(id, listItem, result, server):
+def setListItemProps(id, listItem, result, server, extra_props):
     # set up item and item info
     thumbID = id
     eppNum = -1
@@ -116,6 +127,9 @@ def setListItemProps(id, listItem, result, server):
 
     listItem.setProperty('IsPlayable', 'true')
     listItem.setProperty('IsFolder', 'false')
+
+    for prop in extra_props:
+        listItem.setProperty(prop[0], prop[1])
 
     # play info
     details = {
