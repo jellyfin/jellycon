@@ -19,8 +19,13 @@ log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
 
 
-def playFile(id, auto_resume):
-    log.info("playFile id(" + str(id) + ") resume(" + str(auto_resume) + ")")
+def playFile(play_info):
+
+    id = play_info.get("item_id")
+    auto_resume = play_info.get("auto_resume")
+    force_transcode = play_info.get("force_transcode")
+
+    log.info("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
 
     userid = downloadUtils.getUserId()
 
@@ -71,26 +76,29 @@ def playFile(id, auto_resume):
             playurl, listitem_props = PlayUtils().getStrmDetails(result)
 
     if not playurl:
-        playurl = PlayUtils().getPlayUrl(id, result)
+        playurl = PlayUtils().getPlayUrl(id, result, force_transcode)
 
     log.info("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
 
     playback_type_string = "DirectPlay"
-    if playback_type == "1":
-        playback_type_string = "DirectStream"
-    elif playback_type == "2":
+    if playback_type == "2" or force_transcode:
         playback_type_string = "Transcode"
+    elif playback_type == "1":
+        playback_type_string = "DirectStream"
 
     home_window = HomeWindow()
     home_window.setProperty("PlaybackType_" + id, playback_type_string)
 
-    listItem = xbmcgui.ListItem(label=result.get("Name", i18n('missing_title')), path=playurl)
+    # add the playback type into the overview
+    result["Overview"] = playback_type_string + "\n" + result.get("Overview")
 
-    listItem = setListItemProps(id, listItem, result, server, listitem_props)
+    list_item = xbmcgui.ListItem(label=result.get("Name", i18n('missing_title')), path=playurl)
+
+    list_item = setListItemProps(id, list_item, result, server, listitem_props)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
-    playlist.add(playurl, listItem)
+    playlist.add(playurl, list_item)
     xbmc.Player().play(playlist)
 
     if seekTime == 0:

@@ -453,6 +453,9 @@ def addContextMenu(details, extraData, folder):
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
 
+        argsToPass = "?mode=PLAY&item_id=" + extraData.get("id") + "&force_transcode=true"
+        commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
+
         # watched/unwatched
         if extraData.get("playcount") == "0":
             argsToPass = 'markWatched,' + extraData.get('id')
@@ -1112,16 +1115,25 @@ def checkService():
 def PLAY(params, handle):
     log.info("== ENTER: PLAY ==")
 
-    log.info("PLAY ACTION PARAMS : " + str(params))
+    log.info("PLAY ACTION PARAMS: " + str(params))
     item_id = params.get("item_id")
 
     auto_resume = int(params.get("auto_resume", "-1"))
     log.info("AUTO_RESUME: " + str(auto_resume))
 
+    forceTranscode = params.get("force_transcode", None) is not None
+    log.info("FORCE_TRANSCODE: " + str(forceTranscode))
+
     # set the current playing item id
     # set all the playback info, this will be picked up by the service
     # the service will then start the playback
+
+    play_info = {}
+    play_info["item_id"] =  item_id
+    play_info["auto_resume"] = str(auto_resume)
+    play_info["force_transcode"] = forceTranscode
+    play_data = json.dumps(play_info)
+
     home_window = HomeWindow()
     home_window.setProperty("item_id", item_id)
-    home_window.setProperty("play_item_id", item_id)
-    home_window.setProperty("play_item_resume", str(auto_resume))
+    home_window.setProperty("play_item_message", play_data)

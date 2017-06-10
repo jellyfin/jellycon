@@ -14,19 +14,44 @@ log = SimpleLogging(__name__)
 
 ###########################################################################
 class PlayUtils():
-    def getPlayUrl(self, id, result):
+    def getPlayUrl(self, id, result, force_transcode):
         log.info("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
-        playback_bitrate = addonSettings.getSetting("playback_bitrate")
         server = addonSettings.getSetting('ipaddress') + ":" + addonSettings.getSetting('port')
-        smb_username = addonSettings.getSetting('smbusername')
-        smb_password = addonSettings.getSetting('smbpassword')
         log.info("playback_type: " + playback_type)
+        if force_transcode:
+            log.info("playback_type: FORCED_TRANSCODE")
         playurl = None
 
+        # transcode
+        if playback_type == "2" or force_transcode:
+
+            playback_bitrate = addonSettings.getSetting("playback_bitrate")
+            log.info("playback_bitrate: " + playback_bitrate)
+
+            width_options = ["640", "720", "1024", "1280", "1440", "1600", "1920", "2600", "4096"]
+            playback_max_width = width_options[int(addonSettings.getSetting("playback_max_width"))]
+            playback_video_force_8 = addonSettings.getSetting("playback_video_force_8") == "true"
+
+            clientInfo = ClientInformation()
+            deviceId = clientInfo.getDeviceId()
+            bitrate = int(playback_bitrate) * 1000
+            user_token = downloadUtils.authenticate()
+
+            playurl = (
+                "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
+                % (server, id, id, deviceId, bitrate))
+
+            playurl = playurl + "&maxWidth=" + playback_max_width
+
+            if playback_video_force_8:
+                playurl = playurl + "&MaxVideoBitDepth=8"
+
+            playurl = playurl + "&api_key=" + user_token
+
         # do direct path playback
-        if playback_type == "0":
+        elif playback_type == "0":
             playurl = result.get("Path")
 
             # handle DVD structure
@@ -34,6 +59,9 @@ class PlayUtils():
                 playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
             elif (result.get("VideoType") == "BluRay"):
                 playurl = playurl + "/BDMV/index.bdmv"
+
+            smb_username = addonSettings.getSetting('smbusername')
+            smb_password = addonSettings.getSetting('smbpassword')
 
             # add smb creds
             if smb_username == '':
@@ -47,21 +75,6 @@ class PlayUtils():
         elif playback_type == "1":
             playurl = "http://%s/emby/Videos/%s/stream?static=true" % (server, id)
             user_token = downloadUtils.authenticate()
-            playurl = playurl + "&api_key=" + user_token
-
-        # do transcode http streaming playback
-        elif playback_type == "2":
-            log.info("playback_bitrate: " + playback_bitrate)
-
-            clientInfo = ClientInformation()
-            deviceId = clientInfo.getDeviceId()
-            bitrate = int(playback_bitrate) * 1000
-            user_token = downloadUtils.authenticate()
-
-            playurl = (
-                "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
-                % (server, id, id, deviceId, bitrate))
-
             playurl = playurl + "&api_key=" + user_token
 
         log.info("Playback URL: " + playurl)
