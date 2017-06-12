@@ -4,7 +4,6 @@ import urllib
 import sys
 import os
 import time
-from urlparse import urlparse
 import cProfile
 import pstats
 import json
@@ -583,9 +582,7 @@ def getContent(url, pluginhandle, media_type):
 
 
 def processDirectory(url, results, progress, pluginhandle):
-    cast = ['None']
     log.info("== ENTER: processDirectory ==")
-    parsed = urlparse(url)
     userid = downloadUtils.getUserId()
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -689,9 +686,10 @@ def processDirectory(url, results, progress, pluginhandle):
         # Process People
         director = ''
         writer = ''
-        cast = []
+        cast = None
         people = item.get("People")
         if (people != None):
+            cast = []
             for person in people:
                 if (person.get("Type") == "Director"):
                     director = director + person.get("Name") + ' '
