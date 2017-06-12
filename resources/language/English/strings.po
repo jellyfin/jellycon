@@ -259,7 +259,7 @@ msgid "Playback"
 msgstr ""
 
 msgctxt "#30208"
-msgid "Playback Bitrate (Kbits)"
+msgid "Transcode Bitrate (Kbits)"
 msgstr ""
 
 msgctxt "#30209"
@@ -272,6 +272,14 @@ msgstr ""
 
 msgctxt "#30211"
 msgid "HTTP Transcode"
+msgstr ""
+
+msgctxt "#30212"
+msgid "Transcode Max Width"
+msgstr ""
+
+msgctxt "#30213"
+msgid "Transcode Force 8 Bit"
 msgstr ""
 
 msgctxt "#30230"
@@ -420,6 +428,10 @@ msgstr ""
 
 msgctxt "#30274"
 msgid "Emby: Delete"
+msgstr ""
+
+msgctxt "#30275"
+msgid "Emby: Force Transcode"
 msgstr ""
 
 msgctxt "#30280"

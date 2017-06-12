@@ -77,5 +77,6 @@ STRINGS = {
     'emby_set_favorite': 30272,
     'emby_unset_favorite': 30273,
     'emby_delete': 30274,
-    'missing_title': 30280
+    'missing_title': 30280,
+    'emby_force_transcode': 30275,
 }

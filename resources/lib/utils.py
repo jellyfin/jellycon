@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
-import xbmc
 import xbmcaddon
-import xbmcvfs
+
+import re
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -14,35 +14,44 @@ log = SimpleLogging(__name__)
 
 ###########################################################################
 class PlayUtils():
-    def getPlayUrl(self, id, result):
+    def getPlayUrl(self, id, result, force_transcode):
         log.info("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
-        playback_bitrate = addonSettings.getSetting("playback_bitrate")
         server = addonSettings.getSetting('ipaddress') + ":" + addonSettings.getSetting('port')
-        smb_username = addonSettings.getSetting('smbusername')
-        smb_password = addonSettings.getSetting('smbpassword')
         log.info("playback_type: " + playback_type)
+        if force_transcode:
+            log.info("playback_type: FORCED_TRANSCODE")
         playurl = None
 
-        # check if strm file, will contain contain playback url
-        if result.get('MediaSources'):
-            source = result['MediaSources'][0]
-            if source.get('Container') == 'strm':
-                strm_path = xbmc.translatePath('special://temp/')
-                strm_file = xbmc.translatePath('special://temp/embycon.strm')
-                if not xbmcvfs.exists(strm_path):
-                    xbmcvfs.mkdirs(strm_path)
-                f = xbmcvfs.File(strm_file, mode='w')  # create a temp local .strm, required for inputstream(strm contains listitem properties and path)
-                contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
-                f.write(contents)
-                f.close()
-                playurl = strm_file if xbmcvfs.exists(strm_file) else None
-                if playurl:
-                    return playurl
+        # transcode
+        if playback_type == "2" or force_transcode:
+
+            playback_bitrate = addonSettings.getSetting("playback_bitrate")
+            log.info("playback_bitrate: " + playback_bitrate)
+
+            width_options = ["640", "720", "1024", "1280", "1440", "1600", "1920", "2600", "4096"]
+            playback_max_width = width_options[int(addonSettings.getSetting("playback_max_width"))]
+            playback_video_force_8 = addonSettings.getSetting("playback_video_force_8") == "true"
+
+            clientInfo = ClientInformation()
+            deviceId = clientInfo.getDeviceId()
+            bitrate = int(playback_bitrate) * 1000
+            user_token = downloadUtils.authenticate()
+
+            playurl = (
+                "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
+                % (server, id, id, deviceId, bitrate))
+
+            playurl = playurl + "&maxWidth=" + playback_max_width
+
+            if playback_video_force_8:
+                playurl = playurl + "&MaxVideoBitDepth=8"
+
+            playurl = playurl + "&api_key=" + user_token
 
         # do direct path playback
-        if playback_type == "0":
+        elif playback_type == "0":
             playurl = result.get("Path")
 
             # handle DVD structure
@@ -50,6 +59,9 @@ class PlayUtils():
                 playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
             elif (result.get("VideoType") == "BluRay"):
                 playurl = playurl + "/BDMV/index.bdmv"
+
+            smb_username = addonSettings.getSetting('smbusername')
+            smb_password = addonSettings.getSetting('smbpassword')
 
             # add smb creds
             if smb_username == '':
@@ -65,23 +77,32 @@ class PlayUtils():
             user_token = downloadUtils.authenticate()
             playurl = playurl + "&api_key=" + user_token
 
-        # do transcode http streaming playback
-        elif playback_type == "2":
-            log.info("playback_bitrate: " + playback_bitrate)
-
-            clientInfo = ClientInformation()
-            deviceId = clientInfo.getDeviceId()
-            bitrate = int(playback_bitrate) * 1000
-            user_token = downloadUtils.authenticate()
-
-            playurl = (
-                "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
-                % (server, id, id, deviceId, bitrate))
-
-            playurl = playurl + "&api_key=" + user_token
-
         log.info("Playback URL: " + playurl)
         return playurl.encode('utf-8')
+
+    def getStrmDetails(self, result):
+        playurl = None
+        listitem_props = []
+
+        source = result['MediaSources'][0]
+        contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
+
+        line_break = '\r'
+        if '\r\n' in contents:
+            line_break += '\n'
+
+        lines = contents.split(line_break)
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#KODIPROP:'):
+                match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
+                if match:
+                    listitem_props.append((match.group('item_property'), match.group('property_value')))
+            elif line != '':
+                playurl = line
+
+        log.info("Playback URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+        return playurl, listitem_props
 
 
 def getDetailsString():

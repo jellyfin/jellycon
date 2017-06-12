@@ -4,6 +4,7 @@
 import xbmc
 import xbmcaddon
 import time
+import json
 from datetime import datetime
 
 from resources.lib.downloadutils import DownloadUtils
@@ -222,12 +223,11 @@ while not xbmc.abortRequested:
             pass
 
     else:
-        emby_item_id = home_window.getProperty("play_item_id")
-        emby_item_resume = home_window.getProperty("play_item_resume")
-        if emby_item_id and emby_item_resume:
-            home_window.clearProperty("play_item_id")
-            home_window.clearProperty("play_item_resume")
-            playFile(emby_item_id, emby_item_resume)
+        play_data = home_window.getProperty("play_item_message")
+        if play_data:
+            home_window.clearProperty("play_item_message")
+            play_info = json.loads(play_data)
+            playFile(play_info)
 
     xbmc.sleep(1000)
     HomeWindow().setProperty("Service_Timestamp", str(int(time.time())))
