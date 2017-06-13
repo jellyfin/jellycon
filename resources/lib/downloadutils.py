@@ -99,7 +99,11 @@ class DownloadUtils():
     def imageUrl(self, id, art_type, index, width, height, imageTag, server):
 
         # test imageTag e3ab56fe27d389446754d0fb04910a34
-        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s" % (server, id, art_type, index, width, height, imageTag)
+        artwork = "http://%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+        if int(width) > 0:
+            artwork += '&MaxWidth=%s' % width
+        if int(height) > 0:
+            artwork += '&MaxHeight=%s' % height
         '''
         artwork = ( "http://" + server + "/emby/Items/" + 
                     str(id) + "/Images/" + art_type +

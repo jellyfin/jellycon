@@ -22,7 +22,7 @@ from datamanager import DataManager
 from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
 from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch
 from translation import i18n
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -133,6 +133,25 @@ def mainEntryPoint():
         checkService()
         checkServer(notify=False)
         showContent(sys.argv[0], int(sys.argv[1]), params)
+    elif mode == "SEARCH":
+        # plugin://plugin.video.embycon?mode=SEARCH
+        checkService()
+        checkServer(notify=False)
+        xbmcplugin.setContent(int(sys.argv[1]), 'files')
+        showSearch()
+    elif mode == "NEW_SEARCH":
+        # plugin://plugin.video.embycon?mode=NEW_SEARCH&item_type=<Movie|Series|Episode>
+        if 'SEARCH_RESULTS' not in xbmc.getInfoLabel('Container.FolderPath'):  # don't ask for input on '..'
+            checkService()
+            checkServer(notify=False)
+            search(int(sys.argv[1]), params)
+        else:
+            return
+    elif mode == "SEARCH_RESULTS":
+        # plugin://plugin.video.embycon?mode=SEARCH_RESULTS&item_type=<Movie|Series>&query=<urllib.quote(search query)>&index=<[0-9]+>
+        checkService()
+        checkServer(notify=False)
+        searchResults(params)
     else:
 
         checkService()
@@ -452,27 +471,28 @@ def addContextMenu(details, extraData, folder):
     if item_id != None:
         scriptToRun = PLUGINPATH + "/default.py"
 
-        argsToPass = "?mode=PLAY&item_id=" + extraData.get("id") + "&force_transcode=true"
-        commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
+        if not folder:
+            argsToPass = "?mode=PLAY&item_id=" + item_id + "&force_transcode=true"
+            commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
 
         # watched/unwatched
         if extraData.get("playcount") == "0":
-            argsToPass = 'markWatched,' + extraData.get('id')
+            argsToPass = 'markWatched,' + item_id
             commands.append((i18n('emby_mark_watched'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'markUnwatched,' + extraData.get('id')
+        elif extraData.get("playcount"):
+            argsToPass = 'markUnwatched,' + item_id
             commands.append((i18n('emby_mark_unwatched'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
 
         # favourite add/remove
-        if extraData.get('favorite') != 'true':
-            argsToPass = 'markFavorite,' + extraData.get('id')
+        if extraData.get('favorite') == 'false':
+            argsToPass = 'markFavorite,' + item_id
             commands.append((i18n('emby_set_favorite'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'unmarkFavorite,' + extraData.get('id')
+        elif extraData.get('favorite') == 'true':
+            argsToPass = 'unmarkFavorite,' + item_id
             commands.append((i18n('emby_unset_favorite'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
 
         # delete
-        argsToPass = 'delete,' + extraData.get('id')
+        argsToPass = 'delete,' + item_id
         commands.append((i18n('emby_delete'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
 
     return (commands)
@@ -505,6 +525,37 @@ def get_params(paramstring):
     return param
 
 
+def setSort(pluginhandle, viewType):
+    defaultData = loadSkinDefaults()
+
+    # set the default sort order
+    defaultSortData = defaultData.get("sort", {})
+    sortName = defaultSortData.get(viewType)
+    log.info("SETTING_SORT : " + str(viewType) + " : " + str(sortName))
+    if sortName == "title":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+    elif sortName == "date":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+    else:
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
+
+
+def setView(viewType):
+    defaultData = loadSkinDefaults()
+
+    defaultViewData = defaultData.get("view", {})
+    viewNum = defaultViewData.get(viewType)
+    log.info("SETTING_VIEW : " + str(viewType) + " : " + str(viewNum))
+    if viewNum is not None:
+        xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
+
+
 def getContent(url, pluginhandle, media_type):
     log.info("== ENTER: getContent ==")
     log.info("URL: " + str(url))
@@ -531,31 +582,14 @@ def getContent(url, pluginhandle, media_type):
         xbmcplugin.setContent(pluginhandle, 'episodes')
     log.info("ViewType: " + viewType)
 
-    defaultData = loadSkinDefaults()
-
-    # set the default sort order
-    defaultSortData = defaultData.get("sort", {})
-    sortName = defaultSortData.get(viewType)
-    log.info("SETTING_SORT : " + str(viewType) + " : " + str(sortName))
-    if sortName == "title":
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-    elif sortName == "date":
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-    else:
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
+    setSort(pluginhandle, viewType)
 
     # show a progress indicator if needed
     progress = None
     if (settings.getSetting('showLoadProgress') == "true"):
         progress = xbmcgui.DialogProgress()
-        progress.create("Loading Content")
-        progress.update(0, "Retrieving Data")
+        progress.create(i18n('loading_content'))
+        progress.update(0, i18n('retrieving_data'))
 
     # use the data manager to get the data
     result = dataManager.GetContent(url)
@@ -569,11 +603,7 @@ def getContent(url, pluginhandle, media_type):
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     # set the view mode based on what the user wanted for this view type
-    defaultViewData = defaultData.get("view", {})
-    viewNum = defaultViewData.get(viewType)
-    log.info("SETTING_VIEW : " + str(viewType) + " : " + str(viewNum))
-    if viewNum is not None:
-        xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
+    setView(viewType)
 
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
@@ -1108,6 +1138,214 @@ def checkService():
         log.error("EmbyCon Service Not Running, time stamp to old, exiting")
         xbmcgui.Dialog().ok(i18n('error'), i18n('service_not_running'), i18n('restart_kodi'))
         sys.exit()
+
+
+def search(handle, params):
+    log.info('search Called: ' + str(params))
+    item_type = params.get('item_type')
+    if not item_type:
+        return
+    kb = xbmc.Keyboard()
+    if item_type.lower() == 'movie':
+        heading_type = i18n('movies')
+    elif item_type.lower() == 'series':
+        heading_type = i18n('tvshows')
+    elif item_type.lower() == 'episode':
+        heading_type = i18n('episodes')
+    else:
+        heading_type = item_type
+    kb.setHeading(heading_type.capitalize() + ' ' + i18n('search').lower())
+    kb.doModal()
+    if kb.isConfirmed():
+        user_input = kb.getText().strip()
+        if user_input:
+            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+            user_input = urllib.quote(user_input)
+            xbmc.executebuiltin('Container.Update(plugin://plugin.video.embycon/?mode=SEARCH_RESULTS&query={user_input}&item_type={item_type}&index=0)'
+                                .format(user_input=user_input, item_type=item_type))  # redirect for results to avoid page refreshing issues
+        else:
+            return
+    else:
+        return
+
+
+def searchResults(params):
+    log.info('searchResults Called: ' + str(params))
+
+    handle = int(sys.argv[1])
+    query = params.get('query')
+    item_type = params.get('item_type')
+    if (not item_type) or (not query):
+        return
+
+    limit = int(params.get('limit', 50))
+    index = 0
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    port = settings.getSetting('port')
+    host = settings.getSetting('ipaddress')
+    server = host + ':' + port
+    userid = downloadUtils.getUserId()
+    details_string = getDetailsString()
+
+    content_url = ('http://' + server +
+                  '/emby/Search/Hints?searchTerm=' + query +
+                  '&IncludeItemTypes=' + item_type +
+                  '&UserId=' + userid +
+                  '&StartIndex=' + str(index) +
+                  '&Limit=' + str(limit) +
+                  '&IncludePeople=false&IncludeMedia=true&IncludeGenres=false&IncludeStudios=false&IncludeArtists=false')
+
+    if item_type.lower() == 'movie':
+        xbmcplugin.setContent(handle, 'movies')
+        view_type = 'Movies'
+        media_type = 'movie'
+    elif item_type.lower() == 'series':
+        xbmcplugin.setContent(handle, 'tvshows')
+        view_type = 'Series'
+        media_type = 'tvshow'
+    elif item_type.lower() == 'episode':
+        xbmcplugin.setContent(handle, 'episodes')
+        view_type = 'Episodes'
+        media_type = 'episode'
+    else:
+        xbmcplugin.setContent(handle, 'videos')
+        view_type = ''
+        media_type = 'video'
+
+    setSort(handle, view_type)
+
+    # show a progress indicator if needed
+    progress = None
+    if (settings.getSetting('showLoadProgress') == "true"):
+        progress = xbmcgui.DialogProgress()
+        progress.create(i18n('loading_content'))
+        progress.update(0, i18n('retrieving_data'))
+
+    result = dataManager.GetContent(content_url)
+    log.debug('SearchHints jsonData: ' + str(result))
+
+    results = result.get('SearchHints')
+    if results is None:
+        results = []
+
+    item_count = 1
+    total_results = int(result.get('TotalRecordCount', 0))
+    log.debug('SEARCH_TOTAL_RESULTS: ' + str(total_results))
+    list_items = []
+
+    for item in results:
+        item_id = item.get('ItemId')
+        name = title = item.get('Name')
+        log.debug('SEARCH_RESULT_NAME: ' + name)
+
+        if progress is not None:
+            percent_complete = (float(item_count) / float(total_results)) * 100
+            progress.update(int(percent_complete), i18n('processing_item:') + str(item_count))
+
+        tvshowtitle = ''
+        season = episode = None
+
+        if (item.get('Type') == 'Episode') and (item.get('Series') is not None):
+            episode = '0'
+            if item.get('IndexNumber') is not None:
+                ep_number = item.get('IndexNumber')
+                if ep_number < 10:
+                    episode = '0' + str(ep_number)
+                else:
+                    episode = str(ep_number)
+
+            season = '0'
+            season_number = item.get('ParentIndexNumber')
+            if season_number < 10:
+                season = '0' + str(season_number)
+            else:
+                season = str(season_number)
+
+            tvshowtitle = item.get('Series')
+            title = tvshowtitle + ' - ' + title
+
+        primary_image = thumb_image = backdrop_image = ''
+        primary_tag = item.get('PrimaryImageTag')
+        if primary_tag:
+            primary_image = downloadUtils.imageUrl(item_id, 'Primary', 0, 0, 0, imageTag=primary_tag, server=server)
+        thumb_id = item.get('ThumbImageId')
+        thumb_tag = item.get('ThumbImageTag')
+        if thumb_tag and thumb_id:
+            thumb_image = downloadUtils.imageUrl(thumb_id, 'Thumb', 0, 0, 0, imageTag=thumb_tag, server=server)
+        backdrop_id = item.get('BackdropImageItemId')
+        backdrop_tag = item.get('BackdropImageTag')
+        if backdrop_tag and backdrop_id:
+            backdrop_image = downloadUtils.imageUrl(backdrop_id, 'Backdrop', 0, 0, 0, imageTag=backdrop_tag, server=server)
+
+        art = {
+            'thumb': thumb_image or primary_image,
+            'fanart': backdrop_image,
+            'poster': primary_image or thumb_image,
+            'banner': '',
+            'clearlogo': '',
+            'clearart': '',
+            'discart': '',
+            'landscape': backdrop_image,
+            'tvshow.poster': primary_image
+        }
+
+        if kodi_version > 17:
+            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'], offscreen=True)
+        else:
+            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'])
+
+        info = {'title': title, 'tvshowtitle': tvshowtitle, 'mediatype': media_type}
+        log.debug('SEARCH_RESULT_ART: ' + str(art))
+        list_item.setProperty('fanart_image', art['fanart'])
+        list_item.setProperty('discart', art['discart'])
+        list_item.setArt(art)
+
+        # add count
+        list_item.setProperty('item_index', str(item_count))
+        item_count += 1
+
+        if item.get('MediaType') == 'Video':
+            total_time = str(int(float(item.get('RunTimeTicks', '0')) / (10000000 * 60)))
+            list_item.setProperty('TotalTime', str(total_time))
+            list_item.setProperty('IsPlayable', 'true')
+            list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
+            is_folder = False
+        else:
+            item_url = ('http://' + server +
+                        '/emby/Users/' + userid +
+                        '/items?ParentId=' + item_id +
+                        '&IsVirtualUnAired=false&IsMissing=false' +
+                        '&Fields=' + details_string +
+                        '&format=json')
+            list_item_url = 'plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type={item_type}&url={item_url}'\
+                .format(item_type=item_type, item_url=item_url)
+            list_item.setProperty('IsPlayable', 'false')
+            is_folder = True
+
+        menu_items = addContextMenu({}, {'id': item_id}, is_folder)
+        if len(menu_items) > 0:
+            list_item.addContextMenuItems(menu_items, True)
+
+        if (season is not None) and (episode is not None):
+            info['episode'] = episode
+            info['season'] = season
+
+        info['year'] = item.get('ProductionYear', '')
+
+        log.debug('SEARCH_RESULT_INFO: ' + str(info))
+        list_item.setInfo('Video', infoLabels=info)
+
+        item_tuple = (list_item_url, list_item, is_folder)
+        list_items.append(item_tuple)
+
+    xbmcplugin.addDirectoryItems(handle, list_items)
+    setView(view_type)
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
+    if progress is not None:
+        progress.update(100, i18n('done'))
+        progress.close()
 
 
 def PLAY(params, handle):

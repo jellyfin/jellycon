@@ -110,7 +110,7 @@ def getDetailsString():
     addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
     include_media = addonSettings.getSetting("include_media") == "true"
     include_people = addonSettings.getSetting("include_people") == "true"
-    include_overwiew = addonSettings.getSetting("include_overview") == "true"
+    include_overview = addonSettings.getSetting("include_overview") == "true"
 
     detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,Etag"
 
@@ -120,7 +120,7 @@ def getDetailsString():
     if include_people:
         detailsString += ",People"
 
-    if include_overwiew:
+    if include_overview:
         detailsString += ",Overview"
 
     return detailsString

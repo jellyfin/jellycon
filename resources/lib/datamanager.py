@@ -26,20 +26,23 @@ class DataManager():
         log.info("DataManager __init__")
 
     def getCacheValidatorFromData(self, result):
-        result = result.get("Items")
-        if (result == None):
-            result = []
+        key = 'Items'
+        results = result.get(key)
+        if results is None:
+            key = 'SearchHints'
+            results = result.get(key)
+            if results is None:
+                results = []
 
         itemCount = 0
-        unwatchedItemCount = 0
         dataHashString = ""
 
-        for item in result:
+        for item in results:
             item_hash_string = getChecksum(item)
-            item_hash_string = str(itemCount) + "_" + item.get("Name", "-") + "_" + item_hash_string + "|"
+            item_hash_string = str(itemCount) + "_" + key + "_" + item.get("Name", "-") + "_" + item_hash_string + "|"
             log.debug("ITEM_HASH: " + item_hash_string)
             dataHashString += item_hash_string
-            itemCount = itemCount + 1
+            itemCount += 1
 
         # hash the data
         dataHashString = dataHashString.encode("UTF-8")
