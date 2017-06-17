@@ -84,4 +84,6 @@ STRINGS = {
     'emby_delete': 30274,
     'missing_title': 30280,
     'emby_force_transcode': 30275,
+    'extra_prompt': 30276,
+    'turn_on_auto_resume?': 30277,
 }

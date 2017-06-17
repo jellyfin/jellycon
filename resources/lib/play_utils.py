@@ -14,6 +14,7 @@ from resume_dialog import ResumeDialog
 from utils import PlayUtils, getArt
 from kodi_utils import HomeWindow
 from translation import i18n
+from json_rpc import json_rpc
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -49,6 +50,7 @@ def playFile(play_info):
     else:
         userData = result.get("UserData")
         if userData.get("PlaybackPositionTicks") != 0:
+
             reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
             seekTime = reasonableTicks / 10000
             displayTime = str(timedelta(seconds=seekTime))
@@ -58,8 +60,22 @@ def playFile(play_info):
             resumeDialog.doModal()
             resume_result = resumeDialog.getResumeAction()
             del resumeDialog
-
             log.info("Resume Dialog Result: " + str(resume_result))
+
+            # check system settings for play action
+            # if prompt is set ask to set it to auto resume
+            params = {"setting": "myvideos.selectaction"}
+            setting_result = json_rpc('Settings.getSettingValue').execute(params)
+            log.info("Current Setting (myvideos.selectaction): %s" % setting_result)
+            current_value = setting_result.get("result", None)
+            if current_value is not None:
+                current_value = current_value.get("value", -1)
+            if current_value not in (2,3):
+                return_value = xbmcgui.Dialog().yesno(i18n('extra_prompt'), i18n('turn_on_auto_resume?'))
+                if return_value:
+                    params = {"setting": "myvideos.selectaction", "value": 2}
+                    result = json_rpc('Settings.setSettingValue').execute(params)
+                    log.info("Save Setting (myvideos.selectaction): %s" % result)
 
             if resume_result == 1:
                 seekTime = 0
@@ -90,7 +106,10 @@ def playFile(play_info):
     home_window.setProperty("PlaybackType_" + id, playback_type_string)
 
     # add the playback type into the overview
-    result["Overview"] = playback_type_string + "\n" + result.get("Overview")
+    if result.get("Overview", None) is not None:
+        result["Overview"] = playback_type_string + "\n" + result.get("Overview")
+    else:
+        result["Overview"] = playback_type_string
 
     list_item = xbmcgui.ListItem(label=result.get("Name", i18n('missing_title')), path=playurl)
 

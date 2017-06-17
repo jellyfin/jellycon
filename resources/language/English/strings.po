@@ -454,6 +454,14 @@ msgctxt "#30275"
 msgid "Emby: Force Transcode"
 msgstr ""
 
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr ""
+
+msgctxt "#30277"
+msgid "EmbyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+
 msgctxt "#30280"
 msgid "Missing Title"
 msgstr ""
