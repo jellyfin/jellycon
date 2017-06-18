@@ -86,4 +86,5 @@ STRINGS = {
     'emby_force_transcode': 30275,
     'extra_prompt': 30276,
     'turn_on_auto_resume?': 30277,
+    'skin_not_supported': 30281
 }

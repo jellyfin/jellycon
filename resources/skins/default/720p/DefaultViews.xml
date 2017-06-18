@@ -24,7 +24,7 @@
 			<width>380</width>
 			<height>40</height>
 			<font>font16</font>
-            <label>-</label>
+            <label></label>
             <align>left</align>
             <textcolor>blue</textcolor>
 		</control>
@@ -35,7 +35,7 @@
 			<width>380</width>
 			<height>40</height>
 			<font>font16</font>
-            <label>-</label>
+            <label></label>
             <align>left</align>
             <textcolor>blue</textcolor>
 		</control>
@@ -46,7 +46,7 @@
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>-</label>
+            <label></label>
 		</control>      
         <control type="button" id="3010">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -55,8 +55,8 @@
             <top>100</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
-            <onup>-</onup>
+            <label></label>
+            <onup></onup>
             <onright>3050</onright>
             <ondown>3011</ondown>
             <font>font14</font>
@@ -68,8 +68,8 @@
             <top>100</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
-            <onup>-</onup>
+            <label></label>
+            <onup></onup>
             <onleft>3010</onleft>
             <ondown>3051</ondown>
             <font>font14</font>
@@ -81,7 +81,7 @@
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>-</label>
+            <label></label>
 		</control>      
         <control type="button" id="3011">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -90,7 +90,7 @@
             <top>160</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3010</onup>
             <onright>3051</onright>
             <ondown>3012</ondown>
@@ -103,7 +103,7 @@
             <top>160</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3050</onup>
             <onleft>3011</onleft>
             <ondown>3052</ondown>
@@ -116,7 +116,7 @@
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>-</label>
+            <label></label>
 		</control>      
         <control type="button" id="3012">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -125,7 +125,7 @@
             <top>220</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3011</onup>
             <onright>3052</onright>
             <ondown>3013</ondown>
@@ -138,7 +138,7 @@
             <top>220</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3051</onup>
             <onleft>3012</onleft>
             <ondown>3053</ondown>
@@ -151,7 +151,7 @@
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>-</label>
+            <label></label>
 		</control>      
         <control type="button" id="3013">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -160,7 +160,7 @@
             <top>280</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3012</onup>
             <onright>3053</onright>
             <ondown>3014</ondown>
@@ -173,7 +173,7 @@
             <top>280</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3052</onup>
             <onleft>3013</onleft>
             <ondown>3054</ondown>
@@ -186,7 +186,7 @@
 			<width>120</width>
 			<height>40</height>
 			<font>font14</font>
-            <label>-</label>
+            <label></label>
 		</control>      
         <control type="button" id="3014">
 			<texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -195,7 +195,7 @@
             <top>340</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3013</onup>
             <onright>3054</onright>
             <ondown>3110</ondown>
@@ -208,7 +208,7 @@
             <top>340</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3053</onup>
             <onleft>3014</onleft>
             <ondown>3110</ondown>
@@ -222,9 +222,9 @@
             <top>400</top>
             <width>200</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3014</onup>
-            <ondown>-</ondown>
+            <ondown></ondown>
             <font>font14</font>
         </control>       
 

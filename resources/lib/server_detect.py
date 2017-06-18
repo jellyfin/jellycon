@@ -63,9 +63,9 @@ def checkServer(force=False, change_user=False, notify=False):
 
     if force is False:
         # if not forcing use server details from settings
-        if (len(host) != 0) and (host != "<none>") and (len(port) != 0):
-            log.debug("Server info from settings:  " + host + " : " + port)
-            serverUrl = "http://%s:%s" % (host, port)
+        svr = downloadUtils.getServer()
+        if svr is not None:
+            serverUrl = svr
 
     # if the server is not set then try to detect it
     if serverUrl == "":
@@ -92,11 +92,17 @@ def checkServer(force=False, change_user=False, notify=False):
         url_bits = urlparse(serverUrl)
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
-        log.info("Detected server info " + server_address + " : " + server_port)
+        server_protocol = url_bits.scheme
+        log.info("Detected server info " + server_protocol + " - " + server_address + " - " + server_port)
 
         # save the server info
         settings.setSetting("port", server_port)
         settings.setSetting("ipaddress", server_address)
+
+        if server_protocol == "https":
+            settings.setSetting("use_https", "true")
+        else:
+            settings.setSetting("use_https", "false")
 
         if notify:
             xbmcgui.Dialog().ok(i18n('server_detect_succeeded'), i18n('found_server'),

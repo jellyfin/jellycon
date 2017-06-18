@@ -34,11 +34,9 @@ def playFile(play_info):
     addon_path = settings.getAddonInfo('path')
     playback_type = settings.getSetting("playback_type")
 
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = downloadUtils.getServer()
 
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
+    jsonData = downloadUtils.downloadUrl(server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
                                          suppress=False, popup=1)
     result = json.loads(jsonData)
 

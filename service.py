@@ -68,12 +68,9 @@ def sendProgress():
 
     log.debug("Sending POST progress started: %s." % postdata)
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = download_utils.getServer()
 
-    url = "http://" + server + "/emby/Sessions/Playing/Progress"
+    url = server + "/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
 
@@ -95,12 +92,9 @@ def stopAll(played_information):
             if hasData(emby_item_id):
                 log.info("Playback Stopped at: " + str(int(current_possition * 10000000)))
 
-                settings = xbmcaddon.Addon(id='plugin.video.embycon')
-                port = settings.getSetting('port')
-                host = settings.getSetting('ipaddress')
-                server = host + ":" + port
+                server = download_utils.getServer()
 
-                url = "http://" + server + "/emby/Sessions/Playing/Stopped"
+                url = server + "/emby/Sessions/Playing/Stopped"
                 postdata = {
                     'ItemId': emby_item_id,
                     'MediaSourceId': emby_item_id,
@@ -145,12 +139,9 @@ class Service(xbmc.Player):
 
         log.debug("Sending POST play started: %s." % postdata)
 
-        settings = xbmcaddon.Addon(id='plugin.video.embycon')
-        port = settings.getSetting('port')
-        host = settings.getSetting('ipaddress')
-        server = host + ":" + port
+        server = download_utils.getServer()
 
-        url = "http://" + server + "/emby/Sessions/Playing"
+        url = server + "/emby/Sessions/Playing"
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
         data = {}

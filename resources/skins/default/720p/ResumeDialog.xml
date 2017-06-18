@@ -25,8 +25,8 @@
             <top>30</top>
             <width>340</width>
             <height>40</height>
-            <label>-</label>
-            <onup>-</onup>
+            <label></label>
+            <onup></onup>
             <ondown>3011</ondown>
             <font>font14</font>
             <align>center</align>
@@ -39,7 +39,7 @@
             <top>90</top>
             <width>340</width>
             <height>40</height>
-            <label>-</label>
+            <label></label>
             <onup>3010</onup>
             <ondown>3012</ondown>
             <font>font14</font>

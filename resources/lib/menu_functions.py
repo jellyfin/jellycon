@@ -22,12 +22,12 @@ __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 def showGenreList():
     log.info("== ENTER: showGenreList() ==")
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    host = settings.getSetting('ipaddress')
-    port = settings.getSetting('port')
-    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+    server = downloadUtils.getServer()
+    if server is None:
         return
-    server = host + ":" + port
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
     show_collections = "false"
@@ -60,7 +60,7 @@ def showGenreList():
         collections.append(item_data)
 
     for collection in collections:
-        url = sys.argv[0] + ("?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) +
+        url = sys.argv[0] + ("?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
         log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
@@ -73,11 +73,9 @@ def showMovieAlphaList():
     log.info("== ENTER: showMovieAlphaList() ==")
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    host = settings.getSetting('ipaddress')
-    port = settings.getSetting('port')
-    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+    server = downloadUtils.getServer()
+    if server is None:
         return
-    server = host + ":" + port
     userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
     show_collections = "false"
@@ -117,7 +115,7 @@ def showMovieAlphaList():
         collections.append(item_data)
 
     for collection in collections:
-        url = (sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) +
+        url = (sys.argv[0] + "?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
         log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
@@ -129,17 +127,16 @@ def displaySections():
     log.info("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    host = settings.getSetting('ipaddress')
-    port = settings.getSetting('port')
-    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+    server = downloadUtils.getServer()
+    if server is None:
         return
+
     # Add collections
     detailsString = getDetailsString()
     collections = getCollections(detailsString)
     if collections:
         for collection in collections:
-            url = (sys.argv[0] + "?url=" + urllib.quote('http://%s%s' % (collection['address'], collection['path'])) +
+            url = (sys.argv[0] + "?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
             log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
@@ -158,18 +155,15 @@ def displaySections():
 def getCollections(detailsString):
     log.info("== ENTER: getCollections ==")
 
+    server = downloadUtils.getServer()
+    if server is None:
+        return []
+
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    host = settings.getSetting('ipaddress')
-    port = settings.getSetting('port')
     show_collections = "false"
     if settings.getSetting('show_collections') == "true":
         show_collections = "true"
 
-    if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
-        log.info("No host or port set so returning []")
-        return []
-
-    server = host + ":" + port
     userid = downloadUtils.getUserId()
 
     if userid == None or len(userid) == 0:
@@ -189,7 +183,7 @@ def getCollections(detailsString):
     parentid = result.get("Id")
     log.info("parentid : " + parentid)
 
-    htmlpath = ("http://%s/emby/Users/" % server)
+    htmlpath = ("%s/emby/Users/" % server)
     jsonData = downloadUtils.downloadUrl(
         htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
     log.debug("jsonData : " + jsonData)

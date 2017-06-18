@@ -215,10 +215,9 @@ def mainEntryPoint():
 
 def markWatched(item_id):
     log.info("Mark Item Watched : " + item_id)
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
     userId = downloadUtils.getUserId()
-    server = settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
+    server = downloadUtils.getServer()
+    url = server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -227,10 +226,9 @@ def markWatched(item_id):
 
 def markUnwatched(item_id):
     log.info("Mark Item UnWatched : " + item_id)
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
     userId = downloadUtils.getUserId()
-    server = settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
+    server = downloadUtils.getServer()
+    url = server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -239,10 +237,9 @@ def markUnwatched(item_id):
 
 def markFavorite(item_id):
     log.info("Add item to favourites : " + item_id)
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
     userId = downloadUtils.getUserId()
-    server = settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
+    server = downloadUtils.getServer()
+    url = server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -251,10 +248,9 @@ def markFavorite(item_id):
 
 def unmarkFavorite(item_id):
     log.info("Remove item from favourites : " + item_id)
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
     userId = downloadUtils.getUserId()
-    server = settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
+    server = downloadUtils.getServer()
+    url = server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -265,9 +261,8 @@ def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
     if return_value:
         log.info('Deleting Item : ' + item_id)
-        settings = xbmcaddon.Addon(id='plugin.video.embycon')
-        server = settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
-        url = 'http://' + server + '/emby/Items/' + item_id
+        server = downloadUtils.getServer()
+        url = server + '/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(i18n('deleting'), i18n('waiting_server_delete'))
         downloadUtils.downloadUrl(url, method="DELETE")
@@ -619,9 +614,7 @@ def processDirectory(url, results, progress, pluginhandle):
     userid = downloadUtils.getUserId()
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = downloadUtils.getServer()
 
     detailsString = getDetailsString()
 
@@ -867,7 +860,7 @@ def processDirectory(url, results, progress, pluginhandle):
         extraData['mode'] = "GET_CONTENT"
 
         if isFolder == True:
-            u = ('http://' + server + '/emby/Users/' +
+            u = (server + '/emby/Users/' +
                  userid +
                  '/items?ParentId=' + id +
                  '&IsVirtualUnAired=false&IsMissing=false&Fields=' +
@@ -892,11 +885,7 @@ def showSetViews():
 
 def getWigetContent(handle, params):
     log.info("getWigetContent Called" + str(params))
-
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = downloadUtils.getServer()
 
     type = params.get("type")
     if (type == None):
@@ -905,7 +894,7 @@ def getWigetContent(handle, params):
 
     userid = downloadUtils.getUserId()
 
-    itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
+    itemsUrl = (server + "/emby/Users/" + userid + "/Items"
                 "?Limit=20"
                 "&format=json"
                 "&ImageTypeLimit=1"
@@ -958,7 +947,7 @@ def getWigetContent(handle, params):
                      "&IncludeItemTypes=Episode")
     elif (type == "nextup_episodes"):
         xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl = ("http://" + server + "/emby/Shows/NextUp"
+        itemsUrl = (server + "/emby/Shows/NextUp"
                         "?Limit=20" 
                         "&userid=" + userid + ""
                         "&Recursive=true"
@@ -1055,10 +1044,7 @@ def getWigetContent(handle, params):
 def showContent(pluginName, handle, params):
     log.info("showContent Called: " + str(params))
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = downloadUtils.getServer()
 
     item_type = params.get("item_type")
     userid = downloadUtils.getUserId()
@@ -1066,7 +1052,7 @@ def showContent(pluginName, handle, params):
     if not media_type:
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
-    contentUrl = ("http://" + server + "/emby/Users/" + userid +
+    contentUrl = (server + "/emby/Users/" + userid +
                   "/Items"
                   "?format=json"
                   "&ImageTypeLimit=1"
@@ -1086,9 +1072,7 @@ def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ":" + port
+    server = downloadUtils.getServer()
 
     show_collections = "false"
     if settings.getSetting('show_collections') == "true":
@@ -1104,7 +1088,7 @@ def showParentContent(pluginName, handle, params):
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
     contentUrl = (
-        "http://" + server +
+        server +
         "/emby/Users/" + userid + "/items?ParentId=" + parentId +
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
@@ -1182,13 +1166,11 @@ def searchResults(params):
     index = 0
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
-    server = host + ':' + port
+    server = downloadUtils.getServer()
     userid = downloadUtils.getUserId()
     details_string = getDetailsString()
 
-    content_url = ('http://' + server +
+    content_url = (server +
                   '/emby/Search/Hints?searchTerm=' + query +
                   '&IncludeItemTypes=' + item_type +
                   '&UserId=' + userid +
@@ -1312,7 +1294,7 @@ def searchResults(params):
             list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
             is_folder = False
         else:
-            item_url = ('http://' + server +
+            item_url = (server +
                         '/emby/Users/' + userid +
                         '/items?ParentId=' + item_id +
                         '&IsVirtualUnAired=false&IsMissing=false' +

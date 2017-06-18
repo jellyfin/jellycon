@@ -18,6 +18,10 @@ msgctxt "#30001"
 msgid "Server Port: "
 msgstr ""
 
+msgctxt "#30002"
+msgid "Use HTTPS: "
+msgstr ""
+
 msgctxt "#30004"
 msgid "Log Level: "
 msgstr ""
@@ -464,4 +468,8 @@ msgstr ""
 
 msgctxt "#30280"
 msgid "Missing Title"
+msgstr ""
+
+msgctxt "#30281"
+msgid "Your skin %s is currently not supported"
 msgstr ""

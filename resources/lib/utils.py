@@ -18,7 +18,7 @@ class PlayUtils():
         log.info("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
-        server = addonSettings.getSetting('ipaddress') + ":" + addonSettings.getSetting('port')
+        server = downloadUtils.getServer()
         log.info("playback_type: " + playback_type)
         if force_transcode:
             log.info("playback_type: FORCED_TRANSCODE")
@@ -40,7 +40,7 @@ class PlayUtils():
             user_token = downloadUtils.authenticate()
 
             playurl = (
-                "http://%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
+                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
                 % (server, id, id, deviceId, bitrate))
 
             playurl = playurl + "&maxWidth=" + playback_max_width
@@ -73,7 +73,7 @@ class PlayUtils():
 
         # do direct http streaming playback
         elif playback_type == "1":
-            playurl = "http://%s/emby/Videos/%s/stream?static=true" % (server, id)
+            playurl = "%s/emby/Videos/%s/stream?static=true" % (server, id)
             user_token = downloadUtils.authenticate()
             playurl = playurl + "&api_key=" + user_token
 

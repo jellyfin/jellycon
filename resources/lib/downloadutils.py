@@ -6,6 +6,7 @@ import xbmcaddon
 
 import httplib
 import hashlib
+import ssl
 import StringIO
 import gzip
 import json
@@ -24,6 +25,22 @@ class DownloadUtils():
     def __init__(self, *args):
         self.addon = xbmcaddon.Addon(id='plugin.video.embycon')
         self.addon_name = self.addon.getAddonInfo('name')
+
+    def getServer(self):
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        host = settings.getSetting('ipaddress')
+        port = settings.getSetting('port')
+        if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+            return None
+
+        server = host + ":" + port
+        use_https = settings.getSetting('use_https') == 'true'
+        if use_https:
+            server = "https://" + server
+        else:
+            server = "http://" + server
+
+        return server
 
     def getArtwork(self, data, art_type, parent=False, index="0", width=10000, height=10000, server=None):
 
@@ -81,7 +98,7 @@ class DownloadUtils():
 
         query = ""
 
-        artwork = "http://%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, art_type, index, width, height, imageTag, query)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, art_type, index, width, height, imageTag, query)
 
         log.debug("getArtwork : " + artwork)
 
@@ -99,18 +116,11 @@ class DownloadUtils():
     def imageUrl(self, id, art_type, index, width, height, imageTag, server):
 
         # test imageTag e3ab56fe27d389446754d0fb04910a34
-        artwork = "http://%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
         if int(width) > 0:
             artwork += '&MaxWidth=%s' % width
         if int(height) > 0:
             artwork += '&MaxHeight=%s' % height
-        '''
-        artwork = ( "http://" + server + "/emby/Items/" + 
-                    str(id) + "/Images/" + art_type +
-                    "/" + str(index) + 
-                    "/" + str(imageTag) + "/original/" + 
-                    str(height) + "/" + str(width) + "/0")
-        '''
         return artwork
 
     def getUserId(self):
@@ -123,9 +133,8 @@ class DownloadUtils():
             return userid
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
-        port = settings.getSetting('port')
-        host = settings.getSetting('ipaddress')
         userName = settings.getSetting('username')
+        server = self.getServer()
 
         if not userName:
             return ""
@@ -133,9 +142,9 @@ class DownloadUtils():
 
         jsonData = None
         try:
-            jsonData = self.downloadUrl(host + ":" + port + "/emby/Users/Public?format=json", suppress=True, authenticate=False)
+            jsonData = self.downloadUrl(server + "/emby/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception, msg:
-            error = "Get User unable to connect to " + host + ":" + port + " : " + str(msg)
+            error = "Get User unable to connect to " + server + " : " + str(msg)
             log.error(error)
             return ""
 
@@ -165,13 +174,13 @@ class DownloadUtils():
         if (secure) or (not userid):
             authOk = self.authenticate()
             if (authOk == ""):
-                return_value = xbmcgui.Dialog().ok(self.addon_name, i18n('incorrect_user_pass'))
+                xbmcgui.Dialog().ok(self.addon_name, i18n('incorrect_user_pass'))
                 return ""
             if not userid:
                 userid = WINDOW.getProperty("userid")
 
         if userid == "":
-            return_value = xbmcgui.Dialog().ok(self.addon_name, i18n('username_not_found'))
+            xbmcgui.Dialog().ok(self.addon_name, i18n('username_not_found'))
 
         log.info("userid : " + userid)
 
@@ -194,7 +203,8 @@ class DownloadUtils():
         if (host == None or host == "" or port == None or port == ""):
             return ""
 
-        url = "http://" + host + ":" + port + "/emby/Users/AuthenticateByName?format=json"
+        server = self.getServer()
+        url = server + "/emby/Users/AuthenticateByName?format=json"
 
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getDeviceId()
@@ -268,7 +278,7 @@ class DownloadUtils():
         log.info("downloadUrl")
         link = ""
         try:
-            if url[0:4] == "http":
+            if url.startswith('http'):
                 serversplit = 2
                 urlsplit = 3
             else:
@@ -289,7 +299,13 @@ class DownloadUtils():
             if (host == "<none>" or host == "" or port == ""):
                 return ""
 
-            conn = httplib.HTTPConnection(server, timeout=40)
+            settings = xbmcaddon.Addon('plugin.video.embycon')
+            use_https = settings.getSetting('use_https') == 'true'
+
+            if use_https:
+                conn = httplib.HTTPSConnection(server, timeout=40, context=ssl._create_unverified_context())
+            else:
+                conn = httplib.HTTPConnection(server, timeout=40)
 
             head = self.getAuthHeader(authenticate)
             log.info("HEADERS : " + str(head))
@@ -360,7 +376,7 @@ class DownloadUtils():
                     xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % i18n('unable_connect_server')))
                 else:
                     xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'))
-                raise
+            raise
         else:
             try:
                 conn.close()

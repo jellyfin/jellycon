@@ -21,7 +21,7 @@ class ClientInformation():
         if client_id:
             return client_id
 
-        emby_guid_path = xbmc.translatePath("special://temp/emby_guid").decode('utf-8')
+        emby_guid_path = xbmc.translatePath("special://temp/embycon_guid").decode('utf-8')
         log.info("emby_guid_path: " + emby_guid_path)
         guid = xbmcvfs.File(emby_guid_path)
         client_id = guid.read()
@@ -33,6 +33,7 @@ class ClientInformation():
             guid = xbmcvfs.File(emby_guid_path, 'w')
             guid.write(client_id)
             guid.close()
+            log.info("emby_guid_path (NEW): " + client_id)
 
         WINDOW.setProperty("client_id", client_id)
         return client_id
