@@ -27,10 +27,9 @@ def getServerDetails():
     MULTI_GROUP = ("<broadcast>", 7359)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(6.0)
+    sock.settimeout(4.0)
 
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 10)  # timeout
-
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 4)  # timeout
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
@@ -57,8 +56,6 @@ def checkServer(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    port = settings.getSetting('port')
-    host = settings.getSetting('ipaddress')
     serverUrl = ""
 
     if force is False:
@@ -70,11 +67,6 @@ def checkServer(force=False, change_user=False, notify=False):
     # if the server is not set then try to detect it
     if serverUrl == "":
         serverInfo = getServerDetails()
-
-        if (len(serverInfo) == 0):
-            # server detect failed
-            log.debug("getServerDetails failed")
-            return
 
         serverNames = []
         for server in serverInfo:

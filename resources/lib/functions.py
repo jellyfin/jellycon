@@ -77,7 +77,7 @@ def mainEntryPoint():
 
     param_url = params.get('url', None)
 
-    if param_url and (param_url.startswith('http') or param_url.startswith('file')):
+    if param_url:
         param_url = urllib.unquote(param_url)
 
     mode = params.get("mode", None)
@@ -215,9 +215,7 @@ def mainEntryPoint():
 
 def markWatched(item_id):
     log.info("Mark Item Watched : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = downloadUtils.getServer()
-    url = server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
+    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -226,9 +224,7 @@ def markWatched(item_id):
 
 def markUnwatched(item_id):
     log.info("Mark Item UnWatched : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = downloadUtils.getServer()
-    url = server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
+    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -237,9 +233,7 @@ def markUnwatched(item_id):
 
 def markFavorite(item_id):
     log.info("Add item to favourites : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = downloadUtils.getServer()
-    url = server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
+    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -248,9 +242,7 @@ def markFavorite(item_id):
 
 def unmarkFavorite(item_id):
     log.info("Remove item from favourites : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = downloadUtils.getServer()
-    url = server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
+    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
@@ -261,8 +253,7 @@ def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
     if return_value:
         log.info('Deleting Item : ' + item_id)
-        server = downloadUtils.getServer()
-        url = server + '/emby/Items/' + item_id
+        url = '{server}/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(i18n('deleting'), i18n('waiting_server_delete'))
         downloadUtils.downloadUrl(url, method="DELETE")
@@ -271,7 +262,6 @@ def delete(item_id):
 
 
 def addGUIItem(url, details, extraData, folder=True):
-    home_window = HomeWindow()
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
     url = url.encode('utf-8')
@@ -289,7 +279,7 @@ def addGUIItem(url, details, extraData, folder=True):
         mode = "&mode=%s" % extraData['mode']
 
     # Create the URL to pass to the item
-    if url.startswith('http'):
+    if folder:
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode + "&media_type=" + extraData["itemtype"]
     else:
         u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
@@ -860,8 +850,7 @@ def processDirectory(url, results, progress, pluginhandle):
         extraData['mode'] = "GET_CONTENT"
 
         if isFolder == True:
-            u = (server + '/emby/Users/' +
-                 userid +
+            u = ('{server}/emby/Users/{userid}' +
                  '/items?ParentId=' + id +
                  '&IsVirtualUnAired=false&IsMissing=false&Fields=' +
                  detailsString + '&format=json')
@@ -892,9 +881,7 @@ def getWigetContent(handle, params):
         log.error("getWigetContent type not set")
         return
 
-    userid = downloadUtils.getUserId()
-
-    itemsUrl = (server + "/emby/Users/" + userid + "/Items"
+    itemsUrl = ("{server}/emby/Users/{userid}/Items"
                 "?Limit=20"
                 "&format=json"
                 "&ImageTypeLimit=1"
@@ -947,9 +934,9 @@ def getWigetContent(handle, params):
                      "&IncludeItemTypes=Episode")
     elif (type == "nextup_episodes"):
         xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl = (server + "/emby/Shows/NextUp"
+        itemsUrl = ("{server}/emby/Shows/NextUp"
                         "?Limit=20" 
-                        "&userid=" + userid + ""
+                        "&userid={userid}"
                         "&Recursive=true"
                         "&format=json"
                         "&ImageTypeLimit=1")
@@ -1044,16 +1031,12 @@ def getWigetContent(handle, params):
 def showContent(pluginName, handle, params):
     log.info("showContent Called: " + str(params))
 
-    server = downloadUtils.getServer()
-
     item_type = params.get("item_type")
-    userid = downloadUtils.getUserId()
     media_type = params.get("media_type", None)
     if not media_type:
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
-    contentUrl = (server + "/emby/Users/" + userid +
-                  "/Items"
+    contentUrl = ("{server}/emby/Users/{userid}/Items"
                   "?format=json"
                   "&ImageTypeLimit=1"
                   "&IsMissing=False"
@@ -1064,9 +1047,7 @@ def showContent(pluginName, handle, params):
                   "&IncludeItemTypes=" + item_type)
 
     log.info("showContent Content Url : " + str(contentUrl))
-
     getContent(contentUrl, handle, media_type)
-
 
 def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
@@ -1088,8 +1069,7 @@ def showParentContent(pluginName, handle, params):
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
     contentUrl = (
-        server +
-        "/emby/Users/" + userid + "/items?ParentId=" + parentId +
+        "{server}/emby/Users/{userid}/items?ParentId=" + parentId +
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
@@ -1098,9 +1078,7 @@ def showParentContent(pluginName, handle, params):
         "&format=json")
 
     log.info("showParentContent Content Url : " + str(contentUrl))
-
     getContent(contentUrl, handle, media_type)
-
 
 def checkService():
     home_window = HomeWindow()
@@ -1170,10 +1148,9 @@ def searchResults(params):
     userid = downloadUtils.getUserId()
     details_string = getDetailsString()
 
-    content_url = (server +
-                  '/emby/Search/Hints?searchTerm=' + query +
+    content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
                   '&IncludeItemTypes=' + item_type +
-                  '&UserId=' + userid +
+                  '&UserId={userid}'
                   '&StartIndex=' + str(index) +
                   '&Limit=' + str(limit) +
                   '&IncludePeople=false&IncludeMedia=true&IncludeGenres=false&IncludeStudios=false&IncludeArtists=false')
@@ -1294,14 +1271,13 @@ def searchResults(params):
             list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
             is_folder = False
         else:
-            item_url = (server +
-                        '/emby/Users/' + userid +
+            item_url = ('{server}/emby/Users/{userid}' +
                         '/items?ParentId=' + item_id +
                         '&IsVirtualUnAired=false&IsMissing=false' +
                         '&Fields=' + details_string +
                         '&format=json')
             list_item_url = 'plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type={item_type}&url={item_url}'\
-                .format(item_type=item_type, item_url=item_url)
+                .format(item_type=item_type, item_url=urllib.quote(item_url))
             list_item.setProperty('IsPlayable', 'false')
             is_folder = True
 

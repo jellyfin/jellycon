@@ -36,7 +36,7 @@ def playFile(play_info):
 
     server = downloadUtils.getServer()
 
-    jsonData = downloadUtils.downloadUrl(server + "/emby/Users/" + userid + "/Items/" + id + "?format=json",
+    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json",
                                          suppress=False, popup=1)
     result = json.loads(jsonData)
 

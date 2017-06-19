@@ -35,7 +35,7 @@ def showGenreList():
         show_collections = "true"
 
     try:
-        jsonData = downloadUtils.downloadUrl(server + "/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId=" + userid + "&format=json")
+        jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId={userid}&format=json")
         log.info("GENRE_LIST_DATA : " + jsonData)
     except Exception, msg:
         error = "Get connect : " + str(msg)
@@ -48,11 +48,10 @@ def showGenreList():
 
     for genre in result:
         item_data = {}
-        item_data['address'] = server
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = "Movies"
         item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb", server=server)
-        item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+        item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                              '&Recursive=true&GenreIds=' + genre.get("Id") +
                              '&IncludeItemTypes=Movie' +
                              '&CollapseBoxSetItems=' + show_collections +
@@ -60,7 +59,7 @@ def showGenreList():
         collections.append(item_data)
 
     for collection in collections:
-        url = sys.argv[0] + ("?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
+        url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
         log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
@@ -85,10 +84,9 @@ def showMovieAlphaList():
     collections = []
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = "#"
     item_data['media_type'] = "Movies"
-    item_data['path'] = ('/emby/Users/' + userid +
+    item_data['path'] = ('{server}/emby/Users/{userid}' +
                          '/Items?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&NameLessThan=A' +
@@ -102,10 +100,9 @@ def showMovieAlphaList():
 
     for alphaName in alphaList:
         item_data = {}
-        item_data['address'] = server
         item_data['title'] = alphaName
         item_data['media_type'] = "Movies"
-        item_data['path'] = ('/emby/Users/' + userid +
+        item_data['path'] = ('{server}/emby/Users/{userid}' +
                              '/Items?Fields=' + detailsString +
                              '&Recursive=true' +
                              '&NameStartsWith=' + alphaName +
@@ -115,7 +112,7 @@ def showMovieAlphaList():
         collections.append(item_data)
 
     for collection in collections:
-        url = (sys.argv[0] + "?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
+        url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
         log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
@@ -136,7 +133,7 @@ def displaySections():
     collections = getCollections(detailsString)
     if collections:
         for collection in collections:
-            url = (sys.argv[0] + "?url=" + urllib.quote('%s%s' % (collection['address'], collection['path'])) +
+            url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
             log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
@@ -171,7 +168,7 @@ def getCollections(detailsString):
         return []
 
     try:
-        jsonData = downloadUtils.downloadUrl(server + "/emby/Users/" + userid + "/Items/Root?format=json")
+        jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/Root?format=json")
     except Exception, msg:
         error = "Get connect : " + str(msg)
         log.error(error)
@@ -183,9 +180,8 @@ def getCollections(detailsString):
     parentid = result.get("Id")
     log.info("parentid : " + parentid)
 
-    htmlpath = ("%s/emby/Users/" % server)
-    jsonData = downloadUtils.downloadUrl(
-        htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
+    htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
+    jsonData = downloadUtils.downloadUrl(htmlpath)
     log.debug("jsonData : " + jsonData)
     collections = []
 
@@ -206,9 +202,8 @@ def getCollections(detailsString):
         if collection_type in ["tvshows", "movies", "boxsets"]:
             collections.append({
                 'title': item_name,
-                'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid + '/Items' +
+                'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
@@ -221,9 +216,8 @@ def getCollections(detailsString):
         if collection_type == "tvshows":
             collections.append({
                 'title': item_name + i18n('_in_progress'),
-                'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid + '/Items' +
+                'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit=20' +
                          '&IsVirtualUnaired=false' +
@@ -237,9 +231,8 @@ def getCollections(detailsString):
                 'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_recently_added'),
-                'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid + '/Items' +
+                'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit=20' +
                          '&IsVirtualUnaired=false' +
@@ -257,9 +250,8 @@ def getCollections(detailsString):
         if collection_type == "movies":
             collections.append({
                 'title': item_name + i18n('_in_progress'),
-                'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid + '/Items' +
+                'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit=20' +
                          '&IsVirtualUnaired=false' +
@@ -271,9 +263,8 @@ def getCollections(detailsString):
                 'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_recently_added'),
-                'address': server,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
-                'path': ('/emby/Users/' + userid + '/Items' +
+                'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit=20' +
                          '&IsVirtualUnaired=false' +
@@ -288,10 +279,9 @@ def getCollections(detailsString):
 
     # Add standard nodes
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('movies_all')
     item_data['media_type'] = 'Movies'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Movie' +
                          '&CollapseBoxSetItems=' + show_collections +
@@ -300,10 +290,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('movies_recently_added')
     item_data['media_type'] = 'Movies'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit=20' +
                          '&Recursive=true' +
                          '&SortBy=DateCreated' +
@@ -316,10 +305,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('movies_in_progress')
     item_data['media_type'] = 'Movies'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit=20' +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
@@ -330,10 +318,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('movies_favorites')
     item_data['media_type'] = 'Movies'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&Filters=IsFavorite' +
                          '&IncludeItemTypes=Movie' +
@@ -343,10 +330,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('movies_boxsets')
     item_data['media_type'] = 'BoxSets'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Recursive=true' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Recursive=true' +
                          '&Fields=' + detailsString +
                          '&IncludeItemTypes=BoxSet' +
                          '&ImageTypeLimit=1' +
@@ -354,10 +340,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('tvshows_all')
     item_data['media_type'] = 'tvshows'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Series' +
                          '&ImageTypeLimit=1' +
@@ -365,10 +350,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('tvshows_favorites')
     item_data['media_type'] = 'tvshows'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Fields=' + detailsString +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&Filters=IsFavorite' +
                          '&IncludeItemTypes=Series' +
@@ -377,10 +361,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('episodes_recently_added')
     item_data['media_type'] = 'Season'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Limit=20' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Limit=20' +
                          '&Recursive=true' +
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
@@ -394,10 +377,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('episodes_in_progress')
     item_data['media_type'] = 'Episodes'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items?Limit=20' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Limit=20' +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
                          '&Filters=IsResumable' +
@@ -407,10 +389,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('episodes_up_next')
     item_data['media_type'] = 'Episodes'
-    item_data['path'] = ('/emby/Shows/NextUp/?Userid=' + userid + '&Limit=20' +
+    item_data['path'] = ('{server}/emby/Shows/NextUp/?Userid={userid}&Limit=20' +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
                          '&Filters=IsUnplayed,IsNotFolder' +
@@ -422,10 +403,9 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
-    item_data['address'] = server
     item_data['title'] = i18n('upcoming_tv')
     item_data['media_type'] = 'Episodes'
-    item_data['path'] = ('/emby/Users/' + userid + '/Items' +
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
                          '&SortBy=PremiereDate' +
                          '&Fields=' + detailsString +

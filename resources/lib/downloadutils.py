@@ -134,7 +134,6 @@ class DownloadUtils():
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
         userName = settings.getSetting('username')
-        server = self.getServer()
 
         if not userName:
             return ""
@@ -142,9 +141,9 @@ class DownloadUtils():
 
         jsonData = None
         try:
-            jsonData = self.downloadUrl(server + "/emby/Users/Public?format=json", suppress=True, authenticate=False)
+            jsonData = self.downloadUrl("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception, msg:
-            error = "Get User unable to connect to " + server + " : " + str(msg)
+            error = "Get User unable to connect: " + str(msg)
             log.error(error)
             return ""
 
@@ -203,8 +202,7 @@ class DownloadUtils():
         if (host == None or host == "" or port == None or port == ""):
             return ""
 
-        server = self.getServer()
-        url = server + "/emby/Users/AuthenticateByName?format=json"
+        url = "{server}/emby/Users/AuthenticateByName?format=json"
 
         clientInfo = ClientInformation()
         txt_mac = clientInfo.getDeviceId()
@@ -276,6 +274,16 @@ class DownloadUtils():
 
     def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True):
         log.info("downloadUrl")
+
+        log.debug(url)
+        if url.find("{server}") != -1:
+            server = self.getServer()
+            url = url.replace("{server}", server)
+        if url.find("{userid}") != -1:
+            userid = self.getUserId()
+            url = url.replace("{userid}", userid)
+        log.debug(url)
+
         link = ""
         try:
             if url.startswith('http'):
