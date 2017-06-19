@@ -473,3 +473,7 @@ msgstr ""
 msgctxt "#30281"
 msgid "Your skin %s is currently not supported"
 msgstr ""
+
+msgctxt "#30282"
+msgid "No servers detected"
+msgstr ""
