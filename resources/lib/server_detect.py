@@ -71,7 +71,11 @@ def checkServer(force=False, change_user=False, notify=False):
         serverNames = []
         for server in serverInfo:
             serverNames.append(server.get("Name", i18n('n/a')))
-        return_index = xbmcgui.Dialog().select(i18n('select_server'), serverNames)
+        if serverNames:
+            return_index = xbmcgui.Dialog().select(i18n('select_server'), serverNames)
+        else:
+            xbmcgui.Dialog().notification(__addon_name__, i18n('no_server_detected'), icon='special://home/addons/plugin.video.embycon/icon.png')
+            return_index = -1
 
         if (return_index == -1):
             xbmc.executebuiltin("ActivateWindow(Home)")

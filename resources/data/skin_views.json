@@ -1,3 +1,4 @@
 {
-	"skin.estuary" : {"List" : 50, "Poster" : 51, "IconWall" : 52, "Shift" : 53, "InfoWall" : 54, "WideList" : 55, "Wall" : 500, "Banner" : 501, "FanArt" : 502}
+	"skin.estuary" : {"List" : 50, "Poster" : 51, "IconWall" : 52, "Shift" : 53, "InfoWall" : 54, "WideList" : 55, "Wall" : 500, "Banner" : 501, "FanArt" : 502},
+	"skin.confluence" : {"List" : 50, "Big list" : 51, "Thumbnail" : 500, "Poster" : 500, "Fanart" : 508, "Media info" : 504, "Media info 2" : 503, "Media info 3" : 515, "Wide" : 505}
 }
