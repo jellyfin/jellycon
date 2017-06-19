@@ -71,6 +71,30 @@ def sendProgress():
     url = "{server}/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
+def promptForStopActions(id, current_possition):
+
+    jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" +
+                                          id + "?format=json",
+                                          suppress=False, popup=1)
+    result = json.loads(jsonData)
+
+    log.debug("Prompt Delete Item Details: %s" % result)
+
+    parendId = result.get("ParentId")
+
+    jsonData = download_utils.downloadUrl('{server}/emby/Users/{userid}/Items?' +
+                         '?Recursive=true' +
+                         '&ParentId=' + parendId +
+                         #'&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json',
+                          suppress=False, popup=1)
+    result = json.loads(jsonData)
+    log.debug("Prompt Next Item Details: %s" % result)
+
 
 def stopAll(played_information):
     if len(played_information) == 0:
@@ -97,6 +121,8 @@ def stopAll(played_information):
                     'PositionTicks': int(current_possition * 10000000)
                 }
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+                promptForStopActions(emby_item_id, current_possition)
 
     played_information.clear()
 
