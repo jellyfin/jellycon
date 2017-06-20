@@ -294,6 +294,22 @@ msgctxt "#30213"
 msgid "Transcode Force 8 Bit"
 msgstr ""
 
+msgctxt "#30214"
+msgid "Events"
+msgstr ""
+
+msgctxt "#30215"
+msgid "Prompt to play next episode"
+msgstr ""
+
+msgctxt "#30216"
+msgid "Prompt to delete watched episodes"
+msgstr ""
+
+msgctxt "#30217"
+msgid "Prompt to delete at % complete"
+msgstr ""
+
 msgctxt "#30229"
 msgid "TV Shows"
 msgstr ""
@@ -476,4 +492,12 @@ msgstr ""
 
 msgctxt "#30282"
 msgid "No servers detected"
+msgstr ""
+
+msgctxt "#30283"
+msgid "Play Next Episode"
+msgstr ""
+
+msgctxt "#30284"
+msgid "Do you want to play the next episode?"
 msgstr ""

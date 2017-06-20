@@ -23,6 +23,11 @@
 		<setting id="playback_max_width" type="enum" label="30212" lvalues="640x|720x|1024x|1280x|1440x|1600x|1920x|2600x|4096x" default="6" visible="true"/>
 		<setting id="playback_video_force_8" type="bool" label="30213" default="false" visible="true" enable="true"/>
 	</category>
+	<category label="30214">
+		<setting id="promptPlayNextEpisode" type="bool" label="30215" default="false" visible="true" enable="true" />
+		<setting id="promptDeleteWatchedEpisode" type="bool" label="30216" default="false" visible="true" enable="true" />
+		<setting id="promptDeletePercentage" type="slider" label="30217" default="90" range="5,1,100" option="int" visible="true"/>
+	</category>
 	<category label="30110">
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />

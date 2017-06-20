@@ -87,5 +87,7 @@ STRINGS = {
     'extra_prompt': 30276,
     'turn_on_auto_resume?': 30277,
     'skin_not_supported': 30281,
-    'no_server_detected': 30282
+    'no_server_detected': 30282,
+    'play_next_title': 30283,
+    'play_next_question': 30284,
 }

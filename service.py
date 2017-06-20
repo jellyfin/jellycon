@@ -3,6 +3,7 @@
 
 import xbmc
 import xbmcaddon
+import xbmcgui
 import time
 import json
 from datetime import datetime
@@ -11,6 +12,7 @@ from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
 from resources.lib.kodi_utils import HomeWindow
+from resources.lib.translation import i18n
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -71,29 +73,85 @@ def sendProgress():
     url = "{server}/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
-def promptForStopActions(id, current_possition):
+def promptForStopActions(item_id, current_possition):
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+
+    prompt_delete = settings.getSetting('promptDeleteWatchedEpisode') == "true"
+    prompt_delete_percentage = float(settings.getSetting('promptDeletePercentage'))
+    prompt_next = settings.getSetting('promptPlayNextEpisode') == "true"
+
+    if prompt_delete == False and prompt_next == False:
+        return
 
     jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" +
-                                          id + "?format=json",
+                                          item_id + "?format=json",
                                           suppress=False, popup=1)
     result = json.loads(jsonData)
 
-    log.debug("Prompt Delete Item Details: %s" % result)
+    if result.get("Type", "na") != "Episode":
+        log.debug("Type is not Episode, no post play actions taken")
+        return
 
-    parendId = result.get("ParentId")
+    if prompt_delete:
+        runtime = result.get("RunTimeTicks", 0)
+        if runtime > 0:
+            percenatge_complete = ((current_possition * 10000000) / runtime) * 100
+            log.debug("Percentage complete: %s" % percenatge_complete)
+            if percenatge_complete > prompt_delete_percentage:
+                log.debug("Prompting for delete")
+                resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
+                if resp:
+                    log.debug("Deleting item: %s" % item_id)
+                    url = "{server}/emby/Items/%s?format=json" % item_id
+                    download_utils.downloadUrl(url, method="DELETE")
+                    xbmc.executebuiltin("Container.Refresh")
 
-    jsonData = download_utils.downloadUrl('{server}/emby/Users/{userid}/Items?' +
-                         '?Recursive=true' +
-                         '&ParentId=' + parendId +
-                         #'&Filters=IsUnplayed,IsNotFolder' +
-                         '&IsVirtualUnaired=false' +
-                         '&IsMissing=False' +
-                         '&IncludeItemTypes=Episode' +
-                         '&ImageTypeLimit=1' +
-                         '&format=json',
-                          suppress=False, popup=1)
-    result = json.loads(jsonData)
-    log.debug("Prompt Next Item Details: %s" % result)
+    if prompt_next:
+        parendId = result.get("ParentId", "na")
+        if parendId == "na":
+            log.debug("No parent id, can not prompt for next episode")
+            return
+
+        item_index = result.get("IndexNumber", -1)
+        if item_index == -1:
+            log.debug("No episode number, can not prompt for next episode")
+            return
+
+        jsonData = download_utils.downloadUrl('{server}/emby/Users/{userid}/Items?' +
+                             '?Recursive=true' +
+                             '&ParentId=' + parendId +
+                             #'&Filters=IsUnplayed,IsNotFolder' +
+                             '&IsVirtualUnaired=false' +
+                             '&IsMissing=False' +
+                             '&IncludeItemTypes=Episode' +
+                             '&ImageTypeLimit=1' +
+                             '&format=json',
+                              suppress=False, popup=1)
+
+        items_result = json.loads(jsonData)
+        log.debug("Prompt Next Item Details: %s" % items_result)
+        # find next episode
+        item_list = items_result.get("Items", [])
+        for item in item_list:
+            index = item.get("IndexNumber", -1)
+            if index > item_index: # find the next episode in the season
+                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), autoclose=10000)
+                if resp:
+                    next_item_id = item.get("Id")
+                    log.debug("Playing Next Episode: %s" % next_item_id)
+
+                    play_info = {}
+                    play_info["item_id"] = next_item_id
+                    play_info["auto_resume"] = "-1"
+                    play_info["force_transcode"] = False
+                    play_data = json.dumps(play_info)
+
+                    home_window = HomeWindow()
+                    home_window.setProperty("item_id", next_item_id)
+                    home_window.setProperty("play_item_message", play_data)
+
+                break
 
 
 def stopAll(played_information):
@@ -108,7 +166,7 @@ def stopAll(played_information):
             log.info("item_url  : " + item_url)
             log.info("item_data : " + str(data))
 
-            current_possition = data.get("currentPossition")
+            current_possition = data.get("currentPossition", 0)
             emby_item_id = data.get("item_id")
 
             if hasData(emby_item_id):
