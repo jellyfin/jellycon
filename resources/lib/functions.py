@@ -297,13 +297,6 @@ def addGUIItem(url, details, extraData, folder=True):
             resume = float(extraData.get('resumetime'))
             percentage = int((resume / duration) * 100.0)
             cappedPercentage = percentage
-            '''
-            cappedPercentage = percentage - (percentage % 10)
-            if(cappedPercentage == 0):
-                cappedPercentage = 10
-            if(cappedPercentage == 100):
-                cappedPercentage = 90
-            '''
 
     if (extraData.get('TotalEpisodes') != None and extraData.get('TotalEpisodes') != "0"):
         totalItems = int(extraData.get('TotalEpisodes'))
@@ -314,14 +307,6 @@ def addGUIItem(url, details, extraData, folder=True):
             cappedPercentage = None
         if (cappedPercentage == 100):
             cappedPercentage = None
-
-        '''
-        cappedPercentage = percentage - (percentage % 10)
-        if(cappedPercentage == 0): 
-            cappedPercentage = 10
-        if(cappedPercentage == 100):
-            cappedPercentage = 90        
-        '''
 
     countsAdded = False
     addCounts = settings.getSetting('addCounts') == 'true'
@@ -774,14 +759,16 @@ def processDirectory(url, results, progress, pluginhandle):
         # Populate the details list
         details = {'title': tempTitle,
                    'plot': item.get("Overview"),
-                   'episode': tempEpisode,
-                   # 'watched'      : watched,
                    'Overlay': overlay,
                    'playcount': str(playCount),
                    # 'aired'       : episode.get('originallyAvailableAt','') ,
                    'TVShowTitle': item.get("SeriesName"),
-                   'season': tempSeason
                    }
+
+        if item_type == "Episode":
+            details['episode'] = tempEpisode
+        if item_type == "Episode" or item_type == "Season":
+            details['season'] = tempSeason
 
         try:
             tempDuration = str(int(item.get("RunTimeTicks", "0")) / (10000000))
