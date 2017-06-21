@@ -154,6 +154,10 @@ msgctxt "#30120"
 msgid "Show Load Progress"
 msgstr ""
 
+msgctxt "#30121"
+msgid "On Resume"
+msgstr ""
+
 msgctxt "#30125"
 msgid "Done"
 msgstr ""
@@ -488,6 +492,10 @@ msgstr ""
 
 msgctxt "#30277"
 msgid "EmbyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+
+msgctxt "#30278"
+msgid " - Next Up"
 msgstr ""
 
 msgctxt "#30280"

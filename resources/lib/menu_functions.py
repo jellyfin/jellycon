@@ -131,18 +131,22 @@ def displaySections():
     # Add collections
     detailsString = getDetailsString()
     collections = getCollections(detailsString)
+
     if collections:
         for collection in collections:
             url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
             log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
+
         addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
         addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
         addMenuDirectoryItem(i18n('search'), "plugin://plugin.video.embycon/?mode=SEARCH")
+
     addMenuDirectoryItem(i18n('change_user'), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
     addMenuDirectoryItem(i18n('show_settings'), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
     addMenuDirectoryItem(i18n('set_default_views'), "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
+
     if collections:
         addMenuDirectoryItem(i18n('widgets'), "plugin://plugin.video.embycon/?mode=WIDGETS")
 
@@ -242,6 +246,21 @@ def getCollections(detailsString):
                          '&SortOrder=Descending' +
                          '&Filters=IsUnplayed,IsNotFolder' +
                          '&Recursive=true' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+            collections.append({
+                'title': item_name + i18n('_next_up'),
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('{server}/emby/Shows/NextUp/?Userid={userid}' +
+                         '&ParentId=' + item.get("Id") +
+                         '&Limit=20' +
+                         '&Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),

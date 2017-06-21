@@ -33,6 +33,7 @@ def playFile(play_info):
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
     playback_type = settings.getSetting("playback_type")
+    jump_back_amount = int(settings.getSetting("jump_back_amount"))
 
     server = downloadUtils.getServer()
 
@@ -129,6 +130,8 @@ def playFile(play_info):
             return
         else:
             time.sleep(1)
+
+    seekTime = seekTime - jump_back_amount
 
     while xbmc.Player().getTime() < (seekTime - 5):
         # xbmc.Player().pause()
