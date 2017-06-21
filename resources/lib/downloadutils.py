@@ -157,6 +157,9 @@ class DownloadUtils():
             log.info("jsonload : " + str(e) + " (" + jsonData + ")")
             return ""
 
+        if result is None:
+            return ""
+
         log.info("GETUSER_JSONDATA_02:" + str(result))
 
         userid = ""
@@ -284,7 +287,7 @@ class DownloadUtils():
             url = url.replace("{userid}", userid)
         log.debug(url)
 
-        link = ""
+        return_data = "null"
         try:
             if url.startswith('http'):
                 serversplit = 2
@@ -336,7 +339,6 @@ class DownloadUtils():
             data = conn.getresponse()
             log.debug("GET URL HEADERS : " + str(data.getheaders()))
 
-            contentType = "none"
             if int(data.status) == 200:
                 retData = data.read()
                 contentType = data.getheader('content-encoding')
@@ -344,21 +346,21 @@ class DownloadUtils():
                 if (contentType == "gzip"):
                     retData = StringIO.StringIO(retData)
                     gzipper = gzip.GzipFile(fileobj=retData)
-                    link = gzipper.read()
+                    return_data = gzipper.read()
                 else:
-                    link = retData
-                log.debug("Data Len After : " + str(len(link)))
+                    return_data = retData
+                log.debug("Data Len After : " + str(len(return_data)))
                 log.debug("====== 200 returned =======")
                 log.debug("Content-Type : " + str(contentType))
-                log.debug(link)
+                log.debug(return_data)
                 log.debug("====== 200 finished ======")
 
-            elif (int(data.status) == 301) or (int(data.status) == 302):
-                try:
-                    conn.close()
-                except:
-                    pass
-                return data.getheader('Location')
+            #elif (int(data.status) == 301) or (int(data.status) == 302):
+            #    try:
+            #        conn.close()
+            #    except:
+            #        pass
+            #    return data.getheader('Location')
 
             elif int(data.status) >= 400:
                 error = "HTTP response error: " + str(data.status) + " " + str(data.reason)
@@ -369,13 +371,7 @@ class DownloadUtils():
                     else:
                         xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % str(data.reason))
                 log.error(error)
-                try:
-                    conn.close()
-                except:
-                    pass
-                return ""
-            else:
-                link = ""
+
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
             log.error(error)
@@ -384,11 +380,12 @@ class DownloadUtils():
                     xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % i18n('unable_connect_server')))
                 else:
                     xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'))
-            raise
-        else:
+                #raise
+        finally:
             try:
+                log.debug("Closing HTTP connection: " + str(conn))
                 conn.close()
             except:
                 pass
 
-        return link
+        return return_data
