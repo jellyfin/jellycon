@@ -77,43 +77,60 @@ def promptForStopActions(item_id, current_possition):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
-    prompt_delete = settings.getSetting('promptDeleteWatchedEpisode') == "true"
-    prompt_delete_percentage = float(settings.getSetting('promptDeletePercentage'))
-    prompt_next = settings.getSetting('promptPlayNextEpisode') == "true"
+    prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
+    prompt_delete_episode_percentage = int(settings.getSetting('promptDeleteEpisodePercentage'))
+    prompt_delete_movie_percentage = int(settings.getSetting('promptDeleteMoviePercentage'))
 
-    if prompt_delete == False and prompt_next == False:
+    # everything is off so return
+    if prompt_next_percentage == 100 and prompt_delete_episode_percentage == 100 and prompt_delete_movie_percentage == 100:
         return
 
     jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" +
                                           item_id + "?format=json",
                                           suppress=False, popup=1)
     result = json.loads(jsonData)
+    prompt_to_delete = False
+    runtime = result.get("RunTimeTicks", 0)
 
-    if result.get("Type", "na") != "Episode":
-        log.debug("Type is not Episode, no post play actions taken")
+    # if no runtime we cant calculate perceantge so just return
+    if runtime == 0:
+        log.debug("No runtime so returing")
         return
 
-    if prompt_delete:
-        runtime = result.get("RunTimeTicks", 0)
-        if runtime > 0:
-            percenatge_complete = ((current_possition * 10000000) / runtime) * 100
-            log.debug("Percentage complete: %s" % percenatge_complete)
-            if percenatge_complete > prompt_delete_percentage:
-                log.debug("Prompting for delete")
-                resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
-                if resp:
-                    log.debug("Deleting item: %s" % item_id)
-                    url = "{server}/emby/Items/%s?format=json" % item_id
-                    download_utils.downloadUrl(url, method="DELETE")
-                    xbmc.executebuiltin("Container.Refresh")
+    # item percentage complete
+    percenatge_complete = int(((current_possition * 10000000) / runtime) * 100)
+    log.debug("Episode Percentage Complete: %s" % percenatge_complete)
 
-    if prompt_next:
+    if (prompt_delete_episode_percentage < 100 and
+                result.get("Type", "na") == "Episode" and
+                percenatge_complete > prompt_delete_episode_percentage):
+            prompt_to_delete = True
+
+    if (prompt_delete_movie_percentage < 100 and
+                result.get("Type", "na") == "Movie" and
+                percenatge_complete > prompt_delete_movie_percentage):
+            prompt_to_delete = True
+
+    if prompt_to_delete:
+        log.debug("Prompting for delete")
+        resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
+        if resp:
+            log.debug("Deleting item: %s" % item_id)
+            url = "{server}/emby/Items/%s?format=json" % item_id
+            download_utils.downloadUrl(url, method="DELETE")
+            xbmc.executebuiltin("Container.Refresh")
+
+    # prompt for next episode
+    if (prompt_next_percentage < 100 and
+                result.get("Type", "na") == "Episode" and
+                percenatge_complete > prompt_next_percentage):
         parendId = result.get("ParentId", "na")
+        item_index = result.get("IndexNumber", -1)
+
         if parendId == "na":
             log.debug("No parent id, can not prompt for next episode")
             return
 
-        item_index = result.get("IndexNumber", -1)
         if item_index == -1:
             log.debug("No episode number, can not prompt for next episode")
             return

@@ -299,15 +299,23 @@ msgid "Events"
 msgstr ""
 
 msgctxt "#30215"
-msgid "Prompt to play next episode"
-msgstr ""
-
-msgctxt "#30216"
-msgid "Prompt to delete watched episodes"
+msgid "On Playback Stop (100% = disabled)"
 msgstr ""
 
 msgctxt "#30217"
-msgid "Prompt to delete at % complete"
+msgid "Prompt to delete episode after %"
+msgstr ""
+
+msgctxt "#30218"
+msgid "Prompt to play next episode after %"
+msgstr ""
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr ""
+
+msgctxt "#30221"
+msgid "On Playback Stop"
 msgstr ""
 
 msgctxt "#30229"

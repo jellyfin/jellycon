@@ -24,9 +24,11 @@
 		<setting id="playback_video_force_8" type="bool" label="30213" default="false" visible="true" enable="true"/>
 	</category>
 	<category label="30214">
-		<setting id="promptPlayNextEpisode" type="bool" label="30215" default="false" visible="true" enable="true" />
-		<setting id="promptDeleteWatchedEpisode" type="bool" label="30216" default="false" visible="true" enable="true" />
-		<setting id="promptDeletePercentage" type="slider" label="30217" default="90" range="5,1,100" option="int" visible="true"/>
+		<setting label="30215" type="lsep"/>
+		<setting type="sep" />
+		<setting id="promptPlayNextEpisodePercentage" type="slider" label="30218" default="100" range="5,1,100" option="int" visible="true"/>
+		<setting id="promptDeleteEpisodePercentage" type="slider" label="30217" default="100" range="5,1,100" option="int" visible="true"/>
+		<setting id="promptDeleteMoviePercentage" type="slider" label="30220" default="100" range="5,1,100" option="int" visible="true"/>
 	</category>
 	<category label="30110">
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
