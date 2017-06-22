@@ -312,10 +312,16 @@ class DownloadUtils():
 
             settings = xbmcaddon.Addon('plugin.video.embycon')
             use_https = settings.getSetting('use_https') == 'true'
+            verify_cert = settings.getSetting('verify_cert') == 'true'
 
-            if use_https:
+            if use_https and verify_cert:
+                log.debug("Connection: HTTPS, Cert checked")
+                conn = httplib.HTTPSConnection(server, timeout=40)
+            elif use_https and not verify_cert:
+                log.debug("Connection: HTTPS, Cert NOT checked")
                 conn = httplib.HTTPSConnection(server, timeout=40, context=ssl._create_unverified_context())
             else:
+                log.debug("Connection: HTTP")
                 conn = httplib.HTTPConnection(server, timeout=40)
 
             head = self.getAuthHeader(authenticate)
@@ -377,9 +383,9 @@ class DownloadUtils():
             log.error(error)
             if suppress is False:
                 if popup == 0:
-                    xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % i18n('unable_connect_server')))
+                    xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % str(msg)))
                 else:
-                    xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'))
+                    xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'), str(msg))
                 #raise
         finally:
             try:

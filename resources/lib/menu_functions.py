@@ -181,6 +181,8 @@ def getCollections(detailsString):
 
     log.debug("jsonData : " + jsonData)
     result = json.loads(jsonData)
+    if result is None:
+        return []
 
     parentid = result.get("Id")
     log.info("parentid : " + parentid)

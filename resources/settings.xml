@@ -4,6 +4,7 @@
 		<setting id="ipaddress" type="text" label="30000" default="&lt;none&gt;" visible="true" enable="true" />
 		<setting id="port" type="text" label="30001" default="8096" visible="true" enable="true" />
 		<setting id="use_https" type="bool" label="30002" default="false" visible="true" enable="true" />
+		<setting id="verify_cert" type="bool" label="30003" default="false" visible="true" enable="true" />
         <setting label="30011" type="action" action="RunScript(plugin.video.embycon,0,?mode=DETECT_SERVER_USER)" option="close"/>
 		<setting type="sep" />
 		<setting id="username" type="text" label="30024" />
