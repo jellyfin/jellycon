@@ -91,4 +91,5 @@ STRINGS = {
     'play_next_title': 30283,
     'play_next_question': 30284,
     '_next_up': 30278,
+    'detect_server' : 30011,
 }

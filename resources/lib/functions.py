@@ -935,6 +935,9 @@ def getWigetContent(handle, params):
     log.debug("Recent(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 
+    if result is None:
+        return []
+
     result = result.get("Items")
     if (result == None):
         result = []

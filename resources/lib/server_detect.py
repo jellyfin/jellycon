@@ -25,6 +25,7 @@ def getServerDetails():
 
     MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
+    #MULTI_GROUP = ("127.0.0.1", 7359)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(4.0)
@@ -74,7 +75,7 @@ def checkServer(force=False, change_user=False, notify=False):
         if serverNames:
             return_index = xbmcgui.Dialog().select(i18n('select_server'), serverNames)
         else:
-            xbmcgui.Dialog().notification(__addon_name__, i18n('no_server_detected'), icon='special://home/addons/plugin.video.embycon/icon.png')
+            xbmcgui.Dialog().ok(__addon_name__, i18n('no_server_detected'))
             return_index = -1
 
         if (return_index == -1):
@@ -115,6 +116,8 @@ def checkServer(force=False, change_user=False, notify=False):
 
         log.debug("jsonData : " + str(jsonData))
         result = json.loads(jsonData)
+        if result is None:
+            result = []
 
         names = []
         user_list = []
