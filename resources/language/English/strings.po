@@ -70,6 +70,10 @@ msgctxt "#30016"
 msgid "Device Name"
 msgstr ""
 
+msgctxt "#30017"
+msgid "Show Connected Clients"
+msgstr ""
+
 msgctxt "#30022"
 msgid "Advanced"
 msgstr ""

@@ -24,6 +24,7 @@ from server_detect import checkServer
 from simple_logging import SimpleLogging
 from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch
 from translation import i18n
+from server_sessions import showServerSessions
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -152,6 +153,10 @@ def mainEntryPoint():
         checkService()
         checkServer(notify=False)
         searchResults(params)
+    elif mode == "SHOW_SERVER_SESSIONS":
+        checkService()
+        checkServer(notify=False)
+        showServerSessions()
     else:
 
         checkService()
