@@ -180,8 +180,6 @@ class DefaultViews(xbmcgui.WindowXMLDialog):
 
             self.close()
 
-        pass
-
     def setViewId(self, viewName, labelId):
         viewId = self.viewData.get(self.getControl(labelId).getLabel())
         if (viewId == None):

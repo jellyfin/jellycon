@@ -36,8 +36,6 @@ class ResumeDialog(xbmcgui.WindowXMLDialog):
             self.resumePlay = 1
             self.close()
 
-        pass
-
     def setResumeTime(self, timeStamp):
         self.resumeTimeStamp = timeStamp
 

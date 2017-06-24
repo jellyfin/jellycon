@@ -208,7 +208,6 @@ class Service(xbmc.Player):
     def __init__(self, *args):
         log.info("Starting monitor service: " + str(args))
         self.played_information = {}
-        pass
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
