@@ -527,7 +527,7 @@ def setView(viewType):
     defaultViewData = defaultData.get("view", {})
     viewNum = defaultViewData.get(viewType)
     log.info("SETTING_VIEW : " + str(viewType) + " : " + str(viewNum))
-    if viewNum is not None:
+    if viewNum is not None and viewNum != -1:
         xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
 
 
