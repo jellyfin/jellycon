@@ -175,7 +175,7 @@ def mainEntryPoint():
             if not media_type:
                 xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
             log.info("EmbyCon -> media_type: " + str(media_type))
-            getContent(param_url, pluginhandle, media_type)
+            getContent(param_url, pluginhandle, media_type, params)
 
         elif mode == "PLAY":
             PLAY(params, pluginhandle)
@@ -433,7 +433,7 @@ def addGUIItem(url, details, extraData, folder=True):
     if extraData.get('NumEpisodes') != None:
         list_item.setProperty('NumEpisodes', extraData.get('NumEpisodes'))
 
-    list_item.setProperty('ItemGUID', extraData.get('guiid'))
+    #list_item.setProperty('ItemGUID', extraData.get('guiid'))
     list_item.setProperty('id', extraData.get('id'))
 
     return (u, list_item, folder)
@@ -531,7 +531,7 @@ def setView(viewType):
         xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
 
 
-def getContent(url, pluginhandle, media_type):
+def getContent(url, pluginhandle, media_type, params):
     log.info("== ENTER: getContent ==")
     log.info("URL: " + str(url))
     log.info("MediaType: " + str(media_type))
@@ -552,7 +552,7 @@ def getContent(url, pluginhandle, media_type):
     elif media_type == "series":
         viewType = "Seasons"
         xbmcplugin.setContent(pluginhandle, 'seasons')
-    elif media_type == "season":
+    elif media_type == "season" or media_type == "episodes":
         viewType = "Episodes"
         xbmcplugin.setContent(pluginhandle, 'episodes')
     log.info("ViewType: " + viewType)
@@ -574,7 +574,11 @@ def getContent(url, pluginhandle, media_type):
             progress.close()
         return
 
-    dirItems = processDirectory(url, result, progress, pluginhandle)
+    name_format = params.get("name_format", None)
+    if name_format is not None:
+        name_format = urllib.unquote(name_format)
+
+    dirItems = processDirectory(url, result, progress, name_format)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     # set the view mode based on what the user wanted for this view type
@@ -589,9 +593,10 @@ def getContent(url, pluginhandle, media_type):
     return
 
 
-def processDirectory(url, results, progress, pluginhandle):
+def processDirectory(url, results, progress, name_format = None):
     log.info("== ENTER: processDirectory ==")
-    userid = downloadUtils.getUserId()
+    #userid = downloadUtils.getUserId()
+    #name_format = "{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}"
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
@@ -612,45 +617,61 @@ def processDirectory(url, results, progress, pluginhandle):
             progress.update(int(percentDone), i18n('processing_item:') + str(current_item))
             current_item = current_item + 1
 
-        if (item.get("Name") != None):
-            tempTitle = item.get("Name").encode('utf-8')
-        else:
-            tempTitle = i18n('missing_title')
-
         id = str(item.get("Id")).encode('utf-8')
-        guiid = id
+        #guiid = id
         isFolder = item.get("IsFolder")
 
         item_type = str(item.get("Type")).encode('utf-8')
 
-        tempEpisode = ""
-        if (item.get("IndexNumber") != None):
-            episodeNum = item.get("IndexNumber")
-            if episodeNum < 10:
-                tempEpisode = "0" + str(episodeNum)
+        tempEpisode = item.get("IndexNumber")
+        if tempEpisode is not None:
+            if tempEpisode < 10:
+                tempEpisode = "0" + str(tempEpisode)
             else:
-                tempEpisode = str(episodeNum)
+                tempEpisode = str(tempEpisode)
+        else:
+            tempEpisode = ""
 
-        tempSeason = ""
-        if (str(item.get("ParentIndexNumber")) != None):
-            tempSeason = str(item.get("ParentIndexNumber"))
-            if item.get("ParentIndexNumber") < 10:
-                tempSeason = "0" + tempSeason
+        tempSeason = item.get("ParentIndexNumber")
+        if tempSeason is not None:
+            if tempSeason < 10:
+                tempSeason = "0" + str(tempSeason)
+            else:
+                tempSeason = str(tempSeason)
+        else:
+            tempSeason = ""
 
-        if item.get("Type") == "Season":
-            guiid = item.get("SeriesId")
-        elif item.get("Type") == "Episode":
-            prefix = ''
-            if settings.getSetting('addSeasonNumber') == 'true':
-                prefix = "S" + str(tempSeason)
+        # set the item name
+        # override with name format string from request
+        if name_format is not None:
+            nameInfo = {}
+            nameInfo["ItemName"] = item.get("Name", "").encode('utf-8')
+            nameInfo["SeriesName"] = item.get("SeriesName", "").encode('utf-8')
+            nameInfo["SeasonIndex"] = tempSeason
+            nameInfo["EpisodeIndex"] = tempEpisode
+            log.debug("FormatName : %s | %s" % (name_format, nameInfo))
+            tempTitle = name_format.format(**nameInfo).strip()
+
+        else:
+            if (item.get("Name") != None):
+                tempTitle = item.get("Name").encode('utf-8')
+            else:
+                tempTitle = i18n('missing_title')
+
+            if item.get("Type") == "Episode":
+                prefix = ''
+                if settings.getSetting('addSeasonNumber') == 'true':
+                    prefix = "S" + str(tempSeason)
+                    if settings.getSetting('addEpisodeNumber') == 'true':
+                        prefix = prefix + "E"
                 if settings.getSetting('addEpisodeNumber') == 'true':
-                    prefix = prefix + "E"
-                    # prefix = str(tempEpisode)
-            if settings.getSetting('addEpisodeNumber') == 'true':
-                prefix = prefix + str(tempEpisode)
-            if prefix != '':
-                tempTitle = prefix + ' - ' + tempTitle
-            guiid = item.get("SeriesId")
+                    prefix = prefix + str(tempEpisode)
+                if prefix != '':
+                    tempTitle = prefix + ' - ' + tempTitle
+                #guiid = item.get("SeriesId")
+            #elif item.get("Type") == "Season":
+            #    guiid = item.get("SeriesId")
+
 
         if (item.get("PremiereDate") != None):
             premieredatelist = (item.get("PremiereDate")).split("T")
@@ -804,7 +825,7 @@ def processDirectory(url, results, progress, pluginhandle):
                      'landscape': art['landscape'],
                      'tvshow.poster': art['tvshow.poster'],
                      'id': id,
-                     'guiid': guiid,
+                     #'guiid': guiid,
                      'mpaa': item.get("OfficialRating"),
                      'rating': item.get("CommunityRating"),
                      'criticrating': item.get("CriticRating"),
@@ -1042,7 +1063,7 @@ def showContent(pluginName, handle, params):
                   "&IncludeItemTypes=" + item_type)
 
     log.info("showContent Content Url : " + str(contentUrl))
-    getContent(contentUrl, handle, media_type)
+    getContent(contentUrl, handle, media_type, params)
 
 def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
@@ -1073,7 +1094,7 @@ def showParentContent(pluginName, handle, params):
         "&format=json")
 
     log.info("showParentContent Content Url : " + str(contentUrl))
-    getContent(contentUrl, handle, media_type)
+    getContent(contentUrl, handle, media_type, params)
 
 def checkService():
     home_window = HomeWindow()

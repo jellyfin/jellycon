@@ -136,6 +136,8 @@ def displaySections():
         for collection in collections:
             url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
+            if collection.get("name_format") is not None:
+                url += "&name_format=" + urllib.quote(collection.get("name_format"))
             log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
@@ -167,6 +169,9 @@ def getCollections(detailsString):
     show_collections = "false"
     if settings.getSetting('show_collections') == "true":
         show_collections = "true"
+
+    show_x_filtered_items = settings.getSetting("show_x_filtered_items")
+    filtered_episode_format = settings.getSetting("episode_name_format")
 
     userid = downloadUtils.getUserId()
 
@@ -228,7 +233,7 @@ def getCollections(detailsString):
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&Limit=20' +
+                         '&Limit=' + show_x_filtered_items +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -237,13 +242,14 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type})
+                'media_type': collection_type,
+                'name_format': filtered_episode_format})
             collections.append({
                 'title': item_name + i18n('_recently_added'),
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&Limit=20' +
+                         '&Limit=' + show_x_filtered_items +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -254,13 +260,14 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type})
+                'media_type': collection_type,
+                'name_format': filtered_episode_format})
             collections.append({
                 'title': item_name + i18n('_next_up'),
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('{server}/emby/Shows/NextUp/?Userid={userid}' +
                          '&ParentId=' + item.get("Id") +
-                         '&Limit=20' +
+                         '&Limit=' + show_x_filtered_items +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
                          '&Filters=IsUnplayed,IsNotFolder' +
@@ -269,7 +276,8 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type})
+                'media_type': collection_type,
+                'name_format': filtered_episode_format})
 
         if collection_type == "movies":
             collections.append({
@@ -277,7 +285,7 @@ def getCollections(detailsString):
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&Limit=20' +
+                         '&Limit=' + show_x_filtered_items +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -290,7 +298,7 @@ def getCollections(detailsString):
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&Limit=20' +
+                         '&Limit=' + show_x_filtered_items +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
@@ -317,7 +325,7 @@ def getCollections(detailsString):
     item_data['title'] = i18n('movies_recently_added')
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
-                         '?Limit=20' +
+                         '?Limit=' + show_x_filtered_items +
                          '&Recursive=true' +
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
@@ -332,7 +340,7 @@ def getCollections(detailsString):
     item_data['title'] = i18n('movies_in_progress')
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
-                         '?Limit=20' +
+                         '?Limit=' + show_x_filtered_items +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
                          '&Filters=IsResumable' +
@@ -385,9 +393,24 @@ def getCollections(detailsString):
     collections.append(item_data)
 
     item_data = {}
+    item_data['title'] = i18n('episodes_in_progress')
+    item_data['media_type'] = 'Episodes'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?Limit=' + show_x_filtered_items +
+                         '&Recursive=true' +
+                         '&Fields=' + detailsString +
+                         '&Filters=IsResumable' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
+    item_data['name_format'] = filtered_episode_format
+    collections.append(item_data)
+
+    item_data = {}
     item_data['title'] = i18n('episodes_recently_added')
-    item_data['media_type'] = 'Season'
-    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Limit=20' +
+    item_data['media_type'] = 'Episodes'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?Limit=' + show_x_filtered_items +
                          '&Recursive=true' +
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
@@ -398,24 +421,14 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json')
-    collections.append(item_data)
-
-    item_data = {}
-    item_data['title'] = i18n('episodes_in_progress')
-    item_data['media_type'] = 'Episodes'
-    item_data['path'] = ('{server}/emby/Users/{userid}/Items?Limit=20' +
-                         '&Recursive=true' +
-                         '&Fields=' + detailsString +
-                         '&Filters=IsResumable' +
-                         '&IncludeItemTypes=Episode' +
-                         '&ImageTypeLimit=1' +
-                         '&format=json')
+    item_data['name_format'] = filtered_episode_format
     collections.append(item_data)
 
     item_data = {}
     item_data['title'] = i18n('episodes_up_next')
     item_data['media_type'] = 'Episodes'
-    item_data['path'] = ('{server}/emby/Shows/NextUp/?Userid={userid}&Limit=20' +
+    item_data['path'] = ('{server}/emby/Shows/NextUp/?Userid={userid}' +
+                         '&Limit=' + show_x_filtered_items +
                          '&Recursive=true' +
                          '&Fields=' + detailsString +
                          '&Filters=IsUnplayed,IsNotFolder' +
@@ -424,6 +437,7 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json')
+    item_data['name_format'] = filtered_episode_format
     collections.append(item_data)
 
     item_data = {}

@@ -74,6 +74,14 @@ msgctxt "#30017"
 msgid "Show Connected Clients"
 msgstr ""
 
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr ""
+
 msgctxt "#30022"
 msgid "Advanced"
 msgstr ""
