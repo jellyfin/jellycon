@@ -92,5 +92,8 @@ STRINGS = {
     'play_next_question': 30284,
     '_next_up': 30278,
     'detect_server': 30011,
-    'show_clients': 30017
+    'show_clients': 30017,
+    'tvshows_unwatched': 30279,
+    '_unwatched': 30285,
+    'movies_unwatched': 30286
 }

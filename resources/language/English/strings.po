@@ -518,6 +518,10 @@ msgctxt "#30278"
 msgid " - Next Up"
 msgstr ""
 
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr ""
+
 msgctxt "#30280"
 msgid "Missing Title"
 msgstr ""
@@ -536,4 +540,12 @@ msgstr ""
 
 msgctxt "#30284"
 msgid "Do you want to play the next episode?"
+msgstr ""
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr ""
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
 msgstr ""
