@@ -171,11 +171,7 @@ def mainEntryPoint():
         # if ( mode == None or param_url == None or len(param_url) < 1 ):
         #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
-            media_type = params.get("media_type", None)
-            if not media_type:
-                xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
-            log.info("EmbyCon -> media_type: " + str(media_type))
-            getContent(param_url, pluginhandle, media_type, params)
+            getContent(param_url, params)
 
         elif mode == "PLAY":
             PLAY(params, pluginhandle)
@@ -533,10 +529,16 @@ def setView(viewType):
         xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
 
 
-def getContent(url, pluginhandle, media_type, params):
+def getContent(url, params):
     log.info("== ENTER: getContent ==")
+
+    media_type = params.get("media_type", None)
+    if not media_type:
+        xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
+
     log.info("URL: " + str(url))
     log.info("MediaType: " + str(media_type))
+    pluginhandle = int(sys.argv[1])
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     # determine view type, map it from media type to view type
@@ -576,11 +578,9 @@ def getContent(url, pluginhandle, media_type, params):
             progress.close()
         return
 
-    name_format = params.get("name_format", None)
-    if name_format is not None:
-        name_format = urllib.unquote(name_format)
-
-    dirItems = processDirectory(result, progress, name_format)
+    dirItems = processDirectory(result, progress, params)
+    if dirItems is None:
+        return
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     # set the view mode based on what the user wanted for this view type
@@ -595,10 +595,12 @@ def getContent(url, pluginhandle, media_type, params):
     return
 
 
-def processDirectory(results, progress, name_format = None):
+def processDirectory(results, progress, params):
     log.info("== ENTER: processDirectory ==")
-    #userid = downloadUtils.getUserId()
-    #name_format = "{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}"
+
+    name_format = params.get("name_format", None)
+    if name_format is not None:
+        name_format = urllib.unquote(name_format)
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
@@ -612,7 +614,7 @@ def processDirectory(results, progress, name_format = None):
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
-    # just get the content of the season
+    # build a new url, set the content media type and call get content again
     flatten_single_season = settings.getSetting("flatten_single_season") == "true"
     if flatten_single_season and len(result) == 1 and result[0].get("Type", "") == "Season":
         season_id = result[0].get("Id")
@@ -622,10 +624,11 @@ def processDirectory(results, progress, name_format = None):
                       '&IsMissing=false' +
                       '&Fields=' + detailsString +
                       '&format=json')
-        results = dataManager.GetContent(season_url)
-        result = results.get("Items")
-        if result is None:
-            result = []
+        if (progress != None):
+            progress.close()
+        params["media_type"] = "Episodes"
+        getContent(season_url, params)
+        return None
 
     item_count = len(result)
     current_item = 1
@@ -1074,9 +1077,6 @@ def showContent(pluginName, handle, params):
     log.info("showContent Called: " + str(params))
 
     item_type = params.get("item_type")
-    media_type = params.get("media_type", None)
-    if not media_type:
-        xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
     contentUrl = ("{server}/emby/Users/{userid}/Items"
                   "?format=json"
@@ -1089,7 +1089,7 @@ def showContent(pluginName, handle, params):
                   "&IncludeItemTypes=" + item_type)
 
     log.info("showContent Content Url : " + str(contentUrl))
-    getContent(contentUrl, handle, media_type, params)
+    getContent(contentUrl, params)
 
 def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
@@ -1102,13 +1102,7 @@ def showParentContent(pluginName, handle, params):
         show_collections = "true"
 
     parentId = params.get("ParentId")
-    name = params.get("Name")
     detailsString = getDetailsString()
-    userid = downloadUtils.getUserId()
-    media_type = params.get("media_type", None)
-
-    if not media_type:
-        xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
     contentUrl = (
         "{server}/emby/Users/{userid}/items?ParentId=" + parentId +
@@ -1120,7 +1114,7 @@ def showParentContent(pluginName, handle, params):
         "&format=json")
 
     log.info("showParentContent Content Url : " + str(contentUrl))
-    getContent(contentUrl, handle, media_type, params)
+    getContent(contentUrl, params)
 
 def checkService():
     home_window = HomeWindow()
