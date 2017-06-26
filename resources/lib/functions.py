@@ -416,6 +416,8 @@ def addGUIItem(url, details, extraData, folder=True):
                              'codec': extraData.get('videocodec'), 'width': extraData.get('width'),
                              'height': extraData.get('height')})
     list_item.addStreamInfo('audio', {'codec': extraData.get('audiocodec'), 'channels': extraData.get('channels')})
+    if extraData.get('SubtitleLang', '') != '':
+        list_item.addStreamInfo('subtitle', {'language': extraData.get('SubtitleLang', '')})
 
     list_item.setProperty('CriticRating', str(extraData.get('criticrating')))
     list_item.setProperty('ItemType', extraData.get('itemtype'))
@@ -578,7 +580,7 @@ def getContent(url, pluginhandle, media_type, params):
     if name_format is not None:
         name_format = urllib.unquote(name_format)
 
-    dirItems = processDirectory(url, result, progress, name_format)
+    dirItems = processDirectory(result, progress, name_format)
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     # set the view mode based on what the user wanted for this view type
@@ -593,7 +595,7 @@ def getContent(url, pluginhandle, media_type, params):
     return
 
 
-def processDirectory(url, results, progress, name_format = None):
+def processDirectory(results, progress, name_format = None):
     log.info("== ENTER: processDirectory ==")
     #userid = downloadUtils.getUserId()
     #name_format = "{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}"
@@ -605,8 +607,26 @@ def processDirectory(url, results, progress, name_format = None):
 
     dirItems = []
     result = results.get("Items")
-    if (result == None):
+    if result is None:
         result = []
+
+    # flatten single season
+    # if there is only one result and it is a season and you have flatten signle season turned on then
+    # just get the content of the season
+    flatten_single_season = settings.getSetting("flatten_single_season") == "true"
+    if flatten_single_season and len(result) == 1 and result[0].get("Type", "") == "Season":
+        season_id = result[0].get("Id")
+        season_url = ('{server}/emby/Users/{userid}/items' +
+                      '?ParentId=' + season_id +
+                      '&IsVirtualUnAired=false' +
+                      '&IsMissing=false' +
+                      '&Fields=' + detailsString +
+                      '&format=json')
+        results = dataManager.GetContent(season_url)
+        result = results.get("Items")
+        if result is None:
+            result = []
+
     item_count = len(result)
     current_item = 1
 
@@ -692,10 +712,11 @@ def processDirectory(url, results, progress, name_format = None):
         width = ''
         aspectratio = '1:1'
         aspectfloat = 0.0
+        subtitle_lang = ''
         mediaStreams = item.get("MediaStreams")
         if (mediaStreams != None):
             for mediaStream in mediaStreams:
-                if (mediaStream.get("Type") == "Video"):
+                if mediaStream.get("Type") == "Video":
                     videocodec = mediaStream.get("Codec")
                     height = str(mediaStream.get("Height"))
                     width = str(mediaStream.get("Width"))
@@ -706,9 +727,11 @@ def processDirectory(url, results, progress, name_format = None):
                             aspectfloat = float(aspectwidth) / float(aspectheight)
                         except:
                             aspectfloat = 1.85
-                if (mediaStream.get("Type") == "Audio"):
+                if mediaStream.get("Type") == "Audio":
                     audiocodec = mediaStream.get("Codec")
                     channels = mediaStream.get("Channels")
+                if mediaStream.get("Type") == "Subtitle":
+                    subtitle_lang = mediaStream.get("Language")
 
         # Process People
         director = ''
@@ -845,7 +868,7 @@ def processDirectory(url, results, progress, name_format = None):
                      'width': width,
                      'cast': cast,
                      'favorite': favorite,
-                     'parenturl': url,
+                     #'parenturl': url,
                      'resumetime': str(seekTime),
                      'totaltime': tempDuration,
                      'duration': tempDuration,
@@ -856,19 +879,22 @@ def processDirectory(url, results, progress, name_format = None):
                      'WatchedEpisodes': str(WatchedEpisodes),
                      'UnWatchedEpisodes': str(UnWatchedEpisodes),
                      'NumEpisodes': str(NumEpisodes),
-                     'itemtype': item_type}
+                     'itemtype': item_type,
+                     'SubtitleLang': subtitle_lang}
 
         extraData["Path"] = item.get("Path")
 
         extraData['mode'] = "GET_CONTENT"
 
         if isFolder == True:
-            u = ('{server}/emby/Users/{userid}' +
-                 '/items?ParentId=' + id +
-                 '&IsVirtualUnAired=false&IsMissing=false&Fields=' +
-                 detailsString + '&format=json')
+            u = ('{server}/emby/Users/{userid}/items' +
+                 '?ParentId=' + id +
+                 '&IsVirtualUnAired=false' +
+                 '&IsMissing=false&' +
+                 'Fields=' + detailsString +
+                 '&format=json')
 
-            if (item.get("RecursiveItemCount") != 0):
+            if item.get("RecursiveItemCount") != 0:
                 dirItems.append(addGUIItem(u, details, extraData))
         else:
             u = id
