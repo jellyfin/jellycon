@@ -242,7 +242,7 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type,
+                'media_type': 'Episodes',
                 'name_format': filtered_episode_format})
             collections.append({
                 'title': item_name + i18n('_recently_added'),
@@ -260,7 +260,7 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type,
+                'media_type': 'Episodes',
                 'name_format': filtered_episode_format})
             collections.append({
                 'title': item_name + i18n('_next_up'),
@@ -276,7 +276,7 @@ def getCollections(detailsString):
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': collection_type,
+                'media_type': 'Episodes',
                 'name_format': filtered_episode_format})
 
         if collection_type == "movies":
