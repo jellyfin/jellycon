@@ -319,6 +319,10 @@ def addGUIItem(url, details, extraData, folder=True):
     if (countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
         listItemName = listItemName + " (" + str(cappedPercentage) + "%)"
 
+    subtitle_available = settings.getSetting('addSubtitleAvailable') == 'true'
+    if subtitle_available and extraData.get("SubtitleAvailable", False):
+        listItemName += " (cc)"
+
     # update title with new name, this sets the new name in the deailts that are later passed to video info
     details['title'] = listItemName
 
@@ -713,9 +717,9 @@ def processDirectory(results, progress, params):
         audiocodec = ''
         height = ''
         width = ''
-        aspectratio = '1:1'
         aspectfloat = 0.0
         subtitle_lang = ''
+        subtitle_available = False
         mediaStreams = item.get("MediaStreams")
         if (mediaStreams != None):
             for mediaStream in mediaStreams:
@@ -724,7 +728,7 @@ def processDirectory(results, progress, params):
                     height = str(mediaStream.get("Height"))
                     width = str(mediaStream.get("Width"))
                     aspectratio = mediaStream.get("AspectRatio")
-                    if aspectratio != None and len(aspectratio) >= 3:
+                    if aspectratio is not None and len(aspectratio) >= 3:
                         try:
                             aspectwidth, aspectheight = aspectratio.split(':')
                             aspectfloat = float(aspectwidth) / float(aspectheight)
@@ -734,7 +738,9 @@ def processDirectory(results, progress, params):
                     audiocodec = mediaStream.get("Codec")
                     channels = mediaStream.get("Channels")
                 if mediaStream.get("Type") == "Subtitle":
-                    subtitle_lang = mediaStream.get("Language")
+                    subtitle_available = True
+                    if mediaStream.get("Language") is not None:
+                        subtitle_lang = mediaStream.get("Language")
 
         # Process People
         director = ''
@@ -883,7 +889,8 @@ def processDirectory(results, progress, params):
                      'UnWatchedEpisodes': str(UnWatchedEpisodes),
                      'NumEpisodes': str(NumEpisodes),
                      'itemtype': item_type,
-                     'SubtitleLang': subtitle_lang}
+                     'SubtitleLang': subtitle_lang,
+                     'SubtitleAvailable': subtitle_available}
 
         extraData["Path"] = item.get("Path")
 

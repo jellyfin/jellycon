@@ -226,6 +226,10 @@ msgctxt "#30162"
 msgid "Add Season Number"
 msgstr ""
 
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr ""
+
 msgctxt "#30166"
 msgid "Select Server"
 msgstr ""
