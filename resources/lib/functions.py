@@ -602,14 +602,14 @@ def getContent(url, params):
 def processDirectory(results, progress, params):
     log.info("== ENTER: processDirectory ==")
 
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    server = downloadUtils.getServer()
+    detailsString = getDetailsString()
+
     name_format = params.get("name_format", None)
     if name_format is not None:
         name_format = urllib.unquote(name_format)
-
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    server = downloadUtils.getServer()
-
-    detailsString = getDetailsString()
+        name_format = settings.getSetting(name_format)
 
     dirItems = []
     result = results.get("Items")
@@ -711,7 +711,7 @@ def processDirectory(results, progress, params):
             airtime = item.get("AirTime")
             tempTitle = tempTitle + ' - ' + str(premieredate) + ' - ' + str(airtime)
 
-            # Process MediaStreams
+        # Process MediaStreams
         channels = ''
         videocodec = ''
         audiocodec = ''

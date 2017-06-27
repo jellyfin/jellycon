@@ -277,6 +277,7 @@ class DownloadUtils():
 
     def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True):
         log.info("downloadUrl")
+        settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
         log.debug(url)
         if url.find("{server}") != -1:
@@ -285,6 +286,9 @@ class DownloadUtils():
         if url.find("{userid}") != -1:
             userid = self.getUserId()
             url = url.replace("{userid}", userid)
+        if url.find("{ItemLimit}") != -1:
+            show_x_filtered_items = settings.getSetting("show_x_filtered_items")
+            url = url.replace("{ItemLimit}", show_x_filtered_items)
         log.debug(url)
 
         return_data = "null"
