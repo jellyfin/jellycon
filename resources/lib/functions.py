@@ -1089,7 +1089,7 @@ def showContent(pluginName, handle, params):
                   "?format=json"
                   "&ImageTypeLimit=1"
                   "&IsMissing=False"
-                  "&Fields=" + getDetailsString() + ""
+                  "&Fields=" + getDetailsString() +
                   "&Recursive=true"
                   "&IsVirtualUnaired=false"
                   "&IsMissing=False"
@@ -1102,11 +1102,6 @@ def showParentContent(pluginName, handle, params):
     log.info("showParentContent Called: " + str(params))
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    server = downloadUtils.getServer()
-
-    show_collections = "false"
-    if settings.getSetting('show_collections') == "true":
-        show_collections = "true"
 
     parentId = params.get("ParentId")
     detailsString = getDetailsString()
@@ -1116,7 +1111,6 @@ def showParentContent(pluginName, handle, params):
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
-        "&CollapseBoxSetItems=" + show_collections +
         "&Fields=" + detailsString +
         "&format=json")
 

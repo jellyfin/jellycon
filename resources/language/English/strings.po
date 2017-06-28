@@ -262,10 +262,6 @@ msgctxt "#30183"
 msgid "Include People"
 msgstr ""
 
-msgctxt "#30184"
-msgid "Show Movie Collections"
-msgstr ""
-
 msgctxt "#30200"
 msgid "URL error: %s"
 msgstr ""

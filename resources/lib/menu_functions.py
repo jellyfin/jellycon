@@ -26,13 +26,7 @@ def showGenreList():
     if server is None:
         return
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-
-    userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
-    show_collections = "false"
-    if settings.getSetting('show_collections') == "true":
-        show_collections = "true"
 
     try:
         jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId={userid}&format=json")
@@ -54,7 +48,6 @@ def showGenreList():
         item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                              '&Recursive=true&GenreIds=' + genre.get("Id") +
                              '&IncludeItemTypes=Movie' +
-                             '&CollapseBoxSetItems=' + show_collections +
                              '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
@@ -75,11 +68,7 @@ def showMovieAlphaList():
     server = downloadUtils.getServer()
     if server is None:
         return
-    userid = downloadUtils.getUserId()
     detailsString = getDetailsString()
-    show_collections = "false"
-    if settings.getSetting('show_collections') == "true":
-        show_collections = "true"
 
     collections = []
 
@@ -91,7 +80,6 @@ def showMovieAlphaList():
                          '&Recursive=true' +
                          '&NameLessThan=A' +
                          '&IncludeItemTypes=Movie' +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json')
     collections.append(item_data)
@@ -107,7 +95,6 @@ def showMovieAlphaList():
                              '&Recursive=true' +
                              '&NameStartsWith=' + alphaName +
                              '&IncludeItemTypes=Movie' +
-                             '&CollapseBoxSetItems=' + show_collections +
                              '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
@@ -165,11 +152,6 @@ def getCollections(detailsString):
     if server is None:
         return []
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
-    show_collections = "false"
-    if settings.getSetting('show_collections') == "true":
-        show_collections = "true"
-
     userid = downloadUtils.getUserId()
 
     if userid == None or len(userid) == 0:
@@ -219,7 +201,6 @@ def getCollections(detailsString):
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -300,7 +281,6 @@ def getCollections(detailsString):
                          '&IsMissing=False' +
                          '&Fields=' + detailsString +
                          '&Filters=IsUnplayed' +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -341,7 +321,6 @@ def getCollections(detailsString):
                          '?Fields=' + detailsString +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Movie' +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json')
     collections.append(item_data)
@@ -354,7 +333,6 @@ def getCollections(detailsString):
                          '&Fields=' + detailsString +
                          '&Filters=IsUnplayed' +
                          '&IncludeItemTypes=Movie' +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json')
     collections.append(item_data)
@@ -395,7 +373,6 @@ def getCollections(detailsString):
                          '&Recursive=true' +
                          '&Filters=IsFavorite' +
                          '&IncludeItemTypes=Movie' +
-                         '&CollapseBoxSetItems=' + show_collections +
                          '&ImageTypeLimit=1' +
                          '&format=json')
     collections.append(item_data)
