@@ -193,7 +193,7 @@ def mainEntryPoint():
         ps = ps.sort_stats('cumulative')
         ps.print_stats()
         ps.strip_dirs()
-        ps = ps.sort_stats('cumulative')
+        ps = ps.sort_stats('tottime')
         ps.print_stats()
         f.write(s.getvalue())
 
@@ -262,8 +262,7 @@ def delete(item_id):
         xbmc.executebuiltin("Container.Refresh")
 
 
-def addGUIItem(url, details, extraData, folder=True):
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+def addGUIItem(url, details, extraData, display_options, folder=True):
 
     url = url.encode('utf-8')
 
@@ -310,16 +309,16 @@ def addGUIItem(url, details, extraData, folder=True):
             cappedPercentage = None
 
     countsAdded = False
-    addCounts = settings.getSetting('addCounts') == 'true'
+    addCounts = display_options.get("addCounts", True)
     if addCounts and extraData.get('UnWatchedEpisodes') != "0":
         countsAdded = True
         listItemName = listItemName + " (" + extraData.get('UnWatchedEpisodes') + ")"
 
-    addResumePercent = settings.getSetting('addResumePercent') == 'true'
+    addResumePercent = display_options.get("addResumePercent", True)
     if (countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
         listItemName = listItemName + " (" + str(cappedPercentage) + "%)"
 
-    subtitle_available = settings.getSetting('addSubtitleAvailable') == 'true'
+    subtitle_available = display_options.get("addSubtitleAvailable", False)
     if subtitle_available and extraData.get("SubtitleAvailable", False):
         listItemName += " (cc)"
 
@@ -634,6 +633,14 @@ def processDirectory(results, progress, params):
         getContent(season_url, params)
         return None
 
+    add_season_number = settings.getSetting('addSeasonNumber') == 'true'
+    add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
+
+    display_options = {}
+    display_options["addCounts"] = settings.getSetting("addCounts") == 'true'
+    display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
+    display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
+
     item_count = len(result)
     current_item = 1
 
@@ -645,7 +652,6 @@ def processDirectory(results, progress, params):
             current_item = current_item + 1
 
         id = str(item.get("Id")).encode('utf-8')
-        #guiid = id
         isFolder = item.get("IsFolder")
 
         item_type = str(item.get("Type")).encode('utf-8')
@@ -687,18 +693,14 @@ def processDirectory(results, progress, params):
 
             if item.get("Type") == "Episode":
                 prefix = ''
-                if settings.getSetting('addSeasonNumber') == 'true':
+                if add_season_number:
                     prefix = "S" + str(tempSeason)
-                    if settings.getSetting('addEpisodeNumber') == 'true':
+                    if add_episode_number:
                         prefix = prefix + "E"
-                if settings.getSetting('addEpisodeNumber') == 'true':
+                if add_episode_number:
                     prefix = prefix + str(tempEpisode)
                 if prefix != '':
                     tempTitle = prefix + ' - ' + tempTitle
-                #guiid = item.get("SeriesId")
-            #elif item.get("Type") == "Season":
-            #    guiid = item.get("SeriesId")
-
 
         if (item.get("PremiereDate") != None):
             premieredatelist = (item.get("PremiereDate")).split("T")
@@ -788,7 +790,6 @@ def processDirectory(results, progress, params):
 
         # Process UserData
         userData = item.get("UserData")
-        PlaybackPositionTicks = '100'
         overlay = "0"
         favorite = "false"
         seekTime = 0
@@ -807,7 +808,6 @@ def processDirectory(results, progress, params):
                 favorite = "false"
 
             if userData.get("PlaybackPositionTicks") != None:
-                PlaybackPositionTicks = str(userData.get("PlaybackPositionTicks"))
                 reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
                 seekTime = reasonableTicks / 10000
 
@@ -830,14 +830,11 @@ def processDirectory(results, progress, params):
 
         try:
             tempDuration = str(int(item.get("RunTimeTicks", "0")) / (10000000))
-            RunTimeTicks = str(item.get("RunTimeTicks", "0"))
         except TypeError:
             try:
                 tempDuration = str(int(item.get("CumulativeRunTimeTicks")) / (10000000))
-                RunTimeTicks = str(item.get("CumulativeRunTimeTicks"))
             except TypeError:
                 tempDuration = "0"
-                RunTimeTicks = "0"
 
         TotalSeasons = 0 if item.get("ChildCount") == None else item.get("ChildCount")
         TotalEpisodes = 0 if item.get("RecursiveItemCount") == None else item.get("RecursiveItemCount")
@@ -857,7 +854,6 @@ def processDirectory(results, progress, params):
                      'landscape': art['landscape'],
                      'tvshow.poster': art['tvshow.poster'],
                      'id': id,
-                     #'guiid': guiid,
                      'mpaa': item.get("OfficialRating"),
                      'rating': item.get("CommunityRating"),
                      'criticrating': item.get("CriticRating"),
@@ -877,7 +873,6 @@ def processDirectory(results, progress, params):
                      'width': width,
                      'cast': cast,
                      'favorite': favorite,
-                     #'parenturl': url,
                      'resumetime': str(seekTime),
                      'totaltime': tempDuration,
                      'duration': tempDuration,
@@ -905,10 +900,10 @@ def processDirectory(results, progress, params):
                  '&format=json')
 
             if item.get("RecursiveItemCount") != 0:
-                dirItems.append(addGUIItem(u, details, extraData))
+                dirItems.append(addGUIItem(u, details, extraData, display_options))
         else:
             u = id
-            dirItems.append(addGUIItem(u, details, extraData, folder=False))
+            dirItems.append(addGUIItem(u, details, extraData, display_options, folder=False))
 
     return dirItems
 
