@@ -6,13 +6,15 @@ import xbmcaddon
 import xbmcgui
 import time
 import json
-from datetime import datetime
+import platform
 
 from resources.lib.downloadutils import DownloadUtils
+from resources.lib.server_info import getServerId
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.translation import i18n
+from resources.lib.ga_client import GoogleAnalytics, log_error
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -209,6 +211,7 @@ class Service(xbmc.Player):
         log.info("Starting monitor service: " + str(args))
         self.played_information = {}
 
+    @log_error()
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
         stopAll(self.played_information)
@@ -247,6 +250,7 @@ class Service(xbmc.Player):
         log.info("ADDING_FILE : " + current_playing_file)
         log.info("ADDING_FILE : " + str(self.played_information))
 
+    @log_error()
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
         log.info("EmbyCon Service -> onPlayBackEnded")
@@ -254,6 +258,7 @@ class Service(xbmc.Player):
         home_window.clearProperty("item_id")
         stopAll(self.played_information)
 
+    @log_error()
     def onPlayBackStopped(self):
         # Will be called when user stops kodi playing a file
         log.info("onPlayBackStopped")
@@ -261,6 +266,7 @@ class Service(xbmc.Player):
         home_window.clearProperty("item_id")
         stopAll(self.played_information)
 
+    @log_error()
     def onPlayBackPaused(self):
         # Will be called when kodi pauses the video
         log.info("onPlayBackPaused")
@@ -271,6 +277,7 @@ class Service(xbmc.Player):
             play_data['paused'] = True
             sendProgress()
 
+    @log_error()
     def onPlayBackResumed(self):
         # Will be called when kodi resumes the video
         log.info("onPlayBackResumed")
@@ -281,6 +288,7 @@ class Service(xbmc.Player):
             play_data['paused'] = False
             sendProgress()
 
+    @log_error()
     def onPlayBackSeek(self, time, seekOffset):
         # Will be called when kodi seeks in video
         log.info("onPlayBackSeek")
@@ -288,34 +296,70 @@ class Service(xbmc.Player):
 
 
 monitor = Service()
-last_progress_update = datetime.today()
+last_progress_update = time.time()
+lastMetricPing = time.time()
+lastStartCheck = time.time()
+startSent = False
 
-while not xbmc.abortRequested:
+ga = GoogleAnalytics()
+try:
+    ga.sendEventData("Version", "OS", platform.platform())
+    ga.sendEventData("Version", "Python", platform.python_version())
+except Exception as error:
+    log.error("Exception in sending client meta info: " + str(error))
 
-    home_window = HomeWindow()
+try:
+    while not xbmc.abortRequested:
 
-    if xbmc.Player().isPlaying():
+        home_window = HomeWindow()
+
         try:
-            # send update
-            td = datetime.today() - last_progress_update
-            sec_diff = td.seconds
-            if sec_diff > 10:
-                sendProgress()
-                last_progress_update = datetime.today()
+            if not startSent and (time.time() - lastStartCheck) > 30:
+                lastStartCheck = time.time()
+                server_id = getServerId()
+                if server_id is not None:
+                    startSent = True
+                    ga = GoogleAnalytics()
+                    ga.sendEventData("Application", "Startup", server_id)
 
-        except Exception, e:
-            log.error("Exception in Playback Monitor : " + str(e))
-            pass
+        except Exception as error:
+            log.error("Exception in sending start message: " + str(error))
+            raise
 
-    else:
-        play_data = home_window.getProperty("play_item_message")
-        if play_data:
-            home_window.clearProperty("play_item_message")
-            play_info = json.loads(play_data)
-            playFile(play_info)
+        if xbmc.Player().isPlaying():
 
-    xbmc.sleep(1000)
-    HomeWindow().setProperty("Service_Timestamp", str(int(time.time())))
+            try:
+                if (time.time() - lastMetricPing) > 300:
+                    lastMetricPing = time.time()
+                    ga = GoogleAnalytics()
+                    ga.sendEventData("PlayAction", "PlayPing")
+            except Exception, e:
+                log.error("Exception in sending play ping: " + str(e))
+
+            try:
+                if (time.time() - last_progress_update) > 10:
+                    last_progress_update = time.time()
+                    sendProgress()
+
+            except Exception as error:
+                log.error("Exception in Playback Monitor : " + str(error))
+
+        else:
+            play_data = home_window.getProperty("play_item_message")
+            if play_data:
+                home_window.clearProperty("play_item_message")
+                play_info = json.loads(play_data)
+                playFile(play_info)
+
+        xbmc.sleep(1000)
+        HomeWindow().setProperty("Service_Timestamp", str(int(time.time())))
+
+except Exception as error:
+    ga = GoogleAnalytics()
+    err_strings = ga.formatException()
+    ga.sendEventData("Exception", err_strings[0], err_strings[1])
+    log.error(error)
+    raise
 
 # clear user and token when loggin off
 home_window = HomeWindow()

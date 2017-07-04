@@ -15,6 +15,7 @@ from utils import PlayUtils, getArt
 from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
+from ga_client import GoogleAnalytics, log_error
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -27,8 +28,6 @@ def playFile(play_info):
     force_transcode = play_info.get("force_transcode")
 
     log.info("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
-
-    userid = downloadUtils.getUserId()
 
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
@@ -73,8 +72,8 @@ def playFile(play_info):
                 return_value = xbmcgui.Dialog().yesno(i18n('extra_prompt'), i18n('turn_on_auto_resume?'))
                 if return_value:
                     params = {"setting": "myvideos.selectaction", "value": 2}
-                    result = json_rpc('Settings.setSettingValue').execute(params)
-                    log.info("Save Setting (myvideos.selectaction): %s" % result)
+                    json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
+                    log.info("Save Setting (myvideos.selectaction): %s" % json_rpc_result)
 
             if resume_result == 1:
                 seekTime = 0
@@ -118,6 +117,11 @@ def playFile(play_info):
     playlist.clear()
     playlist.add(playurl, list_item)
     xbmc.Player().play(playlist)
+
+    item_type = result.get('Type', 'na')
+    ga = GoogleAnalytics()
+    ga.sendEventData("PlayAction", item_type, playback_type_string)
+    ga.sendScreenView(item_type)
 
     if seekTime == 0:
         return
