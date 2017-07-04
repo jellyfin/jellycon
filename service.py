@@ -358,7 +358,8 @@ except Exception as error:
     ga = GoogleAnalytics()
     err_strings = ga.formatException()
     ga.sendEventData("Exception", err_strings[0], err_strings[1])
-    log.error(error)
+    log.error(str(error))
+    log.error(str(err_strings))
     raise
 
 # clear user and token when loggin off
