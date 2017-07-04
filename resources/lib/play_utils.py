@@ -119,31 +119,33 @@ def playFile(play_info):
     xbmc.Player().play(playlist)
 
     item_type = result.get('Type', 'na')
-    ga = GoogleAnalytics()
-    ga.sendEventData("PlayAction", item_type, playback_type_string)
-    ga.sendScreenView(item_type)
 
-    if seekTime == 0:
-        return
-
-    count = 0
-    while not xbmc.Player().isPlaying():
-        log.info("Not playing yet...sleep for 1 sec")
-        count = count + 1
-        if count >= 10:
+    try:
+        if seekTime == 0:
             return
-        else:
-            time.sleep(1)
 
-    seekTime = seekTime - jump_back_amount
+        count = 0
+        while not xbmc.Player().isPlaying():
+            log.info("Not playing yet...sleep for 1 sec")
+            count = count + 1
+            if count >= 10:
+                return
+            else:
+                time.sleep(1)
 
-    while xbmc.Player().getTime() < (seekTime - 5):
-        # xbmc.Player().pause()
-        xbmc.sleep(100)
-        xbmc.Player().seekTime(seekTime)
-        xbmc.sleep(100)
-        # xbmc.Player().play()
+        seekTime = seekTime - jump_back_amount
 
+        while xbmc.Player().getTime() < (seekTime - 5):
+            # xbmc.Player().pause()
+            xbmc.sleep(100)
+            xbmc.Player().seekTime(seekTime)
+            xbmc.sleep(100)
+            # xbmc.Player().play()
+
+    finally:
+        ga = GoogleAnalytics()
+        ga.sendEventData("PlayAction", item_type, playback_type_string)
+        ga.sendScreenView(item_type)
 
 def setListItemProps(id, listItem, result, server, extra_props):
     # set up item and item info
