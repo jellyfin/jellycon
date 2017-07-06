@@ -159,7 +159,7 @@ class GoogleAnalytics:
         
         data['ds'] = 'plugin' # data source
         
-        data['an'] = 'Kodi4Emby' # App Name
+        data['an'] = 'EmbyCon' # App Name
         data['aid'] = '1' # App ID
         data['av'] = self.version # App Version
         #data['aiid'] = '1.1' # App installer ID
