@@ -22,18 +22,18 @@ class ClientInformation():
             return client_id
 
         emby_guid_path = xbmc.translatePath("special://temp/embycon_guid").decode('utf-8')
-        log.info("emby_guid_path: " + emby_guid_path)
+        log.debug("emby_guid_path: " + emby_guid_path)
         guid = xbmcvfs.File(emby_guid_path)
         client_id = guid.read()
         guid.close()
 
         if not client_id:
             client_id = str("%012X" % uuid4())
-            log.info("Generating a new guid: " + client_id)
+            log.debug("Generating a new guid: " + client_id)
             guid = xbmcvfs.File(emby_guid_path, 'w')
             guid.write(client_id)
             guid.close()
-            log.info("emby_guid_path (NEW): " + client_id)
+            log.debug("emby_guid_path (NEW): " + client_id)
 
         WINDOW.setProperty("client_id", client_id)
         return client_id

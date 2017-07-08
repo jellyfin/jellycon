@@ -62,7 +62,6 @@ STRINGS = {
     'movies_az': 30252,
     'change_user': 30253,
     'show_settings': 30254,
-    'set_default_views': 30255,
     'movies_all': 30256,
     'movies_recently_added': 30257,
     'movies_in_progress': 30258,

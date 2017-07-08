@@ -90,7 +90,7 @@ def checkServer(force=False, change_user=False, notify=False):
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
         server_protocol = url_bits.scheme
-        log.info("Detected server info " + server_protocol + " - " + server_address + " - " + server_port)
+        log.debug("Detected server info " + server_protocol + " - " + server_address + " - " + server_port)
 
         # save the server info
         settings.setSetting("port", server_port)
@@ -111,7 +111,7 @@ def checkServer(force=False, change_user=False, notify=False):
     # if asked or we have no current user then show user selection screen
     if change_user or len(current_username) == 0:
         # get a list of users
-        log.info("Getting user list")
+        log.debug("Getting user list")
         jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData : " + str(jsonData))

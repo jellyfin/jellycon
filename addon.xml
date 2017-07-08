@@ -18,7 +18,7 @@
     <forum>https://emby.media/community/index.php?/topic/46651-embycon/</forum>
     <website>https://emby.media/community/index.php?/topic/46651-embycon/</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
-    <summary lang="en">View and play your Emby media library.</summary>
-    <description lang="en">An addon to allow you to view and playback your Emby (www.emby.media) Movie and TV Show collection.</description>
+    <summary lang="en_GB">View and play your Emby media library.</summary>
+    <description lang="en_GB">An addon to allow you to view and playback your Emby (www.emby.media) Movie and TV Show collection.</description>
   </extension>
 </addon>

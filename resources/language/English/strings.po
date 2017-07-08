@@ -26,10 +26,6 @@ msgctxt "#30003"
 msgid "Verify HTTPS Certificate: "
 msgstr ""
 
-msgctxt "#30004"
-msgid "Log Level: "
-msgstr ""
-
 msgctxt "#30005"
 msgid "Username: "
 msgstr ""
@@ -422,10 +418,6 @@ msgctxt "#30254"
 msgid "Show Settings"
 msgstr ""
 
-msgctxt "#30255"
-msgid "Set Default Views"
-msgstr ""
-
 msgctxt "#30256"
 msgid "Movies - All"
 msgstr ""
@@ -550,6 +542,3 @@ msgctxt "#30286"
 msgid "Movies - Unwatched"
 msgstr ""
 
-msgctxt "#30287"
-msgid "Log Errors and Anonymous Metrics"
-msgstr ""

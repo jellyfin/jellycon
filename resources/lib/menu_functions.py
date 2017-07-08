@@ -20,7 +20,7 @@ __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 
 
 def showGenreList():
-    log.info("== ENTER: showGenreList() ==")
+    log.debug("== ENTER: showGenreList() ==")
 
     server = downloadUtils.getServer()
     if server is None:
@@ -30,7 +30,7 @@ def showGenreList():
 
     try:
         jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId={userid}&format=json")
-        log.info("GENRE_LIST_DATA : " + jsonData)
+        log.debug("GENRE_LIST_DATA : " + jsonData)
     except Exception, msg:
         error = "Get connect : " + str(msg)
         log.error(error)
@@ -55,14 +55,14 @@ def showGenreList():
         url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
-        log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def showMovieAlphaList():
-    log.info("== ENTER: showMovieAlphaList() ==")
+    log.debug("== ENTER: showMovieAlphaList() ==")
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
@@ -101,14 +101,14 @@ def showMovieAlphaList():
     for collection in collections:
         url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def displaySections():
-    log.info("== ENTER: displaySections() ==")
+    log.debug("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
 
     server = downloadUtils.getServer()
@@ -125,7 +125,7 @@ def displaySections():
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
             if collection.get("name_format") is not None:
                 url += "&name_format=" + urllib.quote(collection.get("name_format"))
-            log.info("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+            log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
         addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
@@ -137,7 +137,6 @@ def displaySections():
 
     addMenuDirectoryItem(i18n('detect_server'), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
     addMenuDirectoryItem(i18n('show_settings'), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    addMenuDirectoryItem(i18n('set_default_views'), "plugin://plugin.video.embycon/?mode=SET_DEFAULT_VIEWS")
 
     if collections:
         addMenuDirectoryItem(i18n('widgets'), "plugin://plugin.video.embycon/?mode=WIDGETS")
@@ -146,7 +145,7 @@ def displaySections():
 
 
 def getCollections(detailsString):
-    log.info("== ENTER: getCollections ==")
+    log.debug("== ENTER: getCollections ==")
 
     server = downloadUtils.getServer()
     if server is None:
@@ -155,7 +154,7 @@ def getCollections(detailsString):
     userid = downloadUtils.getUserId()
 
     if userid == None or len(userid) == 0:
-        log.info("No userid so returning []")
+        log.debug("No userid so returning []")
         return []
 
     try:
@@ -171,7 +170,7 @@ def getCollections(detailsString):
         return []
 
     parentid = result.get("Id")
-    log.info("parentid : " + parentid)
+    log.debug("parentid : " + parentid)
 
     htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
     jsonData = downloadUtils.downloadUrl(htmlpath)
@@ -189,8 +188,8 @@ def getCollections(detailsString):
         item_name = (item.get("Name")).encode('utf-8')
 
         collection_type = item.get('CollectionType', None)
-        log.info("CollectionType: " + str(collection_type))
-        log.info("Title: " + item_name)
+        log.debug("CollectionType: " + str(collection_type))
+        log.debug("Title: " + item_name)
 
         if collection_type in ["tvshows", "movies", "boxsets"]:
             collections.append({

@@ -19,7 +19,6 @@ from utils import getDetailsString, getArt
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
-from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
 from simple_logging import SimpleLogging
 from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch
@@ -40,7 +39,7 @@ dataManager = DataManager()
 
 
 def mainEntryPoint():
-    log.info("===== EmbyCon START =====")
+    log.debug("===== EmbyCon START =====")
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     profile_code = settings.getSetting('profile') == "true"
@@ -52,11 +51,11 @@ def mainEntryPoint():
             pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    log.info("Running Python: " + str(sys.version_info))
-    log.info("Running EmbyCon: " + str(ADDON_VERSION))
-    log.info("Kodi BuildVersion: " + xbmc.getInfoLabel("System.BuildVersion"))
-    log.info("Kodi Version: " + str(kodi_version))
-    log.info("Script argument data: " + str(sys.argv))
+    log.debug("Running Python: " + str(sys.version_info))
+    log.debug("Running EmbyCon: " + str(ADDON_VERSION))
+    log.debug("Kodi BuildVersion: " + xbmc.getInfoLabel("System.BuildVersion"))
+    log.debug("Kodi Version: " + str(kodi_version))
+    log.debug("Script argument data: " + str(sys.argv))
 
     try:
         params = get_params(sys.argv[2])
@@ -66,7 +65,7 @@ def mainEntryPoint():
     if (len(params) == 0):
         home_window = HomeWindow()
         windowParams = home_window.getProperty("Params")
-        log.info("windowParams : " + windowParams)
+        log.debug("windowParams : " + windowParams)
         # home_window.clearProperty("Params")
         if (windowParams):
             try:
@@ -74,7 +73,7 @@ def mainEntryPoint():
             except:
                 params = {}
 
-    log.info("Script params = " + str(params))
+    log.debug("Script params = " + str(params))
 
     param_url = params.get('url', None)
 
@@ -115,14 +114,12 @@ def mainEntryPoint():
         __addon__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
-            log.info("Currently in home - refreshing to allow new settings to be taken")
+            log.debug("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("ActivateWindow(Home)")
     elif sys.argv[1] == "refresh":
         home_window = HomeWindow()
         home_window.setProperty("force_data_reload", "true")
         xbmc.executebuiltin("Container.Refresh")
-    elif mode == "SET_DEFAULT_VIEWS":
-        showSetViews()
     elif mode == "WIDGET_CONTENT":
         getWigetContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
@@ -164,8 +161,8 @@ def mainEntryPoint():
 
         pluginhandle = int(sys.argv[1])
 
-        log.info("EmbyCon -> Mode: " + str(mode))
-        log.info("EmbyCon -> URL: " + str(param_url))
+        log.debug("EmbyCon -> Mode: " + str(mode))
+        log.debug("EmbyCon -> URL: " + str(param_url))
 
         # Run a function based on the mode variable that was passed in the URL
         # if ( mode == None or param_url == None or len(param_url) < 1 ):
@@ -211,11 +208,11 @@ def mainEntryPoint():
 
         f.close()
 
-    log.info("===== EmbyCon FINISHED =====")
+    log.debug("===== EmbyCon FINISHED =====")
 
 
 def markWatched(item_id):
-    log.info("Mark Item Watched : " + item_id)
+    log.debug("Mark Item Watched : " + item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
@@ -224,7 +221,7 @@ def markWatched(item_id):
 
 
 def markUnwatched(item_id):
-    log.info("Mark Item UnWatched : " + item_id)
+    log.debug("Mark Item UnWatched : " + item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
@@ -233,7 +230,7 @@ def markUnwatched(item_id):
 
 
 def markFavorite(item_id):
-    log.info("Add item to favourites : " + item_id)
+    log.debug("Add item to favourites : " + item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
@@ -242,7 +239,7 @@ def markFavorite(item_id):
 
 
 def unmarkFavorite(item_id):
-    log.info("Remove item from favourites : " + item_id)
+    log.debug("Remove item from favourites : " + item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
@@ -253,7 +250,7 @@ def unmarkFavorite(item_id):
 def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
     if return_value:
-        log.info('Deleting Item : ' + item_id)
+        log.debug('Deleting Item : ' + item_id)
         url = '{server}/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(i18n('deleting'), i18n('waiting_server_delete'))
@@ -326,7 +323,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     details['title'] = listItemName
 
     if kodi_version > 17:
-        list_item = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
+        list_item = xbmcgui.ListItem(listItemName, offscreen=True)
     else:
         list_item = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
 
@@ -502,45 +499,29 @@ def get_params(paramstring):
 
 
 def setSort(pluginhandle, viewType):
-    defaultData = loadSkinDefaults()
-
-    # set the default sort order
-    defaultSortData = defaultData.get("sort", {})
-    sortName = defaultSortData.get(viewType)
-    log.info("SETTING_SORT : " + str(viewType) + " : " + str(sortName))
-    if sortName == "title":
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-    elif sortName == "date":
+    log.debug("SETTING_SORT for media type: " + str(viewType))
+    if viewType == "BoxSets":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
     else:
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
-        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
-
-def setView(viewType):
-    defaultData = loadSkinDefaults()
-
-    defaultViewData = defaultData.get("view", {})
-    viewNum = defaultViewData.get(viewType)
-    log.info("SETTING_VIEW : " + str(viewType) + " : " + str(viewNum))
-    if viewNum is not None and viewNum != -1:
-        xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
-
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
 def getContent(url, params):
-    log.info("== ENTER: getContent ==")
+    log.debug("== ENTER: getContent ==")
 
     media_type = params.get("media_type", None)
     if not media_type:
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
-    log.info("URL: " + str(url))
-    log.info("MediaType: " + str(media_type))
+    log.debug("URL: " + str(url))
+    log.debug("MediaType: " + str(media_type))
     pluginhandle = int(sys.argv[1])
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -562,7 +543,7 @@ def getContent(url, params):
     elif media_type == "season" or media_type == "episodes":
         viewType = "Episodes"
         xbmcplugin.setContent(pluginhandle, 'episodes')
-    log.info("ViewType: " + viewType)
+    log.debug("ViewType: " + viewType)
 
     setSort(pluginhandle, viewType)
 
@@ -586,9 +567,6 @@ def getContent(url, params):
         return
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
-    # set the view mode based on what the user wanted for this view type
-    setView(viewType)
-
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
     if (progress != None):
@@ -599,7 +577,7 @@ def getContent(url, params):
 
 
 def processDirectory(results, progress, params):
-    log.info("== ENTER: processDirectory ==")
+    log.debug("== ENTER: processDirectory ==")
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
@@ -907,17 +885,8 @@ def processDirectory(results, progress, params):
 
     return dirItems
 
-
-def showSetViews():
-    log.info("showSetViews Called")
-
-    defaultViews = DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
-    defaultViews.doModal()
-    del defaultViews
-
-
 def getWigetContent(handle, params):
-    log.info("getWigetContent Called" + str(params))
+    log.debug("getWigetContent Called" + str(params))
     server = downloadUtils.getServer()
 
     type = params.get("type")
@@ -1076,7 +1045,7 @@ def getWigetContent(handle, params):
 
 
 def showContent(pluginName, handle, params):
-    log.info("showContent Called: " + str(params))
+    log.debug("showContent Called: " + str(params))
 
     item_type = params.get("item_type")
 
@@ -1090,11 +1059,11 @@ def showContent(pluginName, handle, params):
                   "&IsMissing=False"
                   "&IncludeItemTypes=" + item_type)
 
-    log.info("showContent Content Url : " + str(contentUrl))
+    log.debug("showContent Content Url : " + str(contentUrl))
     getContent(contentUrl, params)
 
 def showParentContent(pluginName, handle, params):
-    log.info("showParentContent Called: " + str(params))
+    log.debug("showParentContent Called: " + str(params))
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
@@ -1109,7 +1078,7 @@ def showParentContent(pluginName, handle, params):
         "&Fields=" + detailsString +
         "&format=json")
 
-    log.info("showParentContent Content Url : " + str(contentUrl))
+    log.debug("showParentContent Content Url : " + str(contentUrl))
     getContent(contentUrl, params)
 
 def checkService():
@@ -1125,8 +1094,8 @@ def checkService():
             sys.exit()
         xbmc.sleep(200)
 
-    log.info("EmbyCon Service Timestamp: " + timeStamp)
-    log.info("EmbyCon Current Timestamp: " + str(int(time.time())))
+    log.debug("EmbyCon Service Timestamp: " + timeStamp)
+    log.debug("EmbyCon Current Timestamp: " + str(int(time.time())))
 
     if ((int(timeStamp) + 240) < int(time.time())):
         log.error("EmbyCon Service Not Running, time stamp to old, exiting")
@@ -1135,7 +1104,7 @@ def checkService():
 
 
 def search(handle, params):
-    log.info('search Called: ' + str(params))
+    log.debug('search Called: ' + str(params))
     item_type = params.get('item_type')
     if not item_type:
         return
@@ -1164,7 +1133,7 @@ def search(handle, params):
 
 
 def searchResults(params):
-    log.info('searchResults Called: ' + str(params))
+    log.debug('searchResults Called: ' + str(params))
 
     handle = int(sys.argv[1])
     query = params.get('query')
@@ -1330,7 +1299,6 @@ def searchResults(params):
         list_items.append(item_tuple)
 
     xbmcplugin.addDirectoryItems(handle, list_items)
-    setView(view_type)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     if progress is not None:
@@ -1339,16 +1307,16 @@ def searchResults(params):
 
 
 def PLAY(params, handle):
-    log.info("== ENTER: PLAY ==")
+    log.debug("== ENTER: PLAY ==")
 
-    log.info("PLAY ACTION PARAMS: " + str(params))
+    log.debug("PLAY ACTION PARAMS: " + str(params))
     item_id = params.get("item_id")
 
     auto_resume = int(params.get("auto_resume", "-1"))
-    log.info("AUTO_RESUME: " + str(auto_resume))
+    log.debug("AUTO_RESUME: " + str(auto_resume))
 
     forceTranscode = params.get("force_transcode", None) is not None
-    log.info("FORCE_TRANSCODE: " + str(forceTranscode))
+    log.debug("FORCE_TRANSCODE: " + str(forceTranscode))
 
     # set the current playing item id
     # set all the playback info, this will be picked up by the service

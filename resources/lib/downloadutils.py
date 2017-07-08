@@ -129,7 +129,7 @@ class DownloadUtils():
         userid = WINDOW.getProperty("userid")
 
         if (userid != None and userid != ""):
-            log.info("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
+            log.debug("EmbyCon DownloadUtils -> Returning saved UserID : " + userid)
             return userid
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
@@ -137,7 +137,7 @@ class DownloadUtils():
 
         if not userName:
             return ""
-        log.info("Looking for user name: " + userName)
+        log.debug("Looking for user name: " + userName)
 
         jsonData = None
         try:
@@ -147,30 +147,30 @@ class DownloadUtils():
             log.error(error)
             return ""
 
-        log.info("GETUSER_JSONDATA_01:" + str(jsonData))
+        log.debug("GETUSER_JSONDATA_01:" + str(jsonData))
 
         result = []
 
         try:
             result = json.loads(jsonData)
         except Exception, e:
-            log.info("jsonload : " + str(e) + " (" + jsonData + ")")
+            log.debug("jsonload : " + str(e) + " (" + jsonData + ")")
             return ""
 
         if result is None:
             return ""
 
-        log.info("GETUSER_JSONDATA_02:" + str(result))
+        log.debug("GETUSER_JSONDATA_02:" + str(result))
 
         userid = ""
         secure = False
         for user in result:
             if (user.get("Name") == userName):
                 userid = user.get("Id")
-                log.info("Username Found:" + user.get("Name"))
+                log.debug("Username Found:" + user.get("Name"))
                 if (user.get("HasPassword") == True):
                     secure = True
-                    log.info("Username Is Secure (HasPassword=True)")
+                    log.debug("Username Is Secure (HasPassword=True)")
                 break
 
         if (secure) or (not userid):
@@ -184,7 +184,7 @@ class DownloadUtils():
         if userid == "":
             xbmcgui.Dialog().ok(self.addon_name, i18n('username_not_found'))
 
-        log.info("userid : " + userid)
+        log.debug("userid : " + userid)
 
         WINDOW.setProperty("userid", userid)
 
@@ -196,7 +196,7 @@ class DownloadUtils():
 
         token = WINDOW.getProperty("AccessToken")
         if (token != None and token != ""):
-            log.info("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
+            log.debug("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
@@ -233,12 +233,12 @@ class DownloadUtils():
             pass
 
         if (accessToken != None):
-            log.info("User Authenticated : " + accessToken)
+            log.debug("User Authenticated : " + accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
             return accessToken
         else:
-            log.info("User NOT Authenticated")
+            log.debug("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
             WINDOW.setProperty("userid", "")
             return ""
@@ -272,11 +272,11 @@ class DownloadUtils():
             if (authToken != ""):
                 headers["X-MediaBrowser-Token"] = authToken
 
-            log.info("EmbyCon Authentication Header : " + str(headers))
+            log.debug("EmbyCon Authentication Header : " + str(headers))
             return headers
 
     def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True):
-        log.info("downloadUrl")
+        log.debug("downloadUrl")
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
         log.debug(url)
@@ -303,7 +303,7 @@ class DownloadUtils():
             server = url.split('/')[serversplit]
             urlPath = "/" + "/".join(url.split('/')[urlsplit:])
 
-            log.info("DOWNLOAD_URL = " + url)
+            log.debug("DOWNLOAD_URL = " + url)
             log.debug("server = " + str(server))
             log.debug("urlPath = " + str(urlPath))
 
@@ -329,7 +329,7 @@ class DownloadUtils():
                 conn = httplib.HTTPConnection(server, timeout=40)
 
             head = self.getAuthHeader(authenticate)
-            log.info("HEADERS : " + str(head))
+            log.debug("HEADERS : " + str(head))
 
             if (postBody != None):
                 if isinstance(postBody, dict):
@@ -339,9 +339,9 @@ class DownloadUtils():
                     content_type = "application/x-www-form-urlencoded"
 
                 head["Content-Type"] = content_type
-                log.info("Content-Type : " + content_type)
+                log.debug("Content-Type : " + content_type)
 
-                log.info("POST DATA : " + postBody)
+                log.debug("POST DATA : " + postBody)
                 conn.request(method=method, url=urlPath, body=postBody, headers=head)
             else:
                 conn.request(method=method, url=urlPath, headers=head)

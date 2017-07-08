@@ -15,20 +15,20 @@ log = SimpleLogging(__name__)
 ###########################################################################
 class PlayUtils():
     def getPlayUrl(self, id, result, force_transcode):
-        log.info("getPlayUrl")
+        log.debug("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
         server = downloadUtils.getServer()
-        log.info("playback_type: " + playback_type)
+        log.debug("playback_type: " + playback_type)
         if force_transcode:
-            log.info("playback_type: FORCED_TRANSCODE")
+            log.debug("playback_type: FORCED_TRANSCODE")
         playurl = None
 
         # transcode
         if playback_type == "2" or force_transcode:
 
             playback_bitrate = addonSettings.getSetting("playback_bitrate")
-            log.info("playback_bitrate: " + playback_bitrate)
+            log.debug("playback_bitrate: " + playback_bitrate)
 
             width_options = ["640", "720", "1024", "1280", "1440", "1600", "1920", "2600", "4096"]
             playback_max_width = width_options[int(addonSettings.getSetting("playback_max_width"))]
@@ -77,7 +77,7 @@ class PlayUtils():
             user_token = downloadUtils.authenticate()
             playurl = playurl + "&api_key=" + user_token
 
-        log.info("Playback URL: " + playurl)
+        log.debug("Playback URL: " + playurl)
         return playurl.encode('utf-8')
 
     def getStrmDetails(self, result):
@@ -101,7 +101,7 @@ class PlayUtils():
             elif line != '':
                 playurl = line
 
-        log.info("Playback URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+        log.debug("Playback URL: " + playurl + " ListItem Properties: " + str(listitem_props))
         return playurl, listitem_props
 
 

@@ -23,7 +23,7 @@ class DataManager():
     canRefreshNow = False
 
     def __init__(self, *args):
-        log.info("DataManager __init__")
+        log.debug("DataManager __init__")
 
     def getCacheValidatorFromData(self, result):
         key = 'Items'
@@ -65,10 +65,10 @@ class DataManager():
 
         if use_cache_system == False:
             # dont use cache system at all, just get the result and return
-            log.info("GetContent - Not using cache system")
+            log.debug("GetContent - Not using cache system")
             jsonData = DownloadUtils().downloadUrl(url, suppress=False, popup=1)
             result = self.loadJasonData(jsonData)
-            log.info("Returning Loaded Result")
+            log.debug("Returning Loaded Result")
             return result
 
         # first get the url hash
@@ -83,7 +83,7 @@ class DataManager():
             os.makedirs(os.path.join(__addondir__, "cache"))
         cacheDataPath = os.path.join(__addondir__, "cache", urlHash)
 
-        log.info("Cache_Data_Manager:" + cacheDataPath)
+        log.debug("Cache_Data_Manager:" + cacheDataPath)
 
         # are we forcing a reload
         WINDOW = HomeWindow()
@@ -93,7 +93,7 @@ class DataManager():
         if os.path.exists(cacheDataPath) and not force_data_reload:
             # load data from cache if it is available and trigger a background
             # verification process to test cache validity   
-            log.info("Loading Cached File")
+            log.debug("Loading Cached File")
             cachedfie = open(cacheDataPath, 'r')
             jsonData = cachedfie.read()
             cachedfie.close()
@@ -107,18 +107,18 @@ class DataManager():
             actionThread.setCacheData(self)
             actionThread.start()
 
-            log.info("Returning Cached Result")
+            log.debug("Returning Cached Result")
             return result
         else:
             # no cache data so load the url and save it
             jsonData = DownloadUtils().downloadUrl(url, suppress=False, popup=1)
-            log.info("Loading URL and saving to cache")
+            log.debug("Loading URL and saving to cache")
             cachedfie = open(cacheDataPath, 'w')
             cachedfie.write(jsonData)
             cachedfie.close()
             result = self.loadJasonData(jsonData)
             self.cacheManagerFinished = True
-            log.info("Returning Loaded Result")
+            log.debug("Returning Loaded Result")
             return result
 
 
@@ -133,19 +133,19 @@ class CacheManagerThread(threading.Thread):
 
     def run(self):
 
-        log.info("CacheManagerThread Started")
+        log.debug("CacheManagerThread Started")
 
         cacheValidatorString = self.dataManager.getCacheValidatorFromData(self.dataManager.cacheDataResult)
-        log.info("Cache Validator String (" + cacheValidatorString + ")")
+        log.debug("Cache Validator String (" + cacheValidatorString + ")")
 
         jsonData = DownloadUtils().downloadUrl(self.dataManager.dataUrl, suppress=False, popup=1)
         loadedResult = self.dataManager.loadJasonData(jsonData)
         loadedValidatorString = self.dataManager.getCacheValidatorFromData(loadedResult)
-        log.info("Loaded Validator String (" + loadedValidatorString + ")")
+        log.debug("Loaded Validator String (" + loadedValidatorString + ")")
 
         # if they dont match then save the data and trigger a content reload
         if (cacheValidatorString != loadedValidatorString):
-            log.info("CacheManagerThread Saving new cache data and reloading container")
+            log.debug("CacheManagerThread Saving new cache data and reloading container")
             cachedfie = open(self.dataManager.cacheDataPath, 'w')
             cachedfie.write(jsonData)
             cachedfie.close()
@@ -157,7 +157,7 @@ class CacheManagerThread(threading.Thread):
                 xbmc.sleep(100)
                 loops = loops + 1
 
-            log.info("Sending container refresh (" + str(loops) + ")")
+            log.debug("Sending container refresh (" + str(loops) + ")")
             xbmc.executebuiltin("Container.Refresh")
 
-        log.info("CacheManagerThread Exited")
+        log.debug("CacheManagerThread Exited")

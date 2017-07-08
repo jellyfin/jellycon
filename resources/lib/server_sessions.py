@@ -10,7 +10,7 @@ from simple_logging import SimpleLogging
 log = SimpleLogging(__name__)
 
 def showServerSessions():
-    log.info("showServerSessions Called")
+    log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
     downloadUtils = DownloadUtils()

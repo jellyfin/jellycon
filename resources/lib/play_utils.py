@@ -15,7 +15,6 @@ from utils import PlayUtils, getArt
 from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
-from ga_client import GoogleAnalytics, log_error
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -27,7 +26,7 @@ def playFile(play_info):
     auto_resume = play_info.get("auto_resume")
     force_transcode = play_info.get("force_transcode")
 
-    log.info("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
+    log.debug("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
 
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
@@ -58,13 +57,13 @@ def playFile(play_info):
             resumeDialog.doModal()
             resume_result = resumeDialog.getResumeAction()
             del resumeDialog
-            log.info("Resume Dialog Result: " + str(resume_result))
+            log.debug("Resume Dialog Result: " + str(resume_result))
 
             # check system settings for play action
             # if prompt is set ask to set it to auto resume
             params = {"setting": "myvideos.selectaction"}
             setting_result = json_rpc('Settings.getSettingValue').execute(params)
-            log.info("Current Setting (myvideos.selectaction): %s" % setting_result)
+            log.debug("Current Setting (myvideos.selectaction): %s" % setting_result)
             current_value = setting_result.get("result", None)
             if current_value is not None:
                 current_value = current_value.get("value", -1)
@@ -73,7 +72,7 @@ def playFile(play_info):
                 if return_value:
                     params = {"setting": "myvideos.selectaction", "value": 2}
                     json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
-                    log.info("Save Setting (myvideos.selectaction): %s" % json_rpc_result)
+                    log.debug("Save Setting (myvideos.selectaction): %s" % json_rpc_result)
 
             if resume_result == 1:
                 seekTime = 0
@@ -92,7 +91,7 @@ def playFile(play_info):
     if not playurl:
         playurl = PlayUtils().getPlayUrl(id, result, force_transcode)
 
-    log.info("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+    log.debug("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
 
     playback_type_string = "DirectPlay"
     if playback_type == "2" or force_transcode:
@@ -118,34 +117,26 @@ def playFile(play_info):
     playlist.add(playurl, list_item)
     xbmc.Player().play(playlist)
 
-    item_type = result.get('Type', 'na')
+    if seekTime == 0:
+        return
 
-    try:
-        if seekTime == 0:
+    count = 0
+    while not xbmc.Player().isPlaying():
+        log.debug("Not playing yet...sleep for 1 sec")
+        count = count + 1
+        if count >= 10:
             return
+        else:
+            time.sleep(1)
 
-        count = 0
-        while not xbmc.Player().isPlaying():
-            log.info("Not playing yet...sleep for 1 sec")
-            count = count + 1
-            if count >= 10:
-                return
-            else:
-                time.sleep(1)
+    seekTime = seekTime - jump_back_amount
 
-        seekTime = seekTime - jump_back_amount
-
-        while xbmc.Player().getTime() < (seekTime - 5):
-            # xbmc.Player().pause()
-            xbmc.sleep(100)
-            xbmc.Player().seekTime(seekTime)
-            xbmc.sleep(100)
-            # xbmc.Player().play()
-
-    finally:
-        ga = GoogleAnalytics()
-        ga.sendEventData("PlayAction", item_type, playback_type_string)
-        ga.sendScreenView(item_type)
+    while xbmc.Player().getTime() < (seekTime - 5):
+        # xbmc.Player().pause()
+        xbmc.sleep(100)
+        xbmc.Player().seekTime(seekTime)
+        xbmc.sleep(100)
+        # xbmc.Player().play()
 
 def setListItemProps(id, listItem, result, server, extra_props):
     # set up item and item info
