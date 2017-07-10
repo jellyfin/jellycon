@@ -94,10 +94,8 @@ class DataManager():
             # load data from cache if it is available and trigger a background
             # verification process to test cache validity   
             log.debug("Loading Cached File")
-            cachedfie = open(cacheDataPath, 'r')
-            jsonData = cachedfie.read()
-            cachedfie.close()
-            result = self.loadJasonData(jsonData)
+            with open(cacheDataPath, 'r') as f:
+                result = self.loadJasonData(f.read())
 
             # start a worker thread to process the cache validity
             self.cacheDataResult = result
@@ -113,9 +111,8 @@ class DataManager():
             # no cache data so load the url and save it
             jsonData = DownloadUtils().downloadUrl(url, suppress=False, popup=1)
             log.debug("Loading URL and saving to cache")
-            cachedfie = open(cacheDataPath, 'w')
-            cachedfie.write(jsonData)
-            cachedfie.close()
+            with open(cacheDataPath, 'w') as f:
+                f.write(jsonData)
             result = self.loadJasonData(jsonData)
             self.cacheManagerFinished = True
             log.debug("Returning Loaded Result")
@@ -146,9 +143,8 @@ class CacheManagerThread(threading.Thread):
         # if they dont match then save the data and trigger a content reload
         if (cacheValidatorString != loadedValidatorString):
             log.debug("CacheManagerThread Saving new cache data and reloading container")
-            cachedfie = open(self.dataManager.cacheDataPath, 'w')
-            cachedfie.write(jsonData)
-            cachedfie.close()
+            with open(self.dataManager.cacheDataPath, 'w') as f:
+                f.write(jsonData)
 
             # we need to refresh but will wait until the main function has finished
             loops = 0
