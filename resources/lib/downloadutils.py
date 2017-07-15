@@ -23,8 +23,8 @@ class DownloadUtils():
     getString = None
 
     def __init__(self, *args):
-        self.addon = xbmcaddon.Addon(id='plugin.video.embycon')
-        self.addon_name = self.addon.getAddonInfo('name')
+        addon = xbmcaddon.Addon(id='plugin.video.embycon')
+        self.addon_name = addon.getAddonInfo('name')
 
     def getServer(self):
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -377,7 +377,7 @@ class DownloadUtils():
                 log.error(error)
                 if suppress is False:
                     if popup == 0:
-                        xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % str(data.reason)))
+                        xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') + str(data.reason))
                     else:
                         xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % str(data.reason))
                 log.error(error)
@@ -387,7 +387,7 @@ class DownloadUtils():
             log.error(error)
             if suppress is False:
                 if popup == 0:
-                    xbmc.executebuiltin("Notification(%s, %s)" % (self.addon_name, i18n('url_error_') % str(msg)))
+                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') + str(msg))
                 else:
                     xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'), str(msg))
                 #raise

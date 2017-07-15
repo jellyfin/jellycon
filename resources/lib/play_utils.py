@@ -127,7 +127,7 @@ def playFile(play_info):
         if count >= 10:
             return
         else:
-            time.sleep(1)
+            xbmc.Monitor().waitForAbort(1)
 
     seekTime = seekTime - jump_back_amount
 

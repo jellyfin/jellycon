@@ -148,7 +148,7 @@ class CacheManagerThread(threading.Thread):
 
             # we need to refresh but will wait until the main function has finished
             loops = 0
-            while (self.dataManager.canRefreshNow == False and loops < 200):
+            while (self.dataManager.canRefreshNow == False and loops < 200 and not xbmc.Monitor().abortRequested()):
                 log.debug("Cache_Data_Manager: Not finished yet")
                 xbmc.sleep(100)
                 loops = loops + 1

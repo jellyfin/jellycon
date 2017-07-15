@@ -183,8 +183,6 @@ def mainEntryPoint():
 
         fileTimeStamp = time.strftime("%Y%m%d-%H%M%S")
         tabFileName = __addondir__ + "profile(" + fileTimeStamp + ").txt"
-        f = open(tabFileName, 'wb')
-
         s = StringIO.StringIO()
         ps = pstats.Stats(pr, stream=s)
         ps = ps.sort_stats('cumulative')
@@ -192,7 +190,8 @@ def mainEntryPoint():
         ps.strip_dirs()
         ps = ps.sort_stats('tottime')
         ps.print_stats()
-        f.write(s.getvalue())
+        with open(tabFileName, 'wb') as f:
+            f.write(s.getvalue())
 
         '''
         ps = pstats.Stats(pr)
@@ -1085,7 +1084,7 @@ def checkService():
     home_window = HomeWindow()
     timeStamp = home_window.getProperty("Service_Timestamp")
     loops = 0
-    while (timeStamp == ""):
+    while (timeStamp == "" and not xbmc.Monitor().abortRequested()):
         timeStamp = home_window.getProperty("Service_Timestamp")
         loops = loops + 1
         if (loops == 40):

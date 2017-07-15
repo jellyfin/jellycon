@@ -41,8 +41,10 @@ def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
     li = xbmcgui.ListItem(label, path=path)
     if thumbnail is None:
         thumbnail = addon.getAddonInfo('icon')
-    li.setIconImage(thumbnail)
-    li.setThumbnailImage(thumbnail)
+    artLinks = {}
+    artLinks["thumb"] = thumbnail
+    artLinks["icon"] = thumbnail
+    li.setArt(artLinks)
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
 
 
