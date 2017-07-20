@@ -585,7 +585,9 @@ def processDirectory(results, progress, params):
     name_format = params.get("name_format", None)
     if name_format is not None:
         name_format = urllib.unquote(name_format)
-        name_format = settings.getSetting(name_format)
+        tokens = name_format.split("|")
+        name_format_type = tokens[0]
+        name_format = settings.getSetting(tokens[1])
 
     dirItems = []
     result = results.get("Items")
@@ -604,7 +606,7 @@ def processDirectory(results, progress, params):
                       '&IsMissing=false' +
                       '&Fields=' + detailsString +
                       '&format=json')
-        if (progress != None):
+        if progress is not None:
             progress.close()
         params["media_type"] = "Episodes"
         getContent(season_url, params)
@@ -653,7 +655,7 @@ def processDirectory(results, progress, params):
 
         # set the item name
         # override with name format string from request
-        if name_format is not None:
+        if name_format is not None and item.get("Type", "") == name_format_type:
             nameInfo = {}
             nameInfo["ItemName"] = item.get("Name", "").encode('utf-8')
             nameInfo["SeriesName"] = item.get("SeriesName", "").encode('utf-8')
