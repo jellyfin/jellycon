@@ -94,5 +94,7 @@ STRINGS = {
     'show_clients': 30017,
     'tvshows_unwatched': 30279,
     '_unwatched': 30285,
-    'movies_unwatched': 30286
+    'movies_unwatched': 30286,
+    'tvshows_latest' : 30287,
+    '_latest' : 30288
 }
