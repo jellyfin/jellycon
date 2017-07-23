@@ -288,6 +288,7 @@ class Service(xbmc.Player):
 
 monitor = Service()
 last_progress_update = time.time()
+download_utils.checkVersion()
 
 xbmc_monitor = xbmc.Monitor()
 while not xbmc_monitor.abortRequested():
