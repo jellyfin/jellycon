@@ -25,8 +25,8 @@ download_utils = DownloadUtils()
 # auth the service
 try:
     download_utils.authenticate()
-except Exception, e:
-    pass
+except Exception as error:
+    log.error("Error with initial service auth: " + str(error))
 
 
 def hasData(data):

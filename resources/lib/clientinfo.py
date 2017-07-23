@@ -33,7 +33,9 @@ class ClientInformation():
             guid = xbmcvfs.File(emby_guid_path, 'w')
             guid.write(client_id)
             guid.close()
-            log.debug("emby_guid_path (NEW): " + client_id)
+            log.debug("emby_client_id (NEW): " + client_id)
+        else:
+            log.debug("emby_client_id: " + client_id)
 
         WINDOW.setProperty("client_id", client_id)
         return client_id

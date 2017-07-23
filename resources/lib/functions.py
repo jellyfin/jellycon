@@ -62,8 +62,10 @@ def mainEntryPoint():
     except:
         params = {}
 
+    checkService()
+    home_window = HomeWindow()
+
     if (len(params) == 0):
-        home_window = HomeWindow()
         windowParams = home_window.getProperty("Params")
         log.debug("windowParams : " + windowParams)
         # home_window.clearProperty("Params")
@@ -81,7 +83,6 @@ def mainEntryPoint():
         param_url = urllib.unquote(param_url)
 
     mode = params.get("mode", None)
-    home_window = HomeWindow()
 
     if mode == "CHANGE_USER":
         checkServer(change_user=True, notify=False)
@@ -117,62 +118,45 @@ def mainEntryPoint():
             log.debug("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("ActivateWindow(Home)")
     elif sys.argv[1] == "refresh":
-        home_window = HomeWindow()
         home_window.setProperty("force_data_reload", "true")
         xbmc.executebuiltin("Container.Refresh")
     elif mode == "WIDGET_CONTENT":
         getWigetContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
-        checkService()
         checkServer(notify=False)
         showParentContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "SHOW_CONTENT":
         # plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
-        checkService()
         checkServer(notify=False)
         showContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "SEARCH":
         # plugin://plugin.video.embycon?mode=SEARCH
-        checkService()
         checkServer(notify=False)
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
         showSearch()
     elif mode == "NEW_SEARCH":
         # plugin://plugin.video.embycon?mode=NEW_SEARCH&item_type=<Movie|Series|Episode>
         if 'SEARCH_RESULTS' not in xbmc.getInfoLabel('Container.FolderPath'):  # don't ask for input on '..'
-            checkService()
             checkServer(notify=False)
             search(int(sys.argv[1]), params)
         else:
             return
     elif mode == "SEARCH_RESULTS":
         # plugin://plugin.video.embycon?mode=SEARCH_RESULTS&item_type=<Movie|Series>&query=<urllib.quote(search query)>&index=<[0-9]+>
-        checkService()
         checkServer(notify=False)
         searchResults(params)
     elif mode == "SHOW_SERVER_SESSIONS":
-        checkService()
         checkServer(notify=False)
         showServerSessions()
     else:
-
-        checkService()
         checkServer(notify=False)
-
-        pluginhandle = int(sys.argv[1])
-
         log.debug("EmbyCon -> Mode: " + str(mode))
         log.debug("EmbyCon -> URL: " + str(param_url))
 
-        # Run a function based on the mode variable that was passed in the URL
-        # if ( mode == None or param_url == None or len(param_url) < 1 ):
-        #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
             getContent(param_url, params)
-
         elif mode == "PLAY":
-            PLAY(params, pluginhandle)
-
+            PLAY(params)
         else:
             displaySections()
 
@@ -192,20 +176,6 @@ def mainEntryPoint():
         ps.print_stats()
         with open(tabFileName, 'wb') as f:
             f.write(s.getvalue())
-
-        '''
-        ps = pstats.Stats(pr)
-        f.write("NumbCalls\tTotalTime\tCumulativeTime\tFunctionName\tFileName\r\n")
-        for (key, value) in ps.stats.items():
-            (filename, count, func_name) = key
-            (ccalls, ncalls, total_time, cumulative_time, callers) = value
-            try:
-                f.write(str(ncalls) + "\t" + "{:10.4f}".format(total_time) + "\t" + "{:10.4f}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-            except ValueError:
-                f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-        '''
-
-        f.close()
 
     log.debug("===== EmbyCon FINISHED =====")
 
@@ -1087,21 +1057,21 @@ def showParentContent(pluginName, handle, params):
 
 def checkService():
     home_window = HomeWindow()
-    timeStamp = home_window.getProperty("Service_Timestamp")
+    time_stamp = home_window.getProperty("Service_Timestamp")
     loops = 0
-    while (timeStamp == "" and not xbmc.Monitor().abortRequested()):
-        timeStamp = home_window.getProperty("Service_Timestamp")
+    while not time_stamp and not xbmc.Monitor().abortRequested():
         loops = loops + 1
-        if (loops == 40):
+        if loops == 100:
             log.error("EmbyCon Service Not Running, no time stamp, exiting")
             xbmcgui.Dialog().ok(i18n('error'), i18n('service_not_running'), i18n('restart_kodi'))
             sys.exit()
         xbmc.sleep(200)
+        time_stamp = home_window.getProperty("Service_Timestamp")
 
-    log.debug("EmbyCon Service Timestamp: " + timeStamp)
+    log.debug("EmbyCon Service Timestamp: " + time_stamp)
     log.debug("EmbyCon Current Timestamp: " + str(int(time.time())))
 
-    if ((int(timeStamp) + 240) < int(time.time())):
+    if ((int(time_stamp) + 240) < int(time.time())):
         log.error("EmbyCon Service Not Running, time stamp to old, exiting")
         xbmcgui.Dialog().ok(i18n('error'), i18n('service_not_running'), i18n('restart_kodi'))
         sys.exit()
@@ -1310,7 +1280,7 @@ def searchResults(params):
         progress.close()
 
 
-def PLAY(params, handle):
+def PLAY(params):
     log.debug("== ENTER: PLAY ==")
 
     log.debug("PLAY ACTION PARAMS: " + str(params))
