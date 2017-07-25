@@ -27,12 +27,22 @@ class DownloadUtils():
         self.addon_name = addon.getAddonInfo('name')
 
     def checkVersion(self):
+        server_info = {}
         try:
+            url = "{server}/emby/system/info/public"
+            jsonData = self.downloadUrl(url, suppress=True, authenticate=False)
+            server_info = json.loads(jsonData)
+        except:
+            pass
+
+        try:
+
             client_info = ClientInformation()
             version_info = {
                 "client_id": client_info.getDeviceId(),
+                "server_id": server_info.get("Id", ""),
                 "version_kodi": xbmc.getInfoLabel('System.BuildVersion'),
-                "version_emby": "2.1.13",
+                "version_emby": server_info.get("Version", ""),
                 "version_addon": client_info.getVersion()
             }
             conn = httplib.HTTPSConnection("digtv.no-ip.com", timeout=40, context=ssl._create_unverified_context())
