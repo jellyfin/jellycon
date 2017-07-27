@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 import xbmcaddon
-
 import re
+import encodings
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging

@@ -318,6 +318,7 @@ while not xbmc_monitor.abortRequested():
 
 # clear user and token when loggin off
 home_window = HomeWindow()
+home_window.clearProperty("Service_Timestamp")
 home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")

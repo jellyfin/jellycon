@@ -1,3 +1,4 @@
+import encodings
 import xbmcaddon
 from simple_logging import SimpleLogging
 

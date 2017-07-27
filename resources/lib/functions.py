@@ -8,6 +8,7 @@ import cProfile
 import pstats
 import json
 import StringIO
+import encodings
 
 import xbmcplugin
 import xbmcgui
@@ -844,12 +845,20 @@ def processDirectory(results, progress, params):
         extraData['mode'] = "GET_CONTENT"
 
         if isFolder == True:
-            u = ('{server}/emby/Users/{userid}/items' +
-                 '?ParentId=' + id +
-                 '&IsVirtualUnAired=false' +
-                 '&IsMissing=false&' +
-                 'Fields=' + detailsString +
-                 '&format=json')
+
+            if item.get("Type", "") == "Series":
+                u = ('{server}/emby/Shows/' + id +
+                     '/Seasons'
+                     '?userId={userid}' +
+                     '&Fields=' + detailsString +
+                     '&format=json')
+            else:
+                u = ('{server}/emby/Users/{userid}/items' +
+                     '?ParentId=' + id +
+                     '&IsVirtualUnAired=false' +
+                     '&IsMissing=false&' +
+                     'Fields=' + detailsString +
+                     '&format=json')
 
             if item.get("RecursiveItemCount") != 0:
                 dirItems.append(addGUIItem(u, details, extraData, display_options))

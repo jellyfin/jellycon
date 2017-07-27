@@ -1,5 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 
+import encodings
+
 import xbmc
 import xbmcaddon
 from json_rpc import json_rpc

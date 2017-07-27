@@ -4,6 +4,7 @@ import hashlib
 import os
 import threading
 import json
+import encodings
 
 import xbmcaddon
 import xbmc

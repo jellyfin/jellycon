@@ -3,6 +3,7 @@
 import sys
 import json
 import urllib
+import encodings
 
 import xbmcplugin
 import xbmcaddon
