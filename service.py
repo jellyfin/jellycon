@@ -289,11 +289,13 @@ class Service(xbmc.Player):
 monitor = Service()
 last_progress_update = time.time()
 download_utils.checkVersion()
+home_window = HomeWindow()
 
-xbmc_monitor = xbmc.Monitor()
-while True:
+# monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
+# the service to exit when a user cancels an addon load action. This is a bug in Kodi.
+# I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
 
-    home_window = HomeWindow()
+while not xbmc.abortRequested:
 
     if xbmc.Player().isPlaying():
 
@@ -312,21 +314,13 @@ while True:
             play_info = json.loads(play_data)
             playFile(play_info)
 
-    xbmc_monitor.waitForAbort(1)
-    # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
-    # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
-    #if xbmc_monitor.abortRequested():
-    if xbmc.abortRequested:
-        log.error("abortRequested is True, exiting service now")
-        break
-
     home_window.setProperty("Service_Timestamp", str(int(time.time())))
+    xbmc.sleep(1000)
 
 # clear user and token when loggin off
-home_window = HomeWindow()
 home_window.clearProperty("Service_Timestamp")
 home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
 
-log.error("Service shut down")
+log.error("Service shutting down")
