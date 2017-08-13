@@ -63,7 +63,6 @@ def mainEntryPoint():
     except:
         params = {}
 
-    checkService()
     home_window = HomeWindow()
 
     if (len(params) == 0):
@@ -1066,28 +1065,6 @@ def showParentContent(pluginName, handle, params):
 
     log.debug("showParentContent Content Url : " + str(contentUrl))
     getContent(contentUrl, params)
-
-def checkService():
-    home_window = HomeWindow()
-    time_stamp = home_window.getProperty("Service_Timestamp")
-    loops = 0
-    while not time_stamp and not xbmc.Monitor().abortRequested():
-        loops = loops + 1
-        if loops == 100:
-            log.error("EmbyCon Service Not Running, no time stamp, exiting")
-            xbmcgui.Dialog().ok(i18n('error'), i18n('service_not_running'), i18n('restart_kodi'))
-            sys.exit()
-        xbmc.sleep(200)
-        time_stamp = home_window.getProperty("Service_Timestamp")
-
-    log.debug("EmbyCon Service Timestamp: " + time_stamp)
-    log.debug("EmbyCon Current Timestamp: " + str(int(time.time())))
-
-    if ((int(time_stamp) + 240) < int(time.time())):
-        log.error("EmbyCon Service Not Running, time stamp to old, exiting")
-        xbmcgui.Dialog().ok(i18n('error'), i18n('service_not_running'), i18n('restart_kodi'))
-        sys.exit()
-
 
 def search(handle, params):
     log.debug('search Called: ' + str(params))

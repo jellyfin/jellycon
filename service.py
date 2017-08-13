@@ -6,6 +6,7 @@ import xbmcaddon
 import xbmcgui
 import time
 import json
+import traceback
 
 from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
@@ -297,28 +298,24 @@ home_window = HomeWindow()
 
 while not xbmc.abortRequested:
 
-    if xbmc.Player().isPlaying():
-
-        try:
+    try:
+        if xbmc.Player().isPlaying():
             if (time.time() - last_progress_update) > 10:
                 last_progress_update = time.time()
                 sendProgress()
+        else:
+            play_data = home_window.getProperty("play_item_message")
+            if play_data:
+                home_window.clearProperty("play_item_message")
+                play_info = json.loads(play_data)
+                playFile(play_info)
+    except Exception as error:
+        log.error("Exception in Playback Monitor : " + str(error))
+        log.error(traceback.format_exc())
 
-        except Exception as error:
-            log.error("Exception in Playback Monitor : " + str(error))
-
-    else:
-        play_data = home_window.getProperty("play_item_message")
-        if play_data:
-            home_window.clearProperty("play_item_message")
-            play_info = json.loads(play_data)
-            playFile(play_info)
-
-    home_window.setProperty("Service_Timestamp", str(int(time.time())))
     xbmc.sleep(1000)
 
 # clear user and token when loggin off
-home_window.clearProperty("Service_Timestamp")
 home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
