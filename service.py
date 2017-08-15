@@ -152,8 +152,9 @@ def promptForStopActions(item_id, current_possition):
         item_list = items_result.get("Items", [])
         for item in item_list:
             index = item.get("IndexNumber", -1)
-            if index > item_index: # find the next episode in the season
-                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), autoclose=10000)
+            if index == item_index + 1: # find the very next episode in the season
+                next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
+                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
                 if resp:
                     next_item_id = item.get("Id")
                     log.debug("Playing Next Episode: %s" % next_item_id)
