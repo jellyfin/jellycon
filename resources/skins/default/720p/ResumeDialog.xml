@@ -7,7 +7,6 @@
 		<left>450</left>
 		<top>280</top>
 	</coordinates>
-	<include>dialogeffect</include>
 	<controls>
     
 		<control type="image">

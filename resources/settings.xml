@@ -46,6 +46,7 @@
 		<setting id="include_people" type="bool" label="30183" default="false" visible="true" enable="true" />
 		<setting id="flatten_single_season" type="bool" label="30020" default="true" visible="true" enable="true" />
 		<setting id="show_x_filtered_items" type="slider" label="30018" default="20" range="5,1,100" option="int" visible="true"/>
+		<setting id="widget_select_action" type="enum" label="30026" lvalues="menu|play" default="0" visible="true"/>
 		<setting id="episode_name_format" type="text" default="{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}" label="30019" />
 	</category>
 	<category label="30022"> <!-- Advanced -->

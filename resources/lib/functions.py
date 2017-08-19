@@ -25,6 +25,7 @@ from simple_logging import SimpleLogging
 from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch
 from translation import i18n
 from server_sessions import showServerSessions
+from action_menu import ActionMenu
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -111,6 +112,8 @@ def mainEntryPoint():
         showGenreList()
     elif mode == "WIDGETS":
         showWidgets()
+    elif mode == "SHOW_MENU":
+        showMenu(params)
     elif mode == "SHOW_SETTINGS":
         __addon__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
@@ -870,6 +873,52 @@ def processDirectory(results, progress, params):
 
     return dirItems
 
+def showMenu(params):
+    log.debug("showMenu(): " + str(params))
+
+    action_items = []
+    li = xbmcgui.ListItem("Play")
+    li.setProperty('menu_id', 'play')
+    action_items.append(li)
+    li = xbmcgui.ListItem("Force Transcode")
+    li.setProperty('menu_id', 'transcode')
+    action_items.append(li)
+    li = xbmcgui.ListItem("Mark Watched")
+    li.setProperty('menu_id', 'mark_watched')
+    action_items.append(li)
+    li = xbmcgui.ListItem("Mark Unwatched")
+    li.setProperty('menu_id', 'mark_unwatched')
+    action_items.append(li)
+    li = xbmcgui.ListItem("Delete")
+    li.setProperty('menu_id', 'delete')
+    action_items.append(li)
+
+    action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
+    action_menu.setActionItems(action_items)
+    action_menu.doModal()
+    selected_action_item = action_menu.getActionItem()
+    selected_action = ""
+    if selected_action_item is not None:
+        selected_action = selected_action_item.getProperty('menu_id')
+    log.debug("Menu Action Selected: " + str(selected_action_item))
+    del action_menu
+
+    if selected_action == "play":
+        log.debug("Play Item")
+        PLAY(params)
+    elif selected_action == "transcode":
+        params['force_transcode'] = 'true'
+        PLAY(params)
+    elif selected_action == "mark_watched":
+        markWatched(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "mark_unwatched":
+        markUnwatched(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "delete":
+        delete(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+
 def getWigetContent(handle, params):
     log.debug("getWigetContent Called" + str(params))
     server = downloadUtils.getServer()
@@ -879,64 +928,67 @@ def getWigetContent(handle, params):
         log.error("getWigetContent type not set")
         return
 
-    itemsUrl = ("{server}/emby/Users/{userid}/Items"
-                "?Limit=20"
-                "&format=json"
-                "&ImageTypeLimit=1"
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    select_action = settings.getSetting("widget_select_action")
+
+    itemsUrl = ("{server}/emby/Users/{userid}/Items" +
+                "?Limit={ItemLimit}" +
+                "&format=json" +
+                "&ImageTypeLimit=1" +
                 "&IsMissing=False")
 
     if (type == "recent_movies"):
         xbmcplugin.setContent(handle, 'movies')
-        itemsUrl += ("&Recursive=true"
-                     "&SortBy=DateCreated"
-                     "&SortOrder=Descending"
-                     "&Filters=IsUnplayed,IsNotFolder"
-                     "&IsVirtualUnaired=false"
-                     "&IsMissing=False"
+        itemsUrl += ("&Recursive=true" +
+                     "&SortBy=DateCreated" +
+                     "&SortOrder=Descending" +
+                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&IsVirtualUnaired=false" +
+                     "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
     elif (type == "inprogress_movies"):
         xbmcplugin.setContent(handle, 'movies')
-        itemsUrl += ("&Recursive=true"
-                     "&SortBy=DatePlayed"
-                     "&SortOrder=Descending"
-                     "&Filters=IsResumable"
-                     "&IsVirtualUnaired=false"
-                     "&IsMissing=False"
+        itemsUrl += ("&Recursive=true" +
+                     "&SortBy=DatePlayed" +
+                     "&SortOrder=Descending" +
+                     "&Filters=IsResumable" +
+                     "&IsVirtualUnaired=false" +
+                     "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
     elif (type == "random_movies"):
         xbmcplugin.setContent(handle, 'movies')
-        itemsUrl += ("&Recursive=true"
-                     "&SortBy=Random"
-                     "&SortOrder=Descending"
-                     "&Filters=IsUnplayed,IsNotFolder"
-                     "&IsVirtualUnaired=false"
-                     "&IsMissing=False"
+        itemsUrl += ("&Recursive=true" +
+                     "&SortBy=Random" +
+                     "&SortOrder=Descending" +
+                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&IsVirtualUnaired=false" +
+                     "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
     elif (type == "recent_episodes"):
         xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl += ("&Recursive=true"
-                     "&SortBy=DateCreated"
-                     "&SortOrder=Descending"
-                     "&Filters=IsUnplayed,IsNotFolder"
-                     "&IsVirtualUnaired=false"
-                     "&IsMissing=False"
+        itemsUrl += ("&Recursive=true" +
+                     "&SortBy=DateCreated" +
+                     "&SortOrder=Descending" +
+                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&IsVirtualUnaired=false" +
+                     "&IsMissing=False" +
                      "&IncludeItemTypes=Episode")
     elif (type == "inprogress_episodes"):
         xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl += ("&Recursive=true"
-                     "&SortBy=DatePlayed"
-                     "&SortOrder=Descending"
-                     "&Filters=IsResumable"
-                     "&IsVirtualUnaired=false"
-                     "&IsMissing=False"
+        itemsUrl += ("&Recursive=true" +
+                     "&SortBy=DatePlayed" +
+                     "&SortOrder=Descending" +
+                     "&Filters=IsResumable" +
+                     "&IsVirtualUnaired=false" +
+                     "&IsMissing=False" +
                      "&IncludeItemTypes=Episode")
     elif (type == "nextup_episodes"):
         xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl = ("{server}/emby/Shows/NextUp"
-                        "?Limit=20" 
-                        "&userid={userid}"
-                        "&Recursive=true"
-                        "&format=json"
+        itemsUrl = ("{server}/emby/Shows/NextUp" +
+                        "?Limit={ItemLimit}"
+                        "&userid={userid}" +
+                        "&Recursive=true" +
+                        "&format=json" +
                         "&ImageTypeLimit=1")
 
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
@@ -1020,7 +1072,10 @@ def getWigetContent(handle, params):
                     percentage = int((playBackTicks / runTimeTicks) * 100.0)
                     list_item.setProperty("complete_percentage", str(percentage))
 
-        playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'
+        if select_action == "1":
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'
+        elif select_action == "0":
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU'
 
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)

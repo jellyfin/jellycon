@@ -94,6 +94,10 @@ msgctxt "#30025"
 msgid "Password:"
 msgstr ""
 
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr ""
+
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
 msgstr ""
