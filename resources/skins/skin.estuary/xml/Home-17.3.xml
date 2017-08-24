@@ -52,19 +52,19 @@
 					<control type="grouplist" id="3001">
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=recent_movies"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_movies&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="Recently Added"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3800"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=inprogress_movies"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_movies&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="In Progress"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3900"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=random_movies"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="Random"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3100"/>
@@ -79,19 +79,19 @@
 					<control type="grouplist" id="4001">
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=recent_episodes"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_episodes&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="Recently Added"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4900"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=inprogress_episodes"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_episodes&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="In Progress"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4100"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&type=nextup_episodes"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=nextup_episodes&amp;reload=$INFO[Window(Home).Property(embycon_widget_reload)"/>
 							<param name="widget_header" value="Next Up"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4200"/>
