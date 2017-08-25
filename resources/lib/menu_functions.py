@@ -265,7 +265,7 @@ def getCollections(detailsString):
                          '&Fields=' + detailsString +
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
-                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&Filters={IsUnplayed,}IsNotFolder' +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
@@ -326,7 +326,7 @@ def getCollections(detailsString):
                          '&Fields=' + detailsString +
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
-                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&Filters={IsUnplayed,}IsNotFolder' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -377,7 +377,7 @@ def getCollections(detailsString):
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
                          '&SortOrder=Descending' +
-                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&Filters={IsUnplayed,}IsNotFolder' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
                          '&format=json')
@@ -451,7 +451,7 @@ def getCollections(detailsString):
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
                          '&SortOrder=Descending' +
-                         '&Filters=IsUnplayed' +
+                         '&Filters={IsUnplayed}' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
@@ -483,7 +483,7 @@ def getCollections(detailsString):
                          '&SortBy=DateCreated' +
                          '&Fields=' + detailsString +
                          '&SortOrder=Descending' +
-                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&Filters={IsUnplayed,}IsNotFolder' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +

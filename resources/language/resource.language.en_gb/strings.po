@@ -98,6 +98,10 @@ msgctxt "#30026"
 msgid "Widget item select action"
 msgstr ""
 
+msgctxt "#30027"
+msgid "Show unplayed in recently added"
+msgstr ""
+
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
 msgstr ""

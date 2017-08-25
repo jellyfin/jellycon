@@ -325,6 +325,22 @@ class DownloadUtils():
         if url.find("{ItemLimit}") != -1:
             show_x_filtered_items = settings.getSetting("show_x_filtered_items")
             url = url.replace("{ItemLimit}", show_x_filtered_items)
+        if url.find("{IsUnplayed}") != -1 or url.find("{,IsUnplayed}") != -1 or url.find("{IsUnplayed,}") != -1 \
+                or url.find("{,IsUnplayed,}") != -1:
+            show_latest_unplayed = settings.getSetting("show_latest_unplayed") == "true"
+            if show_latest_unplayed:
+                url = url.replace("{IsUnplayed}", "")
+                url = url.replace("{,IsUnplayed}", "")
+                url = url.replace("{IsUnplayed,}", "")
+                url = url.replace("{,IsUnplayed,}", "")
+            elif url.find("{IsUnplayed}") != -1:
+                url = url.replace("{IsUnplayed}", "IsUnplayed")
+            elif url.find("{,IsUnplayed}") != -1:
+                url = url.replace("{,IsUnplayed}", ",IsUnplayed")
+            elif url.find("{IsUnplayed,}") != -1:
+                url = url.replace("{IsUnplayed,}", "IsUnplayed,")
+            elif url.find("{,IsUnplayed,}") != -1:
+                url = url.replace("{,IsUnplayed,}", ",IsUnplayed,")
         log.debug(url)
 
         return_data = "null"

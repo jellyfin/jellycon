@@ -79,7 +79,7 @@ def getWigetContent(handle, params):
         itemsUrl += ("&Recursive=true" +
                      "&SortBy=DateCreated" +
                      "&SortOrder=Descending" +
-                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&Filters={IsUnplayed,}IsNotFolder" +
                      "&IsVirtualUnaired=false" +
                      "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
@@ -97,7 +97,7 @@ def getWigetContent(handle, params):
         itemsUrl += ("&Recursive=true" +
                      "&SortBy=Random" +
                      "&SortOrder=Descending" +
-                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&Filters={IsUnplayed,}IsNotFolder" +
                      "&IsVirtualUnaired=false" +
                      "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
@@ -106,7 +106,7 @@ def getWigetContent(handle, params):
         itemsUrl += ("&Recursive=true" +
                      "&SortBy=DateCreated" +
                      "&SortOrder=Descending" +
-                     "&Filters=IsUnplayed,IsNotFolder" +
+                     "&Filters={IsUnplayed,}IsNotFolder" +
                      "&IsVirtualUnaired=false" +
                      "&IsMissing=False" +
                      "&IncludeItemTypes=Episode")
