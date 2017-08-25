@@ -108,9 +108,22 @@ def playFile(play_info):
     else:
         result["Overview"] = playback_type_string
 
-    list_item = xbmcgui.ListItem(label=result.get("Name", i18n('missing_title')), path=playurl)
+    item_title = result.get("Name", i18n('missing_title'))
+    add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
+    if result.get("Type") == "Episode" and add_episode_number:
+        episode_num = result.get("IndexNumber")
+        if episode_num is not None:
+            if episode_num < 10:
+                episode_num = "0" + str(episode_num)
+            else:
+                episode_num = str(episode_num)
+        else:
+            episode_num = ""
+        item_title =  episode_num + " - " + item_title
 
-    list_item = setListItemProps(id, list_item, result, server, listitem_props)
+    list_item = xbmcgui.ListItem(label=item_title, path=playurl)
+
+    list_item = setListItemProps(id, list_item, result, server, listitem_props, item_title)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -138,7 +151,7 @@ def playFile(play_info):
         xbmc.sleep(100)
         # xbmc.Player().play()
 
-def setListItemProps(id, listItem, result, server, extra_props):
+def setListItemProps(id, listItem, result, server, extra_props, title):
     # set up item and item info
     thumbID = id
     eppNum = -1
@@ -152,13 +165,14 @@ def setListItemProps(id, listItem, result, server, extra_props):
 
     listItem.setProperty('IsPlayable', 'true')
     listItem.setProperty('IsFolder', 'false')
+    listItem.setProperty('id', result.get("Id"))
 
     for prop in extra_props:
         listItem.setProperty(prop[0], prop[1])
 
     # play info
     details = {
-        'title': result.get("Name", i18n('missing_title')),
+        'title': title,
         'plot': result.get("Overview")
     }
 

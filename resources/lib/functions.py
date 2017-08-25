@@ -850,6 +850,7 @@ def processDirectory(results, progress, params):
                      'WatchedEpisodes': str(WatchedEpisodes),
                      'UnWatchedEpisodes': str(UnWatchedEpisodes),
                      'NumEpisodes': str(NumEpisodes),
+                     'OriginalTitle': item.get("Name").encode('utf-8'),
                      'itemtype': item_type,
                      'SubtitleLang': subtitle_lang,
                      'SubtitleAvailable': subtitle_available}
