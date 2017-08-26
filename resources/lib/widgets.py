@@ -154,7 +154,12 @@ def populateWidgetItems(itemsUrl):
             list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'])
 
         # list_item.setLabel2(episodeDetails)
-        list_item.setInfo(type="Video", infoLabels={"title": title, "tvshowtitle": tvshowtitle})
+
+        production_year = item.get("ProductionYear")
+        if not production_year and item.get("PremiereDate"):
+            production_year = int(item.get("PremiereDate")[:4])
+
+        list_item.setInfo(type="Video", infoLabels={"title": title, "tvshowtitle": tvshowtitle, "year": production_year})
         list_item.setProperty('fanart_image', art['fanart'])  # back compat
         list_item.setProperty('discart', art['discart'])  # not avail to setArt
         list_item.setArt(art)

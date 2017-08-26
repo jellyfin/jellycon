@@ -151,7 +151,8 @@ def getArt(item, server, widget=False):
         'clearart': '',
         'discart': '',
         'landscape': '',
-        'tvshow.poster': ''
+        'tvshow.poster': '',
+        'tvshow.clearart': ''
     }
     item_id = item.get("Id")
 
@@ -164,10 +165,16 @@ def getArt(item, server, widget=False):
         else:
             art['thumb'] = downloadUtils.getArtwork(item, "Primary", server=server)
 
+    if item.get("Type") == "Episode" or item.get("Type") == "Season":
+        art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
+        art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Logo", parent=True, server=server)
+    elif item.get("Type") == "Series":
+        art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=False, server=server)
+        art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Logo", parent=False, server=server)
+
     if item.get("Type") == "Episode":
         art['thumb'] = art['thumb'] if art['thumb'] else downloadUtils.getArtwork(item, "Thumb", server=server)
         art['landscape'] = art['thumb'] if art['thumb'] else downloadUtils.getArtwork(item, "Thumb", parent=True, server=server)
-        art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
     else:
         art['poster'] = art['thumb']
 

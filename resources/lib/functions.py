@@ -327,7 +327,8 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
 
     # StartPercent
 
-    artTypes = ['thumb', 'poster', 'fanart', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape', 'tvshow.poster']
+    artTypes = ['thumb', 'poster', 'fanart', 'clearlogo', 'discart', 'banner', 'clearart',
+                'landscape', 'tvshow.poster', 'tvshow.clearart']
     artLinks = {}
     for artType in artTypes:
         artLinks[artType] = extraData.get(artType, '')
@@ -367,6 +368,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     videoInfoLabels["director"] = extraData.get('director')
     videoInfoLabels["writer"] = extraData.get('writer')
     videoInfoLabels["year"] = extraData.get('year')
+    videoInfoLabels["premiered"] = extraData.get('premieredate')
     videoInfoLabels["studio"] = extraData.get('studio')
     videoInfoLabels["genre"] = extraData.get('genre')
 
@@ -824,6 +826,7 @@ def processDirectory(results, progress, params):
                      'clearart': art['clearart'],
                      'landscape': art['landscape'],
                      'tvshow.poster': art['tvshow.poster'],
+                     'tvshow.clearart': art['tvshow.clearart'],
                      'id': id,
                      'mpaa': item.get("OfficialRating"),
                      'rating': item.get("CommunityRating"),
