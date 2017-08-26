@@ -626,16 +626,24 @@ def processDirectory(results, progress, params):
 
         item_type = str(item.get("Type")).encode('utf-8')
 
-        tempEpisode = item.get("IndexNumber")
-        if tempEpisode is not None:
-            if tempEpisode < 10:
-                tempEpisode = "0" + str(tempEpisode)
+        # set the episode number
+        tempEpisode = ""
+        if item_type == "Episode":
+            tempEpisode = item.get("IndexNumber")
+            if tempEpisode is not None:
+                if tempEpisode < 10:
+                    tempEpisode = "0" + str(tempEpisode)
+                else:
+                    tempEpisode = str(tempEpisode)
             else:
-                tempEpisode = str(tempEpisode)
-        else:
-            tempEpisode = ""
+                tempEpisode = ""
 
-        tempSeason = item.get("ParentIndexNumber")
+        # set the season number
+        tempSeason = None
+        if item_type == "Episode":
+            tempSeason = item.get("ParentIndexNumber")
+        elif item_type == "Season":
+            tempSeason = item.get("IndexNumber")
         if tempSeason is not None:
             if tempSeason < 10:
                 tempSeason = "0" + str(tempSeason)

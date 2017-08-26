@@ -117,7 +117,7 @@ class DownloadUtils():
                 imageTag = data.get("ImageTags").get(art_type)
                 log.debug("Image Tag:" + imageTag)
         elif (parent == True):
-            if (itemType == "Episode") and (art_type == 'Primary'):
+            if (itemType == "Episode" or itemType == "Season") and art_type == 'Primary':
                 tagName = 'SeriesPrimaryImageTag'
                 idName = 'SeriesId'
             else:
