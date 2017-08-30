@@ -172,6 +172,8 @@ def populateWidgetItems(itemsUrl):
         totalTime = str(int(float(item.get("RunTimeTicks", "0")) / (10000000 * 60)))
         list_item.setProperty('TotalTime', str(totalTime))
 
+        list_item.setProperty('id', item_id)
+
         # add progress percent
         userData = item.get("UserData")
         if (userData != None):
@@ -230,10 +232,14 @@ def getWidgetContent(handle, params):
                      "&IncludeItemTypes=Movie")
     elif (type == "random_movies"):
         xbmcplugin.setContent(handle, 'movies')
+        watched = params.get("watched", "") == "true"
+        if watched:
+            itemsUrl += "&Filters=IsPlayed,IsNotFolder"
+        else:
+            itemsUrl += "&Filters={IsUnplayed,}IsNotFolder"
         itemsUrl += ("&Recursive=true" +
                      "&SortBy=Random" +
                      "&SortOrder=Descending" +
-                     "&Filters={IsUnplayed,}IsNotFolder" +
                      "&IsVirtualUnaired=false" +
                      "&IsMissing=False" +
                      "&IncludeItemTypes=Movie")
