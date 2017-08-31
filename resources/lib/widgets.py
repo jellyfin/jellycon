@@ -15,6 +15,22 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
+def getSuggestions(handle, params):
+    log.debug("getSuggestions Called" + str(params))
+
+    itemsUrl = ("{server}/emby/Movies/Recommendations" +
+                "?userId={userid}" +
+                "&categoryLimit=1" +
+                "&ItemLimit=8" +
+                "&format=json" +
+                "&ImageTypeLimit=1" +
+                "&IsMissing=False")
+
+    listItems = populateWidgetItems(itemsUrl)
+
+    xbmcplugin.addDirectoryItems(handle, listItems)
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
 def getWidgetContentNextUp(handle, params):
     log.debug("getWidgetContentNextUp Called" + str(params))
 
@@ -105,13 +121,17 @@ def populateWidgetItems(itemsUrl):
 
     # get the items
     jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False, popup=1)
-    log.debug("Recent(Items) jsonData: " + jsonData)
+    log.debug("Widget(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 
-    if result is None or result.get("Items") is None:
-        result = []
-    else:
+    if result is not None and isinstance(result, dict) and result.get("Items") is not None:
+        simmilarTo = result.get("BaselineItemName", None)
         result = result.get("Items")
+    elif result is not None and isinstance(result, list) and len(result) > 0:
+        simmilarTo = result[0].get("BaselineItemName", None)
+        result = result[0].get("Items")
+    else:
+        result = []
 
     itemCount = 1
     listItems = []
@@ -173,6 +193,9 @@ def populateWidgetItems(itemsUrl):
         list_item.setProperty('TotalTime', str(totalTime))
 
         list_item.setProperty('id', item_id)
+
+        if simmilarTo is not None:
+            list_item.setProperty('suggested_from_watching', simmilarTo)
 
         # add progress percent
         userData = item.get("UserData")
