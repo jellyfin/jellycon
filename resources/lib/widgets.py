@@ -179,7 +179,35 @@ def populateWidgetItems(itemsUrl):
         if not production_year and item.get("PremiereDate"):
             production_year = int(item.get("PremiereDate")[:4])
 
-        list_item.setInfo(type="Video", infoLabels={"title": title, "tvshowtitle": tvshowtitle, "year": production_year})
+        overlay = "0"
+        playCount = "0"
+
+        # add progress percent
+        userData = item.get("UserData")
+        if (userData != None):
+            if userData.get("Played") == True:
+                playCount = "1"
+                overlay = "5"
+            else:
+                overlay = "6"
+
+            playBackTicks = float(userData.get("PlaybackPositionTicks"))
+            if (playBackTicks != None and playBackTicks > 0):
+                runTimeTicks = float(item.get("RunTimeTicks", "0"))
+                if (runTimeTicks > 0):
+                    playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
+                    list_item.setProperty('ResumeTime', str(playBackPos))
+
+                    percentage = int((playBackTicks / runTimeTicks) * 100.0)
+                    list_item.setProperty("complete_percentage", str(percentage))
+
+        video_info_label = {"title": title,
+                            "tvshowtitle": tvshowtitle,
+                            "year": production_year,
+                            "Overlay": overlay,
+                            "playcount": playCount}
+
+        list_item.setInfo(type="Video", infoLabels=video_info_label)
         list_item.setProperty('fanart_image', art['fanart'])  # back compat
         list_item.setProperty('discart', art['discart'])  # not avail to setArt
         list_item.setArt(art)
@@ -196,19 +224,6 @@ def populateWidgetItems(itemsUrl):
 
         if simmilarTo is not None:
             list_item.setProperty('suggested_from_watching', simmilarTo)
-
-        # add progress percent
-        userData = item.get("UserData")
-        if (userData != None):
-            playBackTicks = float(userData.get("PlaybackPositionTicks"))
-            if (playBackTicks != None and playBackTicks > 0):
-                runTimeTicks = float(item.get("RunTimeTicks", "0"))
-                if (runTimeTicks > 0):
-                    playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
-                    list_item.setProperty('ResumeTime', str(playBackPos))
-
-                    percentage = int((playBackTicks / runTimeTicks) * 100.0)
-                    list_item.setProperty("complete_percentage", str(percentage))
 
         if select_action == "1":
             playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'
