@@ -4,6 +4,8 @@ import xbmcplugin
 import xbmcgui
 import xbmc
 import json
+import urllib
+from datetime import datetime, timedelta
 
 from downloadutils import DownloadUtils
 from utils import getArt
@@ -14,6 +16,63 @@ log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
+
+def checkForNewContent():
+    log.debug("checkForNewContent Called")
+
+    url = "{server}/emby/system/info/public"
+    headers = {}
+    downloadUtils.downloadUrl(url, suppress=True, authenticate=False, headers=headers)
+
+    date_string = headers.get("date")
+    if date_string is None:
+        log.debug("No date string in responce headers: " + str(headers))
+        return
+
+    server_time = None
+    count = 0
+    while server_time is None and count < 10:
+        try:
+            server_time = datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')  # 'Fri, 01 Sep 2017 04:14:03 GMT'
+        except:
+            log.debug("strptime FAILED:" + str(count))
+            xbmc.sleep(500)
+            count += 1
+            pass
+
+    #server_time = server_time - timedelta(days=1500)
+    log.debug("Server Time: " + str(server_time))
+    time_string = server_time.strftime("%Y-%m-%dT%H:%M:%SZ") # 2017-06-28T22:58:50Z
+    log.debug("Server Time: " + str(time_string))
+
+
+
+    movies_url = ('{server}/emby/Users/{userid}/Items' +
+                         #'?Fields=' + detailsString +
+                         '?Recursive=true' +
+                         '&MinDateLastSavedForUser=' + str(time_string) +
+                         #'&IncludeItemTypes=Episode' +
+                         '&IncludeItemTypes=Movie' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json')
+
+    movie_result = downloadUtils.downloadUrl(movies_url, suppress=True)
+    result = json.loads(movie_result)
+    log.debug("RECENT_SAVED_MOVIES:" + str(result))
+
+
+def getWidgetUrlContent(handle, params):
+    log.debug("getWidgetUrlContent Called" + str(params))
+
+    request = params["url"]
+    request = urllib.unquote(request)
+    request = "{server}/emby/" + request + "&ImageTypeLimit=1&format=json"
+    log.debug("getWidgetUrlContent URL:" + request)
+    listItems = populateWidgetItems(request)
+
+    xbmcplugin.addDirectoryItems(handle, listItems)
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
 
 def getSuggestions(handle, params):
     log.debug("getSuggestions Called" + str(params))

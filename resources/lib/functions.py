@@ -26,7 +26,7 @@ from menu_functions import displaySections, showMovieAlphaList, showGenreList, s
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
-from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions
+from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -134,6 +134,8 @@ def mainEntryPoint():
         getWidgetContentNextUp(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_SUGGESTIONS":
         getSuggestions(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_URL":
+        getWidgetUrlContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
         checkServer(notify=False)
         showParentContent(sys.argv[0], int(sys.argv[1]), params)

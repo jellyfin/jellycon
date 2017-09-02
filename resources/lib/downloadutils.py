@@ -311,7 +311,7 @@ class DownloadUtils():
             log.debug("EmbyCon Authentication Header : " + str(headers))
             return headers
 
-    def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True):
+    def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True, headers=None):
         log.debug("downloadUrl")
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
@@ -411,6 +411,8 @@ class DownloadUtils():
                     return_data = gzipper.read()
                 else:
                     return_data = retData
+                if headers is not None and isinstance(headers, dict):
+                    headers.update(data.getheaders())
                 log.debug("Data Len After : " + str(len(return_data)))
                 log.debug("====== 200 returned =======")
                 log.debug("Content-Type : " + str(contentType))
