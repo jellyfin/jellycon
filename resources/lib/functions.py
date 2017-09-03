@@ -109,8 +109,10 @@ def mainEntryPoint():
         delete(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
-    elif mode == "MOVIE_GENRA":
+    elif mode == "MOVIE_GENRE":
         showGenreList()
+    elif mode == "SERIES_GENRE":
+        showGenreList(item_type="series")
     elif mode == "WIDGETS":
         showWidgets()
     elif mode == "SHOW_MENU":

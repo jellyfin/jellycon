@@ -20,7 +20,7 @@ downloadUtils = DownloadUtils()
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 
 
-def showGenreList():
+def showGenreList(item_type=None):
     log.debug("== ENTER: showGenreList() ==")
 
     server = downloadUtils.getServer()
@@ -29,8 +29,20 @@ def showGenreList():
 
     detailsString = getDetailsString()
 
+    kodi_type = "Movies"
+    emby_type = "Movie"
+    if item_type is not None and item_type == "series":
+        emby_type = "Series"
+        kodi_type = "tvshows"
+
     try:
-        jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?SortBy=SortName&SortOrder=Ascending&IncludeTypes=Movie&Recursive=true&UserId={userid}&format=json")
+        jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?" +
+                                             "SortBy=SortName" +
+                                             "&SortOrder=Ascending" +
+                                             "&IncludeItemTypes=" + emby_type +
+                                             "&Recursive=true" +
+                                             "&UserId={userid}" +
+                                             "&format=json")
         log.debug("GENRE_LIST_DATA : " + jsonData)
     except Exception, msg:
         error = "Get connect : " + str(msg)
@@ -44,11 +56,11 @@ def showGenreList():
     for genre in result:
         item_data = {}
         item_data['title'] = genre.get("Name")
-        item_data['media_type'] = "Movies"
+        item_data['media_type'] = kodi_type
         item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb", server=server)
         item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields=' + detailsString +
                              '&Recursive=true&GenreIds=' + genre.get("Id") +
-                             '&IncludeItemTypes=Movie' +
+                             '&IncludeItemTypes=' + emby_type +
                              '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
@@ -129,8 +141,9 @@ def displaySections():
             log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
-        addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRA")
+        addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRE")
         addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
+        addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=SERIES_GENRE")
         addMenuDirectoryItem(i18n('search'), "plugin://plugin.video.embycon/?mode=SEARCH")
 
         addMenuDirectoryItem(i18n('show_clients'), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
