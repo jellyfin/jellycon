@@ -68,7 +68,10 @@ def getWidgetUrlContent(handle, params):
     request = urllib.unquote(request)
     request = "{server}/emby/" + request + "&ImageTypeLimit=1&format=json"
     log.debug("getWidgetUrlContent URL:" + request)
-    listItems = populateWidgetItems(request)
+
+    select_action = params.get("action", None)
+
+    listItems = populateWidgetItems(request, override_select_action=select_action)
 
     xbmcplugin.addDirectoryItems(handle, listItems)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
@@ -170,11 +173,14 @@ def getWidgetContentCast(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
-def populateWidgetItems(itemsUrl):
+def populateWidgetItems(itemsUrl, override_select_action=None):
 
     server = downloadUtils.getServer()
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     select_action = settings.getSetting("widget_select_action")
+
+    if override_select_action is not None:
+        select_action = str(override_select_action)
 
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
 

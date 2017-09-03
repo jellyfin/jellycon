@@ -332,7 +332,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     # StartPercent
 
     artTypes = ['thumb', 'poster', 'fanart', 'clearlogo', 'discart', 'banner', 'clearart',
-                'landscape', 'tvshow.poster', 'tvshow.clearart']
+                'landscape', 'tvshow.poster', 'tvshow.clearart', 'tvshow.banner', 'tvshow.landscape']
     artLinks = {}
     for artType in artTypes:
         artLinks[artType] = extraData.get(artType, '')
@@ -839,6 +839,8 @@ def processDirectory(results, progress, params):
                      'landscape': art['landscape'],
                      'tvshow.poster': art['tvshow.poster'],
                      'tvshow.clearart': art['tvshow.clearart'],
+                     'tvshow.banner': art['tvshow.banner'],
+                     'tvshow.landscape': art['tvshow.landscape'],
                      'id': id,
                      'mpaa': item.get("OfficialRating"),
                      'rating': item.get("CommunityRating"),
