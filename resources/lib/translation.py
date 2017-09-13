@@ -98,5 +98,6 @@ STRINGS = {
     'movies_unwatched': 30286,
     'tvshows_latest' : 30287,
     '_latest' : 30288,
-    'tvshow_genre': 30289
+    'tvshow_genre': 30289,
+    'all': 30290
 }

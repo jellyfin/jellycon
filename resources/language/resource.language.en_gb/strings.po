@@ -561,3 +561,7 @@ msgstr ""
 msgctxt "#30289"
 msgid "TV Show (Genre)"
 msgstr ""
+
+msgctxt "#30290"
+msgid "All"
+msgstr ""

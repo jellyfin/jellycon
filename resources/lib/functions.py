@@ -621,7 +621,7 @@ def processDirectory(results, progress, params):
 
     item_count = len(result)
     current_item = 1
-
+    added_all_seasons = False
     for item in result:
 
         if (progress != None):
@@ -633,6 +633,38 @@ def processDirectory(results, progress, params):
         isFolder = item.get("IsFolder")
 
         item_type = str(item.get("Type")).encode('utf-8')
+
+        if item_type == "Season" and added_all_seasons == False:
+            series_url = ('{server}/emby/Users/{userid}/items' +
+                          '?ParentId=' + str(item.get("SeriesId")).encode('utf-8') +
+                          '&IsVirtualUnAired=false' +
+                          '&IsMissing=false' +
+                          '&Fields=' + detailsString +
+                          '&Recursive=true' +
+                          '&IncludeItemTypes=Episode' +
+                          '&format=json')
+            details = {'title': i18n('all'),
+            }
+            art = getArt(item, server)
+            # Populate the extraData list
+            extraData = {'thumb': art['tvshow.poster'],
+                         'fanart': art['fanart'],
+                         'poster': art['tvshow.poster'],
+                         'banner': art['tvshow.banner'],
+                         'clearlogo': art['clearlogo'],
+                         'discart': art['discart'],
+                         'clearart': art['clearart'],
+                         'landscape': art['landscape'],
+                         'tvshow.poster': art['tvshow.poster'],
+                         'tvshow.clearart': art['tvshow.clearart'],
+                         'tvshow.banner': art['tvshow.banner'],
+                         'tvshow.landscape': art['tvshow.landscape'],            
+                         'itemtype': 'Episodes',
+                         'UnWatchedEpisodes': '0',
+                         'mode': 'GET_CONTENT',
+            }
+            dirItems.append(addGUIItem(series_url, details, extraData, {}, folder=True))
+            added_all_seasons = True  
 
         # set the episode number
         tempEpisode = ""
