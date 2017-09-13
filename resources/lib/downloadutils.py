@@ -81,12 +81,8 @@ class DownloadUtils():
     def getArtwork(self, data, art_type, parent=False, index="0", width=10000, height=10000, server=None):
 
         id = data.get("Id")
-        '''
-        if data.get("Type") == "Season":  # For seasons: primary (poster), thumb and banner get season art, rest series art
-            if art_type != "Primary" and art_type != "Thumb" and art_type != "Banner":
-                id = data.get("SeriesId")
-        '''
-        if data.get("Type") == "Episode":  # For episodes: primary (episode thumb) gets episode art, rest series art. 
+
+        if data.get("Type") in ["Episode", "Season"]:
             if art_type != "Primary" or parent == True:
                 id = data.get("SeriesId")
 

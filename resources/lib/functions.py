@@ -375,6 +375,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     videoInfoLabels["writer"] = extraData.get('writer')
     videoInfoLabels["year"] = extraData.get('year')
     videoInfoLabels["premiered"] = extraData.get('premieredate')
+    videoInfoLabels["dateadded"] = extraData.get('dateadded')
     videoInfoLabels["studio"] = extraData.get('studio')
     videoInfoLabels["genre"] = extraData.get('genre')
 
@@ -500,6 +501,7 @@ def setSort(pluginhandle, viewType):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
 
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_DATEADDED)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
@@ -695,6 +697,12 @@ def processDirectory(results, progress, params):
             tokens = (item.get("PremiereDate")).split("T")
             premiere_date = tokens[0]
 
+        try:
+            date_added = item['DateCreated']
+            date_added = date_added.split('.')[0].replace('T', " ")
+        except KeyError:
+            date_added = ""
+
         # add the premiered date for Upcoming TV
         if item.get("LocationType") == "Virtual":
             airtime = item.get("AirTime")
@@ -849,6 +857,7 @@ def processDirectory(results, progress, params):
                      'criticrating': item.get("CriticRating"),
                      'year': production_year,
                      'premieredate': premiere_date,
+                     'dateadded': date_added,
                      'locationtype': item.get("LocationType"),
                      'studio': studio,
                      'genre': genre,
