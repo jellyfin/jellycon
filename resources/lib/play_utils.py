@@ -30,7 +30,6 @@ def playFile(play_info):
 
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
-    playback_type = settings.getSetting("playback_type")
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
 
     server = downloadUtils.getServer()
@@ -89,12 +88,12 @@ def playFile(play_info):
             playurl, listitem_props = PlayUtils().getStrmDetails(result)
 
     if not playurl:
-        playurl = PlayUtils().getPlayUrl(id, result, force_transcode)
+        playurl, playback_type = PlayUtils().getPlayUrl(id, result, force_transcode)
 
     log.debug("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
 
     playback_type_string = "DirectPlay"
-    if playback_type == "2" or force_transcode:
+    if playback_type == "2":
         playback_type_string = "Transcode"
     elif playback_type == "1":
         playback_type_string = "DirectStream"

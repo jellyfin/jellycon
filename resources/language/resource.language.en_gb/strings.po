@@ -195,7 +195,7 @@ msgid "Play Error"
 msgstr ""
 
 msgctxt "#30129"
-msgid "This item is not playable"
+msgid "Default"
 msgstr ""
 
 msgctxt "#30135"
@@ -375,7 +375,7 @@ msgid "Episodes"
 msgstr ""
 
 msgctxt "#30236"
-msgid "Save"
+msgid "Action for h265(hevc) video files"
 msgstr ""
 
 msgctxt "#30237"
@@ -383,7 +383,7 @@ msgid "Start from beginning"
 msgstr ""
 
 msgctxt "#30238"
-msgid "Default Sort"
+msgid "Playback Overrides"
 msgstr ""
 
 msgctxt "#30245"

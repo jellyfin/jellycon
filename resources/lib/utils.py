@@ -24,14 +24,32 @@ class PlayUtils():
             log.debug("playback_type: FORCED_TRANSCODE")
         playurl = None
 
+        is_h265 = False
+        streams = result.get("MediaStreams", [])
+        for stream in streams:
+            if stream.get("Type", "") == "Video" and stream.get("Codec", "") in ["hevc", "h265"]:
+                is_h265 = True
+                break
+        if is_h265:
+            log.debug("H265_IS_TRUE")
+            h265_action = addonSettings.getSetting("h265_action")
+            if h265_action == "1":
+                log.debug("H265 override play action: setting to Direct Streaming")
+                playback_type = "1"
+            elif h265_action == "2":
+                log.debug("H265 override play action: setting to Transcode Streaming")
+                playback_type = "2"
+
+        if force_transcode:
+            playback_type = "2"
+
         # transcode
-        if playback_type == "2" or force_transcode:
+        if playback_type == "2":
 
             playback_bitrate = addonSettings.getSetting("playback_bitrate")
             log.debug("playback_bitrate: " + playback_bitrate)
 
-            width_options = ["640", "720", "1024", "1280", "1440", "1600", "1920", "2600", "4096"]
-            playback_max_width = width_options[int(addonSettings.getSetting("playback_max_width"))]
+            playback_max_width = addonSettings.getSetting("playback_max_width")
             playback_video_force_8 = addonSettings.getSetting("playback_video_force_8") == "true"
 
             clientInfo = ClientInformation()
@@ -78,7 +96,7 @@ class PlayUtils():
             playurl = playurl + "&api_key=" + user_token
 
         log.debug("Playback URL: " + playurl)
-        return playurl.encode('utf-8')
+        return playurl.encode('utf-8'), playback_type
 
     def getStrmDetails(self, result):
         playurl = None
