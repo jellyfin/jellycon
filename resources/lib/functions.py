@@ -269,6 +269,8 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     # Create the URL to pass to the item
     if folder:
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode + "&media_type=" + extraData["itemtype"]
+        if extraData.get("name_format"):
+            u += '&name_format=' + urllib.quote(extraData.get("name_format"))
     else:
         u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
 
@@ -278,7 +280,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     listItemName = details.get('title', i18n('unknown'))
 
     # calculate percentage
-    cappedPercentage = None
+    cappedPercentage = 0
     if (extraData.get('resumetime') != None and int(extraData.get('resumetime')) > 0):
         duration = float(extraData.get('duration'))
         if (duration > 0):
@@ -291,10 +293,6 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
         watched = int(extraData.get('WatchedEpisodes'))
         percentage = int((float(watched) / float(totalItems)) * 100.0)
         cappedPercentage = percentage
-        if (cappedPercentage == 0):
-            cappedPercentage = None
-        if (cappedPercentage == 100):
-            cappedPercentage = None
 
     countsAdded = False
     addCounts = display_options.get("addCounts", True)
@@ -303,7 +301,10 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
         listItemName = listItemName + " (" + extraData.get('UnWatchedEpisodes') + ")"
 
     addResumePercent = display_options.get("addResumePercent", True)
-    if (countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
+    if (countsAdded == False
+            and addResumePercent
+            and details.get('title') != None
+            and cappedPercentage not in [0, 100]):
         listItemName = listItemName + " (" + str(cappedPercentage) + "%)"
 
     subtitle_available = display_options.get("addSubtitleAvailable", False)
@@ -321,7 +322,7 @@ def addGUIItem(url, details, extraData, display_options, folder=True):
     log.debug("Setting thumbnail as " + thumbPath)
 
     # calculate percentage
-    if (cappedPercentage != None):
+    if (cappedPercentage != 0):
         list_item.setProperty("complete_percentage", str(cappedPercentage))
 
     # For all end items
@@ -564,6 +565,11 @@ def getContent(url, params):
 
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
+    # if the vie master addon is available then run the script
+    if xbmc.getCondVisibility("System.HasAddon(script.viewmaster)"):
+        xbmc.executebuiltin('RunScript(' + xbmc.translatePath(
+            "special://home/addons/script.viewmaster/default.py") + ',' + viewType + ')')
+
     if (progress != None):
         progress.update(100, i18n('done'))
         progress.close()
@@ -621,7 +627,10 @@ def processDirectory(results, progress, params):
 
     item_count = len(result)
     current_item = 1
-    added_all_seasons = False
+    first_season_item = None
+    total_unwatched = 0
+    total_episodes = 0
+    total_watched = 0
     for item in result:
 
         if (progress != None):
@@ -634,37 +643,8 @@ def processDirectory(results, progress, params):
 
         item_type = str(item.get("Type")).encode('utf-8')
 
-        if item_type == "Season" and added_all_seasons == False:
-            series_url = ('{server}/emby/Users/{userid}/items' +
-                          '?ParentId=' + str(item.get("SeriesId")).encode('utf-8') +
-                          '&IsVirtualUnAired=false' +
-                          '&IsMissing=false' +
-                          '&Fields=' + detailsString +
-                          '&Recursive=true' +
-                          '&IncludeItemTypes=Episode' +
-                          '&format=json')
-            details = {'title': i18n('all'),
-            }
-            art = getArt(item, server)
-            # Populate the extraData list
-            extraData = {'thumb': art['tvshow.poster'],
-                         'fanart': art['fanart'],
-                         'poster': art['tvshow.poster'],
-                         'banner': art['tvshow.banner'],
-                         'clearlogo': art['clearlogo'],
-                         'discart': art['discart'],
-                         'clearart': art['clearart'],
-                         'landscape': art['landscape'],
-                         'tvshow.poster': art['tvshow.poster'],
-                         'tvshow.clearart': art['tvshow.clearart'],
-                         'tvshow.banner': art['tvshow.banner'],
-                         'tvshow.landscape': art['tvshow.landscape'],            
-                         'itemtype': 'Episodes',
-                         'UnWatchedEpisodes': '0',
-                         'mode': 'GET_CONTENT',
-            }
-            dirItems.append(addGUIItem(series_url, details, extraData, {}, folder=True))
-            added_all_seasons = True  
+        if item_type == "Season" and first_season_item is None:
+            first_season_item = item
 
         # set the episode number
         tempEpisode = ""
@@ -868,6 +848,9 @@ def processDirectory(results, progress, params):
         WatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else TotalEpisodes - userData.get("UnplayedItemCount")
         UnWatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else userData.get("UnplayedItemCount")
         NumEpisodes = TotalEpisodes
+        total_unwatched += UnWatchedEpisodes
+        total_episodes += TotalEpisodes
+        total_watched += WatchedEpisodes
 
         art = getArt(item, server)
         # Populate the extraData list
@@ -944,6 +927,48 @@ def processDirectory(results, progress, params):
         else:
             u = id
             dirItems.append(addGUIItem(u, details, extraData, display_options, folder=False))
+
+    # add the all episodes item
+    if first_season_item is not None:
+        series_url = ('{server}/emby/Users/{userid}/items' +
+                      '?ParentId=' + str(first_season_item.get("SeriesId")).encode('utf-8') +
+                      '&IsVirtualUnAired=false' +
+                      '&IsMissing=false' +
+                      '&Fields=' + detailsString +
+                      '&Recursive=true' +
+                      '&IncludeItemTypes=Episode' +
+                      '&format=json')
+        played = 0
+        overlay = "7"
+        if total_unwatched == 0:
+            played = 1
+            overlay = "6"
+        details = {'title': i18n('all'),
+                   'Overlay': overlay,
+                   'playcount': str(played)
+        }
+        art = getArt(first_season_item, server)
+        # Populate the extraData list
+        extraData = {'thumb': art['tvshow.poster'],
+                     'fanart': art['fanart'],
+                     'poster': art['tvshow.poster'],
+                     'banner': art['tvshow.banner'],
+                     'clearlogo': art['clearlogo'],
+                     'discart': art['discart'],
+                     'clearart': art['clearart'],
+                     'landscape': art['landscape'],
+                     'tvshow.poster': art['tvshow.poster'],
+                     'tvshow.clearart': art['tvshow.clearart'],
+                     'tvshow.banner': art['tvshow.banner'],
+                     'tvshow.landscape': art['tvshow.landscape'],
+                     'itemtype': 'Episodes',
+                     'UnWatchedEpisodes': str(total_unwatched),
+                     'TotalEpisodes': str(total_episodes),
+                     'WatchedEpisodes': str(total_watched),
+                     'playcount': str(played),
+                     'mode': 'GET_CONTENT',
+                     'name_format': 'Episode|episode_name_format'}
+        dirItems.append(addGUIItem(series_url, details, extraData, {}, folder=True))
 
     return dirItems
 
