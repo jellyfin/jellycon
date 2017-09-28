@@ -13,6 +13,7 @@ from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.translation import i18n
+from resources.lib.widgets import checkForNewContent
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -292,6 +293,7 @@ monitor = Service()
 last_progress_update = time.time()
 download_utils.checkVersion()
 home_window = HomeWindow()
+last_content_check = time.time()
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -301,15 +303,23 @@ while not xbmc.abortRequested:
 
     try:
         if xbmc.Player().isPlaying():
+            # if playing every 10 seconds updated the server with progress
             if (time.time() - last_progress_update) > 10:
                 last_progress_update = time.time()
                 sendProgress()
         else:
+            # if we have a play item them trigger playback
             play_data = home_window.getProperty("play_item_message")
             if play_data:
                 home_window.clearProperty("play_item_message")
                 play_info = json.loads(play_data)
                 playFile(play_info)
+
+            # if not playing every 60 seonds check for new widget content
+            if (time.time() - last_content_check) > 60:
+                last_content_check = time.time()
+                checkForNewContent()
+
     except Exception as error:
         log.error("Exception in Playback Monitor : " + str(error))
         log.error(traceback.format_exc())

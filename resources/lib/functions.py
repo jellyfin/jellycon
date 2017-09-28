@@ -26,7 +26,7 @@ from menu_functions import displaySections, showMovieAlphaList, showGenreList, s
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
-from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent
+from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -202,7 +202,7 @@ def markWatched(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    home_window.setProperty("embycon_widget_reload", time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -212,7 +212,7 @@ def markUnwatched(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    home_window.setProperty("embycon_widget_reload", time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -222,7 +222,7 @@ def markFavorite(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    home_window.setProperty("embycon_widget_reload", time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -232,7 +232,7 @@ def unmarkFavorite(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    home_window.setProperty("embycon_widget_reload", time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -246,7 +246,7 @@ def delete(item_id):
         downloadUtils.downloadUrl(url, method="DELETE")
         progress.close()
         home_window = HomeWindow()
-        home_window.setProperty("embycon_widget_reload", time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+        checkForNewContent()
         xbmc.executebuiltin("Container.Refresh")
 
 

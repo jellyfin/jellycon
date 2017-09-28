@@ -5,12 +5,13 @@ import xbmcgui
 import xbmc
 import json
 import urllib
-from datetime import datetime, timedelta
+import hashlib
 
 from downloadutils import DownloadUtils
 from utils import getArt
 from datamanager import DataManager
 from simple_logging import SimpleLogging
+from kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -20,45 +21,62 @@ kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 def checkForNewContent():
     log.debug("checkForNewContent Called")
 
-    url = "{server}/emby/system/info/public"
-    headers = {}
-    downloadUtils.downloadUrl(url, suppress=True, authenticate=False, headers=headers)
+    added_url = ('{server}/emby/Users/{userid}/Items' +
+                    '?Recursive=true' +
+                    '&limit=1' +
+                    '&Fields=DateCreated,Etag' +
+                    '&SortBy=DateCreated' +
+                    '&SortOrder=Descending' +
+                    '&IncludeItemTypes=Movie,Episode' +
+                    '&ImageTypeLimit=0' +
+                    '&format=json')
 
-    date_string = headers.get("date")
-    if date_string is None:
-        log.debug("No date string in responce headers: " + str(headers))
-        return
+    added_result = downloadUtils.downloadUrl(added_url, suppress=True)
+    result = json.loads(added_result)
+    log.debug("LATEST_ADDED_ITEM:" + str(result))
 
-    server_time = None
-    count = 0
-    while server_time is None and count < 10:
-        try:
-            server_time = datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')  # 'Fri, 01 Sep 2017 04:14:03 GMT'
-        except:
-            log.debug("strptime FAILED:" + str(count))
-            xbmc.sleep(500)
-            count += 1
-            pass
+    last_added_date = ""
+    if result is not None:
+        items = result.get("Items", [])
+        if len(items) > 0:
+            item = items[0]
+            last_added_date = item.get("Etag", "")
+    log.debug("last_added_date: " + last_added_date)
 
-    #server_time = server_time - timedelta(days=1500)
-    log.debug("Server Time: " + str(server_time))
-    time_string = server_time.strftime("%Y-%m-%dT%H:%M:%SZ") # 2017-06-28T22:58:50Z
-    log.debug("Server Time: " + str(time_string))
+    played_url = ('{server}/emby/Users/{userid}/Items' +
+                    '?Recursive=true' +
+                    '&limit=1' +
+                    '&Fields=DateCreated,Etag' +
+                    '&SortBy=DatePlayed' +
+                    '&SortOrder=Descending' +
+                    '&IncludeItemTypes=Movie,Episode' +
+                    '&ImageTypeLimit=0' +
+                    '&format=json')
 
+    played_result = downloadUtils.downloadUrl(played_url, suppress=True)
+    result = json.loads(played_result)
+    log.debug("LATEST_PLAYED_ITEM:" + str(result))
 
+    last_played_date = ""
+    if result is not None:
+        items = result.get("Items", [])
+        if len(items) > 0:
+            item = items[0]
+            last_played_date = item.get("Etag", "")
+    log.debug("last_played_date: " + last_played_date)
 
-    movies_url = ('{server}/emby/Users/{userid}/Items' +
-                         #'?Fields=' + detailsString +
-                         '?Recursive=true' +
-                         '&MinDateLastSavedForUser=' + str(time_string) +
-                         #'&IncludeItemTypes=Episode' +
-                         '&IncludeItemTypes=Movie' +
-                         '&ImageTypeLimit=1' +
-                         '&format=json')
+    home_window = HomeWindow()
+    current_widget_hash = home_window.getProperty("embycon_widget_reload")
+    log.debug("Current Widget Hash: " + str(current_widget_hash))
 
-    movie_result = downloadUtils.downloadUrl(movies_url, suppress=True)
-    result = json.loads(movie_result)
-    log.debug("RECENT_SAVED_MOVIES:" + str(result))
+    m = hashlib.md5()
+    m.update(last_played_date + last_added_date)
+    new_widget_hash = m.hexdigest()
+    log.debug("New Widget Hash: " + str(new_widget_hash))
+
+    if current_widget_hash != new_widget_hash:
+        home_window.setProperty("embycon_widget_reload", new_widget_hash)
+        log.debug("Setting New Widget Hash: " + str(new_widget_hash))
 
 
 def getWidgetUrlContent(handle, params):
