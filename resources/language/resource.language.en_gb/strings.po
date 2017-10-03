@@ -99,7 +99,7 @@ msgid "Widget item select action"
 msgstr ""
 
 msgctxt "#30027"
-msgid "Show unplayed in recently added"
+msgid "Show watched in recently added"
 msgstr ""
 
 msgctxt "#30044"
