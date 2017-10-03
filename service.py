@@ -79,6 +79,7 @@ def promptForStopActions(item_id, current_possition):
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
     prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
+    play_prompt = settings.getSetting('promptPlayNextEpisodePercentage_prompt') == "true"
     prompt_delete_episode_percentage = int(settings.getSetting('promptDeleteEpisodePercentage'))
     prompt_delete_movie_percentage = int(settings.getSetting('promptDeleteMoviePercentage'))
 
@@ -154,8 +155,13 @@ def promptForStopActions(item_id, current_possition):
         for item in item_list:
             index = item.get("IndexNumber", -1)
             if index == item_index + 1: # find the very next episode in the season
-                next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
-                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
+
+                resp = True
+                if play_prompt:
+                    #next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
+                    next_epp_name = ("%02d - " % (index,)) + item.get("Name", "n/a")
+                    resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
+
                 if resp:
                     next_item_id = item.get("Id")
                     log.debug("Playing Next Episode: %s" % next_item_id)
@@ -321,7 +327,7 @@ while not xbmc.abortRequested:
                 checkForNewContent()
 
             # check version
-            if (time.time() - last_version_check) > (60 * 60 * 2): # every 2 hours
+            if (time.time() - last_version_check) > (60 * 60 * 6): # every 6 hours
                 last_version_check = time.time()
                 download_utils.checkVersion()
 

@@ -335,7 +335,11 @@ msgid "Prompt to delete episode after %"
 msgstr ""
 
 msgctxt "#30218"
-msgid "Prompt to play next episode after %"
+msgid "Play next episode after %"
+msgstr ""
+
+msgctxt "#30219"
+msgid " - Prompt before play"
 msgstr ""
 
 msgctxt "#30220"

@@ -31,6 +31,7 @@
 		<setting label="30215" type="lsep"/>
 		<setting type="sep" />
 		<setting id="promptPlayNextEpisodePercentage" type="slider" label="30218" default="100" range="5,1,100" option="int" visible="true"/>
+		<setting id="promptPlayNextEpisodePercentage_prompt" type="bool" label="30219" default="true" visible="true" enable="true" />
 		<setting id="promptDeleteEpisodePercentage" type="slider" label="30217" default="100" range="5,1,100" option="int" visible="true"/>
 		<setting id="promptDeleteMoviePercentage" type="slider" label="30220" default="100" range="5,1,100" option="int" visible="true"/>
 		<setting label="30121" type="lsep"/>
