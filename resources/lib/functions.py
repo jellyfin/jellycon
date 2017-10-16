@@ -565,10 +565,14 @@ def getContent(url, params):
 
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
-    # if the vie master addon is available then run the script
-    if xbmc.getCondVisibility("System.HasAddon(script.viewmaster)"):
-        xbmc.executebuiltin('RunScript(' + xbmc.translatePath(
-            "special://home/addons/script.viewmaster/default.py") + ',' + viewType + ')')
+    # if the view master addon is available then run the script
+    try:
+        view_addon = xbmcaddon.Addon("script.viewmaster")
+        if view_addon is not None:
+            xbmc.executebuiltin('RunScript(' + xbmc.translatePath(
+                "special://home/addons/script.viewmaster/default.py") + ',' + viewType + ')')
+    except:
+        pass
 
     if (progress != None):
         progress.update(100, i18n('done'))
