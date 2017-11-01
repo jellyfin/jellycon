@@ -37,6 +37,7 @@ def playFile(play_info):
     jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json",
                                          suppress=False, popup=1)
     result = json.loads(jsonData)
+    log.debug("Playfile item info: " + str(result))
 
     seekTime = 0
     auto_resume = int(auto_resume)
@@ -120,8 +121,16 @@ def playFile(play_info):
             episode_num = ""
         item_title =  episode_num + " - " + item_title
 
-    list_item = xbmcgui.ListItem(label=item_title, path=playurl)
+    list_item = xbmcgui.ListItem(label=item_title)
 
+    # if transcoding then prompt for audio and subtitle
+    if playback_type == "2":
+        playurl = audioSubsPref(playurl, list_item, result)
+        log.debug("New playurl for transcoding : " + playurl)
+    elif playback_type == "1":
+        externalSubs(result, list_item)
+
+    list_item.setPath(playurl)
     list_item = setListItemProps(id, list_item, result, server, listitem_props, item_title)
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -184,3 +193,135 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     listItem.setInfo("Video", infoLabels=details)
 
     return listItem
+
+# For transcoding only
+# Present the list of audio and subtitles to select from
+# for external streamable subtitles add the URL to the Kodi item and let Kodi handle it
+# else ask for the subtitles to be burnt in when transcoding
+def audioSubsPref(url, list_item, emby_item):
+
+    dialog = xbmcgui.Dialog()
+    audioStreamsList = {}
+    audioStreams = []
+    audioStreamsChannelsList = {}
+    subtitleStreamsList = {}
+    subtitleStreams = ['No subtitles']
+    downloadableStreams = []
+    selectAudioIndex = ""
+    selectSubsIndex = ""
+    playurlprefs = "%s" % url
+
+    try:
+        mediasources = emby_item['MediaSources'][0]
+        mediastreams = mediasources['MediaStreams']
+    except (TypeError, KeyError, IndexError):
+        return
+
+    for stream in mediastreams:
+        # Since Emby returns all possible tracks together, have to sort them.
+        index = stream['Index']
+
+        if 'Audio' in stream['Type']:
+            codec = stream['Codec']
+            channelLayout = stream.get('ChannelLayout', "")
+
+            try:
+                track = "%s - %s - %s %s" % (index, stream['Language'], codec, channelLayout)
+            except:
+                track = "%s - %s %s" % (index, codec, channelLayout)
+
+            audioStreamsChannelsList[index] = stream['Channels']
+            audioStreamsList[track] = index
+            audioStreams.append(track)
+
+        elif 'Subtitle' in stream['Type']:
+            try:
+                track = "%s - %s" % (index, stream['Language'])
+            except:
+                track = "%s - %s" % (index, stream['Codec'])
+
+            default = stream['IsDefault']
+            forced = stream['IsForced']
+            downloadable = stream['IsTextSubtitleStream'] and stream['IsExternal'] and stream['SupportsExternalStream']
+
+            if default:
+                track = "%s - Default" % track
+            if forced:
+                track = "%s - Forced" % track
+            if downloadable:
+                downloadableStreams.append(index)
+
+            subtitleStreamsList[track] = index
+            subtitleStreams.append(track)
+
+    if len(audioStreams) > 1:
+        resp = dialog.select(i18n('select_audio_stream'), audioStreams)
+        if resp > -1:
+            # User selected audio
+            selected = audioStreams[resp]
+            selectAudioIndex = audioStreamsList[selected]
+            playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
+        else:  # User backed out of selection
+            playurlprefs += "&AudioStreamIndex=%s" % mediasources['DefaultAudioStreamIndex']
+    else:  # There's only one audiotrack.
+        selectAudioIndex = audioStreamsList[audioStreams[0]]
+        playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
+
+    if len(subtitleStreams) > 1:
+        resp = dialog.select(i18n('select_subtitle'), subtitleStreams)
+        if resp == 0:
+            # User selected no subtitles
+            pass
+        elif resp > -1:
+            # User selected subtitles
+            selected = subtitleStreams[resp]
+            selectSubsIndex = subtitleStreamsList[selected]
+
+            # Load subtitles in the listitem if downloadable
+            if selectSubsIndex in downloadableStreams:
+
+                itemid = emby_item['Id']
+                url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                        % (downloadUtils.getServer(), itemid, itemid, selectSubsIndex))]
+                log.debug("Streaming subtitles url: %s %s" % (selectSubsIndex, url))
+                list_item.setSubtitles(url)
+            else:
+                # Burn subtitles
+                playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
+
+        else:  # User backed out of selection
+            playurlprefs += "&SubtitleStreamIndex=%s" % mediasources.get('DefaultSubtitleStreamIndex', "")
+
+    # Get number of channels for selected audio track
+    audioChannels = audioStreamsChannelsList.get(selectAudioIndex, 0)
+    if audioChannels > 2:
+        playurlprefs += "&AudioBitrate=384000"
+    else:
+        playurlprefs += "&AudioBitrate=192000"
+
+    return playurlprefs
+
+# direct stream, set any available subtitle streams
+def externalSubs(emby_item, list_item):
+
+    externalsubs = []
+    itemid = emby_item['Id']
+    try:
+        mediastreams = emby_item['MediaSources'][0]['MediaStreams']
+    except (TypeError, KeyError, IndexError):
+        return
+
+    for stream in mediastreams:
+
+        if (stream['Type'] == "Subtitle"
+                and stream['IsExternal']
+                and stream['IsTextSubtitleStream']
+                and stream['SupportsExternalStream']):
+
+            index = stream['Index']
+            url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s"
+                   % (downloadUtils.getServer(), itemid, itemid, index, stream['Codec']))
+
+            externalsubs.append(url)
+
+    list_item.setSubtitles(externalsubs)

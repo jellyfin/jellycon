@@ -97,5 +97,7 @@ STRINGS = {
     'tvshows_latest' : 30287,
     '_latest' : 30288,
     'tvshow_genre': 30289,
-    'all': 30290
+    'all': 30290,
+    'select_audio_stream': 30291,
+    'select_subtitle': 30292
 }

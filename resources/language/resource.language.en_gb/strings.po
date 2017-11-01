@@ -569,3 +569,11 @@ msgstr ""
 msgctxt "#30290"
 msgid "All"
 msgstr ""
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr ""
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr ""
