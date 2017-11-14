@@ -2,6 +2,8 @@
 import xbmcaddon
 import re
 import encodings
+import string
+import random
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -14,7 +16,7 @@ log = SimpleLogging(__name__)
 
 ###########################################################################
 class PlayUtils():
-    def getPlayUrl(self, id, result, force_transcode):
+    def getPlayUrl(self, id, result, force_transcode, play_session_id):
         log.debug("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
@@ -23,6 +25,7 @@ class PlayUtils():
         if force_transcode:
             log.debug("playback_type: FORCED_TRANSCODE")
         playurl = None
+        log.debug("play_session_id: " + play_session_id)
 
         is_h265 = False
         streams = result.get("MediaStreams", [])
@@ -58,8 +61,8 @@ class PlayUtils():
             user_token = downloadUtils.authenticate()
 
             playurl = (
-                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
-                % (server, id, id, deviceId, bitrate))
+                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&PlaySessionId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s&DeviceId=%s"
+                % (server, id, id, play_session_id, deviceId, bitrate))
 
             playurl = playurl + "&maxWidth=" + playback_max_width
 
@@ -91,7 +94,7 @@ class PlayUtils():
 
         # do direct http streaming playback
         elif playback_type == "1":
-            playurl = "%s/emby/Videos/%s/stream?static=true" % (server, id)
+            playurl = "%s/emby/Videos/%s/stream?static=true&PlaySessionId=%s" % (server, id, play_session_id)
             user_token = downloadUtils.authenticate()
             playurl = playurl + "&api_key=" + user_token
 
@@ -220,3 +223,7 @@ def getArt(item, server, widget=False):
     art['discart'] = downloadUtils.getArtwork(item, "Disc", server=server)
 
     return art
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))

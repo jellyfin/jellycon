@@ -7,11 +7,12 @@ import xbmcaddon
 from datetime import timedelta
 import time
 import json
+import hashlib
 
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
 from resume_dialog import ResumeDialog
-from utils import PlayUtils, getArt
+from utils import PlayUtils, getArt, id_generator
 from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
@@ -81,6 +82,8 @@ def playFile(play_info):
 
     listitem_props = []
     playurl = None
+    play_session_id = id_generator()
+    log.debug("play_session_id: %s" % play_session_id)
 
     # check if strm file, path will contain contain strm contents
     if result.get('MediaSources'):
@@ -89,7 +92,7 @@ def playFile(play_info):
             playurl, listitem_props = PlayUtils().getStrmDetails(result)
 
     if not playurl:
-        playurl, playback_type = PlayUtils().getPlayUrl(id, result, force_transcode)
+        playurl, playback_type = PlayUtils().getPlayUrl(id, result, force_transcode, play_session_id)
 
     log.debug("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
 
@@ -101,6 +104,7 @@ def playFile(play_info):
 
     home_window = HomeWindow()
     home_window.setProperty("PlaybackType_" + id, playback_type_string)
+    home_window.setProperty("PlaySessionId_" + id, play_session_id)
 
     # add the playback type into the overview
     if result.get("Overview", None) is not None:

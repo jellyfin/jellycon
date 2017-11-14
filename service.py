@@ -57,6 +57,7 @@ def sendProgress():
     ticks = int(play_time * 10000000)
     paused = play_data.get("paused", False)
     playback_type = play_data.get("playback_type")
+    play_session_id = play_data.get("play_session_id")
 
     postdata = {
         'QueueableMediaTypes': "Video",
@@ -66,7 +67,8 @@ def sendProgress():
         'PositionTicks': ticks,
         'IsPaused': paused,
         'IsMuted': False,
-        'PlayMethod': playback_type
+        'PlayMethod': playback_type,
+        'PlaySessionId': play_session_id
     }
 
     log.debug("Sending POST progress started: %s." % postdata)
@@ -227,6 +229,7 @@ class Service(xbmc.Player):
         home_window = HomeWindow()
         emby_item_id = home_window.getProperty("item_id")
         playback_type = home_window.getProperty("PlaybackType_" + emby_item_id)
+        play_session_id = home_window.getProperty("PlaySessionId_" + emby_item_id)
 
         # if we could not find the ID of the current item then return
         if emby_item_id is None or len(emby_item_id) == 0:
@@ -238,7 +241,8 @@ class Service(xbmc.Player):
             'CanSeek': True,
             'ItemId': emby_item_id,
             'MediaSourceId': emby_item_id,
-            'PlayMethod': playback_type
+            'PlayMethod': playback_type,
+            'PlaySessionId': play_session_id
         }
 
         log.debug("Sending POST play started: %s." % postdata)
@@ -250,6 +254,7 @@ class Service(xbmc.Player):
         data["item_id"] = emby_item_id
         data["paused"] = False
         data["playback_type"] = playback_type
+        data["play_session_id"] = play_session_id
         self.played_information[current_playing_file] = data
 
         log.debug("ADDING_FILE : " + current_playing_file)
