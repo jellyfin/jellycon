@@ -151,6 +151,7 @@ def displaySections():
 
     addMenuDirectoryItem(i18n('detect_server'), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
     addMenuDirectoryItem(i18n('show_settings'), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem("Cache Artwork", "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
 
     if collections:
         addMenuDirectoryItem(i18n('widgets'), "plugin://plugin.video.embycon/?mode=WIDGETS")

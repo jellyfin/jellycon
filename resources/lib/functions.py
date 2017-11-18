@@ -16,7 +16,7 @@ import xbmcaddon
 import xbmc
 
 from downloadutils import DownloadUtils
-from utils import getDetailsString, getArt
+from utils import getDetailsString, getArt, cache_artwork
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
@@ -88,6 +88,8 @@ def mainEntryPoint():
 
     if mode == "CHANGE_USER":
         checkServer(change_user=True, notify=False)
+    elif mode== "CACHE_ARTWORK":
+        cache_artwork()
     elif mode == "DETECT_SERVER":
         checkServer(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":

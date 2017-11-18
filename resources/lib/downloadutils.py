@@ -427,7 +427,7 @@ class DownloadUtils():
                 log.error(error)
                 if suppress is False:
                     if popup == 0:
-                        xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') + str(data.reason))
+                        xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(data.reason))
                     else:
                         xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % str(data.reason))
                 log.error(error)
@@ -437,7 +437,7 @@ class DownloadUtils():
             log.error(error)
             if suppress is False:
                 if popup == 0:
-                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') + str(msg))
+                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(msg))
                 else:
                     xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'), str(msg))
                 #raise
