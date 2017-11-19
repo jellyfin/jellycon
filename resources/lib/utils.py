@@ -71,7 +71,7 @@ class PlayUtils():
             user_token = downloadUtils.authenticate()
 
             playurl = (
-                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&PlaySessionId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s&DeviceId=%s"
+                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&PlaySessionId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
                 % (server, id, id, play_session_id, deviceId, bitrate))
 
             playurl = playurl + "&maxWidth=" + playback_max_width

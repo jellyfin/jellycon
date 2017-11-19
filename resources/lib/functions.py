@@ -1281,6 +1281,8 @@ def PLAY(params):
     # set all the playback info, this will be picked up by the service
     # the service will then start the playback
 
+    xbmc.Player().stop()
+
     play_info = {}
     play_info["item_id"] =  item_id
     play_info["auto_resume"] = str(auto_resume)
@@ -1290,3 +1292,5 @@ def PLAY(params):
     home_window = HomeWindow()
     home_window.setProperty("item_id", item_id)
     home_window.setProperty("play_item_message", play_data)
+
+    xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
