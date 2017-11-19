@@ -577,3 +577,52 @@ msgstr ""
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
 msgstr ""
+
+msgctxt "#30293"
+msgid "Cache Artwork"
+msgstr ""
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr ""
+
+msgctxt "#30295"
+msgid "To use this feature you need to enabled HTTP control in Kodi"
+msgstr ""
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr ""
+
+msgctxt "#30297"
+msgid "Delete all existing textures?"
+msgstr ""
+
+msgctxt "#30298"
+msgid "Deleting Textures"
+msgstr ""
+
+msgctxt "#30299"
+msgid "Cache Textures"
+msgstr ""
+
+msgctxt "#30300"
+msgid "Cache all Emby media images as local Kodi textures?"
+msgstr ""
+
+msgctxt "#30301"
+msgid "Caching Textures"
+msgstr ""
+
+msgctxt "#30302"
+msgid "Existing Textures: "
+msgstr ""
+
+msgctxt "#30303"
+msgid "Missing Textures: "
+msgstr ""
+
+msgctxt "#30304"
+msgid "Loaded Textures: "
+msgstr ""
+

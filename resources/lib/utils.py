@@ -17,6 +17,7 @@ from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from clientinfo import ClientInformation
 from json_rpc import json_rpc
+from translation import i18n
 
 # define our global download utils
 downloadUtils = DownloadUtils()
@@ -248,7 +249,7 @@ def cache_artwork():
     result = json_rpc('Settings.GetSettingValue').execute(web_query)
     xbmc_webserver_enabled = result['result']['value']
     if not xbmc_webserver_enabled:
-        xbmcgui.Dialog().ok("Notice", "To use this feature you need to enabled HTTP control in Kodi")
+        xbmcgui.Dialog().ok(i18n('notice'), i18n('http_control'))
         return
 
     # get the port
@@ -269,10 +270,10 @@ def cache_artwork():
     xbmc_password = result['result']['value']
 
     # ask to delete all textures
-    question_result = xbmcgui.Dialog().yesno("Delete Existing", "Delete all existing textures?")
+    question_result = xbmcgui.Dialog().yesno(i18n('delete'), i18n('delete_existing'))
     if question_result:
         pdialog = xbmcgui.DialogProgress()
-        pdialog.create("Deleteing Textures", "")
+        pdialog.create(i18n('deleting_textures'), "")
         index = 0
 
         json_result = json_rpc('Textures.GetTextures').execute()
@@ -294,7 +295,7 @@ def cache_artwork():
         del textures
         del pdialog
 
-    question_result = xbmcgui.Dialog().yesno("Cache all textures", "Cache all Emby media images as Kodi textures?")
+    question_result = xbmcgui.Dialog().yesno(i18n('cache_all_textures_title'), i18n('cache_all_textures'))
     if not question_result:
         return
 
@@ -315,7 +316,7 @@ def cache_artwork():
 
     url = ('{server}/emby/Users/{userid}/Items?' +
         '&Recursive=true' +
-        '&IncludeItemTypes=Movie' +
+        '&IncludeItemTypes=Movie,Series,Episode,BoxSet' +
         '&ImageTypeLimit=1' +
         '&format=json')
 
@@ -329,7 +330,6 @@ def cache_artwork():
         results = results.get("Items")
 
     server = downloadUtils.getServer()
-
     missing_texture_urls = set()
 
     image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
@@ -352,7 +352,7 @@ def cache_artwork():
         headers = {'Authorization': 'Basic %s' % base64.b64encode(auth)}
 
     pdialog = xbmcgui.DialogProgress()
-    pdialog.create("Caching Textures", "")
+    pdialog.create(i18n('caching_textures'), "")
     total = len(missing_texture_urls)
     index = 1
 
@@ -360,9 +360,8 @@ def cache_artwork():
     for get_url in missing_texture_urls:
         log.debug("texture_url:" + get_url)
         url = double_urlencode(get_url)
-        #kodi_texture_url = ("http://%s:%s/image/image://%s"% ("localhost", "8080", url))
         kodi_texture_url = ("/image/image://%s" % url)
-        log.debug("kodi_texture_url" + kodi_texture_url)
+        log.debug("kodi_texture_url: " + kodi_texture_url)
 
         percentage = int((float(index) / float(total)) * 100)
         message = "%s of %s" % (index, total)
@@ -382,10 +381,10 @@ def cache_artwork():
     pdialog.close()
     del pdialog
 
-    report_text = "Existing Textures: " + str(len(texture_urls)) + "\n"
-    report_text += "Missing Textures: " + str(len(missing_texture_urls)) + "\n"
-    report_text += "Loaded Textures: " + str(count_done)
-    xbmcgui.Dialog().ok("Done", "Texture caching finished", report_text)
+    report_text = i18n('existing_textures') + str(len(texture_urls)) + "\n"
+    report_text += i18n('missing_textures') + str(len(missing_texture_urls)) + "\n"
+    report_text += i18n('loaded_textures') + str(count_done)
+    xbmcgui.Dialog().ok(i18n('done'), report_text)
 
 
 def double_urlencode(text):

@@ -99,5 +99,17 @@ STRINGS = {
     'tvshow_genre': 30289,
     'all': 30290,
     'select_audio_stream': 30291,
-    'select_subtitle': 30292
+    'select_subtitle': 30292,
+    'cache_textures': 30293,
+    'notice': 30294,
+    'http_control': 30295,
+    'delete': 30296,
+    'delete_existing': 30297,
+    'deleting_textures': 30298,
+    'cache_all_textures_title': 30299,
+    'cache_all_textures': 30300,
+    'caching_textures': 30301,
+    'existing_textures': 30302,
+    'missing_textures': 30303,
+    'loaded_textures': 30304
 }
