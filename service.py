@@ -304,7 +304,6 @@ monitor = Service()
 home_window = HomeWindow()
 last_progress_update = time.time()
 last_content_check = time.time()
-last_version_check = 0
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -330,11 +329,6 @@ while not xbmc.abortRequested:
             if (time.time() - last_content_check) > 60:
                 last_content_check = time.time()
                 checkForNewContent()
-
-            # check version
-            if (time.time() - last_version_check) > (60 * 60 * 6): # every 6 hours
-                last_version_check = time.time()
-                download_utils.checkVersion()
 
     except Exception as error:
         log.error("Exception in Playback Monitor : " + str(error))
