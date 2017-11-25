@@ -1293,4 +1293,4 @@ def PLAY(params):
     home_window.setProperty("item_id", item_id)
     home_window.setProperty("play_item_message", play_data)
 
-    xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
+    #xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
