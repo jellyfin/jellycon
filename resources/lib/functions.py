@@ -841,11 +841,10 @@ def processDirectory(results, progress, params):
         if item_type == "Episode" or item_type == "Season":
             details['season'] = tempSeason
 
-        try:
-            tempDuration = str(int(item.get("RunTimeTicks", "0")) / (10000000))
-        except TypeError:
+        tempDuration = "0"
+        if isFolder == False:
             try:
-                tempDuration = str(int(item.get("CumulativeRunTimeTicks")) / (10000000))
+                tempDuration = str(long(item.get("RunTimeTicks", "0")) / (10000000))
             except TypeError:
                 tempDuration = "0"
 
@@ -951,7 +950,8 @@ def processDirectory(results, progress, params):
             overlay = "6"
         details = {'title': i18n('all'),
                    'Overlay': overlay,
-                   'playcount': str(played)
+                   'playcount': str(played),
+                   'TVShowTitle': first_season_item.get("SeriesName")
         }
         art = getArt(first_season_item, server)
         # Populate the extraData list
@@ -967,7 +967,7 @@ def processDirectory(results, progress, params):
                      'tvshow.clearart': art['tvshow.clearart'],
                      'tvshow.banner': art['tvshow.banner'],
                      'tvshow.landscape': art['tvshow.landscape'],
-                     'itemtype': 'Episodes',
+                     'itemtype': 'Season',#''Episodes',
                      'UnWatchedEpisodes': str(total_unwatched),
                      'TotalEpisodes': str(total_episodes),
                      'WatchedEpisodes': str(total_watched),
