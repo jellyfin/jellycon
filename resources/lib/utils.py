@@ -120,7 +120,9 @@ class PlayUtils():
 
         line_break = '\r'
         if '\r\n' in contents:
-            line_break += '\n'
+            line_break = '\r\n'
+        elif '\n' in contents:
+            line_break = '\n'
 
         lines = contents.split(line_break)
         for line in lines:
@@ -129,6 +131,9 @@ class PlayUtils():
                 match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
                 if match:
                     listitem_props.append((match.group('item_property'), match.group('property_value')))
+            elif line.startswith('#'):
+                #  unrecognized, treat as comment
+                pass
             elif line != '':
                 playurl = line
 

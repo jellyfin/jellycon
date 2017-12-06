@@ -81,6 +81,7 @@ def playFile(play_info):
                 return
 
     listitem_props = []
+    playback_type = "0"
     playurl = None
     play_session_id = id_generator()
     log.debug("play_session_id: %s" % play_session_id)
