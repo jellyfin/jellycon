@@ -127,17 +127,22 @@ class PlayUtils():
         lines = contents.split(line_break)
         for line in lines:
             line = line.strip()
+            log.debug("STRM Line: " + line)
             if line.startswith('#KODIPROP:'):
                 match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
                 if match:
+                    log.debug("STRM property found: " + match.group('item_property') + " Value: " + match.group('property_value'))
                     listitem_props.append((match.group('item_property'), match.group('property_value')))
+                else:
+                    log.debug("STRM #KODIPROP incorrect format")
             elif line.startswith('#'):
                 #  unrecognized, treat as comment
-                pass
+                log.debug("STRM unrecognized line identifier, ignored")
             elif line != '':
                 playurl = line
+                log.debug("STRM playback url found")
 
-        log.debug("Playback URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+        log.debug("Playback URL: " + str(playurl) + " ListItem Properties: " + str(listitem_props))
         return playurl, listitem_props
 
 

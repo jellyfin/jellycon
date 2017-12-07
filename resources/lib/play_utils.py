@@ -91,11 +91,13 @@ def playFile(play_info):
         source = result['MediaSources'][0]
         if source.get('Container') == 'strm':
             playurl, listitem_props = PlayUtils().getStrmDetails(result)
+            if playurl is None:
+                return
 
     if not playurl:
         playurl, playback_type = PlayUtils().getPlayUrl(id, result, force_transcode, play_session_id)
 
-    log.debug("Play URL: " + playurl + " ListItem Properties: " + str(listitem_props))
+    log.debug("Play URL: " + str(playurl) + " ListItem Properties: " + str(listitem_props))
 
     playback_type_string = "DirectPlay"
     if playback_type == "2":
