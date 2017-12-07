@@ -210,10 +210,6 @@ msgctxt "#30137"
 msgid "Please restart Kodi"
 msgstr ""
 
-msgctxt "#30138"
-msgid "Cache Emby Data Locally"
-msgstr ""
-
 msgctxt "#30139"
 msgid "No Media Type Set"
 msgstr ""

@@ -56,6 +56,5 @@
 	</category>
 	<category label="30022"> <!-- Advanced -->
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
-		<setting id="cacheEmbyData" type="bool" label="30138" default="false" visible="true" enable="true" />
 	</category>
 </settings>
