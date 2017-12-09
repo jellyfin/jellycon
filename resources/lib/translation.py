@@ -111,5 +111,7 @@ STRINGS = {
     'caching_textures': 30301,
     'existing_textures': 30302,
     'missing_textures': 30303,
-    'loaded_textures': 30304
+    'loaded_textures': 30304,
+    'not_found_': 30305,
+    'playback_starting_': 30306
 }

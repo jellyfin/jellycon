@@ -622,3 +622,10 @@ msgctxt "#30304"
 msgid "Loaded Textures: "
 msgstr ""
 
+msgctxt "#30305"
+msgid "Not Found: %s"
+msgstr ""
+
+msgctxt "#30306"
+msgid "Playback starting: %s"
+msgstr ""

@@ -27,6 +27,8 @@ from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
 from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
+import trakttokodi
+
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -166,6 +168,9 @@ def mainEntryPoint():
     elif mode == "SHOW_SERVER_SESSIONS":
         checkServer(notify=False)
         showServerSessions()
+    elif mode == "TRAKTTOKODI":
+        checkServer(notify=False)
+        trakttokodi.entry_point(params)
     else:
         checkServer(notify=False)
         log.debug("EmbyCon -> Mode: " + str(mode))
