@@ -119,6 +119,51 @@ def showMovieAlphaList():
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+def showYearsList():
+
+    server = downloadUtils.getServer()
+    if server is None:
+        return
+
+    detailsString = getDetailsString()
+
+    jsonData = downloadUtils.downloadUrl("{server}/emby/Years" +
+                                         "?SortBy=SortName" +
+                                         "&SortOrder=Ascending" +
+                                         "&IncludeItemTypes=Movie" +
+                                         "&Recursive=true" +
+                                         "&UserId={userid}" +
+                                         "&format=json")
+    log.debug("YEAR_LIST_DATA : " + jsonData)
+
+    result = json.loads(jsonData)
+    result = result.get("Items")
+
+    collections = []
+
+    for year in result:
+        item_data = {}
+        item_data['title'] = year.get("Name")
+        item_data['media_type'] = "Movies"
+        #item_data['thumbnail'] = server + "/Years/" +  year.get("Name") + "/Images/Thumb"
+        item_data['path'] = ('{server}/emby/Users/{userid}/Items'
+                             '?Fields=' + detailsString +
+                             '&Recursive=true' +
+                             '&Years=' + year.get("Name") +
+                             '&IncludeItemTypes=Movie' +
+                             '&ImageTypeLimit=1' +
+                             '&format=json')
+        collections.append(item_data)
+
+    for collection in collections:
+        url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
+                             "&mode=GET_CONTENT" +
+                             "&media_type=" + collection["media_type"])
+        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)#, thumbnail=collection.get("thumbnail"))
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 
 def displaySections():
     log.debug("== ENTER: displaySections() ==")
@@ -141,6 +186,7 @@ def displaySections():
             log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
+        addMenuDirectoryItem(i18n('movies_year'), "plugin://plugin.video.embycon/?mode=MOVIE_YEARS")
         addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRE")
         addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
         addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=SERIES_GENRE")

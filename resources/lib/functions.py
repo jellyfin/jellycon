@@ -22,7 +22,7 @@ from clientinfo import ClientInformation
 from datamanager import DataManager
 from server_detect import checkServer
 from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch, showYearsList
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
@@ -117,6 +117,8 @@ def mainEntryPoint():
         showGenreList()
     elif mode == "SERIES_GENRE":
         showGenreList(item_type="series")
+    elif mode == "MOVIE_YEARS":
+        showYearsList()
     elif mode == "WIDGETS":
         showWidgets()
     elif mode == "SHOW_MENU":

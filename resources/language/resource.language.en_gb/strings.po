@@ -426,6 +426,10 @@ msgctxt "#30254"
 msgid "Show Settings"
 msgstr ""
 
+msgctxt "#30255"
+msgid "Movies (Year)"
+msgstr ""
+
 msgctxt "#30256"
 msgid "Movies - All"
 msgstr ""
