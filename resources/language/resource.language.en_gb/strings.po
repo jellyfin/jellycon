@@ -641,3 +641,11 @@ msgstr ""
 msgctxt "#30306"
 msgid "Playback starting: %s"
 msgstr ""
+
+msgctxt "#30307"
+msgid "Emby: Play Trailer"
+msgstr ""
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr ""

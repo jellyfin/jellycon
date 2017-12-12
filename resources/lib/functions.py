@@ -111,6 +111,9 @@ def mainEntryPoint():
     elif sys.argv[1] == "delete":
         item_id = sys.argv[2]
         delete(item_id)
+    elif mode == "playTrailer":
+        item_id = params["id"]
+        playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
     elif mode == "MOVIE_GENRE":
@@ -451,6 +454,10 @@ def addContextMenu(details, extraData, folder):
         if not folder:
             argsToPass = "?mode=PLAY&item_id=" + item_id + "&force_transcode=true"
             commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
+
+        if not folder and extraData.get("itemtype", "") == "Movie":
+            argsToPass = "?mode=playTrailer&id=" + item_id
+            commands.append((i18n('play_trailer'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
 
         # watched/unwatched
         if extraData.get("playcount") == "0":
@@ -1309,3 +1316,62 @@ def PLAY(params):
     home_window.setProperty("play_item_message", play_data)
 
     #xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
+
+def playTrailer(id):
+    log.debug("== ENTER: playTrailer ==")
+
+    url = ("{server}/emby/Users/{userid}/Items/%s/LocalTrailers?format=json" % id)
+
+    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    result = json.loads(jsonData)
+    log.debug("LocalTrailers" + str(result))
+
+    trailer_list = []
+    for trailer in result:
+        info = {}
+        info["type"] = "local"
+        info["name"] = trailer.get("Name", "na")
+        info["id"] = trailer.get("Id")
+        trailer_list.append(info)
+
+    url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % id)
+    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    result = json.loads(jsonData)
+    log.debug("RemoteTrailers" + str(result))
+
+    remote_trailers = result.get("RemoteTrailers", [])
+    for trailer in remote_trailers:
+        info = {}
+        info["type"] = "remote"
+        info["name"] = trailer.get("Name", "na")
+        url = trailer.get("Url", "none")
+        if url.lower().find("youtube"):
+            info["url"] = url
+            trailer_list.append(info)
+
+    log.debug("TrailerList: " + str(trailer_list))
+
+    trailer_text = []
+    for trailer in trailer_list:
+        name = trailer.get("name") + " (" + trailer.get("type") + ")"
+        trailer_text.append(name)
+
+    dialog = xbmcgui.Dialog()
+    resp = dialog.select(i18n('select_trailer'), trailer_text)
+    if resp > -1:
+        trailer = trailer_list[resp]
+        log.debug("SelectedTrailer: " + str(trailer))
+
+        if trailer.get("type") == "local":
+            params = {}
+            params["item_id"] = trailer.get("id")
+            PLAY(params)
+
+        elif trailer.get("type") == "remote":
+            youtube_id = trailer.get("url").rsplit('=', 1)[1]
+            log.debug("YoutubeID: " + str(youtube_id))
+            youtube_plugin = "PlayMedia(plugin://plugin.video.youtube/?action=play_video&videoid=%s)" % youtube_id
+            xbmc.executebuiltin(youtube_plugin)
+
+
+

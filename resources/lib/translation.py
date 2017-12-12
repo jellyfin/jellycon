@@ -114,5 +114,7 @@ STRINGS = {
     'missing_textures': 30303,
     'loaded_textures': 30304,
     'not_found_': 30305,
-    'playback_starting_': 30306
+    'playback_starting_': 30306,
+    'play_trailer': 30307,
+    'select_trailer': 30308
 }
