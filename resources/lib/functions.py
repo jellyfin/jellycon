@@ -632,6 +632,7 @@ def processDirectory(results, progress, params):
 
     add_season_number = settings.getSetting('addSeasonNumber') == 'true'
     add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
+    hide_unwatched_details = settings.getSetting('hide_unwatched_details') == 'true'
 
     display_options = {}
     display_options["addCounts"] = settings.getSetting("addCounts") == 'true'
@@ -917,6 +918,12 @@ def processDirectory(results, progress, params):
         extraData["Path"] = item.get("Path")
 
         extraData['mode'] = "GET_CONTENT"
+
+        # if set, for unwatched episodes dont show some of the info
+        if hide_unwatched_details and item_type == "Episode" and playCount == 0:
+            details['plot'] = "[Spoiler Alert]"
+            extraData["poster"] = extraData["tvshow.poster"]
+            extraData["thumb"] = extraData["tvshow.poster"]
 
         if isFolder == True:
 

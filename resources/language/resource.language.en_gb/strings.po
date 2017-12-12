@@ -90,6 +90,10 @@ msgctxt "#30022"
 msgid "Advanced"
 msgstr ""
 
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr ""
+
 msgctxt "#30024"
 msgid "Username:"
 msgstr ""
