@@ -82,6 +82,10 @@ msgctxt "#30020"
 msgid "Flatten single season"
 msgstr ""
 
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr ""
+
 msgctxt "#30022"
 msgid "Advanced"
 msgstr ""

@@ -39,7 +39,6 @@
 		<setting id="jump_back_amount" type="slider" label="30114" default="15" range="0,1,60" option="int" visible="true"/>
 	</category>
 	<category label="30110">
-		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />
 		<setting id="addSeasonNumber" type="bool" label="30162" default="false" visible="true" enable="true" />        
 		<setting id="addEpisodeNumber" type="bool" label="30119" default="true" visible="true" enable="true" />
@@ -49,6 +48,7 @@
 		<setting id="include_media" type="bool" label="30182" default="true" visible="true" enable="true" />
 		<setting id="include_people" type="bool" label="30183" default="false" visible="true" enable="true" />
 		<setting id="flatten_single_season" type="bool" label="30020" default="true" visible="true" enable="true" />
+		<setting id="show_all_episodes" type="bool" label="30021" default="true" visible="true" enable="true" />
 		<setting id="show_x_filtered_items" type="slider" label="30018" default="20" range="5,1,100" option="int" visible="true"/>
 		<setting id="show_latest_unplayed" type="bool" label="30027" default="false" visible="true" enable="true" />
 		<setting id="widget_select_action" type="enum" label="30026" lvalues="menu|play" default="0" visible="true"/>
@@ -56,5 +56,6 @@
 	</category>
 	<category label="30022"> <!-- Advanced -->
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
+		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 	</category>
 </settings>
