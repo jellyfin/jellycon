@@ -26,7 +26,7 @@ log = SimpleLogging(__name__)
 
 ###########################################################################
 class PlayUtils():
-    def getPlayUrl(self, id, result, force_transcode, play_session_id):
+    def getPlayUrl(self, id, media_source, force_transcode, play_session_id):
         log.debug("getPlayUrl")
         addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
         playback_type = addonSettings.getSetting("playback_type")
@@ -36,9 +36,11 @@ class PlayUtils():
             log.debug("playback_type: FORCED_TRANSCODE")
         playurl = None
         log.debug("play_session_id: " + play_session_id)
+        media_source_id = media_source.get("Id")
+        log.debug("media_source_id: " + media_source_id)
 
         is_h265 = False
-        streams = result.get("MediaStreams", [])
+        streams = media_source.get("MediaStreams", [])
         for stream in streams:
             if stream.get("Type", "") == "Video" and stream.get("Codec", "") in ["hevc", "h265"]:
                 is_h265 = True
@@ -70,25 +72,28 @@ class PlayUtils():
             bitrate = int(playback_bitrate) * 1000
             user_token = downloadUtils.authenticate()
 
-            playurl = (
-                "%s/emby/Videos/%s/master.m3u8?MediaSourceId=%s&PlaySessionId=%s&VideoCodec=h264&AudioCodec=ac3&MaxAudioChannels=6&deviceId=%s&VideoBitrate=%s"
-                % (server, id, id, play_session_id, deviceId, bitrate))
-
-            playurl = playurl + "&maxWidth=" + playback_max_width
-
+            playurl = ("%s/emby/Videos/%s/master.m3u8" +
+                       "?MediaSourceId=%s" +
+                       "&PlaySessionId=%s" +
+                       "&VideoCodec=h264" +
+                       "&AudioCodec=ac3" +
+                       "&MaxAudioChannels=6" +
+                       "&deviceId=%s" +
+                       "&VideoBitrate=%s" +
+                       "&maxWidth=%s")
+            playurl = playurl % (server, id, media_source_id, play_session_id, deviceId, bitrate, playback_max_width)
             if playback_video_force_8:
                 playurl = playurl + "&MaxVideoBitDepth=8"
-
             playurl = playurl + "&api_key=" + user_token
 
         # do direct path playback
         elif playback_type == "0":
-            playurl = result.get("Path")
+            playurl = media_source.get("Path")
 
             # handle DVD structure
-            if (result.get("VideoType") == "Dvd"):
+            if (media_source.get("VideoType") == "Dvd"):
                 playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
-            elif (result.get("VideoType") == "BluRay"):
+            elif (media_source.get("VideoType") == "BluRay"):
                 playurl = playurl + "/BDMV/index.bdmv"
 
             smb_username = addonSettings.getSetting('smbusername')
@@ -104,19 +109,22 @@ class PlayUtils():
 
         # do direct http streaming playback
         elif playback_type == "1":
-            playurl = "%s/emby/Videos/%s/stream?static=true&PlaySessionId=%s" % (server, id, play_session_id)
+            playurl = ("%s/emby/Videos/%s/stream" +
+                       "?static=true" +
+                       "&PlaySessionId=%s" +
+                       "&MediaSourceId=%s")
+            playurl = playurl % (server, id, play_session_id, media_source_id)
             user_token = downloadUtils.authenticate()
             playurl = playurl + "&api_key=" + user_token
 
         log.debug("Playback URL: " + playurl)
         return playurl.encode('utf-8'), playback_type
 
-    def getStrmDetails(self, result):
+    def getStrmDetails(self, media_source):
         playurl = None
         listitem_props = []
 
-        source = result['MediaSources'][0]
-        contents = source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
+        contents = media_source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
 
         line_break = '\r'
         if '\r\n' in contents:

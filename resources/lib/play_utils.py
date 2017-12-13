@@ -35,14 +35,41 @@ def playFile(play_info):
 
     server = downloadUtils.getServer()
 
-    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json",
-                                         suppress=False, popup=1)
+    url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
     result = json.loads(jsonData)
     log.debug("Playfile item info: " + str(result))
+
+    # select the media source to use
+    media_sources = result.get('MediaSources')
+    selected_media_source = None
+
+    if media_sources is None or len(media_sources) == 0:
+        log.debug("Play Failed! There is no MediaSources data!")
+        return
+    elif len(media_sources) == 1:
+        selected_media_source = media_sources[0]
+    elif len(media_sources) > 1:
+        sourceNames = []
+        for source in media_sources:
+            sourceNames.append(source.get("Name", "na"))
+
+        dialog = xbmcgui.Dialog()
+        resp = dialog.select(i18n('select_source'), sourceNames)
+        if resp > -1:
+            selected_media_source = media_sources[resp]
+        else:
+            log.debug("Play Aborted, user did not select a MediaSource")
+            return
+
+    if selected_media_source is None:
+        log.debug("Play Aborted, MediaSource was None")
+        return
 
     seekTime = 0
     auto_resume = int(auto_resume)
 
+    # process user data for resume points
     if auto_resume != -1:
         seekTime = (auto_resume / 1000) / 10000
     else:
@@ -87,15 +114,13 @@ def playFile(play_info):
     log.debug("play_session_id: %s" % play_session_id)
 
     # check if strm file, path will contain contain strm contents
-    if result.get('MediaSources'):
-        source = result['MediaSources'][0]
-        if source.get('Container') == 'strm':
-            playurl, listitem_props = PlayUtils().getStrmDetails(result)
-            if playurl is None:
-                return
+    if selected_media_source.get('Container') == 'strm':
+        playurl, listitem_props = PlayUtils().getStrmDetails(selected_media_source)
+        if playurl is None:
+            return
 
     if not playurl:
-        playurl, playback_type = PlayUtils().getPlayUrl(id, result, force_transcode, play_session_id)
+        playurl, playback_type = PlayUtils().getPlayUrl(id, selected_media_source, force_transcode, play_session_id)
 
     log.debug("Play URL: " + str(playurl) + " ListItem Properties: " + str(listitem_props))
 
@@ -115,6 +140,7 @@ def playFile(play_info):
     else:
         result["Overview"] = playback_type_string
 
+    # add title decoration is needed
     item_title = result.get("Name", i18n('missing_title'))
     add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
     if result.get("Type") == "Episode" and add_episode_number:
@@ -130,12 +156,12 @@ def playFile(play_info):
 
     list_item = xbmcgui.ListItem(label=item_title)
 
-    # if transcoding then prompt for audio and subtitle
-    if playback_type == "2":
-        playurl = audioSubsPref(playurl, list_item, result)
+    if playback_type == "2": # if transcoding then prompt for audio and subtitle
+        playurl = audioSubsPref(playurl, list_item, selected_media_source, id)
         log.debug("New playurl for transcoding : " + playurl)
-    elif playback_type == "1":
-        externalSubs(result, list_item)
+
+    elif playback_type == "1": # for direct stream add any streamable subtitles
+        externalSubs(selected_media_source, list_item, id)
 
     list_item.setPath(playurl)
     list_item = setListItemProps(id, list_item, result, server, listitem_props, item_title)
@@ -205,7 +231,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
 # Present the list of audio and subtitles to select from
 # for external streamable subtitles add the URL to the Kodi item and let Kodi handle it
 # else ask for the subtitles to be burnt in when transcoding
-def audioSubsPref(url, list_item, emby_item):
+def audioSubsPref(url, list_item, media_source, item_id):
 
     dialog = xbmcgui.Dialog()
     audioStreamsList = {}
@@ -217,14 +243,12 @@ def audioSubsPref(url, list_item, emby_item):
     selectAudioIndex = ""
     selectSubsIndex = ""
     playurlprefs = "%s" % url
+    default_audio = media_source.get('DefaultAudioStreamIndex', 1)
+    default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
 
-    try:
-        mediasources = emby_item['MediaSources'][0]
-        mediastreams = mediasources['MediaStreams']
-    except (TypeError, KeyError, IndexError):
-        return
+    media_streams = media_source['MediaStreams']
 
-    for stream in mediastreams:
+    for stream in media_streams:
         # Since Emby returns all possible tracks together, have to sort them.
         index = stream['Index']
 
@@ -269,7 +293,7 @@ def audioSubsPref(url, list_item, emby_item):
             selectAudioIndex = audioStreamsList[selected]
             playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
         else:  # User backed out of selection
-            playurlprefs += "&AudioStreamIndex=%s" % mediasources['DefaultAudioStreamIndex']
+            playurlprefs += "&AudioStreamIndex=%s" % default_audio
     else:  # There's only one audiotrack.
         selectAudioIndex = audioStreamsList[audioStreams[0]]
         playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
@@ -286,10 +310,8 @@ def audioSubsPref(url, list_item, emby_item):
 
             # Load subtitles in the listitem if downloadable
             if selectSubsIndex in downloadableStreams:
-
-                itemid = emby_item['Id']
                 url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                        % (downloadUtils.getServer(), itemid, itemid, selectSubsIndex))]
+                        % (downloadUtils.getServer(), item_id, item_id, selectSubsIndex))]
                 log.debug("Streaming subtitles url: %s %s" % (selectSubsIndex, url))
                 list_item.setSubtitles(url)
             else:
@@ -297,7 +319,7 @@ def audioSubsPref(url, list_item, emby_item):
                 playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
 
         else:  # User backed out of selection
-            playurlprefs += "&SubtitleStreamIndex=%s" % mediasources.get('DefaultSubtitleStreamIndex', "")
+            playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
 
     # Get number of channels for selected audio track
     audioChannels = audioStreamsChannelsList.get(selectAudioIndex, 0)
@@ -309,16 +331,12 @@ def audioSubsPref(url, list_item, emby_item):
     return playurlprefs
 
 # direct stream, set any available subtitle streams
-def externalSubs(emby_item, list_item):
+def externalSubs(media_source, list_item, item_id):
 
     externalsubs = []
-    itemid = emby_item['Id']
-    try:
-        mediastreams = emby_item['MediaSources'][0]['MediaStreams']
-    except (TypeError, KeyError, IndexError):
-        return
+    media_streams = media_source['MediaStreams']
 
-    for stream in mediastreams:
+    for stream in media_streams:
 
         if (stream['Type'] == "Subtitle"
                 and stream['IsExternal']
@@ -327,7 +345,7 @@ def externalSubs(emby_item, list_item):
 
             index = stream['Index']
             url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s"
-                   % (downloadUtils.getServer(), itemid, itemid, index, stream['Codec']))
+                   % (downloadUtils.getServer(), item_id, item_id, index, stream['Codec']))
 
             externalsubs.append(url)
 

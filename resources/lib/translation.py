@@ -116,5 +116,6 @@ STRINGS = {
     'not_found_': 30305,
     'playback_starting_': 30306,
     'play_trailer': 30307,
-    'select_trailer': 30308
+    'select_trailer': 30308,
+    'select_source': 30309
 }
