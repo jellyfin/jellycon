@@ -69,10 +69,12 @@ class WebSocketClient(threading.Thread):
             startat = data.get('StartPositionTicks', 0)
             log.debug("WebSocket Message PlayNow: %s" % data)
 
+            media_source_id = data.get("MediaSourceId", "")
+
             params = {}
             params["item_id"] = item_ids[0]
             params["auto_resume"] = str(startat)
-            params["source_index"] = "0" # for now just use the first media source we find until emby can supply this
+            params["media_source_id"] = media_source_id
             params["use_default"] = "true"
             PLAY(params)
 
@@ -288,7 +290,8 @@ class WebSocketClient(threading.Thread):
                                   "SetVolume",
                                   "PlayNext",
                                   "Play",
-                                  "Playstate"]
+                                  "Playstate",
+                                  "PlayMediaSource"]
         }
 
         download_utils = downloadutils.DownloadUtils()

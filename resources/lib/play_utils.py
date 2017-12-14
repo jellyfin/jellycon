@@ -26,7 +26,7 @@ def playFile(play_info):
     id = play_info.get("item_id")
     auto_resume = play_info.get("auto_resume", "-1")
     force_transcode = play_info.get("force_transcode", False)
-    source_index = play_info.get("source_index", "-1")
+    media_source_id = play_info.get("media_source_id", "")
     use_default = play_info.get("use_default", False)
 
     log.debug("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
@@ -45,17 +45,19 @@ def playFile(play_info):
     # select the media source to use
     media_sources = result.get('MediaSources')
     selected_media_source = None
-    source_index = int(source_index)
 
     if media_sources is None or len(media_sources) == 0:
         log.debug("Play Failed! There is no MediaSources data!")
         return
 
-    elif source_index != -1 and len(media_sources) > source_index:
-        selected_media_source = media_sources[source_index]
-
     elif len(media_sources) == 1:
         selected_media_source = media_sources[0]
+
+    elif media_source_id != "":
+        for source in media_sources:
+            if source.get("Id", "na") == media_source_id:
+                selected_media_source = source
+                break
 
     elif len(media_sources) > 1:
         sourceNames = []

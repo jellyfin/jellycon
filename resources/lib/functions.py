@@ -1299,8 +1299,8 @@ def PLAY(params):
     forceTranscode = params.get("force_transcode", None) is not None
     log.debug("FORCE_TRANSCODE: " + str(forceTranscode))
 
-    source_index = params.get("source_index", "-1")
-    log.debug("source_index: " + str(source_index))
+    media_source_id = params.get("media_source_id", "")
+    log.debug("media_source_id: " + str(media_source_id))
 
     use_default = params.get("use_default", "false") == "true"
     log.debug("use_default: " + str(use_default))
@@ -1315,7 +1315,7 @@ def PLAY(params):
     play_info["item_id"] = item_id
     play_info["auto_resume"] = str(auto_resume)
     play_info["force_transcode"] = forceTranscode
-    play_info["source_index"] = source_index
+    play_info["media_source_id"] = media_source_id
     play_info["use_default"] = use_default
     play_data = json.dumps(play_info)
 
