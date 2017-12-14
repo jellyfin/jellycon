@@ -24,8 +24,10 @@ downloadUtils = DownloadUtils()
 def playFile(play_info):
 
     id = play_info.get("item_id")
-    auto_resume = play_info.get("auto_resume")
-    force_transcode = play_info.get("force_transcode")
+    auto_resume = play_info.get("auto_resume", "-1")
+    force_transcode = play_info.get("force_transcode", False)
+    source_index = play_info.get("source_index", "-1")
+    use_default = play_info.get("use_default", False)
 
     log.debug("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
 
@@ -43,12 +45,18 @@ def playFile(play_info):
     # select the media source to use
     media_sources = result.get('MediaSources')
     selected_media_source = None
+    source_index = int(source_index)
 
     if media_sources is None or len(media_sources) == 0:
         log.debug("Play Failed! There is no MediaSources data!")
         return
+
+    elif source_index != -1 and len(media_sources) > source_index:
+        selected_media_source = media_sources[source_index]
+
     elif len(media_sources) == 1:
         selected_media_source = media_sources[0]
+
     elif len(media_sources) > 1:
         sourceNames = []
         for source in media_sources:
@@ -157,7 +165,7 @@ def playFile(play_info):
     list_item = xbmcgui.ListItem(label=item_title)
 
     if playback_type == "2": # if transcoding then prompt for audio and subtitle
-        playurl = audioSubsPref(playurl, list_item, selected_media_source, id)
+        playurl = audioSubsPref(playurl, list_item, selected_media_source, id, use_default)
         log.debug("New playurl for transcoding : " + playurl)
 
     elif playback_type == "1": # for direct stream add any streamable subtitles
@@ -231,7 +239,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
 # Present the list of audio and subtitles to select from
 # for external streamable subtitles add the URL to the Kodi item and let Kodi handle it
 # else ask for the subtitles to be burnt in when transcoding
-def audioSubsPref(url, list_item, media_source, item_id):
+def audioSubsPref(url, list_item, media_source, item_id, use_default):
 
     dialog = xbmcgui.Dialog()
     audioStreamsList = {}
@@ -285,7 +293,10 @@ def audioSubsPref(url, list_item, media_source, item_id):
             subtitleStreamsList[track] = index
             subtitleStreams.append(track)
 
-    if len(audioStreams) > 1:
+    if use_default:
+        playurlprefs += "&AudioStreamIndex=%s" % default_audio
+
+    elif len(audioStreams) > 1:
         resp = dialog.select(i18n('select_audio_stream'), audioStreams)
         if resp > -1:
             # User selected audio
@@ -294,32 +305,37 @@ def audioSubsPref(url, list_item, media_source, item_id):
             playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
         else:  # User backed out of selection
             playurlprefs += "&AudioStreamIndex=%s" % default_audio
+
     else:  # There's only one audiotrack.
         selectAudioIndex = audioStreamsList[audioStreams[0]]
         playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
 
     if len(subtitleStreams) > 1:
-        resp = dialog.select(i18n('select_subtitle'), subtitleStreams)
-        if resp == 0:
-            # User selected no subtitles
-            pass
-        elif resp > -1:
-            # User selected subtitles
-            selected = subtitleStreams[resp]
-            selectSubsIndex = subtitleStreamsList[selected]
-
-            # Load subtitles in the listitem if downloadable
-            if selectSubsIndex in downloadableStreams:
-                url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                        % (downloadUtils.getServer(), item_id, item_id, selectSubsIndex))]
-                log.debug("Streaming subtitles url: %s %s" % (selectSubsIndex, url))
-                list_item.setSubtitles(url)
-            else:
-                # Burn subtitles
-                playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
-
-        else:  # User backed out of selection
+        if use_default:
             playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
+
+        else:
+            resp = dialog.select(i18n('select_subtitle'), subtitleStreams)
+            if resp == 0:
+                # User selected no subtitles
+                pass
+            elif resp > -1:
+                # User selected subtitles
+                selected = subtitleStreams[resp]
+                selectSubsIndex = subtitleStreamsList[selected]
+
+                # Load subtitles in the listitem if downloadable
+                if selectSubsIndex in downloadableStreams:
+                    url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                            % (downloadUtils.getServer(), item_id, item_id, selectSubsIndex))]
+                    log.debug("Streaming subtitles url: %s %s" % (selectSubsIndex, url))
+                    list_item.setSubtitles(url)
+                else:
+                    # Burn subtitles
+                    playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
+
+            else:  # User backed out of selection
+                playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
 
     # Get number of channels for selected audio track
     audioChannels = audioStreamsChannelsList.get(selectAudioIndex, 0)

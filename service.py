@@ -14,6 +14,7 @@ from resources.lib.play_utils import playFile
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.translation import i18n
 from resources.lib.widgets import checkForNewContent
+from resources.lib.websocket_client import WebSocketClient
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -304,6 +305,13 @@ monitor = Service()
 home_window = HomeWindow()
 last_progress_update = time.time()
 last_content_check = time.time()
+websocket_client = WebSocketClient()
+
+# start the WbSocket Client running
+settings = xbmcaddon.Addon(id='plugin.video.embycon')
+remote_control = settings.getSetting('remoteControl') == "true"
+if remote_control:
+    websocket_client.start()
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -335,6 +343,9 @@ while not xbmc.abortRequested:
         log.error(traceback.format_exc())
 
     xbmc.sleep(1000)
+
+# stop the WebSocket Client
+websocket_client.stop_client()
 
 # clear user and token when loggin off
 home_window.clearProperty("userid")

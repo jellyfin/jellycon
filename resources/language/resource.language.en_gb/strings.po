@@ -653,3 +653,7 @@ msgstr ""
 msgctxt "#30309"
 msgid "Select Media Source"
 msgstr ""
+
+msgctxt "#30310"
+msgid "Enable Emby remote control"
+msgstr ""
