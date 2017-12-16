@@ -9,6 +9,7 @@ import time
 import json
 import hashlib
 
+from resources.lib.error import catch_except
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
 from resume_dialog import ResumeDialog
@@ -20,7 +21,7 @@ from json_rpc import json_rpc
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
 
-
+@catch_except()
 def playFile(play_info):
 
     id = play_info.get("item_id")

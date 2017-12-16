@@ -8,6 +8,7 @@ import time
 import json
 import traceback
 
+from resources.lib.error import catch_except
 from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import playFile
@@ -77,6 +78,7 @@ def sendProgress():
     url = "{server}/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
+@catch_except()
 def promptForStopActions(item_id, current_possition):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -181,7 +183,7 @@ def promptForStopActions(item_id, current_possition):
 
                 break
 
-
+@catch_except()
 def stopAll(played_information):
     if len(played_information) == 0:
         return

@@ -15,6 +15,7 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
+from resources.lib.error import catch_except
 from downloadutils import DownloadUtils
 from utils import getDetailsString, getArt, cache_artwork
 from kodi_utils import HomeWindow
@@ -43,6 +44,7 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 
+@catch_except()
 def mainEntryPoint():
     log.debug("===== EmbyCon START =====")
 

@@ -657,3 +657,11 @@ msgstr ""
 msgctxt "#30310"
 msgid "Enable Emby remote control"
 msgstr ""
+
+msgctxt "#30311"
+msgid "EmbyCon encountered an error!"
+msgstr ""
+
+msgctxt "#30312"
+msgid "Do you want to send this error to the devs?"
+msgstr ""

@@ -117,5 +117,7 @@ STRINGS = {
     'playback_starting_': 30306,
     'play_trailer': 30307,
     'select_trailer': 30308,
-    'select_source': 30309
+    'select_source': 30309,
+    'embycon_error': 30311,
+    'embycon_error_submit': 30312
 }

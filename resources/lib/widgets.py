@@ -12,12 +12,14 @@ from utils import getArt
 from datamanager import DataManager
 from simple_logging import SimpleLogging
 from kodi_utils import HomeWindow
+from resources.lib.error import catch_except
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
+@catch_except()
 def checkForNewContent():
     log.debug("checkForNewContent Called")
 
