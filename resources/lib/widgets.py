@@ -19,7 +19,7 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
-@catch_except()
+
 def checkForNewContent():
     log.debug("checkForNewContent Called")
 
