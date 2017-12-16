@@ -29,7 +29,7 @@ def catch_except(errors=(Exception, ), default_value=False):
                             submit_error_data()
                         except Exception as error:
                             log.debug("Sending Error Data Failed: " + str(error))
-
+                    raise
                 return default_value
         return wrapper
     return decorator

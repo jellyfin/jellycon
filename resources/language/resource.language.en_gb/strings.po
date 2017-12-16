@@ -47,7 +47,7 @@ msgid "Enable performance profiling"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Detect Server"
+msgid "Detect Local Server"
 msgstr ""
 
 msgctxt "#30012"

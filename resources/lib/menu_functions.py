@@ -197,9 +197,10 @@ def displaySections():
 
     addMenuDirectoryItem(i18n('detect_server'), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
     addMenuDirectoryItem(i18n('show_settings'), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    addMenuDirectoryItem(i18n('cache_textures'), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
 
+    # only add these if we have other collection which means we have a valid server conn
     if collections:
+        addMenuDirectoryItem(i18n('cache_textures'), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
         addMenuDirectoryItem(i18n('widgets'), "plugin://plugin.video.embycon/?mode=WIDGETS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))

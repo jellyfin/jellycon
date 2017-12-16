@@ -117,66 +117,68 @@ def checkServer(force=False, change_user=False, notify=False):
         log.debug("jsonData : " + str(jsonData))
         result = json.loads(jsonData)
         if result is None:
-            result = []
+            xbmcgui.Dialog().ok(i18n('error'),
+                                i18n('unable_connect_server'),
+                                i18n('address:') + serverUrl)
+        else:
+            names = []
+            user_list = []
+            secured = []
+            for user in result:
+                config = user.get("Configuration")
+                if (config != None):
+                    if (config.get("IsHidden") is None) or (config.get("IsHidden") is False):
+                        name = user.get("Name")
+                        user_list.append(name)
+                        if (user.get("HasPassword") is True):
+                            secured.append(True)
+                            name = i18n('username_secured') % name
+                        else:
+                            secured.append(False)
+                        names.append(name)
 
-        names = []
-        user_list = []
-        secured = []
-        for user in result:
-            config = user.get("Configuration")
-            if (config != None):
-                if (config.get("IsHidden") is None) or (config.get("IsHidden") is False):
-                    name = user.get("Name")
-                    user_list.append(name)
-                    if (user.get("HasPassword") is True):
-                        secured.append(True)
-                        name = i18n('username_secured') % name
-                    else:
-                        secured.append(False)
-                    names.append(name)
+            if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
+                names.insert(0, i18n('username_userdefined') % current_username)
+                user_list.insert(0, current_username)
+                secured.insert(0, True)
 
-        if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
-            names.insert(0, i18n('username_userdefined') % current_username)
-            user_list.insert(0, current_username)
+            names.insert(0, i18n('username_userinput'))
+            user_list.insert(0, '')
             secured.insert(0, True)
+            log.debug("User List : " + str(names))
+            log.debug("User List : " + str(user_list))
 
-        names.insert(0, i18n('username_userinput'))
-        user_list.insert(0, '')
-        secured.insert(0, True)
-        log.debug("User List : " + str(names))
-        log.debug("User List : " + str(user_list))
+            return_value = xbmcgui.Dialog().select(i18n('select_user'), names)
 
-        return_value = xbmcgui.Dialog().select(i18n('select_user'), names)
-
-        if (return_value > -1):
-            log.debug("Selected User Index : " + str(return_value))
-            if return_value == 0:
-                kb = xbmc.Keyboard()
-                kb.setHeading(i18n('username:'))
-                kb.doModal()
-                if kb.isConfirmed():
-                    selected_user = kb.getText()
-                else:
-                    selected_user = None
-            else:
-                selected_user = user_list[return_value]
-
-            log.debug("Selected User Name : " + str(selected_user))
-
-            if selected_user:
-                # we have a user so save it
-                log.debug("Saving Username : " + selected_user)
-                settings.setSetting("username", selected_user)
-                if secured[return_value] is True:
+            if (return_value > -1):
+                log.debug("Selected User Index : " + str(return_value))
+                if return_value == 0:
                     kb = xbmc.Keyboard()
-                    kb.setHeading(i18n('password:'))
-                    kb.setHiddenInput(True)
+                    kb.setHeading(i18n('username:'))
                     kb.doModal()
                     if kb.isConfirmed():
-                        log.debug("Saving Password for Username : " + selected_user)
-                        settings.setSetting('password', kb.getText())
+                        selected_user = kb.getText()
+                    else:
+                        selected_user = None
                 else:
-                    settings.setSetting('password', '')
+                    selected_user = user_list[return_value]
+
+                log.debug("Selected User Name : " + str(selected_user))
+
+                if selected_user:
+                    # we have a user so save it
+                    log.debug("Saving Username : " + selected_user)
+                    settings.setSetting("username", selected_user)
+                    if secured[return_value] is True:
+                        kb = xbmc.Keyboard()
+                        kb.setHeading(i18n('password:'))
+                        kb.setHiddenInput(True)
+                        kb.doModal()
+                        if kb.isConfirmed():
+                            log.debug("Saving Password for Username : " + selected_user)
+                            settings.setSetting('password', kb.getText())
+                    else:
+                        settings.setSetting('password', '')
 
         home_window = HomeWindow()
         home_window.clearProperty("userid")
