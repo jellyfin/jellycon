@@ -129,7 +129,7 @@ def showYearsList():
 
     jsonData = downloadUtils.downloadUrl("{server}/emby/Years" +
                                          "?SortBy=SortName" +
-                                         "&SortOrder=Ascending" +
+                                         "&SortOrder=Descending" +
                                          "&IncludeItemTypes=Movie" +
                                          "&Recursive=true" +
                                          "&UserId={userid}" +
@@ -162,6 +162,7 @@ def showYearsList():
         log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)#, thumbnail=collection.get("thumbnail"))
 
+    xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
