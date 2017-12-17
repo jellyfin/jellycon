@@ -36,13 +36,14 @@ def catch_except(errors=(Exception, ), default_value=False):
 
 def submit_error_data():
 
-    error_type, error_short, error_stack = format_exception()
+    error_type, error_short, error_stack, machine_state = format_exception()
 
     data = {}
     data["event"] = "ErrorReport"
     data["error_stack"] = error_stack
     data["error_type"] = error_type
     data["error_short"] = error_short
+    data["machine_state"] = machine_state
     data["sys.argv"] = sys.argv
     data["kodi_version"] = xbmc.getInfoLabel("System.BuildVersion")
     data["addon_version"] = ClientInformation().getVersion()
@@ -64,6 +65,26 @@ def format_exception():
 
     stack = traceback.extract_stack()
     exc_type, exc_obj, exc_tb = sys.exc_info()
+
+    frames = []
+    tb = exc_tb
+    while tb:
+        frame = tb.tb_frame
+        frames.append(frame)
+        tb = tb.tb_next
+
+    machine_state = []
+    for frame in frames:
+        state = {}
+        state["filename"] = frame.f_code.co_filename
+        state["line"] = frame.f_lineno
+        state["function"] = frame.f_code.co_name
+        locals = {}
+        for key, value in frame.f_locals.items():
+            locals[key] = str(value)
+        state["locals"] = locals
+        machine_state.append(state)
+
     stack_trace_data = traceback.format_tb(exc_tb)
     tb = traceback.extract_tb(exc_tb)
     full_tb = stack[:-1] + tb
@@ -118,4 +139,4 @@ def format_exception():
 
     del (exc_type, exc_obj, exc_tb)
 
-    return errorType, errorFile, stack_trace_data
+    return errorType, errorFile, stack_trace_data, machine_state
