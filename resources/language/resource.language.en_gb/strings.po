@@ -665,3 +665,11 @@ msgstr ""
 msgctxt "#30312"
 msgid "Do you want to send this error to the devs?"
 msgstr ""
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr ""
+
+msgctxt "#30314"
+msgid "Play"
+msgstr ""
