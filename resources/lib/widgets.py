@@ -196,6 +196,9 @@ def getWidgetContentCast(handle, params):
 def populateWidgetItems(itemsUrl, override_select_action=None):
 
     server = downloadUtils.getServer()
+    if server is None:
+        return []
+
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     select_action = settings.getSetting("widget_select_action")
 
