@@ -89,7 +89,7 @@
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="In Progress"/>
 							<param name="widget_target" value="videos"/>
-							<param name="list_id" value="4100"/>
+							<param name="list_id" value="4300"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=nextup_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
