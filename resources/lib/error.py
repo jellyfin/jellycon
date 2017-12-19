@@ -36,17 +36,24 @@ def catch_except(errors=(Exception, ), default_value=False):
 
 def submit_error_data():
 
-    error_type, error_short, error_stack, machine_state = format_exception()
-
     data = {}
-    data["event"] = "ErrorReport"
-    data["error_stack"] = error_stack
-    data["error_type"] = error_type
-    data["error_short"] = error_short
-    data["machine_state"] = machine_state
-    data["sys.argv"] = sys.argv
-    data["kodi_version"] = xbmc.getInfoLabel("System.BuildVersion")
-    data["addon_version"] = ClientInformation().getVersion()
+
+    try:
+        error_type, error_short, error_stack, machine_state = format_exception()
+
+        data["error_stack"] = error_stack
+        data["error_type"] = error_type
+        data["error_short"] = error_short
+        data["machine_state"] = machine_state
+        data["sys.argv"] = sys.argv
+        data["kodi_version"] = xbmc.getInfoLabel("System.BuildVersion")
+
+        client_info = ClientInformation()
+        data["addon_version"] = client_info.getVersion()
+        data["device_id"] = client_info.getDeviceId()
+
+    except Exception as error:
+        data["report_error"] = str(error)
 
     post_data = json.dumps(data)
     log.debug("ERROR_DATA: " + post_data)
