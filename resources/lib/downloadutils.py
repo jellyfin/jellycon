@@ -10,6 +10,7 @@ import ssl
 import StringIO
 import gzip
 import json
+from urlparse import urlparse
 
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
@@ -32,6 +33,17 @@ class DownloadUtils():
         port = settings.getSetting('port')
         if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
             return None
+
+        # if user entered a full path i.e. http://some_host:port
+        if host.lower().strip().startswith("http://") or host.lower().strip().startswith("https://"):
+            log.debug("Extracting host info from url: " + host)
+            url_bits = urlparse(host.strip())
+            if url_bits.hostname is not None and len(url_bits.hostname) > 0:
+                host = url_bits.hostname
+                settings.setSetting("ipaddress", host)
+            if url_bits.port is not None and url_bits.port > 0:
+                port = str(url_bits.port)
+                settings.setSetting("port", port)
 
         server = host + ":" + port
         use_https = settings.getSetting('use_https') == 'true'
