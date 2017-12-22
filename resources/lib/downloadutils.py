@@ -285,11 +285,15 @@ class DownloadUtils():
 
     def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True, headers=None):
         log.debug("downloadUrl")
+
+        return_data = "null"
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
         log.debug(url)
         if url.find("{server}") != -1:
             server = self.getServer()
+            if server is None:
+                return return_data
             url = url.replace("{server}", server)
         if url.find("{userid}") != -1:
             userid = self.getUserId()
@@ -315,7 +319,6 @@ class DownloadUtils():
                 url = url.replace("{,IsUnplayed,}", ",IsUnplayed,")
         log.debug(url)
 
-        return_data = "null"
         try:
             if url.startswith('http'):
                 serversplit = 2

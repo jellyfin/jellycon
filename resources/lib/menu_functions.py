@@ -35,21 +35,21 @@ def showGenreList(item_type=None):
         emby_type = "Series"
         kodi_type = "tvshows"
 
-    try:
-        jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?" +
-                                             "SortBy=SortName" +
-                                             "&SortOrder=Ascending" +
-                                             "&IncludeItemTypes=" + emby_type +
-                                             "&Recursive=true" +
-                                             "&UserId={userid}" +
-                                             "&format=json")
-        log.debug("GENRE_LIST_DATA : " + jsonData)
-    except Exception, msg:
-        error = "Get connect : " + str(msg)
-        log.error(error)
+
+    jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?" +
+                                         "SortBy=SortName" +
+                                         "&SortOrder=Ascending" +
+                                         "&IncludeItemTypes=" + emby_type +
+                                         "&Recursive=true" +
+                                         "&UserId={userid}" +
+                                         "&format=json")
+    log.debug("GENRE_LIST_DATA : %s" % jsonData)
 
     result = json.loads(jsonData)
-    result = result.get("Items")
+    if result is not None:
+        result = result.get("Items")
+    else:
+        result = []
 
     collections = []
 
@@ -134,10 +134,13 @@ def showYearsList():
                                          "&Recursive=true" +
                                          "&UserId={userid}" +
                                          "&format=json")
-    log.debug("YEAR_LIST_DATA : " + jsonData)
+    log.debug("YEAR_LIST_DATA : %s" % jsonData)
 
     result = json.loads(jsonData)
-    result = result.get("Items")
+    if result is not None:
+        result = result.get("Items")
+    else:
+        result = []
 
     collections = []
 
@@ -220,14 +223,9 @@ def getCollections(detailsString):
         log.debug("No userid so returning []")
         return []
 
-    try:
-        jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/Root?format=json")
-    except Exception, msg:
-        error = "Get connect : " + str(msg)
-        log.error(error)
-        return []
+    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/Root?format=json")
 
-    log.debug("jsonData : " + jsonData)
+    log.debug("jsonData : %s" % jsonData)
     result = json.loads(jsonData)
     if result is None:
         return []
@@ -237,15 +235,14 @@ def getCollections(detailsString):
 
     htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
     jsonData = downloadUtils.downloadUrl(htmlpath)
-    log.debug("jsonData : " + jsonData)
+    log.debug("jsonData : %s" % jsonData)
     collections = []
 
-    result = []
-    try:
-        result = json.loads(jsonData)
+    result = json.loads(jsonData)
+    if result is not None:
         result = result.get("Items")
-    except Exception as error:
-        log.error("Error parsing user collection: " + str(error))
+    else:
+        result = []
 
     for item in result:
         item_name = (item.get("Name")).encode('utf-8')

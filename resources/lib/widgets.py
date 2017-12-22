@@ -208,7 +208,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
 
     # get the items
-    jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False)
     log.debug("Widget(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 

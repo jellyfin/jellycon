@@ -543,7 +543,7 @@ msgid "Your skin %s is currently not supported"
 msgstr ""
 
 msgctxt "#30282"
-msgid "No servers detected"
+msgid "No Emby servers on your local network detected"
 msgstr ""
 
 msgctxt "#30283"
