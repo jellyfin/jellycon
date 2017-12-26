@@ -29,7 +29,7 @@ from server_sessions import showServerSessions
 from action_menu import ActionMenu
 from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
 import trakttokodi
-from item_functions import add_gui_item, extract_item_info
+from item_functions import add_gui_item, extract_item_info, ItemDetails, add_context_menu
 
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -453,47 +453,42 @@ def processDirectory(results, progress, params):
             current_item = current_item + 1
 
         # get the infofrom the item
-        details, extraData = extract_item_info(item, gui_options)
+        item_details = extract_item_info(item, gui_options)
 
-        item_type = item.get("Type")
-
-        if item_type == "Season" and first_season_item is None:
+        if item_details.item_type == "Season" and first_season_item is None:
             first_season_item = item
 
-        total_unwatched += extraData["UnWatchedEpisodes"]
-        total_episodes += extraData["TotalEpisodes"]
-        total_watched += extraData["WatchedEpisodes"]
-
-        playCount = extraData["playcount"]
+        total_unwatched += item_details.unwatched_episodes
+        total_episodes += item_details.total_episodes
+        total_watched += item_details.watched_episodes
 
         # if set, for unwatched episodes dont show some of the info
-        if hide_unwatched_details and item_type == "Episode" and playCount == 0:
-            details['plot'] = "[Spoiler Alert]"
-            extraData["poster"] = extraData["tvshow.poster"]
-            extraData["thumb"] = extraData["tvshow.poster"]
+        if hide_unwatched_details and item_details.item_type == "Episode" and item_details.play_count == 0:
+            item_details.plot = "[Spoiler Alert]"
+            item_details.art["poster"] = item_details.art["tvshow.poster"]
+            item_details.art["thumb"] = item_details.art["tvshow.poster"]
 
-        item_id = item.get("Id")
         if item.get("IsFolder") == True:
 
             if item.get("Type", "") == "Series":
-                u = ('{server}/emby/Shows/' + item_id +
+                u = ('{server}/emby/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={userid}' +
                      '&Fields=' + detailsString +
                      '&format=json')
             else:
                 u = ('{server}/emby/Users/{userid}/items' +
-                     '?ParentId=' + item_id +
+                     '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false&' +
                      'Fields=' + detailsString +
                      '&format=json')
 
             if item.get("RecursiveItemCount") != 0:
-                dirItems.append(add_gui_item(u, details, extraData, display_options))
+                dirItems.append(add_gui_item(u, item_details, display_options))
         else:
-            u = item_id
-            dirItems.append(add_gui_item(u, details, extraData, display_options, folder=False))
+            u = item_details.id
+            dirItems.append(add_gui_item(u, item_details, display_options, folder=False))
 
     # add the all episodes item
     show_all_episodes = settings.getSetting('show_all_episodes') == 'true'
@@ -511,53 +506,68 @@ def processDirectory(results, progress, params):
         if total_unwatched == 0:
             played = 1
             overlay = "6"
-        details = {'title': i18n('all'),
-                   'Overlay': overlay,
-                   'playcount': str(played),
-                   'TVShowTitle': first_season_item.get("SeriesName")}
 
-        art = getArt(first_season_item, server)
+        item_details = ItemDetails()
+
+        item_details.name = i18n('all')
+        item_details.art = getArt(first_season_item, server)
+        item_details.play_count = played
+        item_details.overlay = overlay
+        item_details.name_format = "Episode|episode_name_format"
+        item_details.series_name = first_season_item.get("SeriesName")
+        item_details.item_type = "Season"
+        item_details.unwatched_episodes = total_unwatched
+        item_details.total_episodes = total_episodes
+        item_details.watched_episodes = total_watched
+        item_details.mode = "GET_CONTENT"
+
+        #details = {'title': i18n('all'),
+        #           'Overlay': overlay,
+        #           'playcount': str(played),
+        #           'TVShowTitle': first_season_item.get("SeriesName")}
+
+        #art = getArt(first_season_item, server)
         # Populate the extraData list
-        extraData = {'thumb': art['tvshow.poster'],
-                     'fanart': art['fanart'],
-                     'poster': art['tvshow.poster'],
-                     'banner': art['tvshow.banner'],
-                     'clearlogo': art['clearlogo'],
-                     'discart': art['discart'],
-                     'clearart': art['clearart'],
-                     'landscape': art['landscape'],
-                     'tvshow.poster': art['tvshow.poster'],
-                     'tvshow.clearart': art['tvshow.clearart'],
-                     'tvshow.banner': art['tvshow.banner'],
-                     'tvshow.landscape': art['tvshow.landscape'],
-                     'itemtype': 'Season',
-                     'UnWatchedEpisodes': total_unwatched,
-                     'TotalEpisodes': total_episodes,
-                     'WatchedEpisodes': total_watched,
-                     'TotalSeasons': 0,
-                     'NumEpisodes': 0,
-                     'totaltime': 0,
-                     'duration': 0,
-                     'playcount': played,
-                     'mpaa': '',
-                     'rating': '',
-                     'director': '',
-                     'writer': '',
-                     'year': '',
-                     'premieredate': '',
-                     'dateadded': '',
-                     'studio': '',
-                     'genre': '',
-                     'aspectratio': 0.0,
-                     'videocodec': '',
-                     'width': 0,
-                     'height': 0,
-                     'audiocodec': '',
-                     'channels': 0,
-                     'mode': 'GET_CONTENT',
-                     'name_format': 'Episode|episode_name_format'}
+        #extraData = {'thumb': art['tvshow.poster'],
+                     #'fanart': art['fanart'],
+                     #'poster': art['tvshow.poster'],
+                     #'banner': art['tvshow.banner'],
+                     #'clearlogo': art['clearlogo'],
+                     #'discart': art['discart'],
+                     #'clearart': art['clearart'],
+                     #'landscape': art['landscape'],
+                     #'tvshow.poster': art['tvshow.poster'],
+                     #'tvshow.clearart': art['tvshow.clearart'],
+                     #'tvshow.banner': art['tvshow.banner'],
+                     #'tvshow.landscape': art['tvshow.landscape'],
+                     #'itemtype': 'Season',
+                     #'UnWatchedEpisodes': total_unwatched,
+                     #'TotalEpisodes': total_episodes,
+                     #'WatchedEpisodes': total_watched,
+                     #'TotalSeasons': 0,
+                     #'NumEpisodes': 0,
+                     #'totaltime': 0,
+                     #'duration': 0,
+                     #'playcount': played,
+                     #'mpaa': '',
+                     #'rating': '',
+                     #'director': '',
+                     #'writer': '',
+                     #'year': '',
+                     #'premieredate': '',
+                     #'dateadded': '',
+                     #'studio': '',
+                     #'genre': '',
+                     #'aspectratio': 0.0,
+                     #'videocodec': '',
+                     #'width': 0,
+                     #'height': 0,
+                     #'audiocodec': '',
+                     #'channels': 0,
+                     #'mode': 'GET_CONTENT',
+                     #'name_format': 'Episode|episode_name_format'}
 
-        dirItems.append(add_gui_item(series_url, details, extraData, {}, folder=True))
+        dirItems.append(add_gui_item(series_url, item_details, display_options, folder=True))
 
     return dirItems
 
@@ -595,10 +605,10 @@ def showMenu(params):
 
     if selected_action == "play":
         log.debug("Play Item")
-        list_item = populate_listitem(params["item_id"])
-        result = xbmcgui.Dialog().info(list_item)
-        log.debug("xbmcgui.Dialog().info: " + str(result))
-        #PLAY(params)
+        #list_item = populate_listitem(params["item_id"])
+        #result = xbmcgui.Dialog().info(list_item)
+        #log.debug("xbmcgui.Dialog().info: " + str(result))
+        PLAY(params)
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
         PLAY(params)
@@ -621,6 +631,7 @@ def populate_listitem(item_id):
     result = json.loads(jsonData)
     log.debug("populate_listitem item info: " + str(result))
 
+    '''
     server = downloadUtils.getServer()
     gui_options = {}
     gui_options["server"] = server
@@ -637,8 +648,8 @@ def populate_listitem(item_id):
 
     #list_item.setProperty('IsPlayable', 'false')
     #list_item.setPath(u)
-
     '''
+
     item_title = result.get("Name", i18n('missing_title'))
 
     list_item = xbmcgui.ListItem(label=item_title)
@@ -662,7 +673,6 @@ def populate_listitem(item_id):
     }
 
     list_item.setInfo("Video", infoLabels=details)
-    '''
 
     return list_item
 
@@ -883,7 +893,9 @@ def searchResults(params):
             list_item.setProperty('IsPlayable', 'false')
             is_folder = True
 
-        menu_items = addContextMenu({}, {'id': item_id}, is_folder)
+        item_details = ItemDetails()
+        item_details.id = item_id
+        menu_items = add_context_menu(item_details, is_folder)
         if len(menu_items) > 0:
             list_item.addContextMenuItems(menu_items, True)
 
