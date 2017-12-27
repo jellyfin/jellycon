@@ -163,14 +163,6 @@ def mainEntryPoint():
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
         showSearch()
     elif mode == "NEW_SEARCH":
-        # plugin://plugin.video.embycon?mode=NEW_SEARCH&item_type=<Movie|Series|Episode>
-        if 'SEARCH_RESULTS' not in xbmc.getInfoLabel('Container.FolderPath'):  # don't ask for input on '..'
-            checkServer(notify=False)
-            search(int(sys.argv[1]), params)
-        else:
-            return
-    elif mode == "SEARCH_RESULTS":
-        # plugin://plugin.video.embycon?mode=SEARCH_RESULTS&item_type=<Movie|Series>&query=<urllib.quote(search query)>&index=<[0-9]+>
         checkServer(notify=False)
         searchResults(params)
     elif mode == "SHOW_SERVER_SESSIONS":
@@ -710,12 +702,11 @@ def showParentContent(pluginName, handle, params):
     log.debug("showParentContent Content Url : " + str(contentUrl))
     getContent(contentUrl, params)
 
-def search(handle, params):
-    log.debug('search Called: ' + str(params))
+
+def searchResults(params):
+
     item_type = params.get('item_type')
-    if not item_type:
-        return
-    kb = xbmc.Keyboard()
+
     if item_type.lower() == 'movie':
         heading_type = i18n('movies')
     elif item_type.lower() == 'series':
@@ -724,26 +715,26 @@ def search(handle, params):
         heading_type = i18n('episodes')
     else:
         heading_type = item_type
+
+    home_window = HomeWindow()
+
+    last_search = home_window.getProperty("last_search")
+    kb = xbmc.Keyboard()
     kb.setHeading(heading_type.capitalize() + ' ' + i18n('search').lower())
+    kb.setDefault(last_search)
     kb.doModal()
+
     if kb.isConfirmed():
         user_input = kb.getText().strip()
-        if user_input:
-            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-            user_input = urllib.quote(user_input)
-            xbmc.executebuiltin('Container.Update(plugin://plugin.video.embycon/?mode=SEARCH_RESULTS&query={user_input}&item_type={item_type}&index=0)'
-                                .format(user_input=user_input, item_type=item_type))  # redirect for results to avoid page refreshing issues
-        else:
-            return
     else:
         return
 
+    home_window.setProperty("last_search", user_input)
 
-def searchResults(params):
     log.debug('searchResults Called: ' + str(params))
 
     handle = int(sys.argv[1])
-    query = params.get('query')
+    query = user_input
     item_type = params.get('item_type')
     if (not item_type) or (not query):
         return
@@ -753,7 +744,6 @@ def searchResults(params):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
-    userid = downloadUtils.getUserId()
     details_string = getDetailsString()
 
     content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
