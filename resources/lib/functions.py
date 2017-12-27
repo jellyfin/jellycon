@@ -352,17 +352,14 @@ def getContent(url, params):
     # use the data manager to get the data
     result = dataManager.GetContent(url)
 
-    if result == None or len(result) == 0:
-        if (progress != None):
-            progress.close()
-        return
-
     dirItems = processDirectory(result, progress, params)
     if dirItems is None:
         return
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
 
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
+
+    log.debug("== EXIT: getContent == %s " % dirItems)
 
     # if the view master addon is available then run the script
     try:
@@ -397,18 +394,17 @@ def processDirectory(results, progress, params):
 
     dirItems = []
     if results is None:
-        result = []
+        results = []
+
     if isinstance(results, dict):
-        result = results.get("Items") 
-    else:
-        result = results
+        results = results.get("Items", [])
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
     # build a new url, set the content media type and call get content again
     flatten_single_season = settings.getSetting("flatten_single_season") == "true"
-    if flatten_single_season and len(result) == 1 and result[0].get("Type", "") == "Season":
-        season_id = result[0].get("Id")
+    if flatten_single_season and len(results) == 1 and results[0].get("Type", "") == "Season":
+        season_id = results[0].get("Id")
         season_url = ('{server}/emby/Users/{userid}/items' +
                       '?ParentId=' + season_id +
                       '&IsVirtualUnAired=false' +
@@ -430,7 +426,7 @@ def processDirectory(results, progress, params):
     display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
     display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
 
-    item_count = len(result)
+    item_count = len(results)
     current_item = 1
     first_season_item = None
     total_unwatched = 0
@@ -445,7 +441,7 @@ def processDirectory(results, progress, params):
     gui_options["add_season_number"] = add_season_number
     gui_options["add_episode_number"] = add_episode_number
 
-    for item in result:
+    for item in results:
 
         if (progress != None):
             percentDone = (float(current_item) / float(item_count)) * 100
@@ -627,7 +623,7 @@ def populate_listitem(item_id):
     log.debug("populate_listitem: " + item_id)
 
     url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
-    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("populate_listitem item info: " + str(result))
 
@@ -962,7 +958,7 @@ def playTrailer(id):
 
     url = ("{server}/emby/Users/{userid}/Items/%s/LocalTrailers?format=json" % id)
 
-    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("LocalTrailers" + str(result))
 
@@ -975,7 +971,7 @@ def playTrailer(id):
         trailer_list.append(info)
 
     url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % id)
-    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("RemoteTrailers" + str(result))
 

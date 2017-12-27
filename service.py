@@ -89,12 +89,12 @@ def promptForStopActions(item_id, current_possition):
     prompt_delete_movie_percentage = int(settings.getSetting('promptDeleteMoviePercentage'))
 
     # everything is off so return
-    if prompt_next_percentage == 100 and prompt_delete_episode_percentage == 100 and prompt_delete_movie_percentage == 100:
+    if (prompt_next_percentage == 100 and
+            prompt_delete_episode_percentage == 100 and
+            prompt_delete_movie_percentage == 100):
         return
 
-    jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" +
-                                          item_id + "?format=json",
-                                          suppress=False, popup=1)
+    jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
     result = json.loads(jsonData)
     prompt_to_delete = False
     runtime = result.get("RunTimeTicks", 0)
@@ -142,16 +142,17 @@ def promptForStopActions(item_id, current_possition):
             log.debug("No episode number, can not prompt for next episode")
             return
 
-        jsonData = download_utils.downloadUrl('{server}/emby/Users/{userid}/Items?' +
-                             '?Recursive=true' +
-                             '&ParentId=' + parendId +
-                             #'&Filters=IsUnplayed,IsNotFolder' +
-                             '&IsVirtualUnaired=false' +
-                             '&IsMissing=False' +
-                             '&IncludeItemTypes=Episode' +
-                             '&ImageTypeLimit=1' +
-                             '&format=json',
-                              suppress=False, popup=1)
+        url = ( '{server}/emby/Users/{userid}/Items?' +
+                '?Recursive=true' +
+                '&ParentId=' + parendId +
+                # '&Filters=IsUnplayed,IsNotFolder' +
+                '&IsVirtualUnaired=false' +
+                '&IsMissing=False' +
+                '&IncludeItemTypes=Episode' +
+                '&ImageTypeLimit=1' +
+                '&format=json')
+
+        jsonData = download_utils.downloadUrl(url)
 
         items_result = json.loads(jsonData)
         log.debug("Prompt Next Item Details: %s" % items_result)
@@ -163,7 +164,7 @@ def promptForStopActions(item_id, current_possition):
 
                 resp = True
                 if play_prompt:
-                    #next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
+                    # next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
                     next_epp_name = ("%02d - " % (index,)) + item.get("Name", "n/a")
                     resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
 

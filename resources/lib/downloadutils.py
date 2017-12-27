@@ -215,16 +215,16 @@ class DownloadUtils():
 
         url = "{server}/emby/Users/AuthenticateByName?format=json"
 
-        clientInfo = ClientInformation()
-        txt_mac = clientInfo.getDeviceId()
-        version = clientInfo.getVersion()
-        client = clientInfo.getClient()
+        #clientInfo = ClientInformation()
+        #txt_mac = clientInfo.getDeviceId()
+        #version = clientInfo.getVersion()
+        #client = clientInfo.getClient()
 
-        deviceName = settings.getSetting('deviceName')
-        deviceName = deviceName.replace("\"", "_")
+        #deviceName = settings.getSetting('deviceName')
+        #deviceName = deviceName.replace("\"", "_")
 
-        authString = "Mediabrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-        headers = {'Accept-encoding': 'gzip', 'Authorization': authString}
+        #authString = "Mediabrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+        #headers = {'Accept-encoding': 'gzip', 'Authorization': authString}
         sha1 = hashlib.sha1(settings.getSetting('password'))
 
         messageData = "username=" + settings.getSetting('username') + "&password=" + sha1.hexdigest()
@@ -283,11 +283,14 @@ class DownloadUtils():
             log.debug("EmbyCon Authentication Header : " + str(headers))
             return headers
 
-    def downloadUrl(self, url, suppress=False, postBody=None, method="GET", popup=0, authenticate=True, headers=None):
+    def downloadUrl(self, url, suppress=False, postBody=None, method="GET", authenticate=True, headers=None):
         log.debug("downloadUrl")
 
         return_data = "null"
         settings = xbmcaddon.Addon(id='plugin.video.embycon')
+
+        if settings.getSetting("suppressErrors") == "true":
+            suppress = True
 
         log.debug(url)
         if url.find("{server}") != -1:
@@ -341,7 +344,6 @@ class DownloadUtils():
             if (host == "<none>" or host == "" or port == ""):
                 return ""
 
-            settings = xbmcaddon.Addon('plugin.video.embycon')
             use_https = settings.getSetting('use_https') == 'true'
             verify_cert = settings.getSetting('verify_cert') == 'true'
 
@@ -394,32 +396,19 @@ class DownloadUtils():
                 log.debug(return_data)
                 log.debug("====== 200 finished ======")
 
-            #elif (int(data.status) == 301) or (int(data.status) == 302):
-            #    try:
-            #        conn.close()
-            #    except:
-            #        pass
-            #    return data.getheader('Location')
-
             elif int(data.status) >= 400:
                 error = "HTTP response error: " + str(data.status) + " " + str(data.reason)
                 log.error(error)
                 if suppress is False:
-                    if popup == 0:
-                        xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(data.reason))
-                    else:
-                        xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % str(data.reason))
+                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(data.reason))
                 log.error(error)
 
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
             log.error(error)
             if suppress is False:
-                if popup == 0:
-                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(msg))
-                else:
-                    xbmcgui.Dialog().ok(self.addon_name, i18n('url_error_') % i18n('unable_connect_server'), str(msg))
-                #raise
+                xbmcgui.Dialog().notification(i18n("connection_error"), str(msg))
+
         finally:
             try:
                 log.debug("Closing HTTP connection: " + str(conn))

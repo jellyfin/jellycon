@@ -39,7 +39,7 @@ def playFile(play_info):
     server = downloadUtils.getServer()
 
     url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
-    jsonData = downloadUtils.downloadUrl(url, suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("Playfile item info: " + str(result))
 

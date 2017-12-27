@@ -673,3 +673,11 @@ msgstr ""
 msgctxt "#30314"
 msgid "Play"
 msgstr ""
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr ""
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr ""

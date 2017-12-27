@@ -37,9 +37,8 @@ def showServerSessions():
             media_id = play_state.get("MediaSourceId", None)
             log.debug("Media ID " + str(media_id))
             if media_id is not None:
-                jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" +
-                                                        media_id + "?format=json",
-                                                        suppress=False, popup=1)
+                url = "{server}/emby/Users/{userid}/Items/" + media_id + "?format=json"
+                jsonData = downloadUtils.downloadUrl(url)
                 media_info = json.loads(jsonData)
                 log.debug("Media Info " + str(media_info))
                 runtime = media_info.get("RunTimeTicks", 0)

@@ -119,5 +119,6 @@ STRINGS = {
     'select_trailer': 30308,
     'select_source': 30309,
     'embycon_error': 30311,
-    'embycon_error_submit': 30312
+    'embycon_error_submit': 30312,
+    'connection_error': 30316
 }

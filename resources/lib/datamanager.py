@@ -29,7 +29,7 @@ class DataManager():
         return json.loads(jsonData)
 
     def GetContent(self, url):
-        jsonData = DownloadUtils().downloadUrl(url, suppress=False, popup=1)
+        jsonData = DownloadUtils().downloadUrl(url)
         result = self.loadJasonData(jsonData)
         return result
 

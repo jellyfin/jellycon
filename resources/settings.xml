@@ -59,5 +59,6 @@
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="remoteControl" type="bool" label="30310" default="false" visible="true" enable="true" />
+		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />
 	</category>
 </settings>

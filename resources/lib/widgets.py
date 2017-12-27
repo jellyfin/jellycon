@@ -151,8 +151,7 @@ def getWidgetContentCast(handle, params):
     server = downloadUtils.getServer()
 
     id = params["id"]
-    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json",
-                                         suppress=False, popup=1)
+    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json")
     result = json.loads(jsonData)
     log.debug("ItemInfo: " + str(result))
 
@@ -208,7 +207,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
 
     # get the items
-    jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False)
+    jsonData = downloadUtils.downloadUrl(itemsUrl)
     log.debug("Widget(Items) jsonData: " + jsonData)
     result = json.loads(jsonData)
 
