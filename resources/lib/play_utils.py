@@ -43,6 +43,10 @@ def playFile(play_info):
     result = json.loads(jsonData)
     log.debug("Playfile item info: " + str(result))
 
+    if result is None:
+        log.debug("Playfile item was None, so can not play!")
+        return
+
     # select the media source to use
     media_sources = result.get('MediaSources')
     selected_media_source = None
