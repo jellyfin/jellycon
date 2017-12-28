@@ -13,6 +13,7 @@ from utils import getDetailsString
 from kodi_utils import addMenuDirectoryItem
 from simple_logging import SimpleLogging
 from translation import i18n
+from datamanager import DataManager
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -35,17 +36,17 @@ def showGenreList(item_type=None):
         emby_type = "Series"
         kodi_type = "tvshows"
 
+    url = ("{server}/emby/Genres?" +
+             "SortBy=SortName" +
+             "&SortOrder=Ascending" +
+             "&IncludeItemTypes=" + emby_type +
+             "&Recursive=true" +
+             "&UserId={userid}" +
+             "&format=json")
 
-    jsonData = downloadUtils.downloadUrl("{server}/emby/Genres?" +
-                                         "SortBy=SortName" +
-                                         "&SortOrder=Ascending" +
-                                         "&IncludeItemTypes=" + emby_type +
-                                         "&Recursive=true" +
-                                         "&UserId={userid}" +
-                                         "&format=json")
-    log.debug("GENRE_LIST_DATA : %s" % jsonData)
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
 
-    result = json.loads(jsonData)
     if result is not None:
         result = result.get("Items")
     else:
@@ -223,10 +224,8 @@ def getCollections(detailsString):
         log.debug("No userid so returning []")
         return []
 
-    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/Root?format=json")
-
-    log.debug("jsonData : %s" % jsonData)
-    result = json.loads(jsonData)
+    data_manager = DataManager()
+    result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/Root?format=json")
     if result is None:
         return []
 
@@ -234,15 +233,14 @@ def getCollections(detailsString):
     log.debug("parentid : " + parentid)
 
     htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
-    jsonData = downloadUtils.downloadUrl(htmlpath)
-    log.debug("jsonData : %s" % jsonData)
-    collections = []
+    result = data_manager.GetContent(htmlpath)
 
-    result = json.loads(jsonData)
     if result is not None:
         result = result.get("Items")
     else:
         result = []
+
+    collections = []
 
     for item in result:
         item_name = (item.get("Name")).encode('utf-8')

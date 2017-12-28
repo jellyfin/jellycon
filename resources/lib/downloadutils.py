@@ -54,54 +54,57 @@ class DownloadUtils():
 
         return server
 
-    def getArtwork(self, data, art_type, parent=False, index="0", width=10000, height=10000, server=None):
+    def getArtwork(self, data, art_type, parent=False, index=0, width=10000, height=10000, server=None):
 
-        id = data.get("Id")
+        id = data["Id"]
+        item_type = data["Type"]
 
-        if data.get("Type") in ["Episode", "Season"]:
+        if item_type in ["Episode", "Season"]:
             if art_type != "Primary" or parent == True:
-                id = data.get("SeriesId")
+                id = data["SeriesId"]
 
         imageTag = ""
         # "e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
 
-        itemType = data.get("Type")
-
         # for episodes always use the parent BG
-        if (itemType == "Episode" and art_type == "Backdrop"):
-            id = data.get("ParentBackdropItemId")
-            bgItemTags = data.get("ParentBackdropImageTags")
-            if (bgItemTags != None and len(bgItemTags) > 0):
+        if item_type == "Episode" and art_type == "Backdrop":
+            id = data["ParentBackdropItemId"]
+            bgItemTags = data["ParentBackdropImageTags"]
+            if bgItemTags is not None and len(bgItemTags) > 0:
                 imageTag = bgItemTags[0]
-        elif (art_type == "Backdrop") and (parent == True):
-            id = data.get("ParentBackdropItemId")
-            bgItemTags = data.get("ParentBackdropImageTags")
-            if (bgItemTags != None and len(bgItemTags) > 0):
+        elif art_type == "Backdrop" and parent is True:
+            id = data["ParentBackdropItemId"]
+            bgItemTags = data["ParentBackdropImageTags"]
+            if bgItemTags is not None and len(bgItemTags) > 0:
                 imageTag = bgItemTags[0]
-        elif (art_type == "Backdrop"):
-            BGTags = data.get("BackdropImageTags")
-            if (BGTags != None and len(BGTags) > 0):
-                bgIndex = int(index)
-                imageTag = data.get("BackdropImageTags")[bgIndex]
+        elif art_type == "Backdrop":
+            BGTags = data["BackdropImageTags"]
+            if BGTags is not None and len(BGTags) > index:
+                imageTag = BGTags[index]
                 log.debug("Background Image Tag:" + imageTag)
-        elif (parent == False):
-            if (data.get("ImageTags") != None and data.get("ImageTags").get(art_type) != None):
-                imageTag = data.get("ImageTags").get(art_type)
-                log.debug("Image Tag:" + imageTag)
-        elif (parent == True):
-            if (itemType == "Episode" or itemType == "Season") and art_type == 'Primary':
+        elif parent is False:
+            image_tags = data["ImageTags"]
+            if image_tags is not None:
+                image_tag_type = image_tags[art_type]
+                if image_tag_type is not None:
+                    imageTag = image_tag_type
+                    log.debug("Image Tag:" + imageTag)
+        elif parent is True:
+            if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
                 tagName = 'SeriesPrimaryImageTag'
                 idName = 'SeriesId'
             else:
                 tagName = 'Parent%sTag' % art_type
                 idName = 'Parent%sItemId' % art_type
-            if (data.get(idName) != None and data.get(tagName) != None):
-                id = data.get(idName)
-                imageTag = data.get(tagName)
+            parent_image_id = data[idName]
+            parent_image_tag = data[tagName]
+            if parent_image_id is not None and parent_image_tag is not None:
+                id = parent_image_id
+                imageTag = parent_image_tag
                 log.debug("Parent Image Tag:" + imageTag)
 
         if (imageTag == "" or imageTag == None) and (art_type != 'Banner'):  # ParentTag not passed for Banner
-            log.debug("No Image Tag for request:" + art_type + " item:" + itemType + " parent:" + str(parent))
+            log.debug("No Image Tag for request:" + art_type + " item:" + item_type + " parent:" + str(parent))
             return ""
 
         query = ""

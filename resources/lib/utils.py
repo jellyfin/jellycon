@@ -205,29 +205,31 @@ def getArt(item, server, widget=False):
         'tvshow.banner': '',
         'tvshow.landscape': ''
     }
-    item_id = item.get("Id")
+    item_id = item["Id"]
 
     image_id = item_id
-    imageTags = item.get("ImageTags")
-    if (imageTags is not None) and (imageTags.get("Primary") is not None):
-        image_tag = imageTags.get("Primary")
+    imageTags = item["ImageTags"]
+    if imageTags is not None and imageTags["Primary"] is not None:
+        image_tag = imageTags["Primary"]
         if widget:
             art['thumb'] = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag, server=server)
         else:
             art['thumb'] = downloadUtils.getArtwork(item, "Primary", server=server)
 
-    if item.get("Type") == "Episode" or item.get("Type") == "Season":
+    item_type = item["Type"]
+
+    if item_type == "Episode" or item_type == "Season":
         art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
         art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Logo", parent=True, server=server)
         art['tvshow.banner'] = downloadUtils.getArtwork(item, "Banner", parent=True, server=server)
         art['tvshow.landscape'] = downloadUtils.getArtwork(item, "Thumb", parent=True, server=server)
-    elif item.get("Type") == "Series":
+    elif item_type == "Series":
         art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=False, server=server)
         art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Logo", parent=False, server=server)
         art['tvshow.banner'] = downloadUtils.getArtwork(item, "Banner", parent=False, server=server)
         art['tvshow.landscape'] = downloadUtils.getArtwork(item, "Thumb", parent=False, server=server)
 
-    if item.get("Type") == "Episode":
+    if item_type == "Episode":
         art['thumb'] = art['thumb'] if art['thumb'] else downloadUtils.getArtwork(item, "Thumb", server=server)
         art['landscape'] = art['thumb'] if art['thumb'] else downloadUtils.getArtwork(item, "Thumb", parent=True, server=server)
     else:

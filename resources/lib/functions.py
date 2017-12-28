@@ -454,9 +454,9 @@ def processDirectory(results, progress, params):
             item_details.art["poster"] = item_details.art["tvshow.poster"]
             item_details.art["thumb"] = item_details.art["tvshow.poster"]
 
-        if item.get("IsFolder") == True:
+        if item["IsFolder"] is True:
 
-            if item.get("Type", "") == "Series":
+            if item_details.item_type == "Series":
                 u = ('{server}/emby/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={userid}' +
@@ -470,7 +470,7 @@ def processDirectory(results, progress, params):
                      'Fields=' + detailsString +
                      '&format=json')
 
-            if item.get("RecursiveItemCount") != 0:
+            if item["RecursiveItemCount"] != 0:
                 dirItems.append(add_gui_item(u, item_details, display_options))
         else:
             u = item_details.id
@@ -506,52 +506,6 @@ def processDirectory(results, progress, params):
         item_details.total_episodes = total_episodes
         item_details.watched_episodes = total_watched
         item_details.mode = "GET_CONTENT"
-
-        #details = {'title': i18n('all'),
-        #           'Overlay': overlay,
-        #           'playcount': str(played),
-        #           'TVShowTitle': first_season_item.get("SeriesName")}
-
-        #art = getArt(first_season_item, server)
-        # Populate the extraData list
-        #extraData = {'thumb': art['tvshow.poster'],
-                     #'fanart': art['fanart'],
-                     #'poster': art['tvshow.poster'],
-                     #'banner': art['tvshow.banner'],
-                     #'clearlogo': art['clearlogo'],
-                     #'discart': art['discart'],
-                     #'clearart': art['clearart'],
-                     #'landscape': art['landscape'],
-                     #'tvshow.poster': art['tvshow.poster'],
-                     #'tvshow.clearart': art['tvshow.clearart'],
-                     #'tvshow.banner': art['tvshow.banner'],
-                     #'tvshow.landscape': art['tvshow.landscape'],
-                     #'itemtype': 'Season',
-                     #'UnWatchedEpisodes': total_unwatched,
-                     #'TotalEpisodes': total_episodes,
-                     #'WatchedEpisodes': total_watched,
-                     #'TotalSeasons': 0,
-                     #'NumEpisodes': 0,
-                     #'totaltime': 0,
-                     #'duration': 0,
-                     #'playcount': played,
-                     #'mpaa': '',
-                     #'rating': '',
-                     #'director': '',
-                     #'writer': '',
-                     #'year': '',
-                     #'premieredate': '',
-                     #'dateadded': '',
-                     #'studio': '',
-                     #'genre': '',
-                     #'aspectratio': 0.0,
-                     #'videocodec': '',
-                     #'width': 0,
-                     #'height': 0,
-                     #'audiocodec': '',
-                     #'channels': 0,
-                     #'mode': 'GET_CONTENT',
-                     #'name_format': 'Episode|episode_name_format'}
 
         dirItems.append(add_gui_item(series_url, item_details, display_options, folder=True))
 

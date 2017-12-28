@@ -151,8 +151,8 @@ def getWidgetContentCast(handle, params):
     server = downloadUtils.getServer()
 
     id = params["id"]
-    jsonData = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + id + "?format=json")
-    result = json.loads(jsonData)
+    data_manager = DataManager()
+    result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/" + id + "?format=json")
     log.debug("ItemInfo: " + str(result))
 
     listItems = []
@@ -207,9 +207,8 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     log.debug("WIDGET_DATE_URL: " + itemsUrl)
 
     # get the items
-    jsonData = downloadUtils.downloadUrl(itemsUrl)
-    log.debug("Widget(Items) jsonData: " + jsonData)
-    result = json.loads(jsonData)
+    data_manager = DataManager()
+    result = data_manager.GetContent(itemsUrl)
 
     if result is not None and isinstance(result, dict) and result.get("Items") is not None:
         simmilarTo = result.get("BaselineItemName", None)
