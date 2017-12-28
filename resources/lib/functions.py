@@ -347,11 +347,9 @@ def getContent(url, params):
     dirItems = processDirectory(result, progress, params)
     if dirItems is None:
         return
+
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
-
-    log.debug("== EXIT: getContent == %s " % dirItems)
 
     # if the view master addon is available then run the script
     try:
