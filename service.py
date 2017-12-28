@@ -164,8 +164,7 @@ def promptForStopActions(item_id, current_possition):
 
                 resp = True
                 if play_prompt:
-                    # next_epp_name = str(index) + " of " + str(item_list[-1].get("IndexNumber", -1)) + " - " + item.get("Name", "n/a")
-                    next_epp_name = ("%02d - " % (index,)) + item.get("Name", "n/a")
+                    next_epp_name = "%02d - %s" % (index, item.get("Name", "n/a"))
                     resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
 
                 if resp:

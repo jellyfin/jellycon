@@ -91,6 +91,11 @@ def extract_item_info(item, gui_options):
     elif item_details.item_type == "Season":
         item_details.season_number = item["IndexNumber"]
 
+    if item_details.season_number is None:
+        item_details.season_number = 0
+    if item_details.episode_number is None:
+        item_details.episode_number = 0
+
     # set the item name
     # override with name format string from request
     name_format = gui_options["name_format"]
