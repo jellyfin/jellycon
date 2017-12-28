@@ -222,35 +222,30 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     itemCount = 1
     listItems = []
     for item in result:
-        item_id = item.get("Id")
-        name = item.get("Name")
+        item_id = item["Id"]
+        name = item["Name"]
         episodeDetails = ""
         log.debug("WIDGET_DATE_NAME: " + name)
 
-        title = item.get("Name")
+        title = name
         tvshowtitle = ""
+        item_type = item["Type"]
+        series_name = item["SeriesName"]
 
-        if (item.get("Type") == "Episode" and item.get("SeriesName") != None):
+        if item_type == "Episode" and series_name is not None:
 
-            eppNumber = "X"
-            tempEpisodeNumber = "0"
-            if (item.get("IndexNumber") != None):
-                eppNumber = item.get("IndexNumber")
-                if eppNumber < 10:
-                    tempEpisodeNumber = "0" + str(eppNumber)
-                else:
-                    tempEpisodeNumber = str(eppNumber)
+            episode_number = item["IndexNumber"]
+            if episode_number is None:
+                episode_number = 0
 
-            seasonNumber = item.get("ParentIndexNumber")
-            if seasonNumber < 10:
-                tempSeasonNumber = "0" + str(seasonNumber)
-            else:
-                tempSeasonNumber = str(seasonNumber)
+            season_number = item["ParentIndexNumber"]
+            if season_number is None:
+                season_number = 0
 
-            episodeDetails = "S" + tempSeasonNumber + "E" + tempEpisodeNumber
-            name = item.get("SeriesName") + " " + episodeDetails
-            tvshowtitle = episodeDetails
-            title = item.get("SeriesName")
+            name = series_name + " " + episodeDetails
+            name = "%s S%02dE%02d" % (series_name, season_number, episode_number)
+            tvshowtitle = "S%02dE%02d" % (season_number, episode_number)
+            title = series_name
 
         art = getArt(item, server, widget=True)
 
@@ -261,31 +256,30 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
 
         # list_item.setLabel2(episodeDetails)
 
-        production_year = item.get("ProductionYear")
-        if not production_year and item.get("PremiereDate"):
-            production_year = int(item.get("PremiereDate")[:4])
-
-        overlay = "0"
-        playCount = "0"
+        production_year = item["ProductionYear"]
+        prem_year = item["PremiereDate"]
+        if production_year is None and prem_year is not None:
+            production_year = int(prem_year[:4])
 
         # add progress percent
-        userData = item.get("UserData")
-        if (userData != None):
-            if userData.get("Played") == True:
-                playCount = "1"
-                overlay = "5"
-            else:
-                overlay = "6"
+        userData = item["UserData"]
+        if userData["Played"] == True:
+            playCount = "1"
+            overlay = "5"
+        else:
+            playCount = "0"
+            overlay = "6"
 
-            playBackTicks = float(userData.get("PlaybackPositionTicks"))
-            if (playBackTicks != None and playBackTicks > 0):
-                runTimeTicks = float(item.get("RunTimeTicks", "0"))
-                if (runTimeTicks > 0):
-                    playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
-                    list_item.setProperty('ResumeTime', str(playBackPos))
+        runtime = item["RunTimeTicks"]
+        playBackTicks = userData["PlaybackPositionTicks"]
 
-                    percentage = int((playBackTicks / runTimeTicks) * 100.0)
-                    list_item.setProperty("complete_percentage", str(percentage))
+        if playBackTicks is not None and runtime is not None and runtime > 0:
+            runtime = float(runtime)
+            playBackTicks = float(playBackTicks)
+            playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
+            list_item.setProperty('ResumeTime', str(playBackPos))
+            percentage = int((playBackTicks / runtime) * 100.0)
+            list_item.setProperty("complete_percentage", str(percentage))
 
         video_info_label = {"title": title,
                             "tvshowtitle": tvshowtitle,
@@ -298,13 +292,14 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         list_item.setProperty('discart', art['discart'])  # not avail to setArt
         list_item.setArt(art)
         # add count
-        list_item.setProperty("item_index", str(itemCount))
-        itemCount = itemCount + 1
+        #list_item.setProperty("item_index", str(itemCount))
+        #itemCount = itemCount + 1
 
         list_item.setProperty('IsPlayable', 'true')
 
-        totalTime = str(int(float(item.get("RunTimeTicks", "0")) / (10000000 * 60)))
-        list_item.setProperty('TotalTime', str(totalTime))
+        if runtime is not None:
+            totalTime = str(int(float(runtime) / (10000000 * 60)))
+            list_item.setProperty('TotalTime', str(totalTime))
 
         list_item.setProperty('id', item_id)
 

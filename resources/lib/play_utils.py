@@ -17,6 +17,7 @@ from utils import PlayUtils, getArt, id_generator
 from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
+from datamanager import DataManager
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -39,8 +40,8 @@ def playFile(play_info):
     server = downloadUtils.getServer()
 
     url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
-    jsonData = downloadUtils.downloadUrl(url)
-    result = json.loads(jsonData)
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
     log.debug("Playfile item info: " + str(result))
 
     if result is None:
