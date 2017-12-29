@@ -178,22 +178,26 @@ class DownloadUtils():
         for user in result:
             if (user.get("Name") == userName):
                 userid = user.get("Id")
-                log.debug("Username Found:" + user.get("Name"))
+                log.debug("Username Found: " + user.get("Name"))
                 if (user.get("HasPassword") == True):
                     secure = True
                     log.debug("Username Is Secure (HasPassword=True)")
                 break
 
-        if (secure) or (not userid):
+        if secure or not userid:
             authOk = self.authenticate()
-            if (authOk == ""):
-                xbmcgui.Dialog().ok(self.addon_name, i18n('incorrect_user_pass'))
+            if authOk == "":
+                xbmcgui.Dialog().notification(i18n("connection_error"),
+                                              i18n('incorrect_user_pass'),
+                                              icon="special://home/addons/plugin.video.embycon/icon.png")
                 return ""
             if not userid:
                 userid = WINDOW.getProperty("userid")
 
         if userid == "":
-            xbmcgui.Dialog().ok(self.addon_name, i18n('username_not_found'))
+            xbmcgui.Dialog().notification(i18n("connection_error"),
+                                          i18n('username_not_found'),
+                                          icon="special://home/addons/plugin.video.embycon/icon.png")
 
         log.debug("userid : " + userid)
 
@@ -403,14 +407,18 @@ class DownloadUtils():
                 error = "HTTP response error: " + str(data.status) + " " + str(data.reason)
                 log.error(error)
                 if suppress is False:
-                    xbmcgui.Dialog().notification(self.addon_name, i18n('url_error_') % str(data.reason))
+                    xbmcgui.Dialog().notification(i18n("connection_error"),
+                                                  i18n('url_error_') % str(data.reason),
+                                                  icon="special://home/addons/plugin.video.embycon/icon.png")
                 log.error(error)
 
         except Exception, msg:
             error = "Unable to connect to " + str(server) + " : " + str(msg)
             log.error(error)
             if suppress is False:
-                xbmcgui.Dialog().notification(i18n("connection_error"), str(msg))
+                xbmcgui.Dialog().notification(i18n("connection_error"),
+                                              str(msg),
+                                              icon="special://home/addons/plugin.video.embycon/icon.png")
 
         finally:
             try:
