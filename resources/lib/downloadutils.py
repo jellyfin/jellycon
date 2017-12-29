@@ -11,6 +11,7 @@ import StringIO
 import gzip
 import json
 from urlparse import urlparse
+import urllib
 
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
@@ -210,31 +211,21 @@ class DownloadUtils():
         WINDOW = HomeWindow()
 
         token = WINDOW.getProperty("AccessToken")
-        if (token != None and token != ""):
+        if token is not None and token != "":
             log.debug("EmbyCon DownloadUtils -> Returning saved AccessToken : " + token)
             return token
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
         port = settings.getSetting("port")
         host = settings.getSetting("ipaddress")
-        if (host == None or host == "" or port == None or port == ""):
+        if host is None or host == "" or port is None or port == "":
             return ""
 
         url = "{server}/emby/Users/AuthenticateByName?format=json"
 
-        #clientInfo = ClientInformation()
-        #txt_mac = clientInfo.getDeviceId()
-        #version = clientInfo.getVersion()
-        #client = clientInfo.getClient()
-
-        #deviceName = settings.getSetting('deviceName')
-        #deviceName = deviceName.replace("\"", "_")
-
-        #authString = "Mediabrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-        #headers = {'Accept-encoding': 'gzip', 'Authorization': authString}
         sha1 = hashlib.sha1(settings.getSetting('password'))
 
-        messageData = "username=" + settings.getSetting('username') + "&password=" + sha1.hexdigest()
+        messageData = "username=" + urllib.quote(settings.getSetting('username')) + "&password=" + sha1.hexdigest()
 
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
 
@@ -247,7 +238,7 @@ class DownloadUtils():
         except:
             pass
 
-        if (accessToken != None):
+        if accessToken is not None:
             log.debug("User Authenticated : " + accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
