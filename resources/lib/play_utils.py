@@ -31,7 +31,7 @@ def playFile(play_info):
     media_source_id = play_info.get("media_source_id", "")
     use_default = play_info.get("use_default", False)
 
-    log.debug("playFile id(%s) resume(%s) force_transcode(%s)" % (id, auto_resume, force_transcode))
+    log.debug("playFile id({0}) resume({1}) force_transcode({2})", id, auto_resume, force_transcode)
 
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
@@ -42,7 +42,7 @@ def playFile(play_info):
     url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
     data_manager = DataManager()
     result = data_manager.GetContent(url)
-    log.debug("Playfile item info: " + str(result))
+    log.debug("Playfile item info: {0}", result)
 
     if result is None:
         log.debug("Playfile item was None, so can not play!")
@@ -101,13 +101,13 @@ def playFile(play_info):
             resumeDialog.doModal()
             resume_result = resumeDialog.getResumeAction()
             del resumeDialog
-            log.debug("Resume Dialog Result: " + str(resume_result))
+            log.debug("Resume Dialog Result: {0}", resume_result)
 
             # check system settings for play action
             # if prompt is set ask to set it to auto resume
             params = {"setting": "myvideos.selectaction"}
             setting_result = json_rpc('Settings.getSettingValue').execute(params)
-            log.debug("Current Setting (myvideos.selectaction): %s" % setting_result)
+            log.debug("Current Setting (myvideos.selectaction): {0}", setting_result)
             current_value = setting_result.get("result", None)
             if current_value is not None:
                 current_value = current_value.get("value", -1)
@@ -116,7 +116,7 @@ def playFile(play_info):
                 if return_value:
                     params = {"setting": "myvideos.selectaction", "value": 2}
                     json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
-                    log.debug("Save Setting (myvideos.selectaction): %s" % json_rpc_result)
+                    log.debug("Save Setting (myvideos.selectaction): {0}", json_rpc_result)
 
             if resume_result == 1:
                 seekTime = 0
@@ -127,7 +127,7 @@ def playFile(play_info):
     playback_type = "0"
     playurl = None
     play_session_id = id_generator()
-    log.debug("play_session_id: %s" % play_session_id)
+    log.debug("play_session_id: {0}", play_session_id)
 
     # check if strm file, path will contain contain strm contents
     if selected_media_source.get('Container') == 'strm':
@@ -138,7 +138,7 @@ def playFile(play_info):
     if not playurl:
         playurl, playback_type = PlayUtils().getPlayUrl(id, selected_media_source, force_transcode, play_session_id)
 
-    log.debug("Play URL: " + str(playurl) + " ListItem Properties: " + str(listitem_props))
+    log.debug("Play URL: {0} ListItem Properties: {1}", playurl, listitem_props)
 
     playback_type_string = "DirectPlay"
     if playback_type == "2":
@@ -174,7 +174,7 @@ def playFile(play_info):
 
     if playback_type == "2": # if transcoding then prompt for audio and subtitle
         playurl = audioSubsPref(playurl, list_item, selected_media_source, id, use_default)
-        log.debug("New playurl for transcoding : " + playurl)
+        log.debug("New playurl for transcoding: {0}", playurl)
 
     elif playback_type == "1": # for direct stream add any streamable subtitles
         externalSubs(selected_media_source, list_item, id)
@@ -336,7 +336,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
                 if selectSubsIndex in downloadableStreams:
                     url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
                             % (downloadUtils.getServer(), item_id, item_id, selectSubsIndex))]
-                    log.debug("Streaming subtitles url: %s %s" % (selectSubsIndex, url))
+                    log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
                     list_item.setSubtitles(url)
                 else:
                     # Burn subtitles

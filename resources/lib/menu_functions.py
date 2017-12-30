@@ -69,7 +69,7 @@ def showGenreList(item_type=None):
         url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -115,7 +115,7 @@ def showMovieAlphaList():
     for collection in collections:
         url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -135,7 +135,7 @@ def showYearsList():
                                          "&Recursive=true" +
                                          "&UserId={userid}" +
                                          "&format=json")
-    log.debug("YEAR_LIST_DATA : %s" % jsonData)
+    log.debug("YEAR_LIST_DATA: {0}", jsonData)
 
     result = json.loads(jsonData)
     if result is not None:
@@ -163,7 +163,7 @@ def showYearsList():
         url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+        log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)#, thumbnail=collection.get("thumbnail"))
 
     xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
@@ -188,7 +188,7 @@ def displaySections():
                    "&mode=GET_CONTENT&media_type=" + collection["media_type"])
             if collection.get("name_format") is not None:
                 url += "&name_format=" + urllib.quote(collection.get("name_format"))
-            log.debug("addMenuDirectoryItem: " + collection.get('title', i18n('unknown')) + " " + str(url))
+            log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
             addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
         addMenuDirectoryItem(i18n('movies_year'), "plugin://plugin.video.embycon/?mode=MOVIE_YEARS")
@@ -230,7 +230,7 @@ def getCollections(detailsString):
         return []
 
     parentid = result.get("Id")
-    log.debug("parentid : " + parentid)
+    log.debug("parentid: {0}", parentid)
 
     htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
     result = data_manager.GetContent(htmlpath)
@@ -246,8 +246,8 @@ def getCollections(detailsString):
         item_name = (item.get("Name")).encode('utf-8')
 
         collection_type = item.get('CollectionType', None)
-        log.debug("CollectionType: " + str(collection_type))
-        log.debug("Title: " + item_name)
+        log.debug("CollectionType: {0}", collection_type)
+        log.debug("Title: {0}", item_name)
 
         if collection_type in ["tvshows", "movies", "boxsets"]:
             collections.append({

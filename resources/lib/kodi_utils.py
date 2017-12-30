@@ -23,17 +23,17 @@ class HomeWindow():
     def getProperty(self, key):
         key = self.id_string % key
         value = self.window.getProperty(key)
-        # log.debug('HomeWindow: getProperty |%s| -> |%s|' % (key, value))
+        # log.debug('HomeWindow: getProperty |{0}| -> |{1}|', key, value)
         return value
 
     def setProperty(self, key, value):
         key = self.id_string % key
-        # log.debug('HomeWindow: setProperty |%s| -> |%s|' % (key, value))
+        # log.debug('HomeWindow: setProperty |{0}| -> |{1}|', key, value)
         self.window.setProperty(key, value)
 
     def clearProperty(self, key):
         key = self.id_string % key
-        # log.debug('HomeWindow: clearProperty |%s|' % key)
+        # log.debug('HomeWindow: clearProperty |{0}|', key)
         self.window.clearProperty(key)
 
 
@@ -59,9 +59,9 @@ def getKodiVersion():
         result = result.get("result")
         versionData = result.get("version")
         version = float(str(versionData.get("major")) + "." + str(versionData.get("minor")))
-        log.debug("Version : " + str(version) + " - " + str(versionData))
+        log.debug("Version: {0} - {1}", version, versionData)
     except:
         version = 0.0
-        log.error("Version Error : RAW Version Data : " + str(result))
+        log.error("Version Error : RAW Version Data: {0}", result)
 
     return version

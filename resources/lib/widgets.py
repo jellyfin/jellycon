@@ -35,7 +35,7 @@ def checkForNewContent():
 
     added_result = downloadUtils.downloadUrl(added_url, suppress=True)
     result = json.loads(added_result)
-    log.debug("LATEST_ADDED_ITEM:" + str(result))
+    log.debug("LATEST_ADDED_ITEM: {0}", result)
 
     last_added_date = ""
     if result is not None:
@@ -43,7 +43,7 @@ def checkForNewContent():
         if len(items) > 0:
             item = items[0]
             last_added_date = item.get("Etag", "")
-    log.debug("last_added_date: " + last_added_date)
+    log.debug("last_added_date: {0}", last_added_date)
 
     played_url = ('{server}/emby/Users/{userid}/Items' +
                     '?Recursive=true' +
@@ -57,7 +57,7 @@ def checkForNewContent():
 
     played_result = downloadUtils.downloadUrl(played_url, suppress=True)
     result = json.loads(played_result)
-    log.debug("LATEST_PLAYED_ITEM:" + str(result))
+    log.debug("LATEST_PLAYED_ITEM: {0}", result)
 
     last_played_date = ""
     if result is not None:
@@ -65,29 +65,29 @@ def checkForNewContent():
         if len(items) > 0:
             item = items[0]
             last_played_date = item.get("Etag", "")
-    log.debug("last_played_date: " + last_played_date)
+    log.debug("last_played_date: {0}", last_played_date)
 
     home_window = HomeWindow()
     current_widget_hash = home_window.getProperty("embycon_widget_reload")
-    log.debug("Current Widget Hash: " + str(current_widget_hash))
+    log.debug("Current Widget Hash: {0}", current_widget_hash)
 
     m = hashlib.md5()
     m.update(last_played_date + last_added_date)
     new_widget_hash = m.hexdigest()
-    log.debug("New Widget Hash: " + str(new_widget_hash))
+    log.debug("New Widget Hash: {0}", new_widget_hash)
 
     if current_widget_hash != new_widget_hash:
         home_window.setProperty("embycon_widget_reload", new_widget_hash)
-        log.debug("Setting New Widget Hash: " + str(new_widget_hash))
+        log.debug("Setting New Widget Hash: {0}", new_widget_hash)
 
 
 def getWidgetUrlContent(handle, params):
-    log.debug("getWidgetUrlContent Called" + str(params))
+    log.debug("getWidgetUrlContent Called: {0}", params)
 
     request = params["url"]
     request = urllib.unquote(request)
     request = "{server}/emby/" + request + "&ImageTypeLimit=1&format=json"
-    log.debug("getWidgetUrlContent URL:" + request)
+    log.debug("getWidgetUrlContent URL: {0}", request)
 
     select_action = params.get("action", None)
 
@@ -98,7 +98,7 @@ def getWidgetUrlContent(handle, params):
 
 
 def getSuggestions(handle, params):
-    log.debug("getSuggestions Called" + str(params))
+    log.debug("getSuggestions Called: {0}", params)
 
     itemsUrl = ("{server}/emby/Movies/Recommendations" +
                 "?userId={userid}" +
@@ -114,7 +114,7 @@ def getSuggestions(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 def getWidgetContentNextUp(handle, params):
-    log.debug("getWidgetContentNextUp Called" + str(params))
+    log.debug("getWidgetContentNextUp Called: {0}", params)
 
     itemsUrl = ("{server}/emby/Shows/NextUp?SeriesId=" + params["id"] +
                 "&userId={userid}" +
@@ -130,7 +130,7 @@ def getWidgetContentNextUp(handle, params):
 
 
 def getWidgetContentSimilar(handle, params):
-    log.debug("getWisgetContentSimilarMovies Called" + str(params))
+    log.debug("getWisgetContentSimilarMovies Called: {0}", params)
 
     itemsUrl = ("{server}/emby/Items/" + params["id"] + "/Similar"
                 "?userId={userid}" +
@@ -147,13 +147,13 @@ def getWidgetContentSimilar(handle, params):
 
 
 def getWidgetContentCast(handle, params):
-    log.debug("getWigetContentCast Called" + str(params))
+    log.debug("getWigetContentCast Called: {0}", params)
     server = downloadUtils.getServer()
 
     id = params["id"]
     data_manager = DataManager()
     result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/" + id + "?format=json")
-    log.debug("ItemInfo: " + str(result))
+    log.debug("ItemInfo: {0}", result)
 
     listItems = []
     people = result.get("People")
@@ -204,7 +204,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     if override_select_action is not None:
         select_action = str(override_select_action)
 
-    log.debug("WIDGET_DATE_URL: " + itemsUrl)
+    log.debug("WIDGET_DATE_URL: {0}", itemsUrl)
 
     # get the items
     data_manager = DataManager()
@@ -225,7 +225,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         item_id = item["Id"]
         name = item["Name"]
         episodeDetails = ""
-        log.debug("WIDGET_DATE_NAME: " + name)
+        log.debug("WIDGET_DATE_NAME: {0}", name)
 
         title = name
         tvshowtitle = ""
@@ -318,7 +318,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
 
 
 def getWidgetContent(handle, params):
-    log.debug("getWigetContent Called" + str(params))
+    log.debug("getWigetContent Called: {0}", params)
 
     type = params.get("type")
     if (type == None):

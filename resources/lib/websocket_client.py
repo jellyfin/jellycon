@@ -48,17 +48,17 @@ class WebSocketClient(threading.Thread):
             self._playstate(data)
 
         elif message_type == "UserDataChanged":
-            log.debug("WebSocket Message UserDataChanged: %s" % message)
+            log.debug("WebSocket Message UserDataChanged: {0}", message)
 
         elif message_type == "LibraryChanged":
-            log.debug("WebSocket Message LibraryChanged: %s" % message)
+            log.debug("WebSocket Message LibraryChanged: {0}", message)
 
         elif message_type == "GeneralCommand":
             data = result['Data']
             self._general_commands(data)
 
         else:
-            log.debug("WebSocket Message Type: %s" % message)
+            log.debug("WebSocket Message Type: {0}", message)
 
     def _play(cls, data):
 
@@ -67,7 +67,7 @@ class WebSocketClient(threading.Thread):
 
         if command == 'PlayNow':
             startat = data.get('StartPositionTicks', 0)
-            log.debug("WebSocket Message PlayNow: %s" % data)
+            log.debug("WebSocket Message PlayNow: {0}", data)
 
             media_source_id = data.get("MediaSourceId", "")
 
@@ -99,14 +99,14 @@ class WebSocketClient(threading.Thread):
                 seek_to = data['SeekPositionTicks']
                 seek_time = seek_to / 10000000.0
                 player.seekTime(seek_time)
-                log.debug("Seek to %s" % seek_time)
+                log.debug("Seek to {0}", seek_time)
 
         elif command in actions:
             actions[command]()
-            log.debug("Command: %s completed" % command)
+            log.debug("Command: {0} completed",  command)
 
         else:
-            log.debug("Unknown command: %s" % command)
+            log.debug("Unknown command: {0}", command)
             return
 
     def _general_commands(cls, data):
@@ -146,7 +146,7 @@ class WebSocketClient(threading.Thread):
             header = arguments['Header']
             text = arguments['Text']
             # show notification here
-            log.debug("WebSocket DisplayMessage: %s" % text)
+            log.debug("WebSocket DisplayMessage: {0}", text)
             xbmcgui.Dialog().notification("EmbyCon", text)
 
         elif command == 'SendString':
@@ -204,7 +204,7 @@ class WebSocketClient(threading.Thread):
         self.post_capabilities()
 
     def on_error(self, ws, error):
-        log.debug("Error: %s" % error)
+        log.debug("Error: {0}", error)
 
     def run(self):
 
@@ -225,7 +225,7 @@ class WebSocketClient(threading.Thread):
             server = server.replace('http', "ws")
 
         websocket_url = "%s/embywebsocket?api_key=%s&deviceId=%s" % (server, token, self.device_id)
-        log.debug("websocket url: %s" % websocket_url)
+        log.debug("websocket url: {0}", websocket_url)
 
         self._client = websocket.WebSocketApp(websocket_url,
                                               on_message=self.on_message,
@@ -298,5 +298,5 @@ class WebSocketClient(threading.Thread):
 
         download_utils = downloadutils.DownloadUtils()
         download_utils.downloadUrl(url, postBody=data, method="POST")
-        log.debug("Posted Capabilities: %s" % data)
+        log.debug("Posted Capabilities: {0}", data)
 

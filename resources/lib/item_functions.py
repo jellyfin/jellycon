@@ -116,7 +116,7 @@ def extract_item_info(item, gui_options):
             nameInfo["SeriesName"] = ""
         nameInfo["SeasonIndex"] = "%02d" % item_details.season_number
         nameInfo["EpisodeIndex"] = "%02d" % item_details.episode_number
-        log.debug("FormatName : %s | %s" % (name_format, nameInfo))
+        log.debug("FormatName: {0} | {1}", name_format, nameInfo)
         item_details.name = name_format.format(**nameInfo).strip()
 
     else:
@@ -188,7 +188,7 @@ def extract_item_info(item, gui_options):
             elif person_type == "Writing":
                 item_details.writer = person["Name"]
             elif person_type == "Actor":
-                log.debug("Person : %s" % person)
+                log.debug("Person: {0}", person)
                 person_name = person["Name"]
                 person_role = person["Role"]
                 person_id = person["Id"]
@@ -275,8 +275,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     url = url.encode('utf-8')
 
-    log.debug("Adding GuiItem for [%s]" % item_details.name)
-    log.debug("Passed extraData: " + str(item_details.__dict__))
+    log.debug("Passed item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
         return
@@ -335,7 +334,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     else:
         list_item = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
 
-    log.debug("Setting thumbnail as " + thumbPath)
+    log.debug("Setting thumbnail as: {0}", thumbPath)
 
     # calculate percentage
     if (cappedPercentage != 0):

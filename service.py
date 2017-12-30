@@ -30,7 +30,7 @@ download_utils = DownloadUtils()
 try:
     download_utils.authenticate()
 except Exception as error:
-    log.error("Error with initial service auth: " + str(error))
+    log.error("Error with initial service auth: {0}", error)
 
 
 def hasData(data):
@@ -73,7 +73,7 @@ def sendProgress():
         'PlaySessionId': play_session_id
     }
 
-    log.debug("Sending POST progress started: %s." % postdata)
+    log.debug("Sending POST progress started: {0}", postdata)
 
     url = "{server}/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
@@ -106,7 +106,7 @@ def promptForStopActions(item_id, current_possition):
 
     # item percentage complete
     percenatge_complete = int(((current_possition * 10000000) / runtime) * 100)
-    log.debug("Episode Percentage Complete: %s" % percenatge_complete)
+    log.debug("Episode Percentage Complete: {0}", percenatge_complete)
 
     if (prompt_delete_episode_percentage < 100 and
                 result.get("Type", "na") == "Episode" and
@@ -122,7 +122,7 @@ def promptForStopActions(item_id, current_possition):
         log.debug("Prompting for delete")
         resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
         if resp:
-            log.debug("Deleting item: %s" % item_id)
+            log.debug("Deleting item: {0}", item_id)
             url = "{server}/emby/Items/%s?format=json" % item_id
             download_utils.downloadUrl(url, method="DELETE")
             xbmc.executebuiltin("Container.Refresh")
@@ -155,7 +155,7 @@ def promptForStopActions(item_id, current_possition):
         jsonData = download_utils.downloadUrl(url)
 
         items_result = json.loads(jsonData)
-        log.debug("Prompt Next Item Details: %s" % items_result)
+        log.debug("Prompt Next Item Details: {0}", items_result)
         # find next episode
         item_list = items_result.get("Items", [])
         for item in item_list:
@@ -169,7 +169,7 @@ def promptForStopActions(item_id, current_possition):
 
                 if resp:
                     next_item_id = item.get("Id")
-                    log.debug("Playing Next Episode: %s" % next_item_id)
+                    log.debug("Playing Next Episode: {0}", next_item_id)
 
                     play_info = {}
                     play_info["item_id"] = next_item_id
@@ -188,19 +188,19 @@ def stopAll(played_information):
     if len(played_information) == 0:
         return
 
-    log.debug("played_information : " + str(played_information))
+    log.debug("played_information: {0}", played_information)
 
     for item_url in played_information:
         data = played_information.get(item_url)
         if data is not None:
-            log.debug("item_url  : " + item_url)
-            log.debug("item_data : " + str(data))
+            log.debug("item_url: {0}", item_url)
+            log.debug("item_data: {0}", data)
 
             current_possition = data.get("currentPossition", 0)
             emby_item_id = data.get("item_id")
 
             if hasData(emby_item_id):
-                log.debug("Playback Stopped at: " + str(int(current_possition * 10000000)))
+                log.debug("Playback Stopped at: {0}", current_possition)
 
                 url = "{server}/emby/Sessions/Playing/Stopped"
                 postdata = {
@@ -219,7 +219,7 @@ class Service(xbmc.Player):
     played_information = {}
 
     def __init__(self, *args):
-        log.debug("Starting monitor service: " + str(args))
+        log.debug("Starting monitor service: {0}", args)
         self.played_information = {}
 
     def onPlayBackStarted(self):
@@ -227,7 +227,7 @@ class Service(xbmc.Player):
         stopAll(self.played_information)
 
         current_playing_file = xbmc.Player().getPlayingFile()
-        log.debug("onPlayBackStarted: " + current_playing_file)
+        log.debug("onPlayBackStarted: {0}", current_playing_file)
 
         home_window = HomeWindow()
         emby_item_id = home_window.getProperty("item_id")
@@ -248,7 +248,7 @@ class Service(xbmc.Player):
             'PlaySessionId': play_session_id
         }
 
-        log.debug("Sending POST play started: %s." % postdata)
+        log.debug("Sending POST play started: {0}", postdata)
 
         url = "{server}/emby/Sessions/Playing"
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
@@ -260,8 +260,8 @@ class Service(xbmc.Player):
         data["play_session_id"] = play_session_id
         self.played_information[current_playing_file] = data
 
-        log.debug("ADDING_FILE : " + current_playing_file)
-        log.debug("ADDING_FILE : " + str(self.played_information))
+        log.debug("ADDING_FILE: {0}", current_playing_file)
+        log.debug("ADDING_FILE: {0}", self.played_information)
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
@@ -341,8 +341,8 @@ while not xbmc.abortRequested:
                 checkForNewContent()
 
     except Exception as error:
-        log.error("Exception in Playback Monitor : " + str(error))
-        log.error(traceback.format_exc())
+        log.error("Exception in Playback Monitor: {0}", error)
+        log.error("{0}", traceback.format_exc())
 
     xbmc.sleep(1000)
 

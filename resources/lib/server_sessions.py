@@ -35,27 +35,27 @@ def showServerSessions():
         if play_state is not None:
             runtime = 0
             media_id = play_state.get("MediaSourceId", None)
-            log.debug("Media ID " + str(media_id))
+            log.debug("Media ID: {0}", media_id)
             if media_id is not None:
                 url = "{server}/emby/Users/{userid}/Items/" + media_id + "?format=json"
                 jsonData = downloadUtils.downloadUrl(url)
                 media_info = json.loads(jsonData)
-                log.debug("Media Info " + str(media_info))
+                log.debug("Media Info: {0}", media_info)
                 runtime = media_info.get("RunTimeTicks", 0)
-                log.debug("Media Runtime " + str(runtime))
+                log.debug("Media Runtime: {0}", runtime)
 
             position_ticks = play_state.get("PositionTicks", 0)
-            log.debug("Media PositionTicks " + str(position_ticks))
+            log.debug("Media PositionTicks: {0}", position_ticks)
             if position_ticks > 0 and runtime > 0:
                 percenatge_played = (position_ticks / float(runtime)) * 100.0
                 percenatge_played = int(percenatge_played)
 
         now_playing = session.get("NowPlayingItem", None)
-        log.debug("NOW_PLAYING: " + str(now_playing))
+        log.debug("NOW_PLAYING: {0}", now_playing)
         if now_playing is not None:
             session_info += " (" + now_playing.get("Name", "na") + " " + str(percenatge_played) + "%)"
 
-        log.debug(session_info)
+        log.debug("session_info: {0}", session_info)
         list_item = xbmcgui.ListItem(label=session_info)
         item_tuple = ("", list_item, False)
         list_items.append(item_tuple)

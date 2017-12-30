@@ -35,7 +35,7 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
     def onClick(self, controlID):
         if (controlID == 3000):
             self.selected_action = self.listControl.getSelectedItem()
-            log.debug("ActionMenu: Selected Item:" + str(self.selected_action))
+            log.debug("ActionMenu: Selected Item: {0}", self.selected_action)
             self.close()
 
     def setActionItems(self, action_items):

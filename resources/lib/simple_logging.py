@@ -19,23 +19,22 @@ class SimpleLogging():
         current_value = setting_result.get("result", None)
         if current_value is not None:
             self.enable_logging = current_value.get("value", False)
-        #xbmc.log("LOGGING_ENABLED %s: %s" % (self.name, str(self.enable_logging)), level=xbmc.LOGDEBUG)
+        xbmc.log("LOGGING_ENABLED %s : %s" % (self.name, str(self.enable_logging)), level=xbmc.LOGDEBUG)
 
     def __str__(self):
         return "LoggingEnabled: " + str(self.enable_logging)
 
-    def error(self, msg):
+    def error(self, fmt, *args, **kwargs):
+        log_line = self.name + " (ERROR) -> " + fmt.format(*args, **kwargs)
         try:
-            xbmc.log(self.format(msg, "ERROR"), level=xbmc.LOGERROR)
+            xbmc.log(log_line, level=xbmc.LOGERROR)
         except UnicodeEncodeError:
-            xbmc.log(self.format(msg, "ERROR").encode('utf-8'), level=xbmc.LOGERROR)
+            xbmc.log(log_line.encode('utf-8'), level=xbmc.LOGERROR)
 
-    def debug(self, msg):
-        if (self.enable_logging):
+    def debug(self, fmt, *args, **kwargs):
+        if self.enable_logging:
+            log_line = self.name + " (DEBUG) -> " + fmt.format(*args, **kwargs)
             try:
-                xbmc.log(self.format(msg, "DEBUG"), level=xbmc.LOGDEBUG)
+                xbmc.log(log_line, level=xbmc.LOGDEBUG)
             except UnicodeEncodeError:
-                xbmc.log(self.format(msg, "DEBUG").encode('utf-8'), level=xbmc.LOGDEBUG)
-
-    def format(self, msg, levelValue):
-        return self.name + "(" + str(levelValue) + ") -> " + msg
+                xbmc.log(log_line.encode('utf-8'), level=xbmc.LOGDEBUG)

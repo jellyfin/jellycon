@@ -35,8 +35,8 @@ def getServerDetails():
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
 
-    log.debug("MutliGroup       : " + str(MULTI_GROUP))
-    log.debug("Sending UDP Data : " + MESSAGE)
+    log.debug("MutliGroup: {0}", MULTI_GROUP)
+    log.debug("Sending UDP Data: {0}", MESSAGE)
     sock.sendto(MESSAGE, MULTI_GROUP)
 
     servers = []
@@ -46,10 +46,10 @@ def getServerDetails():
         data, addr = sock.recvfrom(1024)  # buffer size
         servers.append(json.loads(data))
     except Exception as e:
-        log.error("Read UPD responce: %s" % e)
+        log.error("Read UPD responce: {0}", e)
         # break
 
-    log.debug("Found Servers: %s" % servers)
+    log.debug("Found Servers: {0}", servers)
     return servers
 
 
@@ -83,14 +83,14 @@ def checkServer(force=False, change_user=False, notify=False):
             return
 
         serverUrl = serverInfo[return_index]["Address"]
-        log.debug("Selected server: " + serverUrl)
+        log.debug("Selected server: {0}", serverUrl)
 
         # parse the url
         url_bits = urlparse(serverUrl)
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
         server_protocol = url_bits.scheme
-        log.debug("Detected server info " + server_protocol + " - " + server_address + " - " + server_port)
+        log.debug("Detected server info {0} - {1} - {2}", server_protocol, server_address, server_port)
 
         # save the server info
         settings.setSetting("port", server_port)
@@ -114,7 +114,7 @@ def checkServer(force=False, change_user=False, notify=False):
         log.debug("Getting user list")
         jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
 
-        log.debug("jsonData : " + str(jsonData))
+        log.debug("jsonData: {0}", jsonData)
         result = json.loads(jsonData)
         if result is None:
             xbmcgui.Dialog().ok(i18n('error'),
@@ -145,13 +145,13 @@ def checkServer(force=False, change_user=False, notify=False):
             names.insert(0, i18n('username_userinput'))
             user_list.insert(0, '')
             secured.insert(0, True)
-            log.debug("User List : " + str(names))
-            log.debug("User List : " + str(user_list))
+            log.debug("User List: {0}", names)
+            log.debug("User List: {0}", user_list)
 
             return_value = xbmcgui.Dialog().select(i18n('select_user'), names)
 
             if (return_value > -1):
-                log.debug("Selected User Index : " + str(return_value))
+                log.debug("Selected User Index: {0}", return_value)
                 if return_value == 0:
                     kb = xbmc.Keyboard()
                     kb.setHeading(i18n('username:'))
@@ -163,11 +163,11 @@ def checkServer(force=False, change_user=False, notify=False):
                 else:
                     selected_user = user_list[return_value]
 
-                log.debug("Selected User Name : " + str(selected_user))
+                log.debug("Selected User Name: {0}", selected_user)
 
                 if selected_user:
                     # we have a user so save it
-                    log.debug("Saving Username : " + selected_user)
+                    log.debug("Saving Username: {0}", selected_user)
                     settings.setSetting("username", selected_user)
                     if secured[return_value] is True:
                         kb = xbmc.Keyboard()
@@ -175,7 +175,7 @@ def checkServer(force=False, change_user=False, notify=False):
                         kb.setHiddenInput(True)
                         kb.doModal()
                         if kb.isConfirmed():
-                            log.debug("Saving Password for Username : " + selected_user)
+                            log.debug("Saving Password for Username: {0}", selected_user)
                             settings.setSetting('password', kb.getText())
                     else:
                         settings.setSetting('password', '')

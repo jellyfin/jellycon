@@ -1,19 +1,10 @@
 # Gnu General Public License - see LICENSE.TXT
 
-import hashlib
-import os
-import threading
 import json
-import encodings
 from collections import defaultdict
-
-import xbmcaddon
-import xbmc
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
-from utils import getChecksum
-from kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
 

@@ -28,7 +28,7 @@ def catch_except(errors=(Exception, ), default_value=False):
                         try:
                             submit_error_data()
                         except Exception as error:
-                            log.debug("Sending Error Data Failed: " + str(error))
+                            log.debug("Sending Error Data Failed: {0}", error)
                     raise
                 return default_value
         return wrapper
@@ -56,7 +56,7 @@ def submit_error_data():
         data["report_error"] = str(error)
 
     post_data = json.dumps(data)
-    log.debug("ERROR_DATA: " + post_data)
+    log.debug("ERROR_DATA: {0}", post_data)
 
     server = "allthedata.pythonanywhere.com"
     url_path = "/submit"
@@ -65,7 +65,7 @@ def submit_error_data():
     head["Content-Type"] = "application/json"
     conn.request(method="POST", url=url_path, body=post_data, headers=head)
     data = conn.getresponse()
-    log.debug("Submit Responce Code: " + str(data.status))
+    log.debug("Submit Responce Code: {0}", data.status)
 
 
 def format_exception():
@@ -126,7 +126,7 @@ def format_exception():
         # log.error(str(fileStackTrace))
     except Exception as e:
         fileStackTrace = None
-        log.error(e)
+        log.error("{0}", e)
 
     errorType = "NA"
     errorFile = "NA"

@@ -59,11 +59,11 @@ def mainEntryPoint():
             pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    log.debug("Running Python: " + str(sys.version_info))
-    log.debug("Running EmbyCon: " + str(ADDON_VERSION))
-    log.debug("Kodi BuildVersion: " + xbmc.getInfoLabel("System.BuildVersion"))
-    log.debug("Kodi Version: " + str(kodi_version))
-    log.debug("Script argument data: " + str(sys.argv))
+    log.debug("Running Python: {0}", sys.version_info)
+    log.debug("Running EmbyCon: {0}", ADDON_VERSION)
+    log.debug("Kodi BuildVersion: {0}", xbmc.getInfoLabel("System.BuildVersion"))
+    log.debug("Kodi Version: {0}", kodi_version)
+    log.debug("Script argument data: {0}", sys.argv)
 
     try:
         params = get_params(sys.argv[2])
@@ -74,7 +74,7 @@ def mainEntryPoint():
 
     if (len(params) == 0):
         windowParams = home_window.getProperty("Params")
-        log.debug("windowParams : " + windowParams)
+        log.debug("windowParams: {0}", windowParams)
         # home_window.clearProperty("Params")
         if (windowParams):
             try:
@@ -82,7 +82,7 @@ def mainEntryPoint():
             except:
                 params = {}
 
-    log.debug("Script params = " + str(params))
+    log.debug("Script params: {0}", params)
 
     param_url = params.get('url', None)
 
@@ -173,8 +173,8 @@ def mainEntryPoint():
         trakttokodi.entry_point(params)
     else:
         checkServer(notify=False)
-        log.debug("EmbyCon -> Mode: " + str(mode))
-        log.debug("EmbyCon -> URL: " + str(param_url))
+        log.debug("EmbyCon -> Mode: {0}", mode)
+        log.debug("EmbyCon -> URL: {0}", param_url)
 
         if mode == "GET_CONTENT":
             getContent(param_url, params)
@@ -204,7 +204,7 @@ def mainEntryPoint():
 
 
 def markWatched(item_id):
-    log.debug("Mark Item Watched : " + item_id)
+    log.debug("Mark Item Watched: {0}", item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
@@ -214,7 +214,7 @@ def markWatched(item_id):
 
 
 def markUnwatched(item_id):
-    log.debug("Mark Item UnWatched : " + item_id)
+    log.debug("Mark Item UnWatched: {0}", item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
@@ -224,7 +224,7 @@ def markUnwatched(item_id):
 
 
 def markFavorite(item_id):
-    log.debug("Add item to favourites : " + item_id)
+    log.debug("Add item to favourites: {0}", item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
@@ -234,7 +234,7 @@ def markFavorite(item_id):
 
 
 def unmarkFavorite(item_id):
-    log.debug("Remove item from favourites : " + item_id)
+    log.debug("Remove item from favourites: {0}", item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
@@ -246,7 +246,7 @@ def unmarkFavorite(item_id):
 def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
     if return_value:
-        log.debug('Deleting Item : ' + item_id)
+        log.debug('Deleting Item: {0}', item_id)
         url = '{server}/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(i18n('deleting'), i18n('waiting_server_delete'))
@@ -258,7 +258,7 @@ def delete(item_id):
 
 
 def get_params(paramstring):
-    log.debug("Parameter string: " + paramstring)
+    log.debug("Parameter string: {0}", paramstring)
     param = {}
     if len(paramstring) >= 2:
         params = paramstring
@@ -280,12 +280,12 @@ def get_params(paramstring):
             elif (len(splitparams)) == 3:
                 param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
 
-    log.debug("EmbyCon -> Detected parameters: " + str(param))
+    log.debug("EmbyCon -> Detected parameters: {0}", param)
     return param
 
 
 def setSort(pluginhandle, viewType):
-    log.debug("SETTING_SORT for media type: " + str(viewType))
+    log.debug("SETTING_SORT for media type: {0}", viewType)
     if viewType == "BoxSets":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
@@ -307,8 +307,8 @@ def getContent(url, params):
     if not media_type:
         xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
 
-    log.debug("URL: " + str(url))
-    log.debug("MediaType: " + str(media_type))
+    log.debug("URL: {0}", url)
+    log.debug("MediaType: {0}", media_type)
     pluginhandle = int(sys.argv[1])
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
@@ -330,7 +330,7 @@ def getContent(url, params):
     elif media_type == "season" or media_type == "episodes":
         viewType = "Episodes"
         xbmcplugin.setContent(pluginhandle, 'episodes')
-    log.debug("ViewType: " + viewType)
+    log.debug("ViewType: {0}", viewType)
 
     setSort(pluginhandle, viewType)
 
@@ -512,7 +512,7 @@ def processDirectory(results, progress, params):
     return dirItems
 
 def showMenu(params):
-    log.debug("showMenu(): " + str(params))
+    log.debug("showMenu(): {0}", params)
 
     action_items = []
     li = xbmcgui.ListItem("Play")
@@ -540,14 +540,14 @@ def showMenu(params):
     selected_action = ""
     if selected_action_item is not None:
         selected_action = selected_action_item.getProperty('menu_id')
-    log.debug("Menu Action Selected: " + str(selected_action_item))
+    log.debug("Menu Action Selected: {0}", selected_action_item)
     del action_menu
 
     if selected_action == "play":
         log.debug("Play Item")
         #list_item = populate_listitem(params["item_id"])
         #result = xbmcgui.Dialog().info(list_item)
-        #log.debug("xbmcgui.Dialog().info: " + str(result))
+        #log.debug("xbmcgui.Dialog().info: {0}", result)
         PLAY(params)
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
@@ -564,12 +564,12 @@ def showMenu(params):
 
 
 def populate_listitem(item_id):
-    log.debug("populate_listitem: " + item_id)
+    log.debug("populate_listitem: {0}", item_id)
 
     url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
-    log.debug("populate_listitem item info: " + str(result))
+    log.debug("populate_listitem item info: {0}", result)
 
     '''
     server = downloadUtils.getServer()
@@ -584,7 +584,7 @@ def populate_listitem(item_id):
     details, extraData = extract_item_info(result,gui_options )
     u, list_item, folder = add_gui_item(result["Id"], details, extraData, {}, folder=False)
 
-    log.debug("list_item path: " + u)
+    log.debug("list_item path: {0}", u)
 
     #list_item.setProperty('IsPlayable', 'false')
     #list_item.setPath(u)
@@ -618,7 +618,7 @@ def populate_listitem(item_id):
 
 
 def showContent(pluginName, handle, params):
-    log.debug("showContent Called: " + str(params))
+    log.debug("showContent Called: {0}", params)
 
     item_type = params.get("item_type")
 
@@ -632,11 +632,11 @@ def showContent(pluginName, handle, params):
                   "&IsMissing=False"
                   "&IncludeItemTypes=" + item_type)
 
-    log.debug("showContent Content Url : " + str(contentUrl))
+    log.debug("showContent Content Url: {0}", contentUrl)
     getContent(contentUrl, params)
 
 def showParentContent(pluginName, handle, params):
-    log.debug("showParentContent Called: " + str(params))
+    log.debug("showParentContent Called: {0}", params)
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
@@ -651,7 +651,7 @@ def showParentContent(pluginName, handle, params):
         "&Fields=" + detailsString +
         "&format=json")
 
-    log.debug("showParentContent Content Url : " + str(contentUrl))
+    log.debug("showParentContent Content Url: {0}", contentUrl)
     getContent(contentUrl, params)
 
 
@@ -683,7 +683,7 @@ def searchResults(params):
 
     home_window.setProperty("last_search", user_input)
 
-    log.debug('searchResults Called: ' + str(params))
+    log.debug('searchResults Called: {0}', params)
 
     handle = int(sys.argv[1])
     query = user_input
@@ -732,7 +732,7 @@ def searchResults(params):
         progress.update(0, i18n('retrieving_data'))
 
     result = dataManager.GetContent(content_url)
-    log.debug('SearchHints jsonData: ' + str(result))
+    log.debug('SearchHints jsonData: {0}', result)
 
     results = result.get('SearchHints')
     if results is None:
@@ -740,13 +740,13 @@ def searchResults(params):
 
     item_count = 1
     total_results = int(result.get('TotalRecordCount', 0))
-    log.debug('SEARCH_TOTAL_RESULTS: ' + str(total_results))
+    log.debug('SEARCH_TOTAL_RESULTS: {0}', total_results)
     list_items = []
 
     for item in results:
         item_id = item.get('ItemId')
         name = title = item.get('Name')
-        log.debug('SEARCH_RESULT_NAME: ' + name)
+        log.debug('SEARCH_RESULT_NAME: {0}', name)
 
         if progress is not None:
             percent_complete = (float(item_count) / float(total_results)) * 100
@@ -805,7 +805,7 @@ def searchResults(params):
             list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'])
 
         info = {'title': title, 'tvshowtitle': tvshowtitle, 'mediatype': media_type}
-        log.debug('SEARCH_RESULT_ART: ' + str(art))
+        log.debug('SEARCH_RESULT_ART: {0}', art)
         list_item.setProperty('fanart_image', art['fanart'])
         list_item.setProperty('discart', art['discart'])
         list_item.setArt(art)
@@ -843,7 +843,7 @@ def searchResults(params):
 
         info['year'] = item.get('ProductionYear', '')
 
-        log.debug('SEARCH_RESULT_INFO: ' + str(info))
+        log.debug('SEARCH_RESULT_INFO: {0}', info)
         list_item.setInfo('Video', infoLabels=info)
 
         item_tuple = (list_item_url, list_item, is_folder)
@@ -860,20 +860,20 @@ def searchResults(params):
 def PLAY(params):
     log.debug("== ENTER: PLAY ==")
 
-    log.debug("PLAY ACTION PARAMS: " + str(params))
+    log.debug("PLAY ACTION PARAMS: {0}", params)
     item_id = params.get("item_id")
 
     auto_resume = int(params.get("auto_resume", "-1"))
-    log.debug("AUTO_RESUME: " + str(auto_resume))
+    log.debug("AUTO_RESUME: {0}", auto_resume)
 
     forceTranscode = params.get("force_transcode", None) is not None
-    log.debug("FORCE_TRANSCODE: " + str(forceTranscode))
+    log.debug("FORCE_TRANSCODE: {0}", forceTranscode)
 
     media_source_id = params.get("media_source_id", "")
-    log.debug("media_source_id: " + str(media_source_id))
+    log.debug("media_source_id: {0}", media_source_id)
 
     use_default = params.get("use_default", "false") == "true"
-    log.debug("use_default: " + str(use_default))
+    log.debug("use_default: {0}", use_default)
 
     # set the current playing item id
     # set all the playback info, this will be picked up by the service
@@ -902,7 +902,7 @@ def playTrailer(id):
 
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
-    log.debug("LocalTrailers" + str(result))
+    log.debug("LocalTrailers {0}", result)
 
     trailer_list = []
     for trailer in result:
@@ -915,7 +915,7 @@ def playTrailer(id):
     url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % id)
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
-    log.debug("RemoteTrailers" + str(result))
+    log.debug("RemoteTrailers: {0}", result)
 
     remote_trailers = result.get("RemoteTrailers", [])
     for trailer in remote_trailers:
@@ -927,7 +927,7 @@ def playTrailer(id):
             info["url"] = url
             trailer_list.append(info)
 
-    log.debug("TrailerList: " + str(trailer_list))
+    log.debug("TrailerList: {0}", trailer_list)
 
     trailer_text = []
     for trailer in trailer_list:
@@ -938,7 +938,7 @@ def playTrailer(id):
     resp = dialog.select(i18n('select_trailer'), trailer_text)
     if resp > -1:
         trailer = trailer_list[resp]
-        log.debug("SelectedTrailer: " + str(trailer))
+        log.debug("SelectedTrailer: {0}", trailer)
 
         if trailer.get("type") == "local":
             params = {}
@@ -947,7 +947,7 @@ def playTrailer(id):
 
         elif trailer.get("type") == "remote":
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
-            log.debug("YoutubeID: " + str(youtube_id))
+            log.debug("YoutubeID: {0}", youtube_id)
             youtube_plugin = "PlayMedia(plugin://plugin.video.youtube/?action=play_video&videoid=%s)" % youtube_id
             xbmc.executebuiltin(youtube_plugin)
 
