@@ -223,7 +223,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     listItems = []
     for item in result:
         item_id = item["Id"]
-        name = item["Name"]
+        name = item["Name"].encode('utf-8')
         episodeDetails = ""
         log.debug("WIDGET_DATE_NAME: {0}", name)
 
