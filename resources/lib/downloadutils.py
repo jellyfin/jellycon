@@ -256,6 +256,9 @@ class DownloadUtils():
 
         settings = xbmcaddon.Addon('plugin.video.embycon')
         deviceName = settings.getSetting('deviceName')
+        # remove none ascii chars
+        deviceName = deviceName.decode("ascii", errors='ignore')
+        # remove some chars not valid for names
         deviceName = deviceName.replace("\"", "_")
 
         headers = {}
