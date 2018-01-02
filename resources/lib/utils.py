@@ -119,7 +119,7 @@ class PlayUtils():
             playurl = playurl + "&api_key=" + user_token
 
         log.debug("Playback URL: {0}", playurl)
-        return playurl.encode('utf-8'), playback_type
+        return playurl, playback_type
 
     def getStrmDetails(self, media_source):
         playurl = None

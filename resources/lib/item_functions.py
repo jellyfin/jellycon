@@ -103,21 +103,21 @@ def extract_item_info(item, gui_options):
     add_season_number = gui_options["add_season_number"]
     add_episode_number = gui_options["add_episode_number"]
 
-    item_details.name = item["Name"].encode('utf-8')
+    item_details.name = item["Name"]
     item_details.original_title = item_details.name
 
     if name_format is not None and item_details.item_type == name_format_type:
         nameInfo = {}
-        nameInfo["ItemName"] = item["Name"].encode('utf-8')
+        nameInfo["ItemName"] = item["Name"]
         season_name = item["SeriesName"]
         if season_name:
-            nameInfo["SeriesName"] = season_name.encode('utf-8')
+            nameInfo["SeriesName"] = season_name
         else:
             nameInfo["SeriesName"] = ""
-        nameInfo["SeasonIndex"] = "%02d" % item_details.season_number
-        nameInfo["EpisodeIndex"] = "%02d" % item_details.episode_number
+        nameInfo["SeasonIndex"] = u"%02d" % item_details.season_number
+        nameInfo["EpisodeIndex"] = u"%02d" % item_details.episode_number
         log.debug("FormatName: {0} | {1}", name_format, nameInfo)
-        item_details.name = name_format.format(**nameInfo).strip()
+        item_details.name = unicode(name_format).format(**nameInfo).strip()
 
     else:
         if item_details.item_type == "Episode":
@@ -129,7 +129,7 @@ def extract_item_info(item, gui_options):
             if add_episode_number:
                 prefix = prefix + "%02d" % item_details.episode_number
             if prefix != '':
-                item_details.name = prefix + ' - ' + item["Name"].encode('utf-8')
+                item_details.name = prefix + ' - ' + item["Name"]
 
     year = item["ProductionYear"]
     prem_date = item["PremiereDate"]
@@ -207,7 +207,7 @@ def extract_item_info(item, gui_options):
         for studio in studios:
             if item_details.studio == "":  # Just take the first one
                 studio_name = studio["Name"]
-                item_details.studio = studio_name.encode('utf-8')
+                item_details.studio = studio_name
                 break
 
     # Process Genres
@@ -272,8 +272,6 @@ def extract_item_info(item, gui_options):
     return item_details
 
 def add_gui_item(url, item_details, display_options, folder=True):
-
-    url = url.encode('utf-8')
 
     log.debug("Passed item_details: {0}", item_details.__dict__)
 

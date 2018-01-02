@@ -128,7 +128,7 @@ def checkServer(force=False, change_user=False, notify=False):
                 config = user.get("Configuration")
                 if (config != None):
                     if (config.get("IsHidden") is None) or (config.get("IsHidden") is False):
-                        name = user.get("Name").encode("utf-8")
+                        name = user.get("Name")
                         user_list.append(name)
                         if (user.get("HasPassword") is True):
                             secured.append(True)

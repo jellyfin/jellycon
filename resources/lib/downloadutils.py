@@ -260,6 +260,8 @@ class DownloadUtils():
         deviceName = deviceName.decode("ascii", errors='ignore')
         # remove some chars not valid for names
         deviceName = deviceName.replace("\"", "_")
+        if len(deviceName) == 0:
+            deviceName = "EmbyCon"
 
         headers = {}
         headers["Accept-encoding"] = "gzip"

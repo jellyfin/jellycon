@@ -18,7 +18,6 @@ class DataManager():
         log.debug("DataManager __init__")
 
     def loadJasonData(self, jsonData):
-        #return json.loads(jsonData)
         return json.loads(jsonData, object_hook=lambda d: defaultdict(lambda: None, d))
 
     def GetContent(self, url):

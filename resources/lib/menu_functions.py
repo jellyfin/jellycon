@@ -243,7 +243,7 @@ def getCollections(detailsString):
     collections = []
 
     for item in result:
-        item_name = (item.get("Name")).encode('utf-8')
+        item_name = item.get("Name")
 
         collection_type = item.get('CollectionType', None)
         log.debug("CollectionType: {0}", collection_type)
