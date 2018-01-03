@@ -211,8 +211,8 @@ def playFile(play_info):
 def setListItemProps(id, listItem, result, server, extra_props, title):
     # set up item and item info
     thumbID = id
-    eppNum = -1
-    seasonNum = -1
+    episode_number = -1
+    season_number = -1
 
     art = getArt(result, server=server)
     listItem.setIconImage(art['thumb'])  # back compat
@@ -227,17 +227,44 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     for prop in extra_props:
         listItem.setProperty(prop[0], prop[1])
 
+    item_type = result.get("Type", "").lower()
+    mediatype = 'video'
+
+    if item_type == 'movie' or item_type == 'boxset':
+        mediatype = 'movie'
+    elif item_type == 'series':
+        mediatype = 'tvshow'
+    elif item_type == 'season':
+        mediatype = 'season'
+    elif item_type == 'episode':
+        mediatype = 'episode'
+
+    if item_type == "episode":
+        episode_number = result.get("IndexNumber", -1)
+
+    if item_type == "episode":
+        season_number = result.get("ParentIndexNumber", -1)
+    elif item_type == "season":
+        season_number = result.get("IndexNumber", -1)
+
     # play info
     details = {
         'title': title,
-        'plot': result.get("Overview")
+        'plot': result.get("Overview"),
+        'mediatype': mediatype
     }
 
-    if (eppNum > -1):
-        details["episode"] = str(eppNum)
+    tv_show_name = result.get("SeriesName")
+    if tv_show_name is not None:
+        details['tvshowtitle'] = tv_show_name
 
-    if (seasonNum > -1):
-        details["season"] = str(seasonNum)
+    if episode_number > -1:
+        details["episode"] = str(episode_number)
+
+    if season_number > -1:
+        details["season"] = str(season_number)
+
+    listItem.setUniqueIDs({'emby': id})
 
     listItem.setInfo("Video", infoLabels=details)
 

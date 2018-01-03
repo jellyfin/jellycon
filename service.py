@@ -315,6 +315,30 @@ remote_control = settings.getSetting('remoteControl') == "true"
 if remote_control:
     websocket_client.start()
 
+'''
+def getNowPlaying():
+
+    # Get the active player
+    result = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "Player.GetActivePlayers"}')
+    result = unicode(result, 'utf-8', errors='ignore')
+    log.debug("Got active player: {0}", result)
+    result = json.loads(result)
+
+    if 'result' in result and len(result["result"]) > 0:
+        playerid = result["result"][0]["playerid"]
+
+        # Get details of the playing media
+        log.debug("Getting details of now  playing media")
+        result = xbmc.executeJSONRPC(
+            '{"jsonrpc": "2.0", "id": 1, "method": "Player.GetItem", "params": {"playerid": ' + str(
+                playerid) + ', "properties": ["showtitle", "tvshowid", "episode", "season", "playcount", "genre", "uniqueid"] } }')
+        result = unicode(result, 'utf-8', errors='ignore')
+        log.debug("playing_item_details: {0}", result)
+
+        result = json.loads(result)
+        return result
+'''
+
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
 # I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
@@ -339,6 +363,8 @@ while not xbmc.abortRequested:
             if (time.time() - last_content_check) > 60:
                 last_content_check = time.time()
                 checkForNewContent()
+
+        #getNowPlaying()
 
     except Exception as error:
         log.error("Exception in Playback Monitor: {0}", error)
