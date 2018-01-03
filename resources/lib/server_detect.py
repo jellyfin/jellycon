@@ -107,6 +107,7 @@ def checkServer(force=False, change_user=False, notify=False):
 
     # we need to change the user
     current_username = settings.getSetting("username")
+    current_username = unicode(current_username, "utf-8")
 
     # if asked or we have no current user then show user selection screen
     if change_user or len(current_username) == 0:

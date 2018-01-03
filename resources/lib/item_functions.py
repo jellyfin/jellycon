@@ -490,7 +490,6 @@ def get_next_episode(item):
     parendId = item.get("ParentId", "na")
     item_index = item.get("IndexNumber", -1)
 
-
     if parendId == "na":
         log.debug("No parent id, can not get next")
         return None

@@ -176,7 +176,7 @@ class DownloadUtils():
         userid = ""
         secure = False
         for user in result:
-            if (user.get("Name") == userName):
+            if (user.get("Name") == unicode(userName, "utf-8")):
                 userid = user.get("Id")
                 log.debug("Username Found: {0}", user.get("Name"))
                 if (user.get("HasPassword") == True):
