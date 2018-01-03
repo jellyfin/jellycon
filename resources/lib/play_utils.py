@@ -1,5 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 
+import binascii
+
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -18,6 +20,7 @@ from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
 from datamanager import DataManager
+from item_functions import get_next_episode
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -187,6 +190,8 @@ def playFile(play_info):
     playlist.add(playurl, list_item)
     xbmc.Player().play(playlist)
 
+    send_next_episode_details(result)
+
     if seekTime == 0:
         return
 
@@ -207,6 +212,30 @@ def playFile(play_info):
         xbmc.Player().seekTime(seekTime)
         xbmc.sleep(100)
         # xbmc.Player().play()
+
+
+def send_next_episode_details(item):
+
+    next_episode = get_next_episode(item)
+
+    if next_episode is None:
+        log.debug("No next episode")
+
+    next_info = {
+        "prev_id": item.get("Id"),
+        "id": next_episode.get("Id"),
+        "title": next_episode.get("Name")
+    }
+    next_data = json.dumps(next_info)
+
+    source_id = "embycon"
+    signal = "embycon_next_episode"
+    data = '\\"[\\"{0}\\"]\\"'.format(binascii.hexlify(next_data))
+
+    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, signal, data)
+    log.debug("Sending next episode details: {0}", command)
+    xbmc.executebuiltin(command)
+
 
 def setListItemProps(id, listItem, result, server, extra_props, title):
     # set up item and item info

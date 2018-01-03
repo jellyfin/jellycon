@@ -2,6 +2,7 @@
 import sys
 import os
 import urllib
+import json
 
 import xbmc
 import xbmcaddon
@@ -19,7 +20,7 @@ addon_instance = xbmcaddon.Addon(id='plugin.video.embycon')
 addon_path = addon_instance.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join(addon_path))
 
-downloadUtils = DownloadUtils()
+download_utils = DownloadUtils()
 
 class ItemDetails():
 
@@ -194,7 +195,7 @@ def extract_item_info(item, gui_options):
                 person_id = person["Id"]
                 person_tag = person["PrimaryImageTag"]
                 if person_tag is not None:
-                    person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server = gui_options["server"])
+                    person_thumbnail = download_utils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server = gui_options["server"])
                 else:
                     person_thumbnail = ""
                 person = {"name": person_name, "role": person_role, "thumbnail": person_thumbnail}
@@ -478,4 +479,51 @@ def add_context_menu(item_details, folder):
     commands.append((i18n('emby_delete'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
 
     return commands
+
+
+def get_next_episode(item):
+
+    if item.get("Type", "na") != "Episode":
+        log.debug("Not an episode, can not get next")
+        return None
+
+    parendId = item.get("ParentId", "na")
+    item_index = item.get("IndexNumber", -1)
+
+
+    if parendId == "na":
+        log.debug("No parent id, can not get next")
+        return None
+
+    if item_index == -1:
+        log.debug("No episode number, can not get next")
+        return None
+
+    url = ( '{server}/emby/Users/{userid}/Items?' +
+            '?Recursive=true' +
+            '&ParentId=' + parendId +
+            '&IsVirtualUnaired=false' +
+            '&IsMissing=False' +
+            '&IncludeItemTypes=Episode' +
+            '&ImageTypeLimit=1' +
+            '&format=json')
+
+    json_data = download_utils.downloadUrl(url)
+    items_result = json.loads(json_data)
+    log.debug("get_next_episode, sibling list: {0}", items_result)
+
+    if items_result is None:
+        log.debug("get_next_episode no results")
+        return None
+
+    item_list = items_result.get("Items", [])
+
+    for item in item_list:
+        index = item.get("IndexNumber", -1)
+        # find the very next episode in the season
+        if index == item_index + 1:
+            log.debug("get_next_episode, found next episode: {0}", item)
+            return item
+
+    return None
 

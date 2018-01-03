@@ -16,6 +16,7 @@ from resources.lib.kodi_utils import HomeWindow
 from resources.lib.translation import i18n
 from resources.lib.widgets import checkForNewContent
 from resources.lib.websocket_client import WebSocketClient
+from resources.lib.item_functions import get_next_episode
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -131,57 +132,30 @@ def promptForStopActions(item_id, current_possition):
     if (prompt_next_percentage < 100 and
                 result.get("Type", "na") == "Episode" and
                 percenatge_complete > prompt_next_percentage):
-        parendId = result.get("ParentId", "na")
-        item_index = result.get("IndexNumber", -1)
 
-        if parendId == "na":
-            log.debug("No parent id, can not prompt for next episode")
-            return
+        next_episode = get_next_episode(result)
 
-        if item_index == -1:
-            log.debug("No episode number, can not prompt for next episode")
-            return
+        if next_episode is not None:
+            resp = True
+            index = next_episode.get("IndexNumber", -1)
+            if play_prompt:
+                next_epp_name = "%02d - %s" % (index, next_episode.get("Name", "n/a"))
+                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
 
-        url = ( '{server}/emby/Users/{userid}/Items?' +
-                '?Recursive=true' +
-                '&ParentId=' + parendId +
-                # '&Filters=IsUnplayed,IsNotFolder' +
-                '&IsVirtualUnaired=false' +
-                '&IsMissing=False' +
-                '&IncludeItemTypes=Episode' +
-                '&ImageTypeLimit=1' +
-                '&format=json')
+            if resp:
+                next_item_id = next_episode.get("Id")
+                log.debug("Playing Next Episode: {0}", next_item_id)
 
-        jsonData = download_utils.downloadUrl(url)
+                play_info = {}
+                play_info["item_id"] = next_item_id
+                play_info["auto_resume"] = "-1"
+                play_info["force_transcode"] = False
+                play_data = json.dumps(play_info)
 
-        items_result = json.loads(jsonData)
-        log.debug("Prompt Next Item Details: {0}", items_result)
-        # find next episode
-        item_list = items_result.get("Items", [])
-        for item in item_list:
-            index = item.get("IndexNumber", -1)
-            if index == item_index + 1: # find the very next episode in the season
+                home_window = HomeWindow()
+                home_window.setProperty("item_id", next_item_id)
+                home_window.setProperty("play_item_message", play_data)
 
-                resp = True
-                if play_prompt:
-                    next_epp_name = "%02d - %s" % (index, item.get("Name", "n/a"))
-                    resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
-
-                if resp:
-                    next_item_id = item.get("Id")
-                    log.debug("Playing Next Episode: {0}", next_item_id)
-
-                    play_info = {}
-                    play_info["item_id"] = next_item_id
-                    play_info["auto_resume"] = "-1"
-                    play_info["force_transcode"] = False
-                    play_data = json.dumps(play_info)
-
-                    home_window = HomeWindow()
-                    home_window.setProperty("item_id", next_item_id)
-                    home_window.setProperty("play_item_message", play_data)
-
-                break
 
 @catch_except()
 def stopAll(played_information):
