@@ -220,6 +220,7 @@ def send_next_episode_details(item):
 
     if next_episode is None:
         log.debug("No next episode")
+        return
 
     next_info = {
         "prev_id": item.get("Id"),
