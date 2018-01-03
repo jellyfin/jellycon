@@ -7,6 +7,7 @@ import xbmcgui
 import time
 import json
 import traceback
+import binascii
 
 from resources.lib.error import catch_except
 from resources.lib.downloadutils import DownloadUtils
@@ -277,7 +278,29 @@ class Service(xbmc.Player):
         sendProgress()
 
 
+class PlaybackService(xbmc.Monitor):
+
+    def onNotification(self, sender, method, data):
+        log.debug("PlaybackService:onNotification:{0}:{1}:{2}", sender, method, data)
+        if sender[-7:] != '.SIGNAL':
+            return
+
+        signal = method.split('.', 1)[-1]
+        if signal != "embycon_play_action":
+            return
+
+        data_json = json.loads(data)
+        hex_data = data_json[0]
+        log.debug("PlaybackService:onNotification:{0}", hex_data)
+        decoded_data = binascii.unhexlify(hex_data)
+        play_info = json.loads(decoded_data)
+        playFile(play_info)
+
+
+# set up all the services
 monitor = Service()
+playback_service = PlaybackService()
+
 home_window = HomeWindow()
 last_progress_update = time.time()
 last_content_check = time.time()
@@ -327,11 +350,11 @@ while not xbmc.abortRequested:
                 sendProgress()
         else:
             # if we have a play item them trigger playback
-            play_data = home_window.getProperty("play_item_message")
-            if play_data:
-                home_window.clearProperty("play_item_message")
-                play_info = json.loads(play_data)
-                playFile(play_info)
+            #play_data = home_window.getProperty("play_item_message")
+            #if play_data:
+            #    home_window.clearProperty("play_item_message")
+            #    play_info = json.loads(play_data)
+            #    playFile(play_info)
 
             # if not playing every 60 seonds check for new widget content
             if (time.time() - last_content_check) > 60:

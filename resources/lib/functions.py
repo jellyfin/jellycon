@@ -9,6 +9,7 @@ import pstats
 import json
 import StringIO
 import encodings
+import binascii
 
 import xbmcplugin
 import xbmcgui
@@ -889,9 +890,17 @@ def PLAY(params):
     play_info["use_default"] = use_default
     play_data = json.dumps(play_info)
 
-    home_window = HomeWindow()
-    home_window.setProperty("item_id", item_id)
-    home_window.setProperty("play_item_message", play_data)
+    source_id = "embycon"
+    signal = "embycon_play_action"
+    hex_string = binascii.hexlify(play_data)
+    data = '\\"[\\"{0}\\"]\\"'.format(hex_string)
+    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, signal, data)
+    log.debug("Sending playback action: {0}", command)
+    xbmc.executebuiltin(command)
+
+    #home_window = HomeWindow()
+    #home_window.setProperty("item_id", item_id)
+    #home_window.setProperty("play_item_message", play_data)
 
     #xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
 
