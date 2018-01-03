@@ -23,7 +23,8 @@ from datamanager import DataManager
 from item_functions import get_next_episode
 
 log = SimpleLogging(__name__)
-downloadUtils = DownloadUtils()
+download_utils = DownloadUtils()
+
 
 @catch_except()
 def playFile(play_info):
@@ -40,7 +41,7 @@ def playFile(play_info):
     addon_path = settings.getAddonInfo('path')
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
 
-    server = downloadUtils.getServer()
+    server = download_utils.getServer()
 
     url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
     data_manager = DataManager()
@@ -293,6 +294,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
 
     return listItem
 
+
 # For transcoding only
 # Present the list of audio and subtitles to select from
 # for external streamable subtitles add the URL to the Kodi item and let Kodi handle it
@@ -385,7 +387,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
                 # Load subtitles in the listitem if downloadable
                 if selectSubsIndex in downloadableStreams:
                     url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                            % (downloadUtils.getServer(), item_id, item_id, selectSubsIndex))]
+                            % (download_utils.getServer(), item_id, item_id, selectSubsIndex))]
                     log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
                     list_item.setSubtitles(url)
                 else:
@@ -404,6 +406,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
 
     return playurlprefs
 
+
 # direct stream, set any available subtitle streams
 def externalSubs(media_source, list_item, item_id):
 
@@ -419,8 +422,264 @@ def externalSubs(media_source, list_item, item_id):
 
             index = stream['Index']
             url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s"
-                   % (downloadUtils.getServer(), item_id, item_id, index, stream['Codec']))
+                   % (download_utils.getServer(), item_id, item_id, index, stream['Codec']))
 
             externalsubs.append(url)
 
     list_item.setSubtitles(externalsubs)
+
+
+def sendProgress(monitor):
+    playing_file = xbmc.Player().getPlayingFile()
+    play_data = monitor.played_information.get(playing_file)
+
+    if play_data is None:
+        return
+
+    log.debug("Sending Progress Update")
+
+    play_time = xbmc.Player().getTime()
+    play_data["currentPossition"] = play_time
+
+    item_id = play_data.get("item_id")
+    if item_id is None:
+        return
+
+    ticks = int(play_time * 10000000)
+    paused = play_data.get("paused", False)
+    playback_type = play_data.get("playback_type")
+    play_session_id = play_data.get("play_session_id")
+
+    postdata = {
+        'QueueableMediaTypes': "Video",
+        'CanSeek': True,
+        'ItemId': item_id,
+        'MediaSourceId': item_id,
+        'PositionTicks': ticks,
+        'IsPaused': paused,
+        'IsMuted': False,
+        'PlayMethod': playback_type,
+        'PlaySessionId': play_session_id
+    }
+
+    log.debug("Sending POST progress started: {0}", postdata)
+
+    url = "{server}/emby/Sessions/Playing/Progress"
+    download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+
+@catch_except()
+def promptForStopActions(item_id, current_possition):
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+
+    prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
+    play_prompt = settings.getSetting('promptPlayNextEpisodePercentage_prompt') == "true"
+    prompt_delete_episode_percentage = int(settings.getSetting('promptDeleteEpisodePercentage'))
+    prompt_delete_movie_percentage = int(settings.getSetting('promptDeleteMoviePercentage'))
+
+    # everything is off so return
+    if (prompt_next_percentage == 100 and
+            prompt_delete_episode_percentage == 100 and
+            prompt_delete_movie_percentage == 100):
+        return
+
+    jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
+    result = json.loads(jsonData)
+    prompt_to_delete = False
+    runtime = result.get("RunTimeTicks", 0)
+
+    # if no runtime we cant calculate perceantge so just return
+    if runtime == 0:
+        log.debug("No runtime so returing")
+        return
+
+    # item percentage complete
+    percenatge_complete = int(((current_possition * 10000000) / runtime) * 100)
+    log.debug("Episode Percentage Complete: {0}", percenatge_complete)
+
+    if (prompt_delete_episode_percentage < 100 and
+                result.get("Type", "na") == "Episode" and
+                percenatge_complete > prompt_delete_episode_percentage):
+            prompt_to_delete = True
+
+    if (prompt_delete_movie_percentage < 100 and
+                result.get("Type", "na") == "Movie" and
+                percenatge_complete > prompt_delete_movie_percentage):
+            prompt_to_delete = True
+
+    if prompt_to_delete:
+        log.debug("Prompting for delete")
+        resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
+        if resp:
+            log.debug("Deleting item: {0}", item_id)
+            url = "{server}/emby/Items/%s?format=json" % item_id
+            download_utils.downloadUrl(url, method="DELETE")
+            xbmc.executebuiltin("Container.Refresh")
+
+    # prompt for next episode
+    if (prompt_next_percentage < 100 and
+                result.get("Type", "na") == "Episode" and
+                percenatge_complete > prompt_next_percentage):
+
+        next_episode = get_next_episode(result)
+
+        if next_episode is not None:
+            resp = True
+            index = next_episode.get("IndexNumber", -1)
+            if play_prompt:
+                next_epp_name = "%02d - %s" % (index, next_episode.get("Name", "n/a"))
+                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
+
+            if resp:
+                next_item_id = next_episode.get("Id")
+                log.debug("Playing Next Episode: {0}", next_item_id)
+
+                play_info = {}
+                play_info["item_id"] = next_item_id
+                play_info["auto_resume"] = "-1"
+                play_info["force_transcode"] = False
+                play_data = json.dumps(play_info)
+
+                home_window = HomeWindow()
+                home_window.setProperty("item_id", next_item_id)
+                home_window.setProperty("play_item_message", play_data)
+
+
+@catch_except()
+def stopAll(played_information):
+    if len(played_information) == 0:
+        return
+
+    log.debug("played_information: {0}", played_information)
+
+    for item_url in played_information:
+        data = played_information.get(item_url)
+        if data is not None:
+            log.debug("item_url: {0}", item_url)
+            log.debug("item_data: {0}", data)
+
+            current_possition = data.get("currentPossition", 0)
+            emby_item_id = data.get("item_id")
+
+            if emby_item_id is not None and len(emby_item_id) != 0 and emby_item_id != "None":
+                log.debug("Playback Stopped at: {0}", current_possition)
+
+                url = "{server}/emby/Sessions/Playing/Stopped"
+                postdata = {
+                    'ItemId': emby_item_id,
+                    'MediaSourceId': emby_item_id,
+                    'PositionTicks': int(current_possition * 10000000)
+                }
+                download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+                promptForStopActions(emby_item_id, current_possition)
+
+    played_information.clear()
+
+
+class Service(xbmc.Player):
+    played_information = {}
+
+    def __init__(self, *args):
+        log.debug("Starting monitor service: {0}", args)
+        self.played_information = {}
+
+    def onPlayBackStarted(self):
+        # Will be called when xbmc starts playing a file
+        stopAll(self.played_information)
+
+        current_playing_file = xbmc.Player().getPlayingFile()
+        log.debug("onPlayBackStarted: {0}", current_playing_file)
+
+        home_window = HomeWindow()
+        emby_item_id = home_window.getProperty("item_id")
+        playback_type = home_window.getProperty("PlaybackType_" + emby_item_id)
+        play_session_id = home_window.getProperty("PlaySessionId_" + emby_item_id)
+
+        # if we could not find the ID of the current item then return
+        if emby_item_id is None or len(emby_item_id) == 0:
+            return
+
+        log.debug("Sending Playback Started")
+        postdata = {
+            'QueueableMediaTypes': "Video",
+            'CanSeek': True,
+            'ItemId': emby_item_id,
+            'MediaSourceId': emby_item_id,
+            'PlayMethod': playback_type,
+            'PlaySessionId': play_session_id
+        }
+
+        log.debug("Sending POST play started: {0}", postdata)
+
+        url = "{server}/emby/Sessions/Playing"
+        download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+        data = {}
+        data["item_id"] = emby_item_id
+        data["paused"] = False
+        data["playback_type"] = playback_type
+        data["play_session_id"] = play_session_id
+        self.played_information[current_playing_file] = data
+
+        log.debug("ADDING_FILE: {0}", current_playing_file)
+        log.debug("ADDING_FILE: {0}", self.played_information)
+
+    def onPlayBackEnded(self):
+        # Will be called when kodi stops playing a file
+        log.debug("EmbyCon Service -> onPlayBackEnded")
+        home_window = HomeWindow()
+        home_window.clearProperty("item_id")
+        stopAll(self.played_information)
+
+    def onPlayBackStopped(self):
+        # Will be called when user stops kodi playing a file
+        log.debug("onPlayBackStopped")
+        home_window = HomeWindow()
+        home_window.clearProperty("item_id")
+        stopAll(self.played_information)
+
+    def onPlayBackPaused(self):
+        # Will be called when kodi pauses the video
+        log.debug("onPlayBackPaused")
+        current_file = xbmc.Player().getPlayingFile()
+        play_data = self.played_information.get(current_file)
+
+        if play_data is not None:
+            play_data['paused'] = True
+            sendProgress(self)
+
+    def onPlayBackResumed(self):
+        # Will be called when kodi resumes the video
+        log.debug("onPlayBackResumed")
+        current_file = xbmc.Player().getPlayingFile()
+        play_data = self.played_information.get(current_file)
+
+        if play_data is not None:
+            play_data['paused'] = False
+            sendProgress(self)
+
+    def onPlayBackSeek(self, time, seekOffset):
+        # Will be called when kodi seeks in video
+        log.debug("onPlayBackSeek")
+        sendProgress(self)
+
+
+class PlaybackService(xbmc.Monitor):
+
+    def onNotification(self, sender, method, data):
+        log.debug("PlaybackService:onNotification:{0}:{1}:{2}", sender, method, data)
+        if sender[-7:] != '.SIGNAL':
+            return
+
+        signal = method.split('.', 1)[-1]
+        if signal != "embycon_play_action":
+            return
+
+        data_json = json.loads(data)
+        hex_data = data_json[0]
+        log.debug("PlaybackService:onNotification:{0}", hex_data)
+        decoded_data = binascii.unhexlify(hex_data)
+        play_info = json.loads(decoded_data)
+        playFile(play_info)
