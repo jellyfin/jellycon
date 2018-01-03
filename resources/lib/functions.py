@@ -18,7 +18,7 @@ import xbmc
 
 from resources.lib.error import catch_except
 from downloadutils import DownloadUtils
-from utils import getDetailsString, getArt, cache_artwork
+from utils import getDetailsString, getArt, cache_artwork, send_event_notification
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
@@ -352,7 +352,12 @@ def getContent(url, params):
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
+    # send display items event
+    display_items_notification = {"view_type": viewType}
+    send_event_notification("display_items", display_items_notification)
+
     # if the view master addon is available then run the script
+    # TODO: remove this when viewmaster addon is updated
     try:
         view_addon = xbmcaddon.Addon("script.viewmaster")
         if view_addon is not None:
@@ -888,18 +893,12 @@ def PLAY(params):
     play_info["force_transcode"] = forceTranscode
     play_info["media_source_id"] = media_source_id
     play_info["use_default"] = use_default
-    play_data = json.dumps(play_info)
 
-    source_id = "embycon"
-    signal = "embycon_play_action"
-    hex_string = binascii.hexlify(play_data)
-    data = '\\"[\\"{0}\\"]\\"'.format(hex_string)
-    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, signal, data)
-    log.debug("Sending playback action: {0}", command)
-    xbmc.executebuiltin(command)
+    send_event_notification("embycon_play_action", play_info)
 
     #home_window = HomeWindow()
     #home_window.setProperty("item_id", item_id)
+    #play_data = json.dumps(play_info)
     #home_window.setProperty("play_item_message", play_data)
 
     #xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")

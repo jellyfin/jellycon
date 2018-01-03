@@ -15,7 +15,7 @@ from resources.lib.error import catch_except
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
 from resume_dialog import ResumeDialog
-from utils import PlayUtils, getArt, id_generator
+from utils import PlayUtils, getArt, id_generator, send_event_notification
 from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
@@ -227,15 +227,8 @@ def send_next_episode_details(item):
         "id": next_episode.get("Id"),
         "title": next_episode.get("Name")
     }
-    next_data = json.dumps(next_info)
 
-    source_id = "embycon"
-    signal = "embycon_next_episode"
-    data = '\\"[\\"{0}\\"]\\"'.format(binascii.hexlify(next_data))
-
-    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, signal, data)
-    log.debug("Sending next episode details: {0}", command)
-    xbmc.executebuiltin(command)
+    send_event_notification("embycon_next_episode", next_info)
 
 
 def setListItemProps(id, listItem, result, server, extra_props, title):

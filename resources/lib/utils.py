@@ -12,6 +12,7 @@ import json
 import httplib
 import base64
 import sys
+import binascii
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -420,3 +421,13 @@ def single_urlencode(text):
     text = urllib.urlencode({'blahblahblah': text.encode('utf-8')})
     text = text[13:]
     return text.decode('utf-8') #return the result again as unicode
+
+
+def send_event_notification(method, data):
+    next_data = json.dumps(data)
+    source_id = "embycon"
+    data = '\\"[\\"{0}\\"]\\"'.format(binascii.hexlify(next_data))
+    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, data)
+    log.debug("Sending notification event data: {0}", command)
+    xbmc.executebuiltin(command)
+
