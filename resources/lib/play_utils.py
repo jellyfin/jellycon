@@ -293,7 +293,8 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     if season_number > -1:
         details["season"] = str(season_number)
 
-    listItem.setUniqueIDs({'emby': id})
+    details["plotoutline"] = "emby_id:" + id
+    #listItem.setUniqueIDs({'emby': id})
 
     listItem.setInfo("Video", infoLabels=details)
 

@@ -63,7 +63,7 @@ def getNowPlaying():
         log.debug("Getting details of now  playing media")
         result = xbmc.executeJSONRPC(
             '{"jsonrpc": "2.0", "id": 1, "method": "Player.GetItem", "params": {"playerid": ' + str(
-                playerid) + ', "properties": ["showtitle", "tvshowid", "episode", "season", "playcount", "genre", "uniqueid"] } }')
+                playerid) + ', "properties": ["showtitle", "tvshowid", "episode", "season", "playcount", "genre", "plotoutline", "uniqueid"] } }')
         result = unicode(result, 'utf-8', errors='ignore')
         log.debug("playing_item_details: {0}", result)
 
