@@ -591,8 +591,12 @@ class Service(xbmc.Player):
 
         current_playing_file = xbmc.Player().getPlayingFile()
         log.debug("onPlayBackStarted: {0}", current_playing_file)
-
         log.debug("played_information: {0}", self.played_information)
+
+        if current_playing_file not in self.played_information:
+            log.debug("This file was not started by EmbyCon")
+            return
+
         data = self.played_information[current_playing_file]
         data["paused"] = False
         data["currently_playing"] = True
