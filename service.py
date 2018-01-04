@@ -10,15 +10,12 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from resources.lib.error import catch_except
 from resources.lib.downloadutils import DownloadUtils
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import Service, PlaybackService, sendProgress
 from resources.lib.kodi_utils import HomeWindow
-from resources.lib.translation import i18n
 from resources.lib.widgets import checkForNewContent
 from resources.lib.websocket_client import WebSocketClient
-from resources.lib.item_functions import get_next_episode
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -44,7 +41,7 @@ last_progress_update = time.time()
 last_content_check = time.time()
 websocket_client = WebSocketClient()
 
-# start the WbSocket Client running
+# start the WebSocket Client running
 settings = xbmcaddon.Addon(id='plugin.video.embycon')
 remote_control = settings.getSetting('remoteControl') == "true"
 if remote_control:
@@ -87,13 +84,6 @@ while not xbmc.abortRequested:
                 last_progress_update = time.time()
                 sendProgress(monitor)
         else:
-            # if we have a play item them trigger playback
-            #play_data = home_window.getProperty("play_item_message")
-            #if play_data:
-            #    home_window.clearProperty("play_item_message")
-            #    play_info = json.loads(play_data)
-            #    playFile(play_info)
-
             # if not playing every 60 seonds check for new widget content
             if (time.time() - last_content_check) > 60:
                 last_content_check = time.time()
