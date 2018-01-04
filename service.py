@@ -105,4 +105,4 @@ home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
 
-log.error("Service shutting down")
+log.debug("Service shutting down")

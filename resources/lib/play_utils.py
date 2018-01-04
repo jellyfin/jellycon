@@ -372,7 +372,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
         else:  # User backed out of selection
             playurlprefs += "&AudioStreamIndex=%s" % default_audio
 
-    else:  # There's only one audiotrack.
+    elif len(audioStreams) == 1:  # There's only one audiotrack.
         selectAudioIndex = audioStreamsList[audioStreams[0]]
         playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
 
