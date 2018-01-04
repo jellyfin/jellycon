@@ -37,7 +37,7 @@ except Exception as error:
 
 # set up all the services
 monitor = Service()
-playback_service = PlaybackService()
+playback_service = PlaybackService(monitor)
 
 home_window = HomeWindow()
 last_progress_update = time.time()

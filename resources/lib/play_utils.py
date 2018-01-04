@@ -27,7 +27,7 @@ download_utils = DownloadUtils()
 
 
 @catch_except()
-def playFile(play_info):
+def playFile(play_info, monitor):
 
     id = play_info.get("item_id")
     auto_resume = play_info.get("auto_resume", "-1")
@@ -150,10 +150,6 @@ def playFile(play_info):
     elif playback_type == "1":
         playback_type_string = "DirectStream"
 
-    home_window = HomeWindow()
-    home_window.setProperty("PlaybackType_" + id, playback_type_string)
-    home_window.setProperty("PlaySessionId_" + id, play_session_id)
-
     # add the playback type into the overview
     if result.get("Overview", None) is not None:
         result["Overview"] = playback_type_string + "\n" + result.get("Overview")
@@ -182,6 +178,15 @@ def playFile(play_info):
 
     elif playback_type == "1": # for direct stream add any streamable subtitles
         externalSubs(selected_media_source, list_item, id)
+
+    # add playurl and data to the monitor
+    data = {}
+    data["item_id"] = id
+    data["playback_type"] = playback_type_string
+    data["play_session_id"] = play_session_id
+    data["currently_playing"] = True
+    monitor.played_information[playurl] = data
+    log.debug("Add to played_information: {0}", monitor.played_information)
 
     list_item.setPath(playurl)
     list_item = setListItemProps(id, list_item, result, server, listitem_props, item_title)
@@ -440,6 +445,7 @@ def sendProgress(monitor):
 
     play_time = xbmc.Player().getTime()
     play_data["currentPossition"] = play_time
+    play_data["currently_playing"] = True
 
     item_id = play_data.get("item_id")
     if item_id is None:
@@ -539,11 +545,7 @@ def promptForStopActions(item_id, current_possition):
                 play_info["item_id"] = next_item_id
                 play_info["auto_resume"] = "-1"
                 play_info["force_transcode"] = False
-                play_data = json.dumps(play_info)
-
-                home_window = HomeWindow()
-                home_window.setProperty("item_id", next_item_id)
-                home_window.setProperty("play_item_message", play_data)
+                send_event_notification("embycon_play_action", play_info)
 
 
 @catch_except()
@@ -555,7 +557,7 @@ def stopAll(played_information):
 
     for item_url in played_information:
         data = played_information.get(item_url)
-        if data is not None:
+        if data.get("currently_playing", False):
             log.debug("item_url: {0}", item_url)
             log.debug("item_data: {0}", data)
 
@@ -572,14 +574,12 @@ def stopAll(played_information):
                     'PositionTicks': int(current_possition * 10000000)
                 }
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
+                data["currently_playing"] = False
 
                 promptForStopActions(emby_item_id, current_possition)
 
-    played_information.clear()
-
 
 class Service(xbmc.Player):
-    played_information = {}
 
     def __init__(self, *args):
         log.debug("Starting monitor service: {0}", args)
@@ -592,10 +592,14 @@ class Service(xbmc.Player):
         current_playing_file = xbmc.Player().getPlayingFile()
         log.debug("onPlayBackStarted: {0}", current_playing_file)
 
-        home_window = HomeWindow()
-        emby_item_id = home_window.getProperty("item_id")
-        playback_type = home_window.getProperty("PlaybackType_" + emby_item_id)
-        play_session_id = home_window.getProperty("PlaySessionId_" + emby_item_id)
+        log.debug("played_information: {0}", self.played_information)
+        data = self.played_information[current_playing_file]
+        data["paused"] = False
+        data["currently_playing"] = True
+
+        emby_item_id = data["item_id"]
+        playback_type = data["playback_type"]
+        play_session_id = data["play_session_id"]
 
         # if we could not find the ID of the current item then return
         if emby_item_id is None or len(emby_item_id) == 0:
@@ -616,28 +620,14 @@ class Service(xbmc.Player):
         url = "{server}/emby/Sessions/Playing"
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
-        data = {}
-        data["item_id"] = emby_item_id
-        data["paused"] = False
-        data["playback_type"] = playback_type
-        data["play_session_id"] = play_session_id
-        self.played_information[current_playing_file] = data
-
-        log.debug("ADDING_FILE: {0}", current_playing_file)
-        log.debug("ADDING_FILE: {0}", self.played_information)
-
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
         log.debug("EmbyCon Service -> onPlayBackEnded")
-        home_window = HomeWindow()
-        home_window.clearProperty("item_id")
         stopAll(self.played_information)
 
     def onPlayBackStopped(self):
         # Will be called when user stops kodi playing a file
         log.debug("onPlayBackStopped")
-        home_window = HomeWindow()
-        home_window.clearProperty("item_id")
         stopAll(self.played_information)
 
     def onPlayBackPaused(self):
@@ -668,6 +658,9 @@ class Service(xbmc.Player):
 
 class PlaybackService(xbmc.Monitor):
 
+    def __init__(self, monitor):
+        self.monitor = monitor
+
     def onNotification(self, sender, method, data):
         log.debug("PlaybackService:onNotification:{0}:{1}:{2}", sender, method, data)
         if sender[-7:] != '.SIGNAL':
@@ -682,4 +675,4 @@ class PlaybackService(xbmc.Monitor):
         log.debug("PlaybackService:onNotification:{0}", hex_data)
         decoded_data = binascii.unhexlify(hex_data)
         play_info = json.loads(decoded_data)
-        playFile(play_info)
+        playFile(play_info, self.monitor)

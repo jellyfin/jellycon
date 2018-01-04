@@ -893,15 +893,8 @@ def PLAY(params):
     play_info["force_transcode"] = forceTranscode
     play_info["media_source_id"] = media_source_id
     play_info["use_default"] = use_default
-
-    home_window = HomeWindow()
-    home_window.setProperty("item_id", item_id)
-
     send_event_notification("embycon_play_action", play_info)
 
-    #play_data = json.dumps(play_info)
-    #home_window.setProperty("play_item_message", play_data)
-    #xbmcgui.Dialog().notification("EmbyCon", "Starting Playback")
 
 def playTrailer(id):
     log.debug("== ENTER: playTrailer ==")
