@@ -184,7 +184,6 @@ def playFile(play_info, monitor):
     data["item_id"] = id
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
-    data["currently_playing"] = True
     monitor.played_information[playurl] = data
     log.debug("Add to played_information: {0}", monitor.played_information)
 
@@ -212,12 +211,16 @@ def playFile(play_info, monitor):
 
     seekTime = seekTime - jump_back_amount
 
-    while xbmc.Player().getTime() < (seekTime - 5):
+    target_seek = (seekTime - 5)
+    current_position = 0
+    while current_position < target_seek:
         # xbmc.Player().pause()
         xbmc.sleep(100)
         xbmc.Player().seekTime(seekTime)
         xbmc.sleep(100)
         # xbmc.Player().play()
+        current_position = xbmc.Player().getTime()
+        log.debug("Playback_Start_Seek target:{0} current:{1}", target_seek, current_position)
 
 
 def send_next_episode_details(item):
@@ -437,6 +440,17 @@ def externalSubs(media_source, list_item, item_id):
 
 def sendProgress(monitor):
     playing_file = xbmc.Player().getPlayingFile()
+
+    '''
+    video_tag_info = xbmc.Player().getVideoInfoTag()
+    plotoutline = video_tag_info.getPlotOutline()
+    log.debug("Player().getVideoInfoTag().getPlotOutline(): {0}", plotoutline)
+    emby_id = None
+    if plotoutline is not None and plotoutline.startswith("emby_id:"):
+        emby_id = plotoutline[8:]
+    log.debug("EmbyId: {0}", emby_id)
+    '''
+
     play_data = monitor.played_information.get(playing_file)
 
     if play_data is None:
@@ -558,7 +572,7 @@ def stopAll(played_information):
 
     for item_url in played_information:
         data = played_information.get(item_url)
-        if data.get("currently_playing", False):
+        if data.get("currently_playing", False) is True:
             log.debug("item_url: {0}", item_url)
             log.debug("item_data: {0}", data)
 
