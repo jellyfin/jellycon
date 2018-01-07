@@ -25,8 +25,97 @@ from item_functions import get_next_episode
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
 
-
 @catch_except()
+def playAllFiles(id, monitor):
+    log.debug("PlayAllFiles for parent item id: {0}", id)
+
+    url = ('{server}/emby/Users/{userid}/items' +
+            '?ParentId=' + id +
+            '&Fields=MediaSources' +
+            '&format=json')
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+    log.debug("PlayAllFiles items info: {0}", result)
+
+    # process each item
+    items = result["Items"]
+    if items is None:
+        items = []
+
+    settings = xbmcaddon.Addon('plugin.video.embycon')
+    server = download_utils.getServer()
+
+    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    playlist.clear()
+
+    for item in items:
+
+        item_id = item.get("Id")
+        sources = item.get("MediaSources")
+        selected_media_source = sources[0]
+
+        listitem_props = []
+        playback_type = "0"
+        playurl = None
+        play_session_id = id_generator()
+        log.debug("play_session_id: {0}", play_session_id)
+
+        # check if strm file, path will contain contain strm contents
+        if selected_media_source.get('Container') == 'strm':
+            playurl, listitem_props = PlayUtils().getStrmDetails(selected_media_source)
+            if playurl is None:
+                return
+
+        if not playurl:
+            playurl, playback_type = PlayUtils().getPlayUrl(item_id, selected_media_source, False, play_session_id)
+
+        log.debug("Play URL: {0} ListItem Properties: {1}", playurl, listitem_props)
+
+        playback_type_string = "DirectPlay"
+        if playback_type == "2":
+            playback_type_string = "Transcode"
+        elif playback_type == "1":
+            playback_type_string = "DirectStream"
+
+        # add the playback type into the overview
+        if item.get("Overview", None) is not None:
+            item["Overview"] = playback_type_string + "\n" + item.get("Overview")
+        else:
+            item["Overview"] = playback_type_string
+
+        # add title decoration is needed
+        item_title = item.get("Name", i18n('missing_title'))
+        add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
+        if item.get("Type") == "Episode" and add_episode_number:
+            episode_num = item.get("IndexNumber")
+            if episode_num is not None:
+                if episode_num < 10:
+                    episode_num = "0" + str(episode_num)
+                else:
+                    episode_num = str(episode_num)
+            else:
+                episode_num = ""
+            item_title = episode_num + " - " + item_title
+
+        list_item = xbmcgui.ListItem(label=item_title)
+
+        # add playurl and data to the monitor
+        data = {}
+        data["item_id"] = item_id
+        data["playback_type"] = playback_type_string
+        data["play_session_id"] = play_session_id
+        data["play_action_type"] = "play_all"
+        monitor.played_information[playurl] = data
+        log.debug("Add to played_information: {0}", monitor.played_information)
+
+        list_item.setPath(playurl)
+        list_item = setListItemProps(item_id, list_item, item, server, listitem_props, item_title)
+
+        playlist.add(playurl, list_item)
+
+    xbmc.Player().play(playlist)
+
+
 def playFile(play_info, monitor):
 
     id = play_info.get("item_id")
@@ -51,6 +140,10 @@ def playFile(play_info, monitor):
     if result is None:
         log.debug("Playfile item was None, so can not play!")
         return
+
+    # if this is a season, tv show or album then play all items
+    if result.get("Type") == "Season" or result.get("Type") == "MusicAlbum":
+        return playAllFiles(id, monitor)
 
     # select the media source to use
     media_sources = result.get('MediaSources')
@@ -184,6 +277,7 @@ def playFile(play_info, monitor):
     data["item_id"] = id
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
+    data["play_action_type"] = "play"
     monitor.played_information[playurl] = data
     log.debug("Add to played_information: {0}", monitor.played_information)
 
@@ -270,6 +364,8 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
         mediatype = 'season'
     elif item_type == 'episode':
         mediatype = 'episode'
+    elif item_type == 'audio':
+        mediatype = 'song'
 
     if item_type == "episode":
         episode_number = result.get("IndexNumber", -1)
@@ -279,27 +375,36 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     elif item_type == "season":
         season_number = result.get("IndexNumber", -1)
 
-    # play info
-    details = {
-        'title': title,
-        'plot': result.get("Overview"),
-        'mediatype': mediatype
-    }
+    if item_type == "audio":
 
-    tv_show_name = result.get("SeriesName")
-    if tv_show_name is not None:
-        details['tvshowtitle'] = tv_show_name
+        details = {
+            'title': title,
+            'mediatype': mediatype
+        }
+        listItem.setInfo("Music", infoLabels=details)
 
-    if episode_number > -1:
-        details["episode"] = str(episode_number)
+    else:
 
-    if season_number > -1:
-        details["season"] = str(season_number)
+        details = {
+            'title': title,
+            'plot': result.get("Overview"),
+            'mediatype': mediatype
+        }
 
-    details["plotoutline"] = "emby_id:" + id
-    #listItem.setUniqueIDs({'emby': id})
+        tv_show_name = result.get("SeriesName")
+        if tv_show_name is not None:
+            details['tvshowtitle'] = tv_show_name
 
-    listItem.setInfo("Video", infoLabels=details)
+        if episode_number > -1:
+            details["episode"] = str(episode_number)
+
+        if season_number > -1:
+            details["season"] = str(season_number)
+
+        details["plotoutline"] = "emby_id:" + id
+        #listItem.setUniqueIDs({'emby': id})
+
+        listItem.setInfo("Video", infoLabels=details)
 
     return listItem
 
@@ -591,7 +696,8 @@ def stopAll(played_information):
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
                 data["currently_playing"] = False
 
-                promptForStopActions(emby_item_id, current_possition)
+                if data.get("play_action_type", "") == "play":
+                    promptForStopActions(emby_item_id, current_possition)
 
 
 class Service(xbmc.Player):

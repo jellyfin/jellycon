@@ -249,7 +249,7 @@ def getCollections(detailsString):
         log.debug("CollectionType: {0}", collection_type)
         log.debug("Title: {0}", item_name)
 
-        if collection_type in ["tvshows", "movies", "boxsets"]:
+        if collection_type in ["tvshows", "movies", "boxsets", "music"]:
             collections.append({
                 'title': item_name,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),

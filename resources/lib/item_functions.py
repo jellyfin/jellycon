@@ -450,6 +450,10 @@ def add_context_menu(item_details, folder):
 
     scriptToRun = PLUGINPATH + "/default.py"
 
+    if item_details.item_type == "Season" or item_details.item_type == "MusicAlbum":
+        argsToPass = "?mode=PLAY&item_id=" + item_details.id
+        commands.append((i18n('play_all'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
+
     if not folder:
         argsToPass = "?mode=PLAY&item_id=" + item_details.id + "&force_transcode=true"
         commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))

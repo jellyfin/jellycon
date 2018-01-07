@@ -681,3 +681,7 @@ msgstr ""
 msgctxt "#30316"
 msgid "Connection Error"
 msgstr ""
+
+msgctxt "#30317"
+msgid "Emby: Play All"
+msgstr ""
