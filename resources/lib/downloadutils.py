@@ -95,7 +95,7 @@ class DownloadUtils():
                 tagName = 'SeriesPrimaryImageTag'
                 idName = 'SeriesId'
             else:
-                tagName = 'Parent%sTag' % art_type
+                tagName = 'Parent%sImageTag' % art_type
                 idName = 'Parent%sItemId' % art_type
             parent_image_id = data[idName]
             parent_image_tag = data[tagName]
@@ -134,6 +134,10 @@ class DownloadUtils():
         if int(height) > 0:
             artwork += '&MaxHeight=%s' % height
         return artwork
+
+    def get_user_artwork(self, item_id, item_type):
+        # Load user information set by UserClient
+        return "%s/emby/Users/%s/Images/%s?Format=original" % (self.getServer(), item_id, item_type)
 
     def getUserId(self):
 
@@ -174,10 +178,13 @@ class DownloadUtils():
         log.debug("GETUSER_JSONDATA_02: {0}", result)
 
         userid = ""
+        userImage = ""
         secure = False
         for user in result:
             if (user.get("Name") == unicode(userName, "utf-8")):
                 userid = user.get("Id")
+                if "PrimaryImageTag" in user:
+                    userImage =  self.get_user_artwork(userid, 'Primary')
                 log.debug("Username Found: {0}", user.get("Name"))
                 if (user.get("HasPassword") == True):
                     secure = True
@@ -202,6 +209,7 @@ class DownloadUtils():
         log.debug("userid: {0}", userid)
 
         WINDOW.setProperty("userid", userid)
+        WINDOW.setProperty("userimage", userImage)
 
         return userid
 
