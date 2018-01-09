@@ -12,6 +12,7 @@ from utils import getArt
 from simple_logging import SimpleLogging
 from translation import i18n
 from downloadutils import DownloadUtils
+from datamanager import DataManager
 
 log = SimpleLogging(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
@@ -370,6 +371,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             videoInfoLabels['cast'] = videoInfoLabels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
     videoInfoLabels["title"] = listItemName
+    videoInfoLabels["originaltitle"] = item_details.original_title
     videoInfoLabels["plot"] = item_details.plot
     videoInfoLabels["Overlay"] = item_details.overlay
     videoInfoLabels["playcount"] = str(item_details.play_count)
@@ -523,8 +525,8 @@ def get_next_episode(item):
             '&ImageTypeLimit=1' +
             '&format=json')
 
-    json_data = download_utils.downloadUrl(url)
-    items_result = json.loads(json_data)
+    data_manager = DataManager()
+    items_result = data_manager.GetContent(url)
     log.debug("get_next_episode, sibling list: {0}", items_result)
 
     if items_result is None:

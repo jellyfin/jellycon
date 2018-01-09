@@ -20,7 +20,7 @@ from kodi_utils import HomeWindow
 from translation import i18n
 from json_rpc import json_rpc
 from datamanager import DataManager
-from item_functions import get_next_episode
+from item_functions import get_next_episode, extract_item_info
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -325,20 +325,56 @@ def send_next_episode_details(item):
         log.debug("No next episode")
         return
 
+    gui_options = {}
+    gui_options["server"] = download_utils.getServer()
+
+    gui_options["name_format"] = None
+    gui_options["name_format_type"] = ""
+    gui_options["add_season_number"] = False
+    gui_options["add_episode_number"] = False
+
+    item_details = extract_item_info(item, gui_options)
+    next_item_details = extract_item_info(next_episode, gui_options)
+
+    current_item = {}
+    current_item["id"] = item_details.id
+    current_item["title"] = item_details.name
+    current_item["image"] = item_details.art.get('tvshow.poster', '')
+    current_item["thumb"] = item_details.art.get('thumb', '')
+    current_item["fanartimage"] = item_details.art.get('tvshow.fanart', '')
+    current_item["overview"] = item_details.plot
+    current_item["tvshowtitle"] = item_details.series_name
+    current_item["playcount"] = item_details.play_count
+    current_item["season"] = item_details.season_number
+    current_item["episode"] = item_details.episode_number
+    current_item["rating"] = item_details.rating
+    current_item["year"] = item_details.year
+
+    next_item = {}
+    next_item["id"] = next_item_details.id
+    next_item["title"] = next_item_details.name
+    next_item["image"] = next_item_details.art.get('tvshow.poster', '')
+    next_item["thumb"] = next_item_details.art.get('thumb', '')
+    next_item["fanartimage"] = next_item_details.art.get('tvshow.fanart', '')
+    next_item["overview"] = next_item_details.plot
+    next_item["tvshowtitle"] = next_item_details.series_name
+    next_item["playcount"] = next_item_details.play_count
+    next_item["season"] = next_item_details.season_number
+    next_item["episode"] = next_item_details.episode_number
+    next_item["rating"] = next_item_details.rating
+    next_item["year"] = next_item_details.year
+
     next_info = {
-        "prev_id": item.get("Id"),
-        "id": next_episode.get("Id"),
-        "title": next_episode.get("Name")
+        "current_item": current_item,
+        "next_item": next_item
     }
 
+    log.debug("send_next_episode_details: {0}", next_info)
     send_event_notification("embycon_next_episode", next_info)
 
 
 def setListItemProps(id, listItem, result, server, extra_props, title):
     # set up item and item info
-    thumbID = id
-    episode_number = -1
-    season_number = -1
 
     art = getArt(result, server=server)
     listItem.setIconImage(art['thumb'])  # back compat
@@ -367,14 +403,6 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     elif item_type == 'audio':
         mediatype = 'song'
 
-    if item_type == "episode":
-        episode_number = result.get("IndexNumber", -1)
-
-    if item_type == "episode":
-        season_number = result.get("ParentIndexNumber", -1)
-    elif item_type == "season":
-        season_number = result.get("IndexNumber", -1)
-
     if item_type == "audio":
 
         details = {
@@ -395,10 +423,13 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
         if tv_show_name is not None:
             details['tvshowtitle'] = tv_show_name
 
-        if episode_number > -1:
+        if item_type == "episode":
+            episode_number = result.get("IndexNumber", -1)
             details["episode"] = str(episode_number)
-
-        if season_number > -1:
+            season_number = result.get("ParentIndexNumber", -1)
+            details["season"] = str(season_number)
+        elif item_type == "season":
+            season_number = result.get("IndexNumber", -1)
             details["season"] = str(season_number)
 
         details["plotoutline"] = "emby_id:" + id
