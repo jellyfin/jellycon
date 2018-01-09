@@ -32,6 +32,7 @@ class ItemDetails():
     series_name = None
     episode_number = 0
     season_number = 0
+    track_number = 0
 
     art = None
 
@@ -96,6 +97,9 @@ def extract_item_info(item, gui_options):
         item_details.season_number = 0
     if item_details.episode_number is None:
         item_details.episode_number = 0
+
+    if item_details.item_type == "Audio":
+        item_details.track_number = item["IndexNumber"]
 
     # set the item name
     # override with name format string from request
@@ -402,6 +406,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
         mediatype = 'season'
     elif item_type == 'episode':
         mediatype = 'episode'
+    elif item_type == 'audio' or item_type == 'musicalbum' or item_type == 'music':
+        mediatype = 'song'
 
     videoInfoLabels["mediatype"] = mediatype
 
@@ -411,7 +417,13 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if (mediatype == 'season') or (mediatype == 'episode'):
         videoInfoLabels["season"] = item_details.season_number
 
-    list_item.setInfo('video', videoInfoLabels)
+    if item_type == 'musicalbum' or item_type == 'audio' or item_type == 'music':
+        videoInfoLabels["tracknumber"] = item_details.track_number
+        list_item.setInfo('music', videoInfoLabels)
+    else:
+        list_item.setInfo('video', videoInfoLabels)
+
+    log.debug("videoInfoLabels: {0}", videoInfoLabels)
 
     list_item.addStreamInfo('video',
                             {'duration': item_details.duration,

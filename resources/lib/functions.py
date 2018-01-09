@@ -319,7 +319,7 @@ def getContent(url, params):
     if media_type.startswith("movie"):
         viewType = "Movies"
         xbmcplugin.setContent(pluginhandle, 'movies')
-    elif media_type.startswith("music"):
+    elif media_type == "music" or media_type == "audio" or media_type == "musicalbum":
         viewType = "Music"
         xbmcplugin.setContent(pluginhandle, 'songs')
     elif media_type.startswith("boxset"):
@@ -334,7 +334,7 @@ def getContent(url, params):
     elif media_type == "season" or media_type == "episodes":
         viewType = "Episodes"
         xbmcplugin.setContent(pluginhandle, 'episodes')
-    log.debug("ViewType: {0}", viewType)
+    log.debug("ViewType: {0} media_type: {1}", viewType, media_type)
 
     setSort(pluginhandle, viewType)
 
