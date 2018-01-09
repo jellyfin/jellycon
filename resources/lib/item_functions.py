@@ -371,7 +371,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
             videoInfoLabels['cast'] = videoInfoLabels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
     videoInfoLabels["title"] = listItemName
-    videoInfoLabels["originaltitle"] = item_details.original_title
     videoInfoLabels["plot"] = item_details.plot
     videoInfoLabels["Overlay"] = item_details.overlay
     videoInfoLabels["playcount"] = str(item_details.play_count)

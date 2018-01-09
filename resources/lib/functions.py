@@ -359,16 +359,6 @@ def getContent(url, params):
     display_items_notification = {"view_type": viewType}
     send_event_notification("display_items", display_items_notification)
 
-    # if the view master addon is available then run the script
-    # TODO: remove this when viewmaster addon is updated
-    try:
-        view_addon = xbmcaddon.Addon("script.viewmaster")
-        if view_addon is not None:
-            xbmc.executebuiltin('RunScript(' + xbmc.translatePath(
-                "special://home/addons/script.viewmaster/default.py") + ',' + viewType + ')')
-    except:
-        pass
-
     if (progress != None):
         progress.update(100, i18n('done'))
         progress.close()
