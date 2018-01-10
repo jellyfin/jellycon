@@ -85,18 +85,6 @@ def playAllFiles(id, monitor):
 
         # add title decoration is needed
         item_title = item.get("Name", i18n('missing_title'))
-        add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
-        if item.get("Type") == "Episode" and add_episode_number:
-            episode_num = item.get("IndexNumber")
-            if episode_num is not None:
-                if episode_num < 10:
-                    episode_num = "0" + str(episode_num)
-                else:
-                    episode_num = str(episode_num)
-            else:
-                episode_num = ""
-            item_title = episode_num + " - " + item_title
-
         list_item = xbmcgui.ListItem(label=item_title)
 
         # add playurl and data to the monitor
@@ -251,18 +239,6 @@ def playFile(play_info, monitor):
 
     # add title decoration is needed
     item_title = result.get("Name", i18n('missing_title'))
-    add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
-    if result.get("Type") == "Episode" and add_episode_number:
-        episode_num = result.get("IndexNumber")
-        if episode_num is not None:
-            if episode_num < 10:
-                episode_num = "0" + str(episode_num)
-            else:
-                episode_num = str(episode_num)
-        else:
-            episode_num = ""
-        item_title =  episode_num + " - " + item_title
-
     list_item = xbmcgui.ListItem(label=item_title)
 
     if playback_type == "2": # if transcoding then prompt for audio and subtitle
@@ -330,8 +306,6 @@ def send_next_episode_details(item):
 
     gui_options["name_format"] = None
     gui_options["name_format_type"] = ""
-    gui_options["add_season_number"] = False
-    gui_options["add_episode_number"] = False
 
     item_details = extract_item_info(item, gui_options)
     next_item_details = extract_item_info(next_episode, gui_options)

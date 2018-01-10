@@ -167,19 +167,11 @@ msgid "On Resume Jump Back Seconds"
 msgstr ""
 
 msgctxt "#30116"
-msgid "Add Item and Played Counts"
-msgstr ""
-
-msgctxt "#30117"
-msgid "Background Art Refresh Rate (seconds)"
+msgid "Add unwatched counts to names"
 msgstr ""
 
 msgctxt "#30118"
-msgid "Add Resume Percent"
-msgstr ""
-
-msgctxt "#30119"
-msgid "Add Episode Number"
+msgid "Add resume percent to names"
 msgstr ""
 
 msgctxt "#30120"
@@ -230,10 +222,6 @@ msgctxt "#30151"
 msgid "Select item action (Requires Restart)"
 msgstr ""
 
-msgctxt "#30162"
-msgid "Add Season Number"
-msgstr ""
-
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
 msgstr ""
@@ -259,15 +247,15 @@ msgid "Select User"
 msgstr ""
 
 msgctxt "#30181"
-msgid "Include Overview"
+msgid "Include plot"
 msgstr ""
 
 msgctxt "#30182"
-msgid "Include Media Info"
+msgid "Include media stream info"
 msgstr ""
 
 msgctxt "#30183"
-msgid "Include People"
+msgid "Include people"
 msgstr ""
 
 msgctxt "#30200"

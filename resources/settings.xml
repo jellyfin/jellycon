@@ -39,10 +39,8 @@
 		<setting id="jump_back_amount" type="slider" label="30114" default="15" range="0,1,60" option="int" visible="true"/>
 	</category>
 	<category label="30110">
-		<setting id="addCounts" type="bool" label="30116" default="true" visible="true" enable="true" />
-		<setting id="addSeasonNumber" type="bool" label="30162" default="false" visible="true" enable="true" />        
-		<setting id="addEpisodeNumber" type="bool" label="30119" default="true" visible="true" enable="true" />
-		<setting id="addResumePercent" type="bool" label="30118" default="true" visible="true" enable="true" />
+		<setting id="addCounts" type="bool" label="30116" default="false" visible="true" enable="true" />
+		<setting id="addResumePercent" type="bool" label="30118" default="false" visible="true" enable="true" />
 		<setting id="addSubtitleAvailable" type="bool" label="30163" default="false" visible="true" enable="true" />
 		<setting id="include_overview" type="bool" label="30181" default="true" visible="true" enable="true" />
 		<setting id="include_media" type="bool" label="30182" default="true" visible="true" enable="true" />

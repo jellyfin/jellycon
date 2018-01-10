@@ -411,8 +411,6 @@ def processDirectory(results, progress, params):
         getContent(season_url, params)
         return None
 
-    add_season_number = settings.getSetting('addSeasonNumber') == 'true'
-    add_episode_number = settings.getSetting('addEpisodeNumber') == 'true'
     hide_unwatched_details = settings.getSetting('hide_unwatched_details') == 'true'
 
     display_options = {}
@@ -432,8 +430,6 @@ def processDirectory(results, progress, params):
 
     gui_options["name_format"] = name_format
     gui_options["name_format_type"] = name_format_type
-    gui_options["add_season_number"] = add_season_number
-    gui_options["add_episode_number"] = add_episode_number
 
     for item in results:
 
@@ -590,8 +586,6 @@ def populate_listitem(item_id):
 
     gui_options["name_format"] = None
     gui_options["name_format_type"] = None
-    gui_options["add_season_number"] = False
-    gui_options["add_episode_number"] = False
 
     details, extraData = extract_item_info(result,gui_options )
     u, list_item, folder = add_gui_item(result["Id"], details, extraData, {}, folder=False)

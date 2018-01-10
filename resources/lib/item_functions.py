@@ -106,8 +106,6 @@ def extract_item_info(item, gui_options):
     # override with name format string from request
     name_format = gui_options["name_format"]
     name_format_type = gui_options["name_format_type"]
-    add_season_number = gui_options["add_season_number"]
-    add_episode_number = gui_options["add_episode_number"]
 
     item_details.name = item["Name"]
     item_details.original_title = item_details.name
@@ -124,18 +122,6 @@ def extract_item_info(item, gui_options):
         nameInfo["EpisodeIndex"] = u"%02d" % item_details.episode_number
         log.debug("FormatName: {0} | {1}", name_format, nameInfo)
         item_details.name = unicode(name_format).format(**nameInfo).strip()
-
-    else:
-        if item_details.item_type == "Episode":
-            prefix = ''
-            if add_season_number:
-                prefix = "S%02d" % item_details.season_number
-                if add_episode_number:
-                    prefix = prefix + "E"
-            if add_episode_number:
-                prefix = prefix + "%02d" % item_details.episode_number
-            if prefix != '':
-                item_details.name = prefix + ' - ' + item["Name"]
 
     year = item["ProductionYear"]
     prem_date = item["PremiereDate"]
