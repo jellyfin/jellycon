@@ -292,6 +292,8 @@ def setSort(pluginhandle, viewType):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
     elif viewType == "Episodes":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_EPISODE)
+    elif viewType == "Music":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_TRACKNUM)
     else:
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
@@ -463,12 +465,20 @@ def processDirectory(results, progress, params):
                      '?userId={userid}' +
                      '&Fields=' + detailsString +
                      '&format=json')
+            elif item_details.item_type == "MusicAlbum":
+                u = ('{server}/emby/Users/{userid}/items' +
+                     '?ParentId=' + item_details.id +
+                     '&IsVirtualUnAired=false' +
+                     '&IsMissing=false' +
+                     '&Fields=' + detailsString +
+                     '&SortBy=SortName' +
+                     '&format=json')
             else:
                 u = ('{server}/emby/Users/{userid}/items' +
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
-                     '&IsMissing=false&' +
-                     'Fields=' + detailsString +
+                     '&IsMissing=false' +
+                     '&Fields=' + detailsString +
                      '&format=json')
 
             if item["RecursiveItemCount"] != 0:
