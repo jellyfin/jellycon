@@ -340,8 +340,6 @@ def getContent(url, params):
         xbmcplugin.setContent(pluginhandle, 'episodes')
     log.debug("ViewType: {0} media_type: {1}", viewType, media_type)
 
-    setSort(pluginhandle, viewType)
-
     # show a progress indicator if needed
     progress = None
     if (settings.getSetting('showLoadProgress') == "true"):
@@ -355,6 +353,9 @@ def getContent(url, params):
     dirItems = processDirectory(result, progress, params)
     if dirItems is None:
         return
+
+    # set the sort items
+    setSort(pluginhandle, viewType)
 
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
