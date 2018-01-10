@@ -347,7 +347,7 @@ def send_next_episode_details(item):
     current_item["playcount"] = item_details.play_count
     current_item["season"] = item_details.season_number
     current_item["episode"] = item_details.episode_number
-    current_item["rating"] = item_details.rating
+    current_item["rating"] = item_details.critic_rating
     current_item["year"] = item_details.year
 
     next_item = {}
@@ -361,7 +361,7 @@ def send_next_episode_details(item):
     next_item["playcount"] = next_item_details.play_count
     next_item["season"] = next_item_details.season_number
     next_item["episode"] = next_item_details.episode_number
-    next_item["rating"] = next_item_details.rating
+    next_item["rating"] = next_item_details.critic_rating
     next_item["year"] = next_item_details.year
 
     next_info = {
