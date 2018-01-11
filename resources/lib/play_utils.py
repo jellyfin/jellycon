@@ -617,6 +617,11 @@ def promptForStopActions(item_id, current_possition):
 
     jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
     result = json.loads(jsonData)
+
+    if result is None:
+        log.debug("promptForStopActions failed! no result from server.")
+        return
+
     prompt_to_delete = False
     runtime = result.get("RunTimeTicks", 0)
 
