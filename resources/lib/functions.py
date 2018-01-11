@@ -641,10 +641,9 @@ def showContent(pluginName, handle, params):
     log.debug("showContent Content Url: {0}", contentUrl)
     getContent(contentUrl, params)
 
+
 def showParentContent(pluginName, handle, params):
     log.debug("showParentContent Called: {0}", params)
-
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
 
     parentId = params.get("ParentId")
     detailsString = getDetailsString()
