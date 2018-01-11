@@ -53,7 +53,10 @@ def submit_error_data():
         data["device_id"] = client_info.getDeviceId()
 
     except Exception as error:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        stack_trace_data = traceback.format_tb(exc_tb)
         data["report_error"] = str(error)
+        data["report_error_stack"] = str(stack_trace_data)
 
     post_data = json.dumps(data)
     log.debug("ERROR_DATA: {0}", post_data)
