@@ -409,6 +409,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if item_type == 'musicalbum' or item_type == 'audio' or item_type == 'music':
         videoInfoLabels["tracknumber"] = item_details.track_number
         list_item.setInfo('music', videoInfoLabels)
+        list_item.setInfo('video', {"tracknumber": item_details.track_number}) # this is to fix a bug in Kodi
     else:
         list_item.setInfo('video', videoInfoLabels)
 
