@@ -704,11 +704,16 @@ def searchResults(params):
     details_string = getDetailsString()
 
     content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
-                  '&IncludeItemTypes=' + item_type +
-                  '&UserId={userid}'
-                  '&StartIndex=' + str(index) +
-                  '&Limit=' + str(limit) +
-                  '&IncludePeople=false&IncludeMedia=true&IncludeGenres=false&IncludeStudios=false&IncludeArtists=false')
+                   '&IncludeItemTypes=' + item_type +
+                   '&ExcludeItemTypes=LiveTvProgram' +
+                   '&UserId={userid}'
+                   '&StartIndex=' + str(index) +
+                   '&Limit=' + str(limit) +
+                   '&IncludePeople=false' +
+                   '&IncludeMedia=true' +
+                   '&IncludeGenres=false' +
+                   '&IncludeStudios=false' +
+                   '&IncludeArtists=false')
 
     if item_type.lower() == 'movie':
         xbmcplugin.setContent(handle, 'movies')
