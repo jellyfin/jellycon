@@ -153,7 +153,7 @@ def mainEntryPoint():
         getWidgetUrlContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
         checkServer(notify=False)
-        showParentContent(sys.argv[0], int(sys.argv[1]), params)
+        showParentContent(params)
     elif mode == "SHOW_CONTENT":
         # plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
         checkServer(notify=False)
@@ -522,24 +522,46 @@ def processDirectory(results, progress, params):
 def showMenu(params):
     log.debug("showMenu(): {0}", params)
 
+    id = params["item_id"]
+
+    url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+    log.debug("Playfile item info: {0}", result)
+
+    if result is None:
+        return
+
     action_items = []
     li = xbmcgui.ListItem("Play")
     li.setProperty('menu_id', 'play')
     action_items.append(li)
+
+    if result["Type"] == "Episode" and result["ParentId"] is not None:
+        li = xbmcgui.ListItem("Show Season")
+        li.setProperty('menu_id', 'show_season')
+        action_items.append(li)
+
     li = xbmcgui.ListItem("Force Transcode")
     li.setProperty('menu_id', 'transcode')
     action_items.append(li)
-    li = xbmcgui.ListItem("Mark Watched")
-    li.setProperty('menu_id', 'mark_watched')
-    action_items.append(li)
-    li = xbmcgui.ListItem("Mark Unwatched")
-    li.setProperty('menu_id', 'mark_unwatched')
-    action_items.append(li)
+
+    user_data = result["UserData"]
+    if user_data.get("Played", False) is False or user_data.get("PlaybackPositionTicks", 0) > 0:
+        li = xbmcgui.ListItem("Mark Watched")
+        li.setProperty('menu_id', 'mark_watched')
+        action_items.append(li)
+
+    if user_data.get("Played", False) is True or user_data.get("PlaybackPositionTicks", 0) > 0:
+        li = xbmcgui.ListItem("Mark Unwatched")
+        li.setProperty('menu_id', 'mark_unwatched')
+        action_items.append(li)
+
     li = xbmcgui.ListItem("Delete")
     li.setProperty('menu_id', 'delete')
     action_items.append(li)
 
-    xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
+    #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
     action_menu.setActionItems(action_items)
@@ -569,6 +591,10 @@ def showMenu(params):
     elif selected_action == "delete":
         delete(params["item_id"])
         xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "show_season":
+        parent_id = result["ParentId"]
+        xbmc.executebuiltin(
+            'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes)'.format(parent_id))
 
 
 def populate_listitem(item_id):
@@ -642,7 +668,7 @@ def showContent(pluginName, handle, params):
     getContent(contentUrl, params)
 
 
-def showParentContent(pluginName, handle, params):
+def showParentContent(params):
     log.debug("showParentContent Called: {0}", params)
 
     parentId = params.get("ParentId")
