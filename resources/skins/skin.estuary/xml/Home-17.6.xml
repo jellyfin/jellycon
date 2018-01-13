@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
+	<onunload>ClearProperty(first_load_done, 10000)</onunload>
 	<defaultcontrol>9000</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
 	<controls>
@@ -784,8 +785,8 @@
 					<focusposition>1</focusposition>
 					<onfocus>ClearProperty(listposition,home)</onfocus>
 					<onright>SetFocus($INFO[Container(9000).ListItem.Property(menu_id)])</onright>
-					<onup>700</onup>
-					<ondown>700</ondown>
+					<onup>PageDown</onup>
+					<ondown>PageUp</ondown>
 					<scrolltime tween="cubic" easing="out">500</scrolltime>
 					<focusedlayout height="95">
 						<control type="group">
@@ -856,16 +857,18 @@
                         <!-- Start Emby Menu Items -->
 						<item>
 							<label>Emby Movies</label>
+							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
 							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies,return)</onclick>
-							<!--<onclick>RunAddon(plugin.video.embycon, /?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies)</onclick>-->
+							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
 							<property name="menu_id">$NUMBER[3000]</property>
 							<thumb>icons/sidemenu/movies.png</thumb>
 							<property name="id">emby_movies</property>
 						</item>
 						<item>
 							<label>Emby TV Shows</label>
+							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
 							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows,return)</onclick>
-							<!--<onclick>RunAddon(plugin.video.embycon, /?mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows)</onclick>-->
+							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
 							<property name="menu_id">$NUMBER[4000]</property>
 							<thumb>icons/sidemenu/tv.png</thumb>
 							<property name="id">emby_tvshows</property>
@@ -970,8 +973,23 @@
 							<property name="id">weather</property>
 							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
 						</item>
+						<item>
+							<label>Settings</label>
+							<onclick>ActivateWindow(settings)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/manage.png</thumb>
+							<property name="id">power</property>
+						</item>
+						<item>
+							<label>LogOff</label>
+							<onclick>ActivateWindow(shutdownmenu)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/programs.png</thumb>
+							<property name="id">power</property>
+						</item>						
 					</content>
 				</control>
+				<!--
 				<control type="grouplist" id="700">
 					<orientation>horizontal</orientation>
 					<itemgap>0</itemgap>
@@ -1013,6 +1031,7 @@
 						<param name="visible" value="Player.HasMedia" />
 					</include>
 				</control>
+				-->
 			</control>
 			<include>BottomBar</include>
 			<include content="TopBar">
