@@ -594,7 +594,7 @@ def showMenu(params):
     elif selected_action == "show_season":
         parent_id = result["ParentId"]
         xbmc.executebuiltin(
-            'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes)'.format(parent_id))
+            'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
 
 
 def populate_listitem(item_id):
