@@ -156,8 +156,12 @@ def getWidgetContentCast(handle, params):
     log.debug("ItemInfo: {0}", result)
 
     listItems = []
-    people = result.get("People")
-    if (people != None):
+    if result is not None:
+        people = result.get("People")
+    else:
+        people = None
+
+    if people is not None:
         for person in people:
             #if (person.get("Type") == "Director"):
             #    director = director + person.get("Name") + ' '
