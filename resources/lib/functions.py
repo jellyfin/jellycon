@@ -770,6 +770,9 @@ def searchResults(params):
     result = dataManager.GetContent(content_url)
     log.debug('SearchHints jsonData: {0}', result)
 
+    if result is None:
+        result = {}
+
     results = result.get('SearchHints')
     if results is None:
         results = []
