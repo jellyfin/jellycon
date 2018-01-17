@@ -323,6 +323,9 @@ def getContent(url, params):
     if media_type.startswith("movie"):
         viewType = "Movies"
         xbmcplugin.setContent(pluginhandle, 'movies')
+    elif media_type == "music": # this is albums
+        viewType = "Albums"
+        xbmcplugin.setContent(pluginhandle, 'albums')
     elif media_type == "music" or media_type == "audio" or media_type == "musicalbum":
         viewType = "Music"
         xbmcplugin.setContent(pluginhandle, 'songs')

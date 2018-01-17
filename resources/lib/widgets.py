@@ -186,12 +186,17 @@ def getWidgetContentCast(handle, params):
                 artLinks["poster"] = person_thumbnail
                 list_item.setArt(artLinks)
 
+                labels = {}
+                labels["mediatype"] = "artist"
+                list_item.setInfo(type="music", infoLabels=labels)
+
                 if person_role:
                     list_item.setLabel2(person_role)
 
                 itemTupple = ("", list_item, False)
                 listItems.append(itemTupple)
 
+    xbmcplugin.setContent(handle, 'artists')
     xbmcplugin.addDirectoryItems(handle, listItems)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 

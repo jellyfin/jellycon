@@ -387,15 +387,19 @@ def add_gui_item(url, item_details, display_options, folder=True):
     item_type = item_details.item_type.lower()
     mediatype = 'video'
 
-    if item_type == 'movie' or item_type == 'boxset':
+    if item_type == 'movie':
         mediatype = 'movie'
+    elif item_type == 'boxset':
+        mediatype = 'set'
     elif item_type == 'series':
         mediatype = 'tvshow'
     elif item_type == 'season':
         mediatype = 'season'
     elif item_type == 'episode':
         mediatype = 'episode'
-    elif item_type == 'audio' or item_type == 'musicalbum' or item_type == 'music':
+    elif item_type == 'musicalbum':
+        mediatype = 'album'
+    elif item_type == 'audio' or item_type == 'music':
         mediatype = 'song'
 
     videoInfoLabels["mediatype"] = mediatype
