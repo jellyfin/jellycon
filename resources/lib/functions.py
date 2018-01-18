@@ -323,12 +323,18 @@ def getContent(url, params):
     if media_type.startswith("movie"):
         viewType = "Movies"
         xbmcplugin.setContent(pluginhandle, 'movies')
-    elif media_type == "music": # this is albums
+    elif media_type == "musicalbums":
         viewType = "Albums"
         xbmcplugin.setContent(pluginhandle, 'albums')
+    elif media_type == "musicartists":
+        viewType = "Artists"
+        xbmcplugin.setContent(pluginhandle, 'artists')
     elif media_type == "music" or media_type == "audio" or media_type == "musicalbum":
         viewType = "Music"
         xbmcplugin.setContent(pluginhandle, 'songs')
+    elif media_type.startswith("boxsets"):
+        viewType = "Movies"
+        xbmcplugin.setContent(pluginhandle, 'sets')
     elif media_type.startswith("boxset"):
         viewType = "BoxSets"
         xbmcplugin.setContent(pluginhandle, 'movies')
@@ -458,21 +464,13 @@ def processDirectory(results, progress, params):
             item_details.art["thumb"] = item_details.art["tvshow.poster"]
 
         if item["IsFolder"] is True:
-
             if item_details.item_type == "Series":
                 u = ('{server}/emby/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={userid}' +
                      '&Fields=' + detailsString +
                      '&format=json')
-            elif item_details.item_type == "MusicAlbum":
-                u = ('{server}/emby/Users/{userid}/items' +
-                     '?ParentId=' + item_details.id +
-                     '&IsVirtualUnAired=false' +
-                     '&IsMissing=false' +
-                     '&Fields=' + detailsString +
-                     '&SortBy=SortName' +
-                     '&format=json')
+
             else:
                 u = ('{server}/emby/Users/{userid}/items' +
                      '?ParentId=' + item_details.id +
@@ -483,6 +481,16 @@ def processDirectory(results, progress, params):
 
             if item["RecursiveItemCount"] != 0:
                 dirItems.append(add_gui_item(u, item_details, display_options))
+
+        elif item_details.item_type == "MusicArtist":
+            u = ('{server}/emby/Users/{userid}/items' +
+                 '?ArtistIds=' + item_details.id +
+                 '&IncludeItemTypes=MusicAlbum' +
+                 '&CollapseBoxSetItems=true' +
+                 '&Recursive=true' +
+                 '&format=json')
+            dirItems.append(add_gui_item(u, item_details, display_options))
+
         else:
             u = item_details.id
             dirItems.append(add_gui_item(u, item_details, display_options, folder=False))

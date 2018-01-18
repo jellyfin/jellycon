@@ -3,6 +3,7 @@ import sys
 import os
 import urllib
 import json
+from collections import defaultdict
 
 import xbmc
 import xbmcaddon
@@ -210,6 +211,8 @@ def extract_item_info(item, gui_options):
 
     # Process UserData
     userData = item["UserData"]
+    if userData is None:
+        userData = defaultdict(lambda: None, {})
 
     if userData["Played"] == True:
         item_details.overlay = "6"

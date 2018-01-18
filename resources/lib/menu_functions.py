@@ -249,7 +249,31 @@ def getCollections(detailsString):
         log.debug("CollectionType: {0}", collection_type)
         log.debug("Title: {0}", item_name)
 
-        if collection_type in ["tvshows", "movies", "boxsets", "music"]:
+        if collection_type == "music":
+            item_data = {}
+            item_data['title'] = item_name + i18n('_all_albums')
+            item_data['media_type'] = 'MusicAlbums'
+            item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                                 '?Recursive=true' +
+                                 '&ParentId=' + item.get("Id") +
+                                 '&IncludeItemTypes=MusicAlbum' +
+                                 '&ImageTypeLimit=1' +
+                                 '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&format=json')
+            collections.append(item_data)
+
+            item_data = {}
+            item_data['title'] = item_name + i18n('_all_artists')
+            item_data['media_type'] = 'MusicArtists'
+            item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
+                                 '?Recursive=true' +
+                                 '&ParentId=' + item.get("Id") +
+                                 '&ImageTypeLimit=1' +
+                                 '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&format=json')
+            collections.append(item_data)
+
+        if collection_type in ["tvshows", "movies", "boxsets"]:
             collections.append({
                 'title': item_name,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
@@ -579,6 +603,28 @@ def getCollections(detailsString):
                          '&ImageTypeLimit=1' +
                          '&format=json')
     collections.append(item_data)
+
+    item_data = {}
+    item_data['title'] = i18n('music_all_albums')
+    item_data['media_type'] = 'MusicAlbums'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?Recursive=true' +
+                         '&IncludeItemTypes=MusicAlbum' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&format=json')
+    collections.append(item_data)
+
+    item_data = {}
+    item_data['title'] = i18n('music_all_artists')
+    item_data['media_type'] = 'MusicArtists'
+    item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
+                         '?Recursive=true' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&format=json')
+    collections.append(item_data)
+
 
     return collections
 

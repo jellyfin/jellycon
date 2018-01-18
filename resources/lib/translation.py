@@ -121,5 +121,10 @@ STRINGS = {
     'embycon_error': 30311,
     'embycon_error_submit': 30312,
     'connection_error': 30316,
-    'play_all': 30317
+    'play_all': 30317,
+    'music_all_albums': 30318,
+    'music_all_artists': 30319,
+    '_all_albums': 30320,
+    '_all_artists': 30321
+
 }

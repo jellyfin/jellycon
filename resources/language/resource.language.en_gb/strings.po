@@ -673,3 +673,19 @@ msgstr ""
 msgctxt "#30317"
 msgid "Emby: Play All"
 msgstr ""
+
+msgctxt "#30318"
+msgid "Music - All Albums"
+msgstr ""
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr ""
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr ""
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr ""
