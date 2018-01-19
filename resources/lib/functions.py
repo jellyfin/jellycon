@@ -489,7 +489,7 @@ def processDirectory(results, progress, params):
             u = ('{server}/emby/Users/{userid}/items' +
                  '?ArtistIds=' + item_details.id +
                  '&IncludeItemTypes=MusicAlbum' +
-                 '&CollapseBoxSetItems=true' +
+                 '&CollapseBoxSetItems=false' +
                  '&Recursive=true' +
                  '&format=json')
             dirItems.append(add_gui_item(u, item_details, display_options))
