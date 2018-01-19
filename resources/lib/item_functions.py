@@ -419,7 +419,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         videoInfoLabels["tracknumber"] = item_details.track_number
         list_item.setInfo('music', videoInfoLabels)
         # this is to fix a bug in Kodi tracknumber sorting, the video tracknumber overrides the music one when sorting
-        list_item.setInfo('video', {"tracknumber": item_details.track_number})
+        list_item.setInfo('video', videoInfoLabels)
     else:
         list_item.setInfo('video', videoInfoLabels)
 
