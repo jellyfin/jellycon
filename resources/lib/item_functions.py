@@ -402,6 +402,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
         mediatype = 'episode'
     elif item_type == 'musicalbum':
         mediatype = 'album'
+    elif item_type == 'musicartist':
+        mediatype = 'artist'
     elif item_type == 'audio' or item_type == 'music':
         mediatype = 'song'
 
