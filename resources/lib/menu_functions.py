@@ -252,6 +252,7 @@ def getCollections(detailsString):
         if collection_type == "music":
             item_data = {}
             item_data['title'] = item_name + i18n('_all_albums')
+            item_data['thumbnail'] = downloadUtils.getArtwork(item, "Primary", server=server)
             item_data['media_type'] = 'MusicAlbums'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                                  '?Recursive=true' +
@@ -264,6 +265,7 @@ def getCollections(detailsString):
 
             item_data = {}
             item_data['title'] = item_name + i18n('_all_artists')
+            item_data['thumbnail'] = downloadUtils.getArtwork(item, "Primary", server=server)
             item_data['media_type'] = 'MusicArtists'
             item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
                                  '?Recursive=true' +
