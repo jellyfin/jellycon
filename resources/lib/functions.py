@@ -648,7 +648,7 @@ def populate_listitem(item_id):
     list_item.setProperty('discart', art['discart'])  # not avail to setArt
     list_item.setArt(art)
 
-    list_item.setProperty('IsPlayable', 'true')
+    list_item.setProperty('IsPlayable', 'false')
     list_item.setProperty('IsFolder', 'false')
     list_item.setProperty('id', result.get("Id"))
 
@@ -870,7 +870,7 @@ def searchResults(params):
         if item.get('MediaType') == 'Video':
             total_time = str(int(float(item.get('RunTimeTicks', '0')) / (10000000 * 60)))
             list_item.setProperty('TotalTime', str(total_time))
-            list_item.setProperty('IsPlayable', 'true')
+            list_item.setProperty('IsPlayable', 'false')
             list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
             is_folder = False
         else:

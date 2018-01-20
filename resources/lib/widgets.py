@@ -304,7 +304,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         #list_item.setProperty("item_index", str(itemCount))
         #itemCount = itemCount + 1
 
-        list_item.setProperty('IsPlayable', 'true')
+        list_item.setProperty('IsPlayable', 'false')
 
         if runtime is not None:
             totalTime = str(int(float(runtime) / (10000000 * 60)))

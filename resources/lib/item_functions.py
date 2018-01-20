@@ -337,8 +337,9 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if (cappedPercentage != 0):
         list_item.setProperty("complete_percentage", str(cappedPercentage))
 
+    list_item.setProperty('IsPlayable', 'false')
+
     if folder == False and is_video:
-        # list_item.setProperty('IsPlayable', 'true')
         list_item.setProperty('TotalTime', str(item_details.duration))
         list_item.setProperty('ResumeTime', str(item_details.resume_time))
 

@@ -356,7 +356,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
     listItem.setProperty('discart', art['discart'])  # not avail to setArt
     listItem.setArt(art)
 
-    listItem.setProperty('IsPlayable', 'true')
+    listItem.setProperty('IsPlayable', 'false')
     listItem.setProperty('IsFolder', 'false')
     listItem.setProperty('id', result.get("Id"))
 
