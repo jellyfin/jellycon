@@ -292,6 +292,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
     thumbPath = item_details.art["thumb"]
 
     listItemName = item_details.name
+    item_type = item_details.item_type.lower()
+    is_video = item_type not in ['musicalbum', 'audio', 'music']
 
     # calculate percentage
     cappedPercentage = 0
@@ -335,7 +337,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if (cappedPercentage != 0):
         list_item.setProperty("complete_percentage", str(cappedPercentage))
 
-    if folder == False:
+    if folder == False and is_video:
         # list_item.setProperty('IsPlayable', 'true')
         list_item.setProperty('TotalTime', str(item_details.duration))
         list_item.setProperty('ResumeTime', str(item_details.resume_time))
@@ -367,11 +369,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
     videoInfoLabels["playcount"] = str(item_details.play_count)
     videoInfoLabels["TVShowTitle"] = item_details.series_name
 
-    #if (extraData.get('type') == None or extraData.get('type') == "Video"):
-    #    videoInfoLabels.update(details)
-    #else:
-    #    list_item.setInfo(type=extraData.get('type', 'Video'), infoLabels=details)
-
     videoInfoLabels["duration"] = item_details.duration
     videoInfoLabels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':
@@ -387,7 +384,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
     videoInfoLabels["studio"] = item_details.studio
     videoInfoLabels["genre"] = item_details.genre
 
-    item_type = item_details.item_type.lower()
     mediatype = 'video'
 
     if item_type == 'movie':
@@ -415,40 +411,37 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if (mediatype == 'season') or (mediatype == 'episode'):
         videoInfoLabels["season"] = item_details.season_number
 
-    if item_type == 'musicalbum' or item_type == 'audio' or item_type == 'music':
-        videoInfoLabels["tracknumber"] = item_details.track_number
-        list_item.setInfo('music', videoInfoLabels)
-        # this is to fix a bug in Kodi tracknumber sorting, the video tracknumber overrides the music one when sorting
+    if is_video:
         list_item.setInfo('video', videoInfoLabels)
+        log.debug("videoInfoLabels: {0}", videoInfoLabels)
+        list_item.addStreamInfo('video',
+                                {'duration': item_details.duration,
+                                 'aspect': item_details.aspect_ratio,
+                                 'codec': item_details.video_codec,
+                                 'width': item_details.width,
+                                 'height': item_details.height})
+        list_item.addStreamInfo('audio',
+                                {'codec': item_details.audio_codec,
+                                 'channels': item_details.channels})
+
+        list_item.setProperty('TotalSeasons', str(item_details.total_seasons))
+        list_item.setProperty('TotalEpisodes', str(item_details.total_episodes))
+        list_item.setProperty('WatchedEpisodes', str(item_details.watched_episodes))
+        list_item.setProperty('UnWatchedEpisodes', str(item_details.unwatched_episodes))
+        list_item.setProperty('NumEpisodes', str(item_details.number_episodes))
+
+        if item_details.subtitle_lang != '':
+            list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
+
+        list_item.setRating("imdb", item_details.critic_rating, 0, True)
+        list_item.setProperty('TotalTime', str(item_details.duration))
+
     else:
-        list_item.setInfo('video', videoInfoLabels)
+        videoInfoLabels["tracknumber"] = item_details.track_number
+        log.debug("videoInfoLabels: {0}", videoInfoLabels)
+        list_item.setInfo('music', videoInfoLabels)
 
-    log.debug("videoInfoLabels: {0}", videoInfoLabels)
-
-    list_item.addStreamInfo('video',
-                            {'duration': item_details.duration,
-                             'aspect': item_details.aspect_ratio,
-                             'codec': item_details.video_codec,
-                             'width': item_details.width,
-                             'height': item_details.height})
-    list_item.addStreamInfo('audio',
-                            {'codec': item_details.audio_codec,
-                             'channels': item_details.channels})
-
-    if item_details.subtitle_lang != '':
-        list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
-
-    list_item.setRating("imdb", item_details.critic_rating, 0, True)
     list_item.setProperty('ItemType', item_details.item_type)
-
-    list_item.setProperty('TotalTime', str(item_details.duration))
-    list_item.setProperty('TotalSeasons', str(item_details.total_seasons))
-    list_item.setProperty('TotalEpisodes', str(item_details.total_episodes))
-    list_item.setProperty('WatchedEpisodes', str(item_details.watched_episodes))
-    list_item.setProperty('UnWatchedEpisodes', str(item_details.unwatched_episodes))
-    list_item.setProperty('NumEpisodes', str(item_details.number_episodes))
-
-    #list_item.setProperty('ItemGUID', extraData.get('guiid'))
     list_item.setProperty('id', item_details.id)
 
     return (u, list_item, folder)
