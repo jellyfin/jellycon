@@ -72,6 +72,10 @@ class ItemDetails():
     subtitle_lang = ""
     subtitle_available = False
 
+    song_artist = ""
+    album_artist = ""
+    album_name = ""
+
     favorite = "false"
     overlay = "0"
 
@@ -86,6 +90,8 @@ def extract_item_info(item, gui_options):
     item_details.is_folder = item["IsFolder"]
     item_details.item_type = item["Type"]
     item_details.location_type = item["LocationType"]
+    item_details.name = item["Name"]
+    item_details.original_title = item_details.name
 
     if item_details.item_type == "Episode":
         item_details.episode_number = item["IndexNumber"]
@@ -102,14 +108,19 @@ def extract_item_info(item, gui_options):
 
     if item_details.item_type == "Audio":
         item_details.track_number = item["IndexNumber"]
+        item_details.album_name = item["Album"]
+        artists = item["Artists"]
+        if artists is not None and len(artists) > 0:
+            item_details.song_artist = artists[0] # get first artist
 
-    # set the item name
+    if item_details.item_type == "MusicAlbum":
+        item_details.album_artist = item["AlbumArtist"]
+        item_details.album_name = item_details.name
+
+        # set the item name
     # override with name format string from request
     name_format = gui_options["name_format"]
     name_format_type = gui_options["name_format_type"]
-
-    item_details.name = item["Name"]
-    item_details.original_title = item_details.name
 
     if name_format is not None and item_details.item_type == name_format_type:
         nameInfo = {}
@@ -355,35 +366,35 @@ def add_gui_item(url, item_details, display_options, folder=True):
         list_item.addContextMenuItems(menu_items, True)
 
     # new way
-    videoInfoLabels = {}
+    info_labels = {}
 
     # add cast
     if item_details.cast is not None:
         if kodi_version >= 17:
             list_item.setCast(item_details.cast)
         else:
-            videoInfoLabels['cast'] = videoInfoLabels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
+            info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
-    videoInfoLabels["title"] = listItemName
-    videoInfoLabels["plot"] = item_details.plot
-    videoInfoLabels["Overlay"] = item_details.overlay
-    videoInfoLabels["playcount"] = str(item_details.play_count)
-    videoInfoLabels["TVShowTitle"] = item_details.series_name
+    info_labels["title"] = listItemName
+    info_labels["plot"] = item_details.plot
+    info_labels["Overlay"] = item_details.overlay
+    info_labels["playcount"] = str(item_details.play_count)
+    info_labels["TVShowTitle"] = item_details.series_name
 
-    videoInfoLabels["duration"] = item_details.duration
-    videoInfoLabels["playcount"] = item_details.play_count
+    info_labels["duration"] = item_details.duration
+    info_labels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':
-        videoInfoLabels["top250"] = "1"
+        info_labels["top250"] = "1"
 
-    videoInfoLabels["mpaa"] = item_details.mpaa
-    videoInfoLabels["rating"] = item_details.rating
-    videoInfoLabels["director"] = item_details.director
-    videoInfoLabels["writer"] = item_details.writer
-    videoInfoLabels["year"] = item_details.year
-    videoInfoLabels["premiered"] = item_details.premiere_date
-    videoInfoLabels["dateadded"] = item_details.date_added
-    videoInfoLabels["studio"] = item_details.studio
-    videoInfoLabels["genre"] = item_details.genre
+    info_labels["mpaa"] = item_details.mpaa
+    info_labels["rating"] = item_details.rating
+    info_labels["director"] = item_details.director
+    info_labels["writer"] = item_details.writer
+    info_labels["year"] = item_details.year
+    info_labels["premiered"] = item_details.premiere_date
+    info_labels["dateadded"] = item_details.date_added
+    info_labels["studio"] = item_details.studio
+    info_labels["genre"] = item_details.genre
 
     mediatype = 'video'
 
@@ -404,17 +415,17 @@ def add_gui_item(url, item_details, display_options, folder=True):
     elif item_type == 'audio' or item_type == 'music':
         mediatype = 'song'
 
-    videoInfoLabels["mediatype"] = mediatype
+    info_labels["mediatype"] = mediatype
 
     if mediatype == 'episode':
-        videoInfoLabels["episode"] = item_details.episode_number
+        info_labels["episode"] = item_details.episode_number
 
     if (mediatype == 'season') or (mediatype == 'episode'):
-        videoInfoLabels["season"] = item_details.season_number
+        info_labels["season"] = item_details.season_number
 
     if is_video:
-        list_item.setInfo('video', videoInfoLabels)
-        log.debug("videoInfoLabels: {0}", videoInfoLabels)
+        list_item.setInfo('video', info_labels)
+        log.debug("info_labels: {0}", info_labels)
         list_item.addStreamInfo('video',
                                 {'duration': item_details.duration,
                                  'aspect': item_details.aspect_ratio,
@@ -438,10 +449,17 @@ def add_gui_item(url, item_details, display_options, folder=True):
         list_item.setProperty('TotalTime', str(item_details.duration))
 
     else:
-        videoInfoLabels["tracknumber"] = item_details.track_number
-        log.debug("videoInfoLabels: {0}", videoInfoLabels)
-        list_item.setInfo('music', videoInfoLabels)
+        info_labels["tracknumber"] = item_details.track_number
+        if item_details.album_artist:
+            info_labels["artist"] = item_details.album_artist
+        elif item_details.song_artist:
+            info_labels["artist"] = item_details.song_artist
+        info_labels["album"] = item_details.album_name
 
+        log.debug("info_labels: {0}", info_labels)
+        list_item.setInfo('music', info_labels)
+
+    list_item.setContentLookup(False)
     list_item.setProperty('ItemType', item_details.item_type)
     list_item.setProperty('id', item_details.id)
 
