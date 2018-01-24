@@ -1,0 +1,691 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EmbyCon\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30000"
+msgid "Server Address: "
+msgstr ""
+
+msgctxt "#30001"
+msgid "Server Port: "
+msgstr ""
+
+msgctxt "#30002"
+msgid "Use HTTPS: "
+msgstr ""
+
+msgctxt "#30003"
+msgid "Verify HTTPS Certificate: "
+msgstr ""
+
+msgctxt "#30005"
+msgid "Username: "
+msgstr ""
+
+msgctxt "#30006"
+msgid "Password: "
+msgstr ""
+
+msgctxt "#30007"
+msgid "Samba Username: "
+msgstr ""
+
+msgctxt "#30008"
+msgid "Samba Password: "
+msgstr ""
+
+msgctxt "#30010"
+msgid "Enable performance profiling"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Detect Local Server"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Change User"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Emby"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Network"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Device Name"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Show Connected Clients"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Show watched in recently added"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr ""
+
+msgctxt "#30060"
+msgid "%s (Secured)"
+msgstr ""
+
+msgctxt "#30061"
+msgid "%s (User-defined)"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Hidden user (User-input)"
+msgstr ""
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr ""
+
+msgctxt "#30091"
+msgid "Confirm file delete?"
+msgstr ""
+
+msgctxt "#30092"
+msgid "Delete this item? This action will delete media and associated data files."
+msgstr ""
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr ""
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr ""
+
+msgctxt "#30114"
+msgid "On Resume Jump Back Seconds"
+msgstr ""
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr ""
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr ""
+
+msgctxt "#30120"
+msgid "Show Load Progress"
+msgstr ""
+
+msgctxt "#30121"
+msgid "On Resume"
+msgstr ""
+
+msgctxt "#30125"
+msgid "Done"
+msgstr ""
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr ""
+
+msgctxt "#30128"
+msgid "Play Error"
+msgstr ""
+
+msgctxt "#30129"
+msgid "Default"
+msgstr ""
+
+msgctxt "#30135"
+msgid "Error"
+msgstr ""
+
+msgctxt "#30136"
+msgid "EmbyCon service is not running"
+msgstr ""
+
+msgctxt "#30137"
+msgid "Please restart Kodi"
+msgstr ""
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr ""
+
+msgctxt "#30150"
+msgid "Skin does not support setting views"
+msgstr ""
+
+msgctxt "#30151"
+msgid "Select item action (Requires Restart)"
+msgstr ""
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr ""
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr ""
+
+msgctxt "#30167"
+msgid "Server Detection Succeeded"
+msgstr ""
+
+msgctxt "#30168"
+msgid "Found server"
+msgstr ""
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr ""
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr ""
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr ""
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr ""
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr ""
+
+msgctxt "#30200"
+msgid "URL error: %s"
+msgstr ""
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Error Extracting Server host:port"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Error in ArtworkRotationThread"
+msgstr ""
+
+msgctxt "#30204"
+msgid "Unable to connect to host"
+msgstr ""
+
+msgctxt "#30205"
+msgid "Error in LoadMenuOptionsThread"
+msgstr ""
+
+msgctxt "#30206"
+msgid "Playback Type"
+msgstr ""
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr ""
+
+msgctxt "#30208"
+msgid "Transcode Bitrate (Kbits)"
+msgstr ""
+
+msgctxt "#30209"
+msgid "File Direct Path"
+msgstr ""
+
+msgctxt "#30210"
+msgid "HTTP Direct Stream"
+msgstr ""
+
+msgctxt "#30211"
+msgid "HTTP Transcode"
+msgstr ""
+
+msgctxt "#30212"
+msgid "Transcode Max Width"
+msgstr ""
+
+msgctxt "#30213"
+msgid "Transcode Force 8 Bit"
+msgstr ""
+
+msgctxt "#30214"
+msgid "Events"
+msgstr ""
+
+msgctxt "#30215"
+msgid "On Playback Stop (100% = disabled)"
+msgstr ""
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr ""
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr ""
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr ""
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr ""
+
+msgctxt "#30221"
+msgid "On Playback Stop"
+msgstr ""
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr ""
+
+msgctxt "#30230"
+msgid "Default View"
+msgstr ""
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr ""
+
+msgctxt "#30232"
+msgid "BoxSets"
+msgstr ""
+
+msgctxt "#30233"
+msgid "Series"
+msgstr ""
+
+msgctxt "#30234"
+msgid "Seasons"
+msgstr ""
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr ""
+
+msgctxt "#30236"
+msgid "Action for h265(hevc) video files"
+msgstr ""
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr ""
+
+msgctxt "#30238"
+msgid "Playback Overrides"
+msgstr ""
+
+msgctxt "#30245"
+msgid "Next page"
+msgstr ""
+
+msgctxt "#30246"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30247"
+msgid "Widgets"
+msgstr ""
+
+msgctxt "#30248"
+msgid "Emby - Movies"
+msgstr ""
+
+msgctxt "#30249"
+msgid "Emby - TV Shows"
+msgstr ""
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr ""
+
+msgctxt "#30251"
+msgid "Movies (Genre)"
+msgstr ""
+
+msgctxt "#30252"
+msgid "Movies (A-Z)"
+msgstr ""
+
+msgctxt "#30253"
+msgid "Change User"
+msgstr ""
+
+msgctxt "#30254"
+msgid "Show Settings"
+msgstr ""
+
+msgctxt "#30255"
+msgid "Movies (Year)"
+msgstr ""
+
+msgctxt "#30256"
+msgid "Movies - All"
+msgstr ""
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr ""
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr ""
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr ""
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr ""
+
+msgctxt "#30261"
+msgid "TV Shows - All"
+msgstr ""
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr ""
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr ""
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr ""
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr ""
+
+msgctxt "#30266"
+msgid "Upcoming TV"
+msgstr ""
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr ""
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr ""
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr ""
+
+msgctxt "#30270"
+msgid "Emby: Mark watched"
+msgstr ""
+
+msgctxt "#30271"
+msgid "Emby: Mark unwatched"
+msgstr ""
+
+msgctxt "#30272"
+msgid "Emby: Set favourite"
+msgstr ""
+
+msgctxt "#30273"
+msgid "Emby: Unset favourite"
+msgstr ""
+
+msgctxt "#30274"
+msgid "Emby: Delete"
+msgstr ""
+
+msgctxt "#30275"
+msgid "Emby: Force Transcode"
+msgstr ""
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr ""
+
+msgctxt "#30277"
+msgid "EmbyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr ""
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr ""
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr ""
+
+msgctxt "#30281"
+msgid "Your skin %s is currently not supported"
+msgstr ""
+
+msgctxt "#30282"
+msgid "No Emby servers on your local network detected"
+msgstr ""
+
+msgctxt "#30283"
+msgid "Play Next Episode"
+msgstr ""
+
+msgctxt "#30284"
+msgid "Do you want to play the next episode?"
+msgstr ""
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr ""
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr ""
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr ""
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr ""
+
+msgctxt "#30289"
+msgid "TV Show (Genre)"
+msgstr ""
+
+msgctxt "#30290"
+msgid "All"
+msgstr ""
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr ""
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr ""
+
+msgctxt "#30293"
+msgid "Cache Artwork"
+msgstr ""
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr ""
+
+msgctxt "#30295"
+msgid "To use this feature you need to enabled HTTP control in Kodi"
+msgstr ""
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr ""
+
+msgctxt "#30297"
+msgid "Delete all existing textures?"
+msgstr ""
+
+msgctxt "#30298"
+msgid "Deleting Textures"
+msgstr ""
+
+msgctxt "#30299"
+msgid "Cache Textures"
+msgstr ""
+
+msgctxt "#30300"
+msgid "Cache all Emby media images as local Kodi textures?"
+msgstr ""
+
+msgctxt "#30301"
+msgid "Caching Textures"
+msgstr ""
+
+msgctxt "#30302"
+msgid "Existing Textures: "
+msgstr ""
+
+msgctxt "#30303"
+msgid "Missing Textures: "
+msgstr ""
+
+msgctxt "#30304"
+msgid "Loaded Textures: "
+msgstr ""
+
+msgctxt "#30305"
+msgid "Not Found: %s"
+msgstr ""
+
+msgctxt "#30306"
+msgid "Playback starting: %s"
+msgstr ""
+
+msgctxt "#30307"
+msgid "Emby: Play Trailer"
+msgstr ""
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr ""
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr ""
+
+msgctxt "#30310"
+msgid "Enable Emby remote control"
+msgstr ""
+
+msgctxt "#30311"
+msgid "EmbyCon encountered an error!"
+msgstr ""
+
+msgctxt "#30312"
+msgid "Do you want to send this error to the devs?"
+msgstr ""
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr ""
+
+msgctxt "#30314"
+msgid "Play"
+msgstr ""
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr ""
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr ""
+
+msgctxt "#30317"
+msgid "Emby: Play All"
+msgstr ""
+
+msgctxt "#30318"
+msgid "Music - All Albums"
+msgstr ""
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr ""
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr ""
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr ""

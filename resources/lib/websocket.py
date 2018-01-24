@@ -72,7 +72,7 @@ STATUS_INVALID_EXTENSION = 1010
 STATUS_UNEXPECTED_CONDITION = 1011
 STATUS_TLS_HANDSHAKE_ERROR = 1015
 
-logger = logging.getLogger("EmbyCon." + __name__)
+logger = logging.getLogger()
 
 
 class WebSocketException(Exception):
@@ -107,10 +107,10 @@ def enableTrace(tracable):
     """
     global traceEnabled
     traceEnabled = tracable
-    #if tracable:
-    #    if not logger.handlers:
-    #        logger.addHandler(logging.StreamHandler())
-    #    logger.setLevel(logging.DEBUG)
+    if tracable:
+        if not logger.handlers:
+            logger.addHandler(logging.StreamHandler())
+        logger.setLevel(logging.DEBUG)
 
 
 def setdefaulttimeout(timeout):
@@ -128,6 +128,22 @@ def getdefaulttimeout():
     Return the global timeout setting(second) to connect.
     """
     return default_timeout
+
+
+def _wrap_sni_socket(sock, sslopt, hostname):
+    context = ssl.SSLContext(sslopt.get('ssl_version', ssl.PROTOCOL_SSLv23))
+
+    if sslopt.get('cert_reqs', ssl.CERT_NONE) != ssl.CERT_NONE:
+        capath = ssl.get_default_verify_paths().capath
+        context.load_verify_locations(cafile=sslopt.get('ca_certs', None),
+                capath=sslopt.get('ca_cert_path', capath))
+
+    return context.wrap_socket(
+        sock,
+        do_handshake_on_connect=sslopt.get('do_handshake_on_connect', True),
+        suppress_ragged_eofs=sslopt.get('suppress_ragged_eofs', True),
+        server_hostname=hostname,
+    )
 
 
 def _parse_url(url):
@@ -448,14 +464,16 @@ class WebSocket(object):
                     sslopt = {}
                 else:
                     sslopt = self.sslopt
-                self.sock = ssl.wrap_socket(self.sock, **sslopt)
+                if ssl.HAS_SNI:
+                    self.sock = _wrap_sni_socket(self.sock, sslopt, hostname)
+                else:
+                    self.sock = ssl.wrap_socket(self.sock, **sslopt)
             else:
                 raise WebSocketException("SSL not available.")
 
         self._handshake(hostname, port, resource, **options)
 
     def _handshake(self, host, port, resource, **options):
-        sock = self.sock
         headers = []
         headers.append("GET %s HTTP/1.1" % resource)
         headers.append("Upgrade: websocket")
@@ -688,7 +706,7 @@ class WebSocket(object):
 
         reason: the reason to close. This must be string.
         """
-
+        
         try:
             self.sock.shutdown(socket.SHUT_RDWR)
         except:
@@ -712,11 +730,10 @@ class WebSocket(object):
                 except:
                     pass
                 self.sock.settimeout(timeout)
-                print("SHUTDOWN ON SOCKET CALLED")
                 self.sock.shutdown(socket.SHUT_RDWR)
             except:
                 pass
-        '''        
+        '''
         self._closeInternal()
 
     def _closeInternal(self):
@@ -827,7 +844,7 @@ class WebSocketApp(object):
         """
         self.keep_running = False
         if(self.sock != None):
-            self.sock.close()
+            self.sock.close()        
 
     def _send_ping(self, interval):
         while True:
@@ -854,6 +871,7 @@ class WebSocketApp(object):
         if self.sock:
             raise WebSocketException("socket is already opened")
         thread = None
+        self.keep_running = True
 
         try:
             self.sock = WebSocket(self.get_mask_key, sockopt=sockopt, sslopt=sslopt)
@@ -895,7 +913,7 @@ class WebSocketApp(object):
                 callback(self, *args)
             except Exception, e:
                 logger.error(e)
-                if logger.isEnabledFor(logging.DEBUG):
+                if True:#logger.isEnabledFor(logging.DEBUG):
                     _, _, tb = sys.exc_info()
                     traceback.print_tb(tb)
 

@@ -1,158 +1,108 @@
-import xbmc
-import xbmcgui
-import xbmcaddon
-import urllib
-import httplib
-import os
+# coding=utf-8
+# Gnu General Public License - see LICENSE.TXT
+
 import time
-import socket
-
-import threading
 import json
-from datetime import datetime
-import xml.etree.ElementTree as xml
+import traceback
+import binascii
 
-import mimetypes
-from threading import Thread
-from urlparse import parse_qs
-from urllib import urlretrieve
-import logging
+import xbmc
+import xbmcaddon
+import xbmcgui
 
-from random import randint
-import random
-import urllib2
+from resources.lib.downloadutils import DownloadUtils
+from resources.lib.simple_logging import SimpleLogging
+from resources.lib.play_utils import Service, PlaybackService, sendProgress
+from resources.lib.kodi_utils import HomeWindow
+from resources.lib.widgets import checkForNewContent
+from resources.lib.websocket_client import WebSocketClient
 
-addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-addonPath = addonSettings.getAddonInfo('path')
-BASE_RESOURCE_PATH = xbmc.translatePath( os.path.join( addonPath, 'resources', 'lib' ) )
-sys.path.append(BASE_RESOURCE_PATH)
+# clear user and token when logging in
+home_window = HomeWindow()
+home_window.clearProperty("userid")
+home_window.clearProperty("AccessToken")
+home_window.clearProperty("Params")
 
-from websocketclient import WebSocketThread
-from downloadutils import DownloadUtils
-import loghandler
-
-log_level = addonSettings.getSetting('logLevel')  
-loghandler.config(int(log_level))
-log = logging.getLogger("EmbyCon.service")
-
-downloadUtils = DownloadUtils()
+log = SimpleLogging('service')
+download_utils = DownloadUtils()
 
 # auth the service
 try:
-    downloadUtils.authenticate()
-except Exception, e:
-    pass
+    download_utils.authenticate()
+except Exception as error:
+    log.error("Error with initial service auth: {0}", error)
 
-newWebSocketThread = WebSocketThread()
-newWebSocketThread.setDaemon(True)
-newWebSocketThread.start()
-    
-def hasData(data):
-    if(data == None or len(data) == 0 or data == "None"):
-        return False
-    else:
-        return True
-        
-def stopAll(played_information):
-
-    if(len(played_information) == 0):
-        return 
-        
-    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-    log.info("EmbyCon Service -> played_information : " + str(played_information))
-    
-    for item_url in played_information:
-        data = played_information.get(item_url)
-        if(data != None):
-            log.info("EmbyCon Service -> item_url  : " + item_url)
-            log.info("EmbyCon Service -> item_data : " + str(data))
-            
-            currentPossition = data.get("currentPossition")
-            item_id = data.get("item_id")
-            
-            if(hasData(item_id)):
-                log.info("EmbyCon Service -> Playback Stopped at :" + str(int(currentPossition * 10000000)))
-                newWebSocketThread.playbackStopped(item_id, str(int(currentPossition * 10000000)))
-        
-    played_information.clear()
-    
-    
-class Service( xbmc.Player ):
-
-    played_information = {}
-    
-    def __init__( self, *args ):
-        log.info("EmbyCon Service -> starting monitor service")
-        self.played_information = {}
-        pass
-    
-    def onPlayBackStarted( self ):
-        # Will be called when xbmc starts playing a file
-        stopAll(self.played_information)
-        
-        currentFile = xbmc.Player().getPlayingFile()
-        log.info("EmbyCon Service -> onPlayBackStarted" + currentFile)
-        
-        WINDOW = xbmcgui.Window( 10000 )
-        item_id = WINDOW.getProperty("item_id")
-        
-        # reset all these so they dont get used is xbmc plays a none 
-        WINDOW.setProperty("item_id", "")
-        
-        if(item_id == None or len(item_id) == 0):
-            return
-        
-        newWebSocketThread.playbackStarted(item_id)
-        
-        data = {}
-        data["item_id"] = item_id
-        self.played_information[currentFile] = data
-        
-        log.info("EmbyCon Service -> ADDING_FILE : " + currentFile)
-        log.info("EmbyCon Service -> ADDING_FILE : " + str(self.played_information))
-
-    def onPlayBackEnded( self ):
-        # Will be called when xbmc stops playing a file
-        log.info("EmbyCon Service -> onPlayBackEnded")
-        stopAll(self.played_information)
-
-    def onPlayBackStopped( self ):
-        # Will be called when user stops xbmc playing a file
-        log.info("EmbyCon Service -> onPlayBackStopped")
-        stopAll(self.played_information)
-
+# set up all the services
 monitor = Service()
-lastProgressUpdate = datetime.today()
-            
+playback_service = PlaybackService(monitor)
+
+home_window = HomeWindow()
+last_progress_update = time.time()
+last_content_check = time.time()
+websocket_client = WebSocketClient()
+
+# start the WebSocket Client running
+settings = xbmcaddon.Addon(id='plugin.video.embycon')
+remote_control = settings.getSetting('remoteControl') == "true"
+if remote_control:
+    websocket_client.start()
+
+
+def get_now_playing():
+
+    # Get the active player
+    result = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "Player.GetActivePlayers"}')
+    result = unicode(result, 'utf-8', errors='ignore')
+    log.debug("Got active player: {0}", result)
+    result = json.loads(result)
+
+    if 'result' in result and len(result["result"]) > 0:
+        playerid = result["result"][0]["playerid"]
+
+        # Get details of the playing media
+        log.debug("Getting details of now  playing media")
+        result = xbmc.executeJSONRPC(
+            '{"jsonrpc": "2.0", "id": 1, "method": "Player.GetItem", "params": {"playerid": ' + str(
+                playerid) + ', "properties": ["showtitle", "tvshowid", "episode", "season", "playcount", "genre", "plotoutline", "uniqueid"] } }')
+        result = unicode(result, 'utf-8', errors='ignore')
+        log.debug("playing_item_details: {0}", result)
+
+        result = json.loads(result)
+        return result
+
+
+# monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
+# the service to exit when a user cancels an addon load action. This is a bug in Kodi.
+# I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
+
 while not xbmc.abortRequested:
-    
-    if xbmc.Player().isPlaying():
-        try:
-            # send update
-            td = datetime.today() - lastProgressUpdate
-            secDiff = td.seconds
-            if(secDiff > 5):
-            
-                playTime = xbmc.Player().getTime()
-                currentFile = xbmc.Player().getPlayingFile()
-                
-                if(monitor.played_information.get(currentFile) != None):
-                    monitor.played_information[currentFile]["currentPossition"] = playTime            
-            
-                if(monitor.played_information.get(currentFile) != None and monitor.played_information.get(currentFile).get("item_id") != None):
-                    item_id =  monitor.played_information.get(currentFile).get("item_id")
-                    newWebSocketThread.sendProgressUpdate(item_id, str(int(playTime * 10000000)))
-                    
-                lastProgressUpdate = datetime.today()
-            
-        except Exception, e:
-            log.error("EmbyCon Service -> Exception in Playback Monitor : " + str(e))
-            pass
+
+    try:
+        if xbmc.Player().isPlaying():
+            # if playing every 10 seconds updated the server with progress
+            if (time.time() - last_progress_update) > 10:
+                last_progress_update = time.time()
+                sendProgress(monitor)
+        else:
+            # if not playing every 60 seonds check for new widget content
+            if (time.time() - last_content_check) > 60:
+                last_content_check = time.time()
+                checkForNewContent()
+
+        #get_now_playing()
+
+    except Exception as error:
+        log.error("Exception in Playback Monitor: {0}", error)
+        log.error("{0}", traceback.format_exc())
 
     xbmc.sleep(1000)
-    xbmcgui.Window(10000).setProperty("EmbyCon_Service_Timestamp", str(int(time.time())))
-    
-# stop the WebSocket client
-newWebSocketThread.stopClient()
 
-log.info("EmbyCon Service -> Service shutting down")
+# stop the WebSocket Client
+websocket_client.stop_client()
+
+# clear user and token when loggin off
+home_window.clearProperty("userid")
+home_window.clearProperty("AccessToken")
+home_window.clearProperty("Params")
+
+log.debug("Service shutting down")

@@ -1,122 +1,105 @@
-'''
-    @license    : Gnu General Public License - see LICENSE.TXT
+# Gnu General Public License - see LICENSE.TXT
 
-    This is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
-
-    This is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with software.  If not, see <http://www.gnu.org/licenses/>.
-    
-    Thanks to Hippojay for the PleXBMC plugin this is derived from
-    This software is derived form the XBMB3C addon
-    
-'''
-#import ptvsd
-
-import logging
-import struct
 import urllib
-import glob
-import re
-import hashlib
-import httplib
-import socket
 import sys
 import os
 import time
-import inspect
-import base64
-import random
-from datetime import datetime
-from datetime import timedelta
-from urlparse import urlparse
 import cProfile
 import pstats
-import threading
-import hashlib
+import json
 import StringIO
-import gzip
-import xml.etree.ElementTree as etree
-import json as json
+import encodings
+import binascii
 
 import xbmcplugin
 import xbmcgui
 import xbmcaddon
 import xbmc
 
+from resources.lib.error import catch_except
 from downloadutils import DownloadUtils
-from utils import PlayUtils
+from utils import getDetailsString, getArt, cache_artwork, send_event_notification
+from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
-from views import DefaultViews, loadSkinDefaults
 from server_detect import checkServer
-from resume_dialog import ResumeDialog
+from simple_logging import SimpleLogging
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch, showYearsList
+from translation import i18n
+from server_sessions import showServerSessions
+from action_menu import ActionMenu
+from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
+import trakttokodi
+from item_functions import add_gui_item, extract_item_info, ItemDetails, add_context_menu
 
 
-__settings__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
-__language__ = __addon__.getLocalizedString
-__addondir__ = xbmc.translatePath( __addon__.getAddonInfo('profile'))
-__cwd__ = __settings__.getAddonInfo('path')
-PLUGINPATH = xbmc.translatePath(os.path.join( __cwd__))
+__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
+__cwd__ = __addon__.getAddonInfo('path')
+PLUGINPATH = xbmc.translatePath(os.path.join(__cwd__))
 
-log = logging.getLogger("EmbyCon." + __name__)
+log = SimpleLogging(__name__)
+
+kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
-def mainEntryPoint():
-   
-    log.info("===== EmbyCon START =====")
-    
-    ProfileCode = __settings__.getSetting('profile') == "true"
 
-    if(ProfileCode):
-        xbmcgui.Dialog().ok("Profiling Enabled", "Remember to turn off when you have finished testing")
-        pr = cProfile.Profile()
-        pr.enable()
+@catch_except()
+def mainEntryPoint():
+    log.debug("===== EmbyCon START =====")
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    profile_code = settings.getSetting('profile') == "true"
+    pr = None
+    if (profile_code):
+        return_value = xbmcgui.Dialog().yesno("Profiling Enabled", "Do you want to run profiling?")
+        if return_value:
+            pr = cProfile.Profile()
+            pr.enable()
 
     ADDON_VERSION = ClientInformation().getVersion()
-    log.info("EmbyCon -> running Python: " + str(sys.version_info))
-    log.info("EmbyCon -> running EmbyCon: " + str(ADDON_VERSION))
-    log.info(xbmc.getInfoLabel( "System.BuildVersion" ))
-    log.info( "EmbyCon -> Script argument data " + str(sys.argv))
+    log.debug("Running Python: {0}", sys.version_info)
+    log.debug("Running EmbyCon: {0}", ADDON_VERSION)
+    log.debug("Kodi BuildVersion: {0}", xbmc.getInfoLabel("System.BuildVersion"))
+    log.debug("Kodi Version: {0}", kodi_version)
+    log.debug("Script argument data: {0}", sys.argv)
 
     try:
         params = get_params(sys.argv[2])
     except:
         params = {}
 
-    if(len(params) == 0):
-        WINDOW = xbmcgui.Window( 10000 )
-        windowParams = WINDOW.getProperty("EmbyConParams")
-        log.info("windowParams : " + windowParams)
-        #WINDOW.clearProperty("EmbyConParams")
-        if(windowParams):
+    home_window = HomeWindow()
+
+    if (len(params) == 0):
+        windowParams = home_window.getProperty("Params")
+        log.debug("windowParams: {0}", windowParams)
+        # home_window.clearProperty("Params")
+        if (windowParams):
             try:
                 params = get_params(windowParams)
             except:
                 params = {}
 
-    log.info("EmbyCon -> Script params = " + str(params))
+    log.debug("Script params: {0}", params)
 
     param_url = params.get('url', None)
 
-    if param_url and ( param_url.startswith('http') or param_url.startswith('file') ):
+    if param_url:
         param_url = urllib.unquote(param_url)
 
     mode = params.get("mode", None)
-    WINDOW = xbmcgui.Window( 10000 )
 
     if mode == "CHANGE_USER":
-        checkServer(True)
+        checkServer(change_user=True, notify=False)
+    elif mode== "CACHE_ARTWORK":
+        cache_artwork()
+    elif mode == "DETECT_SERVER":
+        checkServer(force=True, notify=True)
+    elif mode == "DETECT_SERVER_USER":
+        checkServer(force=True, change_user=True, notify=False)
     elif sys.argv[1] == "markWatched":
         item_id = sys.argv[2]
         markWatched(item_id)
@@ -131,1386 +114,890 @@ def mainEntryPoint():
         unmarkFavorite(item_id)
     elif sys.argv[1] == "delete":
         item_id = sys.argv[2]
-        delete(item_id)    
-    elif mode == "setting":
-        __settings__.openSettings()
+        delete(item_id)
+    elif mode == "playTrailer":
+        item_id = params["id"]
+        playTrailer(item_id)
+    elif mode == "MOVIE_ALPHA":
+        showMovieAlphaList()
+    elif mode == "MOVIE_GENRE":
+        showGenreList()
+    elif mode == "SERIES_GENRE":
+        showGenreList(item_type="series")
+    elif mode == "MOVIE_YEARS":
+        showYearsList()
+    elif mode == "WIDGETS":
+        showWidgets()
+    elif mode == "SHOW_MENU":
+        showMenu(params)
+    elif mode == "SHOW_SETTINGS":
+        __addon__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
         if WINDOW == 10000:
-            log.info("Currently in home - refreshing to allow new settings to be taken")
-            xbmc.executebuiltin("XBMC.ActivateWindow(Home)")
+            log.debug("Currently in home - refreshing to allow new settings to be taken")
+            xbmc.executebuiltin("ActivateWindow(Home)")
     elif sys.argv[1] == "refresh":
-        WINDOW = xbmcgui.Window( 10000 )
-        WINDOW.setProperty("force_data_reload", "true")    
-        xbmc.executebuiltin("Container.Refresh")    
-    elif mode == "SET_DEFAULT_VIEWS":
-        showSetViews()
+        home_window.setProperty("force_data_reload", "true")
+        xbmc.executebuiltin("Container.Refresh")
     elif mode == "WIDGET_CONTENT":
-        getWigetContent(sys.argv[0], int(sys.argv[1]), params)
+        getWidgetContent(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_CAST":
+        getWidgetContentCast(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_SIMILAR":
+        getWidgetContentSimilar(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_NEXTUP":
+        getWidgetContentNextUp(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_SUGGESTIONS":
+        getSuggestions(int(sys.argv[1]), params)
+    elif mode == "WIDGET_CONTENT_URL":
+        getWidgetUrlContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
-        #ptvsd.enable_attach(secret = "shaun")
-        #ptvsd.wait_for_attach()
-        checkService()
-        checkServer()
-        pluginhandle = int(sys.argv[1])
-        showParentContent(sys.argv[0], int(sys.argv[1]), params)
+        checkServer(notify=False)
+        showParentContent(params)
     elif mode == "SHOW_CONTENT":
-        #plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
-        checkService()
-        checkServer()
-        pluginhandle = int(sys.argv[1])
+        # plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
+        checkServer(notify=False)
         showContent(sys.argv[0], int(sys.argv[1]), params)
+    elif mode == "SEARCH":
+        # plugin://plugin.video.embycon?mode=SEARCH
+        checkServer(notify=False)
+        xbmcplugin.setContent(int(sys.argv[1]), 'files')
+        showSearch()
+    elif mode == "NEW_SEARCH":
+        checkServer(notify=False)
+        searchResults(params)
+    elif mode == "SHOW_SERVER_SESSIONS":
+        checkServer(notify=False)
+        showServerSessions()
+    elif mode == "TRAKTTOKODI":
+        checkServer(notify=False)
+        trakttokodi.entry_point(params)
     else:
-        
-        checkService()
-        checkServer()
-        
-        pluginhandle = int(sys.argv[1])
+        checkServer(notify=False)
+        log.debug("EmbyCon -> Mode: {0}", mode)
+        log.debug("EmbyCon -> URL: {0}", param_url)
 
-        WINDOW = xbmcgui.Window( 10000 )
-        WINDOW.clearProperty("heading")
-
-        log.info("EmbyCon -> Mode: " + str(mode))
-        log.info("EmbyCon -> URL: " + str(param_url))
-
-        #Run a function based on the mode variable that was passed in the URL
-        #if ( mode == None or param_url == None or len(param_url) < 1 ):
-        #    displaySections(pluginhandle)
         if mode == "GET_CONTENT":
-            getContent(param_url, pluginhandle)
+            getContent(param_url, params)
         elif mode == "PLAY":
-            PLAY(param_url, pluginhandle)
+            PLAY(params)
         else:
-            displaySections(pluginhandle)
+            displaySections()
 
-    WINDOW = xbmcgui.Window( 10000 )
-    #WINDOW.clearProperty("MB3.Background.Item.FanArt")
-    
     dataManager.canRefreshNow = True
-    
-    if(ProfileCode):
+
+    if (pr):
         pr.disable()
-        ps = pstats.Stats(pr)
-        
-        fileTimeStamp = time.strftime("%Y-%m-%d %H-%M-%S")
-        tabFileName = __addondir__ + "profile_(" + fileTimeStamp + ").tab"
-        f = open(tabFileName, 'wb')
-        f.write("NumbCalls\tTotalTime\tCumulativeTime\tFunctionName\tFileName\r\n")
-        for (key, value) in ps.stats.items():
-            (filename, count, func_name) = key
-            (ccalls, ncalls, total_time, cumulative_time, callers) = value
-            try:
-                f.write(str(ncalls) + "\t" + "{:10.4f}".format(total_time) + "\t" + "{:10.4f}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-            except ValueError:
-                f.write(str(ncalls) + "\t" + "{0}".format(total_time) + "\t" + "{0}".format(cumulative_time) + "\t" + func_name + "\t" + filename + "\r\n")
-        f.close()    
 
-    log.info("===== EmbyCon FINISHED =====")
-   
-def getCollections(detailsString):
-    log.info("== ENTER: getCollections ==")
-    
-    MB_server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
+        fileTimeStamp = time.strftime("%Y%m%d-%H%M%S")
+        tabFileName = __addondir__ + "profile(" + fileTimeStamp + ").txt"
+        s = StringIO.StringIO()
+        ps = pstats.Stats(pr, stream=s)
+        ps = ps.sort_stats('cumulative')
+        ps.print_stats()
+        ps.strip_dirs()
+        ps = ps.sort_stats('tottime')
+        ps.print_stats()
+        with open(tabFileName, 'wb') as f:
+            f.write(s.getvalue())
 
-    userid = downloadUtils.getUserId()
-    
-    if(userid == None or len(userid) == 0):
-        return {}
-    
-    try:
-        jsonData = downloadUtils.downloadUrl(MB_server + "/emby/Users/" + userid + "/Items/Root?format=json")
-    except Exception, msg:
-        error = "Get connect : " + str(msg)
-        log.error(error)
-        return {}        
-    
-    log.debug("jsonData : " + jsonData)
-    result = json.loads(jsonData)
-    
-    parentid = result.get("Id")
-    log.info("parentid : " + parentid)
-       
-    htmlpath = ("http://%s/emby/Users/" % MB_server)
-    jsonData = downloadUtils.downloadUrl(htmlpath + userid + "/items?ParentId=" + parentid + "&Sortby=SortName&format=json")
-    log.debug("jsonData : " + jsonData)
-    collections=[]
+    log.debug("===== EmbyCon FINISHED =====")
 
-    if jsonData is False:
-        return {}
-
-    result = json.loads(jsonData)
-    result = result.get("Items")
-    
-    for item in result:
-        if(item.get("RecursiveItemCount") != "0"):
-            Name = (item.get("Name")).encode('utf-8')
-
-            collections.append({
-                    'title'             : Name,
-                    'address'           : MB_server ,
-                    'thumb'             : downloadUtils.getArtwork(item,"Primary") ,
-                    'fanart_image'      : downloadUtils.getArtwork(item, "Backdrop") ,
-                    'poster'            : downloadUtils.getArtwork(item,"Primary") ,
-                    'guiid'             : item.get("Id"),
-                    'path'              : ('/emby/Users/' + userid + '/items?ParentId=' + item.get("Id") + '&IsVirtualUnaired=false&IsMissing=False&Fields=' + detailsString + '&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json')})
-
-            log.info("Title " + Name)
-    
-    # Add standard nodes
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "All Movies"
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Movie&CollapseBoxSetItems=true&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "BoxSets"
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Recursive=true&Fields=' + detailsString + '&IncludeItemTypes=BoxSet&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "All TV"
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Fields=' + detailsString + '&Recursive=true&IncludeItemTypes=Series&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "Recently Added Movies"
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "Recently Added Episodes"
-    itemData['path'] =  '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&SortBy=DateCreated&Fields=' + detailsString + '&SortOrder=Descending&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "In Progress Movies"
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Movie&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "In Progress Episodes"
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsResumable&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "Next Episodes"
-    itemData['path'] = '/emby/Shows/NextUp/?Userid=' + userid + '&Limit=' + '20' + '&Recursive=true&Fields=' + detailsString + '&Filters=IsUnplayed,IsNotFolder&IsVirtualUnaired=false&IsMissing=False&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    itemData = {}
-    itemData['address'] = MB_server
-    itemData['title'] = "Upcoming TV"
-    itemData['path'] = '/emby/Users/' + userid + '/Items?Recursive=true&SortBy=PremiereDate&Fields=' + detailsString + '&SortOrder=Ascending&Filters=IsUnplayed&IsVirtualUnaired=true&IsNotFolder&IncludeItemTypes=Episode&ImageTypeLimit=1&format=json'
-    collections.append(itemData)
-
-    return collections
 
 def markWatched(item_id):
-    log.info("Mark Item Watched : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
-    downloadUtils.downloadUrl(url, postBody="", type="POST")
-    WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("force_data_reload", "true")  
+    log.debug("Mark Item Watched: {0}", item_id)
+    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
+    downloadUtils.downloadUrl(url, postBody="", method="POST")
+    home_window = HomeWindow()
+    home_window.setProperty("force_data_reload", "true")
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
+
 
 def markUnwatched(item_id):
-    log.info("Mark Item UnWatched : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/PlayedItems/" + item_id
-    downloadUtils.downloadUrl(url, type="DELETE")
-    WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("force_data_reload", "true")      
+    log.debug("Mark Item UnWatched: {0}", item_id)
+    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
+    downloadUtils.downloadUrl(url, method="DELETE")
+    home_window = HomeWindow()
+    home_window.setProperty("force_data_reload", "true")
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
+
 
 def markFavorite(item_id):
-    log.info("Add item to favourites : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
-    downloadUtils.downloadUrl(url, postBody="", type="POST")
-    WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("force_data_reload", "true")    
+    log.debug("Add item to favourites: {0}", item_id)
+    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
+    downloadUtils.downloadUrl(url, postBody="", method="POST")
+    home_window = HomeWindow()
+    home_window.setProperty("force_data_reload", "true")
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
-    
+
+
 def unmarkFavorite(item_id):
-    log.info("Remove item from favourites : " + item_id)
-    userId = downloadUtils.getUserId()
-    server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-    url = "http://" + server + "/emby/Users/" + userId + "/FavoriteItems/" + item_id
-    downloadUtils.downloadUrl(url, type="DELETE")
-    WINDOW = xbmcgui.Window( 10000 )
-    WINDOW.setProperty("force_data_reload", "true")    
+    log.debug("Remove item from favourites: {0}", item_id)
+    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
+    downloadUtils.downloadUrl(url, method="DELETE")
+    home_window = HomeWindow()
+    home_window.setProperty("force_data_reload", "true")
+    checkForNewContent()
     xbmc.executebuiltin("Container.Refresh")
-   
-def delete (item_id):
-    return_value = xbmcgui.Dialog().yesno(__language__(30091),__language__(30092))
+
+
+def delete(item_id):
+    return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
     if return_value:
-        log.info('Deleting Item : ' + item_id)
-        server = __settings__.getSetting('ipaddress') + ":" + __settings__.getSetting('port')
-        url = 'http://' + server + '/emby/Items/' + item_id
+        log.debug('Deleting Item: {0}', item_id)
+        url = '{server}/emby/Items/' + item_id
         progress = xbmcgui.DialogProgress()
-        progress.create(__language__(30052), __language__(30053))
-        downloadUtils.downloadUrl(url, type="DELETE")
+        progress.create(i18n('deleting'), i18n('waiting_server_delete'))
+        downloadUtils.downloadUrl(url, method="DELETE")
         progress.close()
+        home_window = HomeWindow()
+        checkForNewContent()
         xbmc.executebuiltin("Container.Refresh")
-               
-def addGUIItem( url, details, extraData, folder=True ):
 
-    url = url.encode('utf-8')
 
-    log.debug("Adding GuiItem for [%s]" % details.get('title','Unknown'))
-    log.debug("Passed details: " + str(details))
-    log.debug("Passed extraData: " + str(extraData))
-
-    if details.get('title', '') == '':
-        return
-
-    if extraData.get('mode',None) is None:
-        mode="&mode=0"
-    else:
-        mode="&mode=%s" % extraData['mode']
-
-    #Create the URL to pass to the item
-    if 'SETVIEWS' in url:
-        u = sys.argv[0] + "?url=" + url + '&mode=SETVIEWS'
-    elif url.startswith('http'):
-        u = sys.argv[0] + "?url=" + urllib.quote(url) + mode
-    else:
-        u = sys.argv[0] + "?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
-
-    #Create the ListItem that will be displayed
-    thumbPath=str(extraData.get('thumb',''))
-    
-    listItemName = details.get('title','Unknown')
-    
-    # calculate percentage
-    cappedPercentage = None
-    if (extraData.get('resumetime') != None and int(extraData.get('resumetime')) > 0):
-        duration = float(extraData.get('duration'))
-        if(duration > 0):
-            resume = float(extraData.get('resumetime')) / 60.0
-            percentage = int((resume / duration) * 100.0)
-            cappedPercentage = percentage
-            '''
-            cappedPercentage = percentage - (percentage % 10)
-            if(cappedPercentage == 0):
-                cappedPercentage = 10
-            if(cappedPercentage == 100):
-                cappedPercentage = 90
-            '''
-                
-    if (extraData.get('TotalEpisodes') != None and extraData.get('TotalEpisodes') != "0"):
-        totalItems = int(extraData.get('TotalEpisodes'))
-        watched = int(extraData.get('WatchedEpisodes'))
-        percentage = int((float(watched) / float(totalItems)) * 100.0)
-        cappedPercentage = percentage       
-        if(cappedPercentage == 0):
-            cappedPercentage = None
-        if(cappedPercentage == 100):
-            cappedPercentage = None
-            
-        '''
-        cappedPercentage = percentage - (percentage % 10)
-        if(cappedPercentage == 0): 
-            cappedPercentage = 10
-        if(cappedPercentage == 100):
-            cappedPercentage = 90        
-        '''
-       
-    countsAdded = False
-    addCounts = __settings__.getSetting('addCounts') == 'true'
-    if(addCounts and extraData.get("RecursiveItemCount") != None and extraData.get("RecursiveUnplayedItemCount") != None):
-        countsAdded = True
-        listItemName = listItemName + " (" + str(extraData.get("RecursiveItemCount") - extraData.get("RecursiveUnplayedItemCount")) + "/" + str(extraData.get("RecursiveItemCount")) + ")"          
-       
-    addResumePercent = __settings__.getSetting('addResumePercent') == 'true'
-    if(countsAdded == False and addResumePercent and details.get('title') != None and cappedPercentage != None):
-        listItemName = listItemName + " (" + str(cappedPercentage) + "%)"   
-    
-    # update title with new name, this sets the new name in the deailts that are later passed to video info
-    details['title'] = listItemName
-    
-    list = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath, offscreen=True)
-    log.debug("Setting thumbnail as " + thumbPath)
-    
-    # calculate percentage
-    if (cappedPercentage != None):
-        list.setProperty("complete_percentage", str(cappedPercentage))          
-         
-    #For all end items
-    if(not folder):
-        list.setProperty('IsPlayable', 'true')
-        if extraData.get('type','video').lower() == "video":
-            list.setProperty('TotalTime', str(extraData.get('duration')))
-            list.setProperty('ResumeTime', str(int(extraData.get('resumetime')) / 60))
-
-    #StartPercent
-    
-    artTypes=['poster', 'fanart_image', 'clearlogo', 'discart', 'banner', 'clearart', 'landscape']
-    
-    for artType in artTypes:
-        imagePath = str(extraData.get(artType,''))
-        list = setArt(list, artType, imagePath)
-        log.debug( "Setting " + artType + " as " + imagePath)
-    
-    menuItems = addContextMenu(details, extraData, folder)
-    if(len(menuItems) > 0):
-        list.addContextMenuItems( menuItems, True )
-
-    # new way
-    videoInfoLabels = {}
-    
-    if(extraData.get('type') == None or extraData.get('type') == "Video"):
-        videoInfoLabels.update(details)
-    else:
-        list.setInfo( type = extraData.get('type','Video'), infoLabels = details )
-    
-    videoInfoLabels["duration"] = extraData.get("duration")
-    videoInfoLabels["playcount"] = extraData.get("playcount")
-    if (extraData.get('favorite') == 'true'):
-        videoInfoLabels["top250"] = "1"    
-        
-    videoInfoLabels["mpaa"] = extraData.get('mpaa')
-    videoInfoLabels["rating"] = extraData.get('rating')
-    videoInfoLabels["director"] = extraData.get('director')
-    videoInfoLabels["writer"] = extraData.get('writer')
-    videoInfoLabels["year"] = extraData.get('year')
-    videoInfoLabels["studio"] = extraData.get('studio')
-    videoInfoLabels["genre"] = extraData.get('genre')
-    
-    videoInfoLabels["episode"] = details.get('episode')
-    videoInfoLabels["season"] = details.get('season') 
-    
-    list.setInfo('video', videoInfoLabels)
-    
-    list.addStreamInfo('video', {'duration': extraData.get('duration'), 'aspect': extraData.get('aspectratio'),'codec': extraData.get('videocodec'), 'width' : extraData.get('width'), 'height' : extraData.get('height')})
-    list.addStreamInfo('audio', {'codec': extraData.get('audiocodec'),'channels': extraData.get('channels')})
-    
-    list.setProperty('CriticRating', str(extraData.get('criticrating')))
-    list.setProperty('ItemType', extraData.get('itemtype'))
-
-    if extraData.get('totaltime') != None:
-        list.setProperty('TotalTime', extraData.get('totaltime'))
-    if extraData.get('TotalSeasons') != None:
-        list.setProperty('TotalSeasons',extraData.get('TotalSeasons'))
-    if extraData.get('TotalEpisodes') != None:  
-        list.setProperty('TotalEpisodes',extraData.get('TotalEpisodes'))
-    if extraData.get('WatchedEpisodes') != None:
-        list.setProperty('WatchedEpisodes',extraData.get('WatchedEpisodes'))
-    if extraData.get('UnWatchedEpisodes') != None:
-        list.setProperty('UnWatchedEpisodes',extraData.get('UnWatchedEpisodes'))
-    if extraData.get('NumEpisodes') != None:
-        list.setProperty('NumEpisodes',extraData.get('NumEpisodes'))
-    
-    list.setProperty('ItemGUID', extraData.get('guiid'))
-    list.setProperty('id', extraData.get('id'))
-        
-    return (u, list, folder)
-
-def addContextMenu(details, extraData, folder):
-    commands = []
-
-    item_id = extraData.get('id')
-    if item_id != None:
-        scriptToRun = PLUGINPATH + "/default.py"
-        
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=CAST_LIST&id=" + str(extraData.get('id')) + ")"
-        commands.append(("Show People", pluginCastLink))
-        
-        # watched/unwatched
-        if extraData.get("playcount") == "0":
-            argsToPass = 'markWatched,' + extraData.get('id')
-            commands.append(("Mark Watched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'markUnwatched,' + extraData.get('id')
-            commands.append(("Mark Unwatched", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-            
-        # favourite add/remove
-        if extraData.get('favorite') != 'true':
-            argsToPass = 'markFavorite,' + extraData.get('id')
-            commands.append(("Add to Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        else:
-            argsToPass = 'unmarkFavorite,' + extraData.get('id')
-            commands.append(("Remove from Favourites", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-        
-        # delete
-        argsToPass = 'delete,' + extraData.get('id')
-        commands.append(("Delete", "XBMC.RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-                    
-    return(commands)
-    
-def getDetailsString():
-    detailsString = "EpisodeCount,SeasonCount,Path,Genres,Studios,CumulativeRunTimeTicks,MediaStreams,Overview"
-    #detailsString = "EpisodeCount,SeasonCount,Path,Genres,CumulativeRunTimeTicks"
-    return detailsString
-    
-def displaySections( pluginhandle, filter=None ):
-    log.info("== ENTER: displaySections() ==")
-    xbmcplugin.setContent(pluginhandle, 'files')
-
-    dirItems = []
-    userid = downloadUtils.getUserId()  
-    extraData = { 'fanart_image' : '' ,
-                  'type'         : "Video" ,
-                  'thumb'        : '' }
-    
-    # Add collections
-    detailsString = getDetailsString()
-    collections = getCollections(detailsString)
-    for collection in collections:
-        details = {'title' : collection.get('title', 'Unknown') }
-        path = collection['path']
-        extraData['mode'] = "GET_CONTENT"
-        extraData['thumb'] = collection.get('thumb', '')
-        extraData['poster'] = collection.get('poster', '')
-        extraData['fanart_image'] = collection.get('fanart_image', '')
-        extraData['guiid'] = collection.get('guiid', '')
-        s_url = 'http://%s%s' % ( collection['address'], path)
-        log.info("addGUIItem:" + str(s_url) + str(details) + str(extraData))
-        dirItems.append(addGUIItem(s_url, details, extraData))
-        
-    #All XML entries have been parsed and we are ready to allow the user to browse around.  So end the screen listing.
-    xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-
-    li = xbmcgui.ListItem("Set Views", path="plugin://plugin.video.embycon/?mode=showsetviews")
-    xbmcplugin.addDirectoryItem(handle=pluginhandle, url="plugin://plugin.video.embycon/?mode=showsetviews", listitem=li, isFolder=False)
-
-    xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
-        
-def remove_html_tags( data ):
-    p = re.compile(r'<.*?>')
-    return p.sub('', data)
-
-def PLAY( url, handle ):
-    log.info("== ENTER: PLAY ==")
-    
-    #playData = json.loads(url)
-    
-    url=urllib.unquote(url)
-    
-    urlParts = url.split(',;')
-    log.info("PLAY ACTION URL PARTS : " + str(urlParts))
-    server = urlParts[0]
-    id = urlParts[1]
-    autoResume = 0
-    
-    if(len(urlParts) > 2):
-        autoResume = int(urlParts[2])
-        log.info("PLAY ACTION URL AUTO RESUME : " + str(autoResume))
-    
-    ip,port = server.split(':')
-    userid = downloadUtils.getUserId()
-    seekTime = 0
-    resume = 0
-    
-    id = urlParts[1]
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + id + "?format=json", suppress=False, popup=1 )
-    result = json.loads(jsonData)
-    
-    if(autoResume != 0):
-        if(autoResume == -1):
-            resume_result = 1
-        else:
-            resume_result = 0
-            seekTime = (autoResume / 1000) / 10000
-    else:
-        userData = result.get("UserData")
-        resume_result = 0
-        
-        if userData.get("PlaybackPositionTicks") != 0:
-            reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
-            seekTime = reasonableTicks / 10000
-            displayTime = str(timedelta(seconds=seekTime))
-
-            resumeDialog = ResumeDialog("ResumeDialog.xml", __cwd__, "default", "720p")
-            resumeDialog.setResumeTime("Resume from " + displayTime)
-            resumeDialog.doModal()
-            resume_result = resumeDialog.getResumeAction()
-            del resumeDialog
-
-            log.info("Resume Dialog Result: " + str(resume_result))
-
-            if resume_result == -1:
-                return
-    
-    #playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    #playlist.clear()
-
-    playurl = PlayUtils().getPlayUrl(server, id, result)
-    log.info("Play URL: " + playurl)
-    thumbPath = downloadUtils.getArtwork(result, "Primary")
-    listItem = xbmcgui.ListItem(path=playurl, iconImage=thumbPath, thumbnailImage=thumbPath)
-    
-    setListItemProps(server, id, listItem, result)
-
-    # Can not play virtual items
-    if (result.get("LocationType") == "Virtual"):
-        xbmcgui.Dialog().ok(__language__(30128), __language__(30129))
-        return
-
-    # set the current playing item id
-    WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("item_id", id)
-    
-    #playlist.add(playurl, listItem)
-
-    #xbmc.Player().play(playlist)
-
-    #xbmc.Player().play(playurl, listItem)
-
-    xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listItem)
-    
-    #Set a loop to wait for positive confirmation of playback
-    count = 0
-    while not xbmc.Player().isPlaying():
-        log.info( "Not playing yet...sleep for 1 sec")
-        count = count + 1
-        if count >= 10:
-            return
-        else:
-            time.sleep(1)
-            
-    if resume_result == 0:
-        jumpBackSec = int(__settings__.getSetting("resumeJumpBack"))
-        seekToTime = seekTime - jumpBackSec
-        while xbmc.Player().getTime() < (seekToTime - 5):
-            xbmc.Player().pause
-            xbmc.sleep(100)
-            xbmc.Player().seekTime(seekToTime)
-            xbmc.sleep(100)
-            xbmc.Player().play()
-    return
-
-def setListItemProps(server, id, listItem, result):
-
-    # set up item and item info
-    thumbID = id
-    eppNum = -1
-    seasonNum = -1
-        
-    setArt(listItem, 'poster', downloadUtils.getArtwork(result, "Primary"))
-    
-    listItem.setProperty('IsPlayable', 'true')
-    listItem.setProperty('IsFolder', 'false')
-    
-    # play info       
-    details = {
-             'title'        : result.get("Name", "Missing Name"),
-             'plot'         : result.get("Overview")
-             }
-             
-    if(eppNum > -1):
-        details["episode"] = str(eppNum)
-        
-    if(seasonNum > -1):
-        details["season"] = str(seasonNum)
-   
-    listItem.setInfo( "Video", infoLabels=details )
-
-    return
-    
-def get_params( paramstring ):
-    log.debug("Parameter string: " + paramstring)
-    param={}
+def get_params(paramstring):
+    log.debug("Parameter string: {0}", paramstring)
+    param = {}
     if len(paramstring) >= 2:
-            params=paramstring
+        params = paramstring
 
-            if params[0] == "?":
-                cleanedparams=params[1:]
-            else:
-                cleanedparams=params
+        if params[0] == "?":
+            cleanedparams = params[1:]
+        else:
+            cleanedparams = params
 
-            if (params[len(params)-1]=='/'):
-                    params=params[0:len(params)-2]
+        if (params[len(params) - 1] == '/'):
+            params = params[0:len(params) - 2]
 
-            pairsofparams=cleanedparams.split('&')
-            for i in range(len(pairsofparams)):
-                    splitparams={}
-                    splitparams=pairsofparams[i].split('=')
-                    if (len(splitparams))==2:
-                            param[splitparams[0]]=splitparams[1]
-                    elif (len(splitparams))==3:
-                            param[splitparams[0]]=splitparams[1]+"="+splitparams[2]
-    log.debug("EmbyCon -> Detected parameters: " + str(param))
+        pairsofparams = cleanedparams.split('&')
+        for i in range(len(pairsofparams)):
+            splitparams = {}
+            splitparams = pairsofparams[i].split('=')
+            if (len(splitparams)) == 2:
+                param[splitparams[0]] = splitparams[1]
+            elif (len(splitparams)) == 3:
+                param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
+
+    log.debug("EmbyCon -> Detected parameters: {0}", param)
     return param
-       
-def getContent(url, pluginhandle):
 
-    log.info("== ENTER: getContent ==")
-    log.info("URL: " + str(url))
-    
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+
+def setSort(pluginhandle, viewType):
+    log.debug("SETTING_SORT for media type: {0}", viewType)
+    if viewType == "BoxSets":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+    elif viewType == "Episodes":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_EPISODE)
+    elif viewType == "Music":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_TRACKNUM)
+    else:
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_DATEADDED)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_GENRE)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
-    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)    
-    
-    WINDOW = xbmcgui.Window(10000)
-    WINDOW.setProperty("EmbyConContent", "true")
-        
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+    xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
+
+def getContent(url, params):
+    log.debug("== ENTER: getContent ==")
+
+    media_type = params.get("media_type", None)
+    if not media_type:
+        xbmcgui.Dialog().ok(i18n('error'), i18n('no_media_type'))
+
+    log.debug("URL: {0}", url)
+    log.debug("MediaType: {0}", media_type)
+    pluginhandle = int(sys.argv[1])
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    # determine view type, map it from media type to view type
+    viewType = ""
+    media_type = str(media_type).lower().strip()
+    if media_type.startswith("movie"):
+        viewType = "Movies"
+        xbmcplugin.setContent(pluginhandle, 'movies')
+    elif media_type == "musicalbums":
+        viewType = "Albums"
+        xbmcplugin.setContent(pluginhandle, 'albums')
+    elif media_type == "musicartists":
+        viewType = "Artists"
+        xbmcplugin.setContent(pluginhandle, 'artists')
+    elif media_type == "musicartist":
+        viewType = "Albums"
+        xbmcplugin.setContent(pluginhandle, 'albums')
+    elif media_type == "music" or media_type == "audio" or media_type == "musicalbum":
+        viewType = "Music"
+        xbmcplugin.setContent(pluginhandle, 'songs')
+    elif media_type.startswith("boxsets"):
+        viewType = "Movies"
+        xbmcplugin.setContent(pluginhandle, 'sets')
+    elif media_type.startswith("boxset"):
+        viewType = "BoxSets"
+        xbmcplugin.setContent(pluginhandle, 'movies')
+    elif media_type == "tvshows":
+        viewType = "Series"
+        xbmcplugin.setContent(pluginhandle, 'tvshows')
+    elif media_type == "series":
+        viewType = "Seasons"
+        xbmcplugin.setContent(pluginhandle, 'seasons')
+    elif media_type == "season" or media_type == "episodes":
+        viewType = "Episodes"
+        xbmcplugin.setContent(pluginhandle, 'episodes')
+    log.debug("ViewType: {0} media_type: {1}", viewType, media_type)
+
     # show a progress indicator if needed
     progress = None
-    if(__settings__.getSetting('showLoadProgress') == "true"):
+    if (settings.getSetting('showLoadProgress') == "true"):
         progress = xbmcgui.DialogProgress()
-        progress.create("Loading Content")
-        progress.update(0, "Retrieving Data")
-    
+        progress.create(i18n('loading_content'))
+        progress.update(0, i18n('retrieving_data'))
+
     # use the data manager to get the data
     result = dataManager.GetContent(url)
-    
-    if result == None or len(result) == 0:
-        if(progress != None):
-            progress.close()
+
+    dirItems = processDirectory(result, progress, params)
+    if dirItems is None:
         return
 
-    dirItems, viewType = processDirectory(url, result, progress, pluginhandle)
+    # set the sort items
+    setSort(pluginhandle, viewType)
+
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
-    
-    if(viewType != None and len(viewType) > 0):
-        defaultData = loadSkinDefaults()
-        viewNum = defaultData.get(viewType)
-        log.info("SETTING_VIEW : " + str(viewType) + " : " +  str(viewNum))
-        if viewNum != None and viewNum != "":
-            xbmc.executebuiltin("Container.SetViewMode(%s)" % int(viewNum))
-            
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
-    
-    if(progress != None):
-        progress.update(100, __language__(30125))
+
+    # send display items event
+    display_items_notification = {"view_type": viewType}
+    send_event_notification("display_items", display_items_notification)
+
+    if (progress != None):
+        progress.update(100, i18n('done'))
         progress.close()
-    
+
     return
 
-def loadJasonData(jsonData):
-    return json.loads(jsonData)
-    
-def processDirectory(url, results, progress, pluginhandle):
-    cast = ['None']
-    log.info("== ENTER: processDirectory ==")
-    parsed = urlparse(url)
-    parsedserver,parsedport=parsed.netloc.split(':')
-    userid = downloadUtils.getUserId()
 
-    xbmcplugin.setContent(pluginhandle, 'movies')
+def processDirectory(results, progress, params):
+    log.debug("== ENTER: processDirectory ==")
 
-    server = getServerFromURL(url)
-    
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    server = downloadUtils.getServer()
     detailsString = getDetailsString()
-    
+
+    name_format = params.get("name_format", None)
+    name_format_type = None
+    if name_format is not None:
+        name_format = urllib.unquote(name_format)
+        tokens = name_format.split("|")
+        name_format_type = tokens[0]
+        name_format = settings.getSetting(tokens[1])
+
     dirItems = []
-    result = results.get("Items")
-    if(result == None):
-        result = []
-    item_count = len(result)
-    current_item = 1;
-    viewType = ""
-    
-    for item in result:
-    
-        if(progress != None):
+    if results is None:
+        results = []
+
+    if isinstance(results, dict):
+        results = results.get("Items", [])
+
+    # flatten single season
+    # if there is only one result and it is a season and you have flatten signle season turned on then
+    # build a new url, set the content media type and call get content again
+    flatten_single_season = settings.getSetting("flatten_single_season") == "true"
+    if flatten_single_season and len(results) == 1 and results[0].get("Type", "") == "Season":
+        season_id = results[0].get("Id")
+        season_url = ('{server}/emby/Users/{userid}/items' +
+                      '?ParentId=' + season_id +
+                      '&IsVirtualUnAired=false' +
+                      '&IsMissing=false' +
+                      '&Fields=' + detailsString +
+                      '&format=json')
+        if progress is not None:
+            progress.close()
+        params["media_type"] = "Episodes"
+        getContent(season_url, params)
+        return None
+
+    hide_unwatched_details = settings.getSetting('hide_unwatched_details') == 'true'
+
+    display_options = {}
+    display_options["addCounts"] = settings.getSetting("addCounts") == 'true'
+    display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
+    display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
+
+    item_count = len(results)
+    current_item = 1
+    first_season_item = None
+    total_unwatched = 0
+    total_episodes = 0
+    total_watched = 0
+
+    gui_options = {}
+    gui_options["server"] = server
+
+    gui_options["name_format"] = name_format
+    gui_options["name_format_type"] = name_format_type
+
+    for item in results:
+
+        if (progress != None):
             percentDone = (float(current_item) / float(item_count)) * 100
-            progress.update(int(percentDone), __language__(30126) + str(current_item))
+            progress.update(int(percentDone), i18n('processing_item:') + str(current_item))
             current_item = current_item + 1
-        
-        if(item.get("Name") != None):
-            tempTitle = item.get("Name").encode('utf-8')
-        else:
-            tempTitle = "Missing Title"
-            
-        id = str(item.get("Id")).encode('utf-8')
-        guiid = id
-        isFolder = item.get("IsFolder")
-       
-        item_type = str(item.get("Type")).encode('utf-8')
-              
-        tempEpisode = ""
-        if (item.get("IndexNumber") != None):
-            episodeNum = item.get("IndexNumber")
-            if episodeNum < 10:
-                tempEpisode = "0" + str(episodeNum)
+
+        # get the infofrom the item
+        item_details = extract_item_info(item, gui_options)
+
+        if item_details.item_type == "Season" and first_season_item is None:
+            first_season_item = item
+
+        total_unwatched += item_details.unwatched_episodes
+        total_episodes += item_details.total_episodes
+        total_watched += item_details.watched_episodes
+
+        # if set, for unwatched episodes dont show some of the info
+        if hide_unwatched_details and item_details.item_type == "Episode" and item_details.play_count == 0:
+            item_details.plot = "[Spoiler Alert]"
+            item_details.art["poster"] = item_details.art["tvshow.poster"]
+            item_details.art["thumb"] = item_details.art["tvshow.poster"]
+
+        if item["IsFolder"] is True:
+            if item_details.item_type == "Series":
+                u = ('{server}/emby/Shows/' + item_details.id +
+                     '/Seasons'
+                     '?userId={userid}' +
+                     '&Fields=' + detailsString +
+                     '&format=json')
+
             else:
-                tempEpisode = str(episodeNum)
-                
-        tempSeason = ""
-        if (str(item.get("ParentIndexNumber")) != None):
-            tempSeason = str(item.get("ParentIndexNumber"))
-            if item.get("ParentIndexNumber") < 10:
-                tempSeason = "0" + tempSeason
-      
-        if item.get("Type") == "Movie":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = "Movies"
-        elif item.get("Type") == "BoxSet":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = "BoxSets"
-        elif item.get("Type") == "Trailer":
-            xbmcplugin.setContent(pluginhandle, 'movies')
-            viewType = ""            
-        elif item.get("Type") == "Series":
-            xbmcplugin.setContent(pluginhandle, 'tvshows')
-            viewType = "Series"
-        elif item.get("Type") == "Season":
-            xbmcplugin.setContent(pluginhandle, 'seasons')
-            viewType = "Seasons"
-            guiid = item.get("SeriesId")
-        elif item.get("Type") == "Episode":
-            prefix=''
-            if __settings__.getSetting('addSeasonNumber') == 'true':
-                prefix = "S" + str(tempSeason)
-                if __settings__.getSetting('addEpisodeNumber') == 'true':
-                    prefix = prefix + "E"
-                #prefix = str(tempEpisode)
-            if __settings__.getSetting('addEpisodeNumber') == 'true':
-                prefix = prefix + str(tempEpisode)
-            if prefix != '':
-                tempTitle = prefix + ' - ' + tempTitle
-            xbmcplugin.setContent(pluginhandle, 'episodes')
-            viewType = "Episodes"
-            guiid = item.get("SeriesId")
-        
-        if(item.get("PremiereDate") != None):
-            premieredatelist = (item.get("PremiereDate")).split("T")
-            premieredate = premieredatelist[0]
+                u = ('{server}/emby/Users/{userid}/items' +
+                     '?ParentId=' + item_details.id +
+                     '&IsVirtualUnAired=false' +
+                     '&IsMissing=false' +
+                     '&Fields=' + detailsString +
+                     '&format=json')
+
+            if item["RecursiveItemCount"] != 0:
+                dirItems.append(add_gui_item(u, item_details, display_options))
+
+        elif item_details.item_type == "MusicArtist":
+            u = ('{server}/emby/Users/{userid}/items' +
+                 '?ArtistIds=' + item_details.id +
+                 '&IncludeItemTypes=MusicAlbum' +
+                 '&CollapseBoxSetItems=false' +
+                 '&Recursive=true' +
+                 '&format=json')
+            dirItems.append(add_gui_item(u, item_details, display_options))
+
         else:
-            premieredate = ""
-        
-        # add the premiered date for Upcoming TV    
-        if item.get("LocationType") == "Virtual":
-            airtime = item.get("AirTime")
-            tempTitle = tempTitle + ' - ' + str(premieredate) + ' - ' + str(airtime)     
+            u = item_details.id
+            dirItems.append(add_gui_item(u, item_details, display_options, folder=False))
 
-        # Process MediaStreams
-        channels = ''
-        videocodec = ''
-        audiocodec = ''
-        height = ''
-        width = ''
-        aspectratio = '1:1'
-        aspectfloat = 0.0
-        mediaStreams = item.get("MediaStreams")
-        if(mediaStreams != None):
-            for mediaStream in mediaStreams:
-                if(mediaStream.get("Type") == "Video"):
-                    videocodec = mediaStream.get("Codec")
-                    height = str(mediaStream.get("Height"))
-                    width = str(mediaStream.get("Width"))
-                    aspectratio = mediaStream.get("AspectRatio")
-                    if aspectratio != None and len(aspectratio) >= 3:
-                        try:
-                            aspectwidth,aspectheight = aspectratio.split(':')
-                            aspectfloat = float(aspectwidth) / float(aspectheight)
-                        except:
-                            aspectfloat = 1.85
-                if(mediaStream.get("Type") == "Audio"):
-                    audiocodec = mediaStream.get("Codec")
-                    channels = mediaStream.get("Channels")
-                
-        # Process People
-        director = ''
-        writer = ''
-        cast = []
-        people = item.get("People")
-        if(people != None):
-            for person in people:
-                if(person.get("Type") == "Director"):
-                    director = director + person.get("Name") + ' ' 
-                if(person.get("Type") == "Writing"):
-                    writer = person.get("Name")
-                if(person.get("Type") == "Writer"):
-                    writer = person.get("Name")                 
-                if(person.get("Type") == "Actor"):
-                    Name = person.get("Name")
-                    Role = person.get("Role")
-                    if Role == None:
-                        Role = ''
-                    cast.append(Name)
+    # add the all episodes item
+    show_all_episodes = settings.getSetting('show_all_episodes') == 'true'
+    if show_all_episodes and first_season_item is not None and len(dirItems) > 1:
+        series_url = ('{server}/emby/Users/{userid}/items' +
+                      '?ParentId=' + first_season_item.get("SeriesId") +
+                      '&IsVirtualUnAired=false' +
+                      '&IsMissing=false' +
+                      '&Fields=' + detailsString +
+                      '&Recursive=true' +
+                      '&IncludeItemTypes=Episode' +
+                      '&format=json')
+        played = 0
+        overlay = "7"
+        if total_unwatched == 0:
+            played = 1
+            overlay = "6"
 
-        # Process Studios
-        studio = ""
-        studios = item.get("Studios")
-        if(studios != None):
-            for studio_string in studios:
-                if studio=="": #Just take the first one
-                    temp=studio_string.get("Name")
-                    studio=temp.encode('utf-8')
-        # Process Genres
-        genre = ""
-        genres = item.get("Genres")
-        if(genres != None and genres != []):
-            for genre_string in genres:
-                if genre == "": #Just take the first genre
-                    genre = genre_string
-                elif genre_string != None:
-                    genre = genre + " / " + genre_string
-                
-        # Process UserData
-        userData = item.get("UserData")
-        PlaybackPositionTicks = '100'
-        overlay = "0"
-        favorite = "false"
-        seekTime = 0
-        if(userData != None):
-            if userData.get("Played") != True:
-                overlay = "7"
-                watched = "true"
-            else:
-                overlay = "6"
-                watched = "false"
-            if userData.get("IsFavorite") == True:
-                overlay = "5"
-                favorite = "true"
-            else:
-                favorite = "false"
-            if userData.get("PlaybackPositionTicks") != None:
-                PlaybackPositionTicks = str(userData.get("PlaybackPositionTicks"))
-                reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
-                seekTime = reasonableTicks / 10000
-        
-        playCount = 0
-        if(userData != None and userData.get("Played") == True):
-            playCount = 1
-        # Populate the details list
-        details={'title'        : tempTitle,
-                 'plot'         : item.get("Overview"),
-                 'episode'      : tempEpisode,
-                 #'watched'      : watched,
-                 'Overlay'      : overlay,
-                 'playcount'    : str(playCount),
-                 #'aired'       : episode.get('originallyAvailableAt','') ,
-                 'TVShowTitle'  :  item.get("SeriesName"),
-                 'season'       : tempSeason
-                 }
-                 
-        try:
-            tempDuration = str(int(item.get("RunTimeTicks", "0"))/(10000000*60))
-            RunTimeTicks = str(item.get("RunTimeTicks", "0"))
-        except TypeError:
-            try:
-                tempDuration = str(int(item.get("CumulativeRunTimeTicks"))/(10000000*60))
-                RunTimeTicks = str(item.get("CumulativeRunTimeTicks"))
-            except TypeError:
-                tempDuration = "0"
-                RunTimeTicks = "0"
-                
-        TotalSeasons = 0 if item.get("ChildCount") == None else item.get("ChildCount")
-        TotalEpisodes = 0 if item.get("RecursiveItemCount") == None else item.get("RecursiveItemCount")
-        WatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else TotalEpisodes - userData.get("UnplayedItemCount")
-        UnWatchedEpisodes = 0 if userData.get("UnplayedItemCount") == None else userData.get("UnplayedItemCount")
-        NumEpisodes = TotalEpisodes
-        
-        # Populate the extraData list
-        extraData={'thumb'        : downloadUtils.getArtwork(item, "Primary") ,
-                   'fanart_image' : downloadUtils.getArtwork(item, "Backdrop") ,
-                   'poster'       : downloadUtils.getArtwork(item, "Primary") , 
-                   'banner'       : downloadUtils.getArtwork(item, "Banner") ,
-                   'clearlogo'    : downloadUtils.getArtwork(item, "Logo") ,
-                   'discart'      : downloadUtils.getArtwork(item, "Disc") ,
-                   'clearart'     : downloadUtils.getArtwork(item, "Art") ,
-                   'landscape'    : downloadUtils.getArtwork(item, "Thumb") ,                
-                   'id'           : id ,
-                   'guiid'        : guiid ,
-                   'mpaa'         : item.get("OfficialRating"),
-                   'rating'       : item.get("CommunityRating"),
-                   'criticrating' : item.get("CriticRating"), 
-                   'year'         : item.get("ProductionYear"),
-                   'locationtype' : item.get("LocationType"),
-                   'premieredate' : premieredate,
-                   'studio'       : studio,
-                   'genre'        : genre,
-                   'playcount'    : str(playCount),
-                   'director'     : director,
-                   'writer'       : writer,
-                   'channels'     : channels,
-                   'videocodec'   : videocodec,
-                   'aspectratio'  : str(aspectfloat),
-                   'audiocodec'   : audiocodec,
-                   'height'       : height,
-                   'width'        : width,
-                   'cast'         : cast,
-                   'favorite'     : favorite,             
-                   'parenturl'    : url,
-                   'resumetime'   : str(seekTime),
-                   'totaltime'    : tempDuration,
-                   'duration'     : tempDuration,
-                   'RecursiveItemCount' : item.get("RecursiveItemCount"),
-                   'RecursiveUnplayedItemCount' : userData.get("UnplayedItemCount"),
-                   'TotalSeasons' : str(TotalSeasons),
-                   'TotalEpisodes': str(TotalEpisodes),
-                   'WatchedEpisodes': str(WatchedEpisodes),
-                   'UnWatchedEpisodes': str(UnWatchedEpisodes),
-                   'NumEpisodes'  : str(NumEpisodes),
-                   'itemtype'     : item_type}
+        item_details = ItemDetails()
 
-        if extraData['thumb'] == '':
-            extraData['thumb'] = extraData['fanart_image']
+        item_details.name = i18n('all')
+        item_details.art = getArt(first_season_item, server)
+        item_details.play_count = played
+        item_details.overlay = overlay
+        item_details.name_format = "Episode|episode_name_format"
+        item_details.series_name = first_season_item.get("SeriesName")
+        item_details.item_type = "Season"
+        item_details.unwatched_episodes = total_unwatched
+        item_details.total_episodes = total_episodes
+        item_details.watched_episodes = total_watched
+        item_details.mode = "GET_CONTENT"
 
-        extraData['mode'] = "GET_CONTENT"
-        
-        if isFolder == True:
-            u = ('http://' + server + '/emby/Users/' +
-                userid + 
-                '/items?ParentId=' + id + 
-                '&IsVirtualUnAired=false&IsMissing=false&Fields=' + 
-                detailsString + '&format=json')
-                
-            if (item.get("RecursiveItemCount") != 0):
-                dirItems.append(addGUIItem(u, details, extraData))
-        else:
-            u = server + ',;' + id
-            dirItems.append(addGUIItem(u, details, extraData, folder=False))
+        dirItems.append(add_gui_item(series_url, item_details, display_options, folder=True))
 
-    return dirItems, viewType
-    
-def getServerFromURL( url ):
-    '''
-    Simply split the URL up and get the server portion, sans port
-    @ input: url, woth or without protocol
-    @ return: the URL server
-    '''
-    if url[0:4] == "http":
-        return url.split('/')[2]
-    else:
-        return url.split('/')[0]
+    return dirItems
 
-def getLinkURL( url, pathData, server ):
-    '''
-        Investigate the passed URL and determine what is required to
-        turn it into a usable URL
-        @ input: url, XML data and PM server address
-        @ return: Usable http URL
-    '''
-    log.info("== ENTER: getLinkURL ==")
-    path = pathData.get('key','')
-    log.info("Path is: " + path)
+def showMenu(params):
+    log.debug("showMenu(): {0}", params)
 
-    if path == '':
-        log.error("Empty Path")
+    id = params["item_id"]
+
+    url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+    log.debug("Playfile item info: {0}", result)
+
+    if result is None:
         return
 
-    #If key starts with http, then return it
-    if path[0:4] == "http":
-        log.info("Detected http link")
-        return path
+    action_items = []
+    li = xbmcgui.ListItem("Play")
+    li.setProperty('menu_id', 'play')
+    action_items.append(li)
 
-    #If key starts with a / then prefix with server address
-    elif path[0] == '/':
-        log.info("Detected base path link")
-        return 'http://%s%s' % ( server, path )
+    if result["Type"] == "Episode" and result["ParentId"] is not None:
+        li = xbmcgui.ListItem("Show Season")
+        li.setProperty('menu_id', 'show_season')
+        action_items.append(li)
 
-    elif path[0:5] == "rtmp:":
-        log.info("Detected  link")
-        return path
+    li = xbmcgui.ListItem("Force Transcode")
+    li.setProperty('menu_id', 'transcode')
+    action_items.append(li)
 
-    #Any thing else is assumed to be a relative path and is built on existing url
-    else:
-        log.info("Detected relative link")
-        return "%s/%s" % ( url, path )
+    user_data = result["UserData"]
+    if user_data.get("Played", False) is False or user_data.get("PlaybackPositionTicks", 0) > 0:
+        li = xbmcgui.ListItem("Mark Watched")
+        li.setProperty('menu_id', 'mark_watched')
+        action_items.append(li)
 
-    return url
+    if user_data.get("Played", False) is True or user_data.get("PlaybackPositionTicks", 0) > 0:
+        li = xbmcgui.ListItem("Mark Unwatched")
+        li.setProperty('menu_id', 'mark_unwatched')
+        action_items.append(li)
 
-def setArt(list, name, path):
-    list.setProperty(name, path)
-    list.setArt({name:path})
-    return list
-        
-def getXbmcVersion():
-    version = 0.0
-    jsonData = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["version", "name"]}, "id": 1 }') 
-    
+    li = xbmcgui.ListItem("Delete")
+    li.setProperty('menu_id', 'delete')
+    action_items.append(li)
+
+    #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
+
+    action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
+    action_menu.setActionItems(action_items)
+    action_menu.doModal()
+    selected_action_item = action_menu.getActionItem()
+    selected_action = ""
+    if selected_action_item is not None:
+        selected_action = selected_action_item.getProperty('menu_id')
+    log.debug("Menu Action Selected: {0}", selected_action_item)
+    del action_menu
+
+    if selected_action == "play":
+        log.debug("Play Item")
+        #list_item = populate_listitem(params["item_id"])
+        #result = xbmcgui.Dialog().info(list_item)
+        #log.debug("xbmcgui.Dialog().info: {0}", result)
+        PLAY(params)
+    elif selected_action == "transcode":
+        params['force_transcode'] = 'true'
+        PLAY(params)
+    elif selected_action == "mark_watched":
+        markWatched(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "mark_unwatched":
+        markUnwatched(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "delete":
+        delete(params["item_id"])
+        xbmc.executebuiltin("XBMC.ReloadSkin()")
+    elif selected_action == "show_season":
+        parent_id = result["ParentId"]
+        xbmc.executebuiltin(
+            'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
+
+
+def populate_listitem(item_id):
+    log.debug("populate_listitem: {0}", item_id)
+
+    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
+    jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
-    
-    try:
-        result = result.get("result")
-        versionData = result.get("version")
-        version = float(str(versionData.get("major")) + "." + str(versionData.get("minor")))
-        log.info("Version : " + str(version) + " - " + str(versionData))
-    except:
-        version = 0.0
-        log.error("Version Error : RAW Version Data : " + str(result))
+    log.debug("populate_listitem item info: {0}", result)
 
-    return version        
-    
-def getCastList(pluginName, handle, params):
+    '''
+    server = downloadUtils.getServer()
+    gui_options = {}
+    gui_options["server"] = server
 
-    log.info("EmbyCon Returning Cast List")
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port
-    userid = downloadUtils.getUserId()
-    seekTime = 0
-    resume = 0
-    
-    # get the cast list for an item
-    jsonData = downloadUtils.downloadUrl("http://" + server + "/emby/Users/" + userid + "/Items/" + params.get("id") + "?format=json", suppress=False, popup=1 )
-    log.debug("CastList(Items) jsonData: " + jsonData)
-    result = json.loads(jsonData)
+    gui_options["name_format"] = None
+    gui_options["name_format_type"] = None
 
-    people = result.get("People")
-    
-    if(people == None):
-        return
-    
-    listItems = []
+    details, extraData = extract_item_info(result,gui_options )
+    u, list_item, folder = add_gui_item(result["Id"], details, extraData, {}, folder=False)
 
-    for person in people:
+    log.debug("list_item path: {0}", u)
 
-        displayName = person.get("Name")
-        if(person.get("Role") != None):
-            displayName = displayName + " (" + person.get("Role") + ")"
-            
-        tag = person.get("PrimaryImageTag")
-        id = person.get("Id")
-        
-        baseName = person.get("Name")
-        #urllib.quote(baseName)
-        baseName = baseName.replace(" ", "+")
-        baseName = baseName.replace("&", "_")
-        baseName = baseName.replace("?", "_")
-        baseName = baseName.replace("=", "_")
-            
-        if(tag != None):
-            thumbPath = downloadUtils.imageUrl(id, "Primary", 0, 400, 400, tag)
-            item = xbmcgui.ListItem(label=displayName, iconImage=thumbPath, thumbnailImage=thumbPath)
-        else:
-            item = xbmcgui.ListItem(label=displayName)
-            
-        actionUrl = "plugin://plugin.video.embycon?mode=PERSON_DETAILS&name=" + baseName
-        
-        item.setProperty('IsPlayable', 'false')
-        item.setProperty('IsFolder', 'false')
-        
-        commands = []
-        detailsString = getDetailsString()
-        url = "http://" + host + ":" + port + "/emby/Users/" + userid + "/Items/?Recursive=True&Person=PERSON_NAME&Fields=" + detailsString + "&format=json"
-        url = urllib.quote(url)
-        url = url.replace("PERSON_NAME", baseName)
-        pluginCastLink = "XBMC.Container.Update(plugin://plugin.video.embycon?mode=GET_CONTENT&url=" + url + ")"
-        commands.append(( "Show Other Library Items", pluginCastLink))
-        item.addContextMenuItems( commands, True )
-        
-        itemTupple = (actionUrl, item, False)
-        listItems.append(itemTupple)
-        
-        
-    #listItems.sort()
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+    #list_item.setProperty('IsPlayable', 'false')
+    #list_item.setPath(u)
+    '''
 
-def showSetViews():
-    log.info("showSetViews Called")
-       
-    defaultViews = DefaultViews("DefaultViews.xml", __cwd__, "default", "720p")
-    defaultViews.doModal()
-    del defaultViews
-        
-def getWigetContent(pluginName, handle, params):
-    log.info("getWigetContent Called" + str(params))
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port    
+    item_title = result.get("Name", i18n('missing_title'))
 
-    type = params.get("type")
-    if(type == None):
-        log.error("getWigetContent type not set")
-        return
-    
-    userid = downloadUtils.getUserId()
-    
-    itemsUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
-        "?Limit=20"
-        "&format=json"
-        "&ImageTypeLimit=1"
-        "&IsMissing=False"
-        "&Fields=" + getDetailsString())
+    list_item = xbmcgui.ListItem(label=item_title)
 
-    if(type == "recent_movies"):
-        itemsUrl += ("&Recursive=true"
-            "&SortBy=DateCreated"
-            "&SortOrder=Descending"
-            "&Filters=IsUnplayed,IsNotFolder"
-            "&IsVirtualUnaired=false"
-            "&IsMissing=False"
-            "&IncludeItemTypes=Movie")
-    elif(type == "inprogress_movies"):
-        itemsUrl += ("&Recursive=true"
-            "&SortBy=DatePlayed"
-            "&SortOrder=Descending"
-            "&Filters=IsResumable"
-            "&IsVirtualUnaired=false"
-            "&IsMissing=False"
-            "&IncludeItemTypes=Movie")
-    elif(type == "random_movies"):
-        itemsUrl += ("&Recursive=true"
-            "&SortBy=Random"
-            "&SortOrder=Descending"
-            "&Filters=IsUnplayed,IsNotFolder"
-            "&IsVirtualUnaired=false"
-            "&IsMissing=False"
-            "&IncludeItemTypes=Movie")
-    elif(type == "recent_episodes"):
-        itemsUrl += ("&Recursive=true"
-            "&SortBy=DateCreated"
-            "&SortOrder=Descending"
-            "&Filters=IsUnplayed,IsNotFolder"
-            "&IsVirtualUnaired=false"
-            "&IsMissing=False"
-            "&IncludeItemTypes=Episode")
-    elif(type == "inprogress_episodes"):
-        itemsUrl += ("&Recursive=true"
-            "&SortBy=DatePlayed"
-            "&SortOrder=Descending"
-            "&Filters=IsResumable"
-            "&IsVirtualUnaired=false"
-            "&IsMissing=False"
-            "&IncludeItemTypes=Episode")
-    elif(type == "nextup_episodes"):
-        itemsUrl = ("http://" + server + "/emby/Shows/NextUp"
-        "?Limit=20"
-        "&userid=" + userid + ""
-        "&Recursive=true"
-        "&format=json"
-        "&ImageTypeLimit=1"
-        "&Fields=" + getDetailsString())
+    server = downloadUtils.getServer()
+
+    art = getArt(result, server=server)
+    list_item.setIconImage(art['thumb'])  # back compat
+    list_item.setProperty('fanart_image', art['fanart'])  # back compat
+    list_item.setProperty('discart', art['discart'])  # not avail to setArt
+    list_item.setArt(art)
+
+    list_item.setProperty('IsPlayable', 'false')
+    list_item.setProperty('IsFolder', 'false')
+    list_item.setProperty('id', result.get("Id"))
+
+    # play info
+    details = {
+        'title': item_title,
+        'plot': result.get("Overview")
+    }
+
+    list_item.setInfo("Video", infoLabels=details)
+
+    return list_item
 
 
-    log.debug("WIDGET_DATE_URL: " + itemsUrl)
-    
-    # get the items
-    jsonData = downloadUtils.downloadUrl(itemsUrl, suppress=False, popup=1 )
-    log.debug("Recent(Items) jsonData: " + jsonData)
-    result = json.loads(jsonData)
-    
-    result = result.get("Items")
-    if(result == None):
-        result = []   
-
-    image = ""
-    itemCount = 1
-    listItems = []
-    for item in result:
-        item_id = item.get("Id")
-
-        '''
-        image = ""
-        if item.get("Type") == "Episode":
-            #image_id = item.get("SeriesId")
-            #image_tag = item.get("SeriesPrimaryImageTag")
-            #if(image_tag != None):
-            #    image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-
-            image_id = item_id
-            imageTags = item.get("ImageTags")
-            if(imageTags != None and imageTags.get("Primary") != None):
-                image_tag = imageTags.get("Primary")
-                image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)            
-        else:
-            #image_id = item_id
-            #imageTags = item.get("ImageTags")
-            #if(imageTags != None and imageTags.get("Primary") != None):
-            #    image_tag = imageTags.get("Primary")
-            #    image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-
-            image_id = item_id
-            imageTags = item.get("BackdropImageTags")
-            if(imageTags != None and len(imageTags) > 0):
-                image_tag = imageTags[0]
-                image = downloadUtils.imageUrl(image_id, "Backdrop", 0, 400, 400, image_tag)
-        '''
-
-        image_id = item_id
-        imageTags = item.get("ImageTags")
-        if(imageTags != None and imageTags.get("Primary") != None):
-            image_tag = imageTags.get("Primary")
-            image = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag)
-
-        #image = downloadUtils.getArtwork(item, "Primary", width=400, height=400)
-        fanart = downloadUtils.getArtwork(item, "Backdrop")
-
-        name = item.get("Name")
-        episodeDetails = ""
-        log.debug("WIDGET_DATE_NAME: " + name)
-
-        title = item.get("Name")
-        tvshowtitle = ""
-        
-        if(item.get("Type") == "Episode" and item.get("SeriesName") != None):
-
-            eppNumber = "X"
-            tempEpisodeNumber = "0"
-            if(item.get("IndexNumber") != None):
-                eppNumber = item.get("IndexNumber")
-                if eppNumber < 10:
-                    tempEpisodeNumber = "0" + str(eppNumber)
-                else:
-                    tempEpisodeNumber = str(eppNumber)
-
-            seasonNumber = item.get("ParentIndexNumber")
-            if seasonNumber < 10:
-                tempSeasonNumber = "0" + str(seasonNumber)
-            else:
-                tempSeasonNumber = str(seasonNumber)
-                  
-            episodeDetails =  "S" + tempSeasonNumber + "E" + tempEpisodeNumber
-            name = item.get("SeriesName") + " " + episodeDetails
-            tvshowtitle = episodeDetails
-            title = item.get("SeriesName")
-
-        list_item = xbmcgui.ListItem(label=name, iconImage=image, thumbnailImage=image, offscreen=True)
-        #list_item.setLabel2(episodeDetails)
-        list_item.setInfo( type="Video", infoLabels={ "title": title, "tvshowtitle": tvshowtitle } )
-        list_item.setProperty('fanart_image', fanart)
-        
-        # add count
-        list_item.setProperty("item_index", str(itemCount))
-        itemCount = itemCount + 1
-
-        list_item.setProperty('IsPlayable', 'true')
-
-        totalTime = str(int(float(item.get("RunTimeTicks", "0")) / (10000000 * 60)))
-        list_item.setProperty('TotalTime', str(totalTime))
-
-        # add stream info
-        # Process MediaStreams
-        channels = ''
-        videocodec = ''
-        audiocodec = ''
-        height = ''
-        width = ''
-        aspectratio = '1:1'
-        aspectfloat = 0.0
-        mediaStreams = item.get("MediaStreams")
-        if(mediaStreams != None):
-            for mediaStream in mediaStreams:
-                if(mediaStream.get("Type") == "Video"):
-                    videocodec = mediaStream.get("Codec")
-                    height = str(mediaStream.get("Height"))
-                    width = str(mediaStream.get("Width"))
-                    aspectratio = mediaStream.get("AspectRatio")
-                    if aspectratio != None and len(aspectratio) >= 3:
-                        try:
-                            aspectwidth,aspectheight = aspectratio.split(':')
-                            aspectfloat = float(aspectwidth) / float(aspectheight)
-                        except:
-                            aspectfloat = 1.85
-                if(mediaStream.get("Type") == "Audio"):
-                    audiocodec = mediaStream.get("Codec")
-                    channels = mediaStream.get("Channels")
-
-        list_item.addStreamInfo('video', {'duration': str(totalTime), 'aspect': str(aspectratio), 'codec': str(videocodec), 'width' : str(width), 'height' : str(height)})
-        list_item.addStreamInfo('audio', {'codec': str(audiocodec),'channels': str(channels)})
-
-        # add progress percent
-        userData = item.get("UserData")
-        if(userData != None):
-            playBackTicks = float(userData.get("PlaybackPositionTicks"))
-            if(playBackTicks != None and playBackTicks > 0):
-                runTimeTicks = float(item.get("RunTimeTicks", "0"))
-                if(runTimeTicks > 0):
-
-                    playBackPos = int(((playBackTicks / 1000) / 10000) / 60)
-                    list_item.setProperty('ResumeTime', str(playBackPos))
-
-                    percentage = int((playBackTicks / runTimeTicks) * 100.0)
-                    #cappedPercentage = percentage - (percentage % 10)
-                    #if(cappedPercentage == 0):
-                    #    cappedPercentage = 10
-                    #if(cappedPercentage == 100):
-                    #    cappedPercentage = 90
-                    list_item.setProperty("complete_percentage", str(percentage))
-                
-        url =  server + ',;' + item_id
-        playUrl = "plugin://plugin.video.embycon/?url=" + url + '&mode=PLAY' + "&timestamp=" + str(datetime.today())
-        
-        itemTupple = (playUrl, list_item, False)
-        listItems.append(itemTupple)
-    
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-    
 def showContent(pluginName, handle, params):
-    log.info("showContent Called: " + str(params))
-
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port
+    log.debug("showContent Called: {0}", params)
 
     item_type = params.get("item_type")
-    detailsString = getDetailsString()
-    userid = downloadUtils.getUserId()
+
+    contentUrl = ("{server}/emby/Users/{userid}/Items"
+                  "?format=json"
+                  "&ImageTypeLimit=1"
+                  "&IsMissing=False"
+                  "&Fields=" + getDetailsString() +
+                  "&Recursive=true"
+                  "&IsVirtualUnaired=false"
+                  "&IsMissing=False"
+                  "&IncludeItemTypes=" + item_type)
+
+    log.debug("showContent Content Url: {0}", contentUrl)
+    getContent(contentUrl, params)
 
 
-    contentUrl = ("http://" + server + "/emby/Users/" + userid + "/Items"
-        "?format=json"
-        "&ImageTypeLimit=1"
-        "&IsMissing=False"
-        "&Fields=" + getDetailsString() + ""
-        "&Recursive=true"
-        "&IsVirtualUnaired=false"
-        "&IsMissing=False"
-        "&IncludeItemTypes=" + item_type)
+def showParentContent(params):
+    log.debug("showParentContent Called: {0}", params)
 
-    log.info("showContent Content Url : " + str(contentUrl))
-
-    getContent(contentUrl, handle)
-
-def showParentContent(pluginName, handle, params):
-    log.info("showParentContent Called: " + str(params))
-    
-    port = __settings__.getSetting('port')
-    host = __settings__.getSetting('ipaddress')
-    server = host + ":" + port
-    
     parentId = params.get("ParentId")
-    name = params.get("Name")
     detailsString = getDetailsString()
-    userid = downloadUtils.getUserId()
-    
+
     contentUrl = (
-        "http://" + server +
-        "/emby/Users/" + userid + "/items?ParentId=" + parentId +
+        "{server}/emby/Users/{userid}/items?ParentId=" + parentId +
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
-        "&CollapseBoxSetItems=true" +
         "&Fields=" + detailsString +
         "&format=json")
-    
-    log.info("showParentContent Content Url : " + str(contentUrl))
-    
-    getContent(contentUrl, handle)
-        
-def checkService():
 
-    timeStamp = xbmcgui.Window(10000).getProperty("EmbyCon_Service_Timestamp")
-    loops = 0
-    while(timeStamp == ""):
-        timeStamp = xbmcgui.Window(10000).getProperty("EmbyCon_Service_Timestamp")
-        loops = loops + 1
-        if(loops == 40):
-            log.error("EmbyCon Service Not Running, no time stamp, exiting")
-            xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
-            sys.exit()
-        xbmc.sleep(200)
-        
-    log.info("EmbyCon Service Timestamp: " + timeStamp)
-    log.info("EmbyCon Current Timestamp: " + str(int(time.time())))
-    
-    if((int(timeStamp) + 240) < int(time.time())):
-        log.error("EmbyCon Service Not Running, time stamp to old, exiting")
-        xbmcgui.Dialog().ok(__language__(30135), __language__(30136), __language__(30137))
-        sys.exit()
-        
+    log.debug("showParentContent Content Url: {0}", contentUrl)
+    getContent(contentUrl, params)
+
+
+def searchResults(params):
+
+    item_type = params.get('item_type')
+
+    if item_type.lower() == 'movie':
+        heading_type = i18n('movies')
+    elif item_type.lower() == 'series':
+        heading_type = i18n('tvshows')
+    elif item_type.lower() == 'episode':
+        heading_type = i18n('episodes')
+    else:
+        heading_type = item_type
+
+    home_window = HomeWindow()
+
+    last_search = home_window.getProperty("last_search")
+    kb = xbmc.Keyboard()
+    kb.setHeading(heading_type.capitalize() + ' ' + i18n('search').lower())
+    kb.setDefault(last_search)
+    kb.doModal()
+
+    if kb.isConfirmed():
+        user_input = kb.getText().strip()
+    else:
+        return
+
+    home_window.setProperty("last_search", user_input)
+
+    log.debug('searchResults Called: {0}', params)
+
+    handle = int(sys.argv[1])
+    query = user_input
+    item_type = params.get('item_type')
+    if (not item_type) or (not query):
+        return
+
+    limit = int(params.get('limit', 50))
+    index = 0
+
+    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    server = downloadUtils.getServer()
+    details_string = getDetailsString()
+
+    content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
+                   '&IncludeItemTypes=' + item_type +
+                   '&ExcludeItemTypes=LiveTvProgram' +
+                   '&UserId={userid}'
+                   '&StartIndex=' + str(index) +
+                   '&Limit=' + str(limit) +
+                   '&IncludePeople=false' +
+                   '&IncludeMedia=true' +
+                   '&IncludeGenres=false' +
+                   '&IncludeStudios=false' +
+                   '&IncludeArtists=false')
+
+    if item_type.lower() == 'movie':
+        xbmcplugin.setContent(handle, 'movies')
+        view_type = 'Movies'
+        media_type = 'movie'
+    elif item_type.lower() == 'series':
+        xbmcplugin.setContent(handle, 'tvshows')
+        view_type = 'Series'
+        media_type = 'tvshow'
+    elif item_type.lower() == 'episode':
+        xbmcplugin.setContent(handle, 'episodes')
+        view_type = 'Episodes'
+        media_type = 'episode'
+    else:
+        xbmcplugin.setContent(handle, 'videos')
+        view_type = ''
+        media_type = 'video'
+
+    setSort(handle, view_type)
+
+    # show a progress indicator if needed
+    progress = None
+    if (settings.getSetting('showLoadProgress') == "true"):
+        progress = xbmcgui.DialogProgress()
+        progress.create(i18n('loading_content'))
+        progress.update(0, i18n('retrieving_data'))
+
+    result = dataManager.GetContent(content_url)
+    log.debug('SearchHints jsonData: {0}', result)
+
+    if result is None:
+        result = {}
+
+    results = result.get('SearchHints')
+    if results is None:
+        results = []
+
+    item_count = 1
+    total_results = int(result.get('TotalRecordCount', 0))
+    log.debug('SEARCH_TOTAL_RESULTS: {0}', total_results)
+    list_items = []
+
+    for item in results:
+        item_id = item.get('ItemId')
+        name = title = item.get('Name')
+        log.debug('SEARCH_RESULT_NAME: {0}', name)
+
+        if progress is not None:
+            percent_complete = (float(item_count) / float(total_results)) * 100
+            progress.update(int(percent_complete), i18n('processing_item:') + str(item_count))
+
+        tvshowtitle = ''
+        season = episode = None
+
+        if (item.get('Type') == 'Episode') and (item.get('Series') is not None):
+            episode = '0'
+            if item.get('IndexNumber') is not None:
+                ep_number = item.get('IndexNumber')
+                if ep_number < 10:
+                    episode = '0' + str(ep_number)
+                else:
+                    episode = str(ep_number)
+
+            season = '0'
+            season_number = item.get('ParentIndexNumber')
+            if season_number < 10:
+                season = '0' + str(season_number)
+            else:
+                season = str(season_number)
+
+            tvshowtitle = item.get('Series')
+            title = tvshowtitle + ' - ' + title
+
+        primary_image = thumb_image = backdrop_image = ''
+        primary_tag = item.get('PrimaryImageTag')
+        if primary_tag:
+            primary_image = downloadUtils.imageUrl(item_id, 'Primary', 0, 0, 0, imageTag=primary_tag, server=server)
+        thumb_id = item.get('ThumbImageId')
+        thumb_tag = item.get('ThumbImageTag')
+        if thumb_tag and thumb_id:
+            thumb_image = downloadUtils.imageUrl(thumb_id, 'Thumb', 0, 0, 0, imageTag=thumb_tag, server=server)
+        backdrop_id = item.get('BackdropImageItemId')
+        backdrop_tag = item.get('BackdropImageTag')
+        if backdrop_tag and backdrop_id:
+            backdrop_image = downloadUtils.imageUrl(backdrop_id, 'Backdrop', 0, 0, 0, imageTag=backdrop_tag, server=server)
+
+        art = {
+            'thumb': thumb_image or primary_image,
+            'fanart': backdrop_image,
+            'poster': primary_image or thumb_image,
+            'banner': '',
+            'clearlogo': '',
+            'clearart': '',
+            'discart': '',
+            'landscape': backdrop_image,
+            'tvshow.poster': primary_image
+        }
+
+        if kodi_version > 17:
+            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'], offscreen=True)
+        else:
+            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'])
+
+        info = {'title': title, 'tvshowtitle': tvshowtitle, 'mediatype': media_type}
+        log.debug('SEARCH_RESULT_ART: {0}', art)
+        list_item.setProperty('fanart_image', art['fanart'])
+        list_item.setProperty('discart', art['discart'])
+        list_item.setArt(art)
+
+        # add count
+        list_item.setProperty('item_index', str(item_count))
+        item_count += 1
+
+        if item.get('MediaType') == 'Video':
+            total_time = str(int(float(item.get('RunTimeTicks', '0')) / (10000000 * 60)))
+            list_item.setProperty('TotalTime', str(total_time))
+            list_item.setProperty('IsPlayable', 'false')
+            list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
+            is_folder = False
+        else:
+            item_url = ('{server}/emby/Users/{userid}' +
+                        '/items?ParentId=' + item_id +
+                        '&IsVirtualUnAired=false&IsMissing=false' +
+                        '&Fields=' + details_string +
+                        '&format=json')
+            list_item_url = 'plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type={item_type}&url={item_url}'\
+                .format(item_type=item_type, item_url=urllib.quote(item_url))
+            list_item.setProperty('IsPlayable', 'false')
+            is_folder = True
+
+        item_details = ItemDetails()
+        item_details.id = item_id
+        menu_items = add_context_menu(item_details, is_folder)
+        if len(menu_items) > 0:
+            list_item.addContextMenuItems(menu_items, True)
+
+        if (season is not None) and (episode is not None):
+            info['episode'] = episode
+            info['season'] = season
+
+        info['year'] = item.get('ProductionYear', '')
+
+        log.debug('SEARCH_RESULT_INFO: {0}', info)
+        list_item.setInfo('Video', infoLabels=info)
+
+        item_tuple = (list_item_url, list_item, is_folder)
+        list_items.append(item_tuple)
+
+    xbmcplugin.addDirectoryItems(handle, list_items)
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
+    if progress is not None:
+        progress.update(100, i18n('done'))
+        progress.close()
+
+
+def PLAY(params):
+    log.debug("== ENTER: PLAY ==")
+
+    log.debug("PLAY ACTION PARAMS: {0}", params)
+    item_id = params.get("item_id")
+
+    auto_resume = int(params.get("auto_resume", "-1"))
+    log.debug("AUTO_RESUME: {0}", auto_resume)
+
+    forceTranscode = params.get("force_transcode", None) is not None
+    log.debug("FORCE_TRANSCODE: {0}", forceTranscode)
+
+    media_source_id = params.get("media_source_id", "")
+    log.debug("media_source_id: {0}", media_source_id)
+
+    use_default = params.get("use_default", "false") == "true"
+    log.debug("use_default: {0}", use_default)
+
+    # set the current playing item id
+    # set all the playback info, this will be picked up by the service
+    # the service will then start the playback
+
+    xbmc.Player().stop()
+
+    play_info = {}
+    play_info["item_id"] = item_id
+    play_info["auto_resume"] = str(auto_resume)
+    play_info["force_transcode"] = forceTranscode
+    play_info["media_source_id"] = media_source_id
+    play_info["use_default"] = use_default
+    send_event_notification("embycon_play_action", play_info)
+
+
+def playTrailer(id):
+    log.debug("== ENTER: playTrailer ==")
+
+    url = ("{server}/emby/Users/{userid}/Items/%s/LocalTrailers?format=json" % id)
+
+    jsonData = downloadUtils.downloadUrl(url)
+    result = json.loads(jsonData)
+    log.debug("LocalTrailers {0}", result)
+
+    trailer_list = []
+    for trailer in result:
+        info = {}
+        info["type"] = "local"
+        info["name"] = trailer.get("Name", "na")
+        info["id"] = trailer.get("Id")
+        trailer_list.append(info)
+
+    url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % id)
+    jsonData = downloadUtils.downloadUrl(url)
+    result = json.loads(jsonData)
+    log.debug("RemoteTrailers: {0}", result)
+
+    remote_trailers = result.get("RemoteTrailers", [])
+    for trailer in remote_trailers:
+        info = {}
+        info["type"] = "remote"
+        info["name"] = trailer.get("Name", "na")
+        url = trailer.get("Url", "none")
+        if url.lower().find("youtube"):
+            info["url"] = url
+            trailer_list.append(info)
+
+    log.debug("TrailerList: {0}", trailer_list)
+
+    trailer_text = []
+    for trailer in trailer_list:
+        name = trailer.get("name") + " (" + trailer.get("type") + ")"
+        trailer_text.append(name)
+
+    dialog = xbmcgui.Dialog()
+    resp = dialog.select(i18n('select_trailer'), trailer_text)
+    if resp > -1:
+        trailer = trailer_list[resp]
+        log.debug("SelectedTrailer: {0}", trailer)
+
+        if trailer.get("type") == "local":
+            params = {}
+            params["item_id"] = trailer.get("id")
+            PLAY(params)
+
+        elif trailer.get("type") == "remote":
+            youtube_id = trailer.get("url").rsplit('=', 1)[1]
+            log.debug("YoutubeID: {0}", youtube_id)
+            youtube_plugin = "PlayMedia(plugin://plugin.video.youtube/?action=play_video&videoid=%s)" % youtube_id
+            xbmc.executebuiltin(youtube_plugin)
+
+
+
