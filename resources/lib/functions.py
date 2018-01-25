@@ -18,7 +18,7 @@ import xbmc
 
 from resources.lib.error import catch_except
 from downloadutils import DownloadUtils
-from utils import getDetailsString, getArt, cache_artwork, send_event_notification
+from utils import getArt, cache_artwork, send_event_notification
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
@@ -388,7 +388,6 @@ def processDirectory(results, progress, params):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
-    detailsString = getDetailsString()
 
     name_format = params.get("name_format", None)
     name_format_type = None
@@ -415,7 +414,7 @@ def processDirectory(results, progress, params):
                       '?ParentId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=' + detailsString +
+                      '&Fields={field_filters}' +
                       '&format=json')
         if progress is not None:
             progress.close()
@@ -471,7 +470,7 @@ def processDirectory(results, progress, params):
                 u = ('{server}/emby/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={userid}' +
-                     '&Fields=' + detailsString +
+                     '&Fields={field_filters}' +
                      '&format=json')
 
             else:
@@ -479,7 +478,7 @@ def processDirectory(results, progress, params):
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields=' + detailsString +
+                     '&Fields={field_filters}' +
                      '&format=json')
 
             if item["RecursiveItemCount"] != 0:
@@ -505,7 +504,7 @@ def processDirectory(results, progress, params):
                       '?ParentId=' + first_season_item.get("SeriesId") +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=' + detailsString +
+                      '&Fields={field_filters}' +
                       '&Recursive=true' +
                       '&IncludeItemTypes=Episode' +
                       '&format=json')
@@ -672,7 +671,7 @@ def showContent(pluginName, handle, params):
                   "?format=json"
                   "&ImageTypeLimit=1"
                   "&IsMissing=False"
-                  "&Fields=" + getDetailsString() +
+                  "&Fields={field_filters}" +
                   "&Recursive=true"
                   "&IsVirtualUnaired=false"
                   "&IsMissing=False"
@@ -686,14 +685,13 @@ def showParentContent(params):
     log.debug("showParentContent Called: {0}", params)
 
     parentId = params.get("ParentId")
-    detailsString = getDetailsString()
 
     contentUrl = (
         "{server}/emby/Users/{userid}/items?ParentId=" + parentId +
         "&IsVirtualUnaired=false" +
         "&IsMissing=False" +
         "&ImageTypeLimit=1" +
-        "&Fields=" + detailsString +
+        "&Fields={field_filters}" +
         "&format=json")
 
     log.debug("showParentContent Content Url: {0}", contentUrl)
@@ -741,7 +739,6 @@ def searchResults(params):
 
     settings = xbmcaddon.Addon(id='plugin.video.embycon')
     server = downloadUtils.getServer()
-    details_string = getDetailsString()
 
     content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
                    '&IncludeItemTypes=' + item_type +
@@ -877,7 +874,7 @@ def searchResults(params):
             item_url = ('{server}/emby/Users/{userid}' +
                         '/items?ParentId=' + item_id +
                         '&IsVirtualUnAired=false&IsMissing=false' +
-                        '&Fields=' + details_string +
+                        '&Fields={field_filters}' +
                         '&format=json')
             list_item_url = 'plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type={item_type}&url={item_url}'\
                 .format(item_type=item_type, item_url=urllib.quote(item_url))

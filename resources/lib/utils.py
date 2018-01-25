@@ -158,27 +158,6 @@ class PlayUtils():
         return playurl, listitem_props
 
 
-def getDetailsString():
-
-    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
-    include_media = addonSettings.getSetting("include_media") == "true"
-    include_people = addonSettings.getSetting("include_people") == "true"
-    include_overview = addonSettings.getSetting("include_overview") == "true"
-
-    detailsString = "DateCreated,EpisodeCount,SeasonCount,Path,Genres,Studios,Etag"
-
-    if include_media:
-        detailsString += ",MediaStreams"
-
-    if include_people:
-        detailsString += ",People"
-
-    if include_overview:
-        detailsString += ",Overview"
-
-    return detailsString
-
-
 def getChecksum(item):
     userdata = item['UserData']
     checksum = "%s_%s_%s_%s_%s_%s_%s" % (

@@ -20,6 +20,25 @@ from translation import i18n
 
 log = SimpleLogging(__name__)
 
+def getDetailsString():
+
+    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+    include_media = addonSettings.getSetting("include_media") == "true"
+    include_people = addonSettings.getSetting("include_people") == "true"
+    include_overview = addonSettings.getSetting("include_overview") == "true"
+
+    detailsString = "DateCreated,EpisodeCount,SeasonCount,Path,Genres,Studios,Etag"
+
+    if include_media:
+        detailsString += ",MediaStreams"
+
+    if include_people:
+        detailsString += ",People"
+
+    if include_overview:
+        detailsString += ",Overview"
+
+    return detailsString
 
 class DownloadUtils():
     getString = None
@@ -309,17 +328,21 @@ class DownloadUtils():
             suppress = True
 
         log.debug("Before: {0}", url)
+
         if url.find("{server}") != -1:
             server = self.getServer()
             if server is None:
                 return return_data
             url = url.replace("{server}", server)
+
         if url.find("{userid}") != -1:
             userid = self.getUserId()
             url = url.replace("{userid}", userid)
+
         if url.find("{ItemLimit}") != -1:
             show_x_filtered_items = settings.getSetting("show_x_filtered_items")
             url = url.replace("{ItemLimit}", show_x_filtered_items)
+
         if url.find("{IsUnplayed}") != -1 or url.find("{,IsUnplayed}") != -1 or url.find("{IsUnplayed,}") != -1 \
                 or url.find("{,IsUnplayed,}") != -1:
             show_latest_unplayed = settings.getSetting("show_latest_unplayed") == "true"
@@ -336,6 +359,11 @@ class DownloadUtils():
                 url = url.replace("{IsUnplayed,}", "IsUnplayed,")
             elif url.find("{,IsUnplayed,}") != -1:
                 url = url.replace("{,IsUnplayed,}", ",IsUnplayed,")
+
+        if url.find("{field_filters}") != -1:
+            filter_string = getDetailsString()
+            url = url.replace("{field_filters}", filter_string)
+
         log.debug("After: {0}", url)
 
         try:
