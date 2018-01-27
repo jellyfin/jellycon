@@ -15,10 +15,10 @@
     <platform>all</platform>
     <language>en</language>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>https://emby.media/community/index.php?/topic/46651-embycon/</forum>
-    <website>https://emby.media/community/index.php?/topic/46651-embycon/</website>
+    <forum>https://emby.media/community/index.php?/forum/99-kodi/</forum>
+    <website>https://faush01.github.io/plugin.video.embycon/</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
-    <summary lang="en_GB">View and play your Emby media library.</summary>
-    <description lang="en_GB">An addon to allow you to view and playback your Emby (www.emby.media) Movie and TV Show collection.</description>
+    <summary lang="en_GB">Browse and play your Emby server media library.</summary>
+    <description lang="en_GB">An addon to allow you to browse and playback your Emby (www.emby.media) Movie, TV Show and Music collections.</description>
   </extension>
 </addon>
