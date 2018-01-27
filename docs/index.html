@@ -2,6 +2,110 @@
 layout: default
 ---
 
-<h2>EmbyCon</h2>
+<h3>What is EmbyCon?</h3>
 
+<p>EmbyCon is a Kodi addon that allows you to browse and play back your Movie and TV Shows from your Emby media server.</p>
+
+<p>It can play items directly from your file share if you have your paths set up correctly or also using Direct HTTP streaming or HTTP Transcode streaming at a bitrate and resolution you set.</p>
+
+<h3>Installing EmbyCon</h3>
+ 
+<p>You can install the EmbyCon Addon from the official Kodi addon repository.</p>
+
+<ul>
+<li>Open Kodi</li>
+<li>Select Add-on from the main menu</li>
+<li>Select "Download" at the bottom of the Add-on menu</li>
+<li>Select "Video add-ons"</li>
+<li>Select "EmbyCon" from the video add-on list</li>
+<li>Select "Install"</li>
+</ul>
 {% include youtubePlayer.html id="224zVA-T7fw" %}
+
+<h3>Beta (Test) Version</h3>
+ 
+<p>If you want to try the beta test version you can download the following zip and then in Kodi under Addons select install from ZIP and install the Beta Repository.</p>
+ 
+<a href="https://embydata.com/downloads/addons/xbmb3c/kodi-beta-repo/repository.beta.emby.kodi-1.0.5.zip">repository.beta.emby.kodi-1.0.5.zip</a>
+ 
+<p>Once the Beta Repository is installed in Kodi you can select Install addon from repository and select the "Emby Beta Repository", under video add-ons select EmbyCon.</p>
+ 
+<h3>A Little History</h3>
+
+<p>The current Emby for Kodi addon has had a number of iterations over the years, it goes back a long way, all the way back to XBMB3C which was based on a Plex addon from that era.</p>
+
+<a>One Year anniversary (10/24/2014):</p>
+
+<a href="https://emby.media/one-year-of-developing-xbmb3c.html">https://emby.media/one-year-of-developing-xbmb3c.html</a>
+
+<p>So that gives it a starting date of around October 2013. The release post form @xnappo:</p>
+
+<a href="https://emby.media/community/index.php?/topic/2108-xbmb3c-media-browser-addon-for-xbmc/">XBMB3C - Media Browser AddOn for XBMC</a>
+
+<p>And the first initial commit to the original XBMB3C:</p>
+
+<a href="https://github.com/MediaBrowser/MediaBrowser.Kodi/commit/6e3b8b0525d065c8359cf4c986161de12551f3f7">https://github.com/MediaBrowser/MediaBrowser.Kodi/commit/6e3b8b0525d065c8359cf4c986161de12551f3f7</a>
+
+<p>Over time we switch from using the server interaction for each directory view to using the built in Kodi DB and a sync method to keep the Emby and Kodi DBs in sync. We also changed the name from XBMB3C to Emby for Kodi.</p>
+
+<p>All in all the addon is so much better than it was back then, it has a lot of features and the integration with the Kodi DB makes it fast. There have been some outstanding devs on the project over this time and the quality and quantity of work they have been able to achieve is very impressive. What has impressed me the most is the collaboration here on the forum the team has kept up.</p>
+
+<p>The only draw back for me that has cropped up is perhaps the complexity and for lack of a better word, weight of the addon. With each new feature that was added more code, more complexity and more weight was added. In this case the initial sync of data I am considering as weight, time spent on setting up and configuration.</p>
+
+<p>Yes the addon is great and I use it on a daily basis, it works and works very well. However I want options.</p>
+
+<p>I want a light weight addon with a cut back feature set, simple setup and simple install. I dont want it to take over the Kodi DB and I want it to just work to play back my collection. I would also love it to be in the official Kodi repo.</p>
+
+<p>With all of this in mind a went back to a project I had on the go a few years back, it was using an early cut of the original XBMB3C addon way back from the day it was just a simple display and playback addon.
+In September 2014 I cut a new addon from the even then old source of the addon we had at that time. This was a simple addon with a simple goal, display media items from Emby and allow a user to play them back.</p>
+
+<p>I have now update that addon and renamed it to EmbyCon, it uses the old server client approach to display media items you have on your Emby server and allows you to play them back.</p>
+ 
+<h3>Home Screen Integration</h3>
+ 
+<p>Due to the fact this addon does not populate the built in Kodi database none of the built in home screen widgets work by default. This is because Kodi does not know about your content.</p>
+ 
+<p>There are two ways to fix this, one way is to use a Kodi Skin that allows you to set up custom menu items and select video addon targets, this means you can set up a customised menu to allow you to select you movies from Emby. The Kodi Titan is a great example of this.</p>
+ 
+<p>The other way is to edit the skin home screen file directly.</p>
+ 
+<h3>Setup the Titan skin and menus</h3>
+ 
+<ul>
+<li>Install EmbyCon addon</li>
+<li>Install Titan skin</li>
+<li>Set menu to single row (Optional)</li>
+<li>Turn on "smart shortcuts" for favourties in Titan skin settings</li>
+<li>Add favourites for EmbyCon menu items (press the 'C' key to bring up the items context menu)</li>
+<li>Restart Kodi</li>
+<li>Add new menu items to Titan</li>
+<li>Add Widgets to the menu items</li>
+</ul>
+ 
+ {% include youtubePlayer.html id="swxQd50XlK4" %}
+ 
+<h3>Editing the Default Skins (Estuary) Home Screen by adding Emby menu items</h3>
+ 
+<p>For the default Skin (Estuary) we can do this by adding custom menu items to the home screen, this requires editing the default skin Home.xml file. The easiest way to do this is use the packaged Home.xml file that comes with the EmbyCon addon.</p>
+ 
+<p>In 2 simple commands you can create a copy of the default skin and update it to use the packaged Home screen Home.xml file that comes with the EmbyCon addon.</p>
+ 
+<p>The following is for Kodi 17.3</p>
+ 
+<h4>Libreelec</h4>
+Log into Libreelec and run the following commands and then restart Libreelec.
+<pre>
+cp -r /usr/share/kodi/addons/skin.estuary /storage/.kodi/addons
+cp /storage/.kodi/addons/plugin.video.embycon/resources/skins/skin.estuary/xml/Home-17.6.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
+</pre>
+
+<h4>Windows</h4>
+<pre>
+xcopy /S /Y "c:\Program Files (x86)\Kodi\addons\skin.estuary\*" "%APPDATA%\Kodi\addons\skin.estuary\"
+xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.6.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
+</pre>
+
+{% include youtubePlayer.html id="ueukOCfDgm8" %}
+ 
+
+ 
