@@ -116,6 +116,7 @@ def playFile(play_info, monitor):
 
     settings = xbmcaddon.Addon('plugin.video.embycon')
     addon_path = settings.getAddonInfo('path')
+    force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
 
     server = download_utils.getServer()
@@ -173,6 +174,12 @@ def playFile(play_info, monitor):
     # process user data for resume points
     if auto_resume != -1:
         seekTime = (auto_resume / 1000) / 10000
+
+    elif force_auto_resume:
+        userData = result.get("UserData")
+        reasonableTicks = int(userData.get("PlaybackPositionTicks")) / 1000
+        seekTime = reasonableTicks / 10000
+
     else:
         userData = result.get("UserData")
         if userData.get("PlaybackPositionTicks") != 0:

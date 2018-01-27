@@ -689,3 +689,7 @@ msgstr ""
 msgctxt "#30321"
 msgid " - Album Artists"
 msgstr ""
+
+msgctxt "#30322"
+msgid "Auto Resume"
+msgstr ""
