@@ -257,7 +257,7 @@ class DownloadUtils():
 
         use_https = settings.getSetting('use_https') == 'true'
         if use_https:
-            messageData += "&pwd=" + pwd_text
+            messageData += "&pw=" + pwd_text
 
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
 
