@@ -52,7 +52,7 @@
 		<setting id="show_x_filtered_items" type="slider" label="30018" default="20" range="5,1,100" option="int" visible="true"/>
 		<setting id="show_latest_unplayed" type="bool" label="30027" default="false" visible="true" enable="true" />
 		<setting id="widget_select_action" type="select" label="30026" lvalues="30313|30314" default="0" visible="true"/>
-		<setting id="episode_name_format" type="text" default="{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}" label="30019" />
+		<setting id="episode_name_format" type="select" label="30019" default="{ItemName}" values="{ItemName}|s{SeasonIndex}e{EpisodeIndex} - {ItemName}|{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}" />
 	</category>
 	<category label="30022"> <!-- Advanced -->
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
