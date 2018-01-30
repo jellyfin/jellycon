@@ -281,7 +281,7 @@ class ABNF(object):
         self.rsv2 = rsv2
         self.rsv3 = rsv3
         self.opcode = opcode
-        self.mask = mask
+        self.mask_value = mask
         self.data = data
         self.get_mask_key = os.urandom
 
@@ -322,15 +322,15 @@ class ABNF(object):
                            | self.rsv1 << 6 | self.rsv2 << 5 | self.rsv3 << 4
                            | self.opcode)
         if length < ABNF.LENGTH_7:
-            frame_header += chr(self.mask << 7 | length)
+            frame_header += chr(self.mask_value << 7 | length)
         elif length < ABNF.LENGTH_16:
-            frame_header += chr(self.mask << 7 | 0x7e)
+            frame_header += chr(self.mask_value << 7 | 0x7e)
             frame_header += struct.pack("!H", length)
         else:
-            frame_header += chr(self.mask << 7 | 0x7f)
+            frame_header += chr(self.mask_value << 7 | 0x7f)
             frame_header += struct.pack("!Q", length)
 
-        if not self.mask:
+        if not self.mask_value:
             return frame_header + self.data
         else:
             mask_key = self.get_mask_key(4)
