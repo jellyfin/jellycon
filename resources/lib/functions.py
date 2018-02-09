@@ -845,7 +845,7 @@ def searchResults(params):
             'clearlogo': '',
             'clearart': '',
             'discart': '',
-            'landscape': backdrop_image,
+            'landscape': '',
             'tvshow.poster': primary_image
         }
 
