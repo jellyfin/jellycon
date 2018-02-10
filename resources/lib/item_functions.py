@@ -82,6 +82,8 @@ class ItemDetails():
     name_format = ""
     mode = ""
 
+    baseline_itemname = None
+
 def extract_item_info(item, gui_options):
 
     item_details = ItemDetails()
@@ -462,6 +464,9 @@ def add_gui_item(url, item_details, display_options, folder=True):
     list_item.setContentLookup(False)
     list_item.setProperty('ItemType', item_details.item_type)
     list_item.setProperty('id', item_details.id)
+
+    if item_details.baseline_itemname is not None:
+        list_item.setProperty('suggested_from_watching', item_details.baseline_itemname)
 
     return (u, list_item, folder)
 

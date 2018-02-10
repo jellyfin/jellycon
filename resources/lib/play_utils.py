@@ -21,6 +21,7 @@ from translation import i18n
 from json_rpc import json_rpc
 from datamanager import DataManager
 from item_functions import get_next_episode, extract_item_info
+from clientinfo import ClientInformation
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -716,6 +717,9 @@ def stopAll(played_information):
                 if data.get("play_action_type", "") == "play":
                     promptForStopActions(emby_item_id, current_possition)
 
+    device_id = ClientInformation().getDeviceId()
+    url = "{server}/emby/Videos/ActiveEncodings?DeviceId=%s" % device_id
+    download_utils.downloadUrl(url, method="DELETE")
 
 class Service(xbmc.Player):
 
