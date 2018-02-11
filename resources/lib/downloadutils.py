@@ -74,7 +74,7 @@ class DownloadUtils():
 
         return server
 
-    def getArtwork(self, data, art_type, parent=False, index=0, width=10000, height=10000, server=None):
+    def getArtwork(self, data, art_type, parent=False, index=0, server=None):
 
         id = data["Id"]
         item_type = data["Type"]
@@ -127,9 +127,7 @@ class DownloadUtils():
             log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
-        query = ""
-
-        artwork = "%s/emby/Items/%s/Images/%s/%s?MaxWidth=%s&MaxHeight=%s&Format=original&Tag=%s%s" % (server, id, art_type, index, width, height, imageTag, query)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
 
         log.debug("getArtwork: {0}", artwork)
 

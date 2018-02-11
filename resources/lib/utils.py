@@ -227,14 +227,7 @@ def getArt(item, server, widget=False):
     if not art['fanart']:
         art['fanart'] = downloadUtils.getArtwork(item, "Backdrop", parent=True, server=server)
 
-    if not art['landscape']:
-        art['landscape'] = downloadUtils.getArtwork(item, "Thumb", server=server)
-        if not art['landscape']:
-            art['landscape'] = art['fanart']
-
-    if not art['thumb']:
-        art['thumb'] = art['landscape']
-
+    art['landscape'] = downloadUtils.getArtwork(item, "Thumb", server=server)
     art['banner'] = downloadUtils.getArtwork(item, "Banner", server=server)
     art['clearlogo'] = downloadUtils.getArtwork(item, "Logo", server=server)
     art['clearart'] = downloadUtils.getArtwork(item, "Art", server=server)
