@@ -91,7 +91,7 @@ def format_exception():
         state["function"] = frame.f_code.co_name
         locals = {}
         for key, value in frame.f_locals.items():
-            locals[key] = str(value)
+            locals[key] = unicode(value).encode("utf-8")
         state["locals"] = locals
         machine_state.append(state)
 
