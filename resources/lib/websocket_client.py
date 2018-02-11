@@ -71,8 +71,11 @@ class WebSocketClient(threading.Thread):
 
             media_source_id = data.get("MediaSourceId", "")
 
+            if len(item_ids) == 1:
+                item_ids = item_ids[0]
+
             params = {}
-            params["item_id"] = item_ids[0]
+            params["item_id"] = item_ids
             params["auto_resume"] = str(startat)
             params["media_source_id"] = media_source_id
             params["use_default"] = "true"
@@ -261,7 +264,7 @@ class WebSocketClient(threading.Thread):
         url = "{server}/emby/Sessions/Capabilities/Full?format=json"
         data = {
             'SupportsMediaControl': True,
-            'PlayableMediaTypes': ["Video"],
+            'PlayableMediaTypes': ["Video", "Audio"],
             'SupportedCommands': ["MoveUp",
                                   "MoveDown",
                                   "MoveLeft",
