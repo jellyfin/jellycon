@@ -7,9 +7,8 @@ import xbmcgui
 import xbmcaddon
 
 from datetime import timedelta
-import time
+from datetime import date
 import json
-import hashlib
 
 from resources.lib.error import catch_except
 from simple_logging import SimpleLogging
@@ -744,6 +743,14 @@ class Service(xbmc.Player):
     def __init__(self, *args):
         log.debug("Starting monitor service: {0}", args)
         self.played_information = {}
+        self.activity = {}
+
+    def save_activity(self):
+        addon = xbmcaddon.Addon(id='plugin.video.embycon')
+        path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
+        activity_data = json.dumps(self.activity)
+        with open(path, 'wb') as f:
+            f.write(activity_data)
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
@@ -783,6 +790,14 @@ class Service(xbmc.Player):
 
         url = "{server}/emby/Sessions/Playing"
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+        # record the activity
+        today = date.today().isoformat()
+        if today not in self.activity:
+            self.activity[today] = {}
+        if playback_type not in self.activity[today]:
+            self.activity[today][playback_type] = 0
+        self.activity[today][playback_type] += 1
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file

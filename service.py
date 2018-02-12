@@ -97,6 +97,8 @@ while not xbmc.abortRequested:
 
     xbmc.sleep(1000)
 
+monitor.save_activity()
+
 # stop the WebSocket Client
 websocket_client.stop_client()
 
