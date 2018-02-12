@@ -60,12 +60,21 @@ class DownloadUtils():
             activity = json.loads(activity_data)
 
             if len(activity) == 0:
-                log.debug("Version Check No Activity")
+                log.debug("Version Check: No Activity")
+                return
+
+            url = "{server}/emby/System/Configuration"
+            jsonData = self.downloadUrl(url, suppress=True)
+            server_config = json.loads(jsonData)
+            reporting = server_config.get("EnableAnonymousUsageReporting", False)
+            if reporting == False:
+                log.debug("Version Check: Not Enabled")
                 return
 
             url = "{server}/emby/system/info/public"
             jsonData = self.downloadUrl(url, suppress=True, authenticate=False)
             server_info = json.loads(jsonData)
+
         except Exception as error:
             log.debug("Version Check Error: DATA: {0}", error)
             return
@@ -94,6 +103,7 @@ class DownloadUtils():
                 message_text = message.get("message")
                 if message_text is not None and message_text != "OK":
                     xbmcgui.Dialog().ok(self.addon_name, message_text)
+                    
         except Exception as error:
             log.debug("Version Check Error: SEND: {0}", error)
 
