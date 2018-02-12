@@ -5,6 +5,7 @@ import time
 import json
 import traceback
 import binascii
+from threading import Timer
 
 import xbmc
 import xbmcaddon
@@ -70,6 +71,13 @@ def get_now_playing():
         result = json.loads(result)
         return result
 
+
+def check_version():
+    download_utils.checkVersion()
+
+
+t = Timer(5.0, check_version)
+t.start()
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.

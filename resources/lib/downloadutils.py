@@ -3,6 +3,7 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 
 import httplib
 import hashlib
@@ -49,12 +50,24 @@ class DownloadUtils():
 
     def checkVersion(self):
         server_info = {}
+        activity = {}
         try:
+            addon = xbmcaddon.Addon(id='plugin.video.embycon')
+            path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
+            f = xbmcvfs.File(path)
+            activity_data = f.read()
+            f.close()
+            activity = json.loads(activity_data)
+
+            if len(activity) == 0:
+                log.debug("Version Check No Activity")
+                return
+
             url = "{server}/emby/system/info/public"
             jsonData = self.downloadUrl(url, suppress=True, authenticate=False)
             server_info = json.loads(jsonData)
         except Exception as error:
-            log.error("Version Check Error: Server: {0}", error)
+            log.debug("Version Check Error: DATA: {0}", error)
             return
 
         try:
@@ -64,7 +77,8 @@ class DownloadUtils():
                 "server_id": server_info.get("Id", ""),
                 "version_kodi": xbmc.getInfoLabel('System.BuildVersion'),
                 "version_emby": server_info.get("Version", ""),
-                "version_addon": client_info.getVersion()
+                "version_addon": client_info.getVersion(),
+                "activity": activity
             }
             conn = httplib.HTTPConnection("allthedata.pythonanywhere.com", timeout=15)
             head = {}
@@ -75,13 +89,13 @@ class DownloadUtils():
             ret_data = "null"
             if int(data.status) == 200:
                 ret_data = data.read()
-                log.debug("VERSION_CHECK: {0}", ret_data)
+                log.debug("VERSION_CHECK: RESPONCE: {0}", ret_data)
                 message = json.loads(ret_data)
                 message_text = message.get("message")
                 if message_text is not None and message_text != "OK":
                     xbmcgui.Dialog().ok(self.addon_name, message_text)
         except Exception as error:
-            log.error("Version Check Error: {0}", error)
+            log.debug("Version Check Error: SEND: {0}", error)
 
     def getServer(self):
         settings = xbmcaddon.Addon(id='plugin.video.embycon')

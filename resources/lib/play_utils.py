@@ -5,6 +5,7 @@ import binascii
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 
 from datetime import timedelta
 from datetime import date
@@ -749,8 +750,9 @@ class Service(xbmc.Player):
         addon = xbmcaddon.Addon(id='plugin.video.embycon')
         path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
         activity_data = json.dumps(self.activity)
-        with open(path, 'wb') as f:
-            f.write(activity_data)
+        f = xbmcvfs.File(path, 'w')
+        f.write(activity_data)
+        f.close()
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
