@@ -52,8 +52,13 @@ class DownloadUtils():
         server_info = {}
         activity = {}
         try:
-            addon = xbmcaddon.Addon(id='plugin.video.embycon')
-            path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
+            settings = xbmcaddon.Addon(id='plugin.video.embycon')
+            check_version = settings.getSetting('checkVersion') == 'true'
+            if check_version == False:
+                log.debug("Version Check: Not Enabled")
+                return
+
+            path = xbmc.translatePath(settings.getAddonInfo('profile')) + "activity.json"
             f = xbmcvfs.File(path)
             activity_data = f.read()
             f.close()
@@ -61,14 +66,6 @@ class DownloadUtils():
 
             if len(activity) == 0:
                 log.debug("Version Check: No Activity")
-                return
-
-            url = "{server}/emby/System/Configuration"
-            jsonData = self.downloadUrl(url, suppress=True)
-            server_config = json.loads(jsonData)
-            reporting = server_config.get("EnableAnonymousUsageReporting", False)
-            if reporting == False:
-                log.debug("Version Check: Not Enabled")
                 return
 
             url = "{server}/emby/system/info/public"
@@ -103,7 +100,7 @@ class DownloadUtils():
                 message_text = message.get("message")
                 if message_text is not None and message_text != "OK":
                     xbmcgui.Dialog().ok(self.addon_name, message_text)
-                    
+
         except Exception as error:
             log.debug("Version Check Error: SEND: {0}", error)
 
