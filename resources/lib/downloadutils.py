@@ -90,6 +90,7 @@ class DownloadUtils():
             head = {}
             head["Content-Type"] = "application/json"
             postBody = json.dumps(version_info)
+            #log.debug("Version Check Data: {0}", postBody)
             conn.request(method="POST", url="/version", body=postBody, headers=head)
             data = conn.getresponse()
             ret_data = "null"
