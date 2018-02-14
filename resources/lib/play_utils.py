@@ -8,6 +8,7 @@ import xbmcaddon
 import xbmcvfs
 
 from datetime import timedelta
+from datetime import datetime
 import json
 
 from resources.lib.error import catch_except
@@ -793,9 +794,13 @@ class Service(xbmc.Player):
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
         # record the activity
-        if playback_type not in self.activity:
-            self.activity[playback_type] = 0
-        self.activity[playback_type] += 1
+        utcnow = datetime.utcnow()
+        today = "%s-%s-%s" % (utcnow.year, utcnow.month, utcnow.day)
+        if today not in self.activity:
+            self.activity[today] = {}
+        if playback_type not in self.activity[today]:
+            self.activity[today][playback_type] = 0
+        self.activity[today][playback_type] += 1
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file

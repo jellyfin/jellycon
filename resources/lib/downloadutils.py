@@ -13,6 +13,7 @@ import gzip
 import json
 from urlparse import urlparse
 import urllib
+from datetime import datetime
 
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
@@ -77,6 +78,8 @@ class DownloadUtils():
             return
 
         try:
+            utcnow = datetime.utcnow()
+            today = "%s-%s-%s" % (utcnow.year, utcnow.month, utcnow.day)
             client_info = ClientInformation()
             version_info = {
                 "client_id": client_info.getDeviceId(),
@@ -84,13 +87,14 @@ class DownloadUtils():
                 "version_kodi": xbmc.getInfoLabel('System.BuildVersion'),
                 "version_emby": server_info.get("Version", ""),
                 "version_addon": client_info.getVersion(),
-                "activity": activity
+                "activity": activity,
+                "client_utc_date": today
             }
             conn = httplib.HTTPConnection("allthedata.pythonanywhere.com", timeout=15)
             head = {}
             head["Content-Type"] = "application/json"
             postBody = json.dumps(version_info)
-            #log.debug("Version Check Data: {0}", postBody)
+            log.debug("Version Check Data: {0}", postBody)
             conn.request(method="POST", url="/version", body=postBody, headers=head)
             data = conn.getresponse()
             ret_data = "null"
