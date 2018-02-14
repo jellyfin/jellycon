@@ -22,6 +22,7 @@ downloadUtils = DownloadUtils()
 
 def getServerDetails():
     log.debug("Getting Server Details from Network")
+    servers = []
 
     MESSAGE = "who is EmbyServer?"
     MULTI_GROUP = ("<broadcast>", 7359)
@@ -37,16 +38,18 @@ def getServerDetails():
 
     log.debug("MutliGroup: {0}", MULTI_GROUP)
     log.debug("Sending UDP Data: {0}", MESSAGE)
-    sock.sendto(MESSAGE, MULTI_GROUP)
-
-    servers = []
 
     # while True:
     try:
-        data, addr = sock.recvfrom(1024)  # buffer size
-        servers.append(json.loads(data))
+        sock.sendto(MESSAGE, MULTI_GROUP)
+        while True:
+            try:
+                data, addr = sock.recvfrom(1024)
+                servers.append(json.loads(data))
+            except:
+                break
     except Exception as e:
-        log.error("Read UPD responce: {0}", e)
+        log.error("UPD Discovery Error: {0}", e)
         # break
 
     log.debug("Found Servers: {0}", servers)
@@ -116,7 +119,11 @@ def checkServer(force=False, change_user=False, notify=False):
         jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData: {0}", jsonData)
-        result = json.loads(jsonData)
+        try:
+            result = json.loads(jsonData)
+        except:
+            result = None
+
         if result is None:
             xbmcgui.Dialog().ok(i18n('error'),
                                 i18n('unable_connect_server'),
