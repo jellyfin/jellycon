@@ -505,7 +505,10 @@ def processDirectory(results, progress, params):
 
     # add the all episodes item
     show_all_episodes = settings.getSetting('show_all_episodes') == 'true'
-    if show_all_episodes and first_season_item is not None and len(dirItems) > 1:
+    if (show_all_episodes
+            and first_season_item is not None
+            and len(dirItems) > 1
+            and first_season_item.get("SeriesId") is not None):
         series_url = ('{server}/emby/Users/{userid}/items' +
                       '?ParentId=' + first_season_item.get("SeriesId") +
                       '&IsVirtualUnAired=false' +
