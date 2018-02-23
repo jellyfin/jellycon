@@ -97,8 +97,8 @@ class DownloadUtils():
             log.debug("Version Check Data: {0}", postBody)
             conn.request(method="POST", url="/version", body=postBody, headers=head)
             data = conn.getresponse()
-            ret_data = "null"
             if int(data.status) == 200:
+                xbmcvfs.delete(path)
                 ret_data = data.read()
                 log.debug("VERSION_CHECK: RESPONCE: {0}", ret_data)
                 message = json.loads(ret_data)

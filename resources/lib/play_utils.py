@@ -801,6 +801,7 @@ class Service(xbmc.Player):
         if playback_type not in self.activity[today]:
             self.activity[today][playback_type] = 0
         self.activity[today][playback_type] += 1
+        self.save_activity()
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
