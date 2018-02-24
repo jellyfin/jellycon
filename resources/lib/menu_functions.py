@@ -21,26 +21,31 @@ downloadUtils = DownloadUtils()
 __addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 
 
-def showGenreList(item_type=None):
-    log.debug("== ENTER: showGenreList() ==")
+def showGenreList(params):
+    log.debug("showGenreList: {0}", params)
 
     server = downloadUtils.getServer()
     if server is None:
         return
 
+    parent_id = params.get("parent_id")
+    item_type = params.get("item_type")
+
     kodi_type = "Movies"
     emby_type = "Movie"
-    if item_type is not None and item_type == "series":
+    if item_type is not None and item_type == "tvshow":
         emby_type = "Series"
         kodi_type = "tvshows"
 
     url = ("{server}/emby/Genres?" +
-             "SortBy=SortName" +
-             "&SortOrder=Ascending" +
-             "&IncludeItemTypes=" + emby_type +
-             "&Recursive=true" +
-             "&UserId={userid}" +
-             "&format=json")
+           "SortBy=SortName" +
+           "&SortOrder=Ascending" +
+           "&IncludeItemTypes=" + emby_type +
+           "&Recursive=true" +
+           "&UserId={userid}")
+
+    if parent_id is not None:
+        url += "&parentid=" + parent_id
 
     data_manager = DataManager()
     result = data_manager.GetContent(url)
@@ -56,18 +61,26 @@ def showGenreList(item_type=None):
         item_data = {}
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = kodi_type
-        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Thumb", server=server)
-        item_data['path'] = ('{server}/emby/Users/{userid}/Items?Fields={field_filters}' +
-                             '&Recursive=true&GenreIds=' + genre.get("Id") +
-                             '&IncludeItemTypes=' + emby_type +
-                             '&ImageTypeLimit=1&format=json')
+        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Primary", server=server)
+
+        url = ("{server}/emby/Users/{userid}/Items" +
+               "?Fields={field_filters}" +
+               "&Recursive=true" +
+               "&GenreIds=" + genre.get("Id") +
+               "&IncludeItemTypes=" + emby_type +
+               "&ImageTypeLimit=1")
+
+        if parent_id is not None:
+            url += "&parentid=" + parent_id
+
+        item_data['path'] = url
         collections.append(item_data)
 
     for collection in collections:
         url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("thumbnail"))
         addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -178,17 +191,23 @@ def displaySections():
 
     if collections:
         for collection in collections:
-            url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
-                   "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-            if collection.get("name_format") is not None:
-                url += "&name_format=" + urllib.quote(collection.get("name_format"))
-            log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-            addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
+            if collection.get("item_type") == "plugin_link":
+                plugin_path = collection['path']
+                addMenuDirectoryItem(collection.get('title', i18n('unknown')), plugin_path,
+                                     thumbnail=collection.get("thumbnail"))
+            else:
+                url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
+                       "&mode=GET_CONTENT&media_type=" + collection["media_type"])
+                if collection.get("name_format") is not None:
+                    url += "&name_format=" + urllib.quote(collection.get("name_format"))
+                log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
+                addMenuDirectoryItem(collection.get('title', i18n('unknown')), url,
+                                     thumbnail=collection.get("thumbnail"))
 
         addMenuDirectoryItem(i18n('movies_year'), "plugin://plugin.video.embycon/?mode=MOVIE_YEARS")
-        addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=MOVIE_GENRE")
+        addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
         addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
-        addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=SERIES_GENRE")
+        addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
         addMenuDirectoryItem(i18n('search'), "plugin://plugin.video.embycon/?mode=SEARCH")
 
         addMenuDirectoryItem(i18n('show_clients'), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
@@ -365,6 +384,12 @@ def getCollections():
                          '&format=json'),
                 'media_type': 'Episodes',
                 'name_format': 'Episode|episode_name_format'})
+            collections.append({
+                'title': item_name + i18n('_genres'),
+                'item_type': 'plugin_link',
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow&parent_id=' + item.get("Id"),
+                'media_type': 'tvshows'})
 
         if collection_type == "movies":
             collections.append({
@@ -406,6 +431,12 @@ def getCollections():
                          '&Filters={IsUnplayed,}IsNotFolder' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
+                'media_type': collection_type})
+            collections.append({
+                'title': item_name + i18n('_genres'),
+                'item_type': 'plugin_link',
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=movie&parent_id=' + item.get("Id"),
                 'media_type': collection_type})
 
     # Add standard nodes

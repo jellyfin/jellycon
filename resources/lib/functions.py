@@ -120,10 +120,8 @@ def mainEntryPoint():
         playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
-    elif mode == "MOVIE_GENRE":
-        showGenreList()
-    elif mode == "SERIES_GENRE":
-        showGenreList(item_type="series")
+    elif mode == "GENRES":
+        showGenreList(params)
     elif mode == "MOVIE_YEARS":
         showYearsList()
     elif mode == "WIDGETS":

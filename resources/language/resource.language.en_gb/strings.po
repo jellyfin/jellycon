@@ -407,7 +407,7 @@ msgid "Unknown"
 msgstr ""
 
 msgctxt "#30251"
-msgid "Movies (Genre)"
+msgid "Movies (Genres)"
 msgstr ""
 
 msgctxt "#30252"
@@ -559,7 +559,7 @@ msgid " - Latest"
 msgstr ""
 
 msgctxt "#30289"
-msgid "TV Show (Genre)"
+msgid "TV Show (Genres)"
 msgstr ""
 
 msgctxt "#30290"
@@ -701,3 +701,8 @@ msgstr ""
 msgctxt "#30324"
 msgid "Movies - Recommendations"
 msgstr ""
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr ""
+

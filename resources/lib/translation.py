@@ -126,6 +126,7 @@ STRINGS = {
     'music_all_artists': 30319,
     '_all_albums': 30320,
     '_all_artists': 30321,
-    'movies_recommendations': 30324
+    'movies_recommendations': 30324,
+    '_genres': 30325
 
 }
