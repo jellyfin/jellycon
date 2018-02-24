@@ -17,6 +17,7 @@ from resources.lib.play_utils import Service, PlaybackService, sendProgress
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.widgets import checkForNewContent
 from resources.lib.websocket_client import WebSocketClient
+from resources.lib.menu_functions import set_library_window_values
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -78,6 +79,9 @@ def check_version():
 
 t = Timer(5.0, check_version)
 t.start()
+
+skin_menu_info = Timer(2.0, set_library_window_values)
+skin_menu_info.start()
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.

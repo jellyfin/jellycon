@@ -7,9 +7,10 @@ import encodings
 
 import xbmcplugin
 import xbmcaddon
+import xbmc
 
 from downloadutils import DownloadUtils
-from kodi_utils import addMenuDirectoryItem
+from kodi_utils import addMenuDirectoryItem, HomeWindow
 from simple_logging import SimpleLogging
 from translation import i18n
 from datamanager import DataManager
@@ -666,3 +667,60 @@ def showSearch():
     addMenuDirectoryItem(i18n('episodes'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+def set_library_window_values():
+    home_window = HomeWindow()
+    log.debug("set_library_window_values called")
+    count = 0
+    token = home_window.getProperty("AccessToken")
+    while token is None or token == "":
+        count += 1
+        if xbmc.abortRequested or count > 40:
+            log.debug("set_library_window_values, timed out!")
+            return
+
+        xbmc.sleep(500)
+        token = home_window.getProperty("AccessToken")
+
+    log.debug("set_library_window_values: Token: {0}", token)
+    # at this point we should have a token and be authenticated
+
+    server = downloadUtils.getServer()
+    data_manager = DataManager()
+    url = "{server}/emby/Users/{userid}/Views"
+    result = data_manager.GetContent(url)
+
+    if result is not None:
+        result = result.get("Items")
+    else:
+        result = []
+
+    index = 0
+    for item in result:
+
+        type = item.get("CollectionType")
+        if type in ["movies", "boxsets", "music", "tvshows"]:
+            name = item.get("Name")
+            id = item.get("Id")
+
+            # plugin.video.embycon-
+            prop_name = "view_item.%i.name" % index
+            home_window.setProperty(prop_name, name)
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, name)
+
+            prop_name = "view_item.%i.id" % index
+            home_window.setProperty(prop_name, id)
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, id)
+
+            prop_name = "view_item.%i.type" % index
+            home_window.setProperty(prop_name, type)
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, type)
+
+            thumb = downloadUtils.getArtwork(item, "Primary", server=server)
+            prop_name = "view_item.%i.thumb" % index
+            home_window.setProperty(prop_name, thumb)
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, thumb)
+
+            index += 1
+
