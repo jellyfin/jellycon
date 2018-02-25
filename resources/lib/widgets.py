@@ -20,18 +20,41 @@ dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 
+def set_background_image():
+    log.debug("set_background_image Called")
+
+    url = ('{server}/emby/Users/{userid}/Items' +
+           '?Recursive=true' +
+           '&limit=1' +
+           '&SortBy=Random' +
+           '&IncludeItemTypes=Movie,Series' +
+           '&ImageTypeLimit=1')
+
+    results = downloadUtils.downloadUrl(url, suppress=True)
+    results = json.loads(results)
+    if results is not None:
+        items = results.get("Items", [])
+        if len(items) > 0:
+            item = items[0]
+            server = downloadUtils.getServer()
+            bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
+            home_window = HomeWindow()
+            home_window.setProperty("random-gb", bg_image)
+            log.debug("random-gb: {0}", bg_image)
+
+
 def checkForNewContent():
     log.debug("checkForNewContent Called")
 
     added_url = ('{server}/emby/Users/{userid}/Items' +
-                    '?Recursive=true' +
-                    '&limit=1' +
-                    '&Fields=DateCreated,Etag' +
-                    '&SortBy=DateCreated' +
-                    '&SortOrder=Descending' +
-                    '&IncludeItemTypes=Movie,Episode' +
-                    '&ImageTypeLimit=0' +
-                    '&format=json')
+                 '?Recursive=true' +
+                 '&limit=1' +
+                 '&Fields=DateCreated,Etag' +
+                 '&SortBy=DateCreated' +
+                 '&SortOrder=Descending' +
+                 '&IncludeItemTypes=Movie,Episode' +
+                 '&ImageTypeLimit=0' +
+                 '&format=json')
 
     added_result = downloadUtils.downloadUrl(added_url, suppress=True)
     result = json.loads(added_result)
@@ -46,14 +69,14 @@ def checkForNewContent():
     log.debug("last_added_date: {0}", last_added_date)
 
     played_url = ('{server}/emby/Users/{userid}/Items' +
-                    '?Recursive=true' +
-                    '&limit=1' +
-                    '&Fields=DateCreated,Etag' +
-                    '&SortBy=DatePlayed' +
-                    '&SortOrder=Descending' +
-                    '&IncludeItemTypes=Movie,Episode' +
-                    '&ImageTypeLimit=0' +
-                    '&format=json')
+                  '?Recursive=true' +
+                  '&limit=1' +
+                  '&Fields=DateCreated,Etag' +
+                  '&SortBy=DatePlayed' +
+                  '&SortOrder=Descending' +
+                  '&IncludeItemTypes=Movie,Episode' +
+                  '&ImageTypeLimit=0' +
+                  '&format=json')
 
     played_result = downloadUtils.downloadUrl(played_url, suppress=True)
     result = json.loads(played_result)
