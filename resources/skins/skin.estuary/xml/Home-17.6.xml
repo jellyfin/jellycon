@@ -18,7 +18,32 @@
 			<onclick>noop</onclick>
 			<visible allowhiddenfocus="true">Control.HasFocus(20001)</visible>
 		</control>
-		<include>DefaultBackground</include>
+		<!--<include>DefaultBackground</include>-->
+		
+		<!-- Start of EmbyCon Backgrounds -->
+		<control type="group">
+			<!--<animation effect="fade" start="100" end="bg_alpha" time="0" condition="!Control.IsVisible(31111)">Conditional</animation>-->
+			<animation effect="fade" start="0" end="100" time="300" condition="Window.Previous(fullscreenvideo) | Window.Previous(startup)">WindowOpen</animation>
+			<include>ColoredBackgroundImages</include>
+		</control>
+		<control type="image">
+			<include>FullScreenDimensions</include>
+			<aspectratio>scale</aspectratio>
+			<fadetime>400</fadetime>
+			<animation effect="fade" time="400">VisibleChange</animation>
+			<texture background="true" colordiffuse="37FFFFFF">$INFO[Window(Home).Property(plugin.video.embycon-random-gb)]</texture>
+			<visible>String.IsEmpty(ListItem.Art(fanart))</visible>
+		</control>			
+		<control type="image">
+			<include>FullScreenDimensions</include>
+			<aspectratio>scale</aspectratio>
+			<fadetime>400</fadetime>
+			<animation effect="fade" time="400">VisibleChange</animation>
+			<texture background="true" colordiffuse="37FFFFFF">$INFO[ListItem.Art(fanart)]</texture>
+			<visible>!String.IsEmpty(ListItem.Art(fanart))</visible>
+		</control>		
+		<!-- End of EmbyCon Backgrounds -->
+		
 		<control type="multiimage">
 			<depth>DepthBackground</depth>
 			<include>FullScreenDimensions</include>

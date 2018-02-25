@@ -41,7 +41,7 @@ playback_service = PlaybackService(monitor)
 home_window = HomeWindow()
 last_progress_update = time.time()
 last_content_check = time.time()
-last_background_update = time.time()
+last_background_update = 0
 websocket_client = WebSocketClient()
 
 # start the WebSocket Client running
