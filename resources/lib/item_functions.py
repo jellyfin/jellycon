@@ -218,9 +218,8 @@ def extract_item_info(item, gui_options):
 
     # Process Genres
     genres = item["Genres"]
-    if genres is not None:
-        for genre in genres:
-            item_details.genre = item_details.genre  + " / " + genre
+    if genres is not None and len(genres) > 0:
+        item_details.genre = " / ".join(genres)
 
     # Process UserData
     userData = item["UserData"]
