@@ -56,6 +56,7 @@ def showGenreList(params):
         result = []
 
     collections = []
+    xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
     for genre in result:
         item_data = {}

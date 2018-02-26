@@ -44,6 +44,7 @@ def addMenuDirectoryItem(label, path, folder=True, thumbnail=None):
     artLinks = {}
     artLinks["thumb"] = thumbnail
     artLinks["icon"] = thumbnail
+    artLinks["poster"] = thumbnail
     li.setArt(artLinks)
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
 
