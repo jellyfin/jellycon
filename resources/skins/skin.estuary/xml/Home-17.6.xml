@@ -1007,7 +1007,7 @@
 						</item>
 						<item>
 							<label>LogOff</label>
-							<onclick>ActivateWindow(shutdownmenu)</onclick>
+							<onclick>System.LogOff</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
 							<thumb>icons/sidemenu/programs.png</thumb>
 							<property name="id">power</property>
@@ -1067,17 +1067,24 @@
 				<animation effect="slide" end="0,-90" time="300" tween="sine" easing="inout" condition="$EXP[infodialog_active]">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
 				<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
-				<top>30</top>
-				<left>90</left>
+				<top>35</top>
+				<left>20</left>
+				<control type="image">
+					<width>70</width>
+					<height>70</height>
+					<texture >$INFO[Window(Home).Property(plugin.video.embycon-userimage)]</texture>
+				</control>				
 				<control type="image">
 					<aspectratio>keep</aspectratio>
-					<width>56</width>
-					<height>56</height>
+					<width>60</width>
+					<height>60</height>
+					<top>10</top>
+					<left>110</left>
 					<texture colordiffuse="button_focus">icons/logo.png</texture>
 				</control>
 				<control type="image">
-					<left>40</left>
-					<top>10</top>
+					<left>150</left>
+					<top>20</top>
 					<aspectratio>keep</aspectratio>
 					<width>192</width>
 					<height>36</height>
