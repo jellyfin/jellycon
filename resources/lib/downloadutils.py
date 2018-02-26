@@ -323,10 +323,12 @@ class DownloadUtils():
 
         accessToken = None
         userid = None
+        userImage = None
         try:
             result = json.loads(resp)
             accessToken = result.get("AccessToken")
             userid = result["SessionInfo"].get("UserId")
+            userImage = self.get_user_artwork(userid, 'Primary')
         except:
             pass
 
@@ -334,11 +336,13 @@ class DownloadUtils():
             log.debug("User Authenticated: {0}", accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
+            WINDOW.setProperty("userimage", userImage)
             return accessToken
         else:
             log.debug("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
             WINDOW.setProperty("userid", "")
+            WINDOW.setProperty("userimage", "")
             return ""
 
     def getAuthHeader(self, authenticate=True):
