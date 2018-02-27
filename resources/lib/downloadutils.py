@@ -214,9 +214,15 @@ class DownloadUtils():
             artwork += '&MaxHeight=%s' % height
         return artwork
 
-    def get_user_artwork(self, item_id, item_type):
-        # Load user information set by UserClient
-        return "%s/emby/Users/%s/Images/%s?Format=original" % (self.getServer(), item_id, item_type)
+    def get_user_artwork(self, user, item_type):
+
+        if "PrimaryImageTag" not in user:
+            return ""
+        user_id = user.get("Id")
+        tag = user.get("PrimaryImageTag")
+        server = self.getServer()
+
+        return "%s/emby/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
 
     def getUserId(self):
 
@@ -262,8 +268,7 @@ class DownloadUtils():
         for user in result:
             if (user.get("Name") == unicode(userName, "utf-8")):
                 userid = user.get("Id")
-                if "PrimaryImageTag" in user:
-                    userImage =  self.get_user_artwork(userid, 'Primary')
+                userImage =  self.get_user_artwork(user, 'Primary')
                 log.debug("Username Found: {0}", user.get("Name"))
                 if (user.get("HasPassword") == True):
                     secure = True
@@ -322,27 +327,19 @@ class DownloadUtils():
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
 
         accessToken = None
-        userid = None
-        userImage = None
         try:
             result = json.loads(resp)
             accessToken = result.get("AccessToken")
-            userid = result["SessionInfo"].get("UserId")
-            userImage = self.get_user_artwork(userid, 'Primary')
         except:
             pass
 
         if accessToken is not None:
             log.debug("User Authenticated: {0}", accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
-            WINDOW.setProperty("userid", userid)
-            WINDOW.setProperty("userimage", userImage)
             return accessToken
         else:
             log.debug("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
-            WINDOW.setProperty("userid", "")
-            WINDOW.setProperty("userimage", "")
             return ""
 
     def getAuthHeader(self, authenticate=True):
