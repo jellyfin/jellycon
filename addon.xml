@@ -11,6 +11,14 @@
   </extension>
   <extension point="xbmc.service" library="service.py" start="login">
   </extension>
+  <extension point="kodi.context.item" library="contextmenu.py">
+    <menu id="kodi.core.main">
+      <item library="contextmenu.py">
+        <label>30326</label>
+        <visible>!IsEmpty(ListItem.Property(id)) + [Window.IsActive(home) | Container.Content(movies) | Container.Content(albums) | Container.Content(albums) | Container.Content(songs) | Container.Content(episodes)]</visible>
+      </item>
+    </menu>
+  </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language>en</language>
