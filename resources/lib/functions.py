@@ -542,9 +542,9 @@ def processDirectory(results, progress, params):
 def showMenu(params):
     log.debug("showMenu(): {0}", params)
 
-    id = params["item_id"]
+    item_id = params["item_id"]
 
-    url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.GetContent(url)
     log.debug("Playfile item info: {0}", result)
@@ -553,31 +553,52 @@ def showMenu(params):
         return
 
     action_items = []
-    li = xbmcgui.ListItem("Play")
-    li.setProperty('menu_id', 'play')
-    action_items.append(li)
+
+    if result["Type"] in ["Episode", "Movie", "Music"]:
+        li = xbmcgui.ListItem(i18n('play'))
+        li.setProperty('menu_id', 'play')
+        action_items.append(li)
+
+    if result["Type"] in ["Season", "MusicAlbum"]:
+        li = xbmcgui.ListItem(i18n('play_all'))
+        li.setProperty('menu_id', 'play_all')
+        action_items.append(li)
+
+    if result["Type"] in ["Episode", "Movie"]:
+        li = xbmcgui.ListItem(i18n('emby_force_transcode'))
+        li.setProperty('menu_id', 'transcode')
+        action_items.append(li)
+
+    if result["Type"] == "Movie":
+        li = xbmcgui.ListItem(i18n('play_trailer'))
+        li.setProperty('menu_id', 'play_trailer')
+        action_items.append(li)
 
     if result["Type"] == "Episode" and result["ParentId"] is not None:
-        li = xbmcgui.ListItem("Show Season")
-        li.setProperty('menu_id', 'show_season')
+        li = xbmcgui.ListItem(i18n('view_season'))
+        li.setProperty('menu_id', 'view_season')
         action_items.append(li)
-
-    li = xbmcgui.ListItem("Force Transcode")
-    li.setProperty('menu_id', 'transcode')
-    action_items.append(li)
 
     user_data = result["UserData"]
-    if user_data.get("Played", False) is False or user_data.get("PlaybackPositionTicks", 0) > 0:
-        li = xbmcgui.ListItem("Mark Watched")
+    if user_data.get("Played", False) is False:
+        li = xbmcgui.ListItem(i18n('emby_mark_watched'))
         li.setProperty('menu_id', 'mark_watched')
         action_items.append(li)
-
-    if user_data.get("Played", False) is True or user_data.get("PlaybackPositionTicks", 0) > 0:
-        li = xbmcgui.ListItem("Mark Unwatched")
+    else:
+        li = xbmcgui.ListItem(i18n('emby_mark_unwatched'))
         li.setProperty('menu_id', 'mark_unwatched')
         action_items.append(li)
 
-    li = xbmcgui.ListItem("Delete")
+    if user_data["IsFavorite"] == False:
+        li = xbmcgui.ListItem(i18n('emby_set_favorite'))
+        li.setProperty('menu_id', 'emby_set_favorite')
+        action_items.append(li)
+    else:
+        li = xbmcgui.ListItem(i18n('emby_unset_favorite'))
+        li.setProperty('menu_id', 'emby_unset_favorite')
+        action_items.append(li)
+
+    li = xbmcgui.ListItem(i18n('emby_delete'))
     li.setProperty('menu_id', 'delete')
     action_items.append(li)
 
@@ -599,19 +620,38 @@ def showMenu(params):
         #result = xbmcgui.Dialog().info(list_item)
         #log.debug("xbmcgui.Dialog().info: {0}", result)
         PLAY(params)
+
+    elif selected_action == "play_all":
+        PLAY(params)
+
+    elif selected_action == "play_trailer":
+        playTrailer(item_id)
+
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
         PLAY(params)
+
+    elif selected_action == "emby_set_favorite":
+        markFavorite(item_id)
+        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+
+    elif selected_action == "emby_unset_favorite":
+        unmarkFavorite(item_id)
+        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+
     elif selected_action == "mark_watched":
-        markWatched(params["item_id"])
-        xbmc.executebuiltin("XBMC.ReloadSkin()")
+        markWatched(item_id)
+        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+
     elif selected_action == "mark_unwatched":
-        markUnwatched(params["item_id"])
-        xbmc.executebuiltin("XBMC.ReloadSkin()")
+        markUnwatched(item_id)
+        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+
     elif selected_action == "delete":
-        delete(params["item_id"])
-        xbmc.executebuiltin("XBMC.ReloadSkin()")
-    elif selected_action == "show_season":
+        delete(item_id)
+        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+
+    elif selected_action == "view_season":
         parent_id = result["ParentId"]
         xbmc.executebuiltin(
             'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
@@ -890,9 +930,9 @@ def searchResults(params):
 
         item_details = ItemDetails()
         item_details.id = item_id
-        menu_items = add_context_menu(item_details, is_folder)
-        if len(menu_items) > 0:
-            list_item.addContextMenuItems(menu_items, True)
+        #menu_items = add_context_menu(item_details, is_folder)
+        #if len(menu_items) > 0:
+        #    list_item.addContextMenuItems(menu_items, True)
 
         if (season is not None) and (episode is not None):
             info['episode'] = episode

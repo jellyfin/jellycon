@@ -15,7 +15,7 @@
     <menu id="kodi.core.main">
       <item library="contextmenu.py">
         <label>30326</label>
-        <visible>!IsEmpty(ListItem.Property(id)) + [Window.IsActive(home) | Container.Content(movies) | Container.Content(albums) | Container.Content(albums) | Container.Content(songs) | Container.Content(episodes)]</visible>
+        <visible>!String.IsEmpty(ListItem.Property(id)) + String.StartsWith(ListItem.FolderPath,plugin://plugin.video.embycon)</visible><!-- + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song)]</visible>-->
       </item>
     </menu>
   </extension>

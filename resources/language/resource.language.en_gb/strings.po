@@ -483,27 +483,27 @@ msgid "Movies - Random"
 msgstr ""
 
 msgctxt "#30270"
-msgid "Emby: Mark watched"
+msgid "Mark watched"
 msgstr ""
 
 msgctxt "#30271"
-msgid "Emby: Mark unwatched"
+msgid "Mark unwatched"
 msgstr ""
 
 msgctxt "#30272"
-msgid "Emby: Set favourite"
+msgid "Set favourite"
 msgstr ""
 
 msgctxt "#30273"
-msgid "Emby: Unset favourite"
+msgid "Unset favourite"
 msgstr ""
 
 msgctxt "#30274"
-msgid "Emby: Delete"
+msgid "Delete"
 msgstr ""
 
 msgctxt "#30275"
-msgid "Emby: Force Transcode"
+msgid "Force Transcode"
 msgstr ""
 
 msgctxt "#30276"
@@ -631,7 +631,7 @@ msgid "Playback starting: %s"
 msgstr ""
 
 msgctxt "#30307"
-msgid "Emby: Play Trailer"
+msgid "Play Trailer"
 msgstr ""
 
 msgctxt "#30308"
@@ -671,7 +671,7 @@ msgid "Connection Error"
 msgstr ""
 
 msgctxt "#30317"
-msgid "Emby: Play All"
+msgid "Play All"
 msgstr ""
 
 msgctxt "#30318"
@@ -707,5 +707,9 @@ msgid " - Genres"
 msgstr ""
 
 msgctxt "#30326"
-msgid "EmbyCon Menu"
+msgid "[EmbyCon Menu]"
+msgstr ""
+
+msgctxt "#30327"
+msgid "View Season"
 msgstr ""

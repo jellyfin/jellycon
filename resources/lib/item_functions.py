@@ -362,9 +362,9 @@ def add_gui_item(url, item_details, display_options, folder=True):
     list_item.setProperty('tvshow.poster', item_details.art['tvshow.poster'])  # not avail to setArt
 
     # add context menu
-    menu_items = add_context_menu(item_details, folder)
-    if len(menu_items) > 0:
-        list_item.addContextMenuItems(menu_items, True)
+    #menu_items = add_context_menu(item_details, folder)
+    #if len(menu_items) > 0:
+    #    list_item.addContextMenuItems(menu_items, True)
 
     # new way
     info_labels = {}
