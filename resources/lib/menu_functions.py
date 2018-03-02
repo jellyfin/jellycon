@@ -702,31 +702,22 @@ def showSearch():
 
 
 def set_library_window_values():
-    home_window = HomeWindow()
     log.debug("set_library_window_values called")
-    count = 0
-    token = home_window.getProperty("AccessToken")
-    while token is None or token == "":
-        count += 1
-        if xbmc.abortRequested or count > 40:
-            log.debug("set_library_window_values, timed out!")
-            return
+    home_window = HomeWindow()
 
-        xbmc.sleep(500)
-        token = home_window.getProperty("AccessToken")
+    already_set = home_window.getProperty("view_item.0.name")
+    if already_set:
+        return
 
-    log.debug("set_library_window_values: Token: {0}", token)
-    # at this point we should have a token and be authenticated
-
-    server = downloadUtils.getServer()
     data_manager = DataManager()
     url = "{server}/emby/Users/{userid}/Views"
     result = data_manager.GetContent(url)
 
-    if result is not None:
-        result = result.get("Items")
-    else:
-        result = []
+    if result is None:
+        return
+
+    result = result.get("Items")
+    server = downloadUtils.getServer()
 
     index = 0
     for item in result:

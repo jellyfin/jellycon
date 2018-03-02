@@ -56,9 +56,6 @@ def check_version():
 t = Timer(5.0, check_version)
 t.start()
 
-skin_menu_info = Timer(2.0, set_library_window_values)
-skin_menu_info.start()
-
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
 # I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
@@ -77,6 +74,7 @@ while not xbmc.abortRequested:
                 checkForNewContent()
             if (time.time() - last_background_update) > 30:
                 last_background_update = time.time()
+                set_library_window_values()
                 set_background_image()
 
     except Exception as error:
