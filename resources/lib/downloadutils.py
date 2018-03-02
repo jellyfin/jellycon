@@ -228,8 +228,9 @@ class DownloadUtils():
 
         WINDOW = HomeWindow()
         userid = WINDOW.getProperty("userid")
+        userImage = WINDOW.getProperty("userimage")
 
-        if (userid != None and userid != ""):
+        if userid and userImage:
             log.debug("EmbyCon DownloadUtils -> Returning saved UserID: {0}", userid)
             return userid
 
@@ -262,8 +263,6 @@ class DownloadUtils():
 
         log.debug("GETUSER_JSONDATA_02: {0}", result)
 
-        userid = ""
-        userImage = ""
         secure = False
         for user in result:
             if (user.get("Name") == unicode(userName, "utf-8")):
@@ -284,6 +283,9 @@ class DownloadUtils():
                 return ""
             if not userid:
                 userid = WINDOW.getProperty("userid")
+
+        if userid and not userImage:
+            userImage = 'DefaultUser.png'
 
         if userid == "":
             xbmcgui.Dialog().notification(i18n("connection_error"),
@@ -327,19 +329,25 @@ class DownloadUtils():
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
 
         accessToken = None
+        userid = None
         try:
             result = json.loads(resp)
             accessToken = result.get("AccessToken")
+            userid = result["SessionInfo"].get("UserId")
         except:
             pass
 
         if accessToken is not None:
             log.debug("User Authenticated: {0}", accessToken)
             WINDOW.setProperty("AccessToken", accessToken)
+            WINDOW.setProperty("userid", userid)
+            WINDOW.setProperty("userimage", "")
             return accessToken
         else:
             log.debug("User NOT Authenticated")
             WINDOW.setProperty("AccessToken", "")
+            WINDOW.setProperty("userid", "")
+            WINDOW.setProperty("userimage", "")
             return ""
 
     def getAuthHeader(self, authenticate=True):
