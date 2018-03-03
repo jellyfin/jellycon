@@ -4,6 +4,7 @@ import os
 import urllib
 import json
 from collections import defaultdict
+import time
 
 import xbmc
 import xbmcaddon
@@ -300,6 +301,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
     else:
         u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
 
+    u += "&time=" + str(time.time())
+
     # Create the ListItem that will be displayed
     thumbPath = item_details.art["thumb"]
 
@@ -379,7 +382,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
     info_labels["title"] = listItemName
     info_labels["plot"] = item_details.plot
     info_labels["Overlay"] = item_details.overlay
-    info_labels["playcount"] = str(item_details.play_count)
     info_labels["TVShowTitle"] = item_details.series_name
 
     info_labels["duration"] = item_details.duration

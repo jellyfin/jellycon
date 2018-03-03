@@ -633,23 +633,23 @@ def showMenu(params):
 
     elif selected_action == "emby_set_favorite":
         markFavorite(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "emby_unset_favorite":
         unmarkFavorite(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "mark_watched":
         markWatched(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "mark_unwatched":
         markUnwatched(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "delete":
         delete(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime()))
+        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "view_season":
         parent_id = result["ParentId"]

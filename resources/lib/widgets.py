@@ -6,6 +6,7 @@ import xbmc
 import json
 import urllib
 import hashlib
+import time
 
 from downloadutils import DownloadUtils
 from utils import getArt
@@ -333,15 +334,16 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
             totalTime = str(int(float(runtime) / (10000000 * 60)))
             list_item.setProperty('TotalTime', str(totalTime))
 
+        list_item.setContentLookup(False)
         list_item.setProperty('id', item_id)
 
         if simmilarTo is not None:
             list_item.setProperty('suggested_from_watching', simmilarTo)
 
         if select_action == "1":
-            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY'
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY' + "&time=" + str(time.time())
         elif select_action == "0":
-            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU'
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU' + "&time=" + str(time.time())
 
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
