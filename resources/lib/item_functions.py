@@ -15,6 +15,7 @@ from simple_logging import SimpleLogging
 from translation import i18n
 from downloadutils import DownloadUtils
 from datamanager import DataManager
+from kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
@@ -24,6 +25,7 @@ addon_path = addon_instance.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join(addon_path))
 
 download_utils = DownloadUtils()
+home_window = HomeWindow()
 
 class ItemDetails():
 
@@ -299,9 +301,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         if item_details.name_format:
             u += '&name_format=' + urllib.quote(item_details.name_format)
     else:
-        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
-
-    u += "&time=" + str(time.time())
+        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY" + "&session_id=" + home_window.getProperty("session_id")
 
     # Create the ListItem that will be displayed
     thumbPath = item_details.art["thumb"]

@@ -44,6 +44,10 @@ last_content_check = time.time()
 last_background_update = 0
 websocket_client = WebSocketClient()
 
+# session id
+# TODO: this is used to append to the end of PLAY urls, this is to stop mark watched from overriding the Emby ones
+home_window.setProperty("session_id", str(time.time()))
+
 # start the WebSocket Client running
 settings = xbmcaddon.Addon(id='plugin.video.embycon')
 remote_control = settings.getSetting('remoteControl') == "true"

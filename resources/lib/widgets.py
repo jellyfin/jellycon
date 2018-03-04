@@ -239,6 +239,8 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
 
     log.debug("WIDGET_DATE_URL: {0}", itemsUrl)
 
+    home_window = HomeWindow()
+
     # get the items
     data_manager = DataManager()
     result = data_manager.GetContent(itemsUrl)
@@ -340,10 +342,12 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         if simmilarTo is not None:
             list_item.setProperty('suggested_from_watching', simmilarTo)
 
+        session_id =  "&session_id=" + home_window.getProperty("session_id")
+
         if select_action == "1":
-            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY' + "&time=" + str(time.time())
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY' + session_id
         elif select_action == "0":
-            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU' + "&time=" + str(time.time())
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU' + session_id
 
         itemTupple = (playurl, list_item, False)
         listItems.append(itemTupple)
