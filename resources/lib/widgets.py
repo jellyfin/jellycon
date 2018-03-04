@@ -198,17 +198,20 @@ def getWidgetContentCast(handle, params):
                 person_role = person.get("Role")
                 person_id = person.get("Id")
                 person_tag = person.get("PrimaryImageTag")
-                person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                person_thumbnail = None
+                if person_tag:
+                    person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
                 if kodi_version > 17:
                     list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail, offscreen=True)
                 else:
                     list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail)
 
-                artLinks = {}
-                artLinks["thumb"] = person_thumbnail
-                artLinks["poster"] = person_thumbnail
-                list_item.setArt(artLinks)
+                if person_thumbnail:
+                    artLinks = {}
+                    artLinks["thumb"] = person_thumbnail
+                    artLinks["poster"] = person_thumbnail
+                    list_item.setArt(artLinks)
 
                 labels = {}
                 labels["mediatype"] = "artist"
