@@ -427,6 +427,10 @@ def add_gui_item(url, item_details, display_options, folder=True):
         info_labels["season"] = item_details.season_number
 
     if is_video:
+
+        if item_type == 'movie':
+            info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
+
         list_item.setInfo('video', info_labels)
         log.debug("info_labels: {0}", info_labels)
         list_item.addStreamInfo('video',

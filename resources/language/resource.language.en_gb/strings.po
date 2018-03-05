@@ -143,11 +143,11 @@ msgid "N/A"
 msgstr ""
 
 msgctxt "#30091"
-msgid "Confirm file delete?"
+msgid "Confirm delete?"
 msgstr ""
 
 msgctxt "#30092"
-msgid "Delete this item? This action will delete media and associated data files."
+msgid "Warning: This action will delete the media files from the server."
 msgstr ""
 
 msgctxt "#30110"
