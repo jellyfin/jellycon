@@ -112,9 +112,9 @@ def mainEntryPoint():
     elif sys.argv[1] == "unmarkFavorite":
         item_id = sys.argv[2]
         unmarkFavorite(item_id)
-    elif sys.argv[1] == "delete":
-        item_id = sys.argv[2]
-        delete(item_id)
+    #elif sys.argv[1] == "delete":
+    #    item_id = sys.argv[2]
+    #    delete(item_id)
     elif mode == "playTrailer":
         item_id = params["id"]
         playTrailer(item_id)
@@ -208,7 +208,7 @@ def markWatched(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    checkForNewContent()
+    home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -218,7 +218,7 @@ def markUnwatched(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    checkForNewContent()
+    home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -228,7 +228,7 @@ def markFavorite(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    checkForNewContent()
+    home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -238,12 +238,21 @@ def unmarkFavorite(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("force_data_reload", "true")
-    checkForNewContent()
+    home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
 
-def delete(item_id):
-    return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'))
+def delete(item):
+
+    item_id = item.get("Id")
+    item_name = item.get("Name")
+    series_name = item.get("SeriesName")
+    if series_name:
+        final_name = series_name + " - " + item_name
+    else:
+        final_name = item_name
+
+    return_value = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), final_name, i18n('file_delete_confirm'))
     if return_value:
         log.debug('Deleting Item: {0}', item_id)
         url = '{server}/emby/Items/' + item_id
@@ -252,7 +261,8 @@ def delete(item_id):
         downloadUtils.downloadUrl(url, method="DELETE")
         progress.close()
         home_window = HomeWindow()
-        checkForNewContent()
+        home_window.setProperty("force_data_reload", "true")
+        home_window.setProperty("embycon_widget_reload", str(time.time()))
         xbmc.executebuiltin("Container.Refresh")
 
 
@@ -633,23 +643,18 @@ def showMenu(params):
 
     elif selected_action == "emby_set_favorite":
         markFavorite(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "emby_unset_favorite":
         unmarkFavorite(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "mark_watched":
         markWatched(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "mark_unwatched":
         markUnwatched(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
 
     elif selected_action == "delete":
-        delete(item_id)
-        HomeWindow().setProperty("embycon_widget_reload", str(time.time()))
+        delete(result)
 
     elif selected_action == "view_season":
         parent_id = result["ParentId"]

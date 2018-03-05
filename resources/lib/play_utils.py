@@ -10,6 +10,7 @@ import xbmcvfs
 from datetime import timedelta
 from datetime import datetime
 import json
+import time
 
 from resources.lib.error import catch_except
 from simple_logging import SimpleLogging
@@ -22,6 +23,7 @@ from json_rpc import json_rpc
 from datamanager import DataManager
 from item_functions import get_next_episode, extract_item_info
 from clientinfo import ClientInformation
+from functions import delete
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -672,12 +674,7 @@ def promptForStopActions(item_id, current_possition):
 
     if prompt_to_delete:
         log.debug("Prompting for delete")
-        resp = xbmcgui.Dialog().yesno(i18n('confirm_file_delete'), i18n('file_delete_confirm'), autoclose=10000)
-        if resp:
-            log.debug("Deleting item: {0}", item_id)
-            url = "{server}/emby/Items/%s?format=json" % item_id
-            download_utils.downloadUrl(url, method="DELETE")
-            xbmc.executebuiltin("Container.Refresh")
+        delete(result)
 
     # prompt for next episode
     if (prompt_next_percentage < 100 and
