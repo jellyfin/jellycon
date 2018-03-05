@@ -995,28 +995,42 @@ def playTrailer(id):
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("LocalTrailers {0}", result)
+    count = 1
 
+    trailer_names = []
     trailer_list = []
     for trailer in result:
         info = {}
         info["type"] = "local"
-        info["name"] = trailer.get("Name", "na")
+        name = trailer.get("Name")
+        while not name or name in trailer_names:
+            name = "Trailer " + str(count)
+            count += 1
+        info["name"] = name
         info["id"] = trailer.get("Id")
+        count += 1
+        trailer_names.append(name)
         trailer_list.append(info)
 
     url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % id)
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
     log.debug("RemoteTrailers: {0}", result)
+    count = 1
 
     remote_trailers = result.get("RemoteTrailers", [])
     for trailer in remote_trailers:
         info = {}
         info["type"] = "remote"
-        info["name"] = trailer.get("Name", "na")
         url = trailer.get("Url", "none")
         if url.lower().find("youtube"):
             info["url"] = url
+            name = trailer.get("Name")
+            while not name or name in trailer_names:
+                name = "Trailer " + str(count)
+                count += 1
+            info["name"] = name
+            trailer_names.append(name)
             trailer_list.append(info)
 
     log.debug("TrailerList: {0}", trailer_list)
