@@ -296,6 +296,8 @@ def getCollections():
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
+                         '&CollapseBoxSetItems=true' +
+                         '&Recursive=true' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
