@@ -289,7 +289,7 @@ def getCollections():
                                  '&format=json')
             collections.append(item_data)
 
-        if collection_type in ["tvshows", "movies", "boxsets"]:
+        if collection_type in ["movies", "boxsets"]:
             collections.append({
                 'title': item_name,
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
@@ -305,6 +305,17 @@ def getCollections():
                 'media_type': collection_type})
 
         if collection_type == "tvshows":
+            collections.append({
+                'title': item_name,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_unwatched'),
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
