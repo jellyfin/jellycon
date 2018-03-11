@@ -13,14 +13,18 @@ layout: default
 <h4>Libreelec</h4>
 Log into Libreelec and run the following commands and then restart Libreelec.
 <pre>
+
 cp -r /usr/share/kodi/addons/skin.estuary /storage/.kodi/addons
 cp /storage/.kodi/addons/plugin.video.embycon/resources/skins/skin.estuary/xml/Home-17.6.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
+
 </pre>
 
 <h4>Windows</h4>
 <pre>
+
 xcopy /S /Y "c:\Program Files (x86)\Kodi\addons\skin.estuary\*" "%APPDATA%\Kodi\addons\skin.estuary\"
 xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.6.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
+
 </pre>
 
 {% include youtubePlayer.html id="ueukOCfDgm8" %}

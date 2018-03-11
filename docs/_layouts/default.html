@@ -15,7 +15,7 @@
   <body>
     <div class="wrapper">
       <header>
-        <a href="{{ site.github.url }}"> <h1>{{ site.title | default: site.github.repository_name }}</h1> </a>
+        <a href="{{ site.github.url }}"> <h1>EmbyCon: Kodi Addon</h1> </a>
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
 		<p>
@@ -23,27 +23,13 @@
 		</p>
 		
 		<p class="view"><a href="index.html">Home</a></p>
-		<p class="view"><a href="https://emby.media/community/index.php?/forum/99-kodi/">Forum</a></p>
+		<p class="view"><a href="https://emby.media/community/index.php?/forum/99-kodi/" target="_blank">Forum</a></p>
 		<p class="view"><a href="history.html">A Little History</a></p>
 		<p class="view"><a href="titan.html">Titan Skin Setup</a></p>
 		<p class="view"><a href="estuary.html">Estuary Skin Mod</a></p>
 		<p class="view"><a href="beta.html">Beta Versions</a></p>
-		
-        {% if site.github.is_project_page %}
-          <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ github_name }}</small></a></p>
-        {% endif %}
+		<p class="view"><a href="{{ site.github.repository_url }}" target="_blank">GitHub Project Page <small>{{ github_name }}</small></a></p>
 
-        {% if site.github.is_user_page %}
-          <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
-        {% endif %}
-
-        {% if site.show_downloads %}
-          <ul>
-            <li><a href="{{ site.github.zip_url }}">Download <strong>ZIP File</strong></a></li>
-            <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
-            <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
-          </ul>
-        {% endif %}
       </header>
       <section>
 
@@ -51,10 +37,7 @@
 
       </section>
       <footer>
-        {% if site.github.is_project_page %}
-        <p>This project is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
-        {% endif %}
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on GitHub Pages</small></p>
       </footer>
     </div>
     <script src="{{ '/assets/js/scale.fix.js' | relative_url }}"></script>
