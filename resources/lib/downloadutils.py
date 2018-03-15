@@ -24,7 +24,7 @@ log = SimpleLogging(__name__)
 
 def getDetailsString():
 
-    addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+    addonSettings = xbmcaddon.Addon()
     include_media = addonSettings.getSetting("include_media") == "true"
     include_people = addonSettings.getSetting("include_people") == "true"
     include_overview = addonSettings.getSetting("include_overview") == "true"
@@ -46,14 +46,14 @@ class DownloadUtils():
     getString = None
 
     def __init__(self, *args):
-        addon = xbmcaddon.Addon(id='plugin.video.embycon')
+        addon = xbmcaddon.Addon()
         self.addon_name = addon.getAddonInfo('name')
 
     def checkVersion(self):
         server_info = {}
         activity = {}
         try:
-            settings = xbmcaddon.Addon(id='plugin.video.embycon')
+            settings = xbmcaddon.Addon()
             check_version = settings.getSetting('checkVersion') == 'true'
             if check_version == False:
                 log.debug("Version Check: Not Enabled")
@@ -110,7 +110,7 @@ class DownloadUtils():
             log.debug("Version Check Error: SEND: {0}", error)
 
     def getServer(self):
-        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
         port = settings.getSetting('port')
         if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
@@ -234,7 +234,7 @@ class DownloadUtils():
             log.debug("EmbyCon DownloadUtils -> Returning saved UserID: {0}", userid)
             return userid
 
-        settings = xbmcaddon.Addon('plugin.video.embycon')
+        settings = xbmcaddon.Addon()
         userName = settings.getSetting('username')
 
         if not userName:
@@ -308,7 +308,7 @@ class DownloadUtils():
             log.debug("EmbyCon DownloadUtils -> Returning saved AccessToken: {0}", token)
             return token
 
-        settings = xbmcaddon.Addon('plugin.video.embycon')
+        settings = xbmcaddon.Addon()
         port = settings.getSetting("port")
         host = settings.getSetting("ipaddress")
         if host is None or host == "" or port is None or port == "":
@@ -356,7 +356,7 @@ class DownloadUtils():
         version = clientInfo.getVersion()
         client = clientInfo.getClient()
 
-        settings = xbmcaddon.Addon('plugin.video.embycon')
+        settings = xbmcaddon.Addon()
         deviceName = settings.getSetting('deviceName')
         # remove none ascii chars
         deviceName = deviceName.decode("ascii", errors='ignore')
@@ -391,7 +391,7 @@ class DownloadUtils():
         log.debug("downloadUrl")
 
         return_data = "null"
-        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        settings = xbmcaddon.Addon()
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True

@@ -18,7 +18,7 @@ from datamanager import DataManager
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
 
-__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__addon__ = xbmcaddon.Addon()
 
 
 def showGenreList(params):
@@ -90,7 +90,7 @@ def showGenreList(params):
 def showMovieAlphaList():
     log.debug("== ENTER: showMovieAlphaList() ==")
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     server = downloadUtils.getServer()
     if server is None:
         return

@@ -33,7 +33,7 @@ import trakttokodi
 from item_functions import add_gui_item, extract_item_info, ItemDetails, add_context_menu
 
 
-__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
 __cwd__ = __addon__.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join(__cwd__))
@@ -50,7 +50,7 @@ dataManager = DataManager()
 def mainEntryPoint():
     log.debug("===== EmbyCon START =====")
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     profile_code = settings.getSetting('profile') == "true"
     pr = None
     if (profile_code):
@@ -324,7 +324,7 @@ def getContent(url, params):
     log.debug("MediaType: {0}", media_type)
     pluginhandle = int(sys.argv[1])
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     # determine view type, map it from media type to view type
     viewType = ""
     media_type = str(media_type).lower().strip()
@@ -394,7 +394,7 @@ def getContent(url, params):
 def processDirectory(results, progress, params):
     log.debug("== ENTER: processDirectory ==")
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     server = downloadUtils.getServer()
 
     name_format = params.get("name_format", None)
@@ -549,6 +549,8 @@ def processDirectory(results, progress, params):
 
     return dirItems
 
+
+@catch_except()
 def showMenu(params):
     log.debug("showMenu(): {0}", params)
 
@@ -563,7 +565,7 @@ def showMenu(params):
         return
 
     action_items = []
-
+    
     if result["Type"] in ["Episode", "Movie", "Music"]:
         li = xbmcgui.ListItem(i18n('play'))
         li.setProperty('menu_id', 'play')
@@ -789,7 +791,7 @@ def searchResults(params):
     limit = int(params.get('limit', 50))
     index = 0
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     server = downloadUtils.getServer()
 
     content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +

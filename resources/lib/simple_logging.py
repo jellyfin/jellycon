@@ -11,7 +11,7 @@ class SimpleLogging():
     enable_logging = False
 
     def __init__(self, name):
-        settings = xbmcaddon.Addon(id='plugin.video.embycon')
+        settings = xbmcaddon.Addon()
         prefix = settings.getAddonInfo('name')
         self.name = prefix + '.' + name
         params = {"setting": "debug.showloginfo"}

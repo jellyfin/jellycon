@@ -234,7 +234,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     if server is None:
         return []
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     select_action = settings.getSetting("widget_select_action")
 
     if override_select_action is not None:

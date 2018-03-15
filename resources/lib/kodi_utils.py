@@ -9,7 +9,7 @@ import json
 from simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
-addon = xbmcaddon.Addon(id='plugin.video.embycon')
+addon = xbmcaddon.Addon()
 
 class HomeWindow():
     """

@@ -15,7 +15,7 @@ from translation import i18n
 
 log = SimpleLogging(__name__)
 
-__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
+__addon__ = xbmcaddon.Addon()
 __addon_name__ = __addon__.getAddonInfo('name')
 downloadUtils = DownloadUtils()
 
@@ -59,7 +59,7 @@ def getServerDetails():
 def checkServer(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     serverUrl = ""
 
     if force is False:

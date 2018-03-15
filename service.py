@@ -49,7 +49,7 @@ websocket_client = WebSocketClient()
 home_window.setProperty("session_id", str(time.time()))
 
 # start the WebSocket Client running
-settings = xbmcaddon.Addon(id='plugin.video.embycon')
+settings = xbmcaddon.Addon()
 remote_control = settings.getSetting('remoteControl') == "true"
 if remote_control:
     websocket_client.start()

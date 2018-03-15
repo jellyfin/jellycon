@@ -30,7 +30,7 @@ log = SimpleLogging(__name__)
 class PlayUtils():
     def getPlayUrl(self, id, media_source, force_transcode, play_session_id):
         log.debug("getPlayUrl")
-        addonSettings = xbmcaddon.Addon(id='plugin.video.embycon')
+        addonSettings = xbmcaddon.Addon()
         playback_type = addonSettings.getSetting("playback_type")
         server = downloadUtils.getServer()
         log.debug("playback_type: {0}", playback_type)

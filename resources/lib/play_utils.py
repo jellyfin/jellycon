@@ -123,7 +123,7 @@ def playFile(play_info, monitor):
 
     log.debug("playFile id({0}) resume({1}) force_transcode({2})", id, auto_resume, force_transcode)
 
-    settings = xbmcaddon.Addon('plugin.video.embycon')
+    settings = xbmcaddon.Addon()
     addon_path = settings.getAddonInfo('path')
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
@@ -630,7 +630,7 @@ def sendProgress(monitor):
 @catch_except()
 def promptForStopActions(item_id, current_possition):
 
-    settings = xbmcaddon.Addon(id='plugin.video.embycon')
+    settings = xbmcaddon.Addon()
 
     prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
     play_prompt = settings.getSetting('promptPlayNextEpisodePercentage_prompt') == "true"
@@ -744,7 +744,7 @@ class Service(xbmc.Player):
         self.activity = {}
 
     def save_activity(self):
-        addon = xbmcaddon.Addon(id='plugin.video.embycon')
+        addon = xbmcaddon.Addon()
         path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
         activity_data = json.dumps(self.activity)
         f = xbmcvfs.File(path, 'w')

@@ -20,7 +20,7 @@ from kodi_utils import HomeWindow
 log = SimpleLogging(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
-addon_instance = xbmcaddon.Addon(id='plugin.video.embycon')
+addon_instance = xbmcaddon.Addon()
 addon_path = addon_instance.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join(addon_path))
 

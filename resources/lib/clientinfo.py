@@ -40,7 +40,7 @@ class ClientInformation():
         return client_id
 
     def getVersion(self):
-        addon = xbmcaddon.Addon(id="plugin.video.embycon")
+        addon = xbmcaddon.Addon()
         version = addon.getAddonInfo("version")
         return version
 
