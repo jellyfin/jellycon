@@ -5,11 +5,21 @@ layout: default
 <h3>Editing the Default Skins (Estuary) Home Screen by adding Emby menu items</h3>
  
 <p>With the default Skin (Estuary) we can add custom menu items to the home screen, this requires editing the default skin Home.xml file. The easiest way to do this is use the packaged Home.xml file that comes with the EmbyCon addon.</p>
- 
+
+What it looks like in action:
+
+{% include youtubePlayer.html id="ueukOCfDgm8" %} 
+    
 <p>In 2 simple commands you can create a copy of the default skin and update it to use the packaged Home screen Home.xml file that comes with the EmbyCon addon.</p>
- 
-<p>The following is for Kodi 17.3</p>
- 
+
+<h4>Windows</h4>
+<pre>
+
+xcopy /S /Y "c:\Program Files (x86)\Kodi\addons\skin.estuary\*" "%APPDATA%\Kodi\addons\skin.estuary\"
+xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.6.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
+
+</pre> 
+
 <h4>Libreelec</h4>
 Log into Libreelec and run the following commands and then restart Libreelec.
 <pre>
@@ -19,13 +29,4 @@ cp /storage/.kodi/addons/plugin.video.embycon/resources/skins/skin.estuary/xml/H
 
 </pre>
 
-<h4>Windows</h4>
-<pre>
-
-xcopy /S /Y "c:\Program Files (x86)\Kodi\addons\skin.estuary\*" "%APPDATA%\Kodi\addons\skin.estuary\"
-xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.6.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
-
-</pre>
-
-{% include youtubePlayer.html id="ueukOCfDgm8" %}
 </br></br>
