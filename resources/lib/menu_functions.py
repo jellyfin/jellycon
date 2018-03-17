@@ -3,11 +3,9 @@
 import sys
 import json
 import urllib
-import encodings
 
 import xbmcplugin
 import xbmcaddon
-import xbmc
 
 from downloadutils import DownloadUtils
 from kodi_utils import addMenuDirectoryItem, HomeWindow

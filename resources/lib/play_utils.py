@@ -10,7 +10,6 @@ import xbmcvfs
 from datetime import timedelta
 from datetime import datetime
 import json
-import time
 
 from resources.lib.error import catch_except
 from simple_logging import SimpleLogging

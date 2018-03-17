@@ -2,9 +2,7 @@
 import sys
 import os
 import urllib
-import json
 from collections import defaultdict
-import time
 
 import xbmc
 import xbmcaddon

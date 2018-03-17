@@ -402,8 +402,12 @@ def processDirectory(results, progress, params):
     if name_format is not None:
         name_format = urllib.unquote(name_format)
         tokens = name_format.split("|")
-        name_format_type = tokens[0]
-        name_format = settings.getSetting(tokens[1])
+        if len(tokens) == 2:
+            name_format_type = tokens[0]
+            name_format = settings.getSetting(tokens[1])
+        else:
+            name_format_type = None
+            name_format = None
 
     dirItems = []
     if results is None:
@@ -1001,6 +1005,10 @@ def playTrailer(id):
 
     jsonData = downloadUtils.downloadUrl(url)
     result = json.loads(jsonData)
+
+    if result is None:
+        return
+
     log.debug("LocalTrailers {0}", result)
     count = 1
 
@@ -1024,6 +1032,9 @@ def playTrailer(id):
     result = json.loads(jsonData)
     log.debug("RemoteTrailers: {0}", result)
     count = 1
+
+    if result is None:
+        return
 
     remote_trailers = result.get("RemoteTrailers", [])
     for trailer in remote_trailers:
