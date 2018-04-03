@@ -713,3 +713,8 @@ msgstr ""
 msgctxt "#30327"
 msgid "View Season"
 msgstr ""
+
+msgctxt "#30328"
+msgid "Show Empty Folders (Shows, Seasons, Boxsets)"
+msgstr ""
+

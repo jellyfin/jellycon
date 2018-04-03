@@ -446,6 +446,8 @@ def processDirectory(results, progress, params):
     display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
     display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
 
+    show_empty_folders = settings.getSetting("show_empty_folders") == 'true'
+
     item_count = len(results)
     current_item = 1
     first_season_item = None
@@ -499,7 +501,7 @@ def processDirectory(results, progress, params):
                      '&Fields={field_filters}' +
                      '&format=json')
 
-            if item["RecursiveItemCount"] != 0:
+            if show_empty_folders or item["RecursiveItemCount"] != 0:
                 dirItems.append(add_gui_item(u, item_details, display_options))
 
         elif item_details.item_type == "MusicArtist":
