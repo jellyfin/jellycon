@@ -40,9 +40,10 @@ def showServerSessions():
                 url = "{server}/emby/Users/{userid}/Items/" + media_id + "?format=json"
                 jsonData = downloadUtils.downloadUrl(url)
                 media_info = json.loads(jsonData)
-                log.debug("Media Info: {0}", media_info)
-                runtime = media_info.get("RunTimeTicks", 0)
-                log.debug("Media Runtime: {0}", runtime)
+                if media_info:
+                    log.debug("Media Info: {0}", media_info)
+                    runtime = media_info.get("RunTimeTicks", 0)
+                    log.debug("Media Runtime: {0}", runtime)
 
             position_ticks = play_state.get("PositionTicks", 0)
             log.debug("Media PositionTicks: {0}", position_ticks)
