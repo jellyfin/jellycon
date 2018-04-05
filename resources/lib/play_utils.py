@@ -707,6 +707,9 @@ def stopAll(played_information):
 
     log.debug("played_information: {0}", played_information)
 
+    home_screen = HomeWindow()
+    home_screen.clearProperty("currently_playing_id")
+
     for item_url in played_information:
         data = played_information.get(item_url)
         if data.get("currently_playing", False) is True:
@@ -788,6 +791,9 @@ class Service(xbmc.Player):
 
         url = "{server}/emby/Sessions/Playing"
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+        home_screen = HomeWindow()
+        home_screen.setProperty("currently_playing_id", emby_item_id)
 
         # record the activity
         utcnow = datetime.utcnow()
