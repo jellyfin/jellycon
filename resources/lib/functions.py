@@ -28,7 +28,7 @@ from menu_functions import displaySections, showMovieAlphaList, showGenreList, s
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
-from widgets import getWidgetContent, getWidgetContentCast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
+from widgets import getWidgetContent, get_widget_content_cast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
 import trakttokodi
 from item_functions import add_gui_item, extract_item_info, ItemDetails, add_context_menu
 
@@ -140,7 +140,7 @@ def mainEntryPoint():
     elif mode == "WIDGET_CONTENT":
         getWidgetContent(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_CAST":
-        getWidgetContentCast(int(sys.argv[1]), params)
+        get_widget_content_cast(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_SIMILAR":
         getWidgetContentSimilar(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_NEXTUP":

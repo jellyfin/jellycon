@@ -170,61 +170,69 @@ def getWidgetContentSimilar(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
-def getWidgetContentCast(handle, params):
+def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)
     server = downloadUtils.getServer()
 
-    id = params["id"]
+    item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/" + id + "?format=json")
+    result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
     log.debug("ItemInfo: {0}", result)
 
-    listItems = []
+    if not result:
+        return
+
+    if result.get("Type", "") == "Episode" and params.get("auto", "true") == "true":
+        series_id = result.get("SeriesId")
+        if series_id:
+            params["id"] = series_id
+            return get_widget_content_cast(handle, params)
+
+    list_items = []
     if result is not None:
-        people = result.get("People")
+        people = result.get("People", [])
     else:
-        people = None
+        people = []
 
-    if people is not None:
-        for person in people:
-            #if (person.get("Type") == "Director"):
-            #    director = director + person.get("Name") + ' '
-            #if (person.get("Type") == "Writing"):
-            #    writer = person.get("Name")
-            #if (person.get("Type") == "Writer"):
-            #    writer = person.get("Name")
-            if (person.get("Type") == "Actor"):
-                person_name = person.get("Name")
-                person_role = person.get("Role")
-                person_id = person.get("Id")
-                person_tag = person.get("PrimaryImageTag")
-                person_thumbnail = None
-                if person_tag:
-                    person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+    for person in people:
+        # if (person.get("Type") == "Director"):
+        #     director = director + person.get("Name") + ' '
+        # if (person.get("Type") == "Writing"):
+        #     writer = person.get("Name")
+        # if (person.get("Type") == "Writer"):
+        #    writer = person.get("Name")
+        if person.get("Type") == "Actor":
+            person_name = person.get("Name")
+            person_role = person.get("Role")
+            person_id = person.get("Id")
+            person_tag = person.get("PrimaryImageTag")
+            person_thumbnail = None
+            if person_tag:
+                person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
-                if kodi_version > 17:
-                    list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail, offscreen=True)
-                else:
-                    list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail)
+            if kodi_version > 17:
+                list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail, offscreen=True)
+            else:
+                list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail)
 
-                if person_thumbnail:
-                    artLinks = {}
-                    artLinks["thumb"] = person_thumbnail
-                    artLinks["poster"] = person_thumbnail
-                    list_item.setArt(artLinks)
+            if person_thumbnail:
+                art_links = {}
+                art_links["thumb"] = person_thumbnail
+                art_links["poster"] = person_thumbnail
+                list_item.setArt(art_links)
 
-                labels = {}
-                labels["mediatype"] = "artist"
-                list_item.setInfo(type="music", infoLabels=labels)
+            labels = {}
+            labels["mediatype"] = "artist"
+            list_item.setInfo(type="music", infoLabels=labels)
 
-                if person_role:
-                    list_item.setLabel2(person_role)
+            if person_role:
+                list_item.setLabel2(person_role)
 
-                itemTupple = ("", list_item, False)
-                listItems.append(itemTupple)
+            item_tupple = ("", list_item, False)
+            list_items.append(item_tupple)
 
     xbmcplugin.setContent(handle, 'artists')
-    xbmcplugin.addDirectoryItems(handle, listItems)
+    xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
