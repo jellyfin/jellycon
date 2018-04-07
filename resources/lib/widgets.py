@@ -182,7 +182,7 @@ def get_widget_content_cast(handle, params):
     if not result:
         return
 
-    if result.get("Type", "") == "Episode" and params.get("auto", "true") == "true":
+    if result.get("Type", "") in ["Episode", "Season"] and params.get("auto", "true") == "true":
         series_id = result.get("SeriesId")
         if series_id:
             params["id"] = series_id

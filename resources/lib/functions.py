@@ -539,6 +539,7 @@ def processDirectory(results, progress, params):
 
         item_details = ItemDetails()
 
+        item_details.id = first_season_item.get("Id")
         item_details.name = i18n('all')
         item_details.art = getArt(first_season_item, server)
         item_details.play_count = played
