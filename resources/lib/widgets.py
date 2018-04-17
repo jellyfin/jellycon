@@ -211,9 +211,9 @@ def get_widget_content_cast(handle, params):
                 person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
             if kodi_version > 17:
-                list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail, offscreen=True)
+                list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
             else:
-                list_item = xbmcgui.ListItem(label=person_name, iconImage=person_thumbnail)
+                list_item = xbmcgui.ListItem(label=person_name)
 
             if person_thumbnail:
                 art_links = {}
