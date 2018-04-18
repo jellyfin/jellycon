@@ -3,6 +3,7 @@
 import socket
 import json
 from urlparse import urlparse
+import time
 
 import xbmcaddon
 import xbmcgui
@@ -61,6 +62,7 @@ def checkServer(force=False, change_user=False, notify=False):
 
     settings = xbmcaddon.Addon()
     serverUrl = ""
+    something_changed = False
 
     if force is False:
         # if not forcing use server details from settings
@@ -104,6 +106,7 @@ def checkServer(force=False, change_user=False, notify=False):
         else:
             settings.setSetting("use_https", "false")
 
+        something_changed = True
         if notify:
             xbmcgui.Dialog().ok(i18n('server_detect_succeeded'), i18n('found_server'),
                                 i18n('address:') + server_address, i18n('server_port:') + server_port)
@@ -150,17 +153,23 @@ def checkServer(force=False, change_user=False, notify=False):
                 user_list.insert(0, current_username)
                 secured.insert(0, True)
 
-            names.insert(0, i18n('username_userinput'))
-            user_list.insert(0, '')
-            secured.insert(0, True)
+            names.append(i18n('username_userinput'))
+            user_list.append('')
+            secured.append(True)
             log.debug("User List: {0}", names)
             log.debug("User List: {0}", user_list)
 
-            return_value = xbmcgui.Dialog().select(i18n('select_user'), names)
+            if current_username:
+                selection_title = i18n('select_user') + " (" + current_username + ")"
+            else:
+                selection_title = i18n('select_user')
+
+            return_value = xbmcgui.Dialog().select(selection_title, names)
 
             if (return_value > -1):
+                something_changed = True
                 log.debug("Selected User Index: {0}", return_value)
-                if return_value == 0:
+                if return_value == (len(user_list) -1):
                     kb = xbmc.Keyboard()
                     kb.setHeading(i18n('username:'))
                     kb.doModal()
@@ -188,8 +197,13 @@ def checkServer(force=False, change_user=False, notify=False):
                     else:
                         settings.setSetting('password', '')
 
-        home_window = HomeWindow()
-        home_window.clearProperty("userid")
-        home_window.clearProperty("AccessToken")
+        if something_changed:
+            home_window = HomeWindow()
+            home_window.clearProperty("userid")
+            home_window.clearProperty("AccessToken")
+            home_window.setProperty("embycon_widget_reload", str(time.time()))
+            download_utils = DownloadUtils()
+            download_utils.authenticate()
+            download_utils.getUserId()
+            xbmc.executebuiltin("ReloadSkin()")
 
-        xbmc.executebuiltin("ActivateWindow(Home)")

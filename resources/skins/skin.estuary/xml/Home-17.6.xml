@@ -1002,16 +1002,23 @@
 							<label>Settings</label>
 							<onclick>ActivateWindow(settings)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/manage.png</thumb>
+							<thumb>icons/sidemenu/programs.png</thumb>
 							<property name="id">power</property>
 						</item>
 						<item>
-							<label>LogOff</label>
-							<onclick>System.LogOff</onclick>
+							<label>Change User</label>
+							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/programs.png</thumb>
+							<thumb>icons/sidemenu/pictures.png</thumb>
 							<property name="id">power</property>
-						</item>						
+						</item>
+						<item>
+							<label>Power</label>
+							<onclick>ActivateWindow(shutdownmenu)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/manage.png</thumb>
+							<property name="id">power</property>
+						</item>							
 					</content>
 				</control>
 				<!--
