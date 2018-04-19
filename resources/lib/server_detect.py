@@ -174,7 +174,7 @@ def checkServer(force=False, change_user=False, notify=False):
 
             return_value = xbmcgui.Dialog().select(selection_title, names, preselect=selected_id)
 
-            if return_value > -1:
+            if return_value > -1 and return_value != selected_id:
 
                 log.debug("Selected User Index: {0}", return_value)
                 if show_manual and return_value == (len(user_list) -1):
@@ -190,12 +190,8 @@ def checkServer(force=False, change_user=False, notify=False):
 
                 log.debug("Selected User Name: {0}", selected_user)
 
-                if selected_user == current_username:
-                    log.debug("User not changed, selected user name == current user")
-                else:
-                    something_changed = True
-
                 if selected_user:
+                    something_changed = True
                     # we have a user so save it
                     log.debug("Saving Username: {0}", selected_user)
                     settings.setSetting("username", selected_user)
