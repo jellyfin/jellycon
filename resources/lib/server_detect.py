@@ -187,7 +187,6 @@ def checkServer(force=False, change_user=False, notify=False):
 
                 if selected_user == current_username:
                     log.debug("User not changed, selected user name == current user")
-                    return
                 else:
                     something_changed = True
 
