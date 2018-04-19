@@ -132,6 +132,7 @@ def checkServer(force=False, change_user=False, notify=False):
                                 i18n('unable_connect_server'),
                                 i18n('address:') + serverUrl)
         else:
+            selected_id = 0
             names = []
             user_list = []
             secured = []
@@ -147,6 +148,8 @@ def checkServer(force=False, change_user=False, notify=False):
                         else:
                             secured.append(False)
                         names.append(name)
+                        if current_username == name:
+                            selected_id = len(names) - 1
 
             if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
                 names.insert(0, i18n('username_userdefined') % current_username)
@@ -164,10 +167,10 @@ def checkServer(force=False, change_user=False, notify=False):
             else:
                 selection_title = i18n('select_user')
 
-            return_value = xbmcgui.Dialog().select(selection_title, names)
+            return_value = xbmcgui.Dialog().select(selection_title, names, preselect=selected_id)
 
-            if (return_value > -1):
-                something_changed = True
+            if return_value > -1:
+
                 log.debug("Selected User Index: {0}", return_value)
                 if return_value == (len(user_list) -1):
                     kb = xbmc.Keyboard()
@@ -182,6 +185,12 @@ def checkServer(force=False, change_user=False, notify=False):
 
                 log.debug("Selected User Name: {0}", selected_user)
 
+                if selected_user == current_username:
+                    log.debug("User not changed, selected user name == current user")
+                    return
+                else:
+                    something_changed = True
+
                 if selected_user:
                     # we have a user so save it
                     log.debug("Saving Username: {0}", selected_user)
@@ -194,6 +203,7 @@ def checkServer(force=False, change_user=False, notify=False):
                         if kb.isConfirmed():
                             log.debug("Saving Password for Username: {0}", selected_user)
                             settings.setSetting('password', kb.getText())
+                            something_changed = True
                     else:
                         settings.setSetting('password', '')
 
