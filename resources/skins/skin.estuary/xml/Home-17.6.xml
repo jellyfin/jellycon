@@ -918,6 +918,13 @@
 							<visible>!Skin.HasSetting(HomeMenuNoTVShowButton)</visible>
 						</item>
 						<item>
+							<label>Change User</label>
+							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/pictures.png</thumb>
+							<property name="id">change</property>
+						</item>						
+						<item>
 							<label>$LOCALIZE[2]</label>
 							<onclick>ActivateWindow(Music,root,return)</onclick>
 							<property name="menu_id">$NUMBER[7000]</property>
@@ -1003,14 +1010,7 @@
 							<onclick>ActivateWindow(settings)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
 							<thumb>icons/sidemenu/programs.png</thumb>
-							<property name="id">power</property>
-						</item>
-						<item>
-							<label>Change User</label>
-							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
-							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/pictures.png</thumb>
-							<property name="id">power</property>
+							<property name="id">settings</property>
 						</item>
 						<item>
 							<label>Power</label>
