@@ -121,6 +121,9 @@ def checkServer(force=False, change_user=False, notify=False):
         log.debug("Getting user list")
         jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
 
+        # TODO: add a setting to enable this
+        show_manual = False
+
         log.debug("jsonData: {0}", jsonData)
         try:
             result = json.loads(jsonData)
@@ -156,9 +159,11 @@ def checkServer(force=False, change_user=False, notify=False):
                 user_list.insert(0, current_username)
                 secured.insert(0, True)
 
-            names.append(i18n('username_userinput'))
-            user_list.append('')
-            secured.append(True)
+            if show_manual:
+                names.append(i18n('username_userinput'))
+                user_list.append('')
+                secured.append(True)
+
             log.debug("User List: {0}", names)
             log.debug("User List: {0}", user_list)
 
@@ -172,7 +177,7 @@ def checkServer(force=False, change_user=False, notify=False):
             if return_value > -1:
 
                 log.debug("Selected User Index: {0}", return_value)
-                if return_value == (len(user_list) -1):
+                if show_manual and return_value == (len(user_list) -1):
                     kb = xbmc.Keyboard()
                     kb.setHeading(i18n('username:'))
                     kb.doModal()
