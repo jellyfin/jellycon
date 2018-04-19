@@ -58,6 +58,7 @@ class ItemDetails():
     height = 0
     width = 0
     cast = None
+    tagline = ""
 
     resume_time = 0
     duration = 0
@@ -108,6 +109,9 @@ def extract_item_info(item, gui_options):
         item_details.season_number = 0
     if item_details.episode_number is None:
         item_details.episode_number = 0
+
+    if item["Taglines"] is not None and len(item["Taglines"]) > 0:
+        item_details.tagline = item["Taglines"][0]
 
     if item_details.item_type == "Audio":
         item_details.track_number = item["IndexNumber"]
@@ -396,6 +400,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     info_labels["dateadded"] = item_details.date_added
     info_labels["studio"] = item_details.studio
     info_labels["genre"] = item_details.genre
+    info_labels["tagline"] = item_details.tagline
 
     mediatype = 'video'
 
