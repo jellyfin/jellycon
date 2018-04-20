@@ -4,6 +4,7 @@ import socket
 import json
 from urlparse import urlparse
 import time
+import hashlib
 
 import xbmcaddon
 import xbmcgui
@@ -193,18 +194,37 @@ def checkServer(force=False, change_user=False, notify=False):
                 if selected_user:
                     something_changed = True
                     # we have a user so save it
-                    log.debug("Saving Username: {0}", selected_user)
-                    settings.setSetting("username", selected_user)
                     if secured[return_value] is True:
-                        kb = xbmc.Keyboard()
-                        kb.setHeading(i18n('password:'))
-                        kb.setHiddenInput(True)
-                        kb.doModal()
-                        if kb.isConfirmed():
-                            log.debug("Saving Password for Username: {0}", selected_user)
-                            settings.setSetting('password', kb.getText())
-                            something_changed = True
+                        # we need a password, check the settings first
+                        m = hashlib.md5()
+                        m.update(selected_user)
+                        hashed_username = m.hexdigest()
+                        saved_password = settings.getSetting("saved_user_password_" + hashed_username)
+
+                        if saved_password:
+                            log.debug("Saving username and password: {0}", selected_user)
+                            log.debug("Using stored password for user: {0}", hashed_username)
+                            settings.setSetting("username", selected_user)
+                            settings.setSetting('password', saved_password)
+                        else:
+                            kb = xbmc.Keyboard()
+                            kb.setHeading(i18n('password:'))
+                            kb.setHiddenInput(True)
+                            kb.doModal()
+                            if kb.isConfirmed():
+                                log.debug("Saving username and password: {0}", selected_user)
+                                settings.setSetting("username", selected_user)
+                                settings.setSetting('password', kb.getText())
+
+                                # should we save the password
+                                save_password = xbmcgui.Dialog().yesno( "Save Password?",
+                                                                        "Do you want to save the password?")
+                                if save_password:
+                                    log.debug("Saving password for fast user switching: {0}", hashed_username)
+                                    settings.setSetting("saved_user_password_" + hashed_username, kb.getText())
                     else:
+                        log.debug("Saving username is no password: {0}", selected_user)
+                        settings.setSetting("username", selected_user)
                         settings.setSetting('password', '')
 
         if something_changed:

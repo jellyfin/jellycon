@@ -510,6 +510,16 @@ class DownloadUtils():
                 log.debug("====== 200 finished ======")
 
             elif int(data.status) >= 400:
+
+                if int(data.status) == 401:
+                    # remove any saved password
+                    username = settings.getSetting("username")
+                    m = hashlib.md5()
+                    m.update(username)
+                    hashed_username = m.hexdigest()
+                    log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}", hashed_username)
+                    settings.setSetting("saved_user_password_" + hashed_username, "")
+
                 log.error("HTTP response error: {0} {1}", data.status, data.reason)
                 if suppress is False:
                     xbmcgui.Dialog().notification(i18n("connection_error"),
