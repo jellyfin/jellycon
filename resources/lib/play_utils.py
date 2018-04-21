@@ -848,6 +848,12 @@ class PlaybackService(xbmc.Monitor):
 
     def onNotification(self, sender, method, data):
         log.debug("PlaybackService:onNotification:{0}:{1}:{2}", sender, method, data)
+
+        #if method == 'GUI.OnScreensaverDeactivated':
+        if method == 'GUI.OnScreensaverActivated':
+            self.screensaver_deactivated()
+            return
+
         if sender[-7:] != '.SIGNAL':
             return
 
@@ -861,3 +867,11 @@ class PlaybackService(xbmc.Monitor):
         decoded_data = binascii.unhexlify(hex_data)
         play_info = json.loads(decoded_data)
         playFile(play_info, self.monitor)
+
+    def screensaver_deactivated(self):
+        log.debug("Screen Saver Deactivated")
+
+        settings = xbmcaddon.Addon()
+        show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
+        if show_change_user:
+            xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")

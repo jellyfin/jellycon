@@ -38,6 +38,9 @@
 		<setting type="sep" />
 		<setting id="forceAutoResume" type="bool" label="30322" default="true" visible="true" enable="true" />
 		<setting id="jump_back_amount" type="slider" label="30114" default="15" range="0,1,60" option="int" visible="true"/>
+		<setting label="30329" type="lsep"/>
+		<setting type="sep" />
+		<setting id="changeUserOnScreenSaver" type="bool" label="30330" default="true" visible="true" enable="true" />
 	</category>
 	<category label="30110">
 		<setting id="addCounts" type="bool" label="30116" default="false" visible="true" enable="true" />

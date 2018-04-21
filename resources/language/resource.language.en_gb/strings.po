@@ -718,3 +718,10 @@ msgctxt "#30328"
 msgid "Show Empty Folders (Shows, Seasons, Boxsets)"
 msgstr ""
 
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr ""
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr ""

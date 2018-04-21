@@ -235,5 +235,6 @@ def checkServer(force=False, change_user=False, notify=False):
             download_utils = DownloadUtils()
             download_utils.authenticate()
             download_utils.getUserId()
+            xbmc.executebuiltin("ActivateWindow(Home)")
             xbmc.executebuiltin("ReloadSkin()")
 
