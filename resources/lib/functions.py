@@ -31,7 +31,7 @@ from server_sessions import showServerSessions
 from action_menu import ActionMenu
 from widgets import getWidgetContent, get_widget_content_cast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
 import trakttokodi
-from item_functions import add_gui_item, extract_item_info, ItemDetails, add_context_menu
+from item_functions import add_gui_item, extract_item_info, ItemDetails
 
 
 __addon__ = xbmcaddon.Addon()
@@ -807,6 +807,12 @@ def searchResults(params):
 
     item_type = params.get('item_type')
     query_string = params.get('query')
+    if query_string:
+        log.debug("query_string : {0}", query_string)
+        query_string = urllib.unquote(query_string)
+        log.debug("query_string : {0}", query_string)
+        query_string = urllib.quote(query_string)
+        log.debug("query_string : {0}", query_string)
 
     if item_type.lower() == 'movie':
         heading_type = i18n('movies')
@@ -833,9 +839,7 @@ def searchResults(params):
             return
 
         home_window.setProperty("last_search", user_input)
-
         log.debug('searchResults Called: {0}', params)
-
         query = user_input
 
     else:
