@@ -396,7 +396,7 @@ def getContent(url, params):
     result = dataManager.GetContent(url)
 
     total_records = 0
-    if result is not None:
+    if result is not None and isinstance(result, dict):
         total_records = result.get("TotalRecordCount", 0)
 
     dirItems = processDirectory(result, progress, params)
@@ -410,7 +410,7 @@ def getContent(url, params):
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
             dirItems.insert(0, (u, list_item, True))
 
-        if start_index + page_limit < total_records:
+        if total_records == 0 or start_index + page_limit < total_records:
             list_item = xbmcgui.ListItem("Next Page")
             u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
             dirItems.append((u, list_item, True))
