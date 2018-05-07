@@ -806,6 +806,7 @@ def showParentContent(params):
 def searchResults(params):
 
     item_type = params.get('item_type')
+    query_string = params.get('query')
 
     if item_type.lower() == 'movie':
         heading_type = i18n('movies')
@@ -816,26 +817,30 @@ def searchResults(params):
     else:
         heading_type = item_type
 
-    home_window = HomeWindow()
-
-    last_search = home_window.getProperty("last_search")
-    kb = xbmc.Keyboard()
-    kb.setHeading(heading_type.capitalize() + ' ' + i18n('search').lower())
-    kb.setDefault(last_search)
-    kb.doModal()
-
-    if kb.isConfirmed():
-        user_input = kb.getText().strip()
-    else:
-        return
-
-    home_window.setProperty("last_search", user_input)
-
-    log.debug('searchResults Called: {0}', params)
-
     handle = int(sys.argv[1])
-    query = user_input
-    item_type = params.get('item_type')
+
+    if not query_string:
+        home_window = HomeWindow()
+        last_search = home_window.getProperty("last_search")
+        kb = xbmc.Keyboard()
+        kb.setHeading(heading_type.capitalize() + ' ' + i18n('search').lower())
+        kb.setDefault(last_search)
+        kb.doModal()
+
+        if kb.isConfirmed():
+            user_input = kb.getText().strip()
+        else:
+            return
+
+        home_window.setProperty("last_search", user_input)
+
+        log.debug('searchResults Called: {0}', params)
+
+        query = user_input
+
+    else:
+        query = query_string
+
     if (not item_type) or (not query):
         return
 
@@ -901,7 +906,7 @@ def searchResults(params):
         if dir_items is not None:
             xbmcplugin.addDirectoryItems(handle, dir_items)
             xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-    else:
+    elif not query_string:
         xbmcgui.Dialog().ok("No Matches", "No items match your search.")
 
     if progress is not None:
