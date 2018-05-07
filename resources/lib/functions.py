@@ -10,6 +10,7 @@ import json
 import StringIO
 import encodings
 import binascii
+import re
 
 import xbmcplugin
 import xbmcgui
@@ -367,15 +368,58 @@ def getContent(url, params):
         progress.create(i18n('loading_content'))
         progress.update(0, i18n('retrieving_data'))
 
+    # update url for paging
+    start_index = 0
+    page_limit = int(settings.getSetting('moviePageSize'))
+    if page_limit > 0 and media_type.startswith("movie"):
+        url_prev = None
+        m = re.search('StartIndex=([0-9]{1,4})', url)
+        if m and m.group(1):
+            log.debug("UPDATING NEXT URL: {0}", url)
+            start_index = int(m.group(1))
+            log.debug("current_start : {0}", start_index)
+            if start_index > 0:
+                prev_index = start_index - page_limit
+                if prev_index < 0:
+                    prev_index = 0
+                url_prev = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(prev_index), url)
+            url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + page_limit), url)
+            log.debug("UPDATING NEXT URL: {0}", url_next)
+
+        else:
+            log.debug("ADDING NEXT URL: {0}", url)
+            url_next = url + "&StartIndex=" + str(start_index + page_limit) + "&Limit=" + str(page_limit)
+            url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(page_limit)
+            log.debug("ADDING NEXT URL: {0}", url_next)
+
     # use the data manager to get the data
     result = dataManager.GetContent(url)
+
+    total_records = 0
+    if result is not None:
+        total_records = result.get("TotalRecordCount", 0)
 
     dirItems = processDirectory(result, progress, params)
     if dirItems is None:
         return
 
+    # add paging items
+    if page_limit > 0 and media_type.startswith("movie"):
+        if url_prev:
+            list_item = xbmcgui.ListItem("Prev Page")
+            u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
+            dirItems.insert(0, (u, list_item, True))
+
+        if start_index + page_limit < total_records:
+            list_item = xbmcgui.ListItem("Next Page")
+            u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
+            dirItems.append((u, list_item, True))
+
     # set the sort items
-    setSort(pluginhandle, viewType)
+    if page_limit > 0 and media_type.startswith("movie"):
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+    else:
+        setSort(pluginhandle, viewType)
 
     xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)

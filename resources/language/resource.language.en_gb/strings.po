@@ -725,3 +725,7 @@ msgstr ""
 msgctxt "#30330"
 msgid "Show change user dialog"
 msgstr ""
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr ""
