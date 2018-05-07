@@ -112,27 +112,44 @@ class DownloadUtils():
     def getServer(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
-        port = settings.getSetting('port')
-        if (len(host) == 0) or (host == "<none>") or (len(port) == 0):
+
+        if len(host) == 0 or host == "<none>":
             return None
+
+        port = settings.getSetting('port')
+        use_https = settings.getSetting('use_https') == 'true'
+
+        if not port and use_https:
+            port = "443"
+            settings.setSetting("port", port)
+        elif not port and not use_https:
+            port = "80"
+            settings.setSetting("port", port)
 
         # if user entered a full path i.e. http://some_host:port
         if host.lower().strip().startswith("http://") or host.lower().strip().startswith("https://"):
             log.debug("Extracting host info from url: {0}", host)
             url_bits = urlparse(host.strip())
+
+            if host.lower().strip().startswith("http://"):
+                settings.setSetting('use_https', 'false')
+                use_https = False
+            elif host.lower().strip().startswith("https://"):
+                settings.setSetting('use_https', 'true')
+                use_https = True
+
             if url_bits.hostname is not None and len(url_bits.hostname) > 0:
                 host = url_bits.hostname
                 settings.setSetting("ipaddress", host)
+
             if url_bits.port is not None and url_bits.port > 0:
                 port = str(url_bits.port)
                 settings.setSetting("port", port)
 
-        server = host + ":" + port
-        use_https = settings.getSetting('use_https') == 'true'
         if use_https:
-            server = "https://" + server
+            server = "https://" + host + ":" + port
         else:
-            server = "http://" + server
+            server = "http://" + host + ":" + port
 
         return server
 

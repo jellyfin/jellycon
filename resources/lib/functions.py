@@ -795,18 +795,12 @@ def searchResults(params):
     if (not item_type) or (not query):
         return
 
-    limit = int(params.get('limit', 50))
-    index = 0
-
-    settings = xbmcaddon.Addon()
-    server = downloadUtils.getServer()
-
+    limit = int(params.get('limit', 20))
     content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
+                   '&UserId={userid}' +
+                   '&Limit=' + str(limit) +
                    '&IncludeItemTypes=' + item_type +
                    '&ExcludeItemTypes=LiveTvProgram' +
-                   '&UserId={userid}'
-                   '&StartIndex=' + str(index) +
-                   '&Limit=' + str(limit) +
                    '&IncludePeople=false' +
                    '&IncludeMedia=true' +
                    '&IncludeGenres=false' +
@@ -815,153 +809,56 @@ def searchResults(params):
 
     if item_type.lower() == 'movie':
         xbmcplugin.setContent(handle, 'movies')
-        view_type = 'Movies'
-        media_type = 'movie'
     elif item_type.lower() == 'series':
         xbmcplugin.setContent(handle, 'tvshows')
-        view_type = 'Series'
-        media_type = 'tvshow'
     elif item_type.lower() == 'episode':
         xbmcplugin.setContent(handle, 'episodes')
-        view_type = 'Episodes'
-        media_type = 'episode'
+        params["name_format"] = "Episode|episode_name_format"
     else:
         xbmcplugin.setContent(handle, 'videos')
-        view_type = ''
-        media_type = 'video'
-
-    setSort(handle, view_type)
 
     # show a progress indicator if needed
+    settings = xbmcaddon.Addon()
     progress = None
-    if (settings.getSetting('showLoadProgress') == "true"):
+    if settings.getSetting('showLoadProgress') == "true":
         progress = xbmcgui.DialogProgress()
         progress.create(i18n('loading_content'))
         progress.update(0, i18n('retrieving_data'))
 
-    result = dataManager.GetContent(content_url)
-    log.debug('SearchHints jsonData: {0}', result)
+    search_hints_result = dataManager.GetContent(content_url)
+    log.debug('SearchHints jsonData: {0}', search_hints_result)
 
-    if result is None:
-        result = {}
+    if search_hints_result is None:
+        search_hints_result = {}
 
-    results = result.get('SearchHints')
-    if results is None:
-        results = []
+    search_hints = search_hints_result.get('SearchHints')
+    if search_hints is None:
+        search_hints = []
 
-    item_count = 1
-    total_results = int(result.get('TotalRecordCount', 0))
+    total_results = int(search_hints_result.get('TotalRecordCount', 0))
     log.debug('SEARCH_TOTAL_RESULTS: {0}', total_results)
-    list_items = []
 
-    for item in results:
+    # extract IDs for details query
+    id_list = []
+    for item in search_hints:
         item_id = item.get('ItemId')
-        name = title = item.get('Name')
-        log.debug('SEARCH_RESULT_NAME: {0}', name)
+        id_list.append(item_id)
 
-        if progress is not None:
-            percent_complete = (float(item_count) / float(total_results)) * 100
-            progress.update(int(percent_complete), i18n('processing_item:') + str(item_count))
+    if len(id_list) > 0:
+        Ids = ",".join(id_list)
+        details_url = ('{server}/emby/Users/{userid}/items' +
+                       '?Ids=' + Ids +
+                       '&Fields={field_filters}' +
+                       '&format=json')
+        details_result = dataManager.GetContent(details_url)
+        log.debug("Search Results Details: {0}", details_result)
 
-        tvshowtitle = ''
-        season = episode = None
-
-        if (item.get('Type') == 'Episode') and (item.get('Series') is not None):
-            episode = '0'
-            if item.get('IndexNumber') is not None:
-                ep_number = item.get('IndexNumber')
-                if ep_number < 10:
-                    episode = '0' + str(ep_number)
-                else:
-                    episode = str(ep_number)
-
-            season = '0'
-            season_number = item.get('ParentIndexNumber')
-            if season_number < 10:
-                season = '0' + str(season_number)
-            else:
-                season = str(season_number)
-
-            tvshowtitle = item.get('Series')
-            title = tvshowtitle + ' - ' + title
-
-        primary_image = thumb_image = backdrop_image = ''
-        primary_tag = item.get('PrimaryImageTag')
-        if primary_tag:
-            primary_image = downloadUtils.imageUrl(item_id, 'Primary', 0, 0, 0, imageTag=primary_tag, server=server)
-        thumb_id = item.get('ThumbImageId')
-        thumb_tag = item.get('ThumbImageTag')
-        if thumb_tag and thumb_id:
-            thumb_image = downloadUtils.imageUrl(thumb_id, 'Thumb', 0, 0, 0, imageTag=thumb_tag, server=server)
-        backdrop_id = item.get('BackdropImageItemId')
-        backdrop_tag = item.get('BackdropImageTag')
-        if backdrop_tag and backdrop_id:
-            backdrop_image = downloadUtils.imageUrl(backdrop_id, 'Backdrop', 0, 0, 0, imageTag=backdrop_tag, server=server)
-
-        art = {
-            'thumb': thumb_image or primary_image,
-            'fanart': backdrop_image,
-            'poster': primary_image or thumb_image,
-            'banner': '',
-            'clearlogo': '',
-            'clearart': '',
-            'discart': '',
-            'landscape': '',
-            'tvshow.poster': primary_image
-        }
-
-        if kodi_version > 17:
-            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'], offscreen=True)
-        else:
-            list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'])
-
-        info = {'title': title, 'tvshowtitle': tvshowtitle, 'mediatype': media_type}
-        log.debug('SEARCH_RESULT_ART: {0}', art)
-        list_item.setProperty('fanart_image', art['fanart'])
-        list_item.setProperty('discart', art['discart'])
-        list_item.setArt(art)
-
-        # add count
-        list_item.setProperty('item_index', str(item_count))
-        item_count += 1
-
-        if item.get('MediaType') == 'Video':
-            total_time = str(int(float(item.get('RunTimeTicks', '0')) / (10000000 * 60)))
-            list_item.setProperty('TotalTime', str(total_time))
-            list_item.setProperty('IsPlayable', 'false')
-            list_item_url = 'plugin://plugin.video.embycon/?item_id=' + item_id + '&mode=PLAY'
-            is_folder = False
-        else:
-            item_url = ('{server}/emby/Users/{userid}' +
-                        '/items?ParentId=' + item_id +
-                        '&IsVirtualUnAired=false&IsMissing=false' +
-                        '&Fields={field_filters}' +
-                        '&format=json')
-            list_item_url = 'plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type={item_type}&url={item_url}'\
-                .format(item_type=item_type, item_url=urllib.quote(item_url))
-            list_item.setProperty('IsPlayable', 'false')
-            is_folder = True
-
-        item_details = ItemDetails()
-        item_details.id = item_id
-        #menu_items = add_context_menu(item_details, is_folder)
-        #if len(menu_items) > 0:
-        #    list_item.addContextMenuItems(menu_items, True)
-
-        if (season is not None) and (episode is not None):
-            info['episode'] = episode
-            info['season'] = season
-
-        info['year'] = item.get('ProductionYear', '')
-
-        log.debug('SEARCH_RESULT_INFO: {0}', info)
-        list_item.setInfo('Video', infoLabels=info)
-
-        item_tuple = (list_item_url, list_item, is_folder)
-        list_items.append(item_tuple)
-
-    xbmcplugin.addDirectoryItems(handle, list_items)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+        dir_items = processDirectory(details_result, progress, params)
+        if dir_items is not None:
+            xbmcplugin.addDirectoryItems(handle, dir_items)
+            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+    else:
+        xbmcgui.Dialog().ok("No Matches", "No items match your search.")
 
     if progress is not None:
         progress.update(100, i18n('done'))
