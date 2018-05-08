@@ -814,14 +814,27 @@ def searchResults(params):
         query_string = urllib.quote(query_string)
         log.debug("query_string : {0}", query_string)
 
-    if item_type.lower() == 'movie':
+    item_type = item_type.lower()
+
+    if item_type == 'movie':
         heading_type = i18n('movies')
-    elif item_type.lower() == 'series':
+        content_type = 'movies'
+    elif item_type == 'series':
         heading_type = i18n('tvshows')
-    elif item_type.lower() == 'episode':
+        content_type = 'tvshows'
+    elif item_type == 'episode':
         heading_type = i18n('episodes')
+        content_type = 'episodes'
+        params["name_format"] = "Episode|episode_name_format"
+    elif item_type == "music" or item_type == "audio" or item_type == "musicalbum":
+        heading_type = 'Music'
+        content_type = 'songs'
+    elif item_type == "musicartists":
+        heading_type = 'Artists'
+        content_type = 'artists'
     else:
         heading_type = item_type
+        content_type = 'video'
 
     handle = int(sys.argv[1])
 
@@ -860,15 +873,18 @@ def searchResults(params):
                    '&IncludeStudios=false' +
                    '&IncludeArtists=false')
 
-    if item_type.lower() == 'movie':
-        xbmcplugin.setContent(handle, 'movies')
-    elif item_type.lower() == 'series':
-        xbmcplugin.setContent(handle, 'tvshows')
-    elif item_type.lower() == 'episode':
-        xbmcplugin.setContent(handle, 'episodes')
-        params["name_format"] = "Episode|episode_name_format"
-    else:
-        xbmcplugin.setContent(handle, 'videos')
+    if item_type == "musicartists":
+        content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
+                       '&UserId={userid}' +
+                       '&Limit=' + str(limit) +
+                       '&IncludePeople=false' +
+                       '&IncludeMedia=false' +
+                       '&IncludeGenres=false' +
+                       '&IncludeStudios=false' +
+                       '&IncludeArtists=true')
+
+    # set content type
+    xbmcplugin.setContent(handle, content_type)
 
     # show a progress indicator if needed
     settings = xbmcaddon.Addon()

@@ -1,3 +1,4 @@
+# coding=utf-8
 # Gnu General Public License - see LICENSE.TXT
 
 import sys
@@ -708,6 +709,9 @@ def showSearch():
     addMenuDirectoryItem(i18n('movies'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
     addMenuDirectoryItem(i18n('tvshows'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
     addMenuDirectoryItem(i18n('episodes'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
+    addMenuDirectoryItem("Song", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
+    addMenuDirectoryItem("Album", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
+    #addMenuDirectoryItem("Artist", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicArtists')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
