@@ -37,7 +37,7 @@ def showGenreList(params):
         kodi_type = "tvshows"
 
     url = ("{server}/emby/Genres?" +
-           "SortBy=SortName" +
+           "SortBy=Name" +
            "&SortOrder=Ascending" +
            "&IncludeItemTypes=" + emby_type +
            "&Recursive=true" +
@@ -119,6 +119,8 @@ def showMovieAlphaList():
                              '&Recursive=true' +
                              '&NameStartsWith=' + alphaName +
                              '&IncludeItemTypes=Movie' +
+                             "&SortBy=Name" +
+                             "&SortOrder=Ascending" +
                              '&ImageTypeLimit=1&format=json')
         collections.append(item_data)
 
@@ -137,7 +139,7 @@ def showYearsList():
         return
 
     jsonData = downloadUtils.downloadUrl("{server}/emby/Years" +
-                                         "?SortBy=SortName" +
+                                         "?SortBy=Name" +
                                          "&SortOrder=Descending" +
                                          "&IncludeItemTypes=Movie" +
                                          "&Recursive=true" +
@@ -164,6 +166,8 @@ def showYearsList():
                              '&Years=' + year.get("Name") +
                              '&IncludeItemTypes=Movie' +
                              '&ImageTypeLimit=1' +
+                             "&SortBy=Name" +
+                             "&SortOrder=Ascending" +
                              '&format=json')
         collections.append(item_data)
 
@@ -275,6 +279,8 @@ def getCollections():
                                  '&IncludeItemTypes=MusicAlbum' +
                                  '&ImageTypeLimit=1' +
                                  '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&SortBy=Name' +
+                                 '&SortOrder=Ascending' +
                                  '&format=json')
             collections.append(item_data)
 
@@ -287,6 +293,8 @@ def getCollections():
                                  '&ParentId=' + item.get("Id") +
                                  '&ImageTypeLimit=1' +
                                  '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&SortBy=Name' +
+                                 '&SortOrder=Ascending' +
                                  '&format=json')
             collections.append(item_data)
 
@@ -302,6 +310,8 @@ def getCollections():
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json'),
                 'media_type': collection_type})
 
@@ -315,6 +325,8 @@ def getCollections():
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
@@ -328,6 +340,8 @@ def getCollections():
                          '&Filters=IsUnplayed' +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Series' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': 'tvshows'})
@@ -337,6 +351,8 @@ def getCollections():
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
+                         '&SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
@@ -430,6 +446,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
@@ -438,6 +456,8 @@ def getCollections():
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
+                         '&SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
@@ -476,6 +496,8 @@ def getCollections():
                          '&Recursive=true' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -488,6 +510,8 @@ def getCollections():
                          '&Filters=IsUnplayed' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -498,6 +522,8 @@ def getCollections():
                          '?Limit={ItemLimit}' +
                          '&Recursive=true' +
                          '&Fields={field_filters}' +
+                         '&SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
                          '&Filters=IsResumable' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
@@ -528,6 +554,8 @@ def getCollections():
                          '&Filters=IsFavorite' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -539,6 +567,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&IncludeItemTypes=BoxSet' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -550,6 +580,8 @@ def getCollections():
                          '&Recursive=true' +
                          '&IncludeItemTypes=Series' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -562,6 +594,8 @@ def getCollections():
                          '&Filters=IsUnplayed' +
                          '&IncludeItemTypes=Series' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -574,6 +608,8 @@ def getCollections():
                          '&Filters=IsFavorite' +
                          '&IncludeItemTypes=Series' +
                          '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -601,6 +637,8 @@ def getCollections():
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit={ItemLimit}' +
+                         '&SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
                          '&Recursive=true' +
                          '&Fields={field_filters}' +
                          '&Filters=IsResumable' +
@@ -667,6 +705,8 @@ def getCollections():
                          '&IncludeItemTypes=MusicAlbum' +
                          '&ImageTypeLimit=1' +
                          '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
 
@@ -677,9 +717,10 @@ def getCollections():
                          '?Recursive=true' +
                          '&ImageTypeLimit=1' +
                          '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
-
 
     return collections
 

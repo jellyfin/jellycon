@@ -406,12 +406,17 @@ def getContent(url, params):
     # add paging items
     if page_limit > 0 and media_type.startswith("movie"):
         if url_prev:
-            list_item = xbmcgui.ListItem("Prev Page")
+            list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
+                                         " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
             dirItems.insert(0, (u, list_item, True))
 
-        if total_records == 0 or start_index + page_limit < total_records:
-            list_item = xbmcgui.ListItem("Next Page")
+        if start_index + page_limit < total_records:
+            upper_count = start_index + (page_limit * 2)
+            if upper_count > total_records:
+                upper_count = total_records
+            list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
+                                         str(upper_count) + " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
             dirItems.append((u, list_item, True))
 
@@ -773,13 +778,15 @@ def showContent(pluginName, handle, params):
     item_type = params.get("item_type")
 
     contentUrl = ("{server}/emby/Users/{userid}/Items"
-                  "?format=json"
-                  "&ImageTypeLimit=1"
-                  "&IsMissing=False"
+                  "?format=json" +
+                  "&SortBy=Name" +
+                  "&SortOrder=Ascending" +
+                  "&ImageTypeLimit=1" +
+                  "&IsMissing=False" +
                   "&Fields={field_filters}" +
-                  "&Recursive=true"
-                  "&IsVirtualUnaired=false"
-                  "&IsMissing=False"
+                  "&Recursive=true" +
+                  "&IsVirtualUnaired=false" +
+                  "&IsMissing=False" +
                   "&IncludeItemTypes=" + item_type)
 
     log.debug("showContent Content Url: {0}", contentUrl)
