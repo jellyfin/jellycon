@@ -245,7 +245,8 @@ def getCollections():
     parentid = result.get("Id")
     log.debug("parentid: {0}", parentid)
 
-    htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
+    htmlpath = "{server}/emby/Users/{userid}/Views?format=json"
+    #htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
     result = data_manager.GetContent(htmlpath)
 
     if result is not None:
@@ -259,6 +260,7 @@ def getCollections():
         item_name = item.get("Name")
 
         collection_type = item.get('CollectionType', None)
+        type = item.get('Type', None)
         log.debug("CollectionType: {0}", collection_type)
         log.debug("Title: {0}", item_name)
 
@@ -403,6 +405,19 @@ def getCollections():
                 'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow&parent_id=' + item.get("Id"),
                 'media_type': 'tvshows'})
+
+        if type == "Channel":
+            collections.append({
+                'title': item_name,
+                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': 'movies'})
 
         if collection_type == "movies":
             collections.append({
