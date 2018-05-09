@@ -13,6 +13,7 @@ from kodi_utils import addMenuDirectoryItem, HomeWindow
 from simple_logging import SimpleLogging
 from translation import i18n
 from datamanager import DataManager
+from utils import getArt
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -58,10 +59,11 @@ def showGenreList(params):
     xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
     for genre in result:
+        art = getArt(item=genre, server=server)
         item_data = {}
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = kodi_type
-        item_data['thumbnail'] = downloadUtils.getArtwork(genre, "Primary", server=server)
+        item_data['art'] = art
 
         url = ("{server}/emby/Users/{userid}/Items" +
                "?Fields={field_filters}" +
@@ -80,8 +82,8 @@ def showGenreList(params):
         url = sys.argv[0] + ("?url=" + urllib.quote(collection['path']) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("thumbnail"))
-        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, thumbnail=collection.get("thumbnail"))
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("art"))
+        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, art=collection.get("art"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -159,7 +161,6 @@ def showYearsList():
         item_data = {}
         item_data['title'] = year.get("Name")
         item_data['media_type'] = "Movies"
-        #item_data['thumbnail'] = server + "/Years/" +  year.get("Name") + "/Images/Thumb"
         item_data['path'] = ('{server}/emby/Users/{userid}/Items'
                              '?Fields={field_filters}' +
                              '&Recursive=true' +
@@ -176,7 +177,7 @@ def showYearsList():
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)#, thumbnail=collection.get("thumbnail"))
+        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
 
     xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -197,16 +198,18 @@ def displaySections():
         for collection in collections:
             if collection.get("item_type") == "plugin_link":
                 plugin_path = collection['path']
-                addMenuDirectoryItem(collection.get('title', i18n('unknown')), plugin_path,
-                                     thumbnail=collection.get("thumbnail"))
+                addMenuDirectoryItem(collection.get('title', i18n('unknown')),
+                                     plugin_path,
+                                     art=collection.get("art"))
             else:
                 url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                        "&mode=GET_CONTENT&media_type=" + collection["media_type"])
                 if collection.get("name_format") is not None:
                     url += "&name_format=" + urllib.quote(collection.get("name_format"))
                 log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-                addMenuDirectoryItem(collection.get('title', i18n('unknown')), url,
-                                     thumbnail=collection.get("thumbnail"))
+                addMenuDirectoryItem(collection.get('title', i18n('unknown')),
+                                     url,
+                                     art=collection.get("art"))
 
         addMenuDirectoryItem(i18n('movies_year'), "plugin://plugin.video.embycon/?mode=MOVIE_YEARS")
         addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
@@ -267,11 +270,12 @@ def getCollections():
         type = item.get('Type', None)
         log.debug("CollectionType: {0}", collection_type)
         log.debug("Title: {0}", item_name)
+        art = getArt(item=item, server=server)
 
         if collection_type == "music":
             item_data = {}
             item_data['title'] = item_name + i18n('_all_albums')
-            item_data['thumbnail'] = downloadUtils.getArtwork(item, "Primary", server=server)
+            item_data['art'] = art
             item_data['media_type'] = 'MusicAlbums'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                                  '?Recursive=true' +
@@ -286,7 +290,7 @@ def getCollections():
 
             item_data = {}
             item_data['title'] = item_name + i18n('_all_artists')
-            item_data['thumbnail'] = downloadUtils.getArtwork(item, "Primary", server=server)
+            item_data['art'] = art
             item_data['media_type'] = 'MusicArtists'
             item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
                                  '?Recursive=true' +
@@ -301,7 +305,7 @@ def getCollections():
         if collection_type in ["movies", "boxsets"]:
             collections.append({
                 'title': item_name,
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
@@ -318,7 +322,7 @@ def getCollections():
         if collection_type == "tvshows":
             collections.append({
                 'title': item_name,
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
@@ -331,7 +335,7 @@ def getCollections():
                 'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_unwatched'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
@@ -347,7 +351,7 @@ def getCollections():
                 'media_type': 'tvshows'})
             collections.append({
                 'title': item_name + i18n('_in_progress'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -365,7 +369,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
                 'title': item_name + i18n('_latest'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items/Latest' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -383,7 +387,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})            
             collections.append({
                 'title': item_name + i18n('_recently_added'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -401,7 +405,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
                 'title': item_name + i18n('_next_up'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Shows/NextUp/?Userid={userid}' +
                          '&ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -418,14 +422,14 @@ def getCollections():
             collections.append({
                 'title': item_name + i18n('_genres'),
                 'item_type': 'plugin_link',
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow&parent_id=' + item.get("Id"),
                 'media_type': 'tvshows'})
 
         if type == "Channel":
             collections.append({
                 'title': item_name,
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
@@ -433,12 +437,12 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': 'movies'})
+                'media_type': 'files'})
 
         if collection_type == "movies":
             collections.append({
                 'title': item_name + i18n('_unwatched'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
@@ -452,7 +456,7 @@ def getCollections():
                 'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_in_progress'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -467,7 +471,7 @@ def getCollections():
                 'media_type': collection_type})
             collections.append({
                 'title': item_name + i18n('_recently_added'),
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&Limit={ItemLimit}' +
@@ -483,7 +487,7 @@ def getCollections():
             collections.append({
                 'title': item_name + i18n('_genres'),
                 'item_type': 'plugin_link',
-                'thumbnail': downloadUtils.getArtwork(item, "Primary", server=server),
+                'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=movie&parent_id=' + item.get("Id"),
                 'media_type': collection_type})
 
