@@ -203,8 +203,19 @@ def getArt(item, server, widget=False):
 
     item_type = item["Type"]
 
-    if item_type == "Episode" or item_type == "Season":
+    if item_type == "Genre":
+        art['poster'] = downloadUtils.getArtwork(item, "Primary", server=server)
+    elif item_type == "Episode":
         art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
+        art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Art", parent=True, server=server)
+        art['tvshow.clearlogo'] = downloadUtils.getArtwork(item, "Logo", parent=True, server=server)
+        art['tvshow.banner'] = downloadUtils.getArtwork(item, "Banner", parent=True, server=server)
+        art['tvshow.landscape'] = downloadUtils.getArtwork(item, "Thumb", parent=True, server=server)
+        art['tvshow.fanart'] = downloadUtils.getArtwork(item, "Backdrop", parent=True, server=server)
+    elif item_type == "Season":
+        art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
+        art['poster'] = downloadUtils.getArtwork(item, "Primary", parent=False, server=server)
+        art['season.poster'] = downloadUtils.getArtwork(item, "Primary", parent=False, server=server)
         art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Art", parent=True, server=server)
         art['tvshow.clearlogo'] = downloadUtils.getArtwork(item, "Logo", parent=True, server=server)
         art['tvshow.banner'] = downloadUtils.getArtwork(item, "Banner", parent=True, server=server)
@@ -217,21 +228,17 @@ def getArt(item, server, widget=False):
         art['tvshow.banner'] = downloadUtils.getArtwork(item, "Banner", parent=False, server=server)
         art['tvshow.landscape'] = downloadUtils.getArtwork(item, "Thumb", parent=False, server=server)
         art['tvshow.fanart'] = downloadUtils.getArtwork(item, "Backdrop", parent=False, server=server)
-
-    if item_type == "Episode":
-        art['landscape'] = downloadUtils.getArtwork(item, "Thumb", parent=True, server=server)
-    else:
-        art['poster'] = art['thumb']
+    elif item_type == "Movie" or item_type == "BoxSet":
+        art['poster'] = downloadUtils.getArtwork(item, "Primary", server=server)
+        art['landscape'] = downloadUtils.getArtwork(item, "Thumb", server=server)
+        art['banner'] = downloadUtils.getArtwork(item, "Banner", server=server)
+        art['clearlogo'] = downloadUtils.getArtwork(item, "Logo", server=server)
+        art['clearart'] = downloadUtils.getArtwork(item, "Art", server=server)
+        art['discart'] = downloadUtils.getArtwork(item, "Disc", server=server)
 
     art['fanart'] = downloadUtils.getArtwork(item, "Backdrop", server=server)
     if not art['fanart']:
         art['fanart'] = downloadUtils.getArtwork(item, "Backdrop", parent=True, server=server)
-
-    art['landscape'] = downloadUtils.getArtwork(item, "Thumb", server=server)
-    art['banner'] = downloadUtils.getArtwork(item, "Banner", server=server)
-    art['clearlogo'] = downloadUtils.getArtwork(item, "Logo", server=server)
-    art['clearart'] = downloadUtils.getArtwork(item, "Art", server=server)
-    art['discart'] = downloadUtils.getArtwork(item, "Disc", server=server)
 
     return art
 
