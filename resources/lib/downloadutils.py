@@ -203,7 +203,7 @@ class DownloadUtils():
                 log.debug("Parent Image Tag: {0}", imageTag)
 
 
-        if not imageTag and not (art_type == 'Banner' and parent is True):  # ParentTag not passed for Banner
+        if not imageTag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):  # ParentTag not passed for Banner and Art
             log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
