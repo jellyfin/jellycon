@@ -20,6 +20,83 @@ downloadUtils = DownloadUtils()
 
 __addon__ = xbmcaddon.Addon()
 
+def showMoviePages(params):
+    log.debug("showMoviePages: {0}", params)
+
+    parent_id = params.get("parent_id")
+
+    url = ('{server}/emby/Users/{userid}/Items' +
+           '?IsVirtualUnaired=false' +
+           '&CollapseBoxSetItems=true' +
+           '&Recursive=true' +
+           "&IncludeItemTypes=Movie"
+           '&IsMissing=False' +
+           '&ImageTypeLimit=0' +
+           '&format=json')
+
+    if parent_id:
+        url += "&ParentId=" + parent_id
+
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+
+    if result is None:
+        return
+
+    total_results = result.get("TotalRecordCount", 0)
+    log.debug("showMoviePages TotalRecordCount {0}", total_results)
+
+    if result == 0:
+        return
+
+    settings = xbmcaddon.Addon()
+    page_limit = int(settings.getSetting('moviePageSize'))
+    if page_limit == 0:
+        page_limit = 20
+
+    start_index = 0
+    collections = []
+
+    while start_index < total_results:
+
+        item_url = ("{server}/emby/Users/{userid}/Items" +
+                    "?IsVirtualUnaired=false" +
+                    "&CollapseBoxSetItems=true" +
+                    "&Recursive=true" +
+                    "&IsMissing=False" +
+                    "&IncludeItemTypes=Movie"
+                    "&Fields={field_filters}" +
+                    "&ImageTypeLimit=1" +
+                    "&SortBy=Name" +
+                    "&SortOrder=Ascending" +
+                    "&format=json")
+
+        if parent_id:
+            item_url += "&ParentId=" + parent_id
+
+        item_url += "&StartIndex=" + str(start_index) + "&Limit=" + str(page_limit)
+
+        page_upper = start_index + page_limit
+        if page_upper > total_results:
+            page_upper = total_results
+
+        item_data = {}
+        item_data['title'] = "Page (" + str(start_index + 1) + " - " + str(page_upper) + ")"
+        item_data['path'] = item_url
+        item_data['media_type'] = 'movies'
+
+        collections.append(item_data)
+        start_index = start_index + page_limit
+
+    for collection in collections:
+        content_url = urllib.quote(collection['path'])
+        url = sys.argv[0] + ("?url=" + content_url +
+                             "&mode=GET_CONTENT" +
+                             "&media_type=" + collection["media_type"])
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("art"))
+        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, art=collection.get("art"))
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def showGenreList(params):
     log.debug("showGenreList: {0}", params)
@@ -214,6 +291,8 @@ def displaySections():
         addMenuDirectoryItem(i18n('movies_year'), "plugin://plugin.video.embycon/?mode=MOVIE_YEARS")
         addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
         addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
+        addMenuDirectoryItem("Movie (Pages)", "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
+
         addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
         addMenuDirectoryItem(i18n('search'), "plugin://plugin.video.embycon/?mode=SEARCH")
 
@@ -437,7 +516,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
-                'media_type': 'files'})
+                'media_type': 'files',
+                'name_format': 'Episode|episode_name_format'})
 
         if collection_type == "movies":
             collections.append({
@@ -490,6 +570,13 @@ def getCollections():
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=movie&parent_id=' + item.get("Id"),
                 'media_type': collection_type})
+            collections.append({
+                'title': item_name + ' - Pages',
+                'item_type': 'plugin_link',
+                'art': art,
+                'path': 'plugin://plugin.video.embycon/?mode=MOVIE_PAGES&parent_id=' + item.get("Id"),
+                'media_type': collection_type})
+
 
     # Add standard nodes
     item_data = {}

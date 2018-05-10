@@ -209,7 +209,7 @@ class DownloadUtils():
 
         artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
 
-        log.debug("getArtwork: {0}", artwork)
+        log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
 
         '''
         # do not return non-existing images
