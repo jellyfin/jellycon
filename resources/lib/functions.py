@@ -504,7 +504,7 @@ def processDirectory(results, progress, params):
             progress.close()
         params["media_type"] = "Episodes"
         getContent(season_url, params)
-        return None
+        return None, None
 
     hide_unwatched_details = settings.getSetting('hide_unwatched_details') == 'true'
 
