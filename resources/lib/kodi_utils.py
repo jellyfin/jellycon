@@ -39,12 +39,10 @@ class HomeWindow():
 
 def addMenuDirectoryItem(label, path, folder=True, art=None):
     li = xbmcgui.ListItem(label, path=path)
-
-    if art is not None:
-        li.setArt(art)
-    #else:
-        #art = {}
-        #art["thumb"] = addon.getAddonInfo('icon')
+    if art is None:
+        art = {}
+        art["thumb"] = addon.getAddonInfo('icon')
+    li.setArt(art)
 
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
 

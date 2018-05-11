@@ -329,39 +329,41 @@ def getContent(url, params):
 
     settings = xbmcaddon.Addon()
     # determine view type, map it from media type to view type
-    viewType = ""
+    view_type = ""
+    content_type = ""
     media_type = str(media_type).lower().strip()
     if media_type.startswith("movie"):
-        viewType = "Movies"
-        xbmcplugin.setContent(pluginhandle, 'movies')
+        view_type = "Movies"
+        content_type = 'movies'
     elif media_type == "musicalbums":
-        viewType = "Albums"
-        xbmcplugin.setContent(pluginhandle, 'albums')
+        view_type = "Albums"
+        content_type = 'albums'
     elif media_type == "musicartists":
-        viewType = "Artists"
-        xbmcplugin.setContent(pluginhandle, 'artists')
+        view_type = "Artists"
+        content_type = 'artists'
     elif media_type == "musicartist":
-        viewType = "Albums"
-        xbmcplugin.setContent(pluginhandle, 'albums')
+        view_type = "Albums"
+        content_type = 'albums'
     elif media_type == "music" or media_type == "audio" or media_type == "musicalbum":
-        viewType = "Music"
-        xbmcplugin.setContent(pluginhandle, 'songs')
+        view_type = "Music"
+        content_type = 'songs'
     elif media_type.startswith("boxsets"):
-        viewType = "Movies"
-        xbmcplugin.setContent(pluginhandle, 'sets')
+        view_type = "Movies"
+        content_type = 'sets'
     elif media_type.startswith("boxset"):
-        viewType = "BoxSets"
-        xbmcplugin.setContent(pluginhandle, 'movies')
+        view_type = "BoxSets"
+        content_type = 'movies'
     elif media_type == "tvshows":
-        viewType = "Series"
-        xbmcplugin.setContent(pluginhandle, 'tvshows')
+        view_type = "Series"
+        content_type = 'tvshows'
     elif media_type == "series":
-        viewType = "Seasons"
-        xbmcplugin.setContent(pluginhandle, 'seasons')
+        view_type = "Seasons"
+        content_type = 'seasons'
     elif media_type == "season" or media_type == "episodes":
-        viewType = "Episodes"
-        xbmcplugin.setContent(pluginhandle, 'episodes')
-    log.debug("ViewType: {0} media_type: {1}", viewType, media_type)
+        view_type = "Episodes"
+        content_type = 'episodes'
+
+    log.debug("media_type:{0} content_type:{1} view_type:{2} ", media_type, content_type, view_type)
 
     # show a progress indicator if needed
     progress = None
@@ -401,8 +403,8 @@ def getContent(url, params):
     if result is not None and isinstance(result, dict):
         total_records = result.get("TotalRecordCount", 0)
 
-    dirItems = processDirectory(result, progress, params)
-    if dirItems is None:
+    dir_items, detected_type = processDirectory(result, progress, params)
+    if dir_items is None:
         return
 
     # add paging items
@@ -411,7 +413,7 @@ def getContent(url, params):
             list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
-            dirItems.insert(0, (u, list_item, True))
+            dir_items.insert(0, (u, list_item, True))
 
         if start_index + page_limit < total_records:
             upper_count = start_index + (page_limit * 2)
@@ -420,19 +422,33 @@ def getContent(url, params):
             list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
                                          str(upper_count) + " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
-            dirItems.append((u, list_item, True))
+            dir_items.append((u, list_item, True))
+
+    # set the Kodi content type
+    if content_type:
+        xbmcplugin.setContent(pluginhandle, content_type)
+    elif detected_type is not None:
+        # if the media type is not set then try to use the detected type
+        log.debug("Detected content type: {0}", detected_type)
+        if detected_type == "Movie":
+            view_type = "Movies"
+            content_type = 'movies'
+        if detected_type == "Episode":
+            view_type = "Episodes"
+            content_type = 'episodes'
+        xbmcplugin.setContent(pluginhandle, content_type)
 
     # set the sort items
     if page_limit > 0 and media_type.startswith("movie"):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     else:
-        setSort(pluginhandle, viewType)
+        setSort(pluginhandle, view_type)
 
-    xbmcplugin.addDirectoryItems(pluginhandle, dirItems)
+    xbmcplugin.addDirectoryItems(pluginhandle, dir_items)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
     # send display items event
-    display_items_notification = {"view_type": viewType}
+    display_items_notification = {"view_type": view_type}
     send_event_notification("display_items", display_items_notification)
 
     if (progress != None):
@@ -511,17 +527,24 @@ def processDirectory(results, progress, params):
 
     gui_options["name_format"] = name_format
     gui_options["name_format_type"] = name_format_type
+    detected_type = None
 
     for item in results:
 
-        if (progress != None):
-            percentDone = (float(current_item) / float(item_count)) * 100
-            progress.update(int(percentDone), i18n('processing_item:') + str(current_item))
+        if progress is not None:
+            percent_done = (float(current_item) / float(item_count)) * 100
+            progress.update(int(percent_done), i18n('processing_item:') + str(current_item))
             current_item = current_item + 1
 
         # get the infofrom the item
         item_details = extract_item_info(item, gui_options)
         item_details.baseline_itemname = baseline_name
+
+        if detected_type is not None:
+            if item_details.item_type != detected_type:
+                detected_type = "mixed"
+        else:
+            detected_type = item_details.item_type
 
         if item_details.item_type == "Season" and first_season_item is None:
             first_season_item = item
@@ -605,7 +628,7 @@ def processDirectory(results, progress, params):
 
         dirItems.append(add_gui_item(series_url, item_details, display_options, folder=True))
 
-    return dirItems
+    return dirItems, detected_type
 
 
 @catch_except()
@@ -931,7 +954,7 @@ def searchResults(params):
         details_result = dataManager.GetContent(details_url)
         log.debug("Search Results Details: {0}", details_result)
 
-        dir_items = processDirectory(details_result, progress, params)
+        dir_items, detected_type = processDirectory(details_result, progress, params)
         if dir_items is not None:
             xbmcplugin.addDirectoryItems(handle, dir_items)
             xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
