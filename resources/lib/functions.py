@@ -17,7 +17,6 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from resources.lib.error import catch_except
 from downloadutils import DownloadUtils
 from utils import getArt, cache_artwork, send_event_notification
 from kodi_utils import HomeWindow
@@ -47,7 +46,6 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 
-@catch_except()
 def mainEntryPoint():
     log.debug("===== EmbyCon START =====")
 
@@ -631,7 +629,6 @@ def processDirectory(results, progress, params):
     return dirItems, detected_type
 
 
-@catch_except()
 def showMenu(params):
     log.debug("showMenu(): {0}", params)
 

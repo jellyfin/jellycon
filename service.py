@@ -55,12 +55,6 @@ remote_control = settings.getSetting('remoteControl') == "true"
 if remote_control:
     websocket_client.start()
 
-def check_version():
-    download_utils.checkVersion()
-
-t = Timer(5.0, check_version)
-t.start()
-
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
 # I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround

@@ -49,66 +49,6 @@ class DownloadUtils():
         addon = xbmcaddon.Addon()
         self.addon_name = addon.getAddonInfo('name')
 
-    def checkVersion(self):
-        server_info = {}
-        activity = {}
-        try:
-            settings = xbmcaddon.Addon()
-            check_version = settings.getSetting('checkVersion') == 'true'
-            if check_version == False:
-                log.debug("Version Check: Not Enabled")
-                return
-
-            path = xbmc.translatePath(settings.getAddonInfo('profile')) + "activity.json"
-            f = xbmcvfs.File(path)
-            activity_data = f.read()
-            f.close()
-            activity = json.loads(activity_data)
-
-            if len(activity) == 0:
-                log.debug("Version Check: No Activity")
-                return
-
-            url = "{server}/emby/system/info/public"
-            jsonData = self.downloadUrl(url, suppress=True, authenticate=False)
-            server_info = json.loads(jsonData)
-
-        except Exception as error:
-            log.debug("Version Check Error: DATA: {0}", error)
-            return
-
-        try:
-            utcnow = datetime.utcnow()
-            today = "%s-%s-%s" % (utcnow.year, utcnow.month, utcnow.day)
-            client_info = ClientInformation()
-            version_info = {
-                "client_id": client_info.getDeviceId(),
-                "server_id": server_info.get("Id", ""),
-                "version_kodi": xbmc.getInfoLabel('System.BuildVersion'),
-                "version_emby": server_info.get("Version", ""),
-                "version_addon": client_info.getVersion(),
-                "activity": activity,
-                "client_utc_date": today
-            }
-            conn = httplib.HTTPConnection("allthedata.pythonanywhere.com", timeout=15)
-            head = {}
-            head["Content-Type"] = "application/json"
-            postBody = json.dumps(version_info)
-            log.debug("Version Check Data: {0}", postBody)
-            conn.request(method="POST", url="/version", body=postBody, headers=head)
-            data = conn.getresponse()
-            if int(data.status) == 200:
-                xbmcvfs.delete(path)
-                ret_data = data.read()
-                log.debug("VERSION_CHECK: RESPONCE: {0}", ret_data)
-                message = json.loads(ret_data)
-                message_text = message.get("message")
-                if message_text is not None and message_text != "OK":
-                    xbmcgui.Dialog().ok(self.addon_name, message_text)
-
-        except Exception as error:
-            log.debug("Version Check Error: SEND: {0}", error)
-
     def getServer(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
