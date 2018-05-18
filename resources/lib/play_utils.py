@@ -22,6 +22,7 @@ from datamanager import DataManager
 from item_functions import get_next_episode, extract_item_info
 from clientinfo import ClientInformation
 from functions import delete
+from cache_images import CacheArtwork
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -839,14 +840,19 @@ class Service(xbmc.Player):
 
 class PlaybackService(xbmc.Monitor):
 
+    background_image_cache_thread = None
+
     def __init__(self, monitor):
         self.monitor = monitor
 
     def onNotification(self, sender, method, data):
         log.debug("PlaybackService:onNotification:{0}:{1}:{2}", sender, method, data)
 
-        #if method == 'GUI.OnScreensaverDeactivated':
         if method == 'GUI.OnScreensaverActivated':
+            self.screensaver_activated()
+            return
+
+        if method == 'GUI.OnScreensaverDeactivated':
             self.screensaver_deactivated()
             return
 
@@ -864,10 +870,26 @@ class PlaybackService(xbmc.Monitor):
         play_info = json.loads(decoded_data)
         playFile(play_info, self.monitor)
 
-    def screensaver_deactivated(self):
-        log.debug("Screen Saver Deactivated")
+    def screensaver_activated(self):
+        log.debug("Screen Saver Activated")
 
         settings = xbmcaddon.Addon()
         show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
         if show_change_user:
             xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
+
+        cache_images = settings.getSetting('cacheImagesOnScreenSaver') == 'true'
+        if cache_images:
+            self.background_image_cache_thread = CacheArtwork()
+            self.background_image_cache_thread.start()
+
+
+    def screensaver_deactivated(self):
+        log.debug("Screen Saver Deactivated")
+
+        if self.background_image_cache_thread:
+            self.background_image_cache_thread.stop_all_activity = True
+            self.background_image_cache_thread = None
+
+
+

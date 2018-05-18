@@ -729,3 +729,7 @@ msgstr ""
 msgctxt "#30331"
 msgid "Movies per page"
 msgstr ""
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr ""

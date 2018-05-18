@@ -18,7 +18,7 @@ import xbmcaddon
 import xbmc
 
 from downloadutils import DownloadUtils
-from utils import getArt, cache_artwork, send_event_notification
+from utils import getArt, send_event_notification
 from kodi_utils import HomeWindow
 from clientinfo import ClientInformation
 from datamanager import DataManager
@@ -31,7 +31,7 @@ from action_menu import ActionMenu
 from widgets import getWidgetContent, get_widget_content_cast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
 import trakttokodi
 from item_functions import add_gui_item, extract_item_info, ItemDetails
-
+from cache_images import CacheArtwork
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -94,7 +94,7 @@ def mainEntryPoint():
     if mode == "CHANGE_USER":
         checkServer(change_user=True, notify=False)
     elif mode== "CACHE_ARTWORK":
-        cache_artwork()
+        CacheArtwork().cache_artwork_interactive()
     elif mode == "DETECT_SERVER":
         checkServer(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":
