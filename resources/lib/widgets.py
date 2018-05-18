@@ -292,7 +292,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
             tvshowtitle = "S%02dE%02d" % (season_number, episode_number)
             title = series_name
 
-        art = getArt(item, server, widget=True)
+        art = getArt(item, server)
 
         if kodi_version > 17:
             list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'], offscreen=True)

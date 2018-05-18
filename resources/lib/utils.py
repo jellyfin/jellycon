@@ -173,7 +173,7 @@ def getChecksum(item):
     return checksum
 
 
-def getArt(item, server, widget=False):
+def getArt(item, server):
     art = {
         'thumb': '',
         'fanart': '',
@@ -196,10 +196,7 @@ def getArt(item, server, widget=False):
     imageTags = item["ImageTags"]
     if imageTags is not None and imageTags["Primary"] is not None:
         image_tag = imageTags["Primary"]
-        if widget:
-            art['thumb'] = downloadUtils.imageUrl(image_id, "Primary", 0, 400, 400, image_tag, server=server)
-        else:
-            art['thumb'] = downloadUtils.getArtwork(item, "Primary", server=server)
+        art['thumb'] = downloadUtils.getArtwork(item, "Primary", server=server)
 
     item_type = item["Type"]
 
@@ -207,7 +204,7 @@ def getArt(item, server, widget=False):
         art['poster'] = downloadUtils.getArtwork(item, "Primary", server=server)
     elif item_type == "Episode":
         art['tvshow.poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
-        art['poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
+        #art['poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
         art['tvshow.clearart'] = downloadUtils.getArtwork(item, "Art", parent=True, server=server)
         art['clearart'] = downloadUtils.getArtwork(item, "Art", parent=True, server=server)
         art['tvshow.clearlogo'] = downloadUtils.getArtwork(item, "Logo", parent=True, server=server)
