@@ -128,7 +128,7 @@ def mainEntryPoint():
     elif mode == "WIDGETS":
         showWidgets()
     elif mode == "SHOW_MENU":
-        showMenu(params)
+        show_menu(params)
     elif mode == "SHOW_SETTINGS":
         __addon__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()
@@ -574,7 +574,9 @@ def processDirectory(results, progress, params):
                      '&format=json')
 
             if show_empty_folders or item["RecursiveItemCount"] != 0:
-                dirItems.append(add_gui_item(u, item_details, display_options))
+                gui_item = add_gui_item(u, item_details, display_options)
+                if gui_item:
+                    dirItems.append(gui_item)
 
         elif item_details.item_type == "MusicArtist":
             u = ('{server}/emby/Users/{userid}/items' +
@@ -583,11 +585,15 @@ def processDirectory(results, progress, params):
                  '&CollapseBoxSetItems=false' +
                  '&Recursive=true' +
                  '&format=json')
-            dirItems.append(add_gui_item(u, item_details, display_options))
+            gui_item = add_gui_item(u, item_details, display_options)
+            if gui_item:
+                dirItems.append(gui_item)
 
         else:
             u = item_details.id
-            dirItems.append(add_gui_item(u, item_details, display_options, folder=False))
+            gui_item = add_gui_item(u, item_details, display_options, folder=False)
+            if gui_item:
+                dirItems.append(gui_item)
 
     # add the all episodes item
     show_all_episodes = settings.getSetting('show_all_episodes') == 'true'
@@ -624,12 +630,14 @@ def processDirectory(results, progress, params):
         item_details.watched_episodes = total_watched
         item_details.mode = "GET_CONTENT"
 
-        dirItems.append(add_gui_item(series_url, item_details, display_options, folder=True))
+        gui_item = add_gui_item(series_url, item_details, display_options, folder=True)
+        if gui_item:
+            dirItems.append(gui_item)
 
     return dirItems, detected_type
 
 
-def showMenu(params):
+def show_menu(params):
     log.debug("showMenu(): {0}", params)
 
     item_id = params["item_id"]

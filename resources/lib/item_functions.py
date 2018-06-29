@@ -285,12 +285,13 @@ def extract_item_info(item, gui_options):
 
     return item_details
 
+
 def add_gui_item(url, item_details, display_options, folder=True):
 
     log.debug("Passed item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
-        return
+        return None
 
     if item_details.mode:
         mode = "&mode=%s" % item_details.mode

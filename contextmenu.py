@@ -9,7 +9,7 @@ import sys
 import xbmc
 import xbmcaddon
 
-from resources.lib.functions import showMenu
+from resources.lib.functions import show_menu
 from resources.lib.simple_logging import SimpleLogging
 
 log = SimpleLogging('contextmenu')
@@ -19,4 +19,4 @@ log.debug("Context Menu Item ID: {0}", item_id)
 
 params = {}
 params["item_id"] = item_id
-showMenu(params)
+show_menu(params)
