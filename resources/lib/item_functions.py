@@ -367,11 +367,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
     list_item.setProperty('discart', item_details.art['discart'])  # not avail to setArt
     list_item.setProperty('tvshow.poster', item_details.art['tvshow.poster'])  # not avail to setArt
 
-    # add context menu
-    #menu_items = add_context_menu(item_details, folder)
-    #if len(menu_items) > 0:
-    #    list_item.addContextMenuItems(menu_items, True)
-
     # new way
     info_labels = {}
 
@@ -478,49 +473,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
         list_item.setProperty('suggested_from_watching', item_details.baseline_itemname)
 
     return (u, list_item, folder)
-
-
-def add_context_menu(item_details, folder):
-    commands = []
-
-    if item_details.id is None:
-        return commands
-
-    scriptToRun = PLUGINPATH + "/default.py"
-
-    if item_details.item_type == "Season" or item_details.item_type == "MusicAlbum":
-        argsToPass = "?mode=PLAY&item_id=" + item_details.id
-        commands.append((i18n('play_all'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
-
-    if not folder:
-        argsToPass = "?mode=PLAY&item_id=" + item_details.id + "&force_transcode=true"
-        commands.append((i18n('emby_force_transcode'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
-
-    if not folder and item_details.item_type == "Movie":
-        argsToPass = "?mode=playTrailer&id=" + item_details.id
-        commands.append((i18n('play_trailer'), "RunPlugin(plugin://plugin.video.embycon" + argsToPass + ")"))
-
-    # watched/unwatched
-    if item_details.play_count == 0:
-        argsToPass = 'markWatched,' + item_details.id
-        commands.append((i18n('emby_mark_watched'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-    else:
-        argsToPass = 'markUnwatched,' + item_details.id
-        commands.append((i18n('emby_mark_unwatched'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-
-    # favourite add/remove
-    if item_details.favorite == 'false':
-        argsToPass = 'markFavorite,' + item_details.id
-        commands.append((i18n('emby_set_favorite'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-    else:
-        argsToPass = 'unmarkFavorite,' + item_details.id
-        commands.append((i18n('emby_unset_favorite'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-
-    # delete
-    argsToPass = 'delete,' + item_details.id
-    commands.append((i18n('emby_delete'), "RunScript(" + scriptToRun + ", " + argsToPass + ")"))
-
-    return commands
 
 
 def get_next_episode(item):

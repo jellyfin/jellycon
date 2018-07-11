@@ -24,11 +24,11 @@ from clientinfo import ClientInformation
 from datamanager import DataManager
 from server_detect import checkServer
 from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, showSearch, showYearsList, showMoviePages
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showYearsList, showMoviePages
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
-from widgets import getWidgetContent, get_widget_content_cast, getWidgetContentSimilar, getWidgetContentNextUp, getSuggestions, getWidgetUrlContent, checkForNewContent
+from widgets import getWidgetContent, get_widget_content_cast, getWidgetUrlContent
 import trakttokodi
 from item_functions import add_gui_item, extract_item_info, ItemDetails
 from cache_images import CacheArtwork
@@ -99,24 +99,6 @@ def mainEntryPoint():
         checkServer(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":
         checkServer(force=True, change_user=True, notify=False)
-    elif sys.argv[1] == "markWatched":
-        item_id = sys.argv[2]
-        markWatched(item_id)
-    elif sys.argv[1] == "markUnwatched":
-        item_id = sys.argv[2]
-        markUnwatched(item_id)
-    elif sys.argv[1] == "markFavorite":
-        item_id = sys.argv[2]
-        markFavorite(item_id)
-    elif sys.argv[1] == "unmarkFavorite":
-        item_id = sys.argv[2]
-        unmarkFavorite(item_id)
-    #elif sys.argv[1] == "delete":
-    #    item_id = sys.argv[2]
-    #    delete(item_id)
-    elif mode == "playTrailer":
-        item_id = params["id"]
-        playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
     elif mode == "GENRES":
@@ -135,19 +117,10 @@ def mainEntryPoint():
         if WINDOW == 10000:
             log.debug("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("ActivateWindow(Home)")
-    elif sys.argv[1] == "refresh":
-        home_window.setProperty("force_data_reload", "true")
-        xbmc.executebuiltin("Container.Refresh")
     elif mode == "WIDGET_CONTENT":
         getWidgetContent(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_CAST":
         get_widget_content_cast(int(sys.argv[1]), params)
-    elif mode == "WIDGET_CONTENT_SIMILAR":
-        getWidgetContentSimilar(int(sys.argv[1]), params)
-    elif mode == "WIDGET_CONTENT_NEXTUP":
-        getWidgetContentNextUp(int(sys.argv[1]), params)
-    elif mode == "WIDGET_CONTENT_SUGGESTIONS":
-        getSuggestions(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_URL":
         getWidgetUrlContent(int(sys.argv[1]), params)
     elif mode == "PARENT_CONTENT":
@@ -161,10 +134,13 @@ def mainEntryPoint():
         # plugin://plugin.video.embycon?mode=SEARCH
         checkServer(notify=False)
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
-        showSearch()
+        show_search()
     elif mode == "NEW_SEARCH":
         checkServer(notify=False)
-        searchResults(params)
+        search_results(params)
+    elif mode == "NEW_SEARCH_PERSON":
+        checkServer(notify=False)
+        search_results_person(params)
     elif mode == "SHOW_SERVER_SESSIONS":
         checkServer(notify=False)
         showServerSessions()
@@ -208,7 +184,6 @@ def markWatched(item_id):
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
-    home_window.setProperty("force_data_reload", "true")
     home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
@@ -218,7 +193,6 @@ def markUnwatched(item_id):
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
-    home_window.setProperty("force_data_reload", "true")
     home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
@@ -228,7 +202,6 @@ def markFavorite(item_id):
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
-    home_window.setProperty("force_data_reload", "true")
     home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
@@ -238,7 +211,6 @@ def unmarkFavorite(item_id):
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
-    home_window.setProperty("force_data_reload", "true")
     home_window.setProperty("embycon_widget_reload", str(time.time()))
     xbmc.executebuiltin("Container.Refresh")
 
@@ -262,7 +234,6 @@ def delete(item):
         downloadUtils.downloadUrl(url, method="DELETE")
         progress.close()
         home_window = HomeWindow()
-        home_window.setProperty("force_data_reload", "true")
         home_window.setProperty("embycon_widget_reload", str(time.time()))
         xbmc.executebuiltin("Container.Refresh")
 
@@ -840,7 +811,50 @@ def showParentContent(params):
     getContent(contentUrl, params)
 
 
-def searchResults(params):
+def search_results_person(params):
+
+    handle = int(sys.argv[1])
+
+    person_id = params.get("person_id")
+    details_url = ('{server}/emby/Users/{userid}/items' +
+                   '?PersonIds=' + person_id +
+                   # '&IncludeItemTypes=Movie' +
+                   '&Recursive=true' +
+                   '&Fields={field_filters}' +
+                   '&format=json')
+
+    details_result = dataManager.GetContent(details_url)
+    log.debug("Search Results Details: {0}", details_result)
+
+    if details_result:
+        items = details_result.get("Items")
+        found_types = set()
+        for item in items:
+            found_types.add(item.get("Type"))
+        log.debug("search_results_person found_types: {0}", found_types)
+
+    dir_items, detected_type = processDirectory(details_result, None, params)
+
+    log.debug('search_results_person results: {0}', dir_items)
+    log.debug('search_results_person detect_type: {0}', detected_type)
+
+    if detected_type is not None:
+        # if the media type is not set then try to use the detected type
+        log.debug("Detected content type: {0}", detected_type)
+        if detected_type == "Movie":
+            content_type = 'movies'
+        if detected_type == "Episode":
+            content_type = 'episodes'
+        xbmcplugin.setContent(handle, content_type)
+
+    #xbmcplugin.setContent(handle, detected_type)
+
+    if dir_items is not None:
+        xbmcplugin.addDirectoryItems(handle, dir_items)
+
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
+def search_results(params):
 
     item_type = params.get('item_type')
     query_string = params.get('query')
@@ -866,7 +880,7 @@ def searchResults(params):
     elif item_type == "music" or item_type == "audio" or item_type == "musicalbum":
         heading_type = 'Music'
         content_type = 'songs'
-    elif item_type == "musicartists":
+    elif item_type == "person":
         heading_type = 'Artists'
         content_type = 'artists'
     else:
@@ -910,18 +924,17 @@ def searchResults(params):
                    '&IncludeStudios=false' +
                    '&IncludeArtists=false')
 
-    if item_type == "musicartists":
+    if item_type == "person":
         content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
                        '&UserId={userid}' +
                        '&Limit=' + str(limit) +
-                       '&IncludePeople=false' +
+                       '&IncludePeople=true' +
                        '&IncludeMedia=false' +
                        '&IncludeGenres=false' +
                        '&IncludeStudios=false' +
-                       '&IncludeArtists=true')
+                       '&IncludeArtists=false')
 
-    # set content type
-    xbmcplugin.setContent(handle, content_type)
+
 
     # show a progress indicator if needed
     settings = xbmcaddon.Addon()
@@ -944,27 +957,61 @@ def searchResults(params):
     total_results = int(search_hints_result.get('TotalRecordCount', 0))
     log.debug('SEARCH_TOTAL_RESULTS: {0}', total_results)
 
-    # extract IDs for details query
-    id_list = []
-    for item in search_hints:
-        item_id = item.get('ItemId')
-        id_list.append(item_id)
+    # what type of search was it
+    if item_type == "person":
+        log.debug("Item Search Result")
+        server = downloadUtils.getServer()
+        list_items = []
+        for item in search_hints:
+            person_id = item.get('ItemId')
+            person_name = item.get('Name')
+            image_tag = item.get('PrimaryImageTag')
+            person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, image_tag, server=server)
 
-    if len(id_list) > 0:
-        Ids = ",".join(id_list)
-        details_url = ('{server}/emby/Users/{userid}/items' +
-                       '?Ids=' + Ids +
-                       '&Fields={field_filters}' +
-                       '&format=json')
-        details_result = dataManager.GetContent(details_url)
-        log.debug("Search Results Details: {0}", details_result)
+            action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
 
-        dir_items, detected_type = processDirectory(details_result, progress, params)
-        if dir_items is not None:
-            xbmcplugin.addDirectoryItems(handle, dir_items)
-            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-    elif not query_string:
-        xbmcgui.Dialog().ok("No Matches", "No items match your search.")
+            list_item = xbmcgui.ListItem(label=person_name)
+            list_item.setProperty("id", person_id)
+            if person_thumbnail:
+                art_links = {}
+                art_links["thumb"] = person_thumbnail
+                art_links["poster"] = person_thumbnail
+                list_item.setArt(art_links)
+
+            item_tupple = (action_url, list_item, True)
+            list_items.append(item_tupple)
+
+        xbmcplugin.setContent(handle, 'artists')
+        xbmcplugin.addDirectoryItems(handle, list_items)
+        xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
+    else:
+        # extract IDs for details query
+        log.debug("Item Search Result")
+        id_list = []
+        for item in search_hints:
+            item_id = item.get('ItemId')
+            id_list.append(item_id)
+
+        if len(id_list) > 0:
+            Ids = ",".join(id_list)
+            details_url = ('{server}/emby/Users/{userid}/items' +
+                           '?Ids=' + Ids +
+                           '&Fields={field_filters}' +
+                           '&format=json')
+            details_result = dataManager.GetContent(details_url)
+            log.debug("Search Results Details: {0}", details_result)
+
+            # set content type
+            xbmcplugin.setContent(handle, content_type)
+
+            dir_items, detected_type = processDirectory(details_result, progress, params)
+            if dir_items is not None:
+                xbmcplugin.addDirectoryItems(handle, dir_items)
+                xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+
+        elif not query_string:
+            xbmcgui.Dialog().ok("No Matches", "No items match your search.")
 
     if progress is not None:
         progress.update(100, i18n('done'))

@@ -120,55 +120,6 @@ def getWidgetUrlContent(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
-def getSuggestions(handle, params):
-    log.debug("getSuggestions Called: {0}", params)
-
-    itemsUrl = ("{server}/emby/Movies/Recommendations" +
-                "?userId={userid}" +
-                "&categoryLimit=1" +
-                "&ItemLimit=8" +
-                "&format=json" +
-                "&ImageTypeLimit=1" +
-                "&IsMissing=False")
-
-    listItems = populateWidgetItems(itemsUrl)
-
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-def getWidgetContentNextUp(handle, params):
-    log.debug("getWidgetContentNextUp Called: {0}", params)
-
-    itemsUrl = ("{server}/emby/Shows/NextUp?SeriesId=" + params["id"] +
-                "&userId={userid}" +
-                "&Limit={ItemLimit}" +
-                "&format=json" +
-                "&ImageTypeLimit=1" +
-                "&IsMissing=False")
-
-    listItems = populateWidgetItems(itemsUrl)
-
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-
-def getWidgetContentSimilar(handle, params):
-    log.debug("getWisgetContentSimilarMovies Called: {0}", params)
-
-    itemsUrl = ("{server}/emby/Items/" + params["id"] + "/Similar"
-                "?userId={userid}" +
-                "&Limit={ItemLimit}" +
-                "&format=json" +
-                "&ImageTypeLimit=1" +
-                "&IsMissing=False" +
-                "&fields=PrimaryImageAspectRatio,UserData,CanDelete")
-
-    listItems = populateWidgetItems(itemsUrl)
-
-    xbmcplugin.addDirectoryItems(handle, listItems)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)
     server = downloadUtils.getServer()
@@ -213,6 +164,8 @@ def get_widget_content_cast(handle, params):
                 list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
             else:
                 list_item = xbmcgui.ListItem(label=person_name)
+
+            list_item.setProperty("id", person_id)
 
             if person_thumbnail:
                 art_links = {}

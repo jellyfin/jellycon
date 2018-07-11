@@ -853,13 +853,13 @@ def showWidgets():
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-def showSearch():
+def show_search():
     addMenuDirectoryItem(i18n('movies'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
     addMenuDirectoryItem(i18n('tvshows'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
     addMenuDirectoryItem(i18n('episodes'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
     addMenuDirectoryItem("Song", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
     addMenuDirectoryItem("Album", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
-    #addMenuDirectoryItem("Artist", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicArtists')
+    addMenuDirectoryItem("Person", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
