@@ -27,7 +27,7 @@ def showMoviePages(params):
 
     url = ('{server}/emby/Users/{userid}/Items' +
            '?IsVirtualUnaired=false' +
-           '&CollapseBoxSetItems=true' +
+           #'&CollapseBoxSetItems=true' +
            '&Recursive=true' +
            "&IncludeItemTypes=Movie"
            '&IsMissing=False' +
@@ -61,7 +61,7 @@ def showMoviePages(params):
 
         item_url = ("{server}/emby/Users/{userid}/Items" +
                     "?IsVirtualUnaired=false" +
-                    "&CollapseBoxSetItems=true" +
+                    #"&CollapseBoxSetItems=true" +
                     "&Recursive=true" +
                     "&IsMissing=False" +
                     "&IncludeItemTypes=Movie"
@@ -389,7 +389,7 @@ def getCollections():
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
-                         '&CollapseBoxSetItems=true' +
+                         #'&CollapseBoxSetItems=true' +
                          '&Recursive=true' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
