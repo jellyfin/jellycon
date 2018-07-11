@@ -841,11 +841,19 @@ def search_results_person(params):
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
         log.debug("Detected content type: {0}", detected_type)
+        content_type = None
+
         if detected_type == "Movie":
             content_type = 'movies'
-        if detected_type == "Episode":
+        elif detected_type == "Episode":
             content_type = 'episodes'
-        xbmcplugin.setContent(handle, content_type)
+        elif detected_type == "Series":
+            content_type = 'tvshows'
+        elif detected_type == "Music" or detected_type == "Audio" or detected_type == "Musicalbum":
+            content_type = 'songs'
+
+        if content_type:
+            xbmcplugin.setContent(handle, content_type)
 
     #xbmcplugin.setContent(handle, detected_type)
 
@@ -861,8 +869,6 @@ def search_results(params):
     if query_string:
         log.debug("query_string : {0}", query_string)
         query_string = urllib.unquote(query_string)
-        log.debug("query_string : {0}", query_string)
-        query_string = urllib.quote(query_string)
         log.debug("query_string : {0}", query_string)
 
     item_type = item_type.lower()
@@ -908,6 +914,9 @@ def search_results(params):
 
     else:
         query = query_string
+
+    query = urllib.quote(query)
+    log.debug("query : {0}", query)
 
     if (not item_type) or (not query):
         return
