@@ -18,6 +18,7 @@ from resources.lib.kodi_utils import HomeWindow
 from resources.lib.widgets import checkForNewContent, set_background_image
 from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
+from resources.lib.context_monitor import ContextMonitor
 
 # clear user and token when logging in
 home_window = HomeWindow()
@@ -49,11 +50,20 @@ websocket_client = WebSocketClient()
 # TODO: this is used to append to the end of PLAY urls, this is to stop mark watched from overriding the Emby ones
 home_window.setProperty("session_id", str(time.time()))
 
+
+
 # start the WebSocket Client running
 settings = xbmcaddon.Addon()
 remote_control = settings.getSetting('remoteControl') == "true"
 if remote_control:
     websocket_client.start()
+
+# Start the context menu monitor
+context_monitor = None
+context_menu = settings.getSetting('override_contextmenu') == "true"
+if context_menu:
+    context_monitor = ContextMonitor()
+    context_monitor.start()
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -89,6 +99,10 @@ while not xbmc.abortRequested:
         log.error("{0}", traceback.format_exc())
 
     xbmc.sleep(1000)
+
+# call stop on the context menu monitor
+if context_monitor:
+    context_monitor.stop_monitor()
 
 # stop the WebSocket Client
 websocket_client.stop_client()

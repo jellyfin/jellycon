@@ -733,3 +733,7 @@ msgstr ""
 msgctxt "#30333"
 msgid "Cache artwork in the background"
 msgstr ""
+
+msgctxt "#30334"
+msgid "Override default context menu"
+msgstr ""
