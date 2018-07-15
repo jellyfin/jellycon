@@ -109,6 +109,8 @@ def mainEntryPoint():
         showYearsList()
     elif mode == "WIDGETS":
         showWidgets()
+    elif mode == "TOGGLE_WATCHED":
+        toggle_watched(params)
     elif mode == "SHOW_MENU":
         show_menu(params)
     elif mode == "SHOW_SETTINGS":
@@ -177,6 +179,26 @@ def mainEntryPoint():
             f.write(s.getvalue())
 
     log.debug("===== EmbyCon FINISHED =====")
+
+
+def toggle_watched(params):
+    log.debug("toggle_watched: {0}", params)
+    item_id = params.get("item_id", None)
+    if item_id is None:
+        return
+    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+    log.debug("toggle_watched item info: {0}", result)
+
+    user_data = result.get("UserData", None)
+    if user_data is None:
+        return
+
+    if user_data.get("Played", False) is False:
+        markWatched(item_id)
+    else:
+        markUnwatched(item_id)
 
 
 def markWatched(item_id):
