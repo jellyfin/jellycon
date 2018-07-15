@@ -216,18 +216,19 @@ def playFile(play_info, monitor):
 
             # check system settings for play action
             # if prompt is set ask to set it to auto resume
-            params = {"setting": "myvideos.selectaction"}
-            setting_result = json_rpc('Settings.getSettingValue').execute(params)
-            log.debug("Current Setting (myvideos.selectaction): {0}", setting_result)
-            current_value = setting_result.get("result", None)
-            if current_value is not None:
-                current_value = current_value.get("value", -1)
-            if current_value not in (2,3):
-                return_value = xbmcgui.Dialog().yesno(i18n('extra_prompt'), i18n('turn_on_auto_resume?'))
-                if return_value:
-                    params = {"setting": "myvideos.selectaction", "value": 2}
-                    json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
-                    log.debug("Save Setting (myvideos.selectaction): {0}", json_rpc_result)
+            # remove for now as the context dialog is now handeled in the monitor thread
+            # params = {"setting": "myvideos.selectaction"}
+            # setting_result = json_rpc('Settings.getSettingValue').execute(params)
+            # log.debug("Current Setting (myvideos.selectaction): {0}", setting_result)
+            # current_value = setting_result.get("result", None)
+            # if current_value is not None:
+            #     current_value = current_value.get("value", -1)
+            # if current_value not in (2,3):
+            #     return_value = xbmcgui.Dialog().yesno(i18n('extra_prompt'), i18n('turn_on_auto_resume?'))
+            #     if return_value:
+            #         params = {"setting": "myvideos.selectaction", "value": 2}
+            #         json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
+            #         log.debug("Save Setting (myvideos.selectaction): {0}", json_rpc_result)
 
             if resume_result == 1:
                 seekTime = 0
