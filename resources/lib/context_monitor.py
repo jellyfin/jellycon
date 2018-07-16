@@ -22,29 +22,32 @@ class ContextMonitor(threading.Thread):
 
         while not xbmc.abortRequested and not self.stop_thread:
 
-            if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
-                context_up = True
-                if is_embycon_item:
-                    xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
+            if xbmc.Player().isPlaying():
+                xbmc.sleep(1000)
             else:
-                if context_up:  # context now down, do something
-                    context_up = False
-                    container_id = xbmc.getInfoLabel("System.CurrentControlID")
-                    log.debug("ContextMonitor Container ID: {0}", container_id)
-                    item_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(id)")
-                    log.debug("ContextMonitor Item ID: {0}", item_id)
-                    if item_id:
-                        params = {}
-                        params["item_id"] = item_id
-                        show_menu(params)
+                if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
+                    context_up = True
+                    if is_embycon_item:
+                        xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
+                else:
+                    if context_up:  # context now down, do something
+                        context_up = False
+                        container_id = xbmc.getInfoLabel("System.CurrentControlID")
+                        log.debug("ContextMonitor Container ID: {0}", container_id)
+                        item_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(id)")
+                        log.debug("ContextMonitor Item ID: {0}", item_id)
+                        if item_id:
+                            params = {}
+                            params["item_id"] = item_id
+                            show_menu(params)
 
-            container_id = xbmc.getInfoLabel("System.CurrentControlID")
-            condition = ("String.StartsWith(Container(" + str(container_id) +
-                         ").ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(Container(" +
-                         str(container_id) + ").ListItem.Property(id))")
-            is_embycon_item = xbmc.getCondVisibility(condition)
+                container_id = xbmc.getInfoLabel("System.CurrentControlID")
+                condition = ("String.StartsWith(Container(" + str(container_id) +
+                             ").ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(Container(" +
+                             str(container_id) + ").ListItem.Property(id))")
+                is_embycon_item = xbmc.getCondVisibility(condition)
 
-            xbmc.sleep(200)
+                xbmc.sleep(200)
 
         log.debug("ContextMonitor Thread Exited")
 
