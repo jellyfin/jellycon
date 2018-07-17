@@ -22,7 +22,7 @@ class ContextMonitor(threading.Thread):
 
         while not xbmc.abortRequested and not self.stop_thread:
 
-            if xbmc.Player().isPlaying():
+            if xbmc.getCondVisibility("Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)"):
                 xbmc.sleep(1000)
             else:
                 if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
