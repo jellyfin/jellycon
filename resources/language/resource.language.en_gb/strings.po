@@ -737,3 +737,23 @@ msgstr ""
 msgctxt "#30334"
 msgid "Use EmbyCon menu (requires restart)"
 msgstr ""
+
+msgctxt "#30335"
+msgid "No Matches"
+msgstr ""
+
+msgctxt "#30336"
+msgid "No items match your search."
+msgstr ""
+
+msgctxt "#30337"
+msgid "Song"
+msgstr ""
+
+msgctxt "#30338"
+msgid "Album"
+msgstr ""
+
+msgctxt "#30339"
+msgid "Person"
+msgstr ""

@@ -1042,7 +1042,7 @@ def search_results(params):
                 xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
         elif not query_string:
-            xbmcgui.Dialog().ok("No Matches", "No items match your search.")
+            xbmcgui.Dialog().ok(i18n('no_matches'), i18n('no_items'))
 
     if progress is not None:
         progress.update(100, i18n('done'))

@@ -129,6 +129,11 @@ STRINGS = {
     'movies_recommendations': 30324,
     '_genres': 30325,
     'play': 30314,
-    'view_season': 30327
+    'view_season': 30327,
+    'no_matches': 30335,
+    'no_items': 30336,
+    'song': 30337,
+    'album': 30338,
+    'person': 30339
 
 }

@@ -857,9 +857,9 @@ def show_search():
     addMenuDirectoryItem(i18n('movies'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
     addMenuDirectoryItem(i18n('tvshows'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
     addMenuDirectoryItem(i18n('episodes'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
-    addMenuDirectoryItem("Song", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
-    addMenuDirectoryItem("Album", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
-    addMenuDirectoryItem("Person", 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
+    addMenuDirectoryItem(i18n('song'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
+    addMenuDirectoryItem(i18n('album'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
+    addMenuDirectoryItem(i18n('person'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
