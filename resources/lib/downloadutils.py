@@ -49,6 +49,50 @@ class DownloadUtils():
         addon = xbmcaddon.Addon()
         self.addon_name = addon.getAddonInfo('name')
 
+    def post_capabilities(self):
+
+        url = "{server}/emby/Sessions/Capabilities/Full?format=json"
+        data = {
+            'IconUrl': "https://raw.githubusercontent.com/faush01/plugin.video.embycon/develop/kodi.png",
+            'SupportsMediaControl': True,
+            'PlayableMediaTypes': ["Video", "Audio"],
+            'SupportedCommands': ["MoveUp",
+                                  "MoveDown",
+                                  "MoveLeft",
+                                  "MoveRight",
+                                  "Select",
+                                  "Back",
+                                  "ToggleContextMenu",
+                                  "ToggleFullscreen",
+                                  "ToggleOsdMenu",
+                                  "GoHome",
+                                  "PageUp",
+                                  "NextLetter",
+                                  "GoToSearch",
+                                  "GoToSettings",
+                                  "PageDown",
+                                  "PreviousLetter",
+                                  "TakeScreenshot",
+                                  "VolumeUp",
+                                  "VolumeDown",
+                                  "ToggleMute",
+                                  "SendString",
+                                  "DisplayMessage",
+                                  #"SetAudioStreamIndex",
+                                  #"SetSubtitleStreamIndex",
+                                  "SetRepeatMode",
+                                  "Mute",
+                                  "Unmute",
+                                  "SetVolume",
+                                  "PlayNext",
+                                  "Play",
+                                  "Playstate",
+                                  "PlayMediaSource"]
+        }
+
+        self.downloadUrl(url, postBody=data, method="POST")
+        log.debug("Posted Capabilities: {0}", data)
+
     def getServer(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
@@ -300,6 +344,9 @@ class DownloadUtils():
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
             WINDOW.setProperty("userimage", "")
+
+            self.post_capabilities()
+
             return accessToken
         else:
             log.debug("User NOT Authenticated")
