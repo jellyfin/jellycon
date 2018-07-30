@@ -6,6 +6,7 @@ import xbmc
 import xbmcaddon
 from json_rpc import json_rpc
 
+
 class SimpleLogging():
     name = ""
     enable_logging = False
@@ -24,7 +25,20 @@ class SimpleLogging():
     def __str__(self):
         return "LoggingEnabled: " + str(self.enable_logging)
 
+    def info(self, fmt, *args, **kwargs):
+        log_line = self.name + " (INFO) -> " + self.log_line(fmt, args)
+        xbmc.log(log_line, level=xbmc.LOGNOTICE)
+
     def error(self, fmt, *args, **kwargs):
+        log_line = self.name + " (ERROR) -> " + self.log_line(fmt, args)
+        xbmc.log(log_line, level=xbmc.LOGERROR)
+
+    def debug(self, fmt, *args, **kwargs):
+        if self.enable_logging:
+            log_line = self.name + " (DEBUG) -> " + self.log_line(fmt, args)
+            xbmc.log(log_line, level=xbmc.LOGDEBUG)
+
+    def log_line(self, fmt, *args):
         new_args = []
         # convert any unicode to utf-8 strings
         for arg in args:
@@ -32,17 +46,5 @@ class SimpleLogging():
                 new_args.append(arg.encode("utf-8"))
             else:
                 new_args.append(arg)
-        log_line = self.name + " (ERROR) -> " + fmt.format(*new_args)
-        xbmc.log(log_line, level=xbmc.LOGDEBUG)
-
-    def debug(self, fmt, *args, **kwargs):
-        if self.enable_logging:
-            new_args = []
-            # convert any unicode to utf-8 strings
-            for arg in args:
-                if isinstance(arg, unicode):
-                    new_args.append(arg.encode("utf-8"))
-                else:
-                    new_args.append(arg)
-            log_line = self.name + " (DEBUG) -> " + fmt.format(*new_args)
-            xbmc.log(log_line, level=xbmc.LOGDEBUG)
+        log_line = fmt.format(*new_args)
+        return log_line

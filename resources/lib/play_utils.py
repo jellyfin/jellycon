@@ -869,6 +869,7 @@ class PlaybackService(xbmc.Monitor):
         log.debug("PlaybackService:onNotification:{0}", hex_data)
         decoded_data = binascii.unhexlify(hex_data)
         play_info = json.loads(decoded_data)
+        log.info("Received embycon_play_action : {0}", play_info)
         playFile(play_info, self.monitor)
 
     def screensaver_activated(self):

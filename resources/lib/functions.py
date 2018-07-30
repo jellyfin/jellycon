@@ -1079,6 +1079,7 @@ def PLAY(params):
     play_info["force_transcode"] = forceTranscode
     play_info["media_source_id"] = media_source_id
     play_info["use_default"] = use_default
+    log.info("Sending embycon_play_action : {0}", play_info)
     send_event_notification("embycon_play_action", play_info)
 
 

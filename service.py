@@ -93,7 +93,6 @@ while not xbmc.abortRequested:
                 websocket_client = WebSocketClient()
                 websocket_client.start()
 
-
     except Exception as error:
         log.error("Exception in Playback Monitor: {0}", error)
         log.error("{0}", traceback.format_exc())
