@@ -670,24 +670,27 @@ def show_menu(params):
         li.setProperty('menu_id', 'view_season')
         action_items.append(li)
 
-    user_data = result["UserData"]
-    if user_data.get("Played", False) is False:
-        li = xbmcgui.ListItem(i18n('emby_mark_watched'))
-        li.setProperty('menu_id', 'mark_watched')
-        action_items.append(li)
-    else:
-        li = xbmcgui.ListItem(i18n('emby_mark_unwatched'))
-        li.setProperty('menu_id', 'mark_unwatched')
-        action_items.append(li)
+    user_data = result.get("UserData", None)
+    if user_data:
+        progress = user_data.get("PlaybackPositionTicks", 0) != 0
+        played = user_data.get("Played", False)
+        if not played or progress:
+            li = xbmcgui.ListItem(i18n('emby_mark_watched'))
+            li.setProperty('menu_id', 'mark_watched')
+            action_items.append(li)
+        if played or progress:
+            li = xbmcgui.ListItem(i18n('emby_mark_unwatched'))
+            li.setProperty('menu_id', 'mark_unwatched')
+            action_items.append(li)
 
-    if user_data["IsFavorite"] == False:
-        li = xbmcgui.ListItem(i18n('emby_set_favorite'))
-        li.setProperty('menu_id', 'emby_set_favorite')
-        action_items.append(li)
-    else:
-        li = xbmcgui.ListItem(i18n('emby_unset_favorite'))
-        li.setProperty('menu_id', 'emby_unset_favorite')
-        action_items.append(li)
+        if user_data.get("IsFavorite", False) == False:
+            li = xbmcgui.ListItem(i18n('emby_set_favorite'))
+            li.setProperty('menu_id', 'emby_set_favorite')
+            action_items.append(li)
+        else:
+            li = xbmcgui.ListItem(i18n('emby_unset_favorite'))
+            li.setProperty('menu_id', 'emby_unset_favorite')
+            action_items.append(li)
 
     li = xbmcgui.ListItem(i18n('emby_delete'))
     li.setProperty('menu_id', 'delete')

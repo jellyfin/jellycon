@@ -26,16 +26,16 @@ class SimpleLogging():
         return "LoggingEnabled: " + str(self.enable_logging)
 
     def info(self, fmt, *args, **kwargs):
-        log_line = self.name + " (INFO) -> " + self.log_line(fmt, args)
+        log_line = self.name + " (INFO) -> " + self.log_line(fmt, *args)
         xbmc.log(log_line, level=xbmc.LOGNOTICE)
 
     def error(self, fmt, *args, **kwargs):
-        log_line = self.name + " (ERROR) -> " + self.log_line(fmt, args)
+        log_line = self.name + " (ERROR) -> " + self.log_line(fmt, *args)
         xbmc.log(log_line, level=xbmc.LOGERROR)
 
     def debug(self, fmt, *args, **kwargs):
         if self.enable_logging:
-            log_line = self.name + " (DEBUG) -> " + self.log_line(fmt, args)
+            log_line = self.name + " (DEBUG) -> " + self.log_line(fmt, *args)
             xbmc.log(log_line, level=xbmc.LOGDEBUG)
 
     def log_line(self, fmt, *args):
