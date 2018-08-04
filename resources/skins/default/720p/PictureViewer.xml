@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="3301" type="dialog">
+
+    <zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<left>0</left>
+		<top>0</top>
+	</coordinates>
+    <controls>
+
+		<control type="image" id="3000">
+			<left>0</left>
+			<top>0</top>
+			<width>1280</width>
+			<height>720</height>
+			<texture border="40">bg.png</texture>
+		</control>
+
+		<control type="image" id="3010">
+			<left>0</left>
+			<top>0</top>
+			<width>1280</width>
+			<height>720</height>
+			<texture border="40">bg.png</texture>
+            <aspectratio>keep</aspectratio>
+		</control>
+
+	</controls>
+</window>

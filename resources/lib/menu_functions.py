@@ -319,7 +319,7 @@ def getCollections():
 
     userid = downloadUtils.getUserId()
 
-    if userid == None or len(userid) == 0:
+    if userid is None or len(userid) == 0:
         log.debug("No userid so returning []")
         return []
 
@@ -332,7 +332,7 @@ def getCollections():
     log.debug("parentid: {0}", parentid)
 
     htmlpath = "{server}/emby/Users/{userid}/Views?format=json"
-    #htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
+    # htmlpath = "{server}/emby/Users/{userid}/items?ParentId=" + parentid + "&Sortby=SortName&format=json"
     result = data_manager.GetContent(htmlpath)
 
     if result is not None:
@@ -382,6 +382,23 @@ def getCollections():
                                  '&format=json')
             collections.append(item_data)
 
+        if collection_type in ["homevideos"]:
+            collections.append({
+                'title': item_name,
+                'art': art,
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         # '&CollapseBoxSetItems=true' +
+                         '&Recursive=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
+                         '&format=json'),
+                'media_type': collection_type})
+
         if collection_type in ["movies", "boxsets"]:
             collections.append({
                 'title': item_name,
@@ -389,7 +406,7 @@ def getCollections():
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
                          '&IsVirtualUnaired=false' +
-                         #'&CollapseBoxSetItems=true' +
+                         # '&CollapseBoxSetItems=true' +
                          '&Recursive=true' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +

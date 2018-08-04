@@ -10,6 +10,7 @@ import xbmcvfs
 from datetime import timedelta
 from datetime import datetime
 import json
+import os
 
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
@@ -23,6 +24,7 @@ from item_functions import get_next_episode, extract_item_info
 from clientinfo import ClientInformation
 from functions import delete
 from cache_images import CacheArtwork
+from picture_viewer import PictureViewer
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -156,6 +158,16 @@ def playFile(play_info, monitor):
     # select the media source to use
     media_sources = result.get('MediaSources')
     selected_media_source = None
+
+    if result.get("Type") == "Photo":
+        play_url = "%s/emby/Items/%s/Images/Primary"
+        play_url = play_url % (server, id)
+
+        plugin_path = xbmc.translatePath(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
+        action_menu = PictureViewer("PictureViewer.xml", plugin_path, "default", "720p")
+        action_menu.setPicture(play_url)
+        action_menu.doModal()
+        return
 
     if media_sources is None or len(media_sources) == 0:
         log.debug("Play Failed! There is no MediaSources data!")
@@ -559,6 +571,9 @@ def externalSubs(media_source, list_item, item_id):
     externalsubs = []
     media_streams = media_source['MediaStreams']
 
+    if media_streams is None:
+        return
+
     for stream in media_streams:
 
         if (stream['Type'] == "Subtitle"
@@ -754,6 +769,10 @@ class Service(xbmc.Player):
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
         stopAll(self.played_information)
+
+        if not xbmc.Player().isPlaying():
+            log.debug("onPlayBackStarted: not playing file!")
+            return
 
         current_playing_file = xbmc.Player().getPlayingFile()
         log.debug("onPlayBackStarted: {0}", current_playing_file)
