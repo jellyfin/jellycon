@@ -30,6 +30,7 @@ def getDetailsString():
     include_overview = addonSettings.getSetting("include_overview") == "true"
 
     detailsString = "DateCreated,EpisodeCount,SeasonCount,Path,Genres,Studios,Etag,Taglines"
+    detailsString += ",RecursiveItemCount,ChildCount"
 
     if include_media:
         detailsString += ",MediaStreams"
