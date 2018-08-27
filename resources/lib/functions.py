@@ -93,7 +93,7 @@ def mainEntryPoint():
 
     if mode == "CHANGE_USER":
         checkServer(change_user=True, notify=False)
-    elif mode== "CACHE_ARTWORK":
+    elif mode == "CACHE_ARTWORK":
         CacheArtwork().cache_artwork_interactive()
     elif mode == "DETECT_SERVER":
         checkServer(force=True, notify=True)

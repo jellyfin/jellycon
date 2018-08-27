@@ -904,7 +904,6 @@ class PlaybackService(xbmc.Monitor):
             self.background_image_cache_thread = CacheArtwork()
             self.background_image_cache_thread.start()
 
-
     def screensaver_deactivated(self):
         log.debug("Screen Saver Deactivated")
 

@@ -118,6 +118,10 @@ def checkServer(force=False, change_user=False, notify=False):
 
     # if asked or we have no current user then show user selection screen
     if change_user or len(current_username) == 0:
+
+        # stop playback when switching users
+        xbmc.Player().stop()
+
         # get a list of users
         log.debug("Getting user list")
         jsonData = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
