@@ -71,6 +71,11 @@ class WebSocketClient(threading.Thread):
 
             media_source_id = data.get("MediaSourceId", "")
 
+            start_index = data.get("StartIndex", 0)
+
+            if start_index > 0 and start_index < len(item_ids):
+                item_ids = item_ids[start_index:]
+
             if len(item_ids) == 1:
                 item_ids = item_ids[0]
 
