@@ -140,24 +140,26 @@ def checkServer(force=False, change_user=False, notify=False):
                                 i18n('unable_connect_server'),
                                 i18n('address:') + serverUrl)
         else:
-            selected_id = 0
+            selected_id = -1
             names = []
             user_list = []
             secured = []
             for user in result:
                 config = user.get("Configuration")
-                if (config != None):
-                    if (config.get("IsHidden") is None) or (config.get("IsHidden") is False):
+                if config is not None:
+                    if config.get("IsHidden", False) is False:
                         name = user.get("Name")
                         user_list.append(name)
+                        if current_username == name:
+                            selected_id = len(user_list) - 1
+
                         if (user.get("HasPassword") is True):
                             secured.append(True)
                             name = i18n('username_secured') % name
                         else:
                             secured.append(False)
+
                         names.append(name)
-                        if current_username == name:
-                            selected_id = len(names) - 1
 
             if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
                 names.insert(0, i18n('username_userdefined') % current_username)

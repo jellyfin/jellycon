@@ -398,6 +398,7 @@ class DownloadUtils():
 
         return_data = "null"
         settings = xbmcaddon.Addon()
+        username = settings.getSetting("username")
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
@@ -460,8 +461,11 @@ class DownloadUtils():
             tokens = server.split(':')
             host = tokens[0]
             port = tokens[1]
-            if (host == "<none>" or host == "" or port == ""):
-                return ""
+            if host == "<none>" or host == "" or port == "":
+                return return_data
+
+            if authenticate and username == "":
+                return return_data
 
             use_https = settings.getSetting('use_https') == 'true'
             verify_cert = settings.getSetting('verify_cert') == 'true'
@@ -519,12 +523,13 @@ class DownloadUtils():
 
                 if int(data.status) == 401:
                     # remove any saved password
-                    username = settings.getSetting("username")
                     m = hashlib.md5()
                     m.update(username)
                     hashed_username = m.hexdigest()
                     log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}", hashed_username)
                     settings.setSetting("saved_user_password_" + hashed_username, "")
+                    settings.setSetting("username", "")
+                    settings.setSetting("password", "")
 
                 log.error("HTTP response error: {0} {1}", data.status, data.reason)
                 if suppress is False:
