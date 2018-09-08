@@ -330,18 +330,21 @@ class DownloadUtils():
             messageData += "&pw=" + pwd_text
 
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
+        log.debug("AuthenticateByName: {0}", resp)
 
         accessToken = None
         userid = None
         try:
             result = json.loads(resp)
             accessToken = result.get("AccessToken")
-            userid = result["SessionInfo"].get("UserId")
+            #userid = result["SessionInfo"].get("UserId")
+            userid = result["User"].get("Id")
         except:
             pass
 
         if accessToken is not None:
             log.debug("User Authenticated: {0}", accessToken)
+            log.debug("User Id: {0}", userid)
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
             WINDOW.setProperty("userimage", "")
