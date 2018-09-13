@@ -98,7 +98,8 @@ def playListOfItems(id_list, monitor):
     items = []
 
     for id in id_list:
-        url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+        url = "{server}/emby/Users/{userid}/Items/%s?format=json"
+        url = url % (id,)
         result = data_manager.GetContent(url)
         if result is None:
             log.debug("Playfile item was None, so can not play!")
@@ -130,7 +131,7 @@ def playFile(play_info, monitor):
 
     server = download_utils.getServer()
 
-    url = "{server}/emby/Users/{userid}/Items/" + id + "?format=json"
+    url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (id,)
     data_manager = DataManager()
     result = data_manager.GetContent(url)
     log.debug("Playfile item: {0}", result)
@@ -143,9 +144,10 @@ def playFile(play_info, monitor):
     if result.get("Type") == "Season" or result.get("Type") == "MusicAlbum":
         log.debug("PlayAllFiles for parent item id: {0}", id)
         url = ('{server}/emby/Users/{userid}/items' +
-               '?ParentId=' + id +
+               '?ParentId=%s' +
                '&Fields=MediaSources' +
                '&format=json')
+        url = url % (id,)
         result = data_manager.GetContent(url)
         log.debug("PlayAllFiles items: {0}", result)
 
@@ -445,7 +447,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
             season_number = result.get("IndexNumber", -1)
             details["season"] = str(season_number)
 
-        details["plotoutline"] = "emby_id:" + id
+        details["plotoutline"] = "emby_id:%s" % (id,)
         #listItem.setUniqueIDs({'emby': id})
 
         listItem.setInfo("Video", infoLabels=details)
@@ -732,7 +734,7 @@ def stopAll(played_information):
             current_possition = data.get("currentPossition", 0)
             emby_item_id = data.get("item_id")
 
-            if emby_item_id is not None and len(emby_item_id) != 0 and emby_item_id != "None":
+            if emby_item_id is not None:
                 log.debug("Playback Stopped at: {0}", current_possition)
 
                 url = "{server}/emby/Sessions/Playing/Stopped"
@@ -791,7 +793,7 @@ class Service(xbmc.Player):
         play_session_id = data["play_session_id"]
 
         # if we could not find the ID of the current item then return
-        if emby_item_id is None or len(emby_item_id) == 0:
+        if emby_item_id is None:
             return
 
         log.debug("Sending Playback Started")
@@ -810,7 +812,7 @@ class Service(xbmc.Player):
         download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
         home_screen = HomeWindow()
-        home_screen.setProperty("currently_playing_id", emby_item_id)
+        home_screen.setProperty("currently_playing_id", str(emby_item_id))
 
         # record the activity
         utcnow = datetime.utcnow()
