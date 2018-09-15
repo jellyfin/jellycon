@@ -24,7 +24,7 @@ from clientinfo import ClientInformation
 from datamanager import DataManager
 from server_detect import checkServer
 from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showYearsList, showMoviePages
+from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showMoviePages
 from translation import i18n
 from server_sessions import showServerSessions
 from action_menu import ActionMenu
@@ -105,8 +105,6 @@ def mainEntryPoint():
         showGenreList(params)
     elif mode == "MOVIE_PAGES":
         showMoviePages(params)
-    elif mode == "MOVIE_YEARS":
-        showYearsList()
     elif mode == "WIDGETS":
         showWidgets()
     elif mode == "TOGGLE_WATCHED":
@@ -1025,7 +1023,7 @@ def search_results(params):
         id_list = []
         for item in search_hints:
             item_id = item.get('ItemId')
-            id_list.append(item_id)
+            id_list.append(str(item_id))
 
         if len(id_list) > 0:
             Ids = ",".join(id_list)
