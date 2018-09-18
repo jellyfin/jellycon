@@ -896,6 +896,8 @@ class PlaybackService(xbmc.Monitor):
     def screensaver_activated(self):
         log.debug("Screen Saver Activated")
 
+        xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
+
         settings = xbmcaddon.Addon()
 
         cache_images = settings.getSetting('cacheImagesOnScreenSaver') == 'true'
