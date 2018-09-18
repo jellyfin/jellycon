@@ -897,9 +897,6 @@ class PlaybackService(xbmc.Monitor):
         log.debug("Screen Saver Activated")
 
         settings = xbmcaddon.Addon()
-        show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
-        if show_change_user:
-            xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
 
         cache_images = settings.getSetting('cacheImagesOnScreenSaver') == 'true'
         if cache_images:
@@ -913,5 +910,8 @@ class PlaybackService(xbmc.Monitor):
             self.background_image_cache_thread.stop_all_activity = True
             self.background_image_cache_thread = None
 
-
+        settings = xbmcaddon.Addon()
+        show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
+        if show_change_user:
+            xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
 

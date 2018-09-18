@@ -40,7 +40,7 @@ class CacheArtwork(threading.Thread):
                 last_update = time.time()
 
             xbmc.sleep(1000)
-        log.debug("CacheArtwork background thread exited")
+        log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
 
     def cache_artwork_interactive(self):
         log.debug("cache_artwork_interactive")
@@ -134,6 +134,7 @@ class CacheArtwork(threading.Thread):
         params = {"properties": ["url"]}
         json_result = json_rpc('Textures.GetTextures').execute(params)
         textures = json_result.get("result", {}).get("textures", [])
+        log.debug("Textures.GetTextures Count: {0}", len(textures))
 
         if self.stop_all_activity:
             return
@@ -148,6 +149,8 @@ class CacheArtwork(threading.Thread):
 
         del textures
         del json_result
+
+        log.debug("texture_urls Count: {0}", len(texture_urls))
 
         if self.stop_all_activity:
             return
@@ -168,6 +171,8 @@ class CacheArtwork(threading.Thread):
 
         server = downloadUtils.getServer()
         missing_texture_urls = set()
+
+        log.debug("Emby Item Count Count: {0}", len(results))
 
         if self.stop_all_activity:
             return
