@@ -800,17 +800,21 @@ def showContent(pluginName, handle, params):
     log.debug("showContent Called: {0}", params)
 
     item_type = params.get("item_type")
+    settings = xbmcaddon.Addon()
+    group_movies = settings.getSetting('group_movies') == "true"
+
+    if item_type.lower().find("movie") == -1:
+        group_movies = False
 
     contentUrl = ("{server}/emby/Users/{userid}/Items"
                   "?format=json" +
-                  "&SortBy=Name" +
-                  "&SortOrder=Ascending" +
                   "&ImageTypeLimit=1" +
                   "&IsMissing=False" +
                   "&Fields={field_filters}" +
+                  '&CollapseBoxSetItems=' + str(group_movies) +
+                  '&GroupItemsIntoCollections=' + str(group_movies) +
                   "&Recursive=true" +
                   "&IsVirtualUnaired=false" +
-                  "&IsMissing=False" +
                   "&IncludeItemTypes=" + item_type)
 
     log.debug("showContent Content Url: {0}", contentUrl)

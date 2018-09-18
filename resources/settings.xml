@@ -44,6 +44,7 @@
 		<setting id="cacheImagesOnScreenSaver" type="bool" label="30333" default="false" visible="true" enable="true" />
 	</category>
 	<category label="30110">
+		<setting id="group_movies" type="bool" label="30340" default="true" visible="true" enable="true" />
 		<setting id="addCounts" type="bool" label="30116" default="false" visible="true" enable="true" />
 		<setting id="addResumePercent" type="bool" label="30118" default="false" visible="true" enable="true" />
 		<setting id="addSubtitleAvailable" type="bool" label="30163" default="false" visible="true" enable="true" />

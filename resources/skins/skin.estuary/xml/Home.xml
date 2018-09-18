@@ -883,7 +883,7 @@
 						<item>
 							<label>Emby Movies</label>
 							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
-							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Movie%2CBoxSet&amp;media_type=movies,return)</onclick>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies,return)</onclick>
 							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
 							<property name="menu_id">$NUMBER[3000]</property>
 							<thumb>icons/sidemenu/movies.png</thumb>
