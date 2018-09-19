@@ -38,8 +38,12 @@ def set_background_image():
             item = items[0]
             server = downloadUtils.getServer()
             bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
+
+            label = item.get("Name")
+
             home_window = HomeWindow()
             home_window.setProperty("random-gb", bg_image)
+            home_window.setProperty("random-gb-label", label)
             log.debug("random-gb: {0}", bg_image)
 
 
