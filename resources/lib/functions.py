@@ -17,21 +17,21 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from downloadutils import DownloadUtils
-from utils import getArt, send_event_notification
-from kodi_utils import HomeWindow
-from clientinfo import ClientInformation
-from datamanager import DataManager
-from server_detect import checkServer
-from simple_logging import SimpleLogging
-from menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showMoviePages
-from translation import i18n
-from server_sessions import showServerSessions
-from action_menu import ActionMenu
-from widgets import getWidgetContent, get_widget_content_cast, getWidgetUrlContent
+from .downloadutils import DownloadUtils
+from .utils import getArt, send_event_notification
+from .kodi_utils import HomeWindow
+from .clientinfo import ClientInformation
+from .datamanager import DataManager
+from .server_detect import checkServer
+from .simple_logging import SimpleLogging
+from .menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showMoviePages
+from .translation import i18n
+from .server_sessions import showServerSessions
+from .action_menu import ActionMenu
+from .widgets import getWidgetContent, get_widget_content_cast, getWidgetUrlContent
 import trakttokodi
-from item_functions import add_gui_item, extract_item_info, ItemDetails
-from cache_images import CacheArtwork
+from .item_functions import add_gui_item, extract_item_info, ItemDetails
+from .cache_images import CacheArtwork
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))

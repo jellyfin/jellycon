@@ -12,19 +12,18 @@ from datetime import datetime
 import json
 import os
 
-from simple_logging import SimpleLogging
-from downloadutils import DownloadUtils
-from resume_dialog import ResumeDialog
-from utils import PlayUtils, getArt, id_generator, send_event_notification
-from kodi_utils import HomeWindow
-from translation import i18n
-from json_rpc import json_rpc
-from datamanager import DataManager
-from item_functions import get_next_episode, extract_item_info
-from clientinfo import ClientInformation
-from functions import delete
-from cache_images import CacheArtwork
-from picture_viewer import PictureViewer
+from .simple_logging import SimpleLogging
+from .downloadutils import DownloadUtils
+from .resume_dialog import ResumeDialog
+from .utils import PlayUtils, getArt, id_generator, send_event_notification
+from .kodi_utils import HomeWindow
+from .translation import i18n
+from .datamanager import DataManager
+from .item_functions import get_next_episode, extract_item_info
+from .clientinfo import ClientInformation
+from .functions import delete
+from .cache_images import CacheArtwork
+from .picture_viewer import PictureViewer
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
