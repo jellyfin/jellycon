@@ -850,6 +850,7 @@ def showWidgets():
            "&ItemLimit={ItemLimit}" +
            "&format=json" +
            "&ImageTypeLimit=1" +
+           '&Fields={field_filters}' +
            "&IsMissing=False")
     addMenuDirectoryItem(i18n('movies_recommendations'),
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type=Movies&url=" + urllib.quote(url))
@@ -859,6 +860,7 @@ def showWidgets():
            '&CollapseBoxSetItems=false' +
            '&GroupItemsIntoCollections=false' +
            "&format=json" +
+           '&Fields={field_filters}' +
            "&ImageTypeLimit=1" +
            "&IsMissing=False" +
            "&Filters={IsUnplayed,}IsNotFolder" +
