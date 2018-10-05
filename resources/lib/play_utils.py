@@ -895,7 +895,11 @@ class PlaybackService(xbmc.Monitor):
     def screensaver_activated(self):
         log.debug("Screen Saver Activated")
 
-        xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
+        # stop playback when switching users
+        if xbmc.Player().isPlaying():
+            xbmc.Player().stop()
+
+        #xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
 
         settings = xbmcaddon.Addon()
 

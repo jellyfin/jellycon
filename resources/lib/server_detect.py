@@ -179,7 +179,7 @@ def checkServer(force=False, change_user=False, notify=False):
             else:
                 selection_title = i18n('select_user')
 
-            return_value = xbmcgui.Dialog().select(selection_title, names, preselect=selected_id)
+            return_value = xbmcgui.Dialog().select(selection_title, names, preselect=selected_id, autoclose=20000)
 
             if return_value > -1 and return_value != selected_id:
 
