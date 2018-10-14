@@ -47,6 +47,7 @@ class ItemDetails():
     date_added = ""
     location_type = None
     studio = None
+    production_location = None
     genre = ""
     play_count = 0
     director = ""
@@ -216,10 +217,16 @@ def extract_item_info(item, gui_options):
     studios = item["Studios"]
     if studios is not None:
         for studio in studios:
-            if item_details.studio == "":  # Just take the first one
+            if item_details.studio == None:  # Just take the first one
                 studio_name = studio["Name"]
                 item_details.studio = studio_name
                 break
+
+    # production location
+    prod_location = item["ProductionLocations"]
+    log.debug("ProductionLocations : {0}", prod_location)
+    if prod_location and len(prod_location) > 0:
+        item_details.production_location = prod_location[0]
 
     # Process Genres
     genres = item["Genres"]
@@ -395,6 +402,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     info_labels["premiered"] = item_details.premiere_date
     info_labels["dateadded"] = item_details.date_added
     info_labels["studio"] = item_details.studio
+    info_labels["country"] = item_details.production_location
     info_labels["genre"] = item_details.genre
     info_labels["tagline"] = item_details.tagline
 
