@@ -351,40 +351,54 @@ def send_next_episode_details(item):
     next_item_details = extract_item_info(next_episode, gui_options)
 
     current_item = {}
-    current_item["id"] = item_details.id
+    current_item["episodeid"] = item_details.id
+    current_item["tvshowid"] = item_details.series_name
     current_item["title"] = item_details.name
-    current_item["image"] = item_details.art.get('tvshow.poster', '')
-    current_item["thumb"] = item_details.art.get('thumb', '')
-    current_item["fanartimage"] = item_details.art.get('tvshow.fanart', '')
-    current_item["overview"] = item_details.plot
-    current_item["tvshowtitle"] = item_details.series_name
+    current_item["art"] = {}
+    current_item["art"]["tvshow.poster"] = item_details.art.get('tvshow.poster', '')
+    current_item["art"]["thumb"] = item_details.art.get('thumb', '')
+    current_item["art"]["tvshow.fanart"] = item_details.art.get('tvshow.fanart', '')
+    current_item["art"]["tvshow.landscape"] = item_details.art.get('tvshow.landscape', '')
+    current_item["art"]["tvshow.clearart"] = item_details.art.get('tvshow.clearart', '')
+    current_item["art"]["tvshow.clearlogo"] = item_details.art.get('tvshow.clearlogo', '')
+    current_item["plot"] = item_details.plot
+    current_item["showtitle"] = item_details.series_name
     current_item["playcount"] = item_details.play_count
     current_item["season"] = item_details.season_number
     current_item["episode"] = item_details.episode_number
     current_item["rating"] = item_details.critic_rating
-    current_item["year"] = item_details.year
+    current_item["firstaired"] = item_details.year
+
 
     next_item = {}
-    next_item["id"] = next_item_details.id
+    next_item["episodeid"] = next_item_details.id
+    next_item["tvshowid"] = next_item_details.series_name
     next_item["title"] = next_item_details.name
-    next_item["image"] = next_item_details.art.get('tvshow.poster', '')
-    next_item["thumb"] = next_item_details.art.get('thumb', '')
-    next_item["fanartimage"] = next_item_details.art.get('tvshow.fanart', '')
-    next_item["overview"] = next_item_details.plot
-    next_item["tvshowtitle"] = next_item_details.series_name
+    next_item["art"] = {}
+    next_item["art"]["tvshow.poster"] = next_item_details.art.get('tvshow.poster', '')
+    next_item["art"]["thumb"] = next_item_details.art.get('thumb', '')
+    next_item["art"]["tvshow.fanart"] = next_item_details.art.get('tvshow.fanart', '')
+    next_item["art"]["tvshow.landscape"] = next_item_details.art.get('tvshow.landscape', '')
+    next_item["art"]["tvshow.clearart"] = next_item_details.art.get('tvshow.clearart', '')
+    next_item["art"]["tvshow.clearlogo"] = next_item_details.art.get('tvshow.clearlogo', '')
+    next_item["plot"] = next_item_details.plot
+    next_item["showtitle"] = next_item_details.series_name
     next_item["playcount"] = next_item_details.play_count
     next_item["season"] = next_item_details.season_number
     next_item["episode"] = next_item_details.episode_number
     next_item["rating"] = next_item_details.critic_rating
-    next_item["year"] = next_item_details.year
+    next_item["firstaired"] = next_item_details.year
 
     next_info = {
-        "current_item": current_item,
-        "next_item": next_item
+        "current_episode": current_item,
+        "next_episode": next_item,
+        "play_info": {
+            "item_id": next_item_details.id,
+            "auto_resume": False,
+            "force_transcode": False
+        }
     }
-
-    log.debug("send_next_episode_details: {0}", next_info)
-    send_event_notification("embycon_next_episode", next_info)
+    send_event_notification("upnext_data", next_info)
 
 
 def setListItemProps(id, listItem, result, server, extra_props, title):
