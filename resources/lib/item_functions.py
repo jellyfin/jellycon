@@ -42,6 +42,7 @@ class ItemDetails():
     mpaa = None
     rating = None
     critic_rating = 0.0
+    community_rating = 0.0
     year = None
     premiere_date = ""
     date_added = ""
@@ -281,9 +282,15 @@ def extract_item_info(item, gui_options):
     item_details.art = getArt(item, gui_options["server"])
     item_details.rating = item["OfficialRating"]
     item_details.mpaa = item["OfficialRating"]
-    item_details.critic_rating = item["CommunityRating"]
+
+    item_details.community_rating = item["CommunityRating"]
+    if item_details.community_rating is None:
+        item_details.community_rating = 0.0
+
+    item_details.critic_rating = item["CriticRating"]
     if item_details.critic_rating is None:
         item_details.critic_rating = 0.0
+
     item_details.location_type = item["LocationType"]
     item_details.recursive_item_count = item["RecursiveItemCount"]
     item_details.recursive_unplayed_items_count = userData["UnplayedItemCount"]
@@ -459,7 +466,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
         if item_details.subtitle_lang != '':
             list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
 
-        list_item.setRating("imdb", item_details.critic_rating, 0, True)
+        list_item.setRating("imdb", item_details.community_rating, 0, True)
+        list_item.setRating("rt", item_details.critic_rating, 0, False)
         list_item.setProperty('TotalTime', str(item_details.duration))
 
     else:
