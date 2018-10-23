@@ -401,6 +401,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if item_details.favorite == 'true':
         info_labels["top250"] = "1"
 
+    info_labels["userrating"] = item_details.critic_rating
     info_labels["mpaa"] = item_details.mpaa
     info_labels["rating"] = item_details.rating
     info_labels["director"] = item_details.director
@@ -467,7 +468,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
 
         list_item.setRating("imdb", item_details.community_rating, 0, True)
-        list_item.setRating("rt", item_details.critic_rating, 0, False)
+        #list_item.setRating("rt", item_details.critic_rating, 0, False)
         list_item.setProperty('TotalTime', str(item_details.duration))
 
     else:
