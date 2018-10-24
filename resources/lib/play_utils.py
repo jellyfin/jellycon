@@ -19,7 +19,7 @@ from .utils import PlayUtils, getArt, id_generator, send_event_notification
 from .kodi_utils import HomeWindow
 from .translation import i18n
 from .datamanager import DataManager
-from .item_functions import get_next_episode, extract_item_info
+from .item_functions import get_next_episode, extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
 from .functions import delete
 from .cache_images import CacheArtwork
@@ -279,7 +279,23 @@ def playFile(play_info, monitor):
 
     # add title decoration is needed
     item_title = result.get("Name", i18n('missing_title'))
-    list_item = xbmcgui.ListItem(label=item_title)
+
+    # extract item info from result
+    gui_options = {}
+    gui_options["server"] = server
+    gui_options["name_format"] = None
+    gui_options["name_format_type"] = ""
+    item_details = extract_item_info(result, gui_options)
+
+    # create ListItem
+    display_options = {}
+    display_options["addCounts"] = False
+    display_options["addResumePercent"] = False
+    display_options["addSubtitleAvailable"] = False
+
+    gui_item = add_gui_item("", item_details, display_options, False)
+    list_item = gui_item[1]
+    #list_item = xbmcgui.ListItem(label=item_title)
 
     if playback_type == "2": # if transcoding then prompt for audio and subtitle
         playurl = audioSubsPref(playurl, list_item, selected_media_source, id, use_default)
