@@ -901,6 +901,12 @@ def set_library_window_values():
     if already_set:
         return
 
+    for index in range(0, 20):
+        home_window.clearProperty("view_item.%i.name" % index)
+        home_window.clearProperty("view_item.%i.id" % index)
+        home_window.clearProperty("view_item.%i.type" % index)
+        home_window.clearProperty("view_item.%i.thumb" % index)
+
     data_manager = DataManager()
     url = "{server}/emby/Users/{userid}/Views"
     result = data_manager.GetContent(url)

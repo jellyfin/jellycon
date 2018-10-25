@@ -19,32 +19,55 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
+background_items = []
+background_current_item = 0
 
 def set_background_image():
     log.debug("set_background_image Called")
 
-    url = ('{server}/emby/Users/{userid}/Items' +
-           '?Recursive=true' +
-           '&limit=1' +
-           '&SortBy=Random' +
-           '&IncludeItemTypes=Movie,Series' +
-           '&ImageTypeLimit=1')
+    global background_current_item
+    global background_items
 
-    results = downloadUtils.downloadUrl(url, suppress=True)
-    results = json.loads(results)
-    if results is not None:
-        items = results.get("Items", [])
-        if len(items) > 0:
-            item = items[0]
-            server = downloadUtils.getServer()
-            bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
+    if len(background_items) == 0 or background_current_item >= len(background_items):
+        log.debug("set_background_image: Need to load more backgrounds {0} - {1}",
+                  len(background_items), background_current_item)
+        url = ('{server}/emby/Users/{userid}/Items' +
+               '?Recursive=true' +
+               '&limit=60' +
+               '&SortBy=Random' +
+               '&IncludeItemTypes=Movie,Series' +
+               '&ImageTypeLimit=1')
 
-            label = item.get("Name")
+        server = downloadUtils.getServer()
+        results = downloadUtils.downloadUrl(url, suppress=True)
+        results = json.loads(results)
 
-            home_window = HomeWindow()
-            home_window.setProperty("random-gb", bg_image)
-            home_window.setProperty("random-gb-label", label)
-            log.debug("random-gb: {0}", bg_image)
+        if results is not None:
+            items = results.get("Items", [])
+            background_current_item = 0
+            background_items = []
+            for item in items:
+                bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
+                label = item.get("Name")
+                item_background = {}
+                item_background["image"] = bg_image
+                item_background["name"] = label
+                background_items.append(item_background)
+
+        log.debug("set_background_image: Loaded {0} more backgrounds", len(background_items))
+
+    if len(background_items) > 0 and background_current_item < len(background_items):
+
+        bg_image = background_items[background_current_item].get("image")
+        label = background_items[background_current_item].get("name")
+        log.debug("set_background_image: {0} - {1} - {2}", background_current_item, label, bg_image)
+
+        background_current_item += 1
+
+        home_window = HomeWindow()
+        home_window.setProperty("random-gb", bg_image)
+        home_window.setProperty("random-gb-label", label)
+
 
 
 def checkForNewContent():

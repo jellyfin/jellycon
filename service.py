@@ -65,6 +65,9 @@ if context_menu:
     context_monitor = ContextMonitor()
     context_monitor.start()
 
+background_interval = int(settings.getSetting('background_interval'))
+newcontent_interval = int(settings.getSetting('newcontent_interval'))
+
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
 # I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
@@ -78,11 +81,13 @@ while not xbmc.abortRequested:
             if (time.time() - last_progress_update) > 10:
                 last_progress_update = time.time()
                 sendProgress(monitor)
+
         else:
-            if (time.time() - last_content_check) > 60:
+            if (time.time() - last_content_check) > newcontent_interval:
                 last_content_check = time.time()
                 checkForNewContent()
-            if (time.time() - last_background_update) > 30:
+
+            if (time.time() - last_background_update) > background_interval:
                 last_background_update = time.time()
                 set_library_window_values()
                 set_background_image()

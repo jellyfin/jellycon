@@ -67,5 +67,7 @@
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="remoteControl" type="bool" label="30310" default="false" visible="true" enable="true" />
 		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />
+		<setting id="background_interval" type="slider" label="30341" default="20" range="0,1,120" option="int" visible="true"/>
+		<setting id="newcontent_interval" type="slider" label="30342" default="60" range="0,1,300" option="int" visible="true"/>
 	</category>
 </settings>
