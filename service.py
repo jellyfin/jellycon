@@ -83,11 +83,11 @@ while not xbmc.abortRequested:
                 sendProgress(monitor)
 
         else:
-            if (time.time() - last_content_check) > newcontent_interval:
+            if newcontent_interval != 0 and (time.time() - last_content_check) > newcontent_interval:
                 last_content_check = time.time()
                 checkForNewContent()
 
-            if (time.time() - last_background_update) > background_interval:
+            if background_interval != 0 and (time.time() - last_background_update) > background_interval:
                 last_background_update = time.time()
                 set_library_window_values()
                 set_background_image()

@@ -154,6 +154,10 @@ msgctxt "#30110"
 msgid "Interface"
 msgstr ""
 
+msgctxt "#30111"
+msgid "Services"
+msgstr ""
+
 msgctxt "#30112"
 msgid "Loading Content"
 msgstr ""
@@ -322,6 +326,10 @@ msgctxt "#30215"
 msgid "On Playback Stop (100% = disabled)"
 msgstr ""
 
+msgctxt "#30216"
+msgid "Item Details"
+msgstr ""
+
 msgctxt "#30217"
 msgid "Prompt to delete episode after %"
 msgstr ""
@@ -340,6 +348,18 @@ msgstr ""
 
 msgctxt "#30221"
 msgid "On Playback Stop"
+msgstr ""
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr ""
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr ""
+
+msgctxt "#30224"
+msgid "Interaction"
 msgstr ""
 
 msgctxt "#30229"
@@ -643,7 +663,7 @@ msgid "Select Media Source"
 msgstr ""
 
 msgctxt "#30310"
-msgid "Enable Emby remote control (requires restart)"
+msgid "Enable Emby remote control"
 msgstr ""
 
 msgctxt "#30311"
@@ -735,7 +755,7 @@ msgid "Cache artwork in the background"
 msgstr ""
 
 msgctxt "#30334"
-msgid "Use EmbyCon menu (requires restart)"
+msgid "Use EmbyCon context menu"
 msgstr ""
 
 msgctxt "#30335"
@@ -763,9 +783,13 @@ msgid "Group movies into collections"
 msgstr ""
 
 msgctxt "#30341"
-msgid "Background update interval (requires restart)"
+msgid "Background image update interval (0 = disabled)"
 msgstr ""
 
 msgctxt "#30342"
-msgid "New content check interval (requires restart)"
+msgid "New content check interval (0 = disabled)"
+msgstr ""
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
 msgstr ""
