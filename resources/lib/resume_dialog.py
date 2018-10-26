@@ -3,7 +3,7 @@
 import xbmcgui
 
 from simple_logging import SimpleLogging
-from translation import i18n
+from translation import string_load
 
 log = SimpleLogging(__name__)
 
@@ -19,7 +19,7 @@ class ResumeDialog(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         self.getControl(3010).setLabel(self.resumeTimeStamp)
-        self.getControl(3011).setLabel(i18n('start_from_beginning'))
+        self.getControl(3011).setLabel(string_load(30237))
 
     def onFocus(self, controlId):
         pass

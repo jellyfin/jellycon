@@ -10,7 +10,6 @@ import xbmcgui
 
 from utils import getArt
 from simple_logging import SimpleLogging
-from translation import i18n
 from downloadutils import DownloadUtils
 from datamanager import DataManager
 from kodi_utils import HomeWindow

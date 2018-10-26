@@ -9,7 +9,7 @@ import xbmcgui
 from simple_logging import SimpleLogging
 from datamanager import DataManager
 
-from translation import i18n
+from translation import string_load
 
 log = SimpleLogging(__name__)
 dataManager = DataManager()
@@ -19,11 +19,11 @@ icon = xbmc.translatePath('special://home/addons/plugin.video.embycon/icon.png')
 
 
 def not_found(content_string):
-    xbmcgui.Dialog().notification('EmbyCon', i18n('not_found_') % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('EmbyCon', string_load(30305) % content_string, icon=icon, sound=False)
 
 
 def playback_starting(content_string):
-    xbmcgui.Dialog().notification('EmbyCon', i18n('playback_starting_') % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('EmbyCon', string_load(30306) % content_string, icon=icon, sound=False)
 
 
 def search(item_type, query):

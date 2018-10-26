@@ -17,9 +17,6 @@ import binascii
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from clientinfo import ClientInformation
-from json_rpc import json_rpc
-from translation import i18n
-from datamanager import DataManager
 
 # define our global download utils
 downloadUtils = DownloadUtils()

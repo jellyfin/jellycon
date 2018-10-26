@@ -11,7 +11,7 @@ import xbmcaddon
 from downloadutils import DownloadUtils
 from kodi_utils import addMenuDirectoryItem, HomeWindow
 from simple_logging import SimpleLogging
-from translation import i18n
+from translation import string_load
 from datamanager import DataManager
 from utils import getArt
 
@@ -98,7 +98,7 @@ def showMoviePages(params):
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("art"))
-        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, art=collection.get("art"))
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url, art=collection.get("art"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -169,7 +169,7 @@ def showGenreList(params):
                              "&mode=GET_CONTENT" +
                              "&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} - {1} - {2}", collection.get('title'), url, collection.get("art"))
-        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url, art=collection.get("art"))
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url, art=collection.get("art"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -219,7 +219,7 @@ def showMovieAlphaList():
         url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-        addMenuDirectoryItem(collection.get('title', i18n('unknown')), url)
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -239,7 +239,7 @@ def displaySections():
         for collection in collections:
             if collection.get("item_type") == "plugin_link":
                 plugin_path = collection['path']
-                addMenuDirectoryItem(collection.get('title', i18n('unknown')),
+                addMenuDirectoryItem(collection.get('title', string_load(30250)),
                                      plugin_path,
                                      art=collection.get("art"))
             else:
@@ -248,27 +248,27 @@ def displaySections():
                 if collection.get("name_format") is not None:
                     url += "&name_format=" + urllib.quote(collection.get("name_format"))
                 log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-                addMenuDirectoryItem(collection.get('title', i18n('unknown')),
+                addMenuDirectoryItem(collection.get('title', string_load(30250)),
                                      url,
                                      art=collection.get("art"))
 
-        addMenuDirectoryItem(i18n('movies_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
-        addMenuDirectoryItem(i18n('movies_az'), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
+        addMenuDirectoryItem(string_load(30251), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
+        addMenuDirectoryItem(string_load(30252), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
         addMenuDirectoryItem("Movie (Pages)", "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
 
-        addMenuDirectoryItem(i18n('tvshow_genre'), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
-        addMenuDirectoryItem(i18n('search'), "plugin://plugin.video.embycon/?mode=SEARCH")
+        addMenuDirectoryItem(string_load(30289), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
+        addMenuDirectoryItem(string_load(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
 
-        addMenuDirectoryItem(i18n('show_clients'), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
-        addMenuDirectoryItem(i18n('change_user'), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
+        addMenuDirectoryItem(string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
+        addMenuDirectoryItem(string_load(30253), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
 
-    addMenuDirectoryItem(i18n('detect_server'), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
-    addMenuDirectoryItem(i18n('show_settings'), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem(string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
+    addMenuDirectoryItem(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
 
     # only add these if we have other collection which means we have a valid server conn
     if collections:
-        addMenuDirectoryItem(i18n('cache_textures'), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
-        addMenuDirectoryItem(i18n('widgets'), "plugin://plugin.video.embycon/?mode=WIDGETS")
+        addMenuDirectoryItem(string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
+        addMenuDirectoryItem(string_load(30247), "plugin://plugin.video.embycon/?mode=WIDGETS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -320,7 +320,7 @@ def getCollections():
 
         if collection_type == "music":
             item_data = {}
-            item_data['title'] = item_name + i18n('_all_albums')
+            item_data['title'] = item_name + string_load(30320)
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbums'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -335,7 +335,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + i18n('_all_artists')
+            item_data['title'] = item_name + string_load(30321)
             item_data['art'] = art
             item_data['media_type'] = 'MusicArtists'
             item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
@@ -417,7 +417,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
-                'title': item_name + i18n('_unwatched'),
+                'title': item_name + string_load(30285),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -433,7 +433,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': 'tvshows'})
             collections.append({
-                'title': item_name + i18n('_in_progress'),
+                'title': item_name + string_load(30267),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -451,7 +451,7 @@ def getCollections():
                 'media_type': 'Episodes',
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
-                'title': item_name + i18n('_latest'),
+                'title': item_name + string_load(30288),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items/Latest' +
                          '?ParentId=' + item.get("Id") +
@@ -469,7 +469,7 @@ def getCollections():
                 'media_type': 'Episodes',
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
-                'title': item_name + i18n('_recently_added'),
+                'title': item_name + string_load(30268),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -487,7 +487,7 @@ def getCollections():
                 'media_type': 'Episodes',
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
-                'title': item_name + i18n('_next_up'),
+                'title': item_name + string_load(30278),
                 'art': art,
                 'path': ('{server}/emby/Shows/NextUp/?Userid={userid}' +
                          '&ParentId=' + item.get("Id") +
@@ -503,7 +503,7 @@ def getCollections():
                 'media_type': 'Episodes',
                 'name_format': 'Episode|episode_name_format'})
             collections.append({
-                'title': item_name + i18n('_genres'),
+                'title': item_name + string_load(30325),
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow&parent_id=' + item.get("Id"),
@@ -525,7 +525,7 @@ def getCollections():
 
         if collection_type == "movies":
             collections.append({
-                'title': item_name + i18n('_unwatched'),
+                'title': item_name + string_load(30285),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -543,7 +543,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
-                'title': item_name + i18n('_in_progress'),
+                'title': item_name + string_load(30267),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -562,7 +562,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
-                'title': item_name + i18n('_recently_added'),
+                'title': item_name + string_load(30268),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -581,7 +581,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
             collections.append({
-                'title': item_name + i18n('_genres'),
+                'title': item_name + string_load(30325),
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=movie&parent_id=' + item.get("Id"),
@@ -596,7 +596,7 @@ def getCollections():
 
     # Add standard nodes
     item_data = {}
-    item_data['title'] = i18n('movies_all')
+    item_data['title'] = string_load(30256)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -611,7 +611,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('movies_unwatched')
+    item_data['title'] = string_load(30286)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -627,7 +627,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('movies_in_progress')
+    item_data['title'] = string_load(30258)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit={ItemLimit}' +
@@ -644,7 +644,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('movies_recently_added')
+    item_data['title'] = string_load(30257)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit={ItemLimit}' +
@@ -661,7 +661,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('movies_favorites')
+    item_data['title'] = string_load(30259)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -677,7 +677,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('movies_boxsets')
+    item_data['title'] = string_load(30260)
     item_data['media_type'] = 'BoxSets'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -690,7 +690,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('tvshows_all')
+    item_data['title'] = string_load(30261)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -703,7 +703,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('tvshows_unwatched')
+    item_data['title'] = string_load(30279)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -717,7 +717,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('tvshows_favorites')
+    item_data['title'] = string_load(30262)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -731,7 +731,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('tvshows_latest')
+    item_data['title'] = string_load(30287)
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
                          '?Limit={ItemLimit}' +
@@ -750,7 +750,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('episodes_in_progress')
+    item_data['title'] = string_load(30264)
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit={ItemLimit}' +
@@ -766,7 +766,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('episodes_recently_added')
+    item_data['title'] = string_load(30263)
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Limit={ItemLimit}' +
@@ -784,7 +784,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('episodes_up_next')
+    item_data['title'] = string_load(30265)
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Shows/NextUp/?Userid={userid}' +
                          '&Limit={ItemLimit}' +
@@ -800,7 +800,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('upcoming_tv')
+    item_data['title'] = string_load(30266)
     item_data['media_type'] = 'Episodes'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -815,7 +815,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('music_all_albums')
+    item_data['title'] = string_load(30318)
     item_data['media_type'] = 'MusicAlbums'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -828,7 +828,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = i18n('music_all_artists')
+    item_data['title'] = string_load(30319)
     item_data['media_type'] = 'MusicArtists'
     item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
                          '?Recursive=true' +
@@ -852,7 +852,7 @@ def showWidgets():
            "&ImageTypeLimit=1" +
            '&Fields={field_filters}' +
            "&IsMissing=False")
-    addMenuDirectoryItem(i18n('movies_recommendations'),
+    addMenuDirectoryItem(string_load(30324),
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type=Movies&url=" + urllib.quote(url))
 
     url = ("{server}/emby/Users/{userid}/Items" +
@@ -870,25 +870,25 @@ def showWidgets():
            "&IsVirtualUnaired=false" +
            "&IsMissing=False" +
            "&IncludeItemTypes=Movie")
-    addMenuDirectoryItem(i18n('movies_random'),
+    addMenuDirectoryItem(string_load(30269),
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&media_type=Movies&url=" + urllib.quote(url))
 
-    #addMenuDirectoryItem(i18n('movies_recently_added'), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
-    #addMenuDirectoryItem(i18n('movies_in_progress'), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
-    #addMenuDirectoryItem(i18n('episodes_recently_added'), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
-    #addMenuDirectoryItem(i18n('episodes_in_progress'), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
-    #addMenuDirectoryItem(i18n('episodes_up_next'), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+    #addMenuDirectoryItem(string_load(30257), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
+    #addMenuDirectoryItem(string_load(30258), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
+    #addMenuDirectoryItem(string_load(30263), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
+    #addMenuDirectoryItem(string_load(30264), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
+    #addMenuDirectoryItem(string_load(30265), 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_search():
-    addMenuDirectoryItem(i18n('movies'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
-    addMenuDirectoryItem(i18n('tvshows'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
-    addMenuDirectoryItem(i18n('episodes'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
-    addMenuDirectoryItem(i18n('song'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
-    addMenuDirectoryItem(i18n('album'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
-    addMenuDirectoryItem(i18n('person'), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
+    addMenuDirectoryItem(string_load(30231), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
+    addMenuDirectoryItem(string_load(30229), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
+    addMenuDirectoryItem(string_load(30235), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
+    addMenuDirectoryItem(string_load(30337), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
+    addMenuDirectoryItem(string_load(30338), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
+    addMenuDirectoryItem(string_load(30339), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 

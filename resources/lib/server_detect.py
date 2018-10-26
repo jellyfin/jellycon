@@ -13,7 +13,7 @@ import xbmc
 from kodi_utils import HomeWindow
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
-from translation import i18n
+from translation import string_load
 
 log = SimpleLogging(__name__)
 
@@ -77,11 +77,11 @@ def checkServer(force=False, change_user=False, notify=False):
 
         serverNames = []
         for server in serverInfo:
-            serverNames.append(server.get("Name", i18n('n/a')))
+            serverNames.append(server.get("Name", string_load(30063)))
         if serverNames:
-            return_index = xbmcgui.Dialog().select(i18n('select_server'), serverNames)
+            return_index = xbmcgui.Dialog().select(string_load(30166), serverNames)
         else:
-            xbmcgui.Dialog().ok(__addon_name__, i18n('no_server_detected'))
+            xbmcgui.Dialog().ok(__addon_name__, string_load(30282))
             return_index = -1
 
         if (return_index == -1):
@@ -109,8 +109,8 @@ def checkServer(force=False, change_user=False, notify=False):
 
         something_changed = True
         if notify:
-            xbmcgui.Dialog().ok(i18n('server_detect_succeeded'), i18n('found_server'),
-                                i18n('address:') + server_address, i18n('server_port:') + server_port)
+            xbmcgui.Dialog().ok(string_load(30167), string_load(30168),
+                                string_load(30169) + server_address, string_load(30001) + server_port)
 
     # we need to change the user
     current_username = settings.getSetting("username")
@@ -136,9 +136,9 @@ def checkServer(force=False, change_user=False, notify=False):
             result = None
 
         if result is None:
-            xbmcgui.Dialog().ok(i18n('error'),
-                                i18n('unable_connect_server'),
-                                i18n('address:') + serverUrl)
+            xbmcgui.Dialog().ok(string_load(30135),
+                                string_load(30201),
+                                string_load(30169) + serverUrl)
         else:
             selected_id = -1
             names = []
@@ -155,19 +155,19 @@ def checkServer(force=False, change_user=False, notify=False):
 
                         if (user.get("HasPassword") is True):
                             secured.append(True)
-                            name = i18n('username_secured') % name
+                            name = string_load(30060) % name
                         else:
                             secured.append(False)
 
                         names.append(name)
 
             if (len(current_username) > 0) and (not any(n == current_username for n in user_list)):
-                names.insert(0, i18n('username_userdefined') % current_username)
+                names.insert(0, string_load(30061) % current_username)
                 user_list.insert(0, current_username)
                 secured.insert(0, True)
 
             if show_manual:
-                names.append(i18n('username_userinput'))
+                names.append(string_load(30062))
                 user_list.append('')
                 secured.append(True)
 
@@ -175,9 +175,9 @@ def checkServer(force=False, change_user=False, notify=False):
             log.debug("User List: {0}", user_list)
 
             if current_username:
-                selection_title = i18n('select_user') + " (" + current_username + ")"
+                selection_title = string_load(30180) + " (" + current_username + ")"
             else:
-                selection_title = i18n('select_user')
+                selection_title = string_load(30180)
 
             return_value = xbmcgui.Dialog().select(selection_title, names, preselect=selected_id, autoclose=20000)
 
@@ -186,7 +186,7 @@ def checkServer(force=False, change_user=False, notify=False):
                 log.debug("Selected User Index: {0}", return_value)
                 if show_manual and return_value == (len(user_list) -1):
                     kb = xbmc.Keyboard()
-                    kb.setHeading(i18n('username:'))
+                    kb.setHeading(string_load(30005))
                     kb.doModal()
                     if kb.isConfirmed():
                         selected_user = kb.getText()
@@ -214,7 +214,7 @@ def checkServer(force=False, change_user=False, notify=False):
                             settings.setSetting('password', saved_password)
                         else:
                             kb = xbmc.Keyboard()
-                            kb.setHeading(i18n('password:'))
+                            kb.setHeading(string_load(30006))
                             kb.setHiddenInput(True)
                             kb.doModal()
                             if kb.isConfirmed():

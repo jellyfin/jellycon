@@ -17,7 +17,7 @@ from .downloadutils import DownloadUtils
 from .resume_dialog import ResumeDialog
 from .utils import PlayUtils, getArt, id_generator, send_event_notification
 from .kodi_utils import HomeWindow
-from .translation import i18n
+from .translation import string_load
 from .datamanager import DataManager
 from .item_functions import get_next_episode, extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
@@ -71,7 +71,7 @@ def playAllFiles(items, monitor):
             item["Overview"] = playback_type_string
 
         # add title decoration is needed
-        item_title = item.get("Name", i18n('missing_title'))
+        item_title = item.get("Name", string_load(30280))
         list_item = xbmcgui.ListItem(label=item_title)
 
         # add playurl and data to the monitor
@@ -189,7 +189,7 @@ def playFile(play_info, monitor):
             sourceNames.append(source.get("Name", "na"))
 
         dialog = xbmcgui.Dialog()
-        resp = dialog.select(i18n('select_source'), sourceNames)
+        resp = dialog.select(string_load(30309), sourceNames)
         if resp > -1:
             selected_media_source = media_sources[resp]
         else:
@@ -237,7 +237,7 @@ def playFile(play_info, monitor):
             # if current_value is not None:
             #     current_value = current_value.get("value", -1)
             # if current_value not in (2,3):
-            #     return_value = xbmcgui.Dialog().yesno(i18n('extra_prompt'), i18n('turn_on_auto_resume?'))
+            #     return_value = xbmcgui.Dialog().yesno(string_load(30276), string_load(30277))
             #     if return_value:
             #         params = {"setting": "myvideos.selectaction", "value": 2}
             #         json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
@@ -278,7 +278,7 @@ def playFile(play_info, monitor):
         result["Overview"] = playback_type_string
 
     # add title decoration is needed
-    item_title = result.get("Name", i18n('missing_title'))
+    item_title = result.get("Name", string_load(30280))
 
     # extract item info from result
     gui_options = {}
@@ -546,7 +546,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
         playurlprefs += "&AudioStreamIndex=%s" % default_audio
 
     elif len(audioStreams) > 1:
-        resp = dialog.select(i18n('select_audio_stream'), audioStreams)
+        resp = dialog.select(string_load(30291), audioStreams)
         if resp > -1:
             # User selected audio
             selected = audioStreams[resp]
@@ -564,7 +564,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
             playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
 
         else:
-            resp = dialog.select(i18n('select_subtitle'), subtitleStreams)
+            resp = dialog.select(string_load(30292), subtitleStreams)
             if resp == 0:
                 # User selected no subtitles
                 pass
@@ -732,7 +732,7 @@ def promptForStopActions(item_id, current_possition):
             index = next_episode.get("IndexNumber", -1)
             if play_prompt:
                 next_epp_name = "%02d - %s" % (index, next_episode.get("Name", "n/a"))
-                resp = xbmcgui.Dialog().yesno(i18n("play_next_title"), i18n("play_next_question"), next_epp_name, autoclose=10000)
+                resp = xbmcgui.Dialog().yesno(string_load(30283), string_load(30284), next_epp_name, autoclose=10000)
 
             if resp:
                 next_item_id = next_episode.get("Id")
