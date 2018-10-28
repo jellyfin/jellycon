@@ -427,19 +427,19 @@ msgid "Movies - Random"
 msgstr ""
 
 msgctxt "#30270"
-msgid "Mark watched"
+msgid "Mark Watched"
 msgstr ""
 
 msgctxt "#30271"
-msgid "Mark unwatched"
+msgid "Mark Unwatched"
 msgstr ""
 
 msgctxt "#30272"
-msgid "Set favourite"
+msgid "Set Favourite"
 msgstr ""
 
 msgctxt "#30273"
-msgid "Unset favourite"
+msgid "Unset Favourite"
 msgstr ""
 
 msgctxt "#30274"
@@ -468,6 +468,10 @@ msgstr ""
 
 msgctxt "#30280"
 msgid "Missing Title"
+msgstr ""
+
+msgctxt "#30281"
+msgid "Refresh Images"
 msgstr ""
 
 msgctxt "#30282"
@@ -639,7 +643,7 @@ msgid "[EmbyCon Menu]"
 msgstr ""
 
 msgctxt "#30327"
-msgid "View Season"
+msgid "Go To Season"
 msgstr ""
 
 msgctxt "#30328"
@@ -701,3 +705,8 @@ msgstr ""
 msgctxt "#30343"
 msgid "Changes Require Kodi Restart"
 msgstr ""
+
+msgctxt "#30344"
+msgid "Number of images removed from cache : %s"
+msgstr ""
+

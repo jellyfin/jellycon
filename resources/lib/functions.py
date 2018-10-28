@@ -694,7 +694,7 @@ def show_menu(params):
     li.setProperty('menu_id', 'delete')
     action_items.append(li)
 
-    li = xbmcgui.ListItem("Refresh Images")
+    li = xbmcgui.ListItem(string_load(30281))
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 

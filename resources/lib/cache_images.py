@@ -62,15 +62,19 @@ class CacheArtwork(threading.Thread):
         textures = json_result.get("result", {}).get("textures", [])
         log.debug("texture ids: {0}", textures)
 
+        delete_count = 0
         for texture in textures:
             texture_id = texture["textureid"]
             texture_url = texture["url"]
             if item_image_url_part in texture_url:
+                delete_count += 1
                 log.debug("removing texture id: {0}", texture_id)
                 params = {"textureid": int(texture_id)}
                 json_rpc('Textures.RemoveTexture').execute(params)
 
         del textures
+
+        xbmcgui.Dialog().ok(string_load(30281), string_load(30344) % delete_count)
 
     def cache_artwork_interactive(self):
         log.debug("cache_artwork_interactive")
