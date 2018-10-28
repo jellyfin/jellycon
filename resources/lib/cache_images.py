@@ -42,6 +42,36 @@ class CacheArtwork(threading.Thread):
             xbmc.sleep(1000)
         log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
 
+    def delete_cached_images(self, item_id):
+        log.debug("cache_delete_for_links")
+
+        item_image_url_part = "emby/Items/%s/Images/" % item_id
+        item_image_url_part = item_image_url_part.replace("/", "%2f")
+        log.debug("texture ids: {0}", item_image_url_part)
+
+        # is the web server enabled
+        web_query = {"setting": "services.webserver"}
+        result = json_rpc('Settings.GetSettingValue').execute(web_query)
+        xbmc_webserver_enabled = result['result']['value']
+        if not xbmc_webserver_enabled:
+            xbmcgui.Dialog().ok(string_load(30294), string_load(30295))
+            return
+
+        params = {"properties": ["url"]}
+        json_result = json_rpc('Textures.GetTextures').execute(params)
+        textures = json_result.get("result", {}).get("textures", [])
+        log.debug("texture ids: {0}", textures)
+
+        for texture in textures:
+            texture_id = texture["textureid"]
+            texture_url = texture["url"]
+            if item_image_url_part in texture_url:
+                log.debug("removing texture id: {0}", texture_id)
+                params = {"textureid": int(texture_id)}
+                json_rpc('Textures.RemoveTexture').execute(params)
+
+        del textures
+
     def cache_artwork_interactive(self):
         log.debug("cache_artwork_interactive")
 

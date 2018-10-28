@@ -694,6 +694,10 @@ def show_menu(params):
     li.setProperty('menu_id', 'delete')
     action_items.append(li)
 
+    li = xbmcgui.ListItem("Refresh Images")
+    li.setProperty('menu_id', 'refresh_images')
+    action_items.append(li)
+
     #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
@@ -742,6 +746,9 @@ def show_menu(params):
         parent_id = result["ParentId"]
         xbmc.executebuiltin(
             'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
+
+    elif selected_action == "refresh_images":
+        CacheArtwork().delete_cached_images(item_id)
 
 
 def populate_listitem(item_id):
