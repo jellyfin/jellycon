@@ -99,6 +99,9 @@ def mainEntryPoint():
         checkServer(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":
         checkServer(force=True, change_user=True, notify=False)
+    elif mode == "playTrailer":
+        item_id = params["id"]
+        playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
     elif mode == "GENRES":

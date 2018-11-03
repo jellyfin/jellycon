@@ -391,27 +391,14 @@ def add_gui_item(url, item_details, display_options, folder=True):
             info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
     info_labels["title"] = listItemName
-    info_labels["plot"] = item_details.plot
-    info_labels["Overlay"] = item_details.overlay
-    info_labels["TVShowTitle"] = item_details.series_name
-
     info_labels["duration"] = item_details.duration
     info_labels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':
         info_labels["top250"] = "1"
 
-    info_labels["userrating"] = item_details.critic_rating
-    info_labels["mpaa"] = item_details.mpaa
     info_labels["rating"] = item_details.rating
-    info_labels["director"] = item_details.director
-    info_labels["writer"] = item_details.writer
     info_labels["year"] = item_details.year
-    info_labels["premiered"] = item_details.premiere_date
-    info_labels["dateadded"] = item_details.date_added
-    info_labels["studio"] = item_details.studio
-    info_labels["country"] = item_details.production_location
     info_labels["genre"] = item_details.genre
-    info_labels["tagline"] = item_details.tagline
 
     mediatype = 'video'
 
@@ -441,6 +428,19 @@ def add_gui_item(url, item_details, display_options, folder=True):
         info_labels["season"] = item_details.season_number
 
     if is_video:
+
+        info_labels["Overlay"] = item_details.overlay
+        info_labels["tagline"] = item_details.tagline
+        info_labels["studio"] = item_details.studio
+        info_labels["premiered"] = item_details.premiere_date
+        info_labels["plot"] = item_details.plot
+        info_labels["director"] = item_details.director
+        info_labels["writer"] = item_details.writer
+        info_labels["dateadded"] = item_details.date_added
+        info_labels["TVShowTitle"] = item_details.series_name
+        info_labels["country"] = item_details.production_location
+        info_labels["mpaa"] = item_details.mpaa
+        info_labels["userrating"] = item_details.critic_rating
 
         if item_type == 'movie':
             info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
