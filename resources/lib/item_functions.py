@@ -48,7 +48,7 @@ class ItemDetails():
     location_type = None
     studio = None
     production_location = None
-    genre = ""
+    genres = None
     play_count = 0
     director = ""
     writer = ""
@@ -231,7 +231,7 @@ def extract_item_info(item, gui_options):
     # Process Genres
     genres = item["Genres"]
     if genres is not None and len(genres) > 0:
-        item_details.genre = " / ".join(genres)
+        item_details.genres = genres
 
     # Process UserData
     userData = item["UserData"]
@@ -398,7 +398,10 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     info_labels["rating"] = item_details.rating
     info_labels["year"] = item_details.year
-    info_labels["genre"] = item_details.genre
+
+    if item_details.genres is not None and len(item_details.genres) > 0:
+        list_item.setProperty('genres', "%7C".join(item_details.genres))
+        info_labels["genre"] = "/".join(item_details.genres)
 
     mediatype = 'video'
 
