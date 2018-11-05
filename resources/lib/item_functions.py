@@ -224,7 +224,7 @@ def extract_item_info(item, gui_options):
 
     # production location
     prod_location = item["ProductionLocations"]
-    log.debug("ProductionLocations : {0}", prod_location)
+    # log.debug("ProductionLocations : {0}", prod_location)
     if prod_location and len(prod_location) > 0:
         item_details.production_location = prod_location[0]
 
@@ -301,7 +301,7 @@ def extract_item_info(item, gui_options):
 
 def add_gui_item(url, item_details, display_options, folder=True):
 
-    log.debug("Passed item_details: {0}", item_details.__dict__)
+    log.debug("item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
         return None
@@ -362,7 +362,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     else:
         list_item = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
 
-    log.debug("Setting thumbnail as: {0}", thumbPath)
+    #log.debug("Setting thumbnail as: {0}", thumbPath)
 
     # calculate percentage
     if (cappedPercentage != 0):
@@ -467,7 +467,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
 
         list_item.setRating("imdb", item_details.community_rating, 0, True)
-        #list_item.setRating("rt", item_details.critic_rating, 0, False)
+        # list_item.setRating("rt", item_details.critic_rating, 0, False)
         list_item.setProperty('TotalTime', str(item_details.duration))
 
     else:

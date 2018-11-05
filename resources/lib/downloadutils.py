@@ -165,14 +165,14 @@ class DownloadUtils():
             BGTags = data["BackdropImageTags"]
             if BGTags is not None and len(BGTags) > index:
                 imageTag = BGTags[index]
-                log.debug("Background Image Tag: {0}", imageTag)
+                # log.debug("Background Image Tag: {0}", imageTag)
         elif parent is False:
             image_tags = data["ImageTags"]
             if image_tags is not None:
                 image_tag_type = image_tags[art_type]
                 if image_tag_type is not None:
                     imageTag = image_tag_type
-                    log.debug("Image Tag: {0}", imageTag)
+                    # log.debug("Image Tag: {0}", imageTag)
         elif parent is True:
             if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
                 tagName = 'SeriesPrimaryImageTag'
@@ -185,7 +185,7 @@ class DownloadUtils():
             if parent_image_id is not None and parent_image_tag is not None:
                 id = parent_image_id
                 imageTag = parent_image_tag
-                log.debug("Parent Image Tag: {0}", imageTag)
+                # log.debug("Parent Image Tag: {0}", imageTag)
 
 
         if not imageTag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):  # ParentTag not passed for Banner and Art
@@ -194,7 +194,7 @@ class DownloadUtils():
 
         artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
 
-        log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
+        # log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
 
         '''
         # do not return non-existing images

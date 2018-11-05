@@ -250,7 +250,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         item_id = item["Id"]
         name = item["Name"]
         episodeDetails = ""
-        log.debug("WIDGET_DATE_NAME: {0}", name)
+        log.debug("name: {0}", name)
 
         title = name
         tvshowtitle = ""
@@ -267,7 +267,7 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
             if season_number is None:
                 season_number = 0
 
-            name = series_name + " " + episodeDetails
+            # name = series_name + " " + episodeDetails
             name = "%s S%02dE%02d" % (series_name, season_number, episode_number)
             tvshowtitle = "S%02dE%02d" % (season_number, episode_number)
             title = series_name
