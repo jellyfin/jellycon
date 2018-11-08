@@ -502,6 +502,7 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
     playurlprefs = "%s" % url
     default_audio = media_source.get('DefaultAudioStreamIndex', 1)
     default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
+    source_id = media_source["Id"]
 
     media_streams = media_source['MediaStreams']
 
@@ -575,8 +576,8 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
 
                 # Load subtitles in the listitem if downloadable
                 if selectSubsIndex in downloadableStreams:
-                    url = [("%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                            % (download_utils.getServer(), item_id, item_id, selectSubsIndex))]
+                    url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                            % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
                     log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
                     list_item.setSubtitles(url)
                 else:
@@ -613,11 +614,13 @@ def externalSubs(media_source, list_item, item_id):
                 and stream['SupportsExternalStream']):
 
             index = stream['Index']
-            url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s"
-                   % (download_utils.getServer(), item_id, item_id, index, stream['Codec']))
+            source_id = media_source['Id']
+            url = ("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.%s"
+                   % (download_utils.getServer(), item_id, source_id, index, stream['Codec']))
 
             externalsubs.append(url)
 
+    log.debug("External Subtitles : {0}", externalsubs)
     list_item.setSubtitles(externalsubs)
 
 
