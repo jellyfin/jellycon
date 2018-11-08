@@ -40,6 +40,7 @@ def playAllFiles(items, monitor):
         item_id = item.get("Id")
         sources = item.get("MediaSources")
         selected_media_source = sources[0]
+        source_id = selected_media_source.get("Id")
 
         listitem_props = []
         playback_type = "0"
@@ -77,6 +78,7 @@ def playAllFiles(items, monitor):
         # add playurl and data to the monitor
         data = {}
         data["item_id"] = item_id
+        data["source_id"] = source_id
         data["playback_type"] = playback_type_string
         data["play_session_id"] = play_session_id
         data["play_action_type"] = "play_all"
@@ -201,6 +203,7 @@ def playFile(play_info, monitor):
         log.debug("Play Aborted, MediaSource was None")
         return
 
+    source_id = selected_media_source.get("Id")
     seekTime = 0
     auto_resume = int(auto_resume)
 
@@ -308,6 +311,7 @@ def playFile(play_info, monitor):
     # add playurl and data to the monitor
     data = {}
     data["item_id"] = id
+    data["source_id"] = source_id
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
     data["play_action_type"] = "play"
@@ -658,6 +662,8 @@ def sendProgress(monitor):
     if item_id is None:
         return
 
+    source_id = play_data.get("source_id")
+
     ticks = int(play_time * 10000000)
     paused = play_data.get("paused", False)
     playback_type = play_data.get("playback_type")
@@ -667,7 +673,7 @@ def sendProgress(monitor):
         'QueueableMediaTypes': "Video",
         'CanSeek': True,
         'ItemId': item_id,
-        'MediaSourceId': item_id,
+        'MediaSourceId': source_id,
         'PositionTicks': ticks,
         'IsPaused': paused,
         'IsMuted': False,
@@ -771,6 +777,7 @@ def stopAll(played_information):
 
             current_possition = data.get("currentPossition", 0)
             emby_item_id = data.get("item_id")
+            emby_source_id = data.get("source_id")
 
             if emby_item_id is not None and current_possition >= 0:
                 log.debug("Playback Stopped at: {0}", current_possition)
@@ -778,7 +785,7 @@ def stopAll(played_information):
                 url = "{server}/emby/Sessions/Playing/Stopped"
                 postdata = {
                     'ItemId': emby_item_id,
-                    'MediaSourceId': emby_item_id,
+                    'MediaSourceId': emby_source_id,
                     'PositionTicks': int(current_possition * 10000000)
                 }
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
@@ -827,6 +834,7 @@ class Service(xbmc.Player):
         data["currently_playing"] = True
 
         emby_item_id = data["item_id"]
+        emby_source_id = data["source_id"]
         playback_type = data["playback_type"]
         play_session_id = data["play_session_id"]
 
@@ -839,7 +847,7 @@ class Service(xbmc.Player):
             'QueueableMediaTypes': "Video",
             'CanSeek': True,
             'ItemId': emby_item_id,
-            'MediaSourceId': emby_item_id,
+            'MediaSourceId': emby_source_id,
             'PlayMethod': playback_type,
             'PlaySessionId': play_session_id
         }
