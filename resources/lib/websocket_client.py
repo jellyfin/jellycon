@@ -70,6 +70,8 @@ class WebSocketClient(threading.Thread):
             log.debug("WebSocket Message PlayNow: {0}", data)
 
             media_source_id = data.get("MediaSourceId", "")
+            subtitle_stream_index = data.get("SubtitleStreamIndex", None)
+            audio_stream_index = data.get("AudioStreamIndex", None)
 
             start_index = data.get("StartIndex", 0)
 
@@ -83,7 +85,8 @@ class WebSocketClient(threading.Thread):
             params["item_id"] = item_ids
             params["auto_resume"] = str(startat)
             params["media_source_id"] = media_source_id
-            params["use_default"] = "true"
+            params["subtitle_stream_index"] = subtitle_stream_index
+            params["audio_stream_index"] = audio_stream_index
             PLAY(params)
 
 
@@ -144,6 +147,10 @@ class WebSocketClient(threading.Thread):
             elif command == 'SetAudioStreamIndex':
                 index = int(arguments['Index'])
                 player.setAudioStream(index - 1)
+
+            elif command == 'SetSubtitleStreamIndex':
+                index = int(arguments['Index'])
+                player.setSubtitleStream(index - 1)
 
             elif command == 'SetRepeatMode':
                 mode = arguments['RepeatMode']

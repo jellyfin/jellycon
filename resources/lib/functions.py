@@ -1079,8 +1079,11 @@ def PLAY(params):
     media_source_id = params.get("media_source_id", "")
     log.debug("media_source_id: {0}", media_source_id)
 
-    use_default = params.get("use_default", "false") == "true"
-    log.debug("use_default: {0}", use_default)
+    subtitle_stream_index = params.get("subtitle_stream_index")
+    log.debug("subtitle_stream_index: {0}", subtitle_stream_index)
+
+    audio_stream_index = params.get("audio_stream_index")
+    log.debug("audio_stream_index: {0}", audio_stream_index)
 
     # set the current playing item id
     # set all the playback info, this will be picked up by the service
@@ -1093,7 +1096,8 @@ def PLAY(params):
     play_info["auto_resume"] = str(auto_resume)
     play_info["force_transcode"] = forceTranscode
     play_info["media_source_id"] = media_source_id
-    play_info["use_default"] = use_default
+    play_info["subtitle_stream_index"] = subtitle_stream_index
+    play_info["audio_stream_index"] = audio_stream_index
     log.info("Sending embycon_play_action : {0}", play_info)
     send_event_notification("embycon_play_action", play_info)
 

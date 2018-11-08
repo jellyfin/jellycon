@@ -119,7 +119,8 @@ def playFile(play_info, monitor):
     auto_resume = play_info.get("auto_resume", "-1")
     force_transcode = play_info.get("force_transcode", False)
     media_source_id = play_info.get("media_source_id", "")
-    use_default = play_info.get("use_default", False)
+    subtitle_stream_index = play_info.get("subtitle_stream_index", None)
+    audio_stream_index = play_info.get("audio_stream_index", None)
 
     log.debug("playFile id({0}) resume({1}) force_transcode({2})", id, auto_resume, force_transcode)
 
@@ -298,7 +299,7 @@ def playFile(play_info, monitor):
     #list_item = xbmcgui.ListItem(label=item_title)
 
     if playback_type == "2": # if transcoding then prompt for audio and subtitle
-        playurl = audioSubsPref(playurl, list_item, selected_media_source, id, use_default)
+        playurl = audioSubsPref(playurl, list_item, selected_media_source, id, audio_stream_index, subtitle_stream_index)
         log.debug("New playurl for transcoding: {0}", playurl)
 
     elif playback_type == "1": # for direct stream add any streamable subtitles
@@ -488,7 +489,7 @@ def setListItemProps(id, listItem, result, server, extra_props, title):
 # Present the list of audio and subtitles to select from
 # for external streamable subtitles add the URL to the Kodi item and let Kodi handle it
 # else ask for the subtitles to be burnt in when transcoding
-def audioSubsPref(url, list_item, media_source, item_id, use_default):
+def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, subtitle_stream_index):
 
     dialog = xbmcgui.Dialog()
     audioStreamsList = {}
@@ -497,8 +498,8 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
     subtitleStreamsList = {}
     subtitleStreams = ['No subtitles']
     downloadableStreams = []
-    selectAudioIndex = ""
-    selectSubsIndex = ""
+    selectAudioIndex = audio_stream_index
+    selectSubsIndex = subtitle_stream_index
     playurlprefs = "%s" % url
     default_audio = media_source.get('DefaultAudioStreamIndex', 1)
     default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
@@ -543,8 +544,9 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
             subtitleStreamsList[track] = index
             subtitleStreams.append(track)
 
-    if use_default:
-        playurlprefs += "&AudioStreamIndex=%s" % default_audio
+    # set audio index
+    if selectAudioIndex is not None:
+        playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
 
     elif len(audioStreams) > 1:
         resp = dialog.select(string_load(30291), audioStreams)
@@ -556,36 +558,40 @@ def audioSubsPref(url, list_item, media_source, item_id, use_default):
         else:  # User backed out of selection
             playurlprefs += "&AudioStreamIndex=%s" % default_audio
 
-    elif len(audioStreams) == 1:  # There's only one audiotrack.
-        selectAudioIndex = audioStreamsList[audioStreams[0]]
-        playurlprefs += "&AudioStreamIndex=%s" % selectAudioIndex
-
-    if len(subtitleStreams) > 1:
-        if use_default:
-            playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
-
+    # set subtitle index
+    if selectSubsIndex is not None:
+        # Load subtitles in the listitem if downloadable
+        if selectSubsIndex in downloadableStreams:
+            url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                    % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
+            log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
+            list_item.setSubtitles(url)
         else:
-            resp = dialog.select(string_load(30292), subtitleStreams)
-            if resp == 0:
-                # User selected no subtitles
-                pass
-            elif resp > -1:
-                # User selected subtitles
-                selected = subtitleStreams[resp]
-                selectSubsIndex = subtitleStreamsList[selected]
+            # Burn subtitles
+            playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
 
-                # Load subtitles in the listitem if downloadable
-                if selectSubsIndex in downloadableStreams:
-                    url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                            % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
-                    log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
-                    list_item.setSubtitles(url)
-                else:
-                    # Burn subtitles
-                    playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
+    elif len(subtitleStreams) > 1:
+        resp = dialog.select(string_load(30292), subtitleStreams)
+        if resp == 0:
+            # User selected no subtitles
+            pass
+        elif resp > -1:
+            # User selected subtitles
+            selected = subtitleStreams[resp]
+            selectSubsIndex = subtitleStreamsList[selected]
 
-            else:  # User backed out of selection
-                playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
+            # Load subtitles in the listitem if downloadable
+            if selectSubsIndex in downloadableStreams:
+                url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                        % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
+                log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
+                list_item.setSubtitles(url)
+            else:
+                # Burn subtitles
+                playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
+
+        else:  # User backed out of selection
+            playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
 
     # Get number of channels for selected audio track
     audioChannels = audioStreamsChannelsList.get(selectAudioIndex, 0)
@@ -766,7 +772,7 @@ def stopAll(played_information):
             current_possition = data.get("currentPossition", 0)
             emby_item_id = data.get("item_id")
 
-            if emby_item_id is not None:
+            if emby_item_id is not None and current_possition >= 0:
                 log.debug("Playback Stopped at: {0}", current_possition)
 
                 url = "{server}/emby/Sessions/Playing/Stopped"
