@@ -115,5 +115,6 @@ websocket_client.stop_client()
 home_window.clearProperty("userid")
 home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
+home_window.clearProperty("userimage")
 
 log.debug("Service shutting down")

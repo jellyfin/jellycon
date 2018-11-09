@@ -237,6 +237,7 @@ def checkServer(force=False, change_user=False, notify=False):
             home_window = HomeWindow()
             home_window.clearProperty("userid")
             home_window.clearProperty("AccessToken")
+            home_window.clearProperty("userimage")
             home_window.setProperty("embycon_widget_reload", str(time.time()))
             download_utils = DownloadUtils()
             download_utils.authenticate()

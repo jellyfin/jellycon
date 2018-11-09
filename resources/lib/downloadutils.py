@@ -347,7 +347,7 @@ class DownloadUtils():
             log.debug("User Id: {0}", userid)
             WINDOW.setProperty("AccessToken", accessToken)
             WINDOW.setProperty("userid", userid)
-            WINDOW.setProperty("userimage", "")
+            #WINDOW.setProperty("userimage", "")
 
             self.post_capabilities()
 
