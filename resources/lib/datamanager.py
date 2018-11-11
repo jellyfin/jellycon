@@ -2,17 +2,23 @@
 
 import json
 from collections import defaultdict
+import threading
+import hashlib
+import os
+import cPickle
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
+from item_functions import extract_item_info
+
+import xbmc
+import xbmcaddon
 
 log = SimpleLogging(__name__)
 
 class DataManager():
-    cacheDataResult = None
-    dataUrl = None
-    cacheDataPath = None
-    canRefreshNow = False
+
+    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
 
     def __init__(self, *args):
         log.debug("DataManager __init__")
@@ -25,4 +31,126 @@ class DataManager():
         result = self.loadJasonData(jsonData)
         return result
 
+    def get_items(self, url, gui_options):
 
+        m = hashlib.md5()
+        m.update(url)
+        url_hash = m.hexdigest()
+        cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
+
+        item_list = []
+        baseline_name = None
+        cache_thread = CacheManagerThread()
+        cache_thread.cache_file = cache_file
+        cache_thread.cache_url = url
+        cache_thread.gui_options = gui_options
+
+        if os.path.isfile(cache_file):
+            log.debug("Loading url data from pickle data")
+
+            with open(cache_file, 'rb') as handle:
+                item_list = cPickle.load(handle)
+
+            cache_thread.cached_data = item_list
+
+        else:
+            log.debug("Loading url data from server")
+
+            results = self.GetContent(url)
+
+            if results is None:
+                results = []
+
+            if isinstance(results, dict) and results.get("Items") is not None:
+                baseline_name = results.get("BaselineItemName")
+                results = results.get("Items", [])
+            elif isinstance(results, list) and len(results) > 0 and results[0].get("Items") is not None:
+                baseline_name = results[0].get("BaselineItemName")
+                results = results[0].get("Items")
+
+            for item in results:
+                item_data = extract_item_info(item, gui_options)
+                item_list.append(item_data)
+
+            cache_thread.fresh_data = item_list
+
+        cache_thread.start()
+
+        return baseline_name, item_list
+
+
+class CacheManagerThread(threading.Thread):
+    cached_data = None
+    fresh_data = None
+    cache_file = None
+    cache_url = None
+    gui_options = None
+
+    def __init__(self, *args):
+        threading.Thread.__init__(self, *args)
+
+    @staticmethod
+    def get_data_hash(items):
+
+        m = hashlib.md5()
+        for item in items:
+            item_string = "%s_%s_%s_%s_%s" % (
+                item.name,
+                item.play_count,
+                item.favorite,
+                item.resume_time,
+                item.recursive_unplayed_items_count
+            )
+            item_string = item_string.encode("UTF-8")
+            m.update(item_string)
+
+        return m.hexdigest()
+
+    def run(self):
+
+        log.debug("CacheManagerThread : Started")
+
+        if self.cached_data is None and self.fresh_data is not None:
+            log.debug("CacheManagerThread : Saving New Data")
+            with open(self.cache_file, 'wb') as handle:
+                cPickle.dump(self.fresh_data, handle, protocol=cPickle.HIGHEST_PROTOCOL)
+            return
+
+        cached_hash = self.get_data_hash(self.cached_data)
+        log.debug("CacheManagerThread : Cache Hash : {0}", cached_hash)
+
+        data_manager = DataManager()
+        results = data_manager.GetContent(self.cache_url)
+        if results is None:
+            results = []
+
+        if isinstance(results, dict) and results.get("Items") is not None:
+            results = results.get("Items", [])
+        elif isinstance(results, list) and len(results) > 0 and results[0].get("Items") is not None:
+            results = results[0].get("Items")
+
+        loaded_items = []
+        for item in results:
+            item_data = extract_item_info(item, self.gui_options)
+            loaded_items.append(item_data)
+
+        loaded_hash = self.get_data_hash(loaded_items)
+        log.debug("CacheManagerThread : Loaded Hash : {0}", loaded_hash)
+
+        # if they dont match then save the data and trigger a content reload
+        if cached_hash != loaded_hash:
+            log.debug("CacheManagerThread : Saving new cache data and reloading container")
+            with open(self.cache_file, 'wb') as handle:
+                cPickle.dump(loaded_items, handle, protocol=cPickle.HIGHEST_PROTOCOL)
+
+            # we need to refresh but will wait until the main function has finished
+            loops = 0
+            #while (self.dataManager.canRefreshNow == False and loops < 200 and not xbmc.Monitor().abortRequested()):
+            #    log.debug("Cache_Data_Manager: Not finished yet")
+            #    xbmc.sleep(100)
+            #    loops = loops + 1
+
+            log.debug("CacheManagerThread : Sending container refresh (" + str(loops) + ")")
+            xbmc.executebuiltin("Container.Refresh")
+
+        log.debug("CacheManagerThread : Exited")

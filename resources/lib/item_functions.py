@@ -11,7 +11,6 @@ import xbmcgui
 from utils import getArt
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
-from datamanager import DataManager
 from kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
@@ -35,7 +34,7 @@ class ItemDetails():
     episode_number = 0
     season_number = 0
     track_number = 0
-
+    series_id = None
     art = None
 
     mpaa = None
@@ -105,6 +104,7 @@ def extract_item_info(item, gui_options):
         item_details.season_number = item["ParentIndexNumber"]
     elif item_details.item_type == "Season":
         item_details.season_number = item["IndexNumber"]
+        item_details.series_id = item["SeriesId"]
 
     if item_details.season_number is None:
         item_details.season_number = 0
@@ -493,49 +493,4 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     return (u, list_item, folder)
 
-
-def get_next_episode(item):
-
-    if item.get("Type", "na") != "Episode":
-        log.debug("Not an episode, can not get next")
-        return None
-
-    parendId = item.get("ParentId", "na")
-    item_index = item.get("IndexNumber", -1)
-
-    if parendId == "na":
-        log.debug("No parent id, can not get next")
-        return None
-
-    if item_index == -1:
-        log.debug("No episode number, can not get next")
-        return None
-
-    url = ( '{server}/emby/Users/{userid}/Items?' +
-            '?Recursive=true' +
-            '&ParentId=' + parendId +
-            '&IsVirtualUnaired=false' +
-            '&IsMissing=False' +
-            '&IncludeItemTypes=Episode' +
-            '&ImageTypeLimit=1' +
-            '&format=json')
-
-    data_manager = DataManager()
-    items_result = data_manager.GetContent(url)
-    log.debug("get_next_episode, sibling list: {0}", items_result)
-
-    if items_result is None:
-        log.debug("get_next_episode no results")
-        return None
-
-    item_list = items_result.get("Items", [])
-
-    for item in item_list:
-        index = item.get("IndexNumber", -1)
-        # find the very next episode in the season
-        if index == item_index + 1:
-            log.debug("get_next_episode, found next episode: {0}", item)
-            return item
-
-    return None
 

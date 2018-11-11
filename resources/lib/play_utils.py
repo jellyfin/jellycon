@@ -19,7 +19,7 @@ from .utils import PlayUtils, getArt, id_generator, send_event_notification
 from .kodi_utils import HomeWindow
 from .translation import string_load
 from .datamanager import DataManager
-from .item_functions import get_next_episode, extract_item_info, add_gui_item
+from .item_functions import extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
 from .functions import delete
 from .cache_images import CacheArtwork
@@ -353,6 +353,50 @@ def playFile(play_info, monitor):
         current_position = xbmc.Player().getTime()
         log.debug("Playback_Start_Seek target:{0} current:{1}", target_seek, current_position)
 
+def get_next_episode(item):
+
+    if item.get("Type", "na") != "Episode":
+        log.debug("Not an episode, can not get next")
+        return None
+
+    parendId = item.get("ParentId", "na")
+    item_index = item.get("IndexNumber", -1)
+
+    if parendId == "na":
+        log.debug("No parent id, can not get next")
+        return None
+
+    if item_index == -1:
+        log.debug("No episode number, can not get next")
+        return None
+
+    url = ( '{server}/emby/Users/{userid}/Items?' +
+            '?Recursive=true' +
+            '&ParentId=' + parendId +
+            '&IsVirtualUnaired=false' +
+            '&IsMissing=False' +
+            '&IncludeItemTypes=Episode' +
+            '&ImageTypeLimit=1' +
+            '&format=json')
+
+    data_manager = DataManager()
+    items_result = data_manager.GetContent(url)
+    log.debug("get_next_episode, sibling list: {0}", items_result)
+
+    if items_result is None:
+        log.debug("get_next_episode no results")
+        return None
+
+    item_list = items_result.get("Items", [])
+
+    for item in item_list:
+        index = item.get("IndexNumber", -1)
+        # find the very next episode in the season
+        if index == item_index + 1:
+            log.debug("get_next_episode, found next episode: {0}", item)
+            return item
+
+    return None
 
 def send_next_episode_details(item):
 
@@ -943,8 +987,9 @@ class PlaybackService(xbmc.Monitor):
         log.debug("Screen Saver Activated")
 
         # stop playback when switching users
-        if xbmc.Player().isPlaying():
-            xbmc.Player().stop()
+        player = xbmc.Player()
+        if player.isPlaying():
+            player.stop()
 
         #xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
 
