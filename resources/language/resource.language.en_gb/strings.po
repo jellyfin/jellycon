@@ -710,3 +710,6 @@ msgctxt "#30344"
 msgid "Number of images removed from cache : %s"
 msgstr ""
 
+msgctxt "#30345"
+msgid "Cache server requests"
+msgstr ""

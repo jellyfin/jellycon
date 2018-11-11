@@ -164,8 +164,6 @@ def mainEntryPoint():
         else:
             displaySections()
 
-    dataManager.canRefreshNow = True
-
     if (pr):
         pr.disable()
 
@@ -450,8 +448,9 @@ def getContent(url, params):
         progress.update(100, string_load(30125))
         progress.close()
 
-    return
+    HomeWindow().clearProperty("wait_refresh")
 
+    return
 
 def processDirectory(url, progress, params):
     log.debug("== ENTER: processDirectory ==")
@@ -476,49 +475,8 @@ def processDirectory(url, progress, params):
     gui_options["name_format"] = name_format
     gui_options["name_format_type"] = name_format_type
 
-    # get me some items
-    ##############################
-
-    baseline_name, item_list = dataManager.get_items(url, gui_options)
-
-    '''
-    m = hashlib.md5()
-    m.update(url)
-    url_hash = m.hexdigest()
-    cache_file = os.path.join(__addondir__, "cache_" + url_hash + ".pickle")
-
-    baseline_name = None
-
-    if os.path.isfile(cache_file):
-        log.debug("Loading url data from pickle data")
-
-        with open(cache_file, 'rb') as handle:
-            item_list = cPickle.load(handle)
-
-    else:
-        log.debug("Loading url data from server")
-
-        results = dataManager.GetContent(url)
-
-        if results is None:
-            results = []
-
-        if isinstance(results, dict) and results.get("Items") is not None:
-            baseline_name = results.get("BaselineItemName")
-            results = results.get("Items", [])
-        elif isinstance(results, list) and len(results) > 0 and results[0].get("Items") is not None:
-            baseline_name = results[0].get("BaselineItemName")
-            results = results[0].get("Items")
-
-        item_list = []
-        for item in results:
-            item_data = extract_item_info(item, gui_options)
-            item_list.append(item_data)
-
-        with open(cache_file, 'wb') as handle:
-            cPickle.dump(item_list, handle, protocol=cPickle.HIGHEST_PROTOCOL)
-    '''
-    ##############################################
+    use_cache = settings.getSetting("use_cache") == "true"
+    baseline_name, item_list = dataManager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -627,10 +585,6 @@ def processDirectory(url, progress, params):
 
     # add the all episodes item
     show_all_episodes = settings.getSetting('show_all_episodes') == 'true'
-
-    if first_season_item is not None:
-        log.debug("All Seasons Entry : {0} {1}", len(dir_items), first_season_item.__dict__)
-
     if (show_all_episodes
             and first_season_item is not None
             and len(dir_items) > 1
@@ -665,7 +619,6 @@ def processDirectory(url, progress, params):
         item_details.mode = "GET_CONTENT"
 
         gui_item = add_gui_item(series_url, item_details, display_options, folder=True)
-        log.debug("All Seasons GUI Item Entry : {0}", gui_item)
         if gui_item:
             dir_items.append(gui_item)
 
@@ -901,6 +854,7 @@ def search_results_person(params):
                    '&Fields={field_filters}' +
                    '&format=json')
 
+    '''
     details_result = dataManager.GetContent(details_url)
     log.debug("Search Results Details: {0}", details_result)
 
@@ -910,8 +864,8 @@ def search_results_person(params):
         for item in items:
             found_types.add(item.get("Type"))
         log.debug("search_results_person found_types: {0}", found_types)
-
-    dir_items, detected_type = processDirectory(details_result, None, params)
+    '''
+    dir_items, detected_type = processDirectory(details_url, None, params)
 
     log.debug('search_results_person results: {0}', dir_items)
     log.debug('search_results_person detect_type: {0}', detected_type)
@@ -1086,13 +1040,15 @@ def search_results(params):
                            '?Ids=' + Ids +
                            '&Fields={field_filters}' +
                            '&format=json')
+            '''
             details_result = dataManager.GetContent(details_url)
             log.debug("Search Results Details: {0}", details_result)
+            '''
 
             # set content type
             xbmcplugin.setContent(handle, content_type)
 
-            dir_items, detected_type = processDirectory(details_result, progress, params)
+            dir_items, detected_type = processDirectory(details_url, progress, params)
             if dir_items is not None:
                 xbmcplugin.addDirectoryItems(handle, dir_items)
                 xbmcplugin.endOfDirectory(handle, cacheToDisc=False)

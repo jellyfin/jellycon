@@ -10,6 +10,7 @@ import cPickle
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from item_functions import extract_item_info
+from .kodi_utils import HomeWindow
 
 import xbmc
 import xbmcaddon
@@ -31,7 +32,10 @@ class DataManager():
         result = self.loadJasonData(jsonData)
         return result
 
-    def get_items(self, url, gui_options):
+    def get_items(self, url, gui_options, use_cache=False):
+
+        home_window = HomeWindow()
+        home_window.setProperty("wait_refresh", "true")
 
         m = hashlib.md5()
         m.update(url)
@@ -44,8 +48,9 @@ class DataManager():
         cache_thread.cache_file = cache_file
         cache_thread.cache_url = url
         cache_thread.gui_options = gui_options
+        cache_thread.dataManager = self
 
-        if os.path.isfile(cache_file):
+        if os.path.isfile(cache_file) and use_cache:
             log.debug("Loading url data from pickle data")
 
             with open(cache_file, 'rb') as handle:
@@ -74,7 +79,8 @@ class DataManager():
 
             cache_thread.fresh_data = item_list
 
-        cache_thread.start()
+        if use_cache:
+            cache_thread.start()
 
         return baseline_name, item_list
 
@@ -110,10 +116,13 @@ class CacheManagerThread(threading.Thread):
 
         log.debug("CacheManagerThread : Started")
 
+        home_window = HomeWindow()
+
         if self.cached_data is None and self.fresh_data is not None:
             log.debug("CacheManagerThread : Saving New Data")
             with open(self.cache_file, 'wb') as handle:
                 cPickle.dump(self.fresh_data, handle, protocol=cPickle.HIGHEST_PROTOCOL)
+            home_window.clearProperty("wait_refresh")
             return
 
         cached_hash = self.get_data_hash(self.cached_data)
@@ -145,11 +154,14 @@ class CacheManagerThread(threading.Thread):
 
             # we need to refresh but will wait until the main function has finished
             loops = 0
-            #while (self.dataManager.canRefreshNow == False and loops < 200 and not xbmc.Monitor().abortRequested()):
-            #    log.debug("Cache_Data_Manager: Not finished yet")
-            #    xbmc.sleep(100)
-            #    loops = loops + 1
+            wait_refresh = home_window.getProperty("wait_refresh")
+            while wait_refresh and loops < 200 and not xbmc.Monitor().abortRequested():
+                log.debug("Cache_Data_Manager: Not finished yet")
+                xbmc.sleep(100)
+                loops = loops + 1
+                wait_refresh = home_window.getProperty("wait_refresh")
 
+            home_window.clearProperty("wait_refresh")
             log.debug("CacheManagerThread : Sending container refresh (" + str(loops) + ")")
             xbmc.executebuiltin("Container.Refresh")
 
