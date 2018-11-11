@@ -476,7 +476,7 @@ def processDirectory(url, progress, params):
     gui_options["name_format_type"] = name_format_type
 
     use_cache = settings.getSetting("use_cache") == "true"
-    baseline_name, item_list = dataManager.get_items(url, gui_options, use_cache)
+    item_list = dataManager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -521,9 +521,6 @@ def processDirectory(url, progress, params):
             percent_done = (float(current_item) / float(item_count)) * 100
             progress.update(int(percent_done), string_load(30126) + str(current_item))
             current_item = current_item + 1
-
-        # get the infofrom the item
-        item_details.baseline_itemname = baseline_name
 
         if detected_type is not None:
             if item_details.item_type != detected_type:
