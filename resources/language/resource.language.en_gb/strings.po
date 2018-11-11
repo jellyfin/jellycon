@@ -713,3 +713,12 @@ msgstr ""
 msgctxt "#30345"
 msgid "Cache server requests"
 msgstr ""
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr ""
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr ""
+

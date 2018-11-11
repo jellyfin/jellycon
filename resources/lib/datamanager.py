@@ -37,8 +37,10 @@ class DataManager():
         home_window = HomeWindow()
         home_window.setProperty("wait_refresh", "true")
 
+        user_id = DownloadUtils().getUserId()
+
         m = hashlib.md5()
-        m.update(url)
+        m.update(user_id + "|" + url)
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
 

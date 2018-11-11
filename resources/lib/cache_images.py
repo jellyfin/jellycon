@@ -45,6 +45,10 @@ class CacheArtwork(threading.Thread):
     def delete_cached_images(self, item_id):
         log.debug("cache_delete_for_links")
 
+        progress = xbmcgui.DialogProgress()
+        progress.create(string_load(30281))
+        progress.update(30, string_load(30347))
+
         item_image_url_part = "emby/Items/%s/Images/" % item_id
         item_image_url_part = item_image_url_part.replace("/", "%2f")
         log.debug("texture ids: {0}", item_image_url_part)
@@ -62,6 +66,8 @@ class CacheArtwork(threading.Thread):
         textures = json_result.get("result", {}).get("textures", [])
         log.debug("texture ids: {0}", textures)
 
+        progress.update(70, string_load(30346))
+
         delete_count = 0
         for texture in textures:
             texture_id = texture["textureid"]
@@ -73,6 +79,9 @@ class CacheArtwork(threading.Thread):
                 json_rpc('Textures.RemoveTexture').execute(params)
 
         del textures
+
+        progress.update(100, string_load(30125))
+        progress.close()
 
         xbmcgui.Dialog().ok(string_load(30281), string_load(30344) % delete_count)
 
