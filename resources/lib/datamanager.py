@@ -131,9 +131,12 @@ class CacheManagerThread(threading.Thread):
                 xbmc.sleep(100)
                 loops = loops + 1
                 wait_refresh = home_window.getProperty("wait_refresh")
+
             log.debug("CacheManagerThread : Saving New Data loops({0})", loops)
+
             with open(self.cache_file, 'wb') as handle:
                 cPickle.dump(self.fresh_data, handle, protocol=cPickle.HIGHEST_PROTOCOL)
+
             home_window.clearProperty("wait_refresh")
 
         else:
@@ -162,8 +165,6 @@ class CacheManagerThread(threading.Thread):
             # if they dont match then save the data and trigger a content reload
             if cached_hash != loaded_hash:
                 log.debug("CacheManagerThread : Saving new cache data and reloading container")
-                with open(self.cache_file, 'wb') as handle:
-                    cPickle.dump(loaded_items, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
                 # we need to refresh but will wait until the main function has finished
                 loops = 0
@@ -173,6 +174,9 @@ class CacheManagerThread(threading.Thread):
                     xbmc.sleep(100)
                     loops = loops + 1
                     wait_refresh = home_window.getProperty("wait_refresh")
+
+                with open(self.cache_file, 'wb') as handle:
+                    cPickle.dump(loaded_items, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
                 home_window.clearProperty("wait_refresh")
                 log.debug("CacheManagerThread : Sending container refresh ({0})", loops)
