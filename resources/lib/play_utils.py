@@ -803,6 +803,7 @@ def promptForStopActions(item_id, current_possition):
                 play_info["force_transcode"] = False
                 send_event_notification("embycon_play_action", play_info)
 
+    xbmc.executebuiltin("Container.Refresh")
 
 def stopAll(played_information):
     if len(played_information) == 0:
