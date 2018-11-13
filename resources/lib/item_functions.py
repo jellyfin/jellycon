@@ -366,21 +366,23 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     #log.debug("Setting thumbnail as: {0}", thumbPath)
 
-    # calculate percentage
-    if (cappedPercentage != 0):
-        list_item.setProperty("complete_percentage", str(cappedPercentage))
+    item_properties = {}
 
-    list_item.setProperty('IsPlayable', 'false')
+    # calculate percentage
+    if cappedPercentage != 0:
+        item_properties["complete_percentage"] = str(cappedPercentage)
+
+    item_properties["IsPlayable"] = 'false'
 
     if folder == False and is_video:
-        list_item.setProperty('TotalTime', str(item_details.duration))
-        list_item.setProperty('ResumeTime', str(item_details.resume_time))
+        item_properties["TotalTime"] = str(item_details.duration)
+        item_properties["ResumeTime"] = str(item_details.resume_time)
 
     list_item.setArt(item_details.art)
 
-    list_item.setProperty('fanart_image', item_details.art['fanart'])  # back compat
-    list_item.setProperty('discart', item_details.art['discart'])  # not avail to setArt
-    list_item.setProperty('tvshow.poster', item_details.art['tvshow.poster'])  # not avail to setArt
+    item_properties["fanart_image"] = item_details.art['fanart'] # back compat
+    item_properties["discart"] = item_details.art['discart'] # not avail to setArt
+    item_properties["tvshow.poster"] = item_details.art['tvshow.poster'] # not avail to setArt
 
     # new way
     info_labels = {}
@@ -405,7 +407,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         genres_list = []
         for genre in item_details.genres:
             genres_list.append(urllib.quote(genre.encode('utf8')))
-        list_item.setProperty('genres', urllib.quote("|".join(genres_list)))
+        item_properties["genres"] = urllib.quote("|".join(genres_list))
 
         info_labels["genre"] = "/".join(item_details.genres)
 
@@ -466,18 +468,18 @@ def add_gui_item(url, item_details, display_options, folder=True):
                                 {'codec': item_details.audio_codec,
                                  'channels': item_details.channels})
 
-        list_item.setProperty('TotalSeasons', str(item_details.total_seasons))
-        list_item.setProperty('TotalEpisodes', str(item_details.total_episodes))
-        list_item.setProperty('WatchedEpisodes', str(item_details.watched_episodes))
-        list_item.setProperty('UnWatchedEpisodes', str(item_details.unwatched_episodes))
-        list_item.setProperty('NumEpisodes', str(item_details.number_episodes))
+        item_properties["TotalSeasons"] = str(item_details.total_seasons)
+        item_properties["TotalEpisodes"] = str(item_details.total_episodes)
+        item_properties["WatchedEpisodes"] = str(item_details.watched_episodes)
+        item_properties["UnWatchedEpisodes"] = str(item_details.unwatched_episodes)
+        item_properties["NumEpisodes"] =  str(item_details.number_episodes)
 
         if item_details.subtitle_lang != '':
             list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
 
         list_item.setRating("imdb", item_details.community_rating, 0, True)
         # list_item.setRating("rt", item_details.critic_rating, 0, False)
-        list_item.setProperty('TotalTime', str(item_details.duration))
+        item_properties["TotalTime"] = str(item_details.duration)
 
     else:
         info_labels["tracknumber"] = item_details.track_number
@@ -491,11 +493,17 @@ def add_gui_item(url, item_details, display_options, folder=True):
         list_item.setInfo('music', info_labels)
 
     list_item.setContentLookup(False)
-    list_item.setProperty('ItemType', item_details.item_type)
-    list_item.setProperty('id', item_details.id)
+    item_properties["ItemType"] = item_details.item_type
+    item_properties["id"] = item_details.id
 
     if item_details.baseline_itemname is not None:
-        list_item.setProperty('suggested_from_watching', item_details.baseline_itemname)
+        item_properties["suggested_from_watching"] = item_details.baseline_itemname
+
+    if kodi_version > 17:
+        list_item.setProperties(item_properties)
+    else:
+        for key, value in item_properties.iteritems():
+            list_item.setProperty(key, value)
 
     return (u, list_item, folder)
 
