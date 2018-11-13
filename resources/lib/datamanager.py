@@ -36,7 +36,6 @@ class DataManager():
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()
-        home_window.setProperty("wait_refresh", "true")
 
         user_id = DownloadUtils().getUserId()
 
@@ -52,6 +51,8 @@ class DataManager():
         cache_thread.cache_url = url
         cache_thread.gui_options = gui_options
         cache_thread.dataManager = self
+
+        home_window.setProperty(cache_file, "true")
 
         if os.path.isfile(cache_file) and use_cache:
             log.debug("Loading url data from pickle data")
@@ -86,7 +87,7 @@ class DataManager():
         if use_cache:
             cache_thread.start()
 
-        return item_list
+        return cache_file, item_list
 
 
 class CacheManagerThread(threading.Thread):
@@ -104,12 +105,13 @@ class CacheManagerThread(threading.Thread):
 
         m = hashlib.md5()
         for item in items:
-            item_string = "%s_%s_%s_%s_%s" % (
+            item_string = "%s_%s_%s_%s_%s_%s" % (
                 item.name,
                 item.play_count,
                 item.favorite,
                 item.resume_time,
-                item.recursive_unplayed_items_count
+                item.recursive_unplayed_items_count,
+                item.etag
             )
             item_string = item_string.encode("UTF-8")
             m.update(item_string)
@@ -125,19 +127,19 @@ class CacheManagerThread(threading.Thread):
         if self.cached_data is None and self.fresh_data is not None:
 
             loops = 0
-            wait_refresh = home_window.getProperty("wait_refresh")
+            wait_refresh = home_window.getProperty(self.cache_file)
             while wait_refresh and loops < 200 and not xbmc.Monitor().abortRequested():
                 log.debug("CacheManagerThread: wait_refresh")
                 xbmc.sleep(100)
                 loops = loops + 1
-                wait_refresh = home_window.getProperty("wait_refresh")
+                wait_refresh = home_window.getProperty(self.cache_file)
 
             log.debug("CacheManagerThread : Saving New Data loops({0})", loops)
 
             with open(self.cache_file, 'wb') as handle:
                 cPickle.dump(self.fresh_data, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
-            home_window.clearProperty("wait_refresh")
+            home_window.clearProperty(self.cache_file)
 
         else:
 
@@ -168,17 +170,17 @@ class CacheManagerThread(threading.Thread):
 
                 # we need to refresh but will wait until the main function has finished
                 loops = 0
-                wait_refresh = home_window.getProperty("wait_refresh")
+                wait_refresh = home_window.getProperty(self.cache_file)
                 while wait_refresh and loops < 200 and not xbmc.Monitor().abortRequested():
                     log.debug("CacheManagerThread: wait_refresh")
                     xbmc.sleep(100)
                     loops = loops + 1
-                    wait_refresh = home_window.getProperty("wait_refresh")
+                    wait_refresh = home_window.getProperty(self.cache_file)
 
                 with open(self.cache_file, 'wb') as handle:
                     cPickle.dump(loaded_items, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
-                home_window.clearProperty("wait_refresh")
+                home_window.clearProperty(self.cache_file)
                 log.debug("CacheManagerThread : Sending container refresh ({0})", loops)
                 xbmc.executebuiltin("Container.Refresh")
 

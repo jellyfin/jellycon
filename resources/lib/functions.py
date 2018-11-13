@@ -395,7 +395,7 @@ def getContent(url, params):
     #if result is not None and isinstance(result, dict):
     #    total_records = result.get("TotalRecordCount", 0)
 
-    dir_items, detected_type = processDirectory(url, progress, params)
+    dir_items, detected_type = processDirectory(url, progress, params, use_cache_data=True)
     if dir_items is None:
         return
 
@@ -448,11 +448,10 @@ def getContent(url, params):
         progress.update(100, string_load(30125))
         progress.close()
 
-    HomeWindow().clearProperty("wait_refresh")
-
     return
 
-def processDirectory(url, progress, params):
+
+def processDirectory(url, progress, params, use_cache_data=False):
     log.debug("== ENTER: processDirectory ==")
 
     settings = xbmcaddon.Addon()
@@ -475,8 +474,8 @@ def processDirectory(url, progress, params):
     gui_options["name_format"] = name_format
     gui_options["name_format_type"] = name_format_type
 
-    use_cache = settings.getSetting("use_cache") == "true"
-    item_list = dataManager.get_items(url, gui_options, use_cache)
+    use_cache = settings.getSetting("use_cache") == "true" and use_cache_data
+    cache_file, item_list = dataManager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -618,6 +617,8 @@ def processDirectory(url, progress, params):
         gui_item = add_gui_item(series_url, item_details, display_options, folder=True)
         if gui_item:
             dir_items.append(gui_item)
+
+    HomeWindow().clearProperty(cache_file)
 
     return dir_items, detected_type
 

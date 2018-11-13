@@ -27,6 +27,7 @@ class ItemDetails():
 
     name = None
     id = None
+    etag = None
     path = None
     is_folder = False
     plot = None
@@ -91,6 +92,7 @@ def extract_item_info(item, gui_options):
     item_details = ItemDetails()
 
     item_details.id = item["Id"]
+    item_details.etag = item["Etag"]
     item_details.is_folder = item["IsFolder"]
     item_details.item_type = item["Type"]
     item_details.location_type = item["LocationType"]
@@ -400,7 +402,11 @@ def add_gui_item(url, item_details, display_options, folder=True):
     info_labels["year"] = item_details.year
 
     if item_details.genres is not None and len(item_details.genres) > 0:
-        list_item.setProperty('genres', "%7C".join(item_details.genres))
+        genres_list = []
+        for genre in item_details.genres:
+            genres_list.append(urllib.quote(genre.encode('utf8')))
+        list_item.setProperty('genres', urllib.quote("|".join(genres_list)))
+
         info_labels["genre"] = "/".join(item_details.genres)
 
     mediatype = 'video'
