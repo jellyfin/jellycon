@@ -114,6 +114,11 @@ def playFile(play_info, monitor):
 
     id = play_info.get("item_id")
 
+    home_window = HomeWindow()
+    last_url = home_window.getProperty("last_content_url")
+    if last_url:
+        home_window.setProperty(last_url, "true")
+
     # if this is a list of items them add them all to the play list
     if isinstance(id, list):
         return playListOfItems(id, monitor)
@@ -803,7 +808,9 @@ def promptForStopActions(item_id, current_possition):
                 play_info["force_transcode"] = False
                 send_event_notification("embycon_play_action", play_info)
 
-    xbmc.executebuiltin("Container.Refresh")
+            else:
+                xbmc.executebuiltin("Container.Refresh")
+
 
 def stopAll(played_information):
     if len(played_information) == 0:

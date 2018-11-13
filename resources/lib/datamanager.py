@@ -36,6 +36,7 @@ class DataManager():
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()
+        home_window.setProperty("last_content_url", url)
 
         user_id = DownloadUtils().getUserId()
 
@@ -53,6 +54,12 @@ class DataManager():
         cache_thread.dataManager = self
 
         home_window.setProperty(cache_file, "true")
+
+        clear_cache = home_window.getProperty(url)
+        if clear_cache and os.path.isfile(cache_file):
+            log.debug("Clearing cache data and loading new data")
+            home_window.clearProperty(url)
+            os.remove(cache_file)
 
         if os.path.isfile(cache_file) and use_cache:
             log.debug("Loading url data from pickle data")
