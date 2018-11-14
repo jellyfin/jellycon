@@ -62,7 +62,7 @@ class DataManager():
             os.remove(cache_file)
 
         if os.path.isfile(cache_file) and use_cache:
-            log.debug("Loading url data from pickle data")
+            log.debug("Loading url data from cached pickle data")
 
             with open(cache_file, 'rb') as handle:
                 item_list = cPickle.load(handle)

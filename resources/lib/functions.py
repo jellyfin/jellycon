@@ -308,6 +308,7 @@ def setSort(pluginhandle, viewType):
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
+
 def getContent(url, params):
     log.debug("== ENTER: getContent ==")
 
@@ -395,7 +396,9 @@ def getContent(url, params):
     #if result is not None and isinstance(result, dict):
     #    total_records = result.get("TotalRecordCount", 0)
 
-    dir_items, detected_type = processDirectory(url, progress, params, use_cache_data=True)
+    use_cache = params.get("use_cache", "true") == "true"
+
+    dir_items, detected_type = processDirectory(url, progress, params, use_cache)
     if dir_items is None:
         return
 
