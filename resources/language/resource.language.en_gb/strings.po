@@ -410,10 +410,6 @@ msgctxt "#30265"
 msgid "Episodes - Next Up"
 msgstr ""
 
-msgctxt "#30266"
-msgid "Upcoming TV"
-msgstr ""
-
 msgctxt "#30267"
 msgid " - In Progress"
 msgstr ""

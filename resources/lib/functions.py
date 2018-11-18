@@ -741,6 +741,7 @@ def show_menu(params):
         delete(result)
 
     elif selected_action == "view_season":
+        xbmc.executebuiltin("Dialog.Close(all,true)")
         parent_id = result["ParentId"]
         xbmc.executebuiltin(
             'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
