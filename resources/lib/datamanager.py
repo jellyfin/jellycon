@@ -7,6 +7,7 @@ import hashlib
 import os
 import cPickle
 import copy
+import urllib
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -44,6 +45,11 @@ class DataManager():
         m.update(user_id + "|" + url)
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
+
+        #changed_url = url + "&MinDateLastSavedForUser=" + urllib.unquote("2019-09-16T13:45:30")
+        #results = self.GetContent(changed_url)
+        #log.debug("DataManager Changes Since Date : {0}", results)
+
 
         item_list = []
         baseline_name = None
