@@ -117,7 +117,7 @@ def playFile(play_info, monitor):
     home_window = HomeWindow()
     last_url = home_window.getProperty("last_content_url")
     if last_url:
-        home_window.setProperty(last_url, "true")
+        home_window.setProperty("skip_cache_for_" + last_url, "true")
 
     # if this is a list of items them add them all to the play list
     if isinstance(id, list):

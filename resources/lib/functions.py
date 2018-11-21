@@ -208,6 +208,12 @@ def markWatched(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+    last_url = home_window.getProperty("last_content_url")
+    if last_url:
+        log.debug("markWatched_lastUrl: {0}", last_url)
+        home_window.setProperty("skip_cache_for_" + last_url, "true")
+
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -217,6 +223,12 @@ def markUnwatched(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+    last_url = home_window.getProperty("last_content_url")
+    if last_url:
+        log.debug("markUnwatched_lastUrl: {0}", last_url)
+        home_window.setProperty("skip_cache_for_" + last_url, "true")
+
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -226,6 +238,11 @@ def markFavorite(item_id):
     downloadUtils.downloadUrl(url, postBody="", method="POST")
     home_window = HomeWindow()
     home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+    last_url = home_window.getProperty("last_content_url")
+    if last_url:
+        home_window.setProperty("skip_cache_for_" + last_url, "true")
+
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -235,6 +252,11 @@ def unmarkFavorite(item_id):
     downloadUtils.downloadUrl(url, method="DELETE")
     home_window = HomeWindow()
     home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+    last_url = home_window.getProperty("last_content_url")
+    if last_url:
+        home_window.setProperty("skip_cache_for_" + last_url, "true")
+
     xbmc.executebuiltin("Container.Refresh")
 
 
@@ -258,6 +280,11 @@ def delete(item):
         progress.close()
         home_window = HomeWindow()
         home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+        last_url = home_window.getProperty("last_content_url")
+        if last_url:
+            home_window.setProperty("skip_cache_for_" + last_url, "true")
+
         xbmc.executebuiltin("Container.Refresh")
 
 
