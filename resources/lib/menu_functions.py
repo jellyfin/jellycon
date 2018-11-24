@@ -381,7 +381,6 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&Filters=IsResumable' +
                          '&Recursive=true' +
-                         '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -392,7 +391,6 @@ def getCollections():
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&IncludeItemTypes=Movie' +
                          '&CollapseBoxSetItems=false' +
                          '&GroupItemsIntoCollections=false' +
                          '&Recursive=true' +

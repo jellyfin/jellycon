@@ -669,7 +669,7 @@ def show_menu(params):
 
     action_items = []
     
-    if result["Type"] in ["Episode", "Movie", "Music"]:
+    if result["Type"] in ["Episode", "Movie", "Music", "Video"]:
         li = xbmcgui.ListItem(string_load(30314))
         li.setProperty('menu_id', 'play')
         action_items.append(li)
@@ -679,7 +679,7 @@ def show_menu(params):
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
-    if result["Type"] in ["Episode", "Movie"]:
+    if result["Type"] in ["Episode", "Movie", "Video"]:
         li = xbmcgui.ListItem(string_load(30275))
         li.setProperty('menu_id', 'transcode')
         action_items.append(li)
