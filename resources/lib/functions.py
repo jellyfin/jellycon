@@ -531,6 +531,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
     display_options["addCounts"] = settings.getSetting("addCounts") == 'true'
     display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
     display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
+    display_options["addUserRatings"] = settings.getSetting("add_user_ratings") == 'true'
 
     show_empty_folders = settings.getSetting("show_empty_folders") == 'true'
 

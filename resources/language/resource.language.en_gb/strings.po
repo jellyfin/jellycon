@@ -718,3 +718,6 @@ msgctxt "#30347"
 msgid "Getting Existing Images"
 msgstr ""
 
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr ""

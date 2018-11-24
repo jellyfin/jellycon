@@ -367,6 +367,46 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
 
+            collections.append({
+                'title': item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
+                'art': art,
+                'use_cache': False,
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&Limit={ItemLimit}' +
+                         '&SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&Filters=IsResumable' +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Episode' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+            collections.append({
+                'title': item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
+                'art': art,
+                'use_cache': False,
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IncludeItemTypes=Movie' +
+                         '&CollapseBoxSetItems=false' +
+                         '&GroupItemsIntoCollections=false' +
+                         '&Recursive=true' +
+                         '&Limit={ItemLimit}' +
+                         '&IsVirtualUnaired=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&SortBy=DateCreated' +
+                         '&SortOrder=Descending' +
+                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&ImageTypeLimit=1' +
+                         '&format=json'),
+                'media_type': collection_type})
+
         if collection_type in ["boxsets"]:
             collections.append({
                 'title': item_name,

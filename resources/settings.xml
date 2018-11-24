@@ -59,6 +59,7 @@
 		<setting id="addSubtitleAvailable" type="bool" label="30163" default="false" visible="true" enable="true" />
 		<setting id="include_overview" type="bool" label="30181" default="true" visible="true" enable="true" />
 		<setting id="include_media" type="bool" label="30182" default="true" visible="true" enable="true" />
+		<setting id="add_user_ratings" type="bool" label="30348" default="true" visible="true" enable="true" />
 		<setting id="include_people" type="bool" label="30183" default="false" visible="true" enable="true" />
 		<setting id="hide_unwatched_details" type="bool" label="30023" default="false" visible="true" enable="true" />
 		<setting id="episode_name_format" type="select" label="30019" default="{ItemName}" values="{ItemName}|s{SeasonIndex}e{EpisodeIndex} - {ItemName}|{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}" />

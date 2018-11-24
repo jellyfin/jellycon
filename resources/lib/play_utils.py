@@ -301,6 +301,7 @@ def playFile(play_info, monitor):
     display_options["addCounts"] = False
     display_options["addResumePercent"] = False
     display_options["addSubtitleAvailable"] = False
+    display_options["addUserRatings"] = False
 
     gui_item = add_gui_item("", item_details, display_options, False)
     list_item = gui_item[1]
