@@ -593,17 +593,6 @@ def processDirectory(url, progress, params, use_cache_data=False):
                 if gui_item:
                     dir_items.append(gui_item)
 
-        elif item_details.item_type == "MusicArtist":
-            u = ('{server}/emby/Users/{userid}/items' +
-                 '?ArtistIds=' + item_details.id +
-                 '&IncludeItemTypes=MusicAlbum' +
-                 '&CollapseBoxSetItems=false' +
-                 '&Recursive=true' +
-                 '&format=json')
-            gui_item = add_gui_item(u, item_details, display_options)
-            if gui_item:
-                dir_items.append(gui_item)
-
         else:
             u = item_details.id
             gui_item = add_gui_item(u, item_details, display_options, folder=False)
@@ -668,8 +657,8 @@ def show_menu(params):
         return
 
     action_items = []
-    
-    if result["Type"] in ["Episode", "Movie", "Music", "Video"]:
+
+    if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio"]:
         li = xbmcgui.ListItem(string_load(30314))
         li.setProperty('menu_id', 'play')
         action_items.append(li)

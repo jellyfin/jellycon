@@ -338,16 +338,51 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + string_load(30321)
+            item_data['title'] = item_name + string_load(30268) + " (" + show_x_filtered_items + ")"
             item_data['art'] = art
-            item_data['media_type'] = 'MusicArtists'
-            item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
-                                 '?Recursive=true' +
+            item_data['media_type'] = 'MusicAlbums'
+            item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
+                                 '?IncludeItemTypes=Audio' +
                                  '&ParentId=' + item.get("Id") +
                                  '&ImageTypeLimit=1' +
+                                 '&Limit={ItemLimit}' +
                                  '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
                                  '&SortBy=Name' +
                                  '&SortOrder=Ascending' +
+                                 '&format=json')
+            collections.append(item_data)
+
+            item_data = {}
+            item_data['title'] = item_name + string_load(30349) + " (" + show_x_filtered_items + ")"
+            item_data['art'] = art
+            item_data['media_type'] = 'MusicAlbum'
+            item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                                 '?SortBy=DatePlayed' +
+                                 '&SortOrder=Descending' +
+                                 '&IncludeItemTypes=Audio' +
+                                 '&Limit={ItemLimit}' +
+                                 '&Recursive=true' +
+                                 '&ParentId=' + item.get("Id") +
+                                 '&ImageTypeLimit=1' +
+                                 '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&Filters=IsPlayed' +
+                                 '&format=json')
+            collections.append(item_data)
+
+            item_data = {}
+            item_data['title'] = item_name + " - Frequently Played" + " (" + show_x_filtered_items + ")"
+            item_data['art'] = art
+            item_data['media_type'] = 'MusicAlbum'
+            item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                                 '?SortBy=PlayCount' +
+                                 '&SortOrder=Descending' +
+                                 '&IncludeItemTypes=Audio' +
+                                 '&Limit={ItemLimit}' +
+                                 '&Recursive=true' +
+                                 '&ParentId=' + item.get("Id") +
+                                 '&ImageTypeLimit=1' +
+                                 '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&Filters=IsPlayed' +
                                  '&format=json')
             collections.append(item_data)
 
@@ -876,16 +911,51 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30319)
-    item_data['media_type'] = 'MusicArtists'
-    item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
-                         '?Recursive=true' +
+    item_data['title'] = string_load(30350) + " (" + show_x_filtered_items + ")"
+    item_data['art'] = art
+    item_data['media_type'] = 'MusicAlbums'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
+                         '?IncludeItemTypes=Audio' +
                          '&ImageTypeLimit=1' +
+                         '&Limit={ItemLimit}' +
                          '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
                          '&SortBy=Name' +
                          '&SortOrder=Ascending' +
                          '&format=json')
     collections.append(item_data)
+
+    item_data = {}
+    item_data['title'] = string_load(30351) + " (" + show_x_filtered_items + ")"
+    item_data['art'] = art
+    item_data['media_type'] = 'MusicAlbum'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?SortBy=DatePlayed' +
+                         '&SortOrder=Descending' +
+                         '&IncludeItemTypes=Audio' +
+                         '&Limit={ItemLimit}' +
+                         '&Recursive=true' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&Filters=IsPlayed' +
+                         '&format=json')
+    collections.append(item_data)
+
+    item_data = {}
+    item_data['title'] = string_load(30352) + " (" + show_x_filtered_items + ")"
+    item_data['art'] = art
+    item_data['media_type'] = 'MusicAlbum'
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?SortBy=PlayCount' +
+                         '&SortOrder=Descending' +
+                         '&IncludeItemTypes=Audio' +
+                         '&Limit={ItemLimit}' +
+                         '&Recursive=true' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&Filters=IsPlayed' +
+                         '&format=json')
+    collections.append(item_data)
+
 
     return collections
 
