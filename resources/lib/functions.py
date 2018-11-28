@@ -593,6 +593,17 @@ def processDirectory(url, progress, params, use_cache_data=False):
                 if gui_item:
                     dir_items.append(gui_item)
 
+        elif item_details.item_type == "MusicArtist":
+            u = ('{server}/emby/Users/{userid}/items' +
+                 '?ArtistIds=' + item_details.id +
+                 '&IncludeItemTypes=MusicAlbum' +
+                 '&CollapseBoxSetItems=false' +
+                 '&Recursive=true' +
+                 '&format=json')
+            gui_item = add_gui_item(u, item_details, display_options)
+            if gui_item:
+                dir_items.append(gui_item)
+
         else:
             u = item_details.id
             gui_item = add_gui_item(u, item_details, display_options, folder=False)

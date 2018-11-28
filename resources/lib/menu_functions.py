@@ -370,7 +370,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + " - Frequently Played" + " (" + show_x_filtered_items + ")"
+            item_data['title'] = item_name + string_load(30353) + " (" + show_x_filtered_items + ")"
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbum'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -383,6 +383,20 @@ def getCollections():
                                  '&ImageTypeLimit=1' +
                                  '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
                                  '&Filters=IsPlayed' +
+                                 '&format=json')
+            collections.append(item_data)
+
+            item_data = {}
+            item_data['title'] = item_name + string_load(30321)
+            item_data['art'] = art
+            item_data['media_type'] = 'MusicArtists'
+            item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
+                                 '?Recursive=true' +
+                                 '&ParentId=' + item.get("Id") +
+                                 '&ImageTypeLimit=1' +
+                                 '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                                 '&SortBy=Name' +
+                                 '&SortOrder=Ascending' +
                                  '&format=json')
             collections.append(item_data)
 
@@ -956,6 +970,17 @@ def getCollections():
                          '&format=json')
     collections.append(item_data)
 
+    item_data = {}
+    item_data['title'] = string_load(30319)
+    item_data['media_type'] = 'MusicArtists'
+    item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
+                         '?Recursive=true' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableImageTypes=Primary,Backdrop,Banner,Thumb' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
+                         '&format=json')
+    collections.append(item_data)
 
     return collections
 

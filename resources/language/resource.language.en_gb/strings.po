@@ -729,3 +729,15 @@ msgstr ""
 msgctxt "#30352"
 msgid "Music - Frequently Played"
 msgstr ""
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr ""
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr ""
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr ""
