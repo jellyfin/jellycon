@@ -1,4 +1,3 @@
-
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
@@ -21,6 +20,7 @@ kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 background_items = []
 background_current_item = 0
+
 
 def set_background_image():
     log.debug("set_background_image Called")
@@ -57,7 +57,6 @@ def set_background_image():
         log.debug("set_background_image: Loaded {0} more backgrounds", len(background_items))
 
     if len(background_items) > 0 and background_current_item < len(background_items):
-
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
         log.debug("set_background_image: {0} - {1} - {2}", background_current_item, label, bg_image)
@@ -67,7 +66,6 @@ def set_background_image():
         home_window = HomeWindow()
         home_window.setProperty("random-gb", bg_image)
         home_window.setProperty("random-gb-label", label)
-
 
 
 def checkForNewContent():
@@ -141,9 +139,9 @@ def getWidgetUrlContent(handle, params):
 
     select_action = params.get("action", None)
 
-    listItems = populateWidgetItems(request, override_select_action=select_action)
+    list_items = populateWidgetItems(request, None, override_select_action=select_action)
 
-    xbmcplugin.addDirectoryItems(handle, listItems)
+    xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
@@ -215,8 +213,7 @@ def get_widget_content_cast(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
-def populateWidgetItems(itemsUrl, override_select_action=None):
-
+def populateWidgetItems(items_url, widget_type, override_select_action=None):
     server = downloadUtils.getServer()
     if server is None:
         return []
@@ -227,35 +224,34 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
     if override_select_action is not None:
         select_action = str(override_select_action)
 
-    log.debug("WIDGET_DATE_URL: {0}", itemsUrl)
+    log.debug("WIDGET_DATA_URL: {0}", items_url)
 
     home_window = HomeWindow()
 
     # get the items
     data_manager = DataManager()
-    result = data_manager.GetContent(itemsUrl)
+    result = data_manager.GetContent(items_url)
+    log.debug("WIDGET_DATA: {0}", result)
 
+    simmilar_to = None
     if result is not None and isinstance(result, dict) and result.get("Items") is not None:
-        simmilarTo = result.get("BaselineItemName", None)
+        simmilar_to = result.get("BaselineItemName", None)
         result = result.get("Items")
-    elif result is not None and isinstance(result, list) and len(result) > 0:
-        simmilarTo = result[0].get("BaselineItemName", None)
+    elif result is not None and isinstance(result, list) and len(result) > 0 and result[0].get("Items") is not None:
+        simmilar_to = result[0].get("BaselineItemName", None)
         result = result[0].get("Items")
-    else:
-        result = []
 
-    itemCount = 1
-    listItems = []
+    list_items = []
     for item in result:
         item_id = item["Id"]
         name = item["Name"]
-        episodeDetails = ""
         log.debug("name: {0}", name)
 
         title = name
         tvshowtitle = ""
         item_type = item["Type"]
         series_name = item["SeriesName"]
+        art = getArt(item, server)
 
         if item_type == "Episode" and series_name is not None:
 
@@ -272,7 +268,16 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
             tvshowtitle = "S%02dE%02d" % (season_number, episode_number)
             title = series_name
 
-        art = getArt(item, server)
+        elif item_type == "Series":
+
+            user_data = item["UserData"]
+            unplayed = user_data["UnplayedItemCount"]
+
+            title = item["Name"]
+            tvshowtitle = str(unplayed) + " Episodes"
+
+            art["poster"] = art["landscape"]
+
 
         if kodi_version > 17:
             list_item = xbmcgui.ListItem(label=name, iconImage=art['thumb'], offscreen=True)
@@ -316,9 +321,6 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         list_item.setProperty('fanart_image', art['fanart'])  # back compat
         list_item.setProperty('discart', art['discart'])  # not avail to setArt
         list_item.setArt(art)
-        # add count
-        #list_item.setProperty("item_index", str(itemCount))
-        #itemCount = itemCount + 1
 
         list_item.setProperty('IsPlayable', 'false')
 
@@ -329,96 +331,120 @@ def populateWidgetItems(itemsUrl, override_select_action=None):
         list_item.setContentLookup(False)
         list_item.setProperty('id', item_id)
 
-        if simmilarTo is not None:
-            list_item.setProperty('suggested_from_watching', simmilarTo)
+        if simmilar_to is not None:
+            list_item.setProperty('suggested_from_watching', simmilar_to)
 
-        session_id =  "&session_id=" + home_window.getProperty("session_id")
+        session_id = "&session_id=" + home_window.getProperty("session_id")
 
-        if select_action == "1":
+        if item_type == "Series":
+            playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU' + session_id
+        elif select_action == "1":
             playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=PLAY' + session_id
         elif select_action == "0":
             playurl = "plugin://plugin.video.embycon/?item_id=" + item_id + '&mode=SHOW_MENU' + session_id
 
-        itemTupple = (playurl, list_item, False)
-        listItems.append(itemTupple)
+        item_tupple = (playurl, list_item, False)
+        list_items.append(item_tupple)
 
-    return listItems
+    return list_items
 
 
 def getWidgetContent(handle, params):
     log.debug("getWigetContent Called: {0}", params)
 
-    type = params.get("type")
-    if (type == None):
+    widget_type = params.get("type")
+    if widget_type is None:
         log.error("getWigetContent type not set")
         return
 
-    itemsUrl = ("{server}/emby/Users/{userid}/Items" +
-                "?Limit={ItemLimit}" +
-                "&format=json" +
-                "&ImageTypeLimit=1" +
-                "&IsMissing=False")
+    log.debug("widget_type: {0}", widget_type)
 
-    if (type == "recent_movies"):
+    items_url = ("{server}/emby/Users/{userid}/Items" +
+                 "?Limit={ItemLimit}" +
+                 "&format=json" +
+                 "&ImageTypeLimit=1" +
+                 "&IsMissing=False")
+
+    if widget_type == "recent_movies":
         xbmcplugin.setContent(handle, 'movies')
-        itemsUrl += ("&Recursive=true" +
-                     "&SortBy=DateCreated" +
-                     "&SortOrder=Descending" +
-                     "&Filters={IsUnplayed,}IsNotFolder" +
-                     "&IsVirtualUnaired=false" +
-                     "&IsMissing=False" +
-                     "&IncludeItemTypes=Movie")
-    elif (type == "inprogress_movies"):
+        items_url += ("&Recursive=true" +
+                      "&SortBy=DateCreated" +
+                      "&SortOrder=Descending" +
+                      "&Filters={IsUnplayed,}IsNotFolder" +
+                      "&IsVirtualUnaired=false" +
+                      "&IsMissing=False" +
+                      "&IncludeItemTypes=Movie")
+
+    elif widget_type == "inprogress_movies":
         xbmcplugin.setContent(handle, 'movies')
-        itemsUrl += ("&Recursive=true" +
-                     "&SortBy=DatePlayed" +
-                     "&SortOrder=Descending" +
-                     "&Filters=IsResumable" +
-                     "&IsVirtualUnaired=false" +
-                     "&IsMissing=False" +
-                     "&IncludeItemTypes=Movie")
-    elif (type == "random_movies"):
+        items_url += ("&Recursive=true" +
+                      "&SortBy=DatePlayed" +
+                      "&SortOrder=Descending" +
+                      "&Filters=IsResumable" +
+                      "&IsVirtualUnaired=false" +
+                      "&IsMissing=False" +
+                      "&IncludeItemTypes=Movie")
+
+    elif widget_type == "random_movies":
         xbmcplugin.setContent(handle, 'movies')
         watched = params.get("watched", "") == "true"
         if watched:
-            itemsUrl += "&Filters=IsPlayed,IsNotFolder"
+            items_url += "&Filters=IsPlayed,IsNotFolder"
         else:
-            itemsUrl += "&Filters={IsUnplayed,}IsNotFolder"
-        itemsUrl += ("&Recursive=true" +
-                     "&SortBy=Random" +
-                     "&SortOrder=Descending" +
-                     "&IsVirtualUnaired=false" +
-                     "&IsMissing=False" +
-                     "&IncludeItemTypes=Movie")
-    elif (type == "recent_episodes"):
-        xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl += ("&Recursive=true" +
-                     "&SortBy=DateCreated" +
-                     "&SortOrder=Descending" +
-                     "&Filters={IsUnplayed,}IsNotFolder" +
-                     "&IsVirtualUnaired=false" +
-                     "&IsMissing=False" +
-                     "&IncludeItemTypes=Episode")
-    elif (type == "inprogress_episodes"):
-        xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl += ("&Recursive=true" +
-                     "&SortBy=DatePlayed" +
-                     "&SortOrder=Descending" +
-                     "&Filters=IsResumable" +
-                     "&IsVirtualUnaired=false" +
-                     "&IsMissing=False" +
-                     "&IncludeItemTypes=Episode")
-    elif (type == "nextup_episodes"):
-        xbmcplugin.setContent(handle, 'episodes')
-        itemsUrl = ("{server}/emby/Shows/NextUp" +
-                        "?Limit={ItemLimit}"
-                        "&userid={userid}" +
-                        "&Recursive=true" +
-                        "&format=json" +
-                        "&ImageTypeLimit=1")
+            items_url += "&Filters={IsUnplayed,}IsNotFolder"
+        items_url += ("&Recursive=true" +
+                      "&SortBy=Random" +
+                      "&SortOrder=Descending" +
+                      "&IsVirtualUnaired=false" +
+                      "&IsMissing=False" +
+                      "&IncludeItemTypes=Movie")
 
-    listItems = populateWidgetItems(itemsUrl)
+    elif widget_type == "recent_tvshows":
+        xbmcplugin.setContent(handle, 'episodes')
+        items_url = ('{server}/emby/Users/{userid}/Items/Latest' +
+                     '?GroupItems=true' +
+                     '&Limit={ItemLimit}' +
+                     '&Recursive=true' +
+                     '&SortBy=DateCreated' +
+                     '&Fields={field_filters}' +
+                     '&SortOrder=Descending' +
+                     '&Filters={IsUnplayed}' +
+                     '&IsVirtualUnaired=false' +
+                     '&IsMissing=False' +
+                     '&IncludeItemTypes=Episode' +
+                     '&ImageTypeLimit=1' +
+                     '&format=json')
 
-    xbmcplugin.addDirectoryItems(handle, listItems)
+    elif widget_type == "recent_episodes":
+        xbmcplugin.setContent(handle, 'episodes')
+        items_url += ("&Recursive=true" +
+                      "&SortBy=DateCreated" +
+                      "&SortOrder=Descending" +
+                      "&Filters={IsUnplayed,}IsNotFolder" +
+                      "&IsVirtualUnaired=false" +
+                      "&IsMissing=False" +
+                      "&IncludeItemTypes=Episode")
+
+    elif widget_type == "inprogress_episodes":
+        xbmcplugin.setContent(handle, 'episodes')
+        items_url += ("&Recursive=true" +
+                      "&SortBy=DatePlayed" +
+                      "&SortOrder=Descending" +
+                      "&Filters=IsResumable" +
+                      "&IsVirtualUnaired=false" +
+                      "&IsMissing=False" +
+                      "&IncludeItemTypes=Episode")
+
+    elif widget_type == "nextup_episodes":
+        xbmcplugin.setContent(handle, 'episodes')
+        items_url = ("{server}/emby/Shows/NextUp" +
+                     "?Limit={ItemLimit}"
+                     "&userid={userid}" +
+                     "&Recursive=true" +
+                     "&format=json" +
+                     "&ImageTypeLimit=1")
+
+    list_items = populateWidgetItems(items_url, widget_type)
+
+    xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-

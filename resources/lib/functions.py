@@ -54,15 +54,14 @@ def mainEntryPoint():
     settings = xbmcaddon.Addon()
     profile_code = settings.getSetting('profile') == "true"
     pr = None
-    if (profile_code):
+    if profile_code:
         return_value = xbmcgui.Dialog().yesno("Profiling Enabled", "Do you want to run profiling?")
         if return_value:
             pr = cProfile.Profile()
             pr.enable()
 
-    ADDON_VERSION = ClientInformation().getVersion()
     log.debug("Running Python: {0}", sys.version_info)
-    log.debug("Running EmbyCon: {0}", ADDON_VERSION)
+    log.debug("Running EmbyCon: {0}", ClientInformation().getVersion())
     log.debug("Kodi BuildVersion: {0}", xbmc.getInfoLabel("System.BuildVersion"))
     log.debug("Kodi Version: {0}", kodi_version)
     log.debug("Script argument data: {0}", sys.argv)
@@ -74,13 +73,13 @@ def mainEntryPoint():
 
     home_window = HomeWindow()
 
-    if (len(params) == 0):
-        windowParams = home_window.getProperty("Params")
-        log.debug("windowParams: {0}", windowParams)
+    if len(params) == 0:
+        window_params = home_window.getProperty("Params")
+        log.debug("windowParams: {0}", window_params)
         # home_window.clearProperty("Params")
-        if (windowParams):
+        if window_params:
             try:
-                params = get_params(windowParams)
+                params = get_params(window_params)
             except:
                 params = {}
 
@@ -694,6 +693,11 @@ def show_menu(params):
         li.setProperty('menu_id', 'view_season')
         action_items.append(li)
 
+    if result["Type"] == "Series":
+        li = xbmcgui.ListItem("Goto Series")
+        li.setProperty('menu_id', 'view_series')
+        action_items.append(li)
+
     user_data = result.get("UserData", None)
     if user_data:
         progress = user_data.get("PlaybackPositionTicks", 0) != 0
@@ -773,6 +777,17 @@ def show_menu(params):
         parent_id = result["ParentId"]
         xbmc.executebuiltin(
             'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
+
+    elif selected_action == "view_series":
+        xbmc.executebuiltin("Dialog.Close(all,true)")
+        u = ('{server}/emby/Shows/' + item_id +
+             '/Seasons'
+             '?userId={userid}' +
+             '&Fields={field_filters}' +
+             '&format=json')
+        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Series")
+        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+        xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "refresh_images":
         CacheArtwork().delete_cached_images(item_id)
