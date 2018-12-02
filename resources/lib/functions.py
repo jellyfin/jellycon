@@ -34,6 +34,7 @@ from .widgets import getWidgetContent, get_widget_content_cast, getWidgetUrlCont
 import trakttokodi
 from .item_functions import add_gui_item, extract_item_info, ItemDetails
 from .cache_images import CacheArtwork
+from skin_clone import clone_skin
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -121,6 +122,8 @@ def mainEntryPoint():
         if WINDOW == 10000:
             log.debug("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("ActivateWindow(Home)")
+    elif mode == "CLONE_SKIN":
+        clone_skin()
     elif mode == "WIDGET_CONTENT":
         getWidgetContent(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_CAST":
