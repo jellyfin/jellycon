@@ -810,8 +810,10 @@
 					<focusposition>1</focusposition>
 					<onfocus>ClearProperty(listposition,home)</onfocus>
 					<onright>SetFocus($INFO[Container(9000).ListItem.Property(menu_id)])</onright>
+					<!--
 					<onup>PageDown</onup>
 					<ondown>PageUp</ondown>
+					-->
 					<scrolltime tween="cubic" easing="out">500</scrolltime>
 					<focusedlayout height="95">
 						<control type="group">
@@ -918,13 +920,6 @@
 							<visible>!Skin.HasSetting(HomeMenuNoTVShowButton)</visible>
 						</item>
 						<item>
-							<label>Change User</label>
-							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
-							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/pictures.png</thumb>
-							<property name="id">change</property>
-						</item>						
-						<item>
 							<label>$LOCALIZE[2]</label>
 							<onclick>ActivateWindow(Music,root,return)</onclick>
 							<property name="menu_id">$NUMBER[7000]</property>
@@ -1004,6 +999,13 @@
 							<thumb>icons/sidemenu/weather.png</thumb>
 							<property name="id">weather</property>
 							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
+						</item>
+						<item>
+							<label>Change User</label>
+							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/pictures.png</thumb>
+							<property name="id">change</property>
 						</item>
 						<item>
 							<label>Settings</label>
