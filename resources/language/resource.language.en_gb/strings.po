@@ -743,21 +743,5 @@ msgid " - Frequently Played"
 msgstr ""
 
 msgctxt "#30354"
-msgid "Clone Default Skin"
-msgstr ""
-
-msgctxt "#30355"
-msgid "Clone Estuary Skin?"
-msgstr ""
-
-msgctxt "#30356"
-msgid "This will make a clone of the default Estuary skin with some small modifications adding main menu items for EmbyCon content."
-msgstr ""
-
-msgctxt "#30357"
-msgid "You can switch to the new cloned skin now, if you want to change back at any time use the interface settings to change your active skin."
-msgstr ""
-
-msgctxt "#30358"
-msgid "Switch To New Skin?"
+msgid "Goto Series"
 msgstr ""

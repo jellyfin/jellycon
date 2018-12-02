@@ -266,7 +266,6 @@ def displaySections():
 
     addMenuDirectoryItem(string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
     addMenuDirectoryItem(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    addMenuDirectoryItem(string_load(30354), "plugin://plugin.video.embycon/?mode=CLONE_SKIN")
 
     # only add these if we have other collection which means we have a valid server conn
     if collections:
