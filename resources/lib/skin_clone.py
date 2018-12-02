@@ -103,12 +103,12 @@ def clone_skin():
     xbmcvfs.copy(source, destination)
 
     # copy the Includes_Home.xml file
-    source = os.path.join(embycon_path, "resources", "skins", "skin.estuary", "xml", ver, "Includes_Home.xml")
+    source = os.path.join(embycon_path, "resources", "skins", "skin.estuary", ver, "xml", "Includes_Home.xml")
     destination = os.path.join(kodi_skin_destination, "xml", "Includes_Home.xml")
     xbmcvfs.copy(source, destination)
 
     # copy the DialogVideoInfo.xml file
-    source = os.path.join(embycon_path, "resources", "skins", "skin.estuary", "xml", ver, "DialogVideoInfo.xml")
+    source = os.path.join(embycon_path, "resources", "skins", "skin.estuary", ver, "xml", "DialogVideoInfo.xml")
     destination = os.path.join(kodi_skin_destination, "xml", "DialogVideoInfo.xml")
     xbmcvfs.copy(source, destination)
 
