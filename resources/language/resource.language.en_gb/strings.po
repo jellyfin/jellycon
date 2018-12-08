@@ -523,7 +523,7 @@ msgid "Notice"
 msgstr ""
 
 msgctxt "#30295"
-msgid "To use this feature you need to enabled HTTP control in Kodi"
+msgid "To use this feature you need HTTP control enabled"
 msgstr ""
 
 msgctxt "#30296"
@@ -745,3 +745,26 @@ msgstr ""
 msgctxt "#30354"
 msgid "Goto Series"
 msgstr ""
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr ""
+
+msgctxt "#30356"
+msgid ""Loading existing image list""
+msgstr ""
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr ""
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr ""
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr ""
+
+
+

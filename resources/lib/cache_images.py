@@ -95,7 +95,8 @@ class CacheArtwork(threading.Thread):
         result = json_rpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            xbmcgui.Dialog().ok(string_load(30294), string_load(30295))
+            xbmcgui.Dialog().ok(string_load(30294), string_load(30295), string_load(30355))
+            xbmc.executebuiltin('ActivateWindow(servicesettings)')
             return
 
         # ask to delete all textures
@@ -134,13 +135,16 @@ class CacheArtwork(threading.Thread):
         pdialog.close()
         del pdialog
         if result_report:
-            xbmcgui.Dialog().ok(string_load(30125), "\n".join(result_report))
+            xbmcgui.Dialog().ok(string_load(30125), *result_report)
 
     def cache_artwork_background(self):
         log.debug("cache_artwork_background")
         dp = xbmcgui.DialogProgressBG()
         dp.create(string_load(30301), "")
-        result_text = self.cache_artwork(dp)
+        try:
+            result_text = self.cache_artwork(dp)
+        except Exception as err:
+            log.error("Cache Images Failed : {0}", err)
         dp.close()
         del dp
         if result_text:
@@ -174,6 +178,8 @@ class CacheArtwork(threading.Thread):
         result = json_rpc('Settings.GetSettingValue').execute(web_pass)
         xbmc_password = result['result']['value']
 
+        progress.update(0, string_load(30356))
+
         params = {"properties": ["url"]}
         json_result = json_rpc('Textures.GetTextures').execute(params)
         textures = json_result.get("result", {}).get("textures", [])
@@ -181,6 +187,8 @@ class CacheArtwork(threading.Thread):
 
         if self.stop_all_activity:
             return
+
+        progress.update(0, string_load(30357))
 
         texture_urls = set()
         for texture in textures:
@@ -197,6 +205,8 @@ class CacheArtwork(threading.Thread):
 
         if self.stop_all_activity:
             return
+
+        progress.update(0, string_load(30358))
 
         url = ('{server}/emby/Users/{userid}/Items?' +
             '&Recursive=true' +
@@ -219,6 +229,8 @@ class CacheArtwork(threading.Thread):
 
         if self.stop_all_activity:
             return
+
+        progress.update(0, string_load(30359))
 
         image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for item in results:
