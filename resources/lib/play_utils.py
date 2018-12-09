@@ -164,6 +164,13 @@ def playFile(play_info, monitor):
             items = []
         return playAllFiles(items, monitor)
 
+    # if this is a program from live tv epg then play the actual channel
+    if result.get("Type") == "Program":
+        channel_id = result.get("ChannelId")
+        url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (channel_id,)
+        result = data_manager.GetContent(url)
+        id = result["Id"]
+
     # select the media source to use
     media_sources = result.get('MediaSources')
     selected_media_source = None
@@ -661,7 +668,7 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
 def externalSubs(media_source, list_item, item_id):
 
     externalsubs = []
-    media_streams = media_source['MediaStreams']
+    media_streams = media_source.get('MediaStreams')
 
     if media_streams is None:
         return

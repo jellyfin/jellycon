@@ -400,6 +400,43 @@ def getCollections():
                                  '&format=json')
             collections.append(item_data)
 
+        if collection_type in ["livetv"]:
+            collections.append({
+                'title': item_name + string_load(30355),
+                'art': art,
+                'path': ('{server}/emby/LiveTv/Channels' +
+                         '?UserId={userid}' +
+                         '&Recursive=false' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableTotalRecordCount=false' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+            collections.append({
+                'title': item_name + string_load(30356),
+                'art': art,
+                'path': ('{server}/emby/LiveTv/Programs/Recommended' +
+                         '?UserId={userid}' +
+                         '&IsAiring=true' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableTotalRecordCount=false' +
+                         '&format=json'),
+                'media_type': collection_type})
+
+            collections.append({
+                'title': item_name + string_load(30357),
+                'art': art,
+                'path': ('{server}/emby/LiveTv/Recordings' +
+                         '?UserId={userid}' +
+                         '&Recursive=false' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&EnableTotalRecordCount=false' +
+                         '&format=json'),
+                'media_type': collection_type})
+
         if collection_type in ["homevideos"]:
             collections.append({
                 'title': item_name,
