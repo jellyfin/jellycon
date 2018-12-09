@@ -2,6 +2,11 @@
 import sys
 import os
 import urllib
+
+import time
+import calendar
+from datetime import datetime, timedelta
+
 from collections import defaultdict
 
 import xbmc
@@ -78,6 +83,10 @@ class ItemDetails():
     song_artist = ""
     album_artist = ""
     album_name = ""
+
+    program_channel_name = None
+    program_end_date = None
+    program_start_date = None
 
     favorite = "false"
     overlay = "0"
@@ -165,6 +174,11 @@ def extract_item_info(item, gui_options):
     if item_details.location_type == "Virtual":
         airtime = item["AirTime"]
         item_details.name = item_details.name + ' - ' + item_details.premiere_date + ' - ' + str(airtime)
+
+    if item_details.item_type == "Program":
+        item_details.program_channel_name = item["ChannelName"]
+        item_details.program_start_date = item["StartDate"]
+        item_details.program_end_date = item["EndDate"]
 
     # Process MediaStreams
     mediaStreams = item["MediaStreams"]
@@ -324,7 +338,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     # Create the ListItem that will be displayed
     thumbPath = item_details.art["thumb"]
 
-    listItemName = item_details.name
+    list_item_name = item_details.name
     item_type = item_details.item_type.lower()
     is_video = item_type not in ['musicalbum', 'audio', 'music']
 
@@ -347,22 +361,50 @@ def add_gui_item(url, item_details, display_options, folder=True):
     addCounts = display_options["addCounts"]
     if addCounts and item_details.unwatched_episodes != 0:
         countsAdded = True
-        listItemName = listItemName + (" (%s)" % item_details.unwatched_episodes)
+        list_item_name = list_item_name + (" (%s)" % item_details.unwatched_episodes)
 
     addResumePercent = display_options["addResumePercent"]
     if (not countsAdded
             and addResumePercent
             and cappedPercentage not in [0, 100]):
-        listItemName = listItemName + (" (%s%%)" % cappedPercentage)
+        list_item_name = list_item_name + (" (%s%%)" % cappedPercentage)
 
     subtitle_available = display_options["addSubtitleAvailable"]
     if subtitle_available and item_details.subtitle_available:
-        listItemName += " (cc)"
+        list_item_name += " (cc)"
+
+    if item_details.item_type == "Program":
+        start_time = datetime_from_string(item_details.program_start_date)
+        end_time = datetime_from_string(item_details.program_end_date)
+
+        duration = (end_time - start_time).total_seconds()
+        time_done = (datetime.now() - start_time).total_seconds()
+        percentage_done = (float(time_done) / float(duration)) * 100.0
+        cappedPercentage = int(percentage_done)
+
+        start_time_string = start_time.strftime("%H:%M")
+        end_time_string = end_time.strftime("%H:%M")
+
+        item_details.duration = int(duration)
+        item_details.resume_time = int(time_done)
+
+        list_item_name = (item_details.program_channel_name +
+                          " - " + list_item_name +
+                          " - " + start_time_string + " to " + end_time_string +
+                          " (" + str(int(percentage_done)) + "%)")
+
+        time_info = "Start : " + start_time_string + "\n"
+        time_info += "End : " + end_time_string + "\n"
+        time_info += "Complete : " + str(int(percentage_done)) + "%\n"
+        if item_details.plot:
+            item_details.plot = time_info + item_details.plot
+        else:
+            item_details.plot = time_info
 
     if kodi_version > 17:
-        list_item = xbmcgui.ListItem(listItemName, offscreen=True)
+        list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
     else:
-        list_item = xbmcgui.ListItem(listItemName, iconImage=thumbPath, thumbnailImage=thumbPath)
+        list_item = xbmcgui.ListItem(list_item_name, iconImage=thumbPath, thumbnailImage=thumbPath)
 
     #log.debug("Setting thumbnail as: {0}", thumbPath)
 
@@ -394,7 +436,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         else:
             info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
-    info_labels["title"] = listItemName
+    info_labels["title"] = list_item_name
     info_labels["duration"] = item_details.duration
     info_labels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':
@@ -501,6 +543,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
+    log.debug("item_properties: {0}", item_properties)
     if kodi_version > 17:
         list_item.setProperties(item_properties)
     else:
@@ -510,3 +553,11 @@ def add_gui_item(url, item_details, display_options, folder=True):
     return (u, list_item, folder)
 
 
+def datetime_from_string(time_string):
+    time_string = time_string.replace("0+00:00", " UTC")
+    start_time = time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
+    dt = datetime(*(start_time[0:6]))
+    timestamp = calendar.timegm(dt.timetuple())
+    local_dt = datetime.fromtimestamp(timestamp)
+    local_dt.replace(microsecond=dt.microsecond)
+    return local_dt

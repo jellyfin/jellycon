@@ -419,7 +419,7 @@ def getCollections():
                 'path': ('{server}/emby/LiveTv/Programs/Recommended' +
                          '?UserId={userid}' +
                          '&IsAiring=true' +
-                         '&Fields={field_filters}' +
+                         '&Fields=ChannelInfo,{field_filters}' +
                          '&ImageTypeLimit=1' +
                          '&EnableTotalRecordCount=false' +
                          '&format=json'),
