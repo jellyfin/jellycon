@@ -402,7 +402,7 @@ def getCollections():
 
         if collection_type in ["livetv"]:
             collections.append({
-                'title': item_name + string_load(30355),
+                'title': item_name + string_load(30360),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Channels' +
                          '?UserId={userid}' +
@@ -414,7 +414,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30356),
+                'title': item_name + string_load(30361),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Programs/Recommended' +
                          '?UserId={userid}' +
@@ -426,7 +426,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30357),
+                'title': item_name + string_load(30362),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Recordings' +
                          '?UserId={userid}' +

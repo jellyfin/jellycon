@@ -766,5 +766,14 @@ msgctxt "#30359"
 msgid "Building full image list"
 msgstr ""
 
+msgctxt "#30360"
+msgid " - Channels"
+msgstr ""
 
+msgctxt "#30361"
+msgid " - Programs"
+msgstr ""
 
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr ""
