@@ -543,7 +543,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
-    log.debug("item_properties: {0}", item_properties)
+    #log.debug("item_properties: {0}", item_properties)
     if kodi_version > 17:
         list_item.setProperties(item_properties)
     else:
