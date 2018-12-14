@@ -546,6 +546,8 @@ def processDirectory(url, progress, params, use_cache_data=False):
 
     for item_details in item_list:
 
+        item_details.total_items = item_count
+
         if progress is not None:
             percent_done = (float(current_item) / float(item_count)) * 100
             progress.update(int(percent_done), string_load(30126) + str(current_item))

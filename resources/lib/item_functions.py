@@ -65,6 +65,7 @@ class ItemDetails():
     width = 0
     cast = None
     tagline = ""
+    status = None
 
     resume_time = 0
     duration = 0
@@ -79,6 +80,7 @@ class ItemDetails():
     item_type = None
     subtitle_lang = ""
     subtitle_available = False
+    total_items = 0
 
     song_artist = ""
     album_artist = ""
@@ -110,12 +112,25 @@ def extract_item_info(item, gui_options):
 
     if item_details.item_type == "Episode":
         item_details.episode_number = item["IndexNumber"]
-
-    if item_details.item_type == "Episode":
         item_details.season_number = item["ParentIndexNumber"]
+
     elif item_details.item_type == "Season":
         item_details.season_number = item["IndexNumber"]
         item_details.series_id = item["SeriesId"]
+
+    elif item_details.item_type == "Series":
+        item_details.status = item["Status"]
+
+    elif item_details.item_type == "Audio":
+        item_details.track_number = item["IndexNumber"]
+        item_details.album_name = item["Album"]
+        artists = item["Artists"]
+        if artists is not None and len(artists) > 0:
+            item_details.song_artist = artists[0] # get first artist
+
+    elif item_details.item_type == "MusicAlbum":
+        item_details.album_artist = item["AlbumArtist"]
+        item_details.album_name = item_details.name
 
     if item_details.season_number is None:
         item_details.season_number = 0
@@ -125,18 +140,7 @@ def extract_item_info(item, gui_options):
     if item["Taglines"] is not None and len(item["Taglines"]) > 0:
         item_details.tagline = item["Taglines"][0]
 
-    if item_details.item_type == "Audio":
-        item_details.track_number = item["IndexNumber"]
-        item_details.album_name = item["Album"]
-        artists = item["Artists"]
-        if artists is not None and len(artists) > 0:
-            item_details.song_artist = artists[0] # get first artist
-
-    if item_details.item_type == "MusicAlbum":
-        item_details.album_artist = item["AlbumArtist"]
-        item_details.album_name = item_details.name
-
-        # set the item name
+    # set the item name
     # override with name format string from request
     name_format = gui_options["name_format"]
     name_format_type = gui_options["name_format_type"]
@@ -416,7 +420,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     item_properties["IsPlayable"] = 'false'
 
-    if folder == False and is_video:
+    if not folder and is_video:
         item_properties["TotalTime"] = str(item_details.duration)
         item_properties["ResumeTime"] = str(item_details.resume_time)
 
@@ -474,11 +478,17 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     info_labels["mediatype"] = mediatype
 
-    if mediatype == 'episode':
+    if item_type == 'episode':
         info_labels["episode"] = item_details.episode_number
-
-    if (mediatype == 'season') or (mediatype == 'episode'):
         info_labels["season"] = item_details.season_number
+
+    elif item_type == 'season':
+        info_labels["season"] = item_details.total_items
+
+    elif item_type == "series":
+        info_labels["episode"] = item_details.total_episodes
+        info_labels["season"] = item_details.total_seasons
+        info_labels["Status"] = item_details.status
 
     if is_video:
 
