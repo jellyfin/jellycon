@@ -516,7 +516,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         item_properties["TotalEpisodes"] = str(item_details.total_episodes)
         item_properties["WatchedEpisodes"] = str(item_details.watched_episodes)
         item_properties["UnWatchedEpisodes"] = str(item_details.unwatched_episodes)
-        item_properties["NumEpisodes"] =  str(item_details.number_episodes)
+        item_properties["NumEpisodes"] = str(item_details.number_episodes)
 
         if item_details.subtitle_lang != '':
             list_item.addStreamInfo('subtitle', {'language': item_details.subtitle_lang})
