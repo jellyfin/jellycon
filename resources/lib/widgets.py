@@ -370,7 +370,8 @@ def getWidgetContent(handle, params):
         items_url += ("&Recursive=true" +
                       "&SortBy=DateCreated" +
                       "&SortOrder=Descending" +
-                      "&Filters={IsUnplayed,}IsNotFolder" +
+                      "&Filters=IsUnplayed,IsNotFolder" +
+                      "&IsPlayed=false" +
                       "&IsVirtualUnaired=false" +
                       "&IsMissing=False" +
                       "&IncludeItemTypes=Movie")
@@ -387,12 +388,9 @@ def getWidgetContent(handle, params):
 
     elif widget_type == "random_movies":
         xbmcplugin.setContent(handle, 'movies')
-        watched = params.get("watched", "") == "true"
-        if watched:
-            items_url += "&Filters=IsPlayed,IsNotFolder"
-        else:
-            items_url += "&Filters={IsUnplayed,}IsNotFolder"
-        items_url += ("&Recursive=true" +
+        items_url += ("&Filters=IsUnplayed,IsNotFolder" +
+                      "&IsPlayed=false" +
+                      "&Recursive=true" +
                       "&SortBy=Random" +
                       "&SortOrder=Descending" +
                       "&IsVirtualUnaired=false" +
@@ -408,7 +406,8 @@ def getWidgetContent(handle, params):
                      '&SortBy=DateCreated' +
                      '&Fields={field_filters}' +
                      '&SortOrder=Descending' +
-                     '&Filters={IsUnplayed}' +
+                     '&Filters=IsUnplayed' +
+                     '&IsPlayed=false' +
                      '&IsVirtualUnaired=false' +
                      '&IsMissing=False' +
                      '&IncludeItemTypes=Episode' +
@@ -420,7 +419,8 @@ def getWidgetContent(handle, params):
         items_url += ("&Recursive=true" +
                       "&SortBy=DateCreated" +
                       "&SortOrder=Descending" +
-                      "&Filters={IsUnplayed,}IsNotFolder" +
+                      "&Filters=IsUnplayed,IsNotFolder" +
+                      "&IsPlayed=false" +
                       "&IsVirtualUnaired=false" +
                       "&IsMissing=False" +
                       "&IncludeItemTypes=Episode")

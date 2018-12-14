@@ -486,7 +486,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -553,6 +554,7 @@ def getCollections():
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Series' +
                          '&SortBy=Name' +
@@ -594,6 +596,7 @@ def getCollections():
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
                          '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
@@ -613,7 +616,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&Recursive=true' +
                          '&IncludeItemTypes=Episode' +
                          '&ImageTypeLimit=1' +
@@ -631,6 +635,7 @@ def getCollections():
                          '&Recursive=true' +
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
@@ -674,6 +679,7 @@ def getCollections():
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&ImageTypeLimit=1' +
                          '&SortBy=Name' +
                          '&SortOrder=Ascending' +
@@ -717,7 +723,8 @@ def getCollections():
                          '&Fields={field_filters}' +
                          '&SortBy=DateCreated' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&ImageTypeLimit=1' +
                          '&format=json'),
                 'media_type': collection_type})
@@ -762,6 +769,7 @@ def getCollections():
                          '&GroupItemsIntoCollections=false' +
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
                          '&SortBy=Name' +
@@ -799,7 +807,8 @@ def getCollections():
                          '&SortBy=DateCreated' +
                          '&Fields={field_filters}' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&IncludeItemTypes=Movie' +
                          '&ImageTypeLimit=1' +
                          '&format=json')
@@ -854,6 +863,7 @@ def getCollections():
                          '?Fields={field_filters}' +
                          '&Recursive=true' +
                          '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&IncludeItemTypes=Series' +
                          '&ImageTypeLimit=1' +
                          '&SortBy=Name' +
@@ -886,7 +896,8 @@ def getCollections():
                          '&SortBy=DateCreated' +
                          '&Fields={field_filters}' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed}' +
+                         '&Filters=IsUnplayed' +
+                         '&IsPlayed=false' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
@@ -922,7 +933,8 @@ def getCollections():
                          '&Recursive=true' +
                          '&Fields={field_filters}' +
                          '&SortOrder=Descending' +
-                         '&Filters={IsUnplayed,}IsNotFolder' +
+                         '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
@@ -940,6 +952,7 @@ def getCollections():
                          '&Recursive=true' +
                          '&Fields={field_filters}' +
                          '&Filters=IsUnplayed,IsNotFolder' +
+                         '&IsPlayed=false' +
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&IncludeItemTypes=Episode' +
@@ -1033,8 +1046,9 @@ def showWidgets():
            "&ItemLimit={ItemLimit}" +
            "&format=json" +
            "&ImageTypeLimit=1" +
-           '&Fields={field_filters}' +
-           "&Filters={IsUnplayed}" +
+           "&Fields={field_filters}" +
+           "&Filters=IsUnplayed" +
+           "&IsPlayed=false" +
            "&IsMissing=False")
     addMenuDirectoryItem(string_load(30324) + " (" + show_x_filtered_items + ")",
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&use_cache=false&media_type=Movies&url=" + urllib.quote(url))
@@ -1042,13 +1056,14 @@ def showWidgets():
     url = ("{server}/emby/Users/{userid}/Items" +
            "?SortBy=Random" +
            "&Limit={ItemLimit}" +
-           '&CollapseBoxSetItems=false' +
-           '&GroupItemsIntoCollections=false' +
+           "&CollapseBoxSetItems=false" +
+           "&GroupItemsIntoCollections=false" +
            "&format=json" +
-           '&Fields={field_filters}' +
+           "&Fields={field_filters}" +
            "&ImageTypeLimit=1" +
            "&IsMissing=False" +
-           "&Filters={IsUnplayed,}IsNotFolder" +
+           "&Filters=IsUnplayed,IsNotFolder" +
+           "&IsPlayed=false" +
            "&Recursive=true" +
            "&SortBy=Random" +
            #"&SortOrder=Descending" +
