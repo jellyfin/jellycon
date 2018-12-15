@@ -481,14 +481,17 @@ def add_gui_item(url, item_details, display_options, folder=True):
     if item_type == 'episode':
         info_labels["episode"] = item_details.episode_number
         info_labels["season"] = item_details.season_number
+        info_labels["tvshowtitle"] = item_details.series_name
 
     elif item_type == 'season':
         info_labels["season"] = item_details.total_items
+        info_labels["tvshowtitle"] = item_details.series_name
 
     elif item_type == "series":
         info_labels["episode"] = item_details.total_episodes
         info_labels["season"] = item_details.total_seasons
-        info_labels["Status"] = item_details.status
+        info_labels["status"] = item_details.status
+        info_labels["tvshowtitle"] = item_details.name
 
     if is_video:
 
@@ -500,7 +503,6 @@ def add_gui_item(url, item_details, display_options, folder=True):
         info_labels["director"] = item_details.director
         info_labels["writer"] = item_details.writer
         info_labels["dateadded"] = item_details.date_added
-        info_labels["TVShowTitle"] = item_details.series_name
         info_labels["country"] = item_details.production_location
         info_labels["mpaa"] = item_details.mpaa
 
