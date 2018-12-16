@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">8</defaultcontrol>
+	<defaultcontrol always="true">5000</defaultcontrol>
 	<onload>SetProperty(infobackground,$ESCINFO[ListItem.Art(fanart)],home)</onload>
 	<onunload>ClearProperty(infobackground,home)</onunload>
 	<controls>
@@ -389,6 +389,15 @@
 						<param name="icon_off" value="icons/infodialogs/play.png" />
 						<param name="selected" value="String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season)" />
 						<param name="label" value="$VAR[VideoInfoPlayButtonLabelVar]" />
+						<param name="visible" value="!String.IsEqual(ListItem.DBType,tvshow) + !String.IsEqual(ListItem.DBType,season) + !String.IsEqual(ListItem.DBType,set) + String.StartsWith(Container.FolderPath,plugin://plugin.video.embycon)" />
+					</include>
+					<include content="InfoDialogButton">
+						<param name="id" value="3124" />
+						<param name="icon" value="icons/filemanager.png" />
+						<param name="label" value="Browse" />
+						<param name="onclick_1" value="Dialog.Close(MovieInformation)" />
+						<param name="onclick_2" value="ActivateWindow(Videos, $INFO[ListItem.FileNameAndPath], return)" />
+						<param name="visible" value="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set)] + String.StartsWith(Container.FolderPath,plugin://plugin.video.embycon)" />
 					</include>
 					<include content="InfoDialogButton">
 						<param name="id" value="11" />
