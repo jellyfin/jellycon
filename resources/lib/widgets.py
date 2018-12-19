@@ -7,12 +7,14 @@ import urllib
 import hashlib
 import time
 import random
+import sys
 
 from downloadutils import DownloadUtils
 from utils import getArt
 from datamanager import DataManager
 from simple_logging import SimpleLogging
 from kodi_utils import HomeWindow
+from dir_functions import processDirectory
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -166,7 +168,7 @@ def checkForNewContent():
         home_window.setProperty("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
 
-
+'''
 def getWidgetUrlContent(handle, params):
     log.debug("getWidgetUrlContent Called: {0}", params)
 
@@ -181,7 +183,7 @@ def getWidgetUrlContent(handle, params):
 
     xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
+'''
 
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)
@@ -250,7 +252,7 @@ def get_widget_content_cast(handle, params):
     xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
-
+'''
 def populateWidgetItems(items_url, widget_type, override_select_action=None):
     server = downloadUtils.getServer()
     if server is None:
@@ -388,7 +390,7 @@ def populateWidgetItems(items_url, widget_type, override_select_action=None):
         list_items.append(item_tupple)
 
     return list_items
-
+'''
 
 def getWidgetContent(handle, params):
     log.debug("getWigetContent Called: {0}", params)
@@ -478,7 +480,9 @@ def getWidgetContent(handle, params):
                      "&format=json" +
                      "&ImageTypeLimit=1")
 
-    list_items = populateWidgetItems(items_url, widget_type)
+    list_items, detected_type = processDirectory(items_url, None, params, False)
+
+    #list_items = populateWidgetItems(items_url, widget_type)
 
     xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
