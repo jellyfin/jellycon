@@ -388,7 +388,7 @@
 						<param name="id" value="8" />
 						<param name="icon" value="icons/infodialogs/play.png" />
 						<param name="label" value="$LOCALIZE[208]" />
-						<param name="visible" value="!String.IsEqual(ListItem.DBType,tvshow) + !String.IsEqual(ListItem.DBType,season) + !String.IsEqual(ListItem.DBType,set) + String.StartsWith(Container.FolderPath,plugin://plugin.video.embycon)" />
+						<param name="visible" value="!String.IsEqual(ListItem.DBType,tvshow) + !String.IsEqual(ListItem.DBType,season) + !String.IsEqual(ListItem.DBType,set) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)" />
 					</include>
 					<include content="InfoDialogButton">
 						<param name="id" value="3124" />
@@ -396,7 +396,7 @@
 						<param name="label" value="Browse" />
 						<param name="onclick_1" value="Dialog.Close(MovieInformation)" />
 						<param name="onclick_2" value="ActivateWindow(Videos, $INFO[ListItem.FileNameAndPath], return)" />
-						<param name="visible" value="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set)] + String.StartsWith(Container.FolderPath,plugin://plugin.video.embycon)" />
+						<param name="visible" value="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set)] + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)" />
 					</include>
 					<include content="InfoDialogButton">
 						<param name="id" value="11" />
