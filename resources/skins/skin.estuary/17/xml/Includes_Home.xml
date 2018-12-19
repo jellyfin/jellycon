@@ -195,7 +195,7 @@
 			<control type="panel" id="$PARAM[list_id]">
 				<left>0</left>
 				<top>115</top>
-				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
+				<visible allowhiddenfocus="true">Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
 				<right>0</right>
 				<height>500</height>
 				<include content="WidgetListCommon">
@@ -313,8 +313,8 @@
 				<include content="WidgetListCommon">
 					<param name="list_id" value="$PARAM[list_id]"/>
 				</include>
-				<visible>$PARAM[visible]</visible>
-				<visible>Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
+				<visible allowhiddenfocus="true">$PARAM[visible]</visible>
+				<visible allowhiddenfocus="true">Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
 				<itemlayout width="310" height="500">
 					<control type="group">
 						<left>70</left>

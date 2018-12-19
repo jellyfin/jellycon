@@ -6,6 +6,7 @@ import json
 import urllib
 import hashlib
 import time
+import random
 
 from downloadutils import DownloadUtils
 from utils import getArt
@@ -22,11 +23,48 @@ background_items = []
 background_current_item = 0
 
 
-def set_background_image():
-    log.debug("set_background_image Called")
+def set_random_movies():
+    log.debug("set_random_movies Called")
+
+    url = ('{server}/emby/Users/{userid}/Items' +
+           '?Recursive=true' +
+           '&limit=20' +
+           '&Filters=IsUnplayed' +
+           '&IsPlayed=false' +
+           '&SortBy=Random' +
+           '&IncludeItemTypes=Movie' +
+           '&ImageTypeLimit=0')
+    results = downloadUtils.downloadUrl(url, suppress=True)
+    results = json.loads(results)
+
+    randon_movies_list = []
+    if results is not None:
+        items = results.get("Items", [])
+        for item in items:
+            randon_movies_list.append(item.get("Id"))
+
+    random.shuffle(randon_movies_list)
+    movies_list_string = ",".join(randon_movies_list)
+    home_window = HomeWindow()
+    m = hashlib.md5()
+    m.update(movies_list_string)
+    new_widget_hash = m.hexdigest()
+
+    log.debug("set_random_movies : {0}", movies_list_string)
+    log.debug("set_random_movies : {0}", new_widget_hash)
+    home_window.setProperty("random-movies", movies_list_string)
+    home_window.setProperty("random-movies-changed", new_widget_hash)
+
+
+def set_background_image(force=False):
+    log.debug("set_background_image Called forced={0}", force)
 
     global background_current_item
     global background_items
+
+    if force:
+        background_current_item = 0
+        background_items = []
 
     if len(background_items) == 0 or background_current_item >= len(background_items):
         log.debug("set_background_image: Need to load more backgrounds {0} - {1}",
@@ -233,6 +271,9 @@ def populateWidgetItems(items_url, widget_type, override_select_action=None):
     result = data_manager.GetContent(items_url)
     log.debug("WIDGET_DATA: {0}", result)
 
+    if result is None:
+        return []
+
     simmilar_to = None
     if result is not None and isinstance(result, dict) and result.get("Items") is not None:
         simmilar_to = result.get("BaselineItemName", None)
@@ -388,14 +429,7 @@ def getWidgetContent(handle, params):
 
     elif widget_type == "random_movies":
         xbmcplugin.setContent(handle, 'movies')
-        items_url += ("&Filters=IsUnplayed,IsNotFolder" +
-                      "&IsPlayed=false" +
-                      "&Recursive=true" +
-                      "&SortBy=Random" +
-                      "&SortOrder=Descending" +
-                      "&IsVirtualUnaired=false" +
-                      "&IsMissing=False" +
-                      "&IncludeItemTypes=Movie")
+        items_url += "&Ids={random_movies}"
 
     elif widget_type == "recent_tvshows":
         xbmcplugin.setContent(handle, 'episodes')

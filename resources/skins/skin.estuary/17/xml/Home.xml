@@ -90,7 +90,7 @@
 							<param name="list_id" value="3900"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-random-movies-changed)]"/>
 							<param name="widget_header" value="Random"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3100"/>

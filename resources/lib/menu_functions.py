@@ -1054,31 +1054,21 @@ def showWidgets():
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&use_cache=false&media_type=Movies&url=" + urllib.quote(url))
 
     url = ("{server}/emby/Users/{userid}/Items" +
-           "?SortBy=Random" +
-           "&Limit={ItemLimit}" +
-           "&CollapseBoxSetItems=false" +
-           "&GroupItemsIntoCollections=false" +
-           "&format=json" +
+           "?Limit={ItemLimit}" +
+           "&Ids={random_movies}" +
            "&Fields={field_filters}" +
-           "&ImageTypeLimit=1" +
-           "&IsMissing=False" +
-           "&Filters=IsUnplayed,IsNotFolder" +
-           "&IsPlayed=false" +
-           "&Recursive=true" +
-           "&SortBy=Random" +
-           #"&SortOrder=Descending" +
-           "&IsVirtualUnaired=false" +
-           "&IsMissing=False" +
-           "&IncludeItemTypes=Movie")
+           "&ImageTypeLimit=1")
     addMenuDirectoryItem(string_load(30269) + " (" + show_x_filtered_items + ")",
                          "plugin://plugin.video.embycon/?mode=GET_CONTENT&use_cache=false&media_type=Movies&url=" + urllib.quote(url))
 
-    addMenuDirectoryItem(string_load(30257) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
-    addMenuDirectoryItem(string_load(30258) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
-    addMenuDirectoryItem(string_load(30287) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
-    addMenuDirectoryItem(string_load(30263) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
-    addMenuDirectoryItem(string_load(30264) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
-    addMenuDirectoryItem(string_load(30265) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+    addMenuDirectoryItem(" - " + string_load(30257) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
+    addMenuDirectoryItem(" - " + string_load(30258) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
+    addMenuDirectoryItem(" - " + string_load(30269) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=random_movies')
+
+    addMenuDirectoryItem(" - " + string_load(30287) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
+    addMenuDirectoryItem(" - " + string_load(30263) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
+    addMenuDirectoryItem(" - " + string_load(30264) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
+    addMenuDirectoryItem(" - " + string_load(30265) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -1094,12 +1084,12 @@ def show_search():
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-def set_library_window_values():
-    log.debug("set_library_window_values called")
+def set_library_window_values(force=False):
+    log.debug("set_library_window_values Called forced={0}", force)
     home_window = HomeWindow()
 
     already_set = home_window.getProperty("view_item.0.name")
-    if already_set:
+    if not force and already_set:
         return
 
     for index in range(0, 20):
