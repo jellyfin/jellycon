@@ -217,8 +217,11 @@ def processDirectory(url, progress, params, use_cache_data=False):
     flatten_single_season = settings.getSetting("flatten_single_season") == "true"
     if flatten_single_season and len(item_list) == 1 and item_list[0].item_type == "Season":
         season_id = item_list[0].id
-        season_url = ('{server}/emby/Users/{userid}/items' +
-                      '?ParentId=' + season_id +
+        series_id = item_list[0].series_id
+        season_url = ('{server}/emby/Shows/' + series_id +
+                      '/Episodes'
+                      '?userId={userid}' +
+                      '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
                       '&Fields={field_filters}' +
@@ -286,6 +289,16 @@ def processDirectory(url, progress, params, use_cache_data=False):
                      '&Fields={field_filters}' +
                      '&format=json')
 
+            elif item_details.item_type == "Season":
+                u = ('{server}/emby/Shows/' + item_details.series_id +
+                     '/Episodes'
+                     '?userId={userid}' +
+                     '&seasonId=' + item_details.id +
+                     '&IsVirtualUnAired=false' +
+                     '&IsMissing=false' +
+                     '&Fields={field_filters}' +
+                     '&format=json')
+
             else:
                 u = ('{server}/emby/Users/{userid}/items' +
                      '?ParentId=' + item_details.id +
@@ -322,13 +335,13 @@ def processDirectory(url, progress, params, use_cache_data=False):
             and first_season_item is not None
             and len(dir_items) > 1
             and first_season_item.series_id is not None):
-        series_url = ('{server}/emby/Users/{userid}/items' +
-                      '?ParentId=' + first_season_item.series_id +
+        series_url = ('{server}/emby/Shows/' + first_season_item.series_id +
+                      '/Episodes'
+                      '?userId={userid}' +
+                      #'&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
                       '&Fields={field_filters}' +
-                      '&Recursive=true' +
-                      '&IncludeItemTypes=Episode' +
                       '&format=json')
         played = 0
         overlay = "7"
