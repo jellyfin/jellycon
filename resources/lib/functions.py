@@ -437,8 +437,18 @@ def show_menu(params):
     elif selected_action == "view_season":
         xbmc.executebuiltin("Dialog.Close(all,true)")
         parent_id = result["ParentId"]
-        xbmc.executebuiltin(
-            'ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=PARENT_CONTENT&ParentId={0}&media_type=episodes, return)'.format(parent_id))
+        series_id = result["SeriesId"]
+        u = ('{server}/emby/Shows/' + series_id +
+             '/Episodes'
+             '?userId={userid}' +
+             '&seasonId=' + parent_id +
+             '&IsVirtualUnAired=false' +
+             '&IsMissing=false' +
+             '&Fields={field_filters}' +
+             '&format=json')
+        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Season")
+        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+        xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "view_series":
         xbmc.executebuiltin("Dialog.Close(all,true)")
