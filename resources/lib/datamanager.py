@@ -52,7 +52,7 @@ class DataManager():
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()
-        log.debug("last_content_url : {0}", url)
+        log.debug("last_content_url : use_cache={0} url={1}", use_cache, url)
         home_window.setProperty("last_content_url", url)
 
         user_id = DownloadUtils().getUserId()
