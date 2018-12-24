@@ -889,8 +889,8 @@ def playTrailer(id):
 
         elif trailer.get("type") == "remote":
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
-            log.debug("YoutubeID: {0}", youtube_id)
             youtube_plugin = "PlayMedia(plugin://plugin.video.youtube/play/?video_id=%s)" % youtube_id
+            log.debug("youtube_plugin: {0}", youtube_plugin)
             xbmc.executebuiltin(youtube_plugin)
 
 
