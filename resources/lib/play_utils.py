@@ -272,8 +272,10 @@ def playFile(play_info, monitor):
 
     # check if strm file, path will contain contain strm contents
     if selected_media_source.get('Container') == 'strm':
+        log.debug("Detected STRM Container")
         playurl, listitem_props = PlayUtils().getStrmDetails(selected_media_source)
         if playurl is None:
+            log.debug("Error, no strm content")
             return
 
     if not playurl:

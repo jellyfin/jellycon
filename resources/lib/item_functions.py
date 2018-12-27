@@ -113,6 +113,7 @@ def extract_item_info(item, gui_options):
     if item_details.item_type == "Episode":
         item_details.episode_number = item["IndexNumber"]
         item_details.season_number = item["ParentIndexNumber"]
+        item_details.series_id = item["SeriesId"]
 
     elif item_details.item_type == "Season":
         item_details.season_number = item["IndexNumber"]
@@ -220,7 +221,7 @@ def extract_item_info(item, gui_options):
             elif person_type == "Writing":
                 item_details.writer = person["Name"]
             elif person_type == "Actor":
-                log.debug("Person: {0}", person)
+                #log.debug("Person: {0}", person)
                 person_name = person["Name"]
                 person_role = person["Role"]
                 person_id = person["Id"]
@@ -429,6 +430,9 @@ def add_gui_item(url, item_details, display_options, folder=True):
     item_properties["fanart_image"] = item_details.art['fanart'] # back compat
     item_properties["discart"] = item_details.art['discart'] # not avail to setArt
     item_properties["tvshow.poster"] = item_details.art['tvshow.poster'] # not avail to setArt
+
+    if item_details.series_id:
+        item_properties["series_id"] = item_details.series_id
 
     # new way
     info_labels = {}
