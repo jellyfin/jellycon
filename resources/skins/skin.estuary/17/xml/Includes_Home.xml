@@ -54,7 +54,6 @@
 				<texture flipx="true">overlays/overlay-bg.png</texture>
 				<visible>!ListItem.IsParentFolder</visible>
 			</control>
-			-->
 			<control type="label">
 				<left>31</left>
 				<top>178</top>
@@ -64,6 +63,7 @@
 				<shadowcolor>text_shadow</shadowcolor>
 				<align>right</align>
 			</control>
+			-->
 			<control type="image">
 				<left>20</left>
 				<top>175</top>
@@ -83,7 +83,7 @@
 				<visible>Window.IsActive(videos)</visible>
 			</control>
 			<control type="group">
-				<visible>!Window.IsActive(videos)</visible>
+				<visible>!Window.IsActive(videos) + !String.IsEqual(ListItem.DBType,tvshow)</visible>
 				<control type="label">
 					<left>29</left>
 					<top>210</top>
@@ -98,13 +98,36 @@
 					<left>29</left>
 					<top>240</top>
 					<width>260</width>
-					<label>$PARAM[main_label]</label>
+					<label>$PARAM[thumb_label]: $PARAM[main_label]</label>
 					<font>font10</font>
 					<shadowcolor>text_shadow</shadowcolor>
 					<scroll>$PARAM[focused]</scroll>
 					<align>center</align>
 				</control>
 			</control>
+			<control type="group">
+				<visible>!Window.IsActive(videos) + String.IsEqual(ListItem.DBType,tvshow)</visible>
+				<control type="label">
+					<left>29</left>
+					<top>210</top>
+					<width>260</width>
+					<label>$PARAM[sub_label]</label>
+					<font>font12</font>
+					<shadowcolor>text_shadow</shadowcolor>
+					<scroll>$PARAM[focused]</scroll>
+					<align>center</align>
+				</control>
+				<control type="label">
+					<left>29</left>
+					<top>240</top>
+					<width>260</width>
+					<label>$INFO[ListItem.Property(UnWatchedEpisodes)] Episodes</label>
+					<font>font10</font>
+					<shadowcolor>text_shadow</shadowcolor>
+					<scroll>$PARAM[focused]</scroll>
+					<align>center</align>
+				</control>
+			</control>				
 			<control type="progress">
 				<left>20</left>
 				<top>258</top>

@@ -405,6 +405,7 @@ def getWidgetContent(handle, params):
     items_url = ("{server}/emby/Users/{userid}/Items" +
                  "?Limit={ItemLimit}" +
                  "&format=json" +
+                 '&Fields={field_filters}' +
                  "&ImageTypeLimit=1" +
                  "&IsMissing=False")
 
@@ -440,9 +441,9 @@ def getWidgetContent(handle, params):
                      '&Limit={ItemLimit}' +
                      '&Recursive=true' +
                      '&SortBy=DateCreated' +
-                     '&Fields={field_filters}' +
                      '&SortOrder=Descending' +
                      '&Filters=IsUnplayed' +
+                     '&Fields={field_filters}' +
                      '&IsPlayed=false' +
                      '&IsVirtualUnaired=false' +
                      '&IsMissing=False' +
@@ -477,6 +478,7 @@ def getWidgetContent(handle, params):
                      "?Limit={ItemLimit}"
                      "&userid={userid}" +
                      "&Recursive=true" +
+                     '&Fields={field_filters}' +
                      "&format=json" +
                      "&ImageTypeLimit=1")
 
