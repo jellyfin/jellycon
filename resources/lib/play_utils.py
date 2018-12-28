@@ -694,18 +694,7 @@ def externalSubs(media_source, list_item, item_id):
 
 
 def sendProgress(monitor):
-    playing_file = xbmc.Player().getPlayingFile()
-    log.debug("sendProgress getPlayingFile : {0}", playing_file)
-    infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-    log.debug("sendProgress Filenameandpath : {0}", infolabel_path_and_file)
-
-    if playing_file not in monitor.played_information:
-        if infolabel_path_and_file not in monitor.played_information:
-            return
-        else:
-            playing_file = infolabel_path_and_file
-
-    play_data = monitor.played_information.get(playing_file)
+    play_data = get_playing_data(monitor.played_information)
 
     if play_data is None:
         return
@@ -749,11 +738,11 @@ def sendProgress(monitor):
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
 
 
-def promptForStopActions(item_id, data):
+def prompt_for_stop_actions(item_id, data):
 
     settings = xbmcaddon.Addon()
-    current_possition = data.get("currentPossition", 0)
-    duration = data.get("duration", 1)
+    current_position = data.get("currentPossition", 0)
+    duration = data.get("duration", 0)
     media_source_id = data.get("source_id")
 
     prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
@@ -765,9 +754,12 @@ def promptForStopActions(item_id, data):
     result = json.loads(jsonData)
 
     if result is None:
-        log.debug("promptForStopActions failed! no result from server.")
+        log.debug("prompt_for_stop_actions failed! no result from server.")
         return
 
+    # TODO: remove this when emby server supports client duration updates
+    # Start of STRM hack
+    #
     is_strm = False
     for media_source in result.get("MediaSources", []):
         if media_source.get("Id") == media_source_id:
@@ -775,13 +767,16 @@ def promptForStopActions(item_id, data):
                 log.debug("Detected STRM Container")
                 is_strm = True
 
-    if is_strm:
-        percent_done = float(current_possition) / float(duration)
+    if is_strm and duration > 0:
+        percent_done = float(current_position) / float(duration)
         if percent_done > 0.9:
             log.debug("Marking STRM Item played at : {0}", percent_done)
             markWatched(item_id)
         else:
             markUnwatched(item_id)
+    #
+    # End of STRM hack
+    #
 
     # everything is off so return
     if (prompt_next_percentage == 100 and
@@ -798,7 +793,7 @@ def promptForStopActions(item_id, data):
         return
 
     # item percentage complete
-    percenatge_complete = int(((current_possition * 10000000) / runtime) * 100)
+    percenatge_complete = int(((current_position * 10000000) / runtime) * 100)
     log.debug("Episode Percentage Complete: {0}", percenatge_complete)
 
     if (prompt_delete_episode_percentage < 100 and
@@ -843,7 +838,7 @@ def promptForStopActions(item_id, data):
                 xbmc.executebuiltin("Container.Refresh")
 
 
-def stopAll(played_information):
+def stop_all_playback(played_information):
     if len(played_information) == 0:
         return
 
@@ -858,30 +853,46 @@ def stopAll(played_information):
             log.debug("item_url: {0}", item_url)
             log.debug("item_data: {0}", data)
 
-            current_possition = data.get("currentPossition", 0)
-            duration = data.get("duration", 1)
+            current_position = data.get("currentPossition", 0)
+            duration = data.get("duration", 0)
             emby_item_id = data.get("item_id")
             emby_source_id = data.get("source_id")
 
-            if emby_item_id is not None and current_possition >= 0:
-                log.debug("Playback Stopped at: {0}", current_possition)
+            if emby_item_id is not None and current_position >= 0:
+                log.debug("Playback Stopped at: {0}", current_position)
 
                 url = "{server}/emby/Sessions/Playing/Stopped"
                 postdata = {
                     'ItemId': emby_item_id,
                     'MediaSourceId': emby_source_id,
-                    'PositionTicks': int(current_possition * 10000000),
+                    'PositionTicks': int(current_position * 10000000),
                     'RunTimeTicks': int(duration * 10000000)
                 }
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
                 data["currently_playing"] = False
 
                 if data.get("play_action_type", "") == "play":
-                    promptForStopActions(emby_item_id, data)
+                    prompt_for_stop_actions(emby_item_id, data)
 
     device_id = ClientInformation().getDeviceId()
     url = "{server}/emby/Videos/ActiveEncodings?DeviceId=%s" % device_id
     download_utils.downloadUrl(url, method="DELETE")
+
+
+def get_playing_data(play_data_map):
+    playing_file = xbmc.Player().getPlayingFile()
+    log.debug("get_playing_data : getPlayingFile() : {0}", playing_file)
+    if playing_file not in play_data_map:
+        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
+        log.debug("get_playing_data : Filenameandpath : {0}", infolabel_path_and_file)
+        if infolabel_path_and_file not in play_data_map:
+            log.debug("get_playing_data : play data not found")
+            return None
+        else:
+            playing_file = infolabel_path_and_file
+
+    return play_data_map.get(playing_file)
+
 
 class Service(xbmc.Player):
 
@@ -900,33 +911,24 @@ class Service(xbmc.Player):
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
-        stopAll(self.played_information)
+        stop_all_playback(self.played_information)
 
         if not xbmc.Player().isPlaying():
             log.debug("onPlayBackStarted: not playing file!")
             return
 
-        current_playing_file = xbmc.Player().getPlayingFile()
-        log.debug("onPlayBackStarted PlayingFile : {0}", current_playing_file)
-        log.debug("played_information: {0}", self.played_information)
-        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-        log.debug("onPlayBackStarted pathandfile : {0}", infolabel_path_and_file)
+        play_data = get_playing_data(self.played_information)
 
-        if current_playing_file not in self.played_information:
-            if infolabel_path_and_file not in self.played_information:
-                log.debug("This file was not started by EmbyCon")
-                return
-            else:
-                current_playing_file = infolabel_path_and_file
+        if play_data is None:
+            return
 
-        data = self.played_information[current_playing_file]
-        data["paused"] = False
-        data["currently_playing"] = True
+        play_data["paused"] = False
+        play_data["currently_playing"] = True
 
-        emby_item_id = data["item_id"]
-        emby_source_id = data["source_id"]
-        playback_type = data["playback_type"]
-        play_session_id = data["play_session_id"]
+        emby_item_id = play_data["item_id"]
+        emby_source_id = play_data["source_id"]
+        playback_type = play_data["playback_type"]
+        play_session_id = play_data["play_session_id"]
 
         # if we could not find the ID of the current item then return
         if emby_item_id is None:
@@ -963,28 +965,18 @@ class Service(xbmc.Player):
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
         log.debug("EmbyCon Service -> onPlayBackEnded")
-        stopAll(self.played_information)
+        stop_all_playback(self.played_information)
 
     def onPlayBackStopped(self):
         # Will be called when user stops kodi playing a file
         log.debug("onPlayBackStopped")
-        stopAll(self.played_information)
+        stop_all_playback(self.played_information)
 
     def onPlayBackPaused(self):
         # Will be called when kodi pauses the video
         log.debug("onPlayBackPaused")
-        current_file = xbmc.Player().getPlayingFile()
-        log.debug("onPlayBackPaused getPlayingFile  : {0}", current_file)
-        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-        log.debug("onPlayBackPaused pathandfile : {0}", infolabel_path_and_file)
 
-        if current_file not in self.played_information:
-            if infolabel_path_and_file not in self.played_information:
-                return
-            else:
-                current_file = infolabel_path_and_file
-
-        play_data = self.played_information.get(current_file)
+        play_data = get_playing_data(self.played_information)
 
         if play_data is not None:
             play_data['paused'] = True
@@ -993,18 +985,8 @@ class Service(xbmc.Player):
     def onPlayBackResumed(self):
         # Will be called when kodi resumes the video
         log.debug("onPlayBackResumed")
-        current_file = xbmc.Player().getPlayingFile()
-        log.debug("onPlayBackResumed getPlayingFile  : {0}", current_file)
-        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-        log.debug("onPlayBackResumed pathandfile : {0}", infolabel_path_and_file)
 
-        if current_file not in self.played_information:
-            if infolabel_path_and_file not in self.played_information:
-                return
-            else:
-                current_file = infolabel_path_and_file
-
-        play_data = self.played_information.get(current_file)
+        play_data = get_playing_data(self.played_information)
 
         if play_data is not None:
             play_data['paused'] = False
