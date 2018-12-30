@@ -250,11 +250,15 @@
 					<height>370</height>
 					<onleft>50</onleft>
 					<onright>50</onright>
+					<!--
 					<onup condition="System.hasAddon(script.extendedinfo) + Control.HasFocus(50)">RunScript(script.extendedinfo,info=extendedactorinfo,name=$INFO[Container(50).ListItem.Label])</onup>
 					<onup condition="!System.hasAddon(script.extendedinfo)">InstallAddon(script.extendedinfo)</onup>
+					-->
 					<ondown>140</ondown>
 					<scrolltime>200</scrolltime>
 					<orientation>horizontal</orientation>
+					<onclick>close</onclick>
+					<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=NEW_SEARCH_PERSON&amp;person_id=$INFO[ListItem.Property(id)],return)</onclick>
 					<itemlayout height="317" width="245">
 						<control type="group">
 							<top>10</top>

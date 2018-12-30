@@ -582,6 +582,9 @@ def search_results_person(params):
             found_types.add(item.get("Type"))
         log.debug("search_results_person found_types: {0}", found_types)
     '''
+
+    params["name_format"] = "Episode|episode_name_format"
+
     dir_items, detected_type = processDirectory(details_url, None, params)
 
     log.debug('search_results_person results: {0}', dir_items)

@@ -59,7 +59,7 @@
 		<control type="group">
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[infodialog_active]">Conditional</animation>
 			<control type="group" id="2000">
-				<left>462</left>
+				<left>290</left>
 				<animation type="Conditional" condition="Control.IsVisible(20000)" reversible="false">
 					<effect type="slide" end="0,20" time="60" tween="sine" />
 					<effect type="slide" end="0,-20" time="180" tween="sine" delay="80" />
@@ -883,12 +883,12 @@
 				<depth>DepthContentPanel</depth>
 				<include>OpenClose_Left</include>
 				<include content="ContentPanel">
-					<param name="width" value="522" />
+					<param name="width" value="380" />
 				</include>
 				<control type="fixedlist" id="9000">
 					<left>0</left>
 					<top>240</top>
-					<width>462</width>
+					<width>380</width>
 					<bottom>-10</bottom>
 					<movement>7</movement>
 					<focusposition>0</focusposition>
@@ -903,11 +903,12 @@
 							<control type="image">
 								<left>0</left>
 								<top>0</top>
-								<width>462</width>
+								<width>320</width>
 								<height>95</height>
 								<texture colordiffuse="button_focus">lists/focus.png</texture>
 								<animation effect="fade" start="100" end="0" time="0" condition="[!Control.HasFocus(9000) + !ControlGroup(700).HasFocus] | System.HasActiveModalDialog">Conditional</animation>
 							</control>
+							<!--
 							<control type="image">
 								<left>-3</left>
 								<top>1</top>
@@ -924,7 +925,9 @@
 								<texture colordiffuse="51FFFFFF">colors/black.png</texture>
 								<animation effect="fade" start="100" end="0" time="0" condition="[!Control.HasFocus(9000) + !ControlGroup(700).HasFocus] | System.HasActiveModalDialog">Conditional</animation>
 							</control>
+							-->
 						</control>
+						<!--
 						<control type="image">
 							<left>-3</left>
 							<top>1</top>
@@ -932,11 +935,12 @@
 							<height>95</height>
 							<texture>$INFO[ListItem.Art(thumb)]</texture>
 						</control>
+						-->
 						<control type="label">
-							<left>104</left>
+							<left>15</left>
 							<top>0</top>
 							<height>95</height>
-							<width>560</width>
+							<width>370</width>
 							<aligny>center</aligny>
 							<font>font37</font>
 							<label>$INFO[ListItem.Label]</label>
@@ -944,6 +948,7 @@
 						</control>
 					</focusedlayout>
 					<itemlayout height="95">
+						<!--
 						<control type="image">
 							<left>-3</left>
 							<top>1</top>
@@ -951,11 +956,12 @@
 							<height>95</height>
 							<texture colordiffuse="44FFFFFF">$INFO[ListItem.Art(thumb)]</texture>
 						</control>
+						-->
 						<control type="label">
-							<left>104</left>
+							<left>15</left>
 							<top>0</top>
 							<height>95</height>
-							<width>560</width>
+							<width>370</width>
 							<aligny>center</aligny>
 							<font>font37</font>
 							<label>$INFO[ListItem.Label]</label>
@@ -1093,6 +1099,13 @@
 							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
 						</item>
 						<item>
+							<label>Search</label>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SEARCH,return)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/favourites.png</thumb>
+							<property name="id">search</property>
+						</item>
+						<item>
 							<label>Change User</label>
 							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
@@ -1199,6 +1212,7 @@
 					<aspectratio>keep</aspectratio>
 					<texture >$INFO[Window(Home).Property(plugin.video.embycon-userimage)]</texture>
 				</control>
+				<!--
 				<control type="image">
 					<aspectratio>keep</aspectratio>
 					<width>60</width>
@@ -1207,8 +1221,9 @@
 					<left>120</left>
 					<texture colordiffuse="button_focus">icons/logo.png</texture>
 				</control>
+				-->
 				<control type="image">
-					<left>160</left>
+					<left>90</left>
 					<top>30</top>
 					<aspectratio>keep</aspectratio>
 					<width>192</width>
