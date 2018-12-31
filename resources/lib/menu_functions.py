@@ -539,6 +539,8 @@ def getCollections():
                          '&IsVirtualUnaired=false' +
                          '&IsMissing=False' +
                          '&Fields={field_filters}' +
+                         '&Recursive=true' +
+                         '&IncludeItemTypes=Series' +                         
                          '&ImageTypeLimit=1' +
                          '&SortBy=Name' +
                          '&SortOrder=Ascending' +
