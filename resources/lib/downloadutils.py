@@ -209,6 +209,7 @@ class DownloadUtils():
         log.debug("PlaybackInfo : {0}", url)
         log.debug("PlaybackInfo : {0}", profile)
         play_info_result = self.downloadUrl(url, postBody=playback_info, method="POST")
+        play_info_result = json.loads(play_info_result)
         log.debug("PlaybackInfo : {0}", play_info_result)
 
         return play_info_result

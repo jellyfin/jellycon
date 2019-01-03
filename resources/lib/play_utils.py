@@ -38,15 +38,26 @@ def playAllFiles(items, monitor):
     for item in items:
 
         item_id = item.get("Id")
-        sources = item.get("MediaSources")
+
+        # get playback info
+        playback_info = download_utils.get_item_playback_info(item_id)
+        if playback_info is None:
+            log.debug("playback_info was None, could not get MediaSources so can not play!")
+            return
+
+        # play_session_id = id_generator()
+        play_session_id = playback_info.get("PlaySessionId")
+
+        # select the media source to use
+        # sources = item.get("MediaSources")
+        sources = playback_info.get('MediaSources')
+
         selected_media_source = sources[0]
         source_id = selected_media_source.get("Id")
 
         listitem_props = []
         playback_type = "0"
         playurl = None
-        play_session_id = id_generator()
-        log.debug("play_session_id: {0}", play_session_id)
 
         # check if strm file, path will contain contain strm contents
         if selected_media_source.get('Container') == 'strm':
@@ -171,8 +182,18 @@ def playFile(play_info, monitor):
         result = data_manager.GetContent(url)
         id = result["Id"]
 
+    # get playback info
+    playback_info = download_utils.get_item_playback_info(id)
+    if playback_info is None:
+        log.debug("playback_info was None, could not get MediaSources so can not play!")
+        return
+
+    #play_session_id = id_generator()
+    play_session_id = playback_info.get("PlaySessionId")
+
     # select the media source to use
-    media_sources = result.get('MediaSources')
+    #media_sources = result.get('MediaSources')
+    media_sources = playback_info.get('MediaSources')
     selected_media_source = None
 
     if result.get("Type") == "Photo":
@@ -267,7 +288,6 @@ def playFile(play_info, monitor):
     listitem_props = []
     playback_type = "0"
     playurl = None
-    play_session_id = id_generator()
     log.debug("play_session_id: {0}", play_session_id)
 
     # check if strm file, path will contain contain strm contents
@@ -322,9 +342,6 @@ def playFile(play_info, monitor):
 
     elif playback_type == "1": # for direct stream add any streamable subtitles
         externalSubs(selected_media_source, list_item, id)
-
-    # get playback info
-    playback_info = download_utils.get_item_playback_info(id)
 
     # add playurl and data to the monitor
     data = {}
