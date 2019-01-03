@@ -94,6 +94,126 @@ class DownloadUtils():
         self.downloadUrl(url, postBody=data, method="POST")
         log.debug("Posted Capabilities: {0}", data)
 
+    def get_item_playback_info(self, item_id):
+
+        profile = {
+            "Name": "Kodi",
+            "MaxStreamingBitrate": 100000000,
+            "MusicStreamingTranscodingBitrate": 1280000,
+            "TimelineOffsetSeconds": 5,
+            "TranscodingProfiles": [
+                {
+                    "Type": "Audio"
+                },
+                {
+                    "Container": "m3u8",
+                    "Type": "Video",
+                    "AudioCodec": "aac,mp3,ac3,opus,flac,vorbis",
+                    "VideoCodec": "h264,mpeg4,mpeg2video",
+                    "MaxAudioChannels": "6"
+                },
+                {
+                    "Container": "jpeg",
+                    "Type": "Photo"
+                }
+            ],
+            "DirectPlayProfiles": [
+                {
+                    "Type": "Video"
+                },
+                {
+                    "Type": "Audio"
+                },
+                {
+                    "Type": "Photo"
+                }
+            ],
+            "ResponseProfiles": [],
+            "ContainerProfiles": [],
+            "CodecProfiles": [],
+            "SubtitleProfiles": [
+                {
+                    "Format": "srt",
+                    "Method": "External"
+                },
+                {
+                    "Format": "srt",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "ass",
+                    "Method": "External"
+                },
+                {
+                    "Format": "ass",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "sub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "sub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "ssa",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "ssa",
+                    "Method": "External"
+                },
+                {
+                    "Format": "smi",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "smi",
+                    "Method": "External"
+                },
+                {
+                    "Format": "pgssub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "pgssub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "dvdsub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "dvdsub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "pgs",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "pgs",
+                    "Method": "External"
+                }
+            ]
+        }
+
+        playback_info = {
+            'UserId': self.getUserId(),
+            'DeviceProfile': profile,
+            'AutoOpenLiveStream': True
+        }
+
+        url = "{server}/emby/Items/%s/PlaybackInfo" % item_id
+        log.debug("PlaybackInfo : {0}", url)
+        log.debug("PlaybackInfo : {0}", profile)
+        play_info_result = self.downloadUrl(url, postBody=playback_info, method="POST")
+        log.debug("PlaybackInfo : {0}", play_info_result)
+
+        return play_info_result
+
+
     def getServer(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')

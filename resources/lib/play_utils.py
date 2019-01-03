@@ -323,6 +323,9 @@ def playFile(play_info, monitor):
     elif playback_type == "1": # for direct stream add any streamable subtitles
         externalSubs(selected_media_source, list_item, id)
 
+    # get playback info
+    playback_info = download_utils.get_item_playback_info(id)
+
     # add playurl and data to the monitor
     data = {}
     data["item_id"] = id
