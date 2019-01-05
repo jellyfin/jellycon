@@ -3,16 +3,16 @@ import xbmcaddon
 import xbmcgui
 import xbmcplugin
 import xbmc
-import re
-import encodings
+
 import string
 import random
 import urllib
 import json
-import httplib
-import base64
-import sys
 import binascii
+import time
+from datetime import datetime
+import calendar
+import re
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
@@ -281,3 +281,18 @@ def send_event_notification(method, data):
     log.debug("Sending notification event data: {0}", command)
     xbmc.executebuiltin(command)
 
+
+def datetime_from_string(time_string):
+
+    if time_string[-1:] == "Z":
+        time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
+    elif time_string[-6:] == "+00:00":
+        time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)
+    log.debug("New Time String : {0}", time_string)
+
+    start_time = time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
+    dt = datetime(*(start_time[0:6]))
+    timestamp = calendar.timegm(dt.timetuple())
+    local_dt = datetime.fromtimestamp(timestamp)
+    local_dt.replace(microsecond=dt.microsecond)
+    return local_dt

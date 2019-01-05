@@ -389,11 +389,11 @@ class DownloadUtils():
 
         secure = False
         for user in result:
-            if (user.get("Name") == unicode(userName, "utf-8")):
+            if user.get("Name") == unicode(userName, "utf-8"):
                 userid = user.get("Id")
-                userImage =  self.get_user_artwork(user, 'Primary')
+                userImage = self.get_user_artwork(user, 'Primary')
                 log.debug("Username Found: {0}", user.get("Name"))
-                if (user.get("HasPassword") == True):
+                if user.get("HasPassword", False):
                     secure = True
                     log.debug("Username Is Secure (HasPassword=True)")
                 break

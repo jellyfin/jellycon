@@ -118,18 +118,6 @@ msgctxt "#30053"
 msgid "Waiting for server to delete"
 msgstr ""
 
-msgctxt "#30060"
-msgid "%s (Secured)"
-msgstr ""
-
-msgctxt "#30061"
-msgid "%s (User-defined)"
-msgstr ""
-
-msgctxt "#30062"
-msgid "Hidden user (User-input)"
-msgstr ""
-
 msgctxt "#30063"
 msgid "N/A"
 msgstr ""
@@ -772,4 +760,32 @@ msgstr ""
 
 msgctxt "#30362"
 msgid " - Recordings"
+msgstr ""
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr ""
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr ""
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr ""
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr ""
+
+msgctxt "#30367"
+msgid "Allow password saving"
+msgstr ""
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr ""
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
 msgstr ""

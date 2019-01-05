@@ -13,7 +13,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from utils import getArt
+from utils import getArt, datetime_from_string
 from simple_logging import SimpleLogging
 from downloadutils import DownloadUtils
 from kodi_utils import HomeWindow
@@ -97,6 +97,7 @@ class ItemDetails():
     mode = ""
 
     baseline_itemname = None
+
 
 def extract_item_info(item, gui_options):
 
@@ -569,12 +570,3 @@ def add_gui_item(url, item_details, display_options, folder=True):
 
     return (u, list_item, folder)
 
-
-def datetime_from_string(time_string):
-    time_string = time_string.replace("0+00:00", " UTC")
-    start_time = time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
-    dt = datetime(*(start_time[0:6]))
-    timestamp = calendar.timegm(dt.timetuple())
-    local_dt = datetime.fromtimestamp(timestamp)
-    local_dt.replace(microsecond=dt.microsecond)
-    return local_dt

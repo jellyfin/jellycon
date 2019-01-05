@@ -10,6 +10,7 @@
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
 		<setting label="30012" type="action" action="RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)" option="close"/>
+		<setting id="allow_password_saving" type="bool" label="30367" default="true" visible="true" enable="true" />
         <setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
 	</category>
 	<category label="30207">
