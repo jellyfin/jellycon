@@ -11,12 +11,16 @@ import json
 import binascii
 import time
 from datetime import datetime
+import _strptime
 import calendar
 import re
 
 from downloadutils import DownloadUtils
 from simple_logging import SimpleLogging
 from clientinfo import ClientInformation
+
+# hack to get datetime strptime loaded
+throwaway = time.strptime('20110101','%Y%m%d')
 
 # define our global download utils
 downloadUtils = DownloadUtils()

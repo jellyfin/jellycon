@@ -142,6 +142,12 @@ def playFile(play_info, monitor):
 
     log.debug("playFile id({0}) resume({1}) force_transcode({2})", id, auto_resume, force_transcode)
 
+    # get playback info
+    playback_info = download_utils.get_item_playback_info(id)
+    if playback_info is None:
+        log.debug("playback_info was None, could not get MediaSources so can not play!")
+        return
+
     settings = xbmcaddon.Addon()
     addon_path = settings.getAddonInfo('path')
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
@@ -181,12 +187,6 @@ def playFile(play_info, monitor):
         url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (channel_id,)
         result = data_manager.GetContent(url)
         id = result["Id"]
-
-    # get playback info
-    playback_info = download_utils.get_item_playback_info(id)
-    if playback_info is None:
-        log.debug("playback_info was None, could not get MediaSources so can not play!")
-        return
 
     #play_session_id = id_generator()
     play_session_id = playback_info.get("PlaySessionId")
@@ -780,6 +780,7 @@ def prompt_for_stop_actions(item_id, data):
     # TODO: remove this when emby server supports client duration updates
     # Start of STRM hack
     #
+    runtime_ticks = result.get("RunTimeTicks", 0)
     is_strm = False
     for media_source in result.get("MediaSources", []):
         if media_source.get("Id") == media_source_id:
@@ -787,7 +788,7 @@ def prompt_for_stop_actions(item_id, data):
                 log.debug("Detected STRM Container")
                 is_strm = True
 
-    if is_strm and duration > 0:
+    if is_strm and duration > 0 and runtime_ticks == 0:
         percent_done = float(current_position) / float(duration)
         if percent_done > 0.9:
             log.debug("Marking STRM Item played at : {0}", percent_done)
