@@ -168,22 +168,6 @@ def checkForNewContent():
         home_window.setProperty("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
 
-'''
-def getWidgetUrlContent(handle, params):
-    log.debug("getWidgetUrlContent Called: {0}", params)
-
-    request = params["url"]
-    request = urllib.unquote(request)
-    request = "{server}/emby/" + request + "&ImageTypeLimit=1&format=json"
-    log.debug("getWidgetUrlContent URL: {0}", request)
-
-    select_action = params.get("action", None)
-
-    list_items = populateWidgetItems(request, None, override_select_action=select_action)
-
-    xbmcplugin.addDirectoryItems(handle, list_items)
-    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-'''
 
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)

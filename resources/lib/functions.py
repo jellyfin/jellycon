@@ -30,7 +30,7 @@ from .menu_functions import displaySections, showMovieAlphaList, showGenreList, 
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
-from .widgets import getWidgetContent, get_widget_content_cast#, getWidgetUrlContent
+from .widgets import getWidgetContent, get_widget_content_cast
 import trakttokodi
 from .item_functions import add_gui_item, extract_item_info, ItemDetails
 from .cache_images import CacheArtwork
@@ -126,34 +126,23 @@ def mainEntryPoint():
         getWidgetContent(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_CAST":
         get_widget_content_cast(int(sys.argv[1]), params)
-    #elif mode == "WIDGET_CONTENT_URL":
-    #    getWidgetUrlContent(int(sys.argv[1]), params)
-    elif mode == "PARENT_CONTENT":
-        checkServer(notify=False)
-        showParentContent(params)
     elif mode == "SHOW_CONTENT":
         # plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
-        checkServer(notify=False)
+        checkServer()
         showContent(sys.argv[0], int(sys.argv[1]), params)
     elif mode == "SEARCH":
         # plugin://plugin.video.embycon?mode=SEARCH
-        checkServer(notify=False)
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
         show_search()
     elif mode == "NEW_SEARCH":
-        checkServer(notify=False)
         search_results(params)
     elif mode == "NEW_SEARCH_PERSON":
-        checkServer(notify=False)
         search_results_person(params)
     elif mode == "SHOW_SERVER_SESSIONS":
-        checkServer(notify=False)
         showServerSessions()
     elif mode == "TRAKTTOKODI":
-        checkServer(notify=False)
         trakttokodi.entry_point(params)
     else:
-        checkServer(notify=False)
         log.debug("EmbyCon -> Mode: {0}", mode)
         log.debug("EmbyCon -> URL: {0}", param_url)
 
@@ -162,6 +151,7 @@ def mainEntryPoint():
         elif mode == "PLAY":
             PLAY(params)
         else:
+            checkServer()
             displaySections()
 
     if (pr):
@@ -539,23 +529,6 @@ def showContent(pluginName, handle, params):
                   "&IncludeItemTypes=" + item_type)
 
     log.debug("showContent Content Url: {0}", contentUrl)
-    getContent(contentUrl, params)
-
-
-def showParentContent(params):
-    log.debug("showParentContent Called: {0}", params)
-
-    parentId = params.get("ParentId")
-
-    contentUrl = (
-        "{server}/emby/Users/{userid}/items?ParentId=" + parentId +
-        "&IsVirtualUnaired=false" +
-        "&IsMissing=False" +
-        "&ImageTypeLimit=1" +
-        "&Fields={field_filters}" +
-        "&format=json")
-
-    log.debug("showParentContent Content Url: {0}", contentUrl)
     getContent(contentUrl, params)
 
 
