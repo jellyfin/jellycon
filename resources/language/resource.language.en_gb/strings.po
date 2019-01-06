@@ -195,11 +195,7 @@ msgid "Select Server"
 msgstr ""
 
 msgctxt "#30167"
-msgid "Server Detection Succeeded"
-msgstr ""
-
-msgctxt "#30168"
-msgid "Found server"
+msgid "Selected Server Address"
 msgstr ""
 
 msgctxt "#30169"
@@ -455,7 +451,7 @@ msgid "Refresh Images"
 msgstr ""
 
 msgctxt "#30282"
-msgid "No Emby servers on your local network detected"
+msgid "No Emby servers detected on your local network."
 msgstr ""
 
 msgctxt "#30283"
@@ -788,4 +784,36 @@ msgstr ""
 
 msgctxt "#30369"
 msgid "Do you want to clear your saved password?"
+msgstr ""
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr ""
+
+msgctxt "#30371"
+msgid "The server url you entered is not valid, do you want to try again?"
+msgstr ""
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr ""
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr ""
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr ""
+
+msgctxt "#30375"
+msgid "Receiving data packet: %s"
+msgstr ""
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr ""
+
+msgctxt "#30377"
+msgid "Sending request"
 msgstr ""

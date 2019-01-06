@@ -35,7 +35,7 @@ def getServerDetails():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(4.0)
 
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 4)  # timeout
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 3)  # timeout
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
@@ -43,18 +43,28 @@ def getServerDetails():
     log.debug("MutliGroup: {0}", MULTI_GROUP)
     log.debug("Sending UDP Data: {0}", MESSAGE)
 
+    progress = xbmcgui.DialogProgress()
+    progress.create(__addon_name__ + " : " + string_load(30373))
+    progress.update(0, string_load(30374))
+    xbmc.sleep(1000)
+    server_count = 0
+
     # while True:
     try:
         sock.sendto(MESSAGE, MULTI_GROUP)
         while True:
             try:
+                server_count += 1
+                progress.update(server_count * 10, string_load(30375) % server_count)
+                xbmc.sleep(1000)
                 data, addr = sock.recvfrom(1024)
                 servers.append(json.loads(data))
             except:
                 break
     except Exception as e:
         log.error("UPD Discovery Error: {0}", e)
-        # break
+
+    progress.close()
 
     log.debug("Found Servers: {0}", servers)
     return servers
@@ -64,37 +74,91 @@ def checkServer(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
     settings = xbmcaddon.Addon()
-    serverUrl = ""
+    server_url = ""
     something_changed = False
 
     if force is False:
         # if not forcing use server details from settings
         svr = downloadUtils.getServer()
         if svr is not None:
-            serverUrl = svr
+            server_url = svr
 
     # if the server is not set then try to detect it
-    if serverUrl == "":
-        serverInfo = getServerDetails()
+    if server_url == "":
 
-        serverNames = []
-        for server in serverInfo:
-            serverNames.append(server.get("Name", string_load(30063)))
-        if serverNames:
-            return_index = xbmcgui.Dialog().select(string_load(30166), serverNames)
-        else:
-            xbmcgui.Dialog().ok(__addon_name__, string_load(30282))
-            return_index = -1
+        # scan for local server
+        server_info = getServerDetails()
 
-        if (return_index == -1):
-            xbmc.executebuiltin("ActivateWindow(Home)")
-            return
+        addon = xbmcaddon.Addon()
+        server_icon = addon.getAddonInfo('icon')
 
-        serverUrl = serverInfo[return_index]["Address"]
-        log.debug("Selected server: {0}", serverUrl)
+        server_list = []
+        for server in server_info:
+            server_item = xbmcgui.ListItem(server.get("Name", string_load(30063)))
+            sub_line = server.get("Address")
+            server_item.setLabel2(sub_line)
+            server_item.setProperty("address", server.get("Address"))
+            art = {"Thumb": server_icon}
+            server_item.setArt(art)
+            server_list.append(server_item)
+
+        if len(server_list) > 0:
+            return_index = xbmcgui.Dialog().select(__addon_name__ + " : " + string_load(30166),
+                                                   server_list,
+                                                   useDetails=True)
+            if return_index != -1:
+                server_url = server_info[return_index]["Address"]
+
+        if not server_url:
+            return_index = xbmcgui.Dialog().yesno(__addon_name__, string_load(30282), string_load(30370))
+            if not return_index:
+                xbmc.executebuiltin("ActivateWindow(Home)")
+                return
+
+            while True:
+                kb = xbmc.Keyboard()
+                kb.setHeading(string_load(30372))
+                if server_url:
+                    kb.setDefault(server_url)
+                else:
+                    kb.setDefault("http://<server address>:8096")
+                kb.doModal()
+                if kb.isConfirmed():
+                    server_url = kb.getText()
+                else:
+                    xbmc.executebuiltin("ActivateWindow(Home)")
+                    return
+
+                url_bits = urlparse(server_url)
+                server_address = url_bits.hostname
+                server_port = str(url_bits.port)
+                server_protocol = url_bits.scheme
+
+                temp_url = "%s://%s:%s/emby/Users/Public?format=json" % (server_protocol, server_address, server_port)
+
+                progress = xbmcgui.DialogProgress()
+                progress.create(__addon_name__ + " : " + string_load(30376))
+                progress.update(0, string_load(30377))
+                json_data = downloadUtils.downloadUrl(temp_url, authenticate=False)
+                progress.close()
+
+                result = json.loads(json_data)
+                if result is not None:
+                    xbmcgui.Dialog().ok(__addon_name__ + " : " + string_load(30167),
+                                        "%s://%s:%s/" % (server_protocol, server_address, server_port))
+                    break
+                else:
+                    return_index = xbmcgui.Dialog().yesno(__addon_name__ + " : " + string_load(30135),
+                                                          server_url,
+                                                          string_load(30371))
+                    if not return_index:
+                        xbmc.executebuiltin("ActivateWindow(Home)")
+                        return
+
+        log.debug("Selected server: {0}", server_url)
 
         # parse the url
-        url_bits = urlparse(serverUrl)
+        url_bits = urlparse(server_url)
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
         server_protocol = url_bits.scheme
@@ -110,23 +174,20 @@ def checkServer(force=False, change_user=False, notify=False):
             settings.setSetting("use_https", "false")
 
         something_changed = True
-        if notify:
-            xbmcgui.Dialog().ok(string_load(30167), string_load(30168),
-                                string_load(30169) + server_address, string_load(30001) + server_port)
 
-    # we need to change the user
+    # do we need to change the user
     current_username = settings.getSetting("username")
     current_username = unicode(current_username, "utf-8")
 
     # if asked or we have no current user then show user selection screen
-    if change_user or len(current_username) == 0:
+    if something_changed or change_user or len(current_username) == 0:
 
         # stop playback when switching users
         xbmc.Player().stop()
 
         # get a list of users
         log.debug("Getting user list")
-        json_data = downloadUtils.downloadUrl(serverUrl + "/emby/Users/Public?format=json", authenticate=False)
+        json_data = downloadUtils.downloadUrl(server_url + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData: {0}", json_data)
         try:
@@ -137,7 +198,7 @@ def checkServer(force=False, change_user=False, notify=False):
         if result is None:
             xbmcgui.Dialog().ok(string_load(30135),
                                 string_load(30201),
-                                string_load(30169) + serverUrl)
+                                string_load(30169) + server_url)
 
         else:
             selected_id = -1
