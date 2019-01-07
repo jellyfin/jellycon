@@ -901,7 +901,11 @@ def stop_all_playback(played_information):
 
 
 def get_playing_data(play_data_map):
-    playing_file = xbmc.Player().getPlayingFile()
+    try:
+        playing_file = xbmc.Player().getPlayingFile()
+    except Exception as e:
+        log.error("get_playing_data : getPlayingFile() : {0}", e)
+        return None
     log.debug("get_playing_data : getPlayingFile() : {0}", playing_file)
     if playing_file not in play_data_map:
         infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
