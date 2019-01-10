@@ -1059,14 +1059,15 @@ class PlaybackService(xbmc.Monitor):
     def screensaver_activated(self):
         log.debug("Screen Saver Activated")
 
-        # stop playback when switching users
-        player = xbmc.Player()
-        if player.isPlaying():
-            player.stop()
+        settings = xbmcaddon.Addon()
+        stop_playback = settings.getSetting("stopPlaybackOnScreensaver") == 'true'
+
+        if stop_playback:
+            player = xbmc.Player()
+            if player.isPlaying():
+                player.stop()
 
         #xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
-
-        settings = xbmcaddon.Addon()
 
         cache_images = settings.getSetting('cacheImagesOnScreenSaver') == 'true'
         if cache_images:

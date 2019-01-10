@@ -73,6 +73,11 @@ def getServerDetails():
 def checkServer(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
+    # stop any plaback
+    player = xbmc.Player()
+    if player.isPlaying():
+        player.stop()
+
     settings = xbmcaddon.Addon()
     server_url = ""
     something_changed = False
