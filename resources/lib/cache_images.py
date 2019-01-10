@@ -11,12 +11,12 @@ import sys
 import threading
 import time
 
-from downloadutils import DownloadUtils
-from simple_logging import SimpleLogging
-from json_rpc import json_rpc
-from translation import string_load
-from datamanager import DataManager
-from utils import getArt, double_urlencode
+from .downloadutils import DownloadUtils
+from .simple_logging import SimpleLogging
+from .json_rpc import json_rpc
+from .translation import string_load
+from .datamanager import DataManager
+from .utils import getArt, double_urlencode
 
 downloadUtils = DownloadUtils()
 log = SimpleLogging(__name__)

@@ -3,7 +3,7 @@ import sys
 import xbmc
 import xbmcgui
 
-from simple_logging import SimpleLogging
+from .simple_logging import SimpleLogging
 from resources.lib.functions import show_menu
 
 log = SimpleLogging(__name__)

@@ -7,7 +7,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from simple_logging import SimpleLogging
+from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
 

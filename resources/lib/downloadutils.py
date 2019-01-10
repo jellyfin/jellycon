@@ -15,10 +15,10 @@ from urlparse import urlparse
 import urllib
 from datetime import datetime
 
-from kodi_utils import HomeWindow
-from clientinfo import ClientInformation
-from simple_logging import SimpleLogging
-from translation import string_load
+from .kodi_utils import HomeWindow
+from .clientinfo import ClientInformation
+from .simple_logging import SimpleLogging
+from .translation import string_load
 
 log = SimpleLogging(__name__)
 
@@ -368,7 +368,7 @@ class DownloadUtils():
         jsonData = None
         try:
             jsonData = self.downloadUrl("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
-        except Exception, msg:
+        except Exception as msg:
             log.error("Get User unable to connect: {0}", msg)
             return ""
 
@@ -378,7 +378,7 @@ class DownloadUtils():
 
         try:
             result = json.loads(jsonData)
-        except Exception, e:
+        except Exception as e:
             log.debug("Could not load user data: {0}", e)
             return ""
 
@@ -651,7 +651,7 @@ class DownloadUtils():
                                                   string_load(30200) % str(data.reason),
                                                   icon="special://home/addons/plugin.video.embycon/icon.png")
 
-        except Exception, msg:
+        except Exception as msg:
             log.error("Unable to connect to {0} : {1}", server, msg)
             if suppress is False:
                 xbmcgui.Dialog().notification(string_load(30316),

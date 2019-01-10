@@ -5,8 +5,8 @@ import xbmcaddon
 import xbmc
 import xbmcvfs
 
-from kodi_utils import HomeWindow
-from simple_logging import SimpleLogging
+from .kodi_utils import HomeWindow
+from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
 

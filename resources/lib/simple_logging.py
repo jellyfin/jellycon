@@ -2,7 +2,7 @@
 
 import xbmc
 import xbmcaddon
-from json_rpc import json_rpc
+from .json_rpc import json_rpc
 
 
 class SimpleLogging():

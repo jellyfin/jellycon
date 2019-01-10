@@ -893,12 +893,12 @@ class WebSocketApp(object):
                         break
                     self._callback(self.on_message, data)                    
                     
-                except Exception, e:
+                except Exception as e:
                     #print str(e.args[0])
                     if "timed out" not in e.args[0]:
                         raise e
 
-        except Exception, e:
+        except Exception as e:
             self._callback(self.on_error, e)
         finally:
             if thread:
@@ -911,7 +911,7 @@ class WebSocketApp(object):
         if callback:
             try:
                 callback(self, *args)
-            except Exception, e:
+            except Exception as e:
                 logger.error(e)
                 if True:#logger.isEnabledFor(logging.DEBUG):
                     _, _, tb = sys.exc_info()

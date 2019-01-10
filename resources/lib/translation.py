@@ -1,6 +1,6 @@
 import encodings
 import xbmcaddon
-from simple_logging import SimpleLogging
+from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
 addon = xbmcaddon.Addon()

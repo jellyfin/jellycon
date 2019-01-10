@@ -10,9 +10,9 @@ import time
 #import copy
 #import urllib
 
-from downloadutils import DownloadUtils
-from simple_logging import SimpleLogging
-from item_functions import extract_item_info
+from .downloadutils import DownloadUtils
+from .simple_logging import SimpleLogging
+from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 
 import xbmc
@@ -88,7 +88,7 @@ class DataManager():
                     cache_item = cPickle.load(handle)
                     cache_thread.cached_item = cache_item
                     item_list = cache_item.item_list
-                except Exception, err:
+                except Exception as err:
                     log.debug("Pickle Data Load Failed : {0}", err)
                     item_list = None
 

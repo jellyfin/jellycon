@@ -6,7 +6,7 @@ import xbmcaddon
 import sys
 import json
 
-from simple_logging import SimpleLogging
+from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
 addon = xbmcaddon.Addon()

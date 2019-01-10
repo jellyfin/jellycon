@@ -8,12 +8,12 @@ import urllib
 import xbmcplugin
 import xbmcaddon
 
-from downloadutils import DownloadUtils
-from kodi_utils import addMenuDirectoryItem, HomeWindow
-from simple_logging import SimpleLogging
-from translation import string_load
-from datamanager import DataManager
-from utils import getArt
+from .downloadutils import DownloadUtils
+from .kodi_utils import addMenuDirectoryItem, HomeWindow
+from .simple_logging import SimpleLogging
+from .translation import string_load
+from .datamanager import DataManager
+from .utils import getArt
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()

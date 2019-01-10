@@ -15,9 +15,9 @@ import _strptime
 import calendar
 import re
 
-from downloadutils import DownloadUtils
-from simple_logging import SimpleLogging
-from clientinfo import ClientInformation
+from .downloadutils import DownloadUtils
+from .simple_logging import SimpleLogging
+from .clientinfo import ClientInformation
 
 # hack to get datetime strptime loaded
 throwaway = time.strptime('20110101','%Y%m%d')

@@ -9,11 +9,11 @@ import websocket
 import xbmc
 import xbmcgui
 
-from functions import PLAY
-from simple_logging import SimpleLogging
-import clientinfo
-import downloadutils
-from json_rpc import json_rpc
+from .functions import PLAY
+from .simple_logging import SimpleLogging
+from . import clientinfo
+from . import downloadutils
+from .json_rpc import json_rpc
 
 log = SimpleLogging(__name__)
 

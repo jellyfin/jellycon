@@ -9,12 +9,12 @@ import time
 import random
 import sys
 
-from downloadutils import DownloadUtils
-from utils import getArt
-from datamanager import DataManager
-from simple_logging import SimpleLogging
-from kodi_utils import HomeWindow
-from dir_functions import processDirectory
+from .downloadutils import DownloadUtils
+from .utils import getArt
+from .datamanager import DataManager
+from .simple_logging import SimpleLogging
+from .kodi_utils import HomeWindow
+from .dir_functions import processDirectory
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()

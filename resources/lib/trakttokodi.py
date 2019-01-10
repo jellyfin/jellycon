@@ -6,10 +6,10 @@ import encodings
 import xbmc
 import xbmcgui
 
-from simple_logging import SimpleLogging
-from datamanager import DataManager
+from .simple_logging import SimpleLogging
+from .datamanager import DataManager
 
-from translation import string_load
+from .translation import string_load
 
 log = SimpleLogging(__name__)
 dataManager = DataManager()

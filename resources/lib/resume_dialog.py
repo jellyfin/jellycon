@@ -2,8 +2,8 @@
 
 import xbmcgui
 
-from simple_logging import SimpleLogging
-from translation import string_load
+from .simple_logging import SimpleLogging
+from .translation import string_load
 
 log = SimpleLogging(__name__)
 

@@ -13,10 +13,10 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from utils import getArt, datetime_from_string
-from simple_logging import SimpleLogging
-from downloadutils import DownloadUtils
-from kodi_utils import HomeWindow
+from .utils import getArt, datetime_from_string
+from .simple_logging import SimpleLogging
+from .downloadutils import DownloadUtils
+from .kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])

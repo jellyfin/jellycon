@@ -11,11 +11,11 @@ import xbmcaddon
 import xbmcgui
 import xbmc
 
-from kodi_utils import HomeWindow
-from downloadutils import DownloadUtils
-from simple_logging import SimpleLogging
-from translation import string_load
-from utils import datetime_from_string
+from .kodi_utils import HomeWindow
+from .downloadutils import DownloadUtils
+from .simple_logging import SimpleLogging
+from .translation import string_load
+from .utils import datetime_from_string
 
 log = SimpleLogging(__name__)
 

@@ -4,10 +4,10 @@ import sys
 import xbmcgui
 import xbmcplugin
 
-from downloadutils import DownloadUtils
-from simple_logging import SimpleLogging
-from utils import getArt
-from datamanager import DataManager
+from .downloadutils import DownloadUtils
+from .simple_logging import SimpleLogging
+from .utils import getArt
+from .datamanager import DataManager
 
 log = SimpleLogging(__name__)
 

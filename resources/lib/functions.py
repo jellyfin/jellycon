@@ -31,10 +31,10 @@ from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
 from .widgets import getWidgetContent, get_widget_content_cast
-import trakttokodi
+from . import trakttokodi
 from .item_functions import add_gui_item, extract_item_info, ItemDetails
 from .cache_images import CacheArtwork
-from dir_functions import getContent, processDirectory
+from .dir_functions import getContent, processDirectory
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
