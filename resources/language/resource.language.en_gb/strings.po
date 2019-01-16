@@ -779,7 +779,7 @@ msgid "Manually enter user details"
 msgstr ""
 
 msgctxt "#30367"
-msgid "Allow password saving"
+msgid "Allow fast user switching password saving"
 msgstr ""
 
 msgctxt "#30368"
@@ -820,4 +820,8 @@ msgstr ""
 
 msgctxt "#30377"
 msgid "Sending request"
+msgstr ""
+
+msgctxt "#30378"
+msgid "Persist user details"
 msgstr ""

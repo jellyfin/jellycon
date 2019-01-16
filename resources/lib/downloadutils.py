@@ -22,6 +22,36 @@ from .translation import string_load
 
 log = SimpleLogging(__name__)
 
+
+def save_user_details(settings, user_name, user_password):
+    save_user_to_settings = settings.getSetting("save_user_to_settings") == "true"
+    if save_user_to_settings:
+        settings.setSetting("username", user_name)
+        settings.setSetting("password", user_password)
+    else:
+        settings.setSetting("username", "")
+        settings.setSetting("password", "")
+        home_window = HomeWindow()
+        home_window.setProperty("username", user_name)
+        home_window.setProperty("password", user_password)
+
+
+def load_user_details(settings):
+    save_user_to_settings = settings.getSetting("save_user_to_settings") == "true"
+    if save_user_to_settings:
+        user_name = settings.getSetting("username")
+        user_password = settings.getSetting("password")
+    else:
+        home_window = HomeWindow()
+        user_name = home_window.getProperty("username")
+        user_password = home_window.getProperty("password")
+
+    user_details = {}
+    user_details["username"] = user_name
+    user_details["password"] = user_password
+    return user_details
+
+
 def getDetailsString():
 
     addonSettings = xbmcaddon.Addon()
@@ -359,25 +389,25 @@ class DownloadUtils():
             return userid
 
         settings = xbmcaddon.Addon()
-        userName = settings.getSetting('username')
+        user_details = load_user_details(settings)
+        user_name = user_details.get("username", "")
 
-        if not userName:
+        if not user_name:
             return ""
-        log.debug("Looking for user name: {0}", userName)
+        log.debug("Looking for user name: {0}", user_name)
 
-        jsonData = None
         try:
-            jsonData = self.downloadUrl("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
+            json_data = self.downloadUrl("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception as msg:
             log.error("Get User unable to connect: {0}", msg)
             return ""
 
-        log.debug("GETUSER_JSONDATA_01: {0}", jsonData)
+        log.debug("GETUSER_JSONDATA_01: {0}", json_data)
 
         result = []
 
         try:
-            result = json.loads(jsonData)
+            result = json.loads(json_data)
         except Exception as e:
             log.debug("Could not load user data: {0}", e)
             return ""
@@ -389,7 +419,7 @@ class DownloadUtils():
 
         secure = False
         for user in result:
-            if user.get("Name") == unicode(userName, "utf-8"):
+            if user.get("Name") == unicode(user_name, "utf-8"):
                 userid = user.get("Id")
                 userImage = self.get_user_artwork(user, 'Primary')
                 log.debug("Username Found: {0}", user.get("Name"))
@@ -440,9 +470,10 @@ class DownloadUtils():
 
         url = "{server}/emby/Users/AuthenticateByName?format=json"
 
-        pwd_sha = hashlib.sha1(settings.getSetting('password')).hexdigest()
-        user_name = urllib.quote(settings.getSetting('username'))
-        pwd_text = urllib.quote(settings.getSetting('password'))
+        user_details = load_user_details(settings)
+        pwd_sha = hashlib.sha1(user_details.get("password", "")).hexdigest()
+        user_name = urllib.quote(user_details.get("username", ""))
+        pwd_text = urllib.quote(user_details.get("password", ""))
 
         messageData = "username=" + user_name + "&password=" + pwd_sha
 
@@ -522,7 +553,8 @@ class DownloadUtils():
 
         return_data = "null"
         settings = xbmcaddon.Addon()
-        username = settings.getSetting("username")
+        user_details = load_user_details(settings)
+        username = user_details.get("username", "")
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
@@ -642,8 +674,7 @@ class DownloadUtils():
                     hashed_username = m.hexdigest()
                     log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}", hashed_username)
                     settings.setSetting("saved_user_password_" + hashed_username, "")
-                    settings.setSetting("username", "")
-                    settings.setSetting("password", "")
+                    save_user_details(settings, "", "")
 
                 log.error("HTTP response error: {0} {1}", data.status, data.reason)
                 if suppress is False:

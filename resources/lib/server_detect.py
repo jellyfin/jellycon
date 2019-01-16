@@ -12,7 +12,7 @@ import xbmcgui
 import xbmc
 
 from .kodi_utils import HomeWindow
-from .downloadutils import DownloadUtils
+from .downloadutils import DownloadUtils, save_user_details, load_user_details
 from .simple_logging import SimpleLogging
 from .translation import string_load
 from .utils import datetime_from_string
@@ -181,7 +181,8 @@ def checkServer(force=False, change_user=False, notify=False):
         something_changed = True
 
     # do we need to change the user
-    current_username = settings.getSetting("username")
+    user_details = load_user_details(settings)
+    current_username = user_details.get("username", "")
     current_username = unicode(current_username, "utf-8")
 
     # if asked or we have no current user then show user selection screen
@@ -334,8 +335,8 @@ def checkServer(force=False, change_user=False, notify=False):
                     if saved_password:
                         log.debug("Saving username and password: {0}", selected_user_name)
                         log.debug("Using stored password for user: {0}", hashed_username)
-                        settings.setSetting("username", selected_user_name)
-                        settings.setSetting('password', saved_password)
+                        save_user_details(settings, selected_user_name, saved_password)
+
                     else:
                         kb = xbmc.Keyboard()
                         kb.setHeading(string_load(30006))
@@ -343,8 +344,7 @@ def checkServer(force=False, change_user=False, notify=False):
                         kb.doModal()
                         if kb.isConfirmed():
                             log.debug("Saving username and password: {0}", selected_user_name)
-                            settings.setSetting("username", selected_user_name)
-                            settings.setSetting('password', kb.getText())
+                            save_user_details(settings, selected_user_name, kb.getText())
 
                             # should we save the password
                             if allow_password_saving:
@@ -354,8 +354,7 @@ def checkServer(force=False, change_user=False, notify=False):
                                     settings.setSetting("saved_user_password_" + hashed_username, kb.getText())
                 else:
                     log.debug("Saving username with no password: {0}", selected_user_name)
-                    settings.setSetting("username", selected_user_name)
-                    settings.setSetting('password', '')
+                    save_user_details(settings, selected_user_name, "")
 
         if something_changed:
             home_window = HomeWindow()
