@@ -31,6 +31,12 @@ home_window.clearProperty("Params")
 
 log = SimpleLogging('service')
 
+# wait for 10 seconds for the Kodi splash screen to close
+for i in range(100):
+    if not xbmc.getCondVisibility("Window.IsVisible(startup)"):
+        break
+    xbmc.sleep(100)
+
 checkServer()
 
 download_utils = DownloadUtils()
