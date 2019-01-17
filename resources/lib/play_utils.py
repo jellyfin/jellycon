@@ -1045,8 +1045,12 @@ class PlaybackService(xbmc.Monitor):
 
         if stop_playback:
             player = xbmc.Player()
-            if player.isPlaying():
-                player.stop()
+            if player.isPlayingVideo():
+                log.debug("Screen Saver Activated : isPlayingVideo() = true")
+                play_data = get_playing_data(self.monitor.played_information)
+                if play_data:
+                    log.debug("Screen Saver Activated : this is an EmbyCon item so stop it")
+                    player.stop()
 
         #xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
 
