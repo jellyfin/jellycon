@@ -30,11 +30,14 @@ home_window.clearProperty("AccessToken")
 home_window.clearProperty("Params")
 
 log = SimpleLogging('service')
+monitor = xbmc.Monitor()
 
 # wait for 10 seconds for the Kodi splash screen to close
-for i in range(100):
-    if not xbmc.getCondVisibility("Window.IsVisible(startup)"):
+i = 0
+while not monitor.abortRequested():
+    if i == 100 or not xbmc.getCondVisibility("Window.IsVisible(startup)"):
         break
+    i += 1
     xbmc.sleep(100)
 
 checkServer()
