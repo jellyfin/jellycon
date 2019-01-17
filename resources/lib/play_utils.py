@@ -924,15 +924,6 @@ class Service(xbmc.Player):
     def __init__(self, *args):
         log.debug("Starting monitor service: {0}", args)
         self.played_information = {}
-        self.activity = {}
-
-    def save_activity(self):
-        addon = xbmcaddon.Addon()
-        path = xbmc.translatePath(addon.getAddonInfo('profile')) + "activity.json"
-        activity_data = json.dumps(self.activity)
-        f = xbmcvfs.File(path, 'w')
-        f.write(activity_data)
-        f.close()
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
@@ -976,16 +967,6 @@ class Service(xbmc.Player):
 
         home_screen = HomeWindow()
         home_screen.setProperty("currently_playing_id", str(emby_item_id))
-
-        # record the activity
-        utcnow = datetime.utcnow()
-        today = "%s-%s-%s" % (utcnow.year, utcnow.month, utcnow.day)
-        if today not in self.activity:
-            self.activity[today] = {}
-        if playback_type not in self.activity[today]:
-            self.activity[today][playback_type] = 0
-        self.activity[today][playback_type] += 1
-        self.save_activity()
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
