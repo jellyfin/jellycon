@@ -727,6 +727,9 @@ def externalSubs(media_source, list_item, item_id):
             sub_names.append(sub_name)
             externalsubs.append(url)
 
+    if len(externalsubs) == 0:
+        return
+
     settings = xbmcaddon.Addon()
     direct_stream_sub_select = settings.getSetting("direct_stream_sub_select")
 
