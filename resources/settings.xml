@@ -25,7 +25,7 @@
 
 		<setting label="30211" type="lsep"/>
 		<setting type="sep" />
-		<setting id="playback_bitrate" type="slider" label="30208" default="6000" range="400,100,10000" option="int" visible="true"/>
+		<setting id="playback_bitrate" type="slider" label="30208" default="6400" range="400,100,20000" option="int" visible="true"/>
 		<setting id="playback_max_width" type="select" label="30212" values="640|720|1024|1280|1440|1600|1920|2600|4096" default="1920" visible="true"/>
 		<setting id="playback_video_force_8" type="bool" label="30213" default="false" visible="true" enable="true"/>
 
