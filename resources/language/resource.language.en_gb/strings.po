@@ -319,7 +319,7 @@ msgid "Start from beginning"
 msgstr ""
 
 msgctxt "#30238"
-msgid "Playback Overrides"
+msgid "Playback Options"
 msgstr ""
 
 msgctxt "#30246"
@@ -824,4 +824,20 @@ msgstr ""
 
 msgctxt "#30378"
 msgid "Persist user details"
+msgstr ""
+
+msgctxt "#30379"
+msgid "External Subtitle Prompt"
+msgstr ""
+
+msgctxt "#30380"
+msgid "Never"
+msgstr ""
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr ""
+
+msgctxt "#30382"
+msgid "Always"
 msgstr ""

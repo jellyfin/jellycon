@@ -689,11 +689,13 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
 # direct stream, set any available subtitle streams
 def externalSubs(media_source, list_item, item_id):
 
-    externalsubs = []
     media_streams = media_source.get('MediaStreams')
 
     if media_streams is None:
         return
+
+    externalsubs = []
+    sub_names = []
 
     for stream in media_streams:
 
@@ -704,13 +706,39 @@ def externalSubs(media_source, list_item, item_id):
 
             index = stream['Index']
             source_id = media_source['Id']
-            url = ("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.%s"
-                   % (download_utils.getServer(), item_id, source_id, index, stream['Codec']))
+            server = download_utils.getServer()
+            token = download_utils.authenticate()
 
+            if stream.get('DeliveryUrl', '').lower().startswith('/videos'):
+                url = "%s/emby%s" % (server, stream.get('DeliveryUrl'))
+            else:
+                url = ("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.%s?api_key=%s"
+                       % (server, item_id, source_id, index, stream['Codec'], token))
+
+            default = ""
+            if stream['IsDefault']:
+                default = "default"
+            forced = ""
+            if stream['IsForced']:
+                forced = "forced"
+
+            sub_name = stream.get('Language', "n/a") + " (" + stream.get('Codec', "n/a") + ") " + default + " " + forced
+
+            sub_names.append(sub_name)
             externalsubs.append(url)
 
-    log.debug("External Subtitles : {0}", externalsubs)
-    list_item.setSubtitles(externalsubs)
+    settings = xbmcaddon.Addon()
+    direct_stream_sub_select = settings.getSetting("direct_stream_sub_select")
+
+    if direct_stream_sub_select == "0" or (len(externalsubs) == 1 and not direct_stream_sub_select == "2"):
+        list_item.setSubtitles(externalsubs)
+    else:
+        resp = xbmcgui.Dialog().select(string_load(30292), sub_names)
+        if resp > -1:
+
+            selected_sub = externalsubs[resp]
+            log.debug("External Subtitle Selected: {0}", selected_sub)
+            list_item.setSubtitles([selected_sub])
 
 
 def sendProgress(monitor):

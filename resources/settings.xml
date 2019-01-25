@@ -32,6 +32,7 @@
 		<setting label="30238" type="lsep"/>
 		<setting type="sep" />
 		<setting id="h265_action" type="select" label="30236" lvalues="30129|30210|30211" default="0" />
+		<setting id="direct_stream_sub_select" type="select" label="30379" lvalues="30380|30381|30382" default="0" visible="true"/>
 	</category>
 	<category label="30214">
 
