@@ -142,12 +142,6 @@ def playFile(play_info, monitor):
 
     log.debug("playFile id({0}) resume({1}) force_transcode({2})", id, auto_resume, force_transcode)
 
-    # get playback info
-    playback_info = download_utils.get_item_playback_info(id)
-    if playback_info is None:
-        log.debug("playback_info was None, could not get MediaSources so can not play!")
-        return
-
     settings = xbmcaddon.Addon()
     addon_path = settings.getAddonInfo('path')
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
@@ -187,6 +181,12 @@ def playFile(play_info, monitor):
         url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (channel_id,)
         result = data_manager.GetContent(url)
         id = result["Id"]
+
+    # get playback info from the server using the device profile
+    playback_info = download_utils.get_item_playback_info(id)
+    if playback_info is None:
+        log.debug("playback_info was None, could not get MediaSources so can not play!")
+        return
 
     #play_session_id = id_generator()
     play_session_id = playback_info.get("PlaySessionId")
