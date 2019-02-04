@@ -569,6 +569,8 @@ class DownloadUtils():
 
         if url.find("{userid}") != -1:
             userid = self.getUserId()
+            if not userid:
+                return return_data
             url = url.replace("{userid}", userid)
 
         if url.find("{ItemLimit}") != -1:
