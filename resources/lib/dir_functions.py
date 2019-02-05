@@ -106,17 +106,20 @@ def getContent(url, params):
 
     use_cache = params.get("use_cache", "true") == "true"
 
-    dir_items, detected_type = processDirectory(url, progress, params, use_cache)
+    dir_items, detected_type, total_records = processDirectory(url, progress, params, use_cache)
     if dir_items is None:
         return
 
-    total_records = len(dir_items)
+    log.debug("total_records: {0}", total_records)
+
     # add paging items
     if page_limit > 0 and media_type.startswith("movie"):
         if url_prev:
+
             list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
+            log.debug("ADDING PREV ListItem: {0} - {1}", u, list_item)
             dir_items.insert(0, (u, list_item, True))
 
         if start_index + page_limit < total_records:
@@ -126,6 +129,7 @@ def getContent(url, params):
             list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
                                          str(upper_count) + " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
+            log.debug("ADDING NEXT ListItem: {0} - {1}", u, list_item)
             dir_items.append((u, list_item, True))
 
     # set the Kodi content type
@@ -209,7 +213,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
     gui_options["name_format_type"] = name_format_type
 
     use_cache = settings.getSetting("use_cache") == "true" and use_cache_data
-    cache_file, item_list = dataManager.get_items(url, gui_options, use_cache)
+    cache_file, item_list, total_records = dataManager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -370,4 +374,4 @@ def processDirectory(url, progress, params, use_cache_data=False):
 
     HomeWindow().clearProperty(cache_file)
 
-    return dir_items, detected_type
+    return dir_items, detected_type, total_records

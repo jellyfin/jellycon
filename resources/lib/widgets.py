@@ -466,7 +466,7 @@ def getWidgetContent(handle, params):
                      "&format=json" +
                      "&ImageTypeLimit=1")
 
-    list_items, detected_type = processDirectory(items_url, None, params, False)
+    list_items, detected_type, total_records = processDirectory(items_url, None, params, False)
 
     #list_items = populateWidgetItems(items_url, widget_type)
 

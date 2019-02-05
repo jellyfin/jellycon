@@ -67,6 +67,7 @@ class DataManager():
         #log.debug("DataManager Changes Since Date : {0}", results)
 
         item_list = None
+        total_records = 0
         baseline_name = None
         cache_thread = CacheManagerThread()
         cache_thread.gui_options = gui_options
@@ -79,7 +80,7 @@ class DataManager():
             home_window.clearProperty("skip_cache_for_" + url)
             os.remove(cache_file)
 
-        # try to load the list item data form the cache
+        # try to load the list item data from the cache
         if os.path.isfile(cache_file) and use_cache:
             log.debug("Loading url data from cached pickle data")
 
@@ -88,6 +89,7 @@ class DataManager():
                     cache_item = cPickle.load(handle)
                     cache_thread.cached_item = cache_item
                     item_list = cache_item.item_list
+                    total_records = cache_item.total_records
                 except Exception as err:
                     log.debug("Pickle Data Load Failed : {0}", err)
                     item_list = None
@@ -100,6 +102,9 @@ class DataManager():
 
             if results is None:
                 results = []
+
+            if isinstance(results, dict):
+                total_records = results.get("TotalRecordCount", 0)
 
             if isinstance(results, dict) and results.get("Items") is not None:
                 baseline_name = results.get("BaselineItemName")
@@ -120,6 +125,7 @@ class DataManager():
             cache_item.items_url = url
             cache_item.last_action = "fresh_data"
             cache_item.date_saved = time.time()
+            cache_item.total_records = total_records
 
             cache_thread.cached_item = cache_item
             # copy.deepcopy(item_list)
@@ -127,7 +133,7 @@ class DataManager():
         if use_cache:
             cache_thread.start()
 
-        return cache_file, item_list
+        return cache_file, item_list, total_records
 
 
 class CacheManagerThread(threading.Thread):
@@ -209,6 +215,10 @@ class CacheManagerThread(threading.Thread):
             elif isinstance(results, list) and len(results) > 0 and results[0].get("Items") is not None:
                 results = results[0].get("Items")
 
+            total_records = 0
+            if isinstance(results, dict):
+                total_records = results.get("TotalRecordCount", 0)
+
             loaded_items = []
             for item in results:
                 item_data = extract_item_info(item, self.gui_options)
@@ -225,6 +235,7 @@ class CacheManagerThread(threading.Thread):
                 self.cached_item.item_list_hash = loaded_hash
                 self.cached_item.last_action = "fresh_data"
                 self.cached_item.date_saved = time.time()
+                self.cached_item.total_records = total_records
 
                 # we need to refresh but will wait until the main function has finished
                 loops = self.wait_for_save(home_window, self.cached_item.file_path)
