@@ -100,29 +100,37 @@ while not xbmc.abortRequested:
                 sendProgress(monitor)
 
         else:
-            user_changed = False
-            if prev_user_id != home_window.getProperty("userid"):
-                log.debug("user_change_detected")
-                prev_user_id = home_window.getProperty("userid")
-                user_changed = True
+            screen_saver_active = xbmc.getCondVisibility("System.ScreenSaverActive")
 
-            if random_movie_list_interval != 0 and user_changed or (time.time() - last_random_movie_update) > random_movie_list_interval:
-                last_random_movie_update = time.time()
-                set_random_movies()
+            if not screen_saver_active:
+                user_changed = False
+                if prev_user_id != home_window.getProperty("userid"):
+                    log.debug("user_change_detected")
+                    prev_user_id = home_window.getProperty("userid")
+                    user_changed = True
 
-            if newcontent_interval != 0 and user_changed or (time.time() - last_content_check) > newcontent_interval:
-                last_content_check = time.time()
-                checkForNewContent()
+                if random_movie_list_interval != 0 and user_changed or (time.time() - last_random_movie_update) > random_movie_list_interval:
+                    last_random_movie_update = time.time()
+                    set_random_movies()
 
-            if background_interval != 0 and user_changed or (time.time() - last_background_update) > background_interval:
-                last_background_update = time.time()
-                set_library_window_values(user_changed)
-                set_background_image(user_changed)
+                if newcontent_interval != 0 and user_changed or (time.time() - last_content_check) > newcontent_interval:
+                    last_content_check = time.time()
+                    checkForNewContent()
 
-            if remote_control and user_changed:
-                websocket_client.stop_client()
-                websocket_client = WebSocketClient()
-                websocket_client.start()
+                if background_interval != 0 and user_changed or (time.time() - last_background_update) > background_interval:
+                    last_background_update = time.time()
+                    set_library_window_values(user_changed)
+                    set_background_image(user_changed)
+
+                if remote_control and user_changed:
+                    websocket_client.stop_client()
+                    websocket_client = WebSocketClient()
+                    websocket_client.start()
+
+            elif screen_saver_active:
+                if background_interval != 0 and (time.time() - last_background_update) > background_interval:
+                    last_background_update = time.time()
+                    set_background_image(False)
 
     except Exception as error:
         log.error("Exception in Playback Monitor: {0}", error)

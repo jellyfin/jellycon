@@ -73,7 +73,7 @@ def set_background_image(force=False):
                   len(background_items), background_current_item)
         url = ('{server}/emby/Users/{userid}/Items' +
                '?Recursive=true' +
-               '&limit=60' +
+               # '&limit=60' +
                '&SortBy=Random' +
                '&IncludeItemTypes=Movie,Series' +
                '&ImageTypeLimit=1')
