@@ -66,9 +66,10 @@ def set_background_image(force=False):
 
     if force:
         background_current_item = 0
+        del background_items
         background_items = []
 
-    if len(background_items) == 0 or background_current_item >= len(background_items):
+    if len(background_items) == 0:
         log.debug("set_background_image: Need to load more backgrounds {0} - {1}",
                   len(background_items), background_current_item)
         url = ('{server}/emby/Users/{userid}/Items' +
@@ -96,12 +97,14 @@ def set_background_image(force=False):
 
         log.debug("set_background_image: Loaded {0} more backgrounds", len(background_items))
 
-    if len(background_items) > 0 and background_current_item < len(background_items):
+    if len(background_items) > 0:
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
         log.debug("set_background_image: {0} - {1} - {2}", background_current_item, label, bg_image)
 
         background_current_item += 1
+        if background_current_item >= len(background_items):
+            background_current_item = 0
 
         home_window = HomeWindow()
         home_window.setProperty("random-gb", bg_image)
