@@ -305,24 +305,23 @@ def displaySections():
                                      url,
                                      art=collection.get("art"))
 
-        addMenuDirectoryItem(string_load(30251), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
-        addMenuDirectoryItem(string_load(30252), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
-        addMenuDirectoryItem(string_load(30266), "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
+        addMenuDirectoryItem(string_load(30312) + string_load(30251), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
+        addMenuDirectoryItem(string_load(30312) + string_load(30252), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
+        addMenuDirectoryItem(string_load(30312) + string_load(30266), "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
 
-        addMenuDirectoryItem(string_load(30289), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
-        addMenuDirectoryItem(string_load(30255), "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA")
+        addMenuDirectoryItem(string_load(30312) + string_load(30289), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
+        addMenuDirectoryItem(string_load(30312) + string_load(30255), "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA")
 
-        addMenuDirectoryItem(string_load(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
+        addMenuDirectoryItem(string_load(30383) + string_load(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
+        addMenuDirectoryItem(string_load(30383) + string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
+        addMenuDirectoryItem(string_load(30383) + string_load(30253), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
 
-        addMenuDirectoryItem(string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
-        addMenuDirectoryItem(string_load(30253), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
-
-    addMenuDirectoryItem(string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
-    addMenuDirectoryItem(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem(string_load(30383) + string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
+    addMenuDirectoryItem(string_load(30383) + string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
 
     # only add these if we have other collection which means we have a valid server conn
     if collections:
-        addMenuDirectoryItem(string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
+        addMenuDirectoryItem(string_load(30383) + string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
         addMenuDirectoryItem(string_load(30247), "plugin://plugin.video.embycon/?mode=WIDGETS")
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -376,7 +375,7 @@ def getCollections():
 
         if collection_type == "music":
             item_data = {}
-            item_data['title'] = item_name + string_load(30320)
+            item_data['title'] = string_load(30311) + item_name + string_load(30320)
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbums'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -391,7 +390,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + string_load(30268) + " (" + show_x_filtered_items + ")"
+            item_data['title'] = string_load(30311) + item_name + string_load(30268) + " (" + show_x_filtered_items + ")"
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbums'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
@@ -406,7 +405,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + string_load(30349) + " (" + show_x_filtered_items + ")"
+            item_data['title'] = string_load(30311) + item_name + string_load(30349) + " (" + show_x_filtered_items + ")"
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbum'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -423,7 +422,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + string_load(30353) + " (" + show_x_filtered_items + ")"
+            item_data['title'] = string_load(30311) + item_name + string_load(30353) + " (" + show_x_filtered_items + ")"
             item_data['art'] = art
             item_data['media_type'] = 'MusicAlbum'
             item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -440,7 +439,7 @@ def getCollections():
             collections.append(item_data)
 
             item_data = {}
-            item_data['title'] = item_name + string_load(30321)
+            item_data['title'] = string_load(30311) + item_name + string_load(30321)
             item_data['art'] = art
             item_data['media_type'] = 'MusicArtists'
             item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
@@ -455,7 +454,7 @@ def getCollections():
 
         if collection_type in ["livetv"]:
             collections.append({
-                'title': item_name + string_load(30360),
+                'title': string_load(30311) + item_name + string_load(30360),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Channels' +
                          '?UserId={userid}' +
@@ -467,7 +466,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30361),
+                'title': string_load(30311) + item_name + string_load(30361),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Programs/Recommended' +
                          '?UserId={userid}' +
@@ -479,7 +478,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30362),
+                'title': string_load(30311) + item_name + string_load(30362),
                 'art': art,
                 'path': ('{server}/emby/LiveTv/Recordings' +
                          '?UserId={userid}' +
@@ -492,7 +491,7 @@ def getCollections():
 
         if collection_type in ["homevideos"]:
             collections.append({
-                'title': item_name,
+                'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -507,7 +506,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -525,7 +524,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -547,7 +546,7 @@ def getCollections():
 
         if collection_type in ["boxsets"]:
             collections.append({
-                'title': item_name,
+                'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -566,7 +565,7 @@ def getCollections():
 
         if collection_type in ["movies"]:
             collections.append({
-                'title': item_name,
+                'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -585,7 +584,7 @@ def getCollections():
 
         if collection_type == "tvshows":
             collections.append({
-                'title': item_name,
+                'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -601,7 +600,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30285),
+                'title': string_load(30311) + item_name + string_load(30285),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -619,7 +618,7 @@ def getCollections():
                 'media_type': 'tvshows'})
 
             collections.append({
-                'title': item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -639,7 +638,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
 
             collections.append({
-                'title': item_name + string_load(30288) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30288) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items/Latest' +
@@ -660,7 +659,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
 
             collections.append({
-                'title': item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -681,7 +680,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
 
             collections.append({
-                'title': item_name + string_load(30278) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30278) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Shows/NextUp/?Userid={userid}' +
@@ -700,7 +699,7 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
 
             collections.append({
-                'title': item_name + string_load(30325),
+                'title': string_load(30311) + item_name + string_load(30325),
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow&parent_id=' + item.get("Id"),
@@ -708,7 +707,7 @@ def getCollections():
 
         if type == "Channel":
             collections.append({
-                'title': item_name,
+                'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -722,7 +721,7 @@ def getCollections():
 
         if collection_type == "movies":
             collections.append({
-                'title': item_name + string_load(30285),
+                'title': string_load(30311) + item_name + string_load(30285),
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
@@ -742,7 +741,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30267) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -763,7 +762,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
+                'title': string_load(30311) + item_name + string_load(30268) + " (" + show_x_filtered_items + ")",
                 'art': art,
                 'use_cache': False,
                 'path': ('{server}/emby/Users/{userid}/Items' +
@@ -785,14 +784,14 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + string_load(30325),
+                'title': string_load(30311) + item_name + string_load(30325),
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=GENRES&item_type=movie&parent_id=' + item.get("Id"),
                 'media_type': collection_type})
 
             collections.append({
-                'title': item_name + ' - Pages',
+                'title': "Library - " + item_name + ' - Pages',
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=MOVIE_PAGES&parent_id=' + item.get("Id"),
@@ -801,7 +800,7 @@ def getCollections():
 
     # Add standard nodes
     item_data = {}
-    item_data['title'] = string_load(30256)
+    item_data['title'] = string_load(30312) + string_load(30256)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -816,7 +815,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30286)
+    item_data['title'] = string_load(30312) + string_load(30286)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -833,7 +832,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30258) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30258) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Movies'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -851,7 +850,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30257) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30257) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Movies'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -870,7 +869,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30259)
+    item_data['title'] = string_load(30312) + string_load(30259)
     item_data['media_type'] = 'Movies'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -886,7 +885,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30260)
+    item_data['title'] = string_load(30312) + string_load(30260)
     item_data['media_type'] = 'BoxSets'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -899,7 +898,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30261)
+    item_data['title'] = string_load(30312) + string_load(30261)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -912,7 +911,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30279)
+    item_data['title'] = string_load(30312) + string_load(30279)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -927,7 +926,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30262)
+    item_data['title'] = string_load(30312) + string_load(30262)
     item_data['media_type'] = 'tvshows'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Fields={field_filters}' +
@@ -941,7 +940,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30287) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30287) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Episodes'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
@@ -962,7 +961,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30264) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30264) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Episodes'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -979,7 +978,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30263) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30263) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Episodes'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
@@ -999,7 +998,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30265) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30265) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'Episodes'
     item_data['use_cache'] = False
     item_data['path'] = ('{server}/emby/Shows/NextUp/?Userid={userid}' +
@@ -1017,7 +1016,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30318)
+    item_data['title'] = string_load(30312) + string_load(30318)
     item_data['media_type'] = 'MusicAlbums'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?Recursive=true' +
@@ -1030,7 +1029,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30350) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30350) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'MusicAlbums'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
                          '?IncludeItemTypes=Audio' +
@@ -1043,7 +1042,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30351) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30351) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'MusicAlbum'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?SortBy=DatePlayed' +
@@ -1058,7 +1057,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30352) + " (" + show_x_filtered_items + ")"
+    item_data['title'] = string_load(30312) + string_load(30352) + " (" + show_x_filtered_items + ")"
     item_data['media_type'] = 'MusicAlbum'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?SortBy=PlayCount' +
@@ -1073,7 +1072,7 @@ def getCollections():
     collections.append(item_data)
 
     item_data = {}
-    item_data['title'] = string_load(30319)
+    item_data['title'] = string_load(30312) + string_load(30319)
     item_data['media_type'] = 'MusicArtists'
     item_data['path'] = ('{server}/emby/Artists/AlbumArtists' +
                          '?Recursive=true' +

@@ -355,7 +355,7 @@ msgid "TV Show (A-Z)"
 msgstr ""
 
 msgctxt "#30256"
-msgid "Movies - All"
+msgid "Movies"
 msgstr ""
 
 msgctxt "#30257"
@@ -375,7 +375,7 @@ msgid "BoxSets"
 msgstr ""
 
 msgctxt "#30261"
-msgid "TV Shows - All"
+msgid "TV Shows"
 msgstr ""
 
 msgctxt "#30262"
@@ -574,6 +574,14 @@ msgctxt "#30310"
 msgid "Enable Emby remote control"
 msgstr ""
 
+msgctxt "#30311"
+msgid "Library - "
+msgstr ""
+
+msgctxt "#30312"
+msgid "All - "
+msgstr ""
+
 msgctxt "#30313"
 msgid "Menu"
 msgstr ""
@@ -595,7 +603,7 @@ msgid "Play All"
 msgstr ""
 
 msgctxt "#30318"
-msgid "Music - All Albums"
+msgid "Music - Albums"
 msgstr ""
 
 msgctxt "#30320"
@@ -849,3 +857,8 @@ msgstr ""
 msgctxt "#30382"
 msgid "Always"
 msgstr ""
+
+msgctxt "#30383"
+msgid "System - "
+msgstr ""
+
