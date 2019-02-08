@@ -224,6 +224,57 @@ def showMovieAlphaList():
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
+def showTvShowAlphaList():
+    log.debug("== ENTER: showTvShowAlphaList() ==")
+
+    settings = xbmcaddon.Addon()
+    server = downloadUtils.getServer()
+    if server is None:
+        return
+
+    collections = []
+
+    item_data = {}
+    item_data['title'] = "#"
+    item_data['media_type'] = "tvshows"
+    item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                         '?Fields={field_filters}' +
+                         '&Recursive=true' +
+                         '&NameLessThan=A' +
+                         '&IncludeItemTypes=Series' +
+                         '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
+                         '&format=json')
+    collections.append(item_data)
+
+    group_movies = settings.getSetting('group_movies') == "true"
+    alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "Z"]
+
+    for alphaName in alphaList:
+        item_data = {}
+        item_data['title'] = alphaName
+        item_data['media_type'] = "tvshows"
+        item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
+                             '?Fields={field_filters}' +
+                             '&Recursive=true' +
+                             '&NameStartsWith=' + alphaName +
+                             '&IncludeItemTypes=Series' +
+                             '&ImageTypeLimit=1' +
+                             '&SortBy=Name' +
+                             '&SortOrder=Ascending' +
+                             '&format=json')
+        collections.append(item_data)
+
+    for collection in collections:
+        url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
+               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
+        log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url)
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
 def displaySections():
     log.debug("== ENTER: displaySections() ==")
     xbmcplugin.setContent(int(sys.argv[1]), 'files')
@@ -256,9 +307,11 @@ def displaySections():
 
         addMenuDirectoryItem(string_load(30251), "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie")
         addMenuDirectoryItem(string_load(30252), "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA")
-        addMenuDirectoryItem("Movie (Pages)", "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
+        addMenuDirectoryItem(string_load(30266), "plugin://plugin.video.embycon/?mode=MOVIE_PAGES")
 
         addMenuDirectoryItem(string_load(30289), "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow")
+        addMenuDirectoryItem(string_load(30255), "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA")
+
         addMenuDirectoryItem(string_load(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
 
         addMenuDirectoryItem(string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
@@ -978,7 +1031,6 @@ def getCollections():
 
     item_data = {}
     item_data['title'] = string_load(30350) + " (" + show_x_filtered_items + ")"
-    item_data['art'] = art
     item_data['media_type'] = 'MusicAlbums'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items/Latest' +
                          '?IncludeItemTypes=Audio' +
@@ -992,7 +1044,6 @@ def getCollections():
 
     item_data = {}
     item_data['title'] = string_load(30351) + " (" + show_x_filtered_items + ")"
-    item_data['art'] = art
     item_data['media_type'] = 'MusicAlbum'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?SortBy=DatePlayed' +
@@ -1008,7 +1059,6 @@ def getCollections():
 
     item_data = {}
     item_data['title'] = string_load(30352) + " (" + show_x_filtered_items + ")"
-    item_data['art'] = art
     item_data['media_type'] = 'MusicAlbum'
     item_data['path'] = ('{server}/emby/Users/{userid}/Items' +
                          '?SortBy=PlayCount' +

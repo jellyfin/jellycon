@@ -350,6 +350,10 @@ msgctxt "#30254"
 msgid "Show Settings"
 msgstr ""
 
+msgctxt "#30255"
+msgid "TV Show (A-Z)"
+msgstr ""
+
 msgctxt "#30256"
 msgid "Movies - All"
 msgstr ""
@@ -388,6 +392,10 @@ msgstr ""
 
 msgctxt "#30265"
 msgid "Episodes - Next Up"
+msgstr ""
+
+msgctxt "#30266"
+msgid "Movie (Pages)"
 msgstr ""
 
 msgctxt "#30267"

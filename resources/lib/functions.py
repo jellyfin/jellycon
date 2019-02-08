@@ -26,7 +26,7 @@ from .clientinfo import ClientInformation
 from .datamanager import DataManager
 from .server_detect import checkServer
 from .simple_logging import SimpleLogging
-from .menu_functions import displaySections, showMovieAlphaList, showGenreList, showWidgets, show_search, showMoviePages
+from .menu_functions import displaySections, showMovieAlphaList, showTvShowAlphaList, showGenreList, showWidgets, show_search, showMoviePages
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
@@ -106,6 +106,8 @@ def mainEntryPoint():
         playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
         showMovieAlphaList()
+    elif mode == "TVSHOW_ALPHA":
+        showTvShowAlphaList()
     elif mode == "GENRES":
         showGenreList(params)
     elif mode == "MOVIE_PAGES":
