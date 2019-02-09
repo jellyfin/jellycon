@@ -871,7 +871,12 @@ def playTrailer(id):
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
             youtube_plugin = "PlayMedia(plugin://plugin.video.youtube/play/?video_id=%s)" % youtube_id
             log.debug("youtube_plugin: {0}", youtube_plugin)
-            xbmc.executebuiltin(youtube_plugin)
+
+            play_info = {}
+            play_info["url"] = youtube_plugin
+            log.info("Sending embycon_play_trailer_action : {0}", play_info)
+            send_event_notification("embycon_play_youtube_trailer_action", play_info)
+            #xbmc.executebuiltin(youtube_plugin)
 
 
 
