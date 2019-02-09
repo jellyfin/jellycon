@@ -839,7 +839,7 @@ def playTrailer(id):
         info = {}
         info["type"] = "remote"
         url = trailer.get("Url", "none")
-        if url.lower().find("youtube"):
+        if url.lower().find("youtube") != -1:
             info["url"] = url
             name = trailer.get("Name")
             while not name or name in trailer_names:
