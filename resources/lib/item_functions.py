@@ -519,7 +519,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         if display_options["addUserRatings"]:
             info_labels["userrating"] = item_details.critic_rating
 
-        if item_type == 'movie':
+        if item_type in ('movie', 'series'):
             info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
 
         list_item.setInfo('video', info_labels)

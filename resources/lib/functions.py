@@ -337,7 +337,7 @@ def show_menu(params):
         li.setProperty('menu_id', 'transcode')
         action_items.append(li)
 
-    if result["Type"] == "Movie":
+    if result["Type"] in ("Movie", "Series"):
         li = xbmcgui.ListItem(string_load(30307))
         li.setProperty('menu_id', 'play_trailer')
         action_items.append(li)
