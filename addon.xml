@@ -23,7 +23,7 @@
     <platform>all</platform>
     <language>en</language>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>https://emby.media/community/index.php?/forum/99-kodi/</forum>
+    <forum>https://emby.media/community/index.php?/topic/57016-embycon-kodi-addon/</forum>
     <website>https://emby.media/emby-for-kodi.html</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
     <summary lang="en_GB">Browse and play your Emby server media library.</summary>
