@@ -87,7 +87,7 @@ class PlayUtils():
             playurl = playurl % (server, id, media_source_id, play_session_id, deviceId, bitrate, playback_max_width)
             if playback_video_force_8:
                 playurl = playurl + "&MaxVideoBitDepth=8"
-            playurl = playurl + "&api_key=" + user_token
+            playurl = playurl + "&api_key=" + user_token + "|verifypeer=false"
 
         # do direct path playback
         elif playback_type == "0":
@@ -118,7 +118,7 @@ class PlayUtils():
                        "&MediaSourceId=%s")
             playurl = playurl % (server, id, play_session_id, media_source_id)
             user_token = downloadUtils.authenticate()
-            playurl = playurl + "&api_key=" + user_token
+            playurl = playurl + "&api_key=" + user_token + "|verifypeer=false"
 
         log.debug("Playback URL: {0}", playurl)
         return playurl, playback_type

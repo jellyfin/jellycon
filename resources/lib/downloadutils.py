@@ -14,6 +14,7 @@ import json
 from urlparse import urlparse
 import urllib
 from datetime import datetime
+from base64 import b64encode
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -343,7 +344,7 @@ class DownloadUtils():
             log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s|verifypeer=false" % (server, id, art_type, index, imageTag)
 
         # log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
 
@@ -366,7 +367,7 @@ class DownloadUtils():
             artwork += '&MaxWidth=%s' % width
         if int(height) > 0:
             artwork += '&MaxHeight=%s' % height
-        return artwork
+        return artwork + "|verifypeer=false"
 
     def get_user_artwork(self, user, item_type):
 
@@ -376,7 +377,7 @@ class DownloadUtils():
         tag = user.get("PrimaryImageTag")
         server = self.getServer()
 
-        return "%s/emby/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
+        return "%s/emby/Users/%s/Images/%s?Format=original&tag=%s|verifypeer=false" % (server, user_id, item_type, tag)
 
     def getUserId(self):
 
@@ -532,13 +533,13 @@ class DownloadUtils():
 
         if (authenticate == False):
             authString = "MediaBrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            headers["Authorization"] = authString
+            #headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = authString
             return headers
         else:
             userid = self.getUserId()
             authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            headers["Authorization"] = authString
+            #headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = authString
 
             authToken = self.authenticate()
@@ -555,6 +556,9 @@ class DownloadUtils():
         settings = xbmcaddon.Addon()
         user_details = load_user_details(settings)
         username = user_details.get("username", "")
+
+        if authenticate and username == "":
+            return return_data
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
@@ -591,6 +595,18 @@ class DownloadUtils():
         log.debug("After: {0}", url)
 
         try:
+
+            url_bits = urlparse(url.strip())
+
+            protocol = url_bits.scheme
+            host_name = url_bits.hostname
+            port = url_bits.port
+            user_name = url_bits.username
+            user_password = url_bits.password
+            url_path = url_bits.path
+            url_puery = url_bits.query
+
+            '''
             if url.startswith('http'):
                 serversplit = 2
                 urlsplit = 3
@@ -610,10 +626,14 @@ class DownloadUtils():
             host = tokens[0]
             port = tokens[1]
             if host == "<none>" or host == "" or port == "":
+                return return_data            
+            '''
+
+            if not host_name or host_name == "<none>":
                 return return_data
 
-            if authenticate and username == "":
-                return return_data
+            server = "%s:%s" % (host_name, port)
+            urlPath = url_path + "?" + url_puery
 
             use_https = settings.getSetting('use_https') == 'true'
             verify_cert = settings.getSetting('verify_cert') == 'true'
@@ -629,6 +649,12 @@ class DownloadUtils():
                 conn = httplib.HTTPConnection(server, timeout=40)
 
             head = self.getAuthHeader(authenticate)
+
+            if user_name and user_password:
+                # add basic auth headers
+                userAndPass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
+                head["Authorization"] = 'Basic %s' % userAndPass
+
             log.debug("HEADERS: {0}", head)
 
             if (postBody != None):
