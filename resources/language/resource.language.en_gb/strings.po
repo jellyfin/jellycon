@@ -622,10 +622,6 @@ msgctxt "#30325"
 msgid " - Genres"
 msgstr ""
 
-msgctxt "#30326"
-msgid "[EmbyCon Menu]"
-msgstr ""
-
 msgctxt "#30327"
 msgid "Go To Season"
 msgstr ""
