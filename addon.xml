@@ -11,14 +11,6 @@
   </extension>
   <extension point="xbmc.service" library="service.py" start="login">
   </extension>
-  <extension point="kodi.context.item">
-    <menu id="kodi.core.main">
-      <item library="contextmenu.py">
-        <label>30326</label>
-        <visible>!String.IsEmpty(ListItem.Property(id)) + String.StartsWith(ListItem.FolderPath,plugin://plugin.video.embycon)</visible><!-- + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,album) | String.IsEqual(ListItem.DBType,song)]</visible>-->
-      </item>
-    </menu>
-  </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language>en</language>
