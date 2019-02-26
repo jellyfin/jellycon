@@ -83,7 +83,7 @@ if context_menu:
 
 background_interval = int(settings.getSetting('background_interval'))
 newcontent_interval = int(settings.getSetting('newcontent_interval'))
-random_movie_list_interval = 300
+random_movie_list_interval = int(settings.getSetting('random_movie_list_interval'))
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -109,15 +109,15 @@ while not xbmc.abortRequested:
                     prev_user_id = home_window.getProperty("userid")
                     user_changed = True
 
-                if random_movie_list_interval != 0 and user_changed or (time.time() - last_random_movie_update) > random_movie_list_interval:
+                if random_movie_list_interval != 0 and (user_changed or (time.time() - last_random_movie_update) > random_movie_list_interval):
                     last_random_movie_update = time.time()
                     set_random_movies()
 
-                if newcontent_interval != 0 and user_changed or (time.time() - last_content_check) > newcontent_interval:
+                if newcontent_interval != 0 and (user_changed or (time.time() - last_content_check) > newcontent_interval):
                     last_content_check = time.time()
                     checkForNewContent()
 
-                if background_interval != 0 and user_changed or (time.time() - last_background_update) > background_interval:
+                if background_interval != 0 and (user_changed or (time.time() - last_background_update) > background_interval):
                     last_background_update = time.time()
                     set_library_window_values(user_changed)
                     set_background_image(user_changed)
@@ -128,7 +128,7 @@ while not xbmc.abortRequested:
                     websocket_client.start()
 
             elif screen_saver_active:
-                if background_interval != 0 and (time.time() - last_background_update) > background_interval:
+                if background_interval != 0 and ((time.time() - last_background_update) > background_interval):
                     last_background_update = time.time()
                     set_background_image(False)
 

@@ -858,3 +858,7 @@ msgctxt "#30383"
 msgid "System - "
 msgstr ""
 
+msgctxt "#30384"
+msgid "Random movies refresh interval (0 = disabled)"
+msgstr ""
+
