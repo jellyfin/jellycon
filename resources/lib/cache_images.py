@@ -99,43 +99,82 @@ class CacheArtwork(threading.Thread):
             xbmc.executebuiltin('ActivateWindow(servicesettings)')
             return
 
-        # ask to delete all textures
-        question_result = xbmcgui.Dialog().yesno(string_load(30296), string_load(30297))
-        if question_result:
-            pdialog = xbmcgui.DialogProgress()
-            pdialog.create(string_load(30298), "")
+        result_report = []
+
+        # ask questions
+        question_delete_unused = xbmcgui.Dialog().yesno(string_load(30296), string_load(30297))
+        question_cache_images = xbmcgui.Dialog().yesno(string_load(30299), string_load(30300))
+
+        delete_canceled = False
+        # now do work - delete unused
+        if question_delete_unused:
+            delete_pdialog = xbmcgui.DialogProgress()
+            delete_pdialog.create(string_load(30298), "")
             index = 0
 
-            json_result = json_rpc('Textures.GetTextures').execute()
+            params = {"properties": ["url"]}
+            json_result = json_rpc('Textures.GetTextures').execute(params)
             textures = json_result.get("result", {}).get("textures", [])
-            log.debug("texture ids: {0}", textures)
-            total = len(textures)
-            for texture in textures:
-                texture_id = texture["textureid"]
-                params = {"textureid": int(texture_id)}
-                json_rpc('Textures.RemoveTexture').execute(params)
-                percentage = int((float(index) / float(total)) * 100)
-                message = "%s of %s" % (index, total)
-                pdialog.update(percentage, "%s" % (message))
 
-                index += 1
-                if pdialog.iscanceled():
-                    break
+            emby_texture_urls = self.get_emby_artwork(delete_pdialog)
+
+            log.debug("kodi textures: {0}", textures)
+            log.debug("emby texture urls: {0}", emby_texture_urls)
+
+            if emby_texture_urls is not None:
+
+                unused_texture_ids = set()
+                for texture in textures:
+                    url = texture.get("url")
+                    url = urllib.unquote(url)
+                    url = url.replace("image://", "")
+                    url = url[0:-1]
+                    log.debug("checking texture url: {0}", url)
+                    if url.find("/emby/") > -1 and url not in emby_texture_urls:
+                        log.debug("adding unused texture url: {0}", url)
+                        unused_texture_ids.add(texture["textureid"])
+
+                total = len(unused_texture_ids)
+                log.debug("unused texture ids: {0}", unused_texture_ids)
+
+                for texture_id in unused_texture_ids:
+                    params = {"textureid": int(texture_id)}
+                    json_rpc('Textures.RemoveTexture').execute(params)
+                    percentage = int((float(index) / float(total)) * 100)
+                    message = "%s of %s" % (index, total)
+                    delete_pdialog.update(percentage, "%s" % (message))
+
+                    index += 1
+                    if delete_pdialog.iscanceled():
+                        delete_canceled = True
+                        break
+
+                result_report.append(string_load(30385) + str(len(textures)))
+                result_report.append(string_load(30386) + str(len(unused_texture_ids)))
+                result_report.append(string_load(30387) + str(index))
 
             del textures
-            del pdialog
+            del emby_texture_urls
+            del unused_texture_ids
+            delete_pdialog.close()
+            del delete_pdialog
 
-        question_result = xbmcgui.Dialog().yesno(string_load(30299), string_load(30300))
-        if not question_result:
-            return
+        if delete_canceled:
+            xbmc.sleep(2000)
 
-        pdialog = xbmcgui.DialogProgress()
-        pdialog.create(string_load(30301), "")
-        result_report = self.cache_artwork(pdialog)
-        pdialog.close()
-        del pdialog
-        if result_report:
-            xbmcgui.Dialog().ok(string_load(30125), *result_report)
+        # now do work - cache images
+        if question_cache_images:
+            cache_pdialog = xbmcgui.DialogProgress()
+            cache_pdialog.create(string_load(30301), "")
+            cache_report = self.cache_artwork(cache_pdialog)
+            cache_pdialog.close()
+            del cache_pdialog
+            if cache_report:
+                result_report.extend(cache_report)
+
+        if len(result_report) > 0:
+            msg = "\r\n".join(result_report)
+            xbmcgui.Dialog().textviewer(string_load(30125), msg, usemono=True)
 
     def cache_artwork_background(self):
         log.debug("cache_artwork_background")
@@ -150,6 +189,41 @@ class CacheArtwork(threading.Thread):
         if result_text:
             log.debug("Cache Images reuslt : {0}", " - ".join(result_text))
 
+    def get_emby_artwork(self, progress):
+        log.debug("get_emby_artwork")
+
+        url = ('{server}/emby/Users/{userid}/Items?' +
+            '&Recursive=true' +
+            '&IncludeItemTypes=Movie,Series,Episode,BoxSet' +
+            '&ImageTypeLimit=1' +
+            '&format=json')
+
+        data_manager = DataManager()
+        results = data_manager.GetContent(url)
+        if results is None:
+            results = []
+
+        if isinstance(results, dict):
+            results = results.get("Items")
+
+        server = downloadUtils.getServer()
+        log.debug("Emby Item Count Count: {0}", len(results))
+
+        if self.stop_all_activity:
+            return None
+
+        progress.update(0, string_load(30359))
+
+        texture_urls = set()
+
+        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
+        for item in results:
+            art = getArt(item, server)
+            for art_type in art:
+                texture_urls.add(art[art_type])
+
+        return texture_urls
+
     def cache_artwork(self, progress):
         log.debug("cache_artwork")
 
@@ -158,7 +232,7 @@ class CacheArtwork(threading.Thread):
         result = json_rpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            log.debug("Kodi web server not enabled, can not cache images")
+            log.error("Kodi web server not enabled, can not cache images")
             return
 
         # get the port
@@ -208,37 +282,15 @@ class CacheArtwork(threading.Thread):
 
         progress.update(0, string_load(30358))
 
-        url = ('{server}/emby/Users/{userid}/Items?' +
-            '&Recursive=true' +
-            '&IncludeItemTypes=Movie,Series,Episode,BoxSet' +
-            '&ImageTypeLimit=1' +
-            '&format=json')
-
-        data_manager = DataManager()
-        results = data_manager.GetContent(url)
-        if results is None:
-            results = []
-
-        if isinstance(results, dict):
-            results = results.get("Items")
-
-        server = downloadUtils.getServer()
-        missing_texture_urls = set()
-
-        log.debug("Emby Item Count Count: {0}", len(results))
-
-        if self.stop_all_activity:
+        emby_texture_urls = self.get_emby_artwork(progress)
+        if emby_texture_urls is None:
             return
 
-        progress.update(0, string_load(30359))
-
-        image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
-        for item in results:
-            art = getArt(item, server)
-            for image_type in art:
-                image_url = art[image_type]
-                if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
-                    missing_texture_urls.add(image_url)
+        missing_texture_urls = set()
+        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
+        for image_url in emby_texture_urls:
+            if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
+                missing_texture_urls.add(image_url)
 
             if self.stop_all_activity:
                 return
@@ -276,10 +328,13 @@ class CacheArtwork(threading.Thread):
             log.debug("Get Image Result: {0}", data.status)
 
             index += 1
-            if "iscanceled" in dir(progress) and progress.iscanceled():
+            # if "iscanceled" in dir(progress) and progress.iscanceled():
+            if progress.iscanceled():
+                log.debug("Image Ache : iscanceled")
                 break
 
             if self.stop_all_activity:
+                log.debug("Image Ache : stop_all_activity")
                 break
 
         result_report = []

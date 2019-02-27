@@ -519,35 +519,35 @@ msgid "Delete"
 msgstr ""
 
 msgctxt "#30297"
-msgid "Delete all existing textures?"
+msgid "Delete unused images?"
 msgstr ""
 
 msgctxt "#30298"
-msgid "Deleting Textures"
+msgid "Deleting Kodi Images"
 msgstr ""
 
 msgctxt "#30299"
-msgid "Cache Textures"
+msgid "Cache Images"
 msgstr ""
 
 msgctxt "#30300"
-msgid "Cache all Emby media images as local Kodi textures?"
+msgid "Cache all Emby images as local Kodi images?"
 msgstr ""
 
 msgctxt "#30301"
-msgid "Caching Textures"
+msgid "Caching Images"
 msgstr ""
 
 msgctxt "#30302"
-msgid "Existing Textures: "
+msgid "Existing images : "
 msgstr ""
 
 msgctxt "#30303"
-msgid "Missing Textures: "
+msgid "Missing Emby images : "
 msgstr ""
 
 msgctxt "#30304"
-msgid "Loaded Textures: "
+msgid "Cached Emby images : "
 msgstr ""
 
 msgctxt "#30305"
@@ -862,3 +862,14 @@ msgctxt "#30384"
 msgid "Random movies refresh interval (0 = disabled)"
 msgstr ""
 
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr ""
+
+msgctxt "#30386"
+msgid "Unused Emby images : "
+msgstr ""
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr ""
