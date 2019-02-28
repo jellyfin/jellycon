@@ -55,10 +55,12 @@ class DataManager():
         log.debug("last_content_url : use_cache={0} url={1}", use_cache, url)
         home_window.setProperty("last_content_url", url)
 
-        user_id = DownloadUtils().getUserId()
+        download_utils = DownloadUtils()
+        user_id = download_utils.getUserId()
+        server = download_utils.getServer()
 
         m = hashlib.md5()
-        m.update(user_id + "|" + url)
+        m.update(user_id + "|" + server + "|" + url)
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
 
