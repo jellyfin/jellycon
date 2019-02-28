@@ -129,9 +129,8 @@ class CacheArtwork(threading.Thread):
                     url = urllib.unquote(url)
                     url = url.replace("image://", "")
                     url = url[0:-1]
-                    log.debug("checking texture url: {0}", url)
                     if url.find("/emby/") > -1 and url not in emby_texture_urls:
-                        log.debug("adding unused texture url: {0}", url)
+                        # log.debug("adding unused texture url: {0}", url)
                         unused_texture_ids.add(texture["textureid"])
 
                 total = len(unused_texture_ids)
@@ -311,7 +310,7 @@ class CacheArtwork(threading.Thread):
 
         count_done = 0
         for get_url in missing_texture_urls:
-            log.debug("texture_url: {0}", get_url)
+            # log.debug("texture_url: {0}", get_url)
             url = double_urlencode(get_url)
             kodi_texture_url = ("/image/image://%s" % url)
             log.debug("kodi_texture_url: {0}", kodi_texture_url)
@@ -330,11 +329,9 @@ class CacheArtwork(threading.Thread):
             index += 1
             # if "iscanceled" in dir(progress) and progress.iscanceled():
             if progress.iscanceled():
-                log.debug("Image Ache : iscanceled")
                 break
 
             if self.stop_all_activity:
-                log.debug("Image Ache : stop_all_activity")
                 break
 
         result_report = []
