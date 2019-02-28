@@ -74,12 +74,17 @@ def getDetailsString():
 
     return detailsString
 
-class DownloadUtils():
-    getString = None
+
+class DownloadUtils:
+    use_https = False
+    verify_cert = False
 
     def __init__(self, *args):
-        addon = xbmcaddon.Addon()
-        self.addon_name = addon.getAddonInfo('name')
+        settings = xbmcaddon.Addon()
+        self.use_https = settings.getSetting('use_https') == 'true'
+        log.debug("use_https: {0}", self.use_https)
+        self.verify_cert = settings.getSetting('verify_cert') == 'true'
+        log.debug("verify_cert: {0}", self.verify_cert)
 
     def post_capabilities(self):
 
@@ -245,7 +250,6 @@ class DownloadUtils():
 
         return play_info_result
 
-
     def getServer(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
@@ -254,12 +258,11 @@ class DownloadUtils():
             return None
 
         port = settings.getSetting('port')
-        use_https = settings.getSetting('use_https') == 'true'
 
-        if not port and use_https:
+        if not port and self.use_https:
             port = "443"
             settings.setSetting("port", port)
-        elif not port and not use_https:
+        elif not port and not self.use_https:
             port = "80"
             settings.setSetting("port", port)
 
@@ -270,10 +273,10 @@ class DownloadUtils():
 
             if host.lower().strip().startswith("http://"):
                 settings.setSetting('use_https', 'false')
-                use_https = False
+                self.use_https = False
             elif host.lower().strip().startswith("https://"):
                 settings.setSetting('use_https', 'true')
-                use_https = True
+                self.use_https = True
 
             if url_bits.hostname is not None and len(url_bits.hostname) > 0:
                 host = url_bits.hostname
@@ -283,7 +286,7 @@ class DownloadUtils():
                 port = str(url_bits.port)
                 settings.setSetting("port", port)
 
-        if use_https:
+        if self.use_https:
             server = "https://" + host + ":" + port
         else:
             server = "http://" + host + ":" + port
@@ -344,7 +347,10 @@ class DownloadUtils():
             log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s|verifypeer=false" % (server, id, art_type, index, imageTag)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+
+        if self.use_https and not self.verify_cert:
+            artwork += "|verifypeer=false"
 
         # log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
 
@@ -367,7 +373,11 @@ class DownloadUtils():
             artwork += '&MaxWidth=%s' % width
         if int(height) > 0:
             artwork += '&MaxHeight=%s' % height
-        return artwork + "|verifypeer=false"
+
+        if self.use_https and not self.verify_cert:
+            artwork += "|verifypeer=false"
+
+        return artwork
 
     def get_user_artwork(self, user, item_type):
 
@@ -377,7 +387,12 @@ class DownloadUtils():
         tag = user.get("PrimaryImageTag")
         server = self.getServer()
 
-        return "%s/emby/Users/%s/Images/%s?Format=original&tag=%s|verifypeer=false" % (server, user_id, item_type, tag)
+        artwork = "%s/emby/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
+
+        if self.use_https and not self.verify_cert:
+            artwork += "|verifypeer=false"
+
+        return artwork
 
     def getUserId(self):
 
@@ -478,8 +493,7 @@ class DownloadUtils():
 
         messageData = "username=" + user_name + "&password=" + pwd_sha
 
-        use_https = settings.getSetting('use_https') == 'true'
-        if use_https:
+        if self.use_https:
             messageData += "&pw=" + pwd_text
 
         resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
@@ -635,13 +649,10 @@ class DownloadUtils():
             server = "%s:%s" % (host_name, port)
             urlPath = url_path + "?" + url_puery
 
-            use_https = settings.getSetting('use_https') == 'true'
-            verify_cert = settings.getSetting('verify_cert') == 'true'
-
-            if use_https and verify_cert:
+            if self.use_https and self.verify_cert:
                 log.debug("Connection: HTTPS, Cert checked")
                 conn = httplib.HTTPSConnection(server, timeout=40)
-            elif use_https and not verify_cert:
+            elif self.use_https and not self.verify_cert:
                 log.debug("Connection: HTTPS, Cert NOT checked")
                 conn = httplib.HTTPSConnection(server, timeout=40, context=ssl._create_unverified_context())
             else:
@@ -657,7 +668,7 @@ class DownloadUtils():
 
             log.debug("HEADERS: {0}", head)
 
-            if (postBody != None):
+            if postBody is not None:
                 if isinstance(postBody, dict):
                     content_type = "application/json"
                     postBody = json.dumps(postBody)

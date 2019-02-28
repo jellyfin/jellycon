@@ -31,9 +31,15 @@ log = SimpleLogging(__name__)
 class PlayUtils():
     def getPlayUrl(self, id, media_source, force_transcode, play_session_id):
         log.debug("getPlayUrl")
+
         addonSettings = xbmcaddon.Addon()
         playback_type = addonSettings.getSetting("playback_type")
         server = downloadUtils.getServer()
+        use_https = addonSettings.getSetting('use_https') == 'true'
+        log.debug("use_https: {0}", use_https)
+        verify_cert = addonSettings.getSetting('verify_cert') == 'true'
+        log.debug("verify_cert: {0}", verify_cert)
+
         log.debug("playback_type: {0}", playback_type)
         if force_transcode:
             log.debug("playback_type: FORCED_TRANSCODE")
@@ -85,9 +91,13 @@ class PlayUtils():
                        "&VideoBitrate=%s" +
                        "&maxWidth=%s")
             playurl = playurl % (server, id, media_source_id, play_session_id, deviceId, bitrate, playback_max_width)
+
             if playback_video_force_8:
-                playurl = playurl + "&MaxVideoBitDepth=8"
-            playurl = playurl + "&api_key=" + user_token + "|verifypeer=false"
+                playurl += "&MaxVideoBitDepth=8"
+            playurl += "&api_key=" + user_token
+
+            if use_https and not verify_cert:
+                playurl += "|verifypeer=false"
 
         # do direct path playback
         elif playback_type == "0":
@@ -118,7 +128,10 @@ class PlayUtils():
                        "&MediaSourceId=%s")
             playurl = playurl % (server, id, play_session_id, media_source_id)
             user_token = downloadUtils.authenticate()
-            playurl = playurl + "&api_key=" + user_token + "|verifypeer=false"
+            playurl += "&api_key=" + user_token
+
+            if use_https and not verify_cert:
+                playurl += "|verifypeer=false"
 
         log.debug("Playback URL: {0}", playurl)
         return playurl, playback_type
