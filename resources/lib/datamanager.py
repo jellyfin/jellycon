@@ -14,14 +14,17 @@ from .downloadutils import DownloadUtils
 from .simple_logging import SimpleLogging
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
+from .translation import string_load
 
 import xbmc
 import xbmcaddon
+import xbmcvfs
+import xbmcgui
 
 log = SimpleLogging(__name__)
 
 
-class CacheItem():
+class CacheItem:
     item_list = None
     item_list_hash = None
     date_saved = None
@@ -33,7 +36,7 @@ class CacheItem():
         pass
 
 
-class DataManager():
+class DataManager:
 
     addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
 
@@ -250,3 +253,23 @@ class CacheManagerThread(threading.Thread):
                 xbmc.executebuiltin("Container.Refresh")
 
         log.debug("CacheManagerThread : Exited")
+
+
+def clear_cached_server_data():
+    log.debug("clear_cached_server_data() called")
+
+    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    dirs, files = xbmcvfs.listdir(addon_dir)
+
+    del_count = 0
+    for filename in files:
+        if filename.startswith("cache_") and filename.endswith(".pickle"):
+            log.debug("Deleteing CacheFile: {0}", filename)
+            xbmcvfs.delete(os.path.join(addon_dir, filename))
+            del_count += 1
+
+    msg = string_load(30394) % del_count
+    xbmcgui.Dialog().ok(string_load(30393), msg)
+
+
+

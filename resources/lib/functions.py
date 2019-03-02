@@ -23,7 +23,7 @@ from .downloadutils import DownloadUtils
 from .utils import getArt, send_event_notification
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
-from .datamanager import DataManager
+from .datamanager import DataManager, clear_cached_server_data
 from .server_detect import checkServer
 from .simple_logging import SimpleLogging
 from .menu_functions import displaySections, showMovieAlphaList, showTvShowAlphaList, showGenreList, showWidgets, show_search, showMoviePages
@@ -124,6 +124,8 @@ def mainEntryPoint():
         if WINDOW == 10000:
             log.debug("Currently in home - refreshing to allow new settings to be taken")
             xbmc.executebuiltin("ActivateWindow(Home)")
+    elif mode == "CLEAR_CACHE":
+        clear_cached_server_data()
     elif mode == "WIDGET_CONTENT":
         getWidgetContent(int(sys.argv[1]), params)
     elif mode == "WIDGET_CONTENT_CAST":

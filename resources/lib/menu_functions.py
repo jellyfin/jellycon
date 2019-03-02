@@ -318,6 +318,7 @@ def displaySections():
 
     addMenuDirectoryItem(string_load(30383) + string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
     addMenuDirectoryItem(string_load(30383) + string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    addMenuDirectoryItem(string_load(30383) + string_load(30395), "plugin://plugin.video.embycon/?mode=CLEAR_CACHE")
 
     # only add these if we have other collection which means we have a valid server conn
     if collections:

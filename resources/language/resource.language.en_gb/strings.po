@@ -885,3 +885,15 @@ msgstr ""
 msgctxt "#30392"
 msgid "HTTPS"
 msgstr ""
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr ""
+
+msgctxt "#30394"
+msgid "%s cache files detelted"
+msgstr ""
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr ""
