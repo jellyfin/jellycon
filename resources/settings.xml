@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
 	<category label="30014">
+
+		<setting label="30388" type="lsep"/>
 		<setting label="30011" type="action" action="RunScript(plugin.video.embycon,0,?mode=DETECT_SERVER_USER)" option="close"/>
 		<setting id="ipaddress" type="text" label="30000" default="&lt;none&gt;" visible="true" enable="true" />
 		<setting id="port" type="text" label="30001" default="8096" visible="true" enable="true" />
 		<setting id="use_https" type="bool" label="30002" default="false" visible="true" enable="true" />
 		<setting id="verify_cert" type="bool" label="30003" default="false" visible="true" enable="true" />
 
+		<setting label="30389" type="lsep"/>
 		<setting type="sep" />
 		<setting label="30012" type="action" action="RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)" option="close"/>
 		<setting id="username" type="text" label="30024" />
 		<setting id="password" type="text" option="hidden" label="30025" />
 		<setting id="save_user_to_settings" type="bool" label="30378" default="true" visible="true" enable="true" />
 		<setting id="allow_password_saving" type="bool" label="30367" default="true" visible="true" enable="true" />
-        <setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
+
 	</category>
 	<category label="30207">
 
@@ -98,6 +101,7 @@
 	</category>
 	<category label="30022">
 
+		<setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
 		<setting id="use_cache" type="bool" label="30345" default="true" visible="true" enable="true" />
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />

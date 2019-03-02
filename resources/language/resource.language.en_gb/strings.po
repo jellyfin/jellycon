@@ -11,35 +11,35 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "#30000"
-msgid "Server Address: "
+msgid "Host"
 msgstr ""
 
 msgctxt "#30001"
-msgid "Server Port: "
+msgid "Port"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Use HTTPS: "
+msgid "Use HTTPS"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Verify HTTPS Certificate: "
+msgid "Verify HTTPS certificate"
 msgstr ""
 
 msgctxt "#30005"
-msgid "Username: "
+msgid "Username"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Password: "
+msgid "Password"
 msgstr ""
 
 msgctxt "#30007"
-msgid "Samba Username: "
+msgid "Samba username"
 msgstr ""
 
 msgctxt "#30008"
-msgid "Samba Password: "
+msgid "Samba password"
 msgstr ""
 
 msgctxt "#30010"
@@ -47,11 +47,11 @@ msgid "Enable performance profiling"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Detect Local Server"
+msgid "[Detect local server]"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Change User"
+msgid "[Change user]"
 msgstr ""
 
 msgctxt "#30014"
@@ -59,11 +59,11 @@ msgid "Emby"
 msgstr ""
 
 msgctxt "#30016"
-msgid "Device Name"
+msgid "Device display name"
 msgstr ""
 
 msgctxt "#30017"
-msgid "Show Connected Clients"
+msgid "Show connected clients"
 msgstr ""
 
 msgctxt "#30018"
@@ -147,7 +147,7 @@ msgid "Retrieving Data"
 msgstr ""
 
 msgctxt "#30114"
-msgid "On Resume Jump Back Seconds"
+msgid "Jump back seconds"
 msgstr ""
 
 msgctxt "#30116"
@@ -159,7 +159,7 @@ msgid "Add resume percent to names"
 msgstr ""
 
 msgctxt "#30120"
-msgid "Show Load Progress"
+msgid "Show load progress"
 msgstr ""
 
 msgctxt "#30121"
@@ -227,7 +227,7 @@ msgid "Unable to connect to server"
 msgstr ""
 
 msgctxt "#30206"
-msgid "Playback Type"
+msgid "Playback type"
 msgstr ""
 
 msgctxt "#30207"
@@ -239,23 +239,23 @@ msgid "Transcode Bitrate (Kbits)"
 msgstr ""
 
 msgctxt "#30209"
-msgid "File Direct Path"
+msgid "File direct path"
 msgstr ""
 
 msgctxt "#30210"
-msgid "HTTP Direct Stream"
+msgid "HTTP direct stream"
 msgstr ""
 
 msgctxt "#30211"
-msgid "HTTP Transcode"
+msgid "HTTP transcode"
 msgstr ""
 
 msgctxt "#30212"
-msgid "Transcode Max Width"
+msgid "Transcode max width"
 msgstr ""
 
 msgctxt "#30213"
-msgid "Transcode Force 8 Bit"
+msgid "Transcode force 8 bit"
 msgstr ""
 
 msgctxt "#30214"
@@ -263,7 +263,7 @@ msgid "Events"
 msgstr ""
 
 msgctxt "#30215"
-msgid "On Playback Stop (100% = disabled)"
+msgid "On playback stop (100% = disabled)"
 msgstr ""
 
 msgctxt "#30216"
@@ -611,7 +611,7 @@ msgid " - Albums"
 msgstr ""
 
 msgctxt "#30322"
-msgid "Auto Resume"
+msgid "Auto resume"
 msgstr ""
 
 msgctxt "#30324"
@@ -627,7 +627,7 @@ msgid "Go To Season"
 msgstr ""
 
 msgctxt "#30328"
-msgid "Show Empty Folders (Shows, Seasons, Boxsets)"
+msgid "Show empty folders (shows, seasons, collections)"
 msgstr ""
 
 msgctxt "#30329"
@@ -839,7 +839,7 @@ msgid "Persist user details"
 msgstr ""
 
 msgctxt "#30379"
-msgid "External Subtitle Prompt"
+msgid "External subtitle prompt"
 msgstr ""
 
 msgctxt "#30380"
@@ -872,4 +872,12 @@ msgstr ""
 
 msgctxt "#30387"
 msgid "Unused images removed : "
+msgstr ""
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr ""
+
+msgctxt "#30389"
+msgid "User details"
 msgstr ""
