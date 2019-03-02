@@ -60,7 +60,7 @@ class DataManager():
         server = download_utils.getServer()
 
         m = hashlib.md5()
-        m.update(user_id + "|" + server + "|" + url)
+        m.update(user_id + "|" + str(server) + "|" + url)
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
 

@@ -35,7 +35,9 @@ class PlayUtils():
         addonSettings = xbmcaddon.Addon()
         playback_type = addonSettings.getSetting("playback_type")
         server = downloadUtils.getServer()
-        use_https = addonSettings.getSetting('use_https') == 'true'
+        use_https = False
+        if addonSettings.getSetting('protocol') == "1":
+            use_https = True
         log.debug("use_https: {0}", use_https)
         verify_cert = addonSettings.getSetting('verify_cert') == 'true'
         log.debug("verify_cert: {0}", verify_cert)

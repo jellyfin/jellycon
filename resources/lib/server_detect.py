@@ -21,7 +21,6 @@ log = SimpleLogging(__name__)
 
 __addon__ = xbmcaddon.Addon()
 __addon_name__ = __addon__.getAddonInfo('name')
-downloadUtils = DownloadUtils()
 
 
 def getServerDetails():
@@ -76,10 +75,11 @@ def checkServer(force=False, change_user=False, notify=False):
     settings = xbmcaddon.Addon()
     server_url = ""
     something_changed = False
+    du = DownloadUtils()
 
     if force is False:
         # if not forcing use server details from settings
-        svr = downloadUtils.getServer()
+        svr = du.getServer()
         if svr is not None:
             server_url = svr
 
@@ -133,13 +133,19 @@ def checkServer(force=False, change_user=False, notify=False):
                 server_address = url_bits.hostname
                 server_port = str(url_bits.port)
                 server_protocol = url_bits.scheme
+                user_name = url_bits.username
+                user_password = url_bits.password
 
-                temp_url = "%s://%s:%s/emby/Users/Public?format=json" % (server_protocol, server_address, server_port)
+                if user_name and user_password:
+                    temp_url = "%s://%s:%s@%s:%s/emby/Users/Public?format=json" % (server_protocol, user_name, user_password, server_address, server_port)
+                else:
+                    temp_url = "%s://%s:%s/emby/Users/Public?format=json" % (server_protocol, server_address, server_port)
 
+                log.debug("Testing_Url: {0}", temp_url)
                 progress = xbmcgui.DialogProgress()
                 progress.create(__addon_name__ + " : " + string_load(30376))
                 progress.update(0, string_load(30377))
-                json_data = downloadUtils.downloadUrl(temp_url, authenticate=False)
+                json_data = du.downloadUrl(temp_url, authenticate=False)
                 progress.close()
 
                 result = json.loads(json_data)
@@ -162,16 +168,22 @@ def checkServer(force=False, change_user=False, notify=False):
         server_address = url_bits.hostname
         server_port = str(url_bits.port)
         server_protocol = url_bits.scheme
+        user_name = url_bits.username
+        user_password = url_bits.password
         log.debug("Detected server info {0} - {1} - {2}", server_protocol, server_address, server_port)
 
         # save the server info
         settings.setSetting("port", server_port)
+
+        if user_name and user_password:
+            server_address = "%s:%s@%s" % (url_bits.username, url_bits.password, server_address)
+
         settings.setSetting("ipaddress", server_address)
 
         if server_protocol == "https":
-            settings.setSetting("use_https", "true")
+            settings.setSetting("protocol", "1")
         else:
-            settings.setSetting("use_https", "false")
+            settings.setSetting("protocol", "0")
 
         something_changed = True
 
@@ -185,10 +197,11 @@ def checkServer(force=False, change_user=False, notify=False):
 
         # stop playback when switching users
         xbmc.Player().stop()
+        du = DownloadUtils()
 
         # get a list of users
         log.debug("Getting user list")
-        json_data = downloadUtils.downloadUrl(server_url + "/emby/Users/Public?format=json", authenticate=False)
+        json_data = du.downloadUrl(server_url + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData: {0}", json_data)
         try:
@@ -236,7 +249,7 @@ def checkServer(force=False, change_user=False, notify=False):
                             log.debug("LastActivityDate: {0}", time_ago)
 
                         user_item = xbmcgui.ListItem(name)
-                        user_image = downloadUtils.get_user_artwork(user, 'Primary')
+                        user_image = du.get_user_artwork(user, 'Primary')
                         if not user_image:
                             user_image = "DefaultUser.png"
                         art = {"Thumb": user_image}
@@ -357,8 +370,8 @@ def checkServer(force=False, change_user=False, notify=False):
             home_window.clearProperty("AccessToken")
             home_window.clearProperty("userimage")
             home_window.setProperty("embycon_widget_reload", str(time.time()))
-            download_utils = DownloadUtils()
-            download_utils.authenticate()
-            download_utils.getUserId()
+            du = DownloadUtils()
+            du.authenticate()
+            du.getUserId()
             xbmc.executebuiltin("ActivateWindow(Home)")
             xbmc.executebuiltin("ReloadSkin()")

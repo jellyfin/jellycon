@@ -81,8 +81,12 @@ class DownloadUtils:
 
     def __init__(self, *args):
         settings = xbmcaddon.Addon()
-        self.use_https = settings.getSetting('use_https') == 'true'
+
+        self.use_https = False
+        if settings.getSetting('protocol') == "1":
+            self.use_https = True
         log.debug("use_https: {0}", self.use_https)
+
         self.verify_cert = settings.getSetting('verify_cert') == 'true'
         log.debug("verify_cert: {0}", self.verify_cert)
 
@@ -262,7 +266,7 @@ class DownloadUtils:
         if not port and self.use_https:
             port = "443"
             settings.setSetting("port", port)
-        elif not port and not self.use_https:
+        elif not port:
             port = "80"
             settings.setSetting("port", port)
 
@@ -272,14 +276,18 @@ class DownloadUtils:
             url_bits = urlparse(host.strip())
 
             if host.lower().strip().startswith("http://"):
-                settings.setSetting('use_https', 'false')
+                settings.setSetting('protocol', '0')
                 self.use_https = False
             elif host.lower().strip().startswith("https://"):
-                settings.setSetting('use_https', 'true')
+                settings.setSetting('protocol', '1')
                 self.use_https = True
 
             if url_bits.hostname is not None and len(url_bits.hostname) > 0:
                 host = url_bits.hostname
+
+                if url_bits.username and url_bits.password:
+                    host = "%s:%s@" % (url_bits.username, url_bits.password) + host
+
                 settings.setSetting("ipaddress", host)
 
             if url_bits.port is not None and url_bits.port > 0:
@@ -620,39 +628,20 @@ class DownloadUtils:
             url_path = url_bits.path
             url_puery = url_bits.query
 
-            '''
-            if url.startswith('http'):
-                serversplit = 2
-                urlsplit = 3
-            else:
-                serversplit = 0
-                urlsplit = 1
-
-            server = url.split('/')[serversplit]
-            urlPath = "/" + "/".join(url.split('/')[urlsplit:])
-
-            log.debug("DOWNLOAD_URL: {0}", url)
-            log.debug("server: {0}", server)
-            log.debug("urlPath: {0}", urlPath)
-
-            # check the server details
-            tokens = server.split(':')
-            host = tokens[0]
-            port = tokens[1]
-            if host == "<none>" or host == "" or port == "":
-                return return_data            
-            '''
-
             if not host_name or host_name == "<none>":
                 return return_data
+
+            local_use_https = False
+            if protocol.lower() == "https":
+                local_use_https = True
 
             server = "%s:%s" % (host_name, port)
             urlPath = url_path + "?" + url_puery
 
-            if self.use_https and self.verify_cert:
+            if local_use_https and self.verify_cert:
                 log.debug("Connection: HTTPS, Cert checked")
                 conn = httplib.HTTPSConnection(server, timeout=40)
-            elif self.use_https and not self.verify_cert:
+            elif local_use_https and not self.verify_cert:
                 log.debug("Connection: HTTPS, Cert NOT checked")
                 conn = httplib.HTTPSConnection(server, timeout=40, context=ssl._create_unverified_context())
             else:
