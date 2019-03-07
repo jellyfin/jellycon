@@ -453,7 +453,7 @@ def getCollections():
                                  '&format=json')
             collections.append(item_data)
 
-        if collection_type in ["livetv"]:
+        if collection_type == "livetv":
             collections.append({
                 'title': string_load(30311) + item_name + string_load(30360),
                 'art': art,
@@ -490,7 +490,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
 
-        if collection_type in ["homevideos"]:
+        if collection_type == "homevideos":
             collections.append({
                 'title': string_load(30311) + item_name,
                 'art': art,
@@ -545,7 +545,7 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
 
-        if collection_type in ["boxsets"]:
+        if collection_type == "boxsets":
             collections.append({
                 'title': string_load(30311) + item_name,
                 'art': art,
@@ -564,18 +564,12 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
 
-        if collection_type in ["movies"]:
+        if collection_type == "playlists":
             collections.append({
                 'title': string_load(30311) + item_name,
                 'art': art,
                 'path': ('{server}/emby/Users/{userid}/Items' +
                          '?ParentId=' + item.get("Id") +
-                         '&IsVirtualUnaired=false' +
-                         '&IncludeItemTypes=Movie' +
-                         '&CollapseBoxSetItems=' + str(group_movies) +
-                         '&GroupItemsIntoCollections=' + str(group_movies) +
-                         '&Recursive=true' +
-                         '&IsMissing=False' +
                          '&Fields={field_filters}' +
                          '&ImageTypeLimit=1' +
                          '&SortBy=Name' +
@@ -721,6 +715,24 @@ def getCollections():
                 'name_format': 'Episode|episode_name_format'})
 
         if collection_type == "movies":
+            collections.append({
+                'title': string_load(30311) + item_name,
+                'art': art,
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&IncludeItemTypes=Movie' +
+                         '&CollapseBoxSetItems=' + str(group_movies) +
+                         '&GroupItemsIntoCollections=' + str(group_movies) +
+                         '&Recursive=true' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
+                         '&format=json'),
+                'media_type': collection_type})
+            
             collections.append({
                 'title': string_load(30311) + item_name + string_load(30285),
                 'art': art,
