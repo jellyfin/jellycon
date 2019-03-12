@@ -891,9 +891,17 @@ msgid "Clear Cache Result"
 msgstr ""
 
 msgctxt "#30394"
-msgid "%s cache files detelted"
+msgid "%s cache files deleted"
 msgstr ""
 
 msgctxt "#30395"
 msgid "Clear cached server data"
+msgstr ""
+
+msgctxt "#30396"
+msgid "Page"
+msgstr ""
+
+msgctxt "#30397"
+msgid " - Pages"
 msgstr ""

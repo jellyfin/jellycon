@@ -804,7 +804,7 @@ def getCollections():
                 'media_type': collection_type})
 
             collections.append({
-                'title': "Library - " + item_name + ' - Pages',
+                'title': string_load(30311) + item_name + string_load(30397),
                 'item_type': 'plugin_link',
                 'art': art,
                 'path': 'plugin://plugin.video.embycon/?mode=MOVIE_PAGES&parent_id=' + item.get("Id"),

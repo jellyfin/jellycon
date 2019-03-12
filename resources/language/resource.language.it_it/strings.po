@@ -628,7 +628,7 @@ msgstr "Vai Alla Stagione"
 
 msgctxt "#30328"
 msgid "Show Empty Folders (Shows, Seasons, Boxsets)"
-msgstr ""
+msgstr "Mostra Cartelle vuote (Serie, Stagioni, Collezioni)"
 
 msgctxt "#30329"
 msgid "Screensaver"
@@ -636,7 +636,7 @@ msgstr "Salvaschermo"
 
 msgctxt "#30330"
 msgid "Show change user dialog"
-msgstr ""
+msgstr "Mostra la finestra di dialogo cambia utente"
 
 msgctxt "#30331"
 msgid "Movies per page"
@@ -644,7 +644,7 @@ msgstr "Films per pagina"
 
 msgctxt "#30332"
 msgid "Stop media playback on screensaver activation"
-msgstr ""
+msgstr "Interrompi la riproduzione all'attivazione del salvaschermo"
 
 msgctxt "#30333"
 msgid "Cache artwork in the background"
@@ -684,19 +684,19 @@ msgstr ""
 
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
-msgstr ""
+msgstr "Nuovo intervallo di controllo del contenuto (0 = disabilitato)"
 
 msgctxt "#30343"
 msgid "Changes Require Kodi Restart"
-msgstr ""
+msgstr "Le modifiche richiedono il riavvio di Kodi"
 
 msgctxt "#30344"
 msgid "Number of images removed from cache : %s"
-msgstr ""
+msgstr "Numero di immaini rimosse dalla cache : %s"
 
 msgctxt "#30345"
 msgid "Cache server requests"
-msgstr ""
+msgstr "Richieste cache server"
 
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
@@ -704,7 +704,7 @@ msgstr "Eliminazione Immagini Della cache"
 
 msgctxt "#30347"
 msgid "Getting Existing Images"
-msgstr "Ottenimentoimmagini esistenti"
+msgstr "Aggiunta immagini esistenti"
 
 msgctxt "#30348"
 msgid "Add user ratings"
@@ -716,7 +716,7 @@ msgstr " - Visti Di Recente"
 
 msgctxt "#30350"
 msgid "Music - Recently Added"
-msgstr "Musica - Aggiunti Di recente""
+msgstr "Musica - Aggiunti Di recente"
 
 msgctxt "#30351"
 msgid "Music - Recently Played"
@@ -873,3 +873,39 @@ msgstr "Immagini Emby non utilizzate : "
 msgctxt "#30387"
 msgid "Unused images removed : "
 msgstr "Immagini non utilizzate rimosse : "
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Dettagli Server"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Dettagli Utente"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protocollo"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Elimina Cache Dei Risultati"
+
+msgctxt "#30394"
+msgid "%s cache files deleted"
+msgstr "%s cache files eliminati"
+
+msgctxt "#30396"
+msgid "Page"
+msgstr "Pagina"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr " - Pagine"
