@@ -858,7 +858,8 @@ def prompt_for_stop_actions(item_id, data):
                 percenatge_complete > prompt_delete_movie_percentage):
             prompt_to_delete = True
 
-    if prompt_to_delete:
+    can_delete = result.get("CanDelete", False)
+    if can_delete and prompt_to_delete:
         log.debug("Prompting for delete")
         delete(result)
 

@@ -376,9 +376,11 @@ def show_menu(params):
             li.setProperty('menu_id', 'emby_unset_favorite')
             action_items.append(li)
 
-    li = xbmcgui.ListItem(string_load(30274))
-    li.setProperty('menu_id', 'delete')
-    action_items.append(li)
+    can_delete = result.get("CanDelete", False)
+    if can_delete:
+        li = xbmcgui.ListItem(string_load(30274))
+        li.setProperty('menu_id', 'delete')
+        action_items.append(li)
 
     li = xbmcgui.ListItem(string_load(30281))
     li.setProperty('menu_id', 'refresh_images')

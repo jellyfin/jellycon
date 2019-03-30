@@ -673,6 +673,7 @@ class DownloadUtils:
                 conn.request(method=method, url=urlPath, headers=head)
 
             data = conn.getresponse()
+            log.debug("HTTP response: {0} {1}", data.status, data.reason)
             log.debug("GET URL HEADERS: {0}", data.getheaders())
 
             if int(data.status) == 200:
