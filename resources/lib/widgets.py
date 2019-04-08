@@ -286,7 +286,7 @@ def getWidgetContent(handle, params):
         xbmcplugin.setContent(handle, 'episodes')
         items_url = ('{server}/emby/Users/{userid}/Items/Latest' +
                      '?GroupItems=true' +
-                     '&Limit={ItemLimit}' +
+                     '&Limit=45' +
                      '&Recursive=true' +
                      '&SortBy=DateCreated' +
                      '&SortOrder=Descending' +
