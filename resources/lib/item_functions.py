@@ -31,6 +31,7 @@ home_window = HomeWindow()
 class ItemDetails():
 
     name = None
+    sort_name = None
     id = None
     etag = None
     path = None
@@ -109,6 +110,7 @@ def extract_item_info(item, gui_options):
     item_details.item_type = item["Type"]
     item_details.location_type = item["LocationType"]
     item_details.name = item["Name"]
+    item_details.sort_name = item["SortName"]
     item_details.original_title = item_details.name
 
     if item_details.item_type == "Episode":
@@ -446,6 +448,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
     info_labels["title"] = list_item_name
+    info_labels["sorttitle"] = item_details.sort_name
     info_labels["duration"] = item_details.duration
     info_labels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':

@@ -15,6 +15,7 @@ from urlparse import urlparse
 import urllib
 from datetime import datetime
 from base64 import b64encode
+from collections import defaultdict
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -60,7 +61,7 @@ def getDetailsString():
     include_people = addonSettings.getSetting("include_people") == "true"
     include_overview = addonSettings.getSetting("include_overview") == "true"
 
-    detailsString = "DateCreated,EpisodeCount,SeasonCount,Path,Genres,Studios,Etag,Taglines"
+    detailsString = "DateCreated,EpisodeCount,SeasonCount,Path,Genres,Studios,Etag,Taglines,SortName"
     detailsString += ",RecursiveItemCount,ChildCount,ProductionLocations"
 
     if include_media:
@@ -300,6 +301,30 @@ class DownloadUtils:
             server = "http://" + host + ":" + port
 
         return server
+
+    def get_all_artwork(self, item, server):
+        all_art = defaultdict(lambda: "")
+
+        id = item["Id"]
+        item_type = item["Type"]
+        image_tags = item["ImageTags"]
+        bg_item_tags = item["ParentBackdropImageTags"]
+
+        # All the image tags
+        for tag_name in image_tags:
+            tag = image_tags[tag_name]
+            art_url = "%s/emby/Items/%s/Images/%s/0?Format=original&Tag=%s" % (server, id, tag_name, tag)
+            all_art[tag_name] = art_url
+
+        # Series images
+        if item_type in ["Episode", "Season"]:
+            image_tag = item["SeriesPrimaryImageTag"]
+            series_id = item["SeriesId"]
+            if image_tag and series_id:
+                art_url = "%s/emby/Items/%s/Images/Primary/0?Format=original&Tag=%s" % (server, series_id, image_tag)
+                all_art["Primary.Series"] = art_url
+
+        return all_art
 
     def getArtwork(self, data, art_type, parent=False, index=0, server=None):
 
