@@ -448,7 +448,11 @@ def add_gui_item(url, item_details, display_options, folder=True):
             info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
 
     info_labels["title"] = list_item_name
-    info_labels["sorttitle"] = item_details.sort_name
+    if item_details.sort_name:
+        info_labels["sorttitle"] = item_details.sort_name
+    else:
+        info_labels["sorttitle"] = list_item_name
+
     info_labels["duration"] = item_details.duration
     info_labels["playcount"] = item_details.play_count
     if item_details.favorite == 'true':
