@@ -13,16 +13,18 @@
 			<left>0</left>
 			<top>0</top>
 			<width>380</width>
-			<height>300</height>
+			<height>265</height>
 			<texture border="40">bg.png</texture>
 		</control>
 
-        <control type="list" id="3000">
+        <control type="wraplist" id="3000">
             <left>10</left>
             <top>10</top>
             <width>360</width>
-            <!--<height>400</height>-->
-            <height max="780">auto</height>
+            <height>250</height>
+            <!--<height max="780">auto</height>-->
+            <orientation>vertical</orientation>
+            <focusposition>2</focusposition>
             <itemlayout width="360" height="50">
                 <control type="image">
                     <left>0</left>
