@@ -349,7 +349,7 @@ def show_menu(params):
         li.setProperty('menu_id', 'view_season')
         action_items.append(li)
 
-    if result["Type"] == "Series":
+    if result["Type"] in ("Series", "Season", "Episode"):
         li = xbmcgui.ListItem(string_load(30354))
         li.setProperty('menu_id', 'view_series')
         action_items.append(li)
@@ -473,13 +473,25 @@ def show_menu(params):
 
     elif selected_action == "view_series":
         xbmc.executebuiltin("Dialog.Close(all,true)")
-        u = ('{server}/emby/Shows/' + item_id +
+
+        series_id = result["SeriesId"]
+        if not series_id:
+            series_id = item_id
+
+        u = ('{server}/emby/Shows/' + series_id +
              '/Seasons'
              '?userId={userid}' +
              '&Fields={field_filters}' +
              '&format=json')
+
         action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Series")
-        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+
+        if xbmc.getCondVisibility("Window.IsActive(home)"):
+            built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+        else:
+            #built_in_command = 'Container.Update(' + action_url + ', replace)'
+            built_in_command = 'Container.Update(' + action_url + ')'
+
         xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "refresh_images":
