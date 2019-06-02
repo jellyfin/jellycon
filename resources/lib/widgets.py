@@ -332,6 +332,15 @@ def getWidgetContent(handle, params):
 
     list_items, detected_type, total_records = processDirectory(items_url, None, params, False)
 
+    # remove resumable items from next up
+    if widget_type == "nextup_episodes":
+        filtered_list = []
+        for item in list_items:
+            resume_time = item[1].getProperty("ResumeTime")
+            if resume_time is None or float(resume_time) == 0.0:
+                filtered_list.append(item)
+        list_items = filtered_list
+
     #list_items = populateWidgetItems(items_url, widget_type)
 
     xbmcplugin.addDirectoryItems(handle, list_items)
