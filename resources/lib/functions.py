@@ -19,7 +19,7 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from .downloadutils import DownloadUtils
+from .downloadutils import DownloadUtils, load_user_details
 from .utils import getArt, send_event_notification
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -317,7 +317,7 @@ def show_menu(params):
     url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.GetContent(url)
-    log.debug("Playfile item info: {0}", result)
+    log.debug("Menu item info: {0}", result)
 
     if result is None:
         return
@@ -386,6 +386,11 @@ def show_menu(params):
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 
+    if result["Type"] in ["Movie", "Series"]:
+        li = xbmcgui.ListItem("Hide")
+        li.setProperty('menu_id', 'hide')
+        action_items.append(li)
+
     #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
@@ -395,7 +400,7 @@ def show_menu(params):
     selected_action = ""
     if selected_action_item is not None:
         selected_action = selected_action_item.getProperty('menu_id')
-    log.debug("Menu Action Selected: {0}", selected_action_item)
+    log.debug("Menu Action Selected: {0}", selected_action)
     del action_menu
 
     if selected_action == "play":
@@ -404,6 +409,26 @@ def show_menu(params):
         #result = xbmcgui.Dialog().info(list_item)
         #log.debug("xbmcgui.Dialog().info: {0}", result)
         PLAY(params)
+
+    elif selected_action == "hide":
+        settings = xbmcaddon.Addon()
+        user_details = load_user_details(settings)
+        user_name = user_details["username"]
+        hide_tag_string = "hide-" + user_name
+        url = "{server}/Items/" + item_id + "/Tags/Add"
+        post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
+        res = downloadUtils.downloadUrl(url, postBody=post_tag_data, method="POST")
+        log.debug("Add Tag Responce: {0}", res)
+
+        home_window = HomeWindow()
+        home_window.setProperty("embycon_widget_reload", str(time.time()))
+
+        last_url = home_window.getProperty("last_content_url")
+        if last_url:
+            log.debug("markUnwatched_lastUrl: {0}", last_url)
+            home_window.setProperty("skip_cache_for_" + last_url, "true")
+
+        xbmc.executebuiltin("Container.Refresh")
 
     elif selected_action == "play_all":
         PLAY(params)
