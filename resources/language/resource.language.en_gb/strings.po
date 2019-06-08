@@ -447,7 +447,7 @@ msgid "Missing Title"
 msgstr ""
 
 msgctxt "#30281"
-msgid "Refresh Images"
+msgid "Refresh Cached Images"
 msgstr ""
 
 msgctxt "#30282"
