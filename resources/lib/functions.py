@@ -382,6 +382,10 @@ def show_menu(params):
         li.setProperty('menu_id', 'delete')
         action_items.append(li)
 
+    li = xbmcgui.ListItem("Refresh Emby Metadata")
+    li.setProperty('menu_id', 'refresh_server')
+    action_items.append(li)
+
     li = xbmcgui.ListItem(string_load(30281))
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
@@ -410,12 +414,22 @@ def show_menu(params):
         #log.debug("xbmcgui.Dialog().info: {0}", result)
         PLAY(params)
 
+    elif selected_action == "refresh_server":
+        url = ("{server}/emby/Items/" + item_id + "/Refresh" +
+               "?Recursive=true" +
+               "&ImageRefreshMode=FullRefresh" +
+               "&MetadataRefreshMode=FullRefresh" +
+               "&ReplaceAllImages=true" +
+               "&ReplaceAllMetadata=true")
+        res = downloadUtils.downloadUrl(url, postBody="", method="POST")
+        log.debug("Refresh Server Responce: {0}", res)
+
     elif selected_action == "hide":
         settings = xbmcaddon.Addon()
         user_details = load_user_details(settings)
         user_name = user_details["username"]
         hide_tag_string = "hide-" + user_name
-        url = "{server}/Items/" + item_id + "/Tags/Add"
+        url = "{server}/emby/Items/" + item_id + "/Tags/Add"
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
         res = downloadUtils.downloadUrl(url, postBody=post_tag_data, method="POST")
         log.debug("Add Tag Responce: {0}", res)
