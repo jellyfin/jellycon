@@ -731,7 +731,7 @@ msgid " - Frequently Played"
 msgstr ""
 
 msgctxt "#30354"
-msgid "Goto Series"
+msgid "Go To Series"
 msgstr ""
 
 msgctxt "#30355"
