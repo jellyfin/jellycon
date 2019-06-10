@@ -145,7 +145,7 @@
 				</control>
 				<control type="grouplist" id="4000">
 					<orientation>vertical</orientation>
-					<left>730</left>
+					<left>745</left>
 					<top>488</top>
 					<height>355</height>
 					<itemgap>-8</itemgap>
