@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<onunload>ClearProperty(first_load_done, 10000)</onunload>
-	<!--<onload>SetFocus(9000,99,absolute)</onload>-->
-	<onload>SetFocus(9000)</onload>
 	<defaultcontrol>9000</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
 	<controls>

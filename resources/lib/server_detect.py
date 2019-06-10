@@ -374,4 +374,5 @@ def checkServer(force=False, change_user=False, notify=False):
             du.authenticate()
             du.getUserId()
             xbmc.executebuiltin("ActivateWindow(Home)")
+            xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
