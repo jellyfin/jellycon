@@ -905,3 +905,11 @@ msgstr ""
 msgctxt "#30397"
 msgid " - Pages"
 msgstr ""
+
+msgctxt "#30398"
+msgid "Refresh Emby Metadata"
+msgstr ""
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr ""

@@ -382,7 +382,7 @@ def show_menu(params):
         li.setProperty('menu_id', 'delete')
         action_items.append(li)
 
-    li = xbmcgui.ListItem("Refresh Emby Metadata")
+    li = xbmcgui.ListItem(string_load(30398))
     li.setProperty('menu_id', 'refresh_server')
     action_items.append(li)
 
@@ -391,7 +391,7 @@ def show_menu(params):
     action_items.append(li)
 
     if result["Type"] in ["Movie", "Series"]:
-        li = xbmcgui.ListItem("Hide")
+        li = xbmcgui.ListItem(string_load(30399))
         li.setProperty('menu_id', 'hide')
         action_items.append(li)
 
