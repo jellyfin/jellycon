@@ -62,6 +62,7 @@ class ItemDetails():
     video_codec = ""
     aspect_ratio = 0.0
     audio_codec = ""
+    audio_lang = ""
     height = 0
     width = 0
     cast = None
@@ -192,6 +193,8 @@ def extract_item_info(item, gui_options):
     mediaStreams = item["MediaStreams"]
     if mediaStreams is not None:
         for mediaStream in mediaStreams:
+            if not mediaStream["IsDefault"]:  # dont store none default stream info
+                continue
             stream_type = mediaStream["Type"]
             if stream_type == "Video":
                 item_details.video_codec = mediaStream["Codec"]
@@ -207,6 +210,7 @@ def extract_item_info(item, gui_options):
             if stream_type == "Audio":
                 item_details.audio_codec = mediaStream["Codec"]
                 item_details.channels = mediaStream["Channels"]
+                item_details.audio_lang = mediaStream["Language"]
             if stream_type == "Subtitle":
                 item_details.subtitle_available = True
                 sub_lang = mediaStream["Language"]
@@ -539,7 +543,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
                                  'height': item_details.height})
         list_item.addStreamInfo('audio',
                                 {'codec': item_details.audio_codec,
-                                 'channels': item_details.channels})
+                                 'channels': item_details.channels,
+                                 'language': item_details.audio_lang})
 
         item_properties["TotalSeasons"] = str(item_details.total_seasons)
         item_properties["TotalEpisodes"] = str(item_details.total_episodes)
