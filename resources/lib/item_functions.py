@@ -202,6 +202,8 @@ def extract_item_info(item, gui_options):
                         media_info["apect_ratio"] = float(aspect_width) / float(aspect_height)
                     except:
                         media_info["apect_ratio"] = 1.85
+                else:
+                    media_info["apect_ratio"] = 1.85
                 media_info_list.append(media_info)
             if stream_type == "Audio":
                 media_info = {}
