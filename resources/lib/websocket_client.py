@@ -48,10 +48,12 @@ class WebSocketClient(threading.Thread):
             self._playstate(data)
 
         elif message_type == "UserDataChanged":
-            log.debug("WebSocket Message UserDataChanged: {0}", message)
+            data = result['Data']
+            self._library_changed(data)
 
         elif message_type == "LibraryChanged":
-            log.debug("WebSocket Message LibraryChanged: {0}", message)
+            data = result['Data']
+            self._library_changed(data)
 
         elif message_type == "GeneralCommand":
             data = result['Data']
@@ -59,6 +61,9 @@ class WebSocketClient(threading.Thread):
 
         else:
             log.debug("WebSocket Message Type: {0}", message)
+
+    def _library_changed(self, data):
+        log.debug("Library_Changed: {0}", data)
 
     def _play(cls, data):
 
