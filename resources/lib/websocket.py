@@ -905,8 +905,13 @@ class WebSocketApp(object):
                     self._callback(self.on_message, data)                    
                     
                 except Exception as e:
-                    #print str(e.args[0])
-                    if "timed out" not in e.args[0]:
+                    found_timeout = False
+                    for arg in e.args:
+                        if isinstance(arg, str):
+                            print str(arg)
+                            if "timed out" in arg:
+                                found_timeout = True
+                    if not found_timeout:
                         raise e
 
         except Exception as e:
