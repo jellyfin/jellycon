@@ -695,6 +695,7 @@ class DownloadUtils:
                 userAndPass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
                 head["Authorization"] = 'Basic %s' % userAndPass
 
+            head["User-Agent"] = "EmbyCon-" + ClientInformation().getVersion()
             log.debug("HEADERS: {0}", head)
 
             if postBody is not None:

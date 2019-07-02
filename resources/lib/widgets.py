@@ -89,11 +89,12 @@ def set_background_image(force=False):
             background_items = []
             for item in items:
                 bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
-                label = item.get("Name")
-                item_background = {}
-                item_background["image"] = bg_image
-                item_background["name"] = label
-                background_items.append(item_background)
+                if bg_image:
+                    label = item.get("Name")
+                    item_background = {}
+                    item_background["image"] = bg_image
+                    item_background["name"] = label
+                    background_items.append(item_background)
 
         log.debug("set_background_image: Loaded {0} more backgrounds", len(background_items))
 
