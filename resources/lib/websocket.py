@@ -21,6 +21,7 @@ Copyright (C) 2010 Hiroki Ohtani(liris)
 
 
 import socket
+from base64 import b64encode
 
 try:
     import ssl
@@ -186,7 +187,10 @@ def _parse_url(url):
     if parsed.query:
         resource += "?" + parsed.query
 
-    return (hostname, port, resource, is_secure)
+    user_name = parsed.username
+    user_password = parsed.password
+
+    return (hostname, port, resource, is_secure, user_name, user_password)
 
 
 def create_connection(url, timeout=None, **options):
@@ -455,7 +459,8 @@ class WebSocket(object):
                  the custom HTTP headers are added.
 
         """
-        hostname, port, resource, is_secure = _parse_url(url)
+        hostname, port, resource, is_secure, user_name, user_password = _parse_url(url)
+
         # TODO: we need to support proxy
         self.sock.connect((hostname, port))
         if is_secure:
@@ -471,11 +476,17 @@ class WebSocket(object):
             else:
                 raise WebSocketException("SSL not available.")
 
-        self._handshake(hostname, port, resource, **options)
+        self._handshake(hostname, port, resource, user_name, user_password, **options)
 
-    def _handshake(self, host, port, resource, **options):
+    def _handshake(self, host, port, resource, user_name, user_password, **options):
         headers = []
         headers.append("GET %s HTTP/1.1" % resource)
+
+        if user_name and user_password:
+            # add basic auth headers
+            userAndPass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
+            headers.append("Authorization: Basic %s" % userAndPass)
+
         headers.append("Upgrade: websocket")
         headers.append("Connection: Upgrade")
         if port == 80:
