@@ -30,9 +30,8 @@ from .menu_functions import displaySections, showMovieAlphaList, showTvShowAlpha
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
-from .widgets import getWidgetContent, get_widget_content_cast
+from .widgets import getWidgetContent, get_widget_content_cast, checkForNewContent
 from . import trakttokodi
-from .item_functions import add_gui_item, extract_item_info, ItemDetails
 from .cache_images import CacheArtwork
 from .dir_functions import getContent, processDirectory
 
@@ -200,9 +199,8 @@ def markWatched(item_id):
     log.debug("Mark Item Watched: {0}", item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
+    checkForNewContent()
     home_window = HomeWindow()
-    home_window.setProperty("embycon_widget_reload", str(time.time()))
-
     last_url = home_window.getProperty("last_content_url")
     if last_url:
         log.debug("markWatched_lastUrl: {0}", last_url)
@@ -215,9 +213,8 @@ def markUnwatched(item_id):
     log.debug("Mark Item UnWatched: {0}", item_id)
     url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
+    checkForNewContent()
     home_window = HomeWindow()
-    home_window.setProperty("embycon_widget_reload", str(time.time()))
-
     last_url = home_window.getProperty("last_content_url")
     if last_url:
         log.debug("markUnwatched_lastUrl: {0}", last_url)
@@ -230,9 +227,8 @@ def markFavorite(item_id):
     log.debug("Add item to favourites: {0}", item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, postBody="", method="POST")
+    checkForNewContent()
     home_window = HomeWindow()
-    home_window.setProperty("embycon_widget_reload", str(time.time()))
-
     last_url = home_window.getProperty("last_content_url")
     if last_url:
         home_window.setProperty("skip_cache_for_" + last_url, "true")
@@ -244,9 +240,8 @@ def unmarkFavorite(item_id):
     log.debug("Remove item from favourites: {0}", item_id)
     url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.downloadUrl(url, method="DELETE")
+    checkForNewContent()
     home_window = HomeWindow()
-    home_window.setProperty("embycon_widget_reload", str(time.time()))
-
     last_url = home_window.getProperty("last_content_url")
     if last_url:
         home_window.setProperty("skip_cache_for_" + last_url, "true")
@@ -272,9 +267,8 @@ def delete(item):
         progress.create(string_load(30052), string_load(30053))
         downloadUtils.downloadUrl(url, method="DELETE")
         progress.close()
+        checkForNewContent()
         home_window = HomeWindow()
-        home_window.setProperty("embycon_widget_reload", str(time.time()))
-
         last_url = home_window.getProperty("last_content_url")
         if last_url:
             home_window.setProperty("skip_cache_for_" + last_url, "true")
@@ -434,9 +428,9 @@ def show_menu(params):
         res = downloadUtils.downloadUrl(url, postBody=post_tag_data, method="POST")
         log.debug("Add Tag Responce: {0}", res)
 
-        home_window = HomeWindow()
-        home_window.setProperty("embycon_widget_reload", str(time.time()))
+        checkForNewContent()
 
+        home_window = HomeWindow()
         last_url = home_window.getProperty("last_content_url")
         if last_url:
             log.debug("markUnwatched_lastUrl: {0}", last_url)

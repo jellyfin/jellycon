@@ -41,7 +41,7 @@
 
 		<setting label="30215" type="lsep"/>
 		<setting type="sep" />
-		<setting id="promptPlayNextEpisodePercentage" type="slider" label="30218" default="100" range="5,1,100" option="int" visible="true"/>
+		<setting id="promptPlayNextEpisodePercentage" type="slider" label="30218" default="90" range="5,1,100" option="int" visible="true"/>
 		<setting id="promptPlayNextEpisodePercentage_prompt" type="bool" label="30219" default="true" visible="true" enable="true" />
 		<setting id="promptDeleteEpisodePercentage" type="slider" label="30217" default="100" range="5,1,100" option="int" visible="true"/>
 		<setting id="promptDeleteMoviePercentage" type="slider" label="30220" default="100" range="5,1,100" option="int" visible="true"/>
@@ -54,8 +54,9 @@
 		<setting label="30329" type="lsep"/>
 		<setting type="sep" />
 		<setting id="stopPlaybackOnScreensaver" type="bool" label="30332" default="true" visible="true" enable="true" />
-		<setting id="changeUserOnScreenSaver" type="bool" label="30330" default="false" visible="true" enable="true" />
-		<setting id="cacheImagesOnScreenSaver" type="bool" label="30333" default="false" visible="true" enable="true" />
+		<setting id="changeUserOnScreenSaver" type="bool" label="30330" default="true" visible="true" enable="true" />
+		<setting id="cacheImagesOnScreenSaver" type="bool" label="30333" default="true" visible="true" enable="true" />
+		<setting id="cacheImagesOnScreenSaver_interval" type="slider" label="30400" default="0" range="0,1,60" option="int" visible="true"/>
 
 	</category>
 	<category label="30110">
@@ -92,11 +93,11 @@
 	<category label="30111">
 
 		<setting label="30343" type="lsep"/>
-		<setting id="remoteControl" type="bool" label="30310" default="false" visible="true" enable="true" />
+		<setting id="remoteControl" type="bool" label="30310" default="true" visible="true" enable="true" />
 		<setting id="override_contextmenu" type="bool" label="30334" default="true" visible="true"/>
 		<setting id="background_interval" type="slider" label="30341" default="20" range="0,1,120" option="int" visible="true"/>
-		<setting id="newcontent_interval" type="slider" label="30342" default="60" range="0,1,300" option="int" visible="true"/>
-		<setting id="random_movie_list_interval" type="slider" label="30384" default="300" range="0,1,600" option="int" visible="true"/>
+		<setting id="newcontent_interval" type="slider" label="30342" default="0" range="0,1,300" option="int" visible="true"/>
+		<setting id="random_movie_list_interval" type="slider" label="30384" default="5" range="0,1,60" option="int" visible="true"/>
 
 	</category>
 	<category label="30022">

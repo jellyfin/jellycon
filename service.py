@@ -15,11 +15,12 @@ from resources.lib.downloadutils import DownloadUtils, save_user_details
 from resources.lib.simple_logging import SimpleLogging
 from resources.lib.play_utils import Service, PlaybackService, sendProgress
 from resources.lib.kodi_utils import HomeWindow
-from resources.lib.widgets import checkForNewContent, set_background_image, set_random_movies
+from resources.lib.widgets import set_background_image, set_random_movies
 from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
 from resources.lib.context_monitor import ContextMonitor
 from resources.lib.server_detect import checkServer
+from resources.lib.library_change_monitor import LibraryChangeMonitor
 
 settings = xbmcaddon.Addon()
 
@@ -60,17 +61,18 @@ last_progress_update = time.time()
 last_content_check = time.time()
 last_background_update = 0
 last_random_movie_update = 0
-websocket_client = WebSocketClient()
 
 # session id
 # TODO: this is used to append to the end of PLAY urls, this is to stop mark watched from overriding the Emby ones
 home_window.setProperty("session_id", str(time.time()))
 
-
+# start the library update monitor
+library_change_monitor = LibraryChangeMonitor()
+library_change_monitor.start()
 
 # start the WebSocket Client running
-
 remote_control = settings.getSetting('remoteControl') == "true"
+websocket_client = WebSocketClient(library_change_monitor)
 if remote_control:
     websocket_client.start()
 
@@ -84,6 +86,7 @@ if context_menu:
 background_interval = int(settings.getSetting('background_interval'))
 newcontent_interval = int(settings.getSetting('newcontent_interval'))
 random_movie_list_interval = int(settings.getSetting('random_movie_list_interval'))
+random_movie_list_interval = random_movie_list_interval * 60
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
@@ -113,9 +116,9 @@ while not xbmc.abortRequested:
                     last_random_movie_update = time.time()
                     set_random_movies()
 
-                if newcontent_interval != 0 and (user_changed or (time.time() - last_content_check) > newcontent_interval):
+                if user_changed or (newcontent_interval != 0 and (time.time() - last_content_check) > newcontent_interval):
                     last_content_check = time.time()
-                    checkForNewContent()
+                    library_change_monitor.check_for_updates()
 
                 if background_interval != 0 and (user_changed or (time.time() - last_background_update) > background_interval):
                     last_background_update = time.time()
@@ -124,7 +127,7 @@ while not xbmc.abortRequested:
 
                 if remote_control and user_changed:
                     websocket_client.stop_client()
-                    websocket_client = WebSocketClient()
+                    websocket_client = WebSocketClient(library_change_monitor)
                     websocket_client.start()
 
             elif screen_saver_active:
@@ -137,6 +140,9 @@ while not xbmc.abortRequested:
         log.error("{0}", traceback.format_exc())
 
     xbmc.sleep(1000)
+
+# call stop on the library update monitor
+library_change_monitor.stop()
 
 # call stop on the context menu monitor
 if context_monitor:

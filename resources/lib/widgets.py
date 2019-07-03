@@ -171,6 +171,9 @@ def checkForNewContent():
     if current_widget_hash != new_widget_hash:
         home_window.setProperty("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
+        return True
+    else:
+        return False
 
 
 def get_widget_content_cast(handle, params):

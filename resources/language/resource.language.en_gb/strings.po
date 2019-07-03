@@ -851,7 +851,7 @@ msgid "System - "
 msgstr ""
 
 msgctxt "#30384"
-msgid "Random movies refresh interval (0 = disabled)"
+msgid "Random movies interval minutes (0 = disabled)"
 msgstr ""
 
 msgctxt "#30385"
@@ -912,4 +912,8 @@ msgstr ""
 
 msgctxt "#30399"
 msgid "Hide"
+msgstr ""
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
 msgstr ""

@@ -14,6 +14,7 @@ from .simple_logging import SimpleLogging
 from . import clientinfo
 from . import downloadutils
 from .json_rpc import json_rpc
+from .library_change_monitor import LibraryChangeMonitor
 
 log = SimpleLogging(__name__)
 
@@ -23,14 +24,17 @@ class WebSocketClient(threading.Thread):
 
     _client = None
     _stop_websocket = False
+    _library_monitor = None
 
-    def __init__(self):
+    def __init__(self, library_change_monitor):
 
         self.__dict__ = self._shared_state
         self.monitor = xbmc.Monitor()
 
         self.client_info = clientinfo.ClientInformation()
         self.device_id = self.client_info.getDeviceId()
+
+        self._library_monitor = library_change_monitor
 
         threading.Thread.__init__(self)
 
@@ -64,6 +68,7 @@ class WebSocketClient(threading.Thread):
 
     def _library_changed(self, data):
         log.debug("Library_Changed: {0}", data)
+        self._library_monitor.check_for_updates()
 
     def _play(cls, data):
 

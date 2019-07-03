@@ -1,9 +1,6 @@
 # coding=utf-8
 # Gnu General Public License - see LICENSE.TXT
 
-import xbmcgui
-import xbmcplugin
-import xbmc
 import urllib
 import httplib
 import base64
@@ -11,12 +8,18 @@ import sys
 import threading
 import time
 
+import xbmcgui
+import xbmcplugin
+import xbmc
+import xbmcaddon
+
 from .downloadutils import DownloadUtils
 from .simple_logging import SimpleLogging
 from .json_rpc import json_rpc
 from .translation import string_load
 from .datamanager import DataManager
 from .utils import getArt, double_urlencode
+from .kodi_utils import HomeWindow
 
 downloadUtils = DownloadUtils()
 log = SimpleLogging(__name__)
@@ -34,10 +37,18 @@ class CacheArtwork(threading.Thread):
     def run(self):
         log.debug("CacheArtwork background thread started")
         last_update = 0
+        home_window = HomeWindow()
+        settings = xbmcaddon.Addon()
+        latest_content_hash = "never"
+        check_interval = int(settings.getSetting('cacheImagesOnScreenSaver_interval'))
+        check_interval = check_interval * 60
+
         while not self.stop_all_activity and not xbmc.abortRequested:
-            if (time.time() - last_update) > 300:
+            content_hash = home_window.getProperty("embycon_widget_reload")
+            if (check_interval != 0 and (time.time() - last_update) > check_interval) or (latest_content_hash != content_hash):
                 self.cache_artwork_background()
                 last_update = time.time()
+                latest_content_hash = content_hash
 
             xbmc.sleep(1000)
         log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
