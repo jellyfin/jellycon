@@ -97,6 +97,7 @@ while not xbmc.abortRequested:
 
     try:
         if xbmc.Player().isPlaying():
+            last_random_movie_update = time.time() - (random_movie_list_interval - 15)
             # if playing every 10 seconds updated the server with progress
             if (time.time() - last_progress_update) > 10:
                 last_progress_update = time.time()
@@ -112,7 +113,7 @@ while not xbmc.abortRequested:
                     prev_user_id = home_window.getProperty("userid")
                     user_changed = True
 
-                if random_movie_list_interval != 0 and (user_changed or (time.time() - last_random_movie_update) > random_movie_list_interval):
+                if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_movie_update) > random_movie_list_interval):
                     last_random_movie_update = time.time()
                     set_random_movies()
 
@@ -120,7 +121,7 @@ while not xbmc.abortRequested:
                     last_content_check = time.time()
                     library_change_monitor.check_for_updates()
 
-                if background_interval != 0 and (user_changed or (time.time() - last_background_update) > background_interval):
+                if user_changed or (background_interval != 0 and (time.time() - last_background_update) > background_interval):
                     last_background_update = time.time()
                     set_library_window_values(user_changed)
                     set_background_image(user_changed)
@@ -131,6 +132,7 @@ while not xbmc.abortRequested:
                     websocket_client.start()
 
             elif screen_saver_active:
+                last_random_movie_update = time.time() - (random_movie_list_interval - 15)
                 if background_interval != 0 and ((time.time() - last_background_update) > background_interval):
                     last_background_update = time.time()
                     set_background_image(False)
