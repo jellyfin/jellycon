@@ -487,6 +487,7 @@ class WebSocket(object):
             userAndPass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
             headers.append("Authorization: Basic %s" % userAndPass)
 
+        headers.append("User-Agent: EmbyConWebSocket")
         headers.append("Upgrade: websocket")
         headers.append("Connection: Upgrade")
         if port == 80:
