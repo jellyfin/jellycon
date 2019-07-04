@@ -190,13 +190,14 @@ class CacheArtwork(threading.Thread):
         log.debug("cache_artwork_background")
         dp = xbmcgui.DialogProgressBG()
         dp.create(string_load(30301), "")
+        result_text = None
         try:
             result_text = self.cache_artwork(dp)
         except Exception as err:
             log.error("Cache Images Failed : {0}", err)
         dp.close()
         del dp
-        if result_text:
+        if result_text is not None:
             log.debug("Cache Images reuslt : {0}", " - ".join(result_text))
 
     def get_emby_artwork(self, progress):
@@ -338,8 +339,9 @@ class CacheArtwork(threading.Thread):
             log.debug("Get Image Result: {0}", data.status)
 
             index += 1
+            # if progress.iscanceled():
             # if "iscanceled" in dir(progress) and progress.iscanceled():
-            if progress.iscanceled():
+            if isinstance(progress, xbmcgui.DialogProgress) and progress.iscanceled():
                 break
 
             if self.stop_all_activity:
