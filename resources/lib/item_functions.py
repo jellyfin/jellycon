@@ -349,7 +349,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
         if item_details.name_format:
             u += '&name_format=' + urllib.quote(item_details.name_format)
     else:
-        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY" + "&session_id=" + home_window.getProperty("session_id")
+        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"# + "&session_id=" + home_window.getProperty("session_id")
 
     # Create the ListItem that will be displayed
     thumbPath = item_details.art["thumb"]

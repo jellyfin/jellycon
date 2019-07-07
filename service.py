@@ -64,7 +64,8 @@ last_random_movie_update = 0
 
 # session id
 # TODO: this is used to append to the end of PLAY urls, this is to stop mark watched from overriding the Emby ones
-home_window.setProperty("session_id", str(time.time()))
+# this shold no longer be needed with the fix for ListItem items using the play status from the ListItem instead of the DB
+# home_window.setProperty("session_id", str(time.time()))
 
 # start the library update monitor
 library_change_monitor = LibraryChangeMonitor()
