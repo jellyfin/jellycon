@@ -21,8 +21,11 @@ from resources.lib.menu_functions import set_library_window_values
 from resources.lib.context_monitor import ContextMonitor
 from resources.lib.server_detect import checkServer
 from resources.lib.library_change_monitor import LibraryChangeMonitor
+from resources.lib.datamanager import clear_old_cache_data
 
 settings = xbmcaddon.Addon()
+
+clear_old_cache_data()
 
 # clear user and token when logging in
 home_window = HomeWindow()

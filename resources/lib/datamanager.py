@@ -28,9 +28,11 @@ class CacheItem:
     item_list = None
     item_list_hash = None
     date_saved = None
+    date_last_used = None
     last_action = None
     items_url = None
     file_path = None
+    user_id = None
 
     def __init__(self, *args):
         pass
@@ -96,7 +98,7 @@ class DataManager:
                     item_list = cache_item.item_list
                     total_records = cache_item.total_records
                 except Exception as err:
-                    log.debug("Pickle Data Load Failed : {0}", err)
+                    log.error("Pickle Data Load Failed : {0}", err)
                     item_list = None
 
         # we need to load the list item data form the server
@@ -128,8 +130,10 @@ class DataManager:
             cache_item.item_list = item_list
             cache_item.file_path = cache_file
             cache_item.items_url = url
+            cache_item.user_id = user_id
             cache_item.last_action = "fresh_data"
             cache_item.date_saved = time.time()
+            cache_item.date_last_used = time.time()
             cache_item.total_records = total_records
 
             cache_thread.cached_item = cache_item
@@ -178,6 +182,7 @@ class CacheManagerThread(threading.Thread):
     def run(self):
 
         log.debug("CacheManagerThread : Started")
+        # log.debug("CacheManagerThread : Cache Item : {0}", self.cached_item.__dict__)
 
         home_window = HomeWindow()
         is_fresh = False
@@ -195,6 +200,7 @@ class CacheManagerThread(threading.Thread):
             self.cached_item.item_list_hash = cached_hash
             self.cached_item.last_action = "cached_data"
             self.cached_item.date_saved = time.time()
+            self.cached_item.date_last_used = time.time()
 
             loops = self.wait_for_save(home_window, self.cached_item.file_path)
 
@@ -240,6 +246,7 @@ class CacheManagerThread(threading.Thread):
                 self.cached_item.item_list_hash = loaded_hash
                 self.cached_item.last_action = "fresh_data"
                 self.cached_item.date_saved = time.time()
+                self.cached_item.date_last_used = time.time()
                 self.cached_item.total_records = total_records
 
                 # we need to refresh but will wait until the main function has finished
@@ -251,6 +258,14 @@ class CacheManagerThread(threading.Thread):
                 home_window.clearProperty(self.cached_item.file_path)
                 log.debug("CacheManagerThread : Sending container refresh ({0})", loops)
                 xbmc.executebuiltin("Container.Refresh")
+
+            else:
+                self.cached_item.date_last_used = time.time()
+                loops = self.wait_for_save(home_window, self.cached_item.file_path)
+                with open(self.cached_item.file_path, 'wb') as handle:
+                    cPickle.dump(self.cached_item, handle, protocol=cPickle.HIGHEST_PROTOCOL)
+                log.debug("CacheManagerThread : Updating last used date for cache data ({0})", loops)
+                home_window.clearProperty(self.cached_item.file_path)
 
         log.debug("CacheManagerThread : Exited")
 
@@ -271,5 +286,31 @@ def clear_cached_server_data():
     msg = string_load(30394) % del_count
     xbmcgui.Dialog().ok(string_load(30393), msg)
 
+
+def clear_old_cache_data():
+    log.debug("clear_old_cache_data() called")
+
+    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    dirs, files = xbmcvfs.listdir(addon_dir)
+
+    del_count = 0
+    for filename in files:
+        if filename.startswith("cache_") and filename.endswith(".pickle"):
+            log.debug("Checking CacheFile: {0}", filename)
+
+            with open(os.path.join(addon_dir, filename), 'rb') as handle:
+                cache_item = cPickle.load(handle)
+
+            item_last_used = -1
+            if cache_item.date_last_used is not None:
+                item_last_used = time.time() - cache_item.date_last_used
+
+            log.debug("Cache item last used : {0} sec ago", item_last_used)
+            if item_last_used == -1 or item_last_used > (3600 * 24 * 7):
+                log.debug("Deleting cache item age : {0}", item_last_used)
+                xbmcvfs.delete(os.path.join(addon_dir, filename))
+                del_count += 1
+
+    log.debug("Cache items deleted : {0}", del_count)
 
 

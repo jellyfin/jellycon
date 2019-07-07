@@ -18,7 +18,7 @@ from .resume_dialog import ResumeDialog
 from .utils import PlayUtils, getArt, id_generator, send_event_notification
 from .kodi_utils import HomeWindow
 from .translation import string_load
-from .datamanager import DataManager
+from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
 from .functions import delete, markWatched, markUnwatched
@@ -1091,6 +1091,8 @@ class PlaybackService(xbmc.Monitor):
                     player.stop()
 
         #xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
+
+        clear_old_cache_data()
 
         cache_images = settings.getSetting('cacheImagesOnScreenSaver') == 'true'
         if cache_images:
