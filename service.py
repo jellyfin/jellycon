@@ -75,7 +75,7 @@ library_change_monitor = LibraryChangeMonitor()
 library_change_monitor.start()
 
 # start the WebSocket Client running
-remote_control = settings.getSetting('remoteControl') == "true"
+remote_control = settings.getSetting('websocket_enabled') == "true"
 websocket_client = WebSocketClient(library_change_monitor)
 if remote_control:
     websocket_client.start()
@@ -88,8 +88,8 @@ if context_menu:
     context_monitor.start()
 
 background_interval = int(settings.getSetting('background_interval'))
-newcontent_interval = int(settings.getSetting('newcontent_interval'))
-random_movie_list_interval = int(settings.getSetting('random_movie_list_interval'))
+newcontent_interval = int(settings.getSetting('new_content_check_interval'))
+random_movie_list_interval = int(settings.getSetting('random_movie_refresh_interval'))
 random_movie_list_interval = random_movie_list_interval * 60
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
