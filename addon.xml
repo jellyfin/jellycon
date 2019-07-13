@@ -20,5 +20,9 @@
     <source>https://github.com/faush01/plugin.video.embycon</source>
     <summary lang="en_GB">Browse and play your Emby server media library.</summary>
     <description lang="en_GB">An addon to allow you to browse and playback your Emby (www.emby.media) Movie, TV Show and Music collections.</description>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
   </extension>
 </addon>
