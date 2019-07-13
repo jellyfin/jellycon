@@ -739,7 +739,7 @@ msgid "Kodi Settings->Services->Allow remote control via HTTP"
 msgstr ""
 
 msgctxt "#30356"
-msgid ""Loading existing image list""
+msgid "Loading existing image list"
 msgstr ""
 
 msgctxt "#30357"
