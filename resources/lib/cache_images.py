@@ -203,8 +203,7 @@ class CacheArtwork(threading.Thread):
     def get_emby_artwork(self, progress):
         log.debug("get_emby_artwork")
 
-        url = ('{server}/emby/Users/{userid}/Items?' +
-            '&Recursive=true' +
+        url = ('{server}/emby/Users/{userid}/Items?Recursive=true' +
             '&IncludeItemTypes=Movie,Series,Episode,BoxSet' +
             '&ImageTypeLimit=1' +
             '&format=json')
