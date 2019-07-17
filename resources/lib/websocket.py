@@ -909,7 +909,6 @@ class WebSocketApp(object):
                     found_timeout = False
                     for arg in e.args:
                         if isinstance(arg, str):
-                            print str(arg)
                             if "timed out" in arg:
                                 found_timeout = True
                     if not found_timeout:
