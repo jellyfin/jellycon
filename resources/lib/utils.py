@@ -50,20 +50,29 @@ class PlayUtils():
         media_source_id = media_source.get("Id")
         log.debug("media_source_id: {0}", media_source_id)
 
-        is_h265 = False
-        streams = media_source.get("MediaStreams", [])
-        for stream in streams:
-            if stream.get("Type", "") == "Video" and stream.get("Codec", "") in ["hevc", "h265"]:
-                is_h265 = True
-                break
-        if is_h265:
-            log.debug("H265_IS_TRUE")
-            h265_action = addonSettings.getSetting("h265_action")
-            if h265_action == "1":
-                log.debug("H265 override play action: setting to Direct Streaming")
-                playback_type = "1"
-            elif h265_action == "2":
-                log.debug("H265 override play action: setting to Transcode Streaming")
+        force_transcode_codecs = []
+        if addonSettings.getSetting("force_transcode_h265") == "true":
+            force_transcode_codecs.append("hevc")
+            force_transcode_codecs.append("h265")
+        if addonSettings.getSetting("force_transcode_mpeg2") == "true":
+            force_transcode_codecs.append("mpeg2video")
+        if addonSettings.getSetting("force_transcode_msmpeg4v3") == "true":
+            force_transcode_codecs.append("msmpeg4v3")
+        if addonSettings.getSetting("force_transcode_mpeg4") == "true":
+            force_transcode_codecs.append("mpeg4")
+
+        if len(force_transcode_codecs) > 0:
+            codec_force_transcode = False
+            codec_name = ""
+            streams = media_source.get("MediaStreams", [])
+            for stream in streams:
+                if stream.get("Type", "") == "Video":
+                    codec_name = stream.get("Codec", "").lower()
+                    if codec_name in force_transcode_codecs:
+                        codec_force_transcode = True
+                        break
+            if codec_force_transcode:
+                log.debug("codec_force_transcode: {0}", codec_name)
                 playback_type = "2"
 
         if force_transcode:

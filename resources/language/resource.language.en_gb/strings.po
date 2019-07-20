@@ -170,10 +170,6 @@ msgctxt "#30126"
 msgid "Processing Item : "
 msgstr ""
 
-msgctxt "#30129"
-msgid "Default"
-msgstr ""
-
 msgctxt "#30135"
 msgid "Error"
 msgstr ""
@@ -307,7 +303,7 @@ msgid "Episodes"
 msgstr ""
 
 msgctxt "#30236"
-msgid "Action for h265(hevc) video files"
+msgid "Force transcode h265(hevc)"
 msgstr ""
 
 msgctxt "#30237"
@@ -316,6 +312,18 @@ msgstr ""
 
 msgctxt "#30238"
 msgid "Playback Options"
+msgstr ""
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr ""
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3(divx)"
+msgstr ""
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
 msgstr ""
 
 msgctxt "#30246"
@@ -896,10 +904,6 @@ msgstr ""
 
 msgctxt "#30395"
 msgid "Clear cached server data"
-msgstr ""
-
-msgctxt "#30396"
-msgid "Page"
 msgstr ""
 
 msgctxt "#30397"
