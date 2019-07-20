@@ -10,6 +10,6 @@ Select-String -path resources\language\resource.language.en_gb\strings.po -patte
 	else
 	{
 	   $string_ids += $id
-	   Get-ChildItem *.py,settings.xml,strings.po -recurse | Select-String -pattern $id | group Pattern | where {$_.Count -eq 1} | select Name, Count
+	   Get-ChildItem *.py,settings.xml,resources\language\resource.language.en_gb\strings.po -recurse | Select-String -pattern $id | group Pattern | where {$_.Count -eq 1} | select Name, Count
 	}
 }
