@@ -288,7 +288,7 @@ def clear_cached_server_data():
 
 
 def clear_old_cache_data():
-    log.debug("clear_old_cache_data() called")
+    log.debug("clear_old_cache_data() : called")
 
     addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
     dirs, files = xbmcvfs.listdir(addon_dir)
@@ -296,21 +296,33 @@ def clear_old_cache_data():
     del_count = 0
     for filename in files:
         if filename.startswith("cache_") and filename.endswith(".pickle"):
-            log.debug("Checking CacheFile: {0}", filename)
+            log.debug("clear_old_cache_data() : Checking CacheFile : {0}", filename)
 
-            with open(os.path.join(addon_dir, filename), 'rb') as handle:
-                cache_item = cPickle.load(handle)
+            cache_item = None
+            for x in range(0, 5):
+                try:
+                    with open(os.path.join(addon_dir, filename), 'rb') as handle:
+                        cache_item = cPickle.load(handle)
+                    break
+                except Exception as error:
+                    log.debug("clear_old_cache_data() : Pickle load error : {0}", error)
+                    cache_item = None
+                    xbmc.sleep(1000)
 
-            item_last_used = -1
-            if cache_item.date_last_used is not None:
-                item_last_used = time.time() - cache_item.date_last_used
+            if cache_item is not None:
+                item_last_used = -1
+                if cache_item.date_last_used is not None:
+                    item_last_used = time.time() - cache_item.date_last_used
 
-            log.debug("Cache item last used : {0} sec ago", item_last_used)
-            if item_last_used == -1 or item_last_used > (3600 * 24 * 7):
-                log.debug("Deleting cache item age : {0}", item_last_used)
+                log.debug("clear_old_cache_data() : Cache item last used : {0} sec ago", item_last_used)
+                if item_last_used == -1 or item_last_used > (3600 * 24 * 7):
+                    log.debug("clear_old_cache_data() : Deleting cache item age : {0}", item_last_used)
+                    xbmcvfs.delete(os.path.join(addon_dir, filename))
+                    del_count += 1
+            else:
+                log.debug("clear_old_cache_data() : Deleting unloadable cache item")
                 xbmcvfs.delete(os.path.join(addon_dir, filename))
-                del_count += 1
 
-    log.debug("Cache items deleted : {0}", del_count)
+    log.debug("clear_old_cache_data() : Cache items deleted : {0}", del_count)
 
 

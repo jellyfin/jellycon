@@ -25,8 +25,6 @@ from resources.lib.datamanager import clear_old_cache_data
 
 settings = xbmcaddon.Addon()
 
-clear_old_cache_data()
-
 # clear user and token when logging in
 home_window = HomeWindow()
 home_window.clearProperty("userid")
@@ -35,6 +33,11 @@ home_window.clearProperty("Params")
 
 log = SimpleLogging('service')
 monitor = xbmc.Monitor()
+
+try:
+    clear_old_cache_data()
+except Exception as error:
+    log.error("Error in clear_old_cache_data() : {0}", error)
 
 # wait for 10 seconds for the Kodi splash screen to close
 i = 0
