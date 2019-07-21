@@ -356,37 +356,51 @@ def playFile(play_info, monitor):
     list_item.setPath(playurl)
     list_item = setListItemProps(id, list_item, result, server, listitem_props, item_title)
 
+    player = xbmc.Player()
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
     playlist.add(playurl, list_item)
-    xbmc.Player().play(playlist)
+    player.play(playlist)
 
     send_next_episode_details(result)
 
     if seekTime == 0:
         return
 
+    monitor = xbmc.Monitor()
     count = 0
-    while not xbmc.Player().isPlaying():
-        log.debug("Not playing yet...sleep for 1 sec")
+    while not player.isPlaying() and not monitor.abortRequested() and count != 100:
         count = count + 1
-        if count >= 10:
-            return
-        else:
-            xbmc.Monitor().waitForAbort(1)
-
-    seekTime = seekTime - jump_back_amount
-
-    target_seek = (seekTime - 5)
-    current_position = 0
-    while current_position < target_seek:
-        # xbmc.Player().pause()
         xbmc.sleep(100)
-        xbmc.Player().seekTime(seekTime)
-        xbmc.sleep(100)
-        # xbmc.Player().play()
-        current_position = xbmc.Player().getTime()
-        log.debug("Playback_Start_Seek target:{0} current:{1}", target_seek, current_position)
+
+    if count == 100 or not player.isPlaying() or monitor.abortRequested():
+        log.info("PlaybackResumrAction : Playback item did not get to a play state in 10 seconds so exiting")
+        player.stop()
+        return
+
+    log.info("PlaybackResumrAction : Playback is Running")
+
+    seek_to_time = seekTime - jump_back_amount
+    target_seek = (seek_to_time - 10)
+    player.pause()
+    count = 0
+    while not monitor.abortRequested() and player.isPlaying() and count != 20:
+        log.info("PlaybackResumrAction : Seeking to : {0}", seek_to_time)
+        player.seekTime(seek_to_time)
+        current_position = player.getTime()
+        if current_position >= target_seek:
+            break
+        log.info("PlaybackResumrAction : target:{0} current:{1}", target_seek, current_position)
+        count = count + 1
+        xbmc.sleep(500)
+
+    if count == 20:
+        log.info("PlaybackResumrAction : Playback could not seek to required position")
+        player.stop()
+    else:
+        log.info("PlaybackResumrAction : Playback Resumed")
+        player.pause()
+
 
 def get_next_episode(item):
 
