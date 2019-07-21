@@ -398,8 +398,17 @@ def playFile(play_info, monitor):
         log.info("PlaybackResumrAction : Playback could not seek to required position")
         player.stop()
     else:
-        log.info("PlaybackResumrAction : Playback Resumed")
-        player.pause()
+        count = 0
+        while bool(xbmc.getCondVisibility("Player.Paused")) and count != 20:
+            log.info("PlaybackResumrAction : Unpausing playback")
+            player.pause()
+            xbmc.sleep(500)
+            count = count + 1
+
+        if count == 20:
+            log.info("PlaybackResumrAction : Could not unpause")
+        else:
+            log.info("PlaybackResumrAction : Playback resumed")
 
 
 def get_next_episode(item):
