@@ -700,28 +700,6 @@ def search_results(params):
         return
 
     limit = int(params.get('limit', 20))
-    content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
-                   '&UserId={userid}' +
-                   '&Limit=' + str(limit) +
-                   '&IncludeItemTypes=' + item_type +
-                   '&ExcludeItemTypes=LiveTvProgram' +
-                   '&IncludePeople=false' +
-                   '&IncludeMedia=true' +
-                   '&IncludeGenres=false' +
-                   '&IncludeStudios=false' +
-                   '&IncludeArtists=false')
-
-    if item_type == "person":
-        content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
-                       '&UserId={userid}' +
-                       '&Limit=' + str(limit) +
-                       '&IncludePeople=true' +
-                       '&IncludeMedia=false' +
-                       '&IncludeGenres=false' +
-                       '&IncludeStudios=false' +
-                       '&IncludeArtists=false')
-
-
 
     # show a progress indicator if needed
     settings = xbmcaddon.Addon()
@@ -731,28 +709,36 @@ def search_results(params):
         progress.create(string_load(30112))
         progress.update(0, string_load(30113))
 
-    search_hints_result = dataManager.GetContent(content_url)
-    log.debug('SearchHints jsonData: {0}', search_hints_result)
-
-    if search_hints_result is None:
-        search_hints_result = {}
-
-    search_hints = search_hints_result.get('SearchHints')
-    if search_hints is None:
-        search_hints = []
-
-    total_results = int(search_hints_result.get('TotalRecordCount', 0))
-    log.debug('SEARCH_TOTAL_RESULTS: {0}', total_results)
-
-    # what type of search was it
+    # what type of search
     if item_type == "person":
-        log.debug("Item Search Result")
+        search_url = ("{server}/emby/Persons" +
+                      "?searchTerm=" + query +
+                      "&IncludePeople=true" +
+                      "&IncludeMedia=false" +
+                      "&IncludeGenres=false" +
+                      "&IncludeStudios=false" +
+                      "&IncludeArtists=false" +
+                      "&Limit=16" +
+                      "&Fields=PrimaryImageAspectRatio,BasicSyncInfo,ProductionYear" +
+                      "&Recursive=true" +
+                      "&EnableTotalRecordCount=false" +
+                      "&ImageTypeLimit=1" +
+                      "&userId={userid}")
+
+        person_search_results = dataManager.GetContent(search_url)
+        log.debug("Person Search Result : {0}", person_search_results)
+        if person_search_results is None:
+            return
+
+        person_items = person_search_results.get("Items", [])
+
         server = downloadUtils.getServer()
         list_items = []
-        for item in search_hints:
-            person_id = item.get('ItemId')
+        for item in person_items:
+            person_id = item.get('Id')
             person_name = item.get('Name')
-            image_tag = item.get('PrimaryImageTag')
+            image_tags = item.get('ImageTags', {})
+            image_tag = image_tags.get('PrimaryImageTag', '')
             person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, image_tag, server=server)
 
             action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
@@ -768,38 +754,37 @@ def search_results(params):
             item_tupple = (action_url, list_item, True)
             list_items.append(item_tupple)
 
-        xbmcplugin.setContent(handle, 'artists')
-        xbmcplugin.addDirectoryItems(handle, list_items)
-        xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+        if len(list_items) > 0:
+            xbmcplugin.setContent(handle, 'artists')
+            xbmcplugin.addDirectoryItems(handle, list_items)
+            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+        else:
+            xbmcgui.Dialog().ok(string_load(30335), string_load(30336))
 
     else:
-        # extract IDs for details query
-        log.debug("Item Search Result")
-        id_list = []
-        for item in search_hints:
-            item_id = item.get('ItemId')
-            id_list.append(str(item_id))
+        search_url = ("{server}/emby/Users/{userid}/Items" +
+                      "?searchTerm=" + query +
+                      "&IncludePeople=false" +
+                      "&IncludeMedia=true" +
+                      "&IncludeGenres=false" +
+                      "&IncludeStudios=false" +
+                      "&IncludeArtists=false" +
+                      "&IncludeItemTypes=" + item_type +
+                      "&Limit=16" +
+                      "&Fields={field_filters}" +
+                      "&Recursive=true" +
+                      "&EnableTotalRecordCount=false" +
+                      "&ImageTypeLimit=1")
 
-        if len(id_list) > 0:
-            Ids = ",".join(id_list)
-            details_url = ('{server}/emby/Users/{userid}/items' +
-                           '?Ids=' + Ids +
-                           '&Fields={field_filters}' +
-                           '&format=json')
-            '''
-            details_result = dataManager.GetContent(details_url)
-            log.debug("Search Results Details: {0}", details_result)
-            '''
+        # set content type
+        xbmcplugin.setContent(handle, content_type)
 
-            # set content type
-            xbmcplugin.setContent(handle, content_type)
+        dir_items, detected_type, total_records = processDirectory(search_url, progress, params)
+        if dir_items is not None and len(dir_items) > 0:
+            xbmcplugin.addDirectoryItems(handle, dir_items)
+            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
-            dir_items, detected_type, total_records = processDirectory(details_url, progress, params)
-            if dir_items is not None:
-                xbmcplugin.addDirectoryItems(handle, dir_items)
-                xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-        elif not query_string:
+        else:
             xbmcgui.Dialog().ok(string_load(30335), string_load(30336))
 
     if progress is not None:
