@@ -754,12 +754,9 @@ def search_results(params):
             item_tupple = (action_url, list_item, True)
             list_items.append(item_tupple)
 
-        if len(list_items) > 0:
-            xbmcplugin.setContent(handle, 'artists')
-            xbmcplugin.addDirectoryItems(handle, list_items)
-            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-        else:
-            xbmcgui.Dialog().ok(string_load(30335), string_load(30336))
+        xbmcplugin.setContent(handle, 'artists')
+        xbmcplugin.addDirectoryItems(handle, list_items)
+        xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     else:
         search_url = ("{server}/emby/Users/{userid}/Items" +
@@ -778,14 +775,9 @@ def search_results(params):
 
         # set content type
         xbmcplugin.setContent(handle, content_type)
-
         dir_items, detected_type, total_records = processDirectory(search_url, progress, params)
-        if dir_items is not None and len(dir_items) > 0:
-            xbmcplugin.addDirectoryItems(handle, dir_items)
-            xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
-
-        else:
-            xbmcgui.Dialog().ok(string_load(30335), string_load(30336))
+        xbmcplugin.addDirectoryItems(handle, dir_items)
+        xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     if progress is not None:
         progress.update(100, string_load(30125))

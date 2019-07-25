@@ -654,14 +654,6 @@ msgctxt "#30334"
 msgid "Use EmbyCon context menu"
 msgstr ""
 
-msgctxt "#30335"
-msgid "No Matches"
-msgstr ""
-
-msgctxt "#30336"
-msgid "No items match your search."
-msgstr ""
-
 msgctxt "#30337"
 msgid "Song"
 msgstr ""
