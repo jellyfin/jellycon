@@ -14,7 +14,7 @@ from .simple_logging import SimpleLogging
 from . import clientinfo
 from . import downloadutils
 from .json_rpc import json_rpc
-from .library_change_monitor import LibraryChangeMonitor
+from .kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
 
@@ -76,6 +76,9 @@ class WebSocketClient(threading.Thread):
         command = data['PlayCommand']
 
         if command == 'PlayNow':
+            home_screen = HomeWindow()
+            home_screen.setProperty("skip_select_user", "true")
+
             startat = data.get('StartPositionTicks', 0)
             log.debug("WebSocket Message PlayNow: {0}", data)
 

@@ -1100,6 +1100,9 @@ class PlaybackService(xbmc.Monitor):
     def screensaver_activated(self):
         log.debug("Screen Saver Activated")
 
+        home_screen = HomeWindow()
+        home_screen.clearProperty("skip_select_user")
+
         settings = xbmcaddon.Addon()
         stop_playback = settings.getSetting("stopPlaybackOnScreensaver") == 'true'
 
@@ -1131,5 +1134,9 @@ class PlaybackService(xbmc.Monitor):
         settings = xbmcaddon.Addon()
         show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
         if show_change_user:
+            home_screen = HomeWindow()
+            skip_select_user = home_screen.getProperty("skip_select_user")
+            if skip_select_user is not None and skip_select_user == "true":
+                return
             xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
 
