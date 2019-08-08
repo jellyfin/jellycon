@@ -182,6 +182,16 @@ def playFile(play_info, monitor):
         result = data_manager.GetContent(url)
         id = result["Id"]
 
+    if result.get("Type") == "Photo":
+        play_url = "%s/emby/Items/%s/Images/Primary"
+        play_url = play_url % (server, id)
+
+        plugin_path = xbmc.translatePath(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
+        action_menu = PictureViewer("PictureViewer.xml", plugin_path, "default", "720p")
+        action_menu.setPicture(play_url)
+        action_menu.doModal()
+        return
+
     # get playback info from the server using the device profile
     playback_info = download_utils.get_item_playback_info(id)
     if playback_info is None:
@@ -195,16 +205,6 @@ def playFile(play_info, monitor):
     #media_sources = result.get('MediaSources')
     media_sources = playback_info.get('MediaSources')
     selected_media_source = None
-
-    if result.get("Type") == "Photo":
-        play_url = "%s/emby/Items/%s/Images/Primary"
-        play_url = play_url % (server, id)
-
-        plugin_path = xbmc.translatePath(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
-        action_menu = PictureViewer("PictureViewer.xml", plugin_path, "default", "720p")
-        action_menu.setPicture(play_url)
-        action_menu.doModal()
-        return
 
     if media_sources is None or len(media_sources) == 0:
         log.debug("Play Failed! There is no MediaSources data!")
