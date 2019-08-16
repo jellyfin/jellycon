@@ -475,7 +475,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             genres_list.append(urllib.quote(genre.encode('utf8')))
         item_properties["genres"] = urllib.quote("|".join(genres_list))
 
-        info_labels["genre"] = "/".join(item_details.genres)
+        info_labels["genre"] = " / ".join(item_details.genres)
 
     mediatype = 'video'
 
