@@ -605,7 +605,7 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
     downloadableStreams = []
     selectAudioIndex = audio_stream_index
     selectSubsIndex = subtitle_stream_index
-    playurlprefs = "%s" % url
+    playurlprefs = ""
     default_audio = media_source.get('DefaultAudioStreamIndex', 1)
     default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
     source_id = media_source["Id"]
@@ -667,10 +667,10 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
     if selectSubsIndex is not None:
         # Load subtitles in the listitem if downloadable
         if selectSubsIndex in downloadableStreams:
-            url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+            subtitle_url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
                     % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
-            log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
-            list_item.setSubtitles(url)
+            log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, subtitle_url)
+            list_item.setSubtitles(subtitle_url)
         else:
             # Burn subtitles
             playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
@@ -687,10 +687,10 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
 
             # Load subtitles in the listitem if downloadable
             if selectSubsIndex in downloadableStreams:
-                url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                subtitle_url = [("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
                         % (download_utils.getServer(), item_id, source_id, selectSubsIndex))]
-                log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, url)
-                list_item.setSubtitles(url)
+                log.debug("Streaming subtitles url: {0} {1}", selectSubsIndex, subtitle_url)
+                list_item.setSubtitles(subtitle_url)
             else:
                 # Burn subtitles
                 playurlprefs += "&SubtitleStreamIndex=%s" % selectSubsIndex
@@ -705,7 +705,12 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
     else:
         playurlprefs += "&AudioBitrate=192000"
 
-    return playurlprefs
+    if url.find("|verifypeer=false"):
+        new_url = url.replace("|verifypeer=false", playurlprefs + "|verifypeer=false")
+    else:
+        new_url = url + playurlprefs
+
+    return new_url
 
 
 # direct stream, set any available subtitle streams
