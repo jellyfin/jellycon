@@ -739,17 +739,19 @@ def search_results(params):
             person_name = item.get('Name')
             image_tags = item.get('ImageTags', {})
             image_tag = image_tags.get('PrimaryImageTag', '')
-            person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, image_tag, server=server)
+            person_thumbnail = downloadUtils.getArtwork(item, "Primary", server=server)
 
             action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
 
             list_item = xbmcgui.ListItem(label=person_name)
             list_item.setProperty("id", person_id)
+
+            art_links = {}
+            art_links["icon"] = "DefaultActor.png"
             if person_thumbnail:
-                art_links = {}
                 art_links["thumb"] = person_thumbnail
                 art_links["poster"] = person_thumbnail
-                list_item.setArt(art_links)
+            list_item.setArt(art_links)
 
             item_tupple = (action_url, list_item, True)
             list_items.append(item_tupple)
