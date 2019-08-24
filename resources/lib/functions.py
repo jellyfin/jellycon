@@ -389,6 +389,10 @@ def show_menu(params):
         li.setProperty('menu_id', 'hide')
         action_items.append(li)
 
+    li = xbmcgui.ListItem(string_load(30401))
+    li.setProperty('menu_id', 'info')
+    action_items.append(li)
+
     #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
@@ -505,6 +509,8 @@ def show_menu(params):
     elif selected_action == "refresh_images":
         CacheArtwork().delete_cached_images(item_id)
 
+    elif selected_action == "info":
+        xbmc.executebuiltin("Action(info)")
 
 def populate_listitem(item_id):
     log.debug("populate_listitem: {0}", item_id)

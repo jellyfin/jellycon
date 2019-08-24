@@ -913,3 +913,7 @@ msgstr ""
 msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
 msgstr ""
+
+msgctxt "#30401"
+msgid "Info"
+msgstr ""
