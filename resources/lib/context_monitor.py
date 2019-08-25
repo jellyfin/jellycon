@@ -26,6 +26,25 @@ class ContextMonitor(threading.Thread):
                 xbmc.sleep(1000)
             else:
                 if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
+                    if item_id:
+                        xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
+                        params = {}
+                        params["item_id"] = item_id
+                        show_menu(params)
+
+                container_id = xbmc.getInfoLabel("System.CurrentControlID")
+                item_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(id)")
+
+                xbmc.sleep(100)
+
+        '''
+
+        while not xbmc.abortRequested and not self.stop_thread:
+
+            if xbmc.getCondVisibility("Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)"):
+                xbmc.sleep(1000)
+            else:
+                if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
                     context_up = True
                     if is_embycon_item:
                         xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
@@ -48,6 +67,8 @@ class ContextMonitor(threading.Thread):
                 is_embycon_item = xbmc.getCondVisibility(condition)
 
                 xbmc.sleep(200)
+                
+        '''
 
         log.debug("ContextMonitor Thread Exited")
 
