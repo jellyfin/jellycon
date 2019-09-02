@@ -34,6 +34,9 @@ class CacheArtwork(threading.Thread):
         self.stop_all_activity = False
         super(CacheArtwork, self).__init__()
 
+    def stop_activity(self):
+        self.stop_all_activity = True
+
     def run(self):
         log.debug("CacheArtwork background thread started")
         last_update = 0
@@ -42,15 +45,22 @@ class CacheArtwork(threading.Thread):
         latest_content_hash = "never"
         check_interval = int(settings.getSetting('cacheImagesOnScreenSaver_interval'))
         check_interval = check_interval * 60
+        monitor = xbmc.Monitor()
 
-        while not self.stop_all_activity and not xbmc.abortRequested:
+        while not self.stop_all_activity and not monitor.abortRequested():
             content_hash = home_window.getProperty("embycon_widget_reload")
             if (check_interval != 0 and (time.time() - last_update) > check_interval) or (latest_content_hash != content_hash):
+                log.debug("CacheArtwork background thread - triggered")
+                if monitor.waitForAbort(10):
+                    break
+                if self.stop_all_activity or monitor.abortRequested():
+                    break
                 self.cache_artwork_background()
                 last_update = time.time()
                 latest_content_hash = content_hash
 
-            xbmc.sleep(1000)
+            monitor.waitForAbort(1)
+
         log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
 
     def delete_cached_images(self, item_id):

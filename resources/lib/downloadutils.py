@@ -396,7 +396,7 @@ class DownloadUtils:
 
 
         if not imageTag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):  # ParentTag not passed for Banner and Art
-            log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
+            # log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
         artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)

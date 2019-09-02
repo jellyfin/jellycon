@@ -1133,7 +1133,7 @@ class PlaybackService(xbmc.Monitor):
         log.debug("Screen Saver Deactivated")
 
         if self.background_image_cache_thread:
-            self.background_image_cache_thread.stop_all_activity = True
+            self.background_image_cache_thread.stop_activity()
             self.background_image_cache_thread = None
 
         settings = xbmcaddon.Addon()
