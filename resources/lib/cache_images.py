@@ -46,8 +46,9 @@ class CacheArtwork(threading.Thread):
         check_interval = int(settings.getSetting('cacheImagesOnScreenSaver_interval'))
         check_interval = check_interval * 60
         monitor = xbmc.Monitor()
+        monitor.waitForAbort(5)
 
-        while not self.stop_all_activity and not monitor.abortRequested():
+        while not self.stop_all_activity and not monitor.abortRequested() and xbmc.getCondVisibility("System.ScreenSaverActive"):
             content_hash = home_window.getProperty("embycon_widget_reload")
             if (check_interval != 0 and (time.time() - last_update) > check_interval) or (latest_content_hash != content_hash):
                 log.debug("CacheArtwork background thread - triggered")
@@ -59,7 +60,7 @@ class CacheArtwork(threading.Thread):
                 last_update = time.time()
                 latest_content_hash = content_hash
 
-            monitor.waitForAbort(1)
+            monitor.waitForAbort(5)
 
         log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
 
