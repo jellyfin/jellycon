@@ -14,7 +14,7 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language>en</language>
-    <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+    <license>GPL-2.0-only</license>
     <forum>https://github.com/faush01/plugin.video.embycon/issues</forum>
     <website>https://github.com/faush01/plugin.video.embycon/wiki</website>
     <source>https://github.com/faush01/plugin.video.embycon</source>
