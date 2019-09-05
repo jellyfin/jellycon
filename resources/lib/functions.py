@@ -510,6 +510,7 @@ def show_menu(params):
         CacheArtwork().delete_cached_images(item_id)
 
     elif selected_action == "info":
+        xbmc.executebuiltin("Dialog.Close(all,true)")
         xbmc.executebuiltin("Action(info)")
 
 def populate_listitem(item_id):
