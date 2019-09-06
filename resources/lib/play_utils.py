@@ -381,7 +381,8 @@ def playFile(play_info, monitor):
         target_seek = (seek_to_time - 10)
 
         count = 0
-        while not monitor.abortRequested() and player.isPlaying() and count != 20:
+        max_loops = 2 * 120
+        while not monitor.abortRequested() and player.isPlaying() and count < max_loops:
             log.info("PlaybackResumrAction : Seeking to : {0}", seek_to_time)
             player.seekTime(seek_to_time)
             current_position = player.getTime()
@@ -391,18 +392,18 @@ def playFile(play_info, monitor):
             count = count + 1
             xbmc.sleep(500)
 
-        if count == 20:
+        if count == max_loops:
             log.info("PlaybackResumrAction : Playback could not seek to required position")
             player.stop()
         else:
             count = 0
-            while bool(xbmc.getCondVisibility("Player.Paused")) and count != 10:
+            while bool(xbmc.getCondVisibility("Player.Paused")) and count < 10:
                 log.info("PlaybackResumrAction : Unpausing playback")
                 player.pause()
                 xbmc.sleep(1000)
                 count = count + 1
 
-            if count == 20:
+            if count == 10:
                 log.info("PlaybackResumrAction : Could not unpause")
             else:
                 log.info("PlaybackResumrAction : Playback resumed")
