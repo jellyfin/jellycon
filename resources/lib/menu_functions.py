@@ -490,6 +490,22 @@ def getCollections():
                          '&format=json'),
                 'media_type': collection_type})
 
+        if collection_type == "musicvideos":
+            collections.append({
+                'title': string_load(30311) + item_name,
+                'art': art,
+                'path': ('{server}/emby/Users/{userid}/Items' +
+                         '?ParentId=' + item.get("Id") +
+                         '&IsVirtualUnaired=false' +
+                         '&Recursive=false' +
+                         '&IsMissing=False' +
+                         '&Fields={field_filters}' +
+                         '&ImageTypeLimit=1' +
+                         '&SortBy=Name' +
+                         '&SortOrder=Ascending' +
+                         '&format=json'),
+                'media_type': collection_type})
+
         if collection_type == "homevideos":
             collections.append({
                 'title': string_load(30311) + item_name,
