@@ -798,6 +798,10 @@ def sendProgress(monitor):
     playback_type = play_data.get("playback_type")
     play_session_id = play_data.get("play_session_id")
 
+    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    playlist_position = playlist.getposition()
+    playlist_size = playlist.size()
+
     postdata = {
         'QueueableMediaTypes': "Video",
         'CanSeek': True,
@@ -808,7 +812,9 @@ def sendProgress(monitor):
         'IsPaused': paused,
         'IsMuted': False,
         'PlayMethod': playback_type,
-        'PlaySessionId': play_session_id
+        'PlaySessionId': play_session_id,
+        'PlaylistIndex': playlist_position,
+        'PlaylistLength': playlist_size
     }
 
     log.debug("Sending POST progress started: {0}", postdata)
