@@ -917,3 +917,7 @@ msgstr ""
 msgctxt "#30401"
 msgid "Info"
 msgstr ""
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr ""
