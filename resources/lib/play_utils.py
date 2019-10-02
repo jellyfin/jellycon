@@ -44,6 +44,12 @@ def playAllFiles(items, monitor):
         if playback_info is None:
             log.debug("playback_info was None, could not get MediaSources so can not play!")
             return
+        if playback_info.get("ErrorCode") is not None:
+            error_string = playback_info.get("ErrorCode")
+            xbmcgui.Dialog().notification(string_load(30316),
+                                          error_string,
+                                          icon="special://home/addons/plugin.video.embycon/icon.png")
+            return
 
         # play_session_id = id_generator()
         play_session_id = playback_info.get("PlaySessionId")
@@ -140,6 +146,12 @@ def add_to_playlist(play_info, monitor):
     playback_info = download_utils.get_item_playback_info(item_id)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
+        return
+    if playback_info.get("ErrorCode") is not None:
+        error_string = playback_info.get("ErrorCode")
+        xbmcgui.Dialog().notification(string_load(30316),
+                                      error_string,
+                                      icon="special://home/addons/plugin.video.embycon/icon.png")
         return
 
     # play_session_id = id_generator()
@@ -279,6 +291,12 @@ def playFile(play_info, monitor):
     playback_info = download_utils.get_item_playback_info(id)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
+        return
+    if playback_info.get("ErrorCode") is not None:
+        error_string = playback_info.get("ErrorCode")
+        xbmcgui.Dialog().notification(string_load(30316),
+                                      error_string,
+                                      icon="special://home/addons/plugin.video.embycon/icon.png")
         return
 
     #play_session_id = id_generator()
