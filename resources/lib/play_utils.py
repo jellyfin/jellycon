@@ -24,6 +24,7 @@ from .clientinfo import ClientInformation
 from .functions import delete, markWatched, markUnwatched
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
+from .tracking import timer
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -211,6 +212,7 @@ def add_to_playlist(play_info, monitor):
     playlist.add(playurl, list_item)
 
 
+@timer
 def playFile(play_info, monitor):
 
     id = play_info.get("item_id")

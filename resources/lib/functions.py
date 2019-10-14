@@ -34,6 +34,7 @@ from .widgets import getWidgetContent, get_widget_content_cast, checkForNewConte
 from . import trakttokodi
 from .cache_images import CacheArtwork
 from .dir_functions import getContent, processDirectory
+from .tracking import timer
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -48,6 +49,7 @@ downloadUtils = DownloadUtils()
 dataManager = DataManager()
 
 
+@timer
 def mainEntryPoint():
     log.debug("===== EmbyCon START =====")
 

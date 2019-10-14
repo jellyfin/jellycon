@@ -15,6 +15,7 @@ from .datamanager import DataManager
 from .simple_logging import SimpleLogging
 from .kodi_utils import HomeWindow
 from .dir_functions import processDirectory
+from .tracking import timer
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -25,6 +26,7 @@ background_items = []
 background_current_item = 0
 
 
+@timer
 def set_random_movies():
     log.debug("set_random_movies Called")
 
@@ -112,6 +114,7 @@ def set_background_image(force=False):
         home_window.setProperty("random-gb-label", label)
 
 
+@timer
 def checkForNewContent():
     log.debug("checkForNewContent Called")
 
@@ -176,6 +179,7 @@ def checkForNewContent():
         return False
 
 
+@timer
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)
     server = downloadUtils.getServer()
@@ -244,6 +248,7 @@ def get_widget_content_cast(handle, params):
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
 
+@timer
 def getWidgetContent(handle, params):
     log.debug("getWigetContent Called: {0}", params)
 

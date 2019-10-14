@@ -15,6 +15,7 @@ from .simple_logging import SimpleLogging
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .translation import string_load
+from .tracking import timer
 
 import xbmc
 import xbmcaddon
@@ -49,11 +50,13 @@ class DataManager:
     def loadJasonData(self, jsonData):
         return json.loads(jsonData, object_hook=lambda d: defaultdict(lambda: None, d))
 
+    @timer
     def GetContent(self, url):
         jsonData = DownloadUtils().downloadUrl(url)
         result = self.loadJasonData(jsonData)
         return result
 
+    @timer
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()

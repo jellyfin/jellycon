@@ -6,6 +6,7 @@ import xbmcaddon
 
 from .simple_logging import SimpleLogging
 from .widgets import checkForNewContent
+from .tracking import timer
 
 log = SimpleLogging(__name__)
 
@@ -22,6 +23,7 @@ class LibraryChangeMonitor(threading.Thread):
     def stop(self):
         self.exit_now = True
 
+    @timer
     def check_for_updates(self):
         log.debug("Trigger check for updates")
         self.library_check_triggered = True

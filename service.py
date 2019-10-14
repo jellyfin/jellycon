@@ -22,8 +22,13 @@ from resources.lib.context_monitor import ContextMonitor
 from resources.lib.server_detect import checkServer
 from resources.lib.library_change_monitor import LibraryChangeMonitor
 from resources.lib.datamanager import clear_old_cache_data
+from resources.lib.tracking import set_timing_enabled
 
 settings = xbmcaddon.Addon()
+
+log_timing_data = settings.getSetting('log_timing') == "true"
+if log_timing_data:
+    set_timing_enabled(True)
 
 # clear user and token when logging in
 home_window = HomeWindow()

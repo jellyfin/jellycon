@@ -107,6 +107,7 @@
 
 		<setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
 		<setting id="profile" type="bool" label="30010" default="false" visible="true" enable="true" />
+		<setting id="log_timing" type="bool" label="30015" default="false" visible="true" enable="true" />
 		<setting id="use_cache" type="bool" label="30345" default="true" visible="true" enable="true" />
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />

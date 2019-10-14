@@ -13,10 +13,12 @@ from .translation import string_load
 from .simple_logging import SimpleLogging
 from .item_functions import add_gui_item, extract_item_info, ItemDetails
 from .utils import getArt, send_event_notification
+from .tracking import timer
 
 log = SimpleLogging(__name__)
 
 
+@timer
 def getContent(url, params):
     log.debug("== ENTER: getContent ==")
 
@@ -187,6 +189,7 @@ def setSort(pluginhandle, viewType):
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
 
+@timer
 def processDirectory(url, progress, params, use_cache_data=False):
     log.debug("== ENTER: processDirectory ==")
 

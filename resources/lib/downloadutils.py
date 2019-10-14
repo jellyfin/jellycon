@@ -21,6 +21,7 @@ from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .simple_logging import SimpleLogging
 from .translation import string_load
+from .tracking import timer
 
 log = SimpleLogging(__name__)
 
@@ -611,6 +612,7 @@ class DownloadUtils:
             log.debug("EmbyCon Authentication Header: {0}", headers)
             return headers
 
+    @timer
     def downloadUrl(self, url, suppress=False, postBody=None, method="GET", authenticate=True, headers=None):
         log.debug("downloadUrl")
 

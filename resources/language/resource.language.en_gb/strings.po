@@ -54,6 +54,10 @@ msgctxt "#30014"
 msgid "Emby"
 msgstr ""
 
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr ""
+
 msgctxt "#30016"
 msgid "Device display name"
 msgstr ""
