@@ -39,7 +39,7 @@ msgid "Samba password"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Enable performance profiling"
+msgid "Number of performance profiles to capture"
 msgstr ""
 
 msgctxt "#30011"
