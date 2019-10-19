@@ -54,13 +54,13 @@ def mainEntryPoint():
     log.debug("===== EmbyCon START =====")
 
     settings = xbmcaddon.Addon()
-    profile_code = settings.getSetting('profile') == "true"
+    profile_count = int(settings.getSetting('profile_count'))
     pr = None
-    if profile_code:
-        return_value = xbmcgui.Dialog().yesno("Profiling Enabled", "Do you want to run profiling?")
-        if return_value:
-            pr = cProfile.Profile()
-            pr.enable()
+    if profile_count > 0:
+        profile_count = profile_count - 1
+        settings.setSetting('profile_count', str(profile_count))
+        pr = cProfile.Profile()
+        pr.enable()
 
     log.debug("Running Python: {0}", sys.version_info)
     log.debug("Running EmbyCon: {0}", ClientInformation().getVersion())
@@ -159,7 +159,7 @@ def mainEntryPoint():
             checkServer()
             displaySections()
 
-    if (pr):
+    if pr:
         pr.disable()
 
         fileTimeStamp = time.strftime("%Y%m%d-%H%M%S")
