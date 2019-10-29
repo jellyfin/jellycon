@@ -2,69 +2,71 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EmbyCon\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-10-29 19:09+0100\n"
+"Last-Translator: EffeF\n"
 "Language-Team: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
 msgctxt "#30000"
-msgid "Server Address: "
-msgstr "Indirizzo Server: "
+msgid "Host"
+msgstr "Host"
 
 msgctxt "#30001"
-msgid "Server Port: "
-msgstr "Porta Server: "
-
-msgctxt "#30002"
-msgid "Use HTTPS: "
-msgstr "Usa HTTPS: "
+msgid "Port"
+msgstr "Porta"
 
 msgctxt "#30003"
-msgid "Verify HTTPS Certificate: "
-msgstr "Verifica Certificato HTTPS : "
+msgid "Verify HTTPS certificate"
+msgstr "Verifica del certificato HTTPS"
 
 msgctxt "#30005"
-msgid "Username: "
+msgid "Username"
 msgstr "Username"
 
 msgctxt "#30006"
-msgid "Password: "
+msgid "Password"
 msgstr "Password"
 
 msgctxt "#30007"
-msgid "Samba Username: "
+msgid "Samba username"
 msgstr "Username Samba"
 
 msgctxt "#30008"
-msgid "Samba Password: "
+msgid "Samba password"
 msgstr "Password Samba"
 
 msgctxt "#30010"
-msgid "Enable performance profiling"
-msgstr "Abilita il profiling delle prestazioni"
+msgid "Number of performance profiles to capture"
+msgstr "Numero di profili prestazionali da acquisire"
 
 msgctxt "#30011"
-msgid "Detect Local Server"
-msgstr "Trova Server Locale"
+msgid "[Detect local server]"
+msgstr "[Rileva server locale]"
 
 msgctxt "#30012"
-msgid "Change User"
-msgstr "Cambia Utente"
+msgid "[Change user]"
+msgstr "[Cambia utente]"
 
 msgctxt "#30014"
 msgid "Emby"
 msgstr "Emby"
 
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Registra i dati di temporizzazione"
+
 msgctxt "#30016"
-msgid "Device Name"
-msgstr "Nome Dispositivo"
+msgid "Device display name"
+msgstr "Nome del dispositivo visualizzato"
 
 msgctxt "#30017"
-msgid "Show Connected Clients"
-msgstr "Mostra I Client Connessi"
+msgid "Show connected clients"
+msgstr "Mostra i client connessi"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
@@ -76,7 +78,7 @@ msgstr "Formato del nome dell'episodio filtrato"
 
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "Spiana la stagione singola"
+msgstr "Spiana stagione singola"
 
 msgctxt "#30021"
 msgid "Show all episodes item"
@@ -88,23 +90,23 @@ msgstr "Avanzate"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "Nascondi dettagli degli episodi non visti"
+msgstr "Nascondi dettagli episodio non visto"
 
 msgctxt "#30024"
 msgid "Username:"
-msgstr "Username"
+msgstr "Username:"
 
 msgctxt "#30025"
 msgid "Password:"
-msgstr "Password"
+msgstr "Password:"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "Azione di selezione dell'elemento del widget"
+msgstr "Azione selezione elemento widget"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
-msgstr "Username/Password non corretti"
+msgstr "Username/Password Errata"
 
 msgctxt "#30045"
 msgid "Username not found"
@@ -124,11 +126,11 @@ msgstr "N/D"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "conferma eliminazione?"
+msgstr "Conferma eliminazione?"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
-msgstr "Attenzione: Questa azione eliminerà i files dal server."
+msgstr "Avviso: questa azione eliminerà i file multimediali dal server."
 
 msgctxt "#30110"
 msgid "Interface"
@@ -140,31 +142,31 @@ msgstr "Servizi"
 
 msgctxt "#30112"
 msgid "Loading Content"
-msgstr "caricamento Contenuto"
+msgstr "Caricamento Contenuto"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
-msgstr "Recupero dati"
+msgstr "Recupero Dati"
 
 msgctxt "#30114"
-msgid "On Resume Jump Back Seconds"
-msgstr "Riprendi i secondi di salto indietro"
+msgid "Jump back seconds"
+msgstr "Torna indietro di secondi"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Aggiungi conteggi non visti ai nomi"
+msgstr "Aggiungi conteggio non visti ai nomi"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "Aggiungi percentuale di recupero ai nomi"
+msgstr "Aggiungi percentuale riprendi ai nomi"
 
 msgctxt "#30120"
-msgid "Show Load Progress"
-msgstr "Mostra il progresso del caricamento"
+msgid "Show load progress"
+msgstr "Mostra avanzamento del caricamento"
 
 msgctxt "#30121"
 msgid "On Resume"
-msgstr "Ripresa"
+msgstr "Alla Ripresa"
 
 msgctxt "#30125"
 msgid "Done"
@@ -172,11 +174,7 @@ msgstr "Fatto"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "Elaborazione : "
-
-msgctxt "#30129"
-msgid "Default"
-msgstr "Default"
+msgstr "Elaborazione Elemento : "
 
 msgctxt "#30135"
 msgid "Error"
@@ -184,11 +182,11 @@ msgstr "Errore"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
-msgstr "Nessun tipo di supporto impostato"
+msgstr "Nessun Tipo Supporto Impostato"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "Aggiungi (cc) se il sottotitlo è disponibile"
+msgstr "Aggiungi (cc) se sono disponibili i sottotitoli"
 
 msgctxt "#30166"
 msgid "Select Server"
@@ -200,7 +198,7 @@ msgstr "Indirizzo Server Selezionato"
 
 msgctxt "#30169"
 msgid "Address: "
-msgstr "Indirizzo"
+msgstr "Indirizzo: "
 
 msgctxt "#30180"
 msgid "Select User"
@@ -212,7 +210,7 @@ msgstr "Includi trama"
 
 msgctxt "#30182"
 msgid "Include media stream info"
-msgstr "Includi info media"
+msgstr "Includi informazioni sul flusso multimediale"
 
 msgctxt "#30183"
 msgid "Include people"
@@ -220,15 +218,15 @@ msgstr "Includi persone"
 
 msgctxt "#30200"
 msgid "URL error: %s"
-msgstr "URL errore: %s"
+msgstr "Errore URL: %s"
 
 msgctxt "#30201"
 msgid "Unable to connect to server"
-msgstr "impossibile connettersi al server"
+msgstr "Impossibile stabilire una connessione al server"
 
 msgctxt "#30206"
-msgid "Playback Type"
-msgstr "Tipo di Riproduzione"
+msgid "Playback type"
+msgstr "Tipo di riproduzione"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -236,63 +234,63 @@ msgstr "Riproduzione"
 
 msgctxt "#30208"
 msgid "Transcode Bitrate (Kbits)"
-msgstr ""
+msgstr "Transcode Bitrate (Kbits)"
 
 msgctxt "#30209"
-msgid "File Direct Path"
+msgid "File direct path"
 msgstr "Percorso diretto del file"
 
 msgctxt "#30210"
-msgid "HTTP Direct Stream"
-msgstr "HTTP Stream Diretto"
+msgid "HTTP direct stream"
+msgstr "Flusso diretto HTTP"
 
 msgctxt "#30211"
-msgid "HTTP Transcode"
-msgstr "HTTP Transcodifica"
+msgid "HTTP transcode"
+msgstr "Transcodifica HTTP"
 
 msgctxt "#30212"
-msgid "Transcode Max Width"
-msgstr "Transcodifica Max Width"
+msgid "Transcode max width"
+msgstr "Transcodifica larghezza massima"
 
 msgctxt "#30213"
-msgid "Transcode Force 8 Bit"
-msgstr "Transcodifica Forza 8 Bit"
+msgid "Transcode force 8 bit"
+msgstr "Forza transcodifica 8 bit"
 
 msgctxt "#30214"
 msgid "Events"
 msgstr "Eventi"
 
 msgctxt "#30215"
-msgid "On Playback Stop (100% = disabled)"
-msgstr "Stop Riproduzione (100% = disabilitato)"
+msgid "On playback stop (100% = disabled)"
+msgstr "All'arresto della riproduzione (100% = disabilitato)"
 
 msgctxt "#30216"
 msgid "Item Details"
-msgstr "Dettagli"
+msgstr "Dettagli Elemento"
 
 msgctxt "#30217"
 msgid "Prompt to delete episode after %"
-msgstr ""
+msgstr "Richiedi l'eliminazione dell'episodio dopo %"
 
 msgctxt "#30218"
 msgid "Play next episode after %"
-msgstr ""
+msgstr "Riproduci il prossimo episodio dopo %"
 
 msgctxt "#30219"
 msgid " - Prompt before play"
-msgstr " - Chiedi prima di avviare"
+msgstr " - Chiedi prima di riprodurre"
 
 msgctxt "#30220"
 msgid "Prompt to delete movie after %"
-msgstr "Chiedi prima di eliminare un film dopo %"
+msgstr "Richiedi l'eliminazione del film dopo %"
 
 msgctxt "#30222"
 msgid "Item Layout"
-msgstr "Layout"
+msgstr "Layout Elemento"
 
 msgctxt "#30223"
 msgid "Page Size and Filtering"
-msgstr "Dimensioni della pagina e filtri"
+msgstr "Dimensioni Pagina e Filtro"
 
 msgctxt "#30224"
 msgid "Interaction"
@@ -300,7 +298,7 @@ msgstr "Interazione"
 
 msgctxt "#30229"
 msgid "TV Shows"
-msgstr "Serie TV"
+msgstr "Programmi TV"
 
 msgctxt "#30231"
 msgid "Movies"
@@ -311,8 +309,8 @@ msgid "Episodes"
 msgstr "Episodi"
 
 msgctxt "#30236"
-msgid "Action for h265(hevc) video files"
-msgstr "Azione per i file video h265 (hevc)"
+msgid "Force transcode h265(hevc)"
+msgstr "Forza transcodifica h265(hevc)"
 
 msgctxt "#30237"
 msgid "Start from beginning"
@@ -320,7 +318,19 @@ msgstr "Riprendi dall'inizio"
 
 msgctxt "#30238"
 msgid "Playback Options"
-msgstr "Opzioni di riproduzione"
+msgstr "Opzioni Riproduzione"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forza transcodifica mpeg2"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3(divx)"
+msgstr "Forza transcodifica msmpeg4v3(divx)"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forza transcodifica mpeg4"
 
 msgctxt "#30246"
 msgid "Search"
@@ -336,23 +346,19 @@ msgstr "Sconosciuto"
 
 msgctxt "#30251"
 msgid "Movies (Genres)"
-msgstr "Film (Categorie)"
+msgstr "Film (Generi)"
 
 msgctxt "#30252"
 msgid "Movies (A-Z)"
 msgstr "Film (A-Z)"
 
-msgctxt "#30253"
-msgid "Change User"
-msgstr "cambia Utente"
-
 msgctxt "#30254"
-msgid "Show Settings"
-msgstr "Mostra Impostazioni"
+msgid "Show add-on settings"
+msgstr "Mostra impostazioni add-on"
 
 msgctxt "#30255"
 msgid "TV Show (A-Z)"
-msgstr "Serie TV (A-Z)"
+msgstr "Programmi TV (A-Z)"
 
 msgctxt "#30256"
 msgid "Movies"
@@ -360,7 +366,7 @@ msgstr "Film"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
-msgstr "Film - Aggiunti di recente"
+msgstr "Film - Aggiunti Recentemente"
 
 msgctxt "#30258"
 msgid "Movies - In Progress"
@@ -372,19 +378,19 @@ msgstr "Film - Preferiti"
 
 msgctxt "#30260"
 msgid "BoxSets"
-msgstr "Pacchetti"
+msgstr "BoxSets"
 
 msgctxt "#30261"
 msgid "TV Shows"
-msgstr "Serie TV"
+msgstr "Programmi TV"
 
 msgctxt "#30262"
 msgid "TV Shows - Favorites"
-msgstr "Serie TV - Preferiti"
+msgstr "Programmi TV - Preferiti"
 
 msgctxt "#30263"
 msgid "Episodes - Recently Added"
-msgstr "Episodi - Aggiunti Di Recente"
+msgstr "Episodi - Aggiunti Recentemente"
 
 msgctxt "#30264"
 msgid "Episodes - In Progress"
@@ -396,7 +402,7 @@ msgstr "Episodi - Successivi"
 
 msgctxt "#30266"
 msgid "Movie (Pages)"
-msgstr "Film  (Pagine)"
+msgstr "Film (Pagine)"
 
 msgctxt "#30267"
 msgid " - In Progress"
@@ -404,7 +410,7 @@ msgstr " - In Corso"
 
 msgctxt "#30268"
 msgid " - Recently Added"
-msgstr " - Aggiunti di Recente"
+msgstr " - Aggiunti Recentemente"
 
 msgctxt "#30269"
 msgid "Movies - Random"
@@ -412,19 +418,19 @@ msgstr "Film - Casuali"
 
 msgctxt "#30270"
 msgid "Mark Watched"
-msgstr "Segna Come Visto"
+msgstr "Segna come Visto"
 
 msgctxt "#30271"
 msgid "Mark Unwatched"
-msgstr "Segna Come Non Visto"
+msgstr "Segna come Non Visto"
 
 msgctxt "#30272"
 msgid "Set Favourite"
-msgstr "Inserisci nei preferiti"
+msgstr "Imposta Preferito"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
-msgstr "Elimina dai preferiti"
+msgstr "Elimina Preferito"
 
 msgctxt "#30274"
 msgid "Delete"
@@ -436,31 +442,31 @@ msgstr "Forza Transcodifica"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
-msgstr "Rilevamento extra di resume"
+msgstr "Rilevata Richiesta Ripresa Extra"
 
 msgctxt "#30277"
 msgid "EmbyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
-msgstr "EmbyCon deve richiedere di riprendere gli elementi riprodotti in modo parziale, può farlo anche Kodi, questo può causare una doppia richiesta. Vuoi rimuovere la doppia richiesta?"
+msgstr "EmbyCon deve richiedere di riprendere su elementi parzialmente riprodotti, Kodi anche, ciò può causare una doppia richiesta. Vuoi rimuovere la doppia richiesta?"
 
 msgctxt "#30278"
 msgid " - Next Up"
-msgstr " - Successivo"
+msgstr " - Successivi"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
-msgstr "Serie Tv - Non Visti"
+msgstr "Programmi TV - Non Visti"
 
 msgctxt "#30280"
 msgid "Missing Title"
 msgstr "Titolo Mancante"
 
 msgctxt "#30281"
-msgid "Refresh Images"
-msgstr "Aggiorna Immagini"
+msgid "Refresh Cached Images"
+msgstr "Aggiorna Immagini nella Cache"
 
 msgctxt "#30282"
 msgid "No Emby servers detected on your local network."
-msgstr "Nessun server Emby rilevato nella tua rete"
+msgstr "Nessun server Emby rilevato sulla rete locale."
 
 msgctxt "#30283"
 msgid "Play Next Episode"
@@ -468,7 +474,7 @@ msgstr "Avvia Episodio Successivo"
 
 msgctxt "#30284"
 msgid "Do you want to play the next episode?"
-msgstr "Vuoi avviare il prossimo episodio?"
+msgstr "Vuoi riprodurre il prossimo episodio?"
 
 msgctxt "#30285"
 msgid " - Unwatched"
@@ -480,7 +486,7 @@ msgstr "Fim - Non Visti"
 
 msgctxt "#30287"
 msgid "TV Shows - Latest"
-msgstr "Serie TV - Ultimi"
+msgstr "Programmi TV - Ultimi"
 
 msgctxt "#30288"
 msgid " - Latest"
@@ -488,7 +494,7 @@ msgstr " - Ultimi"
 
 msgctxt "#30289"
 msgid "TV Show (Genres)"
-msgstr "Serie TV (Categorie)"
+msgstr "Programmi TV (Generi)"
 
 msgctxt "#30290"
 msgid "All"
@@ -496,15 +502,15 @@ msgstr "Tutti"
 
 msgctxt "#30291"
 msgid "Select Audio Stream"
-msgstr "Seleziona Audio"
+msgstr "Seleziona Flusso Audio"
 
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
-msgstr "Seleziona Sottotitoli"
+msgstr "Seleziona Flusso Sottotitoli"
 
 msgctxt "#30293"
-msgid "Cache Artwork"
-msgstr "Cache di Artwork"
+msgid "Cache images"
+msgstr "Immagini nella cache"
 
 msgctxt "#30294"
 msgid "Notice"
@@ -512,7 +518,7 @@ msgstr "Avviso"
 
 msgctxt "#30295"
 msgid "To use this feature you need HTTP control enabled"
-msgstr "Per usare questa funzione devi attivare il controllo HTTP"
+msgstr "Per utilizzare questa funzione è necessario il controllo HTTP abilitato"
 
 msgctxt "#30296"
 msgid "Delete"
@@ -520,11 +526,11 @@ msgstr "Elimina"
 
 msgctxt "#30297"
 msgid "Delete unused images?"
-msgstr "Eliminare immagini non utilizzate?"
+msgstr "Elimina immagini inutilizzate?"
 
 msgctxt "#30298"
 msgid "Deleting Kodi Images"
-msgstr "Cancellazione immagini di Kodi"
+msgstr "Eliminazione Immagini Kodi"
 
 msgctxt "#30299"
 msgid "Cache Images"
@@ -532,23 +538,23 @@ msgstr "Cache delle Immagini"
 
 msgctxt "#30300"
 msgid "Cache all Emby images as local Kodi images?"
-msgstr "Inserire in cache tutte le immagini Emby come immagini Kodi locali?"
+msgstr "Inserire nella cache tutte le immagini Emby come immagini Kodi locali?"
 
 msgctxt "#30301"
 msgid "Caching Images"
-msgstr "Caching Immagini"
+msgstr "Inserimento immagini nella cache"
 
 msgctxt "#30302"
 msgid "Existing images : "
-msgstr ""
+msgstr "Immagini esistenti : "
 
 msgctxt "#30303"
 msgid "Missing Emby images : "
-msgstr ""
+msgstr "Immagini Emby mancanti : "
 
 msgctxt "#30304"
 msgid "Cached Emby images : "
-msgstr ""
+msgstr "Immagini cache Emby : "
 
 msgctxt "#30305"
 msgid "Not Found: %s"
@@ -556,11 +562,11 @@ msgstr "Non Trovato: %s"
 
 msgctxt "#30306"
 msgid "Playback starting: %s"
-msgstr "Inizio della riproduzione: %s"
+msgstr "Inizio riproduzione: %s"
 
 msgctxt "#30307"
 msgid "Play Trailer"
-msgstr "Avvia Trailer"
+msgstr "Riproduci Trailer"
 
 msgctxt "#30308"
 msgid "Select Trailer"
@@ -568,7 +574,7 @@ msgstr "Seleziona Trailer"
 
 msgctxt "#30309"
 msgid "Select Media Source"
-msgstr "Seleziona Sorgente Media"
+msgstr "Seleziona Sorgente Multimediale"
 
 msgctxt "#30310"
 msgid "Enable Emby remote control"
@@ -576,7 +582,7 @@ msgstr "Abilita controllo remoto Emby"
 
 msgctxt "#30311"
 msgid "Library - "
-msgstr "Videoteca - "
+msgstr "Libreria - "
 
 msgctxt "#30312"
 msgid "All - "
@@ -588,47 +594,47 @@ msgstr "Menu"
 
 msgctxt "#30314"
 msgid "Play"
-msgstr "Avvia"
+msgstr "Riproduci"
 
 msgctxt "#30315"
 msgid "Suppress notifications for connection errors"
-msgstr "Elimina notifica errori"
+msgstr "Elimina notifiche per errori connessione"
 
 msgctxt "#30316"
 msgid "Connection Error"
-msgstr "Errore di connessione"
+msgstr "Errore Connessione"
 
 msgctxt "#30317"
 msgid "Play All"
-msgstr "Avvia Tutti"
+msgstr "Riproduci Tutto"
 
 msgctxt "#30318"
 msgid "Music - Albums"
-msgstr "Musica - Albums"
+msgstr "Musica - Album"
 
 msgctxt "#30320"
 msgid " - Albums"
-msgstr " - Albums"
+msgstr "  - Album"
 
 msgctxt "#30322"
-msgid "Auto Resume"
-msgstr ""
+msgid "Auto resume"
+msgstr "Ripresa automatica"
 
 msgctxt "#30324"
 msgid "Movies - Recommendations"
-msgstr "Film - Consigliati"
+msgstr "Film - Raccomandazioni"
 
 msgctxt "#30325"
 msgid " - Genres"
-msgstr " - Categorie"
+msgstr " - Generi"
 
 msgctxt "#30327"
 msgid "Go To Season"
 msgstr "Vai Alla Stagione"
 
 msgctxt "#30328"
-msgid "Show Empty Folders (Shows, Seasons, Boxsets)"
-msgstr "Mostra Cartelle vuote (Serie, Stagioni, Collezioni)"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Mostra cartelle vuote (programmi, stagioni, collezioni)"
 
 msgctxt "#30329"
 msgid "Screensaver"
@@ -640,27 +646,19 @@ msgstr "Mostra la finestra di dialogo cambia utente"
 
 msgctxt "#30331"
 msgid "Movies per page"
-msgstr "Films per pagina"
+msgstr "Film per pagina"
 
 msgctxt "#30332"
 msgid "Stop media playback on screensaver activation"
-msgstr "Interrompi la riproduzione all'attivazione del salvaschermo"
+msgstr "Arresta riproduzione all'attivazione dello screensaver"
 
 msgctxt "#30333"
 msgid "Cache artwork in the background"
-msgstr "Cache artwork in background"
+msgstr "Salva immagini nella cache in background"
 
 msgctxt "#30334"
 msgid "Use EmbyCon context menu"
 msgstr "Usa il menu contestuale di EmbyCon"
-
-msgctxt "#30335"
-msgid "No Matches"
-msgstr "nessun Risultato"
-
-msgctxt "#30336"
-msgid "No items match your search."
-msgstr "Nessun articolo corrisponde alal tua ricerca"
 
 msgctxt "#30337"
 msgid "Song"
@@ -676,83 +674,83 @@ msgstr "Persona"
 
 msgctxt "#30340"
 msgid "Group movies into collections"
-msgstr ""
+msgstr "Raggruppa i film in collezioni"
 
 msgctxt "#30341"
 msgid "Background image update interval (0 = disabled)"
-msgstr ""
+msgstr "Intervallo di aggiornamento dell'immagine di sfondo (0 = disabilitato)"
 
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
-msgstr "Nuovo intervallo di controllo del contenuto (0 = disabilitato)"
+msgstr "Intervallo di controllo nuovo contenuto (0 = disabilitato)"
 
 msgctxt "#30343"
 msgid "Changes Require Kodi Restart"
-msgstr "Le modifiche richiedono il riavvio di Kodi"
+msgstr "Modifiche Richiedono Riavvio Kodi"
 
 msgctxt "#30344"
 msgid "Number of images removed from cache : %s"
-msgstr "Numero di immaini rimosse dalla cache : %s"
+msgstr "Numero di immagini rimosse dalla cache : %s"
 
 msgctxt "#30345"
 msgid "Cache server requests"
-msgstr "Richieste cache server"
+msgstr "Richieste server cache"
 
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
-msgstr "Eliminazione Immagini Della cache"
+msgstr "Eliminazione Immagini dalla Cache"
 
 msgctxt "#30347"
 msgid "Getting Existing Images"
-msgstr "Aggiunta immagini esistenti"
+msgstr "Ottengo Immagini Esistenti"
 
 msgctxt "#30348"
 msgid "Add user ratings"
-msgstr "Aggiungi valutazione utente"
+msgstr "Aggiungi valutazioni utente"
 
 msgctxt "#30349"
 msgid " - Recently Played"
-msgstr " - Visti Di Recente"
+msgstr " - Recentemente Riprodotto"
 
 msgctxt "#30350"
 msgid "Music - Recently Added"
-msgstr "Musica - Aggiunti Di recente"
+msgstr "Musica - Recentemente Aggiunta"
 
 msgctxt "#30351"
 msgid "Music - Recently Played"
-msgstr "Musica - Avviati Di Recente"
+msgstr "Musica - Recentemente Riprodotta"
 
 msgctxt "#30352"
 msgid "Music - Frequently Played"
-msgstr "Musica - Avviati Di Frequente"
+msgstr "Musica - Riprodotta Spesso"
 
 msgctxt "#30319"
 msgid "Music - All Album Artists"
-msgstr "Musica - Tutti Gli Album Degli Artisti"
+msgstr "Musica - Tutti gli Artisti Album"
 
 msgctxt "#30321"
 msgid " - Album Artists"
-msgstr " - Album Artisti"
+msgstr " - Artisti Album"
 
 msgctxt "#30353"
 msgid " - Frequently Played"
-msgstr " - Avviati Di Frequente"
+msgstr " - Riprodotta Spesso"
 
 msgctxt "#30354"
-msgid "Goto Series"
-msgstr "Vai Alle Serie"
+msgid "Go To Series"
+msgstr "Vai Alla Serie"
 
 msgctxt "#30355"
 msgid "Kodi Settings->Services->Allow remote control via HTTP"
-msgstr "Kodi Impostazioni->Servizi->peremtti controllo remoto via HTTP"
+msgstr "Impostazioni Kodi->Servizi->Consenti controllo remoto via HTTP"
 
 msgctxt "#30356"
 msgid "Loading existing image list"
-msgstr "Caricamento elenco immagini esistente"
+msgstr "Caricamento elenco immagini esistenti"
 
 msgctxt "#30357"
 msgid "Processing existing image list"
-msgstr "Elaborazione di elenchi di immagini esistenti"
+msgstr "Elaborazione elenco immagini esistenti"
 
 msgctxt "#30358"
 msgid "Retreiving remote image list"
@@ -760,7 +758,7 @@ msgstr "Recupero elenco immagini remote"
 
 msgctxt "#30359"
 msgid "Building full image list"
-msgstr "Costruzione di un elenco completo di immagini"
+msgstr "Creazione elenco completo immagini"
 
 msgctxt "#30360"
 msgid " - Channels"
@@ -776,7 +774,7 @@ msgstr " - Registrazioni"
 
 msgctxt "#30363"
 msgid "Save Password?"
-msgstr "Salvare password?"
+msgstr "Salvare Password?"
 
 msgctxt "#30364"
 msgid "Do you want to save the password?"
@@ -784,39 +782,39 @@ msgstr "Vuoi salvare la password?"
 
 msgctxt "#30365"
 msgid "Manual Login"
-msgstr "Login manuale"
+msgstr "Login Manuale"
 
 msgctxt "#30366"
 msgid "Manually enter user details"
-msgstr "Inserisci manualmente i dettagli utente"
+msgstr "Inserisci manualmente dettagli utente"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
-msgstr "Consenti il salvataggio rapido della password di cambio utente"
+msgstr "Consenti salvataggio password per un cambio utente rapido"
 
 msgctxt "#30368"
 msgid "Clear Password?"
-msgstr "Elimina password?"
+msgstr "Cancellare Password?"
 
 msgctxt "#30369"
 msgid "Do you want to clear your saved password?"
-msgstr "Vuoi eliminare la tua password salvata?"
+msgstr "Vuoi cancellare la password salvata?"
 
 msgctxt "#30370"
 msgid "Do you want to manually enter a server url?"
-msgstr "Vuoi inserire manualmente l'url di un server?"
+msgstr "Vuoi inserire manualmente un URL del server?"
 
 msgctxt "#30371"
-msgid "The server url you entered is not valid, do you want to try again?"
-msgstr "L'URL del server che hai inserito non è valido, vuoi riprovare?"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Impossibile connettersi all'URL inserito, vuoi riprovare?"
 
 msgctxt "#30372"
 msgid "Server URL"
-msgstr "Server URL"
+msgstr "URL del server"
 
 msgctxt "#30373"
 msgid "Scanning for local servers"
-msgstr "Rilevamento server locali"
+msgstr "Scansione server locali"
 
 msgctxt "#30374"
 msgid "Sending request"
@@ -824,11 +822,11 @@ msgstr "Invio richiesta"
 
 msgctxt "#30375"
 msgid "Receiving data packet: %s"
-msgstr "Ricezione dati pacchetto: %s"
+msgstr "Ricezione pacchetto dati: %s"
 
 msgctxt "#30376"
 msgid "Checking server url"
-msgstr "Controllo url del server"
+msgstr "Verifica URL del server"
 
 msgctxt "#30377"
 msgid "Sending request"
@@ -836,19 +834,19 @@ msgstr "Invio richiesta"
 
 msgctxt "#30378"
 msgid "Persist user details"
-msgstr "Conferma i dettagli dell'utente"
+msgstr "Persistenza dettagli utente"
 
 msgctxt "#30379"
-msgid "External Subtitle Prompt"
-msgstr "Richiesta Sottotitoli Esterni"
+msgid "External subtitle prompt"
+msgstr "Richiesta sottotitoli esterni"
 
 msgctxt "#30380"
 msgid "Never"
-msgstr "mai"
+msgstr "Mai"
 
 msgctxt "#30381"
 msgid "More than one"
-msgstr "Più Di Uno"
+msgstr "Più di una"
 
 msgctxt "#30382"
 msgid "Always"
@@ -859,28 +857,28 @@ msgid "System - "
 msgstr "Sistema - "
 
 msgctxt "#30384"
-msgid "Random movies refresh interval (0 = disabled)"
-msgstr "Intervallo di aggiornamento dei film casuali (0 = disabilitato)"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Intervallo minuti film casuali (0 = disabilitato)"
 
 msgctxt "#30385"
 msgid "Existing images before delete : "
-msgstr "Immagini esistenti prima dell'eliminazione:"
+msgstr "Immagini esistenti prima dell'eliminazione : "
 
 msgctxt "#30386"
 msgid "Unused Emby images : "
-msgstr "Immagini Emby non utilizzate : "
+msgstr "Immagini Emby inutilizzate : "
 
 msgctxt "#30387"
 msgid "Unused images removed : "
-msgstr "Immagini non utilizzate rimosse : "
+msgstr "Immagini inutilizzate rimosse : "
 
 msgctxt "#30388"
 msgid "Server details"
-msgstr "Dettagli Server"
+msgstr "Dettagli server"
 
 msgctxt "#30389"
 msgid "User details"
-msgstr "Dettagli Utente"
+msgstr "Dettagli utente"
 
 msgctxt "#30390"
 msgid "Protocol"
@@ -896,16 +894,36 @@ msgstr "HTTPS"
 
 msgctxt "#30393"
 msgid "Clear Cache Result"
-msgstr "Elimina Cache Dei Risultati"
+msgstr "Cancella Cache Risultati"
 
 msgctxt "#30394"
 msgid "%s cache files deleted"
-msgstr "%s cache files eliminati"
+msgstr "%s file eliminati dalla cache"
 
-msgctxt "#30396"
-msgid "Page"
-msgstr "Pagina"
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Cancella dati del server dalla cache"
 
 msgctxt "#30397"
 msgid " - Pages"
 msgstr " - Pagine"
+
+msgctxt "#30398"
+msgid "Refresh Emby Metadata"
+msgstr "Aggiorna Metadati Emby"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Nascondi"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Intervallo minuti immagini cache (0 = disabilitato)"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Info"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Aggiungi alla playlist Kodi"
