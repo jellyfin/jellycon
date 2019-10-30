@@ -339,6 +339,33 @@ def getWidgetContent(handle, params):
                      "&format=json" +
                      "&ImageTypeLimit=1")
 
+    elif widget_type == "movie_recommendations":
+        suggested_items_url = ("{server}/emby/Movies/Recommendations?userId={userid}" +
+                                "&categoryLimit=10" +
+                                "&ItemLimit=10" +
+                                "&ImageTypeLimit=0")
+        data_manager = DataManager()
+        suggested_items = data_manager.GetContent(suggested_items_url)
+        ids = []
+        loops = 0
+        set_id = 0
+        while len(ids) < 20 and loops < 100 and suggested_items:
+            loops += 1
+            items = suggested_items[set_id]
+            items = items["Items"]
+            rand = random.randint(0, len(items) - 1)
+            #log.debug("random suggestions index : {0} {1} {2}", rand, set_id, loops)
+            item = items[rand]
+            if item["Type"] == "Movie" and item["Id"] not in ids and item["UserData"]["Played"] == False:
+                ids.append(item["Id"])
+            set_id += 1
+            if set_id == len(suggested_items):
+                set_id = 0
+
+        id_list = ",".join(ids)
+        log.debug("random suggestions : {0}", id_list)
+        items_url += "&Ids=" + id_list
+
     list_items, detected_type, total_records = processDirectory(items_url, None, params, False)
 
     # remove resumable items from next up
@@ -351,6 +378,23 @@ def getWidgetContent(handle, params):
         list_items = filtered_list
 
     #list_items = populateWidgetItems(items_url, widget_type)
+
+    if detected_type is not None:
+        # if the media type is not set then try to use the detected type
+        log.debug("Detected content type: {0}", detected_type)
+        content_type = None
+
+        if detected_type == "Movie":
+            content_type = 'movies'
+        elif detected_type == "Episode":
+            content_type = 'episodes'
+        elif detected_type == "Series":
+            content_type = 'tvshows'
+        elif detected_type == "Music" or detected_type == "Audio" or detected_type == "Musicalbum":
+            content_type = 'songs'
+
+        if content_type:
+            xbmcplugin.setContent(handle, content_type)
 
     xbmcplugin.addDirectoryItems(handle, list_items)
     xbmcplugin.endOfDirectory(handle, cacheToDisc=False)

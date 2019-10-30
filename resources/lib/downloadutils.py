@@ -620,6 +620,7 @@ class DownloadUtils:
         settings = xbmcaddon.Addon()
         user_details = load_user_details(settings)
         username = user_details.get("username", "")
+        server = None
 
         if authenticate and username == "":
             return return_data

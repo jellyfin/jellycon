@@ -1144,6 +1144,7 @@ def showWidgets():
     addMenuDirectoryItem(" - " + string_load(30257) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
     addMenuDirectoryItem(" - " + string_load(30258) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
     addMenuDirectoryItem(" - " + string_load(30269) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=random_movies')
+    addMenuDirectoryItem(" - " + string_load(30403) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
 
     addMenuDirectoryItem(" - " + string_load(30287) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
     addMenuDirectoryItem(" - " + string_load(30263) + " (" + show_x_filtered_items + ")", 'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
