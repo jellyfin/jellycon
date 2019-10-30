@@ -341,29 +341,35 @@ def getWidgetContent(handle, params):
 
     elif widget_type == "movie_recommendations":
         suggested_items_url = ("{server}/emby/Movies/Recommendations?userId={userid}" +
-                                "&categoryLimit=10" +
-                                "&ItemLimit=10" +
+                                "&categoryLimit=15" +
+                                "&ItemLimit=20" +
                                 "&ImageTypeLimit=0")
         data_manager = DataManager()
         suggested_items = data_manager.GetContent(suggested_items_url)
         ids = []
-        loops = 0
         set_id = 0
-        while len(ids) < 20 and loops < 100 and suggested_items:
-            loops += 1
+        while len(ids) < 20 and suggested_items:
             items = suggested_items[set_id]
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
-            #log.debug("random suggestions index : {0} {1} {2}", rand, set_id, loops)
+            #log.debug("random suggestions index : {0} {1}", rand, set_id)
             item = items[rand]
-            if item["Type"] == "Movie" and item["Id"] not in ids and item["UserData"]["Played"] == False:
+            if item["Type"] == "Movie" and item["Id"] not in ids and not item["UserData"]["Played"]:
+                #log.debug("random suggestions adding : {0}", item["Id"])
                 ids.append(item["Id"])
+            #else:
+            #    log.debug("random suggestions not valid : {0} - {1} - {2}", item["Id"], item["Type"], item["UserData"]["Played"])
+            del items[rand]
+            #log.debug("items len {0}", len(items))
+            if len(items) == 0:
+                #log.debug("Removing Set {0}", set_id)
+                del suggested_items[set_id]
             set_id += 1
-            if set_id == len(suggested_items):
+            if set_id >= len(suggested_items):
                 set_id = 0
 
         id_list = ",".join(ids)
-        log.debug("random suggestions : {0}", id_list)
+        log.debug("Recommended Items : {0}", len(ids), id_list)
         items_url += "&Ids=" + id_list
 
     list_items, detected_type, total_records = processDirectory(items_url, None, params, False)
