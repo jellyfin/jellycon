@@ -340,6 +340,50 @@ def getWidgetContent(handle, params):
                      "&ImageTypeLimit=1")
 
     elif widget_type == "movie_recommendations":
+        '''
+        recent_movies = ("{server}/emby/Users/{userid}/Items" +
+                         "?Limit=10" +
+                         "&format=json" +
+                         # "&Fields={field_filters}" +
+                         "&ImageTypeLimit=0" +
+                         "&IsMissing=False" +
+                         "&Recursive=true" +
+                         "&SortBy=DatePlayed" +
+                         "&SortOrder=Descending" +
+                         "&Filters=IsPlayed,IsNotFolder" +
+                         "&IsPlayed=true" +
+                         "&IsMissing=False" +
+                         "&IncludeItemTypes=Movie" +
+                         "&EnableTotalRecordCount=false")
+        data_manager = DataManager()
+        recent_movie_list = data_manager.GetContent(recent_movies)
+        recent_movie_items = recent_movie_list.get("Items")
+        similar_ids = []
+        for movie in recent_movie_items:
+            item_id = movie.get("Id")
+            similar_movies_url = ("{server}/emby/Movies/" + item_id + "/Similar?userId={userid}" +
+                                  "&limit=10" +
+                                  "&IncludeItemTypes=Movies" +
+                                  "&EnableImages=false"
+                                  "&EnableTotalRecordCount=false")
+            similar_movie_list = data_manager.GetContent(similar_movies_url)
+            similar_movie_items = similar_movie_list.get("Items")
+            for similar in similar_movie_items:
+                log.debug("Similar Movie : {0} {1} - {2} {3} {4}", movie.get("Id"), movie.get("Name"), similar.get("Id"), similar.get("Name"), similar["UserData"]["Played"])
+                if similar["Type"] == "Movie" and similar.get("Id") not in similar_ids and not similar["UserData"]["Played"]:
+                    similar_ids.append(similar.get("Id"))
+
+            log.debug("Similar Ids : {0}", similar_ids)
+
+        random.shuffle(similar_ids)
+        random.shuffle(similar_ids)
+        similar_ids = similar_ids[0:20]
+        log.debug("Similar Ids : {0}", similar_ids)
+        id_list = ",".join(similar_ids)
+        log.debug("Recommended Items : {0}", len(similar_ids), id_list)
+        items_url += "&Ids=" + id_list
+        '''
+
         suggested_items_url = ("{server}/emby/Movies/Recommendations?userId={userid}" +
                                 "&categoryLimit=15" +
                                 "&ItemLimit=20" +
@@ -350,6 +394,7 @@ def getWidgetContent(handle, params):
         set_id = 0
         while len(ids) < 20 and suggested_items:
             items = suggested_items[set_id]
+            log.debug("BaselineItemName : {0} - {1}", set_id, items.get("BaselineItemName"))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
             #log.debug("random suggestions index : {0} {1}", rand, set_id)
