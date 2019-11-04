@@ -1231,6 +1231,19 @@
 					<texture>icons/logo-text.png</texture>
 				</control>
 			</control>
+			<!--
+			<control type="label">
+				<left>15</left>
+				<top>110</top>
+				<height>95</height>
+				<width>370</width>
+				<aligny>center</aligny>
+				<font>font10</font>
+				<label>$INFO[System.CPUTemperature] - $INFO[System.GPUTemperature]</label>
+				<shadowcolor>text_shadow</shadowcolor>
+				<visible>!String.IsEqual(System.CPUTemperature,Not available)</visible>
+			</control>
+			-->
 		</control>
 	</controls>
 </window>
