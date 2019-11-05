@@ -343,11 +343,11 @@ msgid "Unknown"
 msgstr ""
 
 msgctxt "#30251"
-msgid "Movies (Genres)"
+msgid "Movies - Genres"
 msgstr ""
 
 msgctxt "#30252"
-msgid "Movies (A-Z)"
+msgid "Movies - A-Z"
 msgstr ""
 
 msgctxt "#30254"
@@ -355,7 +355,7 @@ msgid "Show add-on settings"
 msgstr ""
 
 msgctxt "#30255"
-msgid "TV Show (A-Z)"
+msgid "TV Shows - A-Z"
 msgstr ""
 
 msgctxt "#30256"
@@ -399,7 +399,7 @@ msgid "Episodes - Next Up"
 msgstr ""
 
 msgctxt "#30266"
-msgid "Movie (Pages)"
+msgid "Movies - Pages"
 msgstr ""
 
 msgctxt "#30267"
@@ -491,7 +491,7 @@ msgid " - Latest"
 msgstr ""
 
 msgctxt "#30289"
-msgid "TV Show (Genres)"
+msgid "TV Shows - Genres"
 msgstr ""
 
 msgctxt "#30290"
@@ -616,10 +616,6 @@ msgstr ""
 
 msgctxt "#30322"
 msgid "Auto resume"
-msgstr ""
-
-msgctxt "#30324"
-msgid "Movies - Recommendations"
 msgstr ""
 
 msgctxt "#30325"

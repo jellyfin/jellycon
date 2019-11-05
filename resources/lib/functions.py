@@ -26,7 +26,7 @@ from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
 from .server_detect import checkServer
 from .simple_logging import SimpleLogging
-from .menu_functions import displaySections, showMovieAlphaList, showTvShowAlphaList, showGenreList, showWidgets, show_search, showMoviePages
+from .menu_functions import displaySections, display_main_menu, display_menu, showMovieAlphaList, showTvShowAlphaList, showGenreList, show_search, showMoviePages
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
@@ -113,8 +113,6 @@ def mainEntryPoint():
         showGenreList(params)
     elif mode == "MOVIE_PAGES":
         showMoviePages(params)
-    elif mode == "WIDGETS":
-        showWidgets()
     elif mode == "TOGGLE_WATCHED":
         toggle_watched(params)
     elif mode == "SHOW_MENU":
@@ -147,6 +145,8 @@ def mainEntryPoint():
         showServerSessions()
     elif mode == "TRAKTTOKODI":
         trakttokodi.entry_point(params)
+    elif mode == "SHOW_ADDON_MENU":
+        display_menu(params)
     else:
         log.debug("EmbyCon -> Mode: {0}", mode)
         log.debug("EmbyCon -> URL: {0}", param_url)
@@ -157,7 +157,8 @@ def mainEntryPoint():
             PLAY(params)
         else:
             checkServer()
-            displaySections()
+            #displaySections()
+            display_main_menu()
 
     if pr:
         pr.disable()
