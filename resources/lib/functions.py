@@ -106,9 +106,9 @@ def mainEntryPoint():
         item_id = params["id"]
         playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
-        showMovieAlphaList()
+        showMovieAlphaList(params)
     elif mode == "TVSHOW_ALPHA":
-        showTvShowAlphaList()
+        showTvShowAlphaList(params)
     elif mode == "GENRES":
         showGenreList(params)
     elif mode == "MOVIE_PAGES":
