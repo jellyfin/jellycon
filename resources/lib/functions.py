@@ -26,7 +26,7 @@ from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
 from .server_detect import checkServer
 from .simple_logging import SimpleLogging
-from .menu_functions import displaySections, display_main_menu, display_menu, showMovieAlphaList, showTvShowAlphaList, showGenreList, show_search, showMoviePages
+from .menu_functions import displaySections, display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
@@ -106,13 +106,13 @@ def mainEntryPoint():
         item_id = params["id"]
         playTrailer(item_id)
     elif mode == "MOVIE_ALPHA":
-        showMovieAlphaList(params)
+        show_movie_alpha_list(params)
     elif mode == "TVSHOW_ALPHA":
-        showTvShowAlphaList(params)
+        show_tvshow_alpha_list(params)
     elif mode == "GENRES":
-        showGenreList(params)
+        show_genre_list(params)
     elif mode == "MOVIE_PAGES":
-        showMoviePages(params)
+        show_movie_pages(params)
     elif mode == "TOGGLE_WATCHED":
         toggle_watched(params)
     elif mode == "SHOW_MENU":

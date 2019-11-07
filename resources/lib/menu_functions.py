@@ -21,7 +21,7 @@ downloadUtils = DownloadUtils()
 __addon__ = xbmcaddon.Addon()
 
 
-def showMoviePages(params):
+def show_movie_pages(params):
     log.debug("showMoviePages: {0}", params)
 
     parent_id = params.get("parent_id")
@@ -103,7 +103,7 @@ def showMoviePages(params):
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-def showGenreList(params):
+def show_genre_list(params):
     log.debug("showGenreList: {0}", params)
 
     server = downloadUtils.getServer()
@@ -180,7 +180,7 @@ def showGenreList(params):
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-def showMovieAlphaList(params):
+def show_movie_alpha_list(params):
     log.debug("== ENTER: showMovieAlphaList() ==")
 
     settings = xbmcaddon.Addon()
@@ -250,7 +250,7 @@ def showMovieAlphaList(params):
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-def showTvShowAlphaList(params):
+def show_tvshow_alpha_list(params):
     log.debug("== ENTER: showTvShowAlphaList() ==")
 
     settings = xbmcaddon.Addon()
@@ -316,18 +316,16 @@ def showTvShowAlphaList(params):
 
 
 def display_main_menu():
-    log.debug("== ENTER: display_main_menu() ==")
-
     handle = int(sys.argv[1])
     xbmcplugin.setContent(handle, 'files')
 
-    addMenuDirectoryItem("Emby Libraries",
+    addMenuDirectoryItem(string_load(30406),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library")
-    addMenuDirectoryItem("Global Lists",
+    addMenuDirectoryItem(string_load(30407),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_global_types")
-    addMenuDirectoryItem("Custom Widgets",
+    addMenuDirectoryItem(string_load(30408),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
-    addMenuDirectoryItem("Add-on Actions",
+    addMenuDirectoryItem(string_load(30409),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=addon_items")
 
     xbmcplugin.endOfDirectory(handle)
@@ -361,9 +359,9 @@ def display_menu(params):
 def show_global_types(params):
     handle = int(sys.argv[1])
 
-    addMenuDirectoryItem("Movies",
+    addMenuDirectoryItem(string_load(30256),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
-    addMenuDirectoryItem("TV Shows",
+    addMenuDirectoryItem(string_load(30261),
                          "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
 
     xbmcplugin.endOfDirectory(handle)
@@ -388,7 +386,7 @@ def global_list_movies(params):
     # All Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
-    addMenuDirectoryItem("Movies" + " - Show All", url)
+    addMenuDirectoryItem(string_load(30256) + string_load(30405), url)
 
     params["Filters"] = "IsUnplayed"
     params["IsPlayed"] = False
@@ -398,7 +396,7 @@ def global_list_movies(params):
     # Unwatched Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
-    addMenuDirectoryItem("Movies" + string_load(30285), url)
+    addMenuDirectoryItem(string_load(30256) + string_load(30285), url)
 
     params["SortBy"] = "DatePlayed"
     params["SortOrder"] = "Descending"
@@ -408,7 +406,7 @@ def global_list_movies(params):
     # Resumable Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
-    addMenuDirectoryItem("Movies" + string_load(30267) + " (" + show_x_filtered_items + ")", url)
+    addMenuDirectoryItem(string_load(30256) + string_load(30267) + " (" + show_x_filtered_items + ")", url)
 
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
@@ -417,16 +415,16 @@ def global_list_movies(params):
     # Recently Added Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
-    addMenuDirectoryItem("Movies" + string_load(30268) + " (" + show_x_filtered_items + ")", url)
+    addMenuDirectoryItem(string_load(30256) + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
     path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie"
-    addMenuDirectoryItem("Movies" + string_load(30325), path)
+    addMenuDirectoryItem(string_load(30256) + string_load(30325), path)
 
     path = "plugin://plugin.video.embycon/?mode=MOVIE_PAGES"
-    addMenuDirectoryItem("Movies" + string_load(30397), path)
+    addMenuDirectoryItem(string_load(30256) + string_load(30397), path)
 
     path = "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA"
-    addMenuDirectoryItem("Movies" + string_load(30404), path)
+    addMenuDirectoryItem(string_load(30256) + string_load(30404), path)
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -434,15 +432,77 @@ def global_list_movies(params):
 def global_list_tvshows(params):
     handle = int(sys.argv[1])
 
-    addMenuDirectoryItem("Movies",
-                         "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
-    addMenuDirectoryItem("TV Shows",
-                         "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
+    settings = xbmcaddon.Addon()
+    show_x_filtered_items = settings.getSetting("show_x_filtered_items")
+
+    params = {}
+    params["Fields"] = "{field_filters}"
+    params["ImageTypeLimit"] = 1
+    params["IsMissing"] = False
+    params["IncludeItemTypes"] = "Series"
+    params["Recursive"] = True
+
+    # All TV Shows
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    addMenuDirectoryItem(string_load(30261) + string_load(30405), url)
+
+    params["Filters"] = "IsUnplayed"
+    params["IsPlayed"] = False
+
+    # Tv Shows with unplayed
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    addMenuDirectoryItem(string_load(30261) + string_load(30285), url)
+
+    params["Limit"] = "{ItemLimit}"
+    params["SortBy"] = "DatePlayed"
+    params["SortOrder"] = "Descending"
+    params["Filters"] = "IsResumable"
+    params["IncludeItemTypes"] = "Episode"
+
+    # In progress episodes
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url += "&name_format=" + urllib.quote('Episode|episode_name_format')
+    addMenuDirectoryItem(string_load(30261) + string_load(30267) + " (" + show_x_filtered_items + ")", url)
+
+    params["SortBy"] = "DateCreated"
+    params["SortOrder"] = "Descending"
+    params["Filters"] = "IsUnplayed"
+
+    # Latest Episodes
+    path = get_emby_url("{server}/emby/Users/{userid}/Items/Latest", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    addMenuDirectoryItem(string_load(30261) + string_load(30288) + " (" + show_x_filtered_items + ")", url)
+
+    params["SortBy"] = "DateCreated"
+    params["Filters"] = "IsUnplayed,IsNotFolder"
+
+    # Recently Added
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url += "&name_format=" + urllib.quote('Episode|episode_name_format')
+    addMenuDirectoryItem(string_load(30261) + string_load(30268) + " (" + show_x_filtered_items + ")", url)
+
+    params["Userid"] = "{userid}"
+
+    # Next Up Episodes
+    path = get_emby_url("{server}/emby/Shows/NextUp", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url += "&name_format=" + urllib.quote('Episode|episode_name_format')
+    addMenuDirectoryItem(string_load(30261) + string_load(30278) + " (" + show_x_filtered_items + ")", url)
+
+    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow"
+    addMenuDirectoryItem(string_load(30261) + string_load(30325), path)
+
+    path = "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA"
+    addMenuDirectoryItem(string_load(30261) + string_load(30404), path)
 
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_homevideos_view(params, view):
+def display_homevideos_type(params, view):
     handle = int(sys.argv[1])
     view_name = view.get("Name")
     settings = xbmcaddon.Addon()
@@ -458,7 +518,7 @@ def display_homevideos_view(params, view):
     # All Home Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
-    addMenuDirectoryItem(view_name + " - Show All", url)
+    addMenuDirectoryItem(view_name + string_load(30405), url)
 
     params["Filters"] = "IsResumable"
     params["Recursive"] = True
@@ -496,34 +556,6 @@ def display_addon_menu(params):
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_library_view(params):
-    node_id = params.get("view_id")
-
-    view_info_url = "{server}/emby/Users/{userid}/Items/" + node_id
-    data_manager = DataManager()
-    view_info = data_manager.GetContent(view_info_url)
-
-    log.debug("VIEW_INFO : {0}", view_info)
-
-    collection_type = view_info.get("CollectionType")
-
-    if collection_type == "movies":
-        display_movies_type(params, view_info)
-        return
-    elif collection_type == "playlists":
-        display_playlist_type(params, view_info)
-        return
-    elif collection_type == "tvshows":
-        display_tvshow_type(params, view_info)
-        return
-    elif collection_type == "boxsets":
-        display_collection_type(params, view_info)
-        return
-    elif collection_type == "homevideos":
-        display_homevideos_view(params, view_info)
-        return
-
-
 def display_collection_type(params, view):
     handle = int(sys.argv[1])
     view_name = view.get("Name")
@@ -541,7 +573,7 @@ def display_collection_type(params, view):
     # All Collections
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
-    addMenuDirectoryItem(view_name + " - Show All", url)
+    addMenuDirectoryItem(view_name + string_load(30405), url)
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -564,7 +596,7 @@ def display_tvshow_type(params, view):
     # All TV Shows
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
-    addMenuDirectoryItem(view_name + " - Show All", url)
+    addMenuDirectoryItem(view_name + string_load(30405), url)
 
     params["Filters"] = "IsUnplayed"
     params["IsPlayed"] = False
@@ -633,7 +665,144 @@ def display_playlist_type(params, view):
     # All Playlists
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=playlists"
-    addMenuDirectoryItem(view_name + " - Show All", url)
+    addMenuDirectoryItem(view_name + string_load(30405), url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_music_type(params, view):
+    handle = int(sys.argv[1])
+    view_name = view.get("Name")
+
+    settings = xbmcaddon.Addon()
+    show_x_filtered_items = settings.getSetting("show_x_filtered_items")
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["Recursive"] = True
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "MusicAlbum"
+
+    # all albums
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
+    addMenuDirectoryItem(view_name + string_load(30320), url)
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Audio"
+    params["Limit"] = "{ItemLimit}"
+
+    # recently added
+    path = get_emby_url("{server}/emby/Users/{userid}/Items/Latest", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
+    addMenuDirectoryItem(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["Recursive"] = True
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Audio"
+    params["Limit"] = "{ItemLimit}"
+    params["Filters"] = "IsPlayed"
+    params["SortBy"] = "DatePlayed"
+    params["SortOrder"] = "Descending"
+
+    # recently played
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
+    addMenuDirectoryItem(view_name + string_load(30349) + " (" + show_x_filtered_items + ")", url)
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["Recursive"] = True
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Audio"
+    params["Limit"] = "{ItemLimit}"
+    params["Filters"] = "IsPlayed"
+    params["SortBy"] = "PlayCount"
+    params["SortOrder"] = "Descending"
+
+    # most played
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
+    addMenuDirectoryItem(view_name + string_load(30353) + " (" + show_x_filtered_items + ")", url)
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["Recursive"] = True
+    params["ImageTypeLimit"] = 1
+
+    # artists
+    path = get_emby_url("{server}/emby/Artists/AlbumArtists", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicArtists"
+    addMenuDirectoryItem(view_name + string_load(30321), url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_musicvideos_type(params, view):
+    handle = int(sys.argv[1])
+    xbmcplugin.setContent(handle, 'files')
+
+    view_name = view.get("Name")
+
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["Recursive"] = False
+    params["ImageTypeLimit"] = 1
+    params["IsMissing"] = False
+    params["Fields"] = "{field_filters}"
+
+    # artists
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=musicvideos"
+    addMenuDirectoryItem(view_name + string_load(30405), url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_livetv_type(params, view):
+    handle = int(sys.argv[1])
+    xbmcplugin.setContent(handle, 'files')
+
+    view_name = view.get("Name")
+
+    params = {}
+    params["UserId"] = "{userid}"
+    params["Recursive"] = False
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = "{field_filters}"
+
+    # channels
+    path = get_emby_url("{server}/emby/LiveTv/Channels", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
+    addMenuDirectoryItem(view_name + string_load(30360), url)
+
+    params = {}
+    params["UserId"] = "{userid}"
+    params["IsAiring"] = True
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = "ChannelInfo,{field_filters}"
+    params["EnableTotalRecordCount"] = False
+
+    # programs
+    path = get_emby_url("{server}/emby/LiveTv/Programs/Recommended", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
+    addMenuDirectoryItem(view_name + string_load(30361), url)
+
+    params = {}
+    params["UserId"] = "{userid}"
+    params["Recursive"] = False
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = "{field_filters}"
+    params["EnableTotalRecordCount"] = False
+
+    # recordings
+    path = get_emby_url("{server}/emby/LiveTv/Recordings", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
+    addMenuDirectoryItem(view_name + string_load(30362), url)
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -661,7 +830,7 @@ def display_movies_type(params, view):
     # All Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
-    addMenuDirectoryItem(view_name + " - Show All", url)
+    addMenuDirectoryItem(view_name + string_load(30405), url)
 
     params["Filters"] = "IsUnplayed"
     params["IsPlayed"] = False
@@ -719,19 +888,48 @@ def display_library_views(params):
         return []
     views = views.get("Items")
 
+    view_types = ["movies", "tvshows", "homevideos", "boxsets", "playlists", "music", "musicvideos", "livetv", "Channel"]
+
     for view in views:
         collection_type = view.get('CollectionType', None)
-        if collection_type in ["music", "livetv", "musicvideos", "homevideos", "boxsets", "playlists", "tvshows",
-                               "Channel", "movies"]:
+        if collection_type in view_types:
             view_name = view.get("Name")
             art = getArt(item=view, server=server)
             art['landscape'] = downloadUtils.getArtwork(view, "Primary", server=server)
-            addMenuDirectoryItem(view_name,
-                                 "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get(
-                                     "Id"),
-                                 art=art)
+            plugin_path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
+            addMenuDirectoryItem(view_name, plugin_path, art=art)
 
     xbmcplugin.endOfDirectory(handle)
+
+
+def display_library_view(params):
+    node_id = params.get("view_id")
+
+    view_info_url = "{server}/emby/Users/{userid}/Items/" + node_id
+    data_manager = DataManager()
+    view_info = data_manager.GetContent(view_info_url)
+
+    log.debug("VIEW_INFO : {0}", view_info)
+
+    collection_type = view_info.get("CollectionType")
+
+    if collection_type == "movies":
+        display_movies_type(params, view_info)
+    elif collection_type == "playlists":
+        display_playlist_type(params, view_info)
+    elif collection_type == "tvshows":
+        display_tvshow_type(params, view_info)
+    elif collection_type == "boxsets":
+        display_collection_type(params, view_info)
+    elif collection_type == "homevideos":
+        display_homevideos_type(params, view_info)
+    elif collection_type == "music":
+        display_music_type(params, view_info)
+    elif collection_type == "musicvideos":
+        display_musicvideos_type(params, view_info)
+    elif collection_type == "livetv":
+        display_livetv_type(params, view_info)
+
 
 
 def displaySections():
@@ -1580,6 +1778,8 @@ def getCollections():
     collections.append(item_data)
 
     return collections
+
+
 
 
 def show_widgets():

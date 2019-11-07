@@ -930,4 +930,22 @@ msgctxt "#30404"
 msgid " - A-Z"
 msgstr ""
 
+msgctxt "#30405"
+msgid " - Show All"
+msgstr ""
 
+msgctxt "#30406"
+msgid "Emby Libraries"
+msgstr ""
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr ""
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr ""
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr ""
