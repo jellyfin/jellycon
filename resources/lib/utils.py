@@ -31,7 +31,8 @@ def get_emby_url(base_url, params):
     params["format"] = "json"
     param_list = []
     for key in params:
-        param_list.append(key + "=" + str(params[key]))
+        if params[key] is not None:
+            param_list.append(key + "=" + str(params[key]))
     param_string = "&".join(param_list)
     return base_url + "?" + param_string
 
