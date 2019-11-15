@@ -20,6 +20,151 @@ downloadUtils = DownloadUtils()
 
 __addon__ = xbmcaddon.Addon()
 
+def show_movie_tags(params):
+    log.debug("show_movie_tags: {0}", params)
+    parent_id = params.get("parent_id")
+
+    url_params = {}
+    url_params["UserId"] = "{userid}"
+    url_params["SortBy"] = "SortName"
+    url_params["SortOrder"] = "Ascending"
+    url_params["CollapseBoxSetItems"] = False
+    url_params["GroupItemsIntoCollections"] = False
+    url_params["Recursive"] = True
+    url_params["IsMissing"] = False
+    url_params["EnableTotalRecordCount"] = False
+    url_params["EnableUserData"] = False
+    url_params["IncludeItemTypes"] = "Movie"
+
+    if parent_id:
+        url_params["ParentId"] = parent_id
+
+    url = get_emby_url("{server}/emby/Tags", url_params)
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+
+    if not result:
+        return
+
+    tags = result.get("Items")
+
+    log.debug("Tags : {0}", result)
+
+    for tag in tags:
+        name = tag["Name"]
+        tag_id = tag["Id"]
+
+        url_params = {}
+        url_params["IncludeItemTypes"] = "Movie"
+        url_params["CollapseBoxSetItems"] = False
+        url_params["GroupItemsIntoCollections"] = False
+        url_params["Recursive"] = True
+        url_params["IsMissing"] = False
+        url_params["ImageTypeLimit"] = 1
+        url_params["SortBy"] = "Name"
+        url_params["SortOrder"] = "Ascending"
+        url_params["Fields"] = "{field_filters}"
+        url_params["TagIds"] = tag_id
+
+        if parent_id:
+            params["ParentId"] = parent_id
+
+        item_url = get_emby_url("{server}/emby/Users/{userid}/Items", url_params)
+
+        content_url = urllib.quote(item_url)
+        url = sys.argv[0] + ("?url=" +
+                             content_url +
+                             "&mode=GET_CONTENT" +
+                             "&media_type=movies")
+        log.debug("addMenuDirectoryItem: {0} - {1}", name, url)
+        addMenuDirectoryItem(name, url)
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+def show_movie_years(params):
+    log.debug("show_movie_years: {0}", params)
+    parent_id = params.get("parent_id")
+    group_into_decades = params.get("group") == "true"
+
+    url_params = {}
+    url_params["UserId"] = "{userid}"
+    url_params["SortBy"] = "SortName"
+    url_params["SortOrder"] = "Ascending"
+    url_params["CollapseBoxSetItems"] = False
+    url_params["GroupItemsIntoCollections"] = False
+    url_params["Recursive"] = True
+    url_params["IsMissing"] = False
+    url_params["EnableTotalRecordCount"] = False
+    url_params["EnableUserData"] = False
+    url_params["IncludeItemTypes"] = "Movie"
+
+    if parent_id:
+        url_params["ParentId"] = parent_id
+
+    url = get_emby_url("{server}/emby/Years", url_params)
+
+    data_manager = DataManager()
+    result = data_manager.GetContent(url)
+
+    if not result:
+        return
+
+    years_list = result.get("Items")
+    result_names = {}
+    for year in years_list:
+        name = year.get("Name")
+        if group_into_decades:
+            year_int = int(name)
+            decade = str(year_int - year_int % 10)
+            decade_end = str((year_int - year_int % 10) + 9)
+            decade_name = decade + "-" + decade_end
+            result_names[decade_name] = year_int - year_int % 10
+        else:
+            result_names[name] = [name]
+
+    keys = list(result_names.keys())
+    keys.sort()
+
+    if group_into_decades:
+        for decade_key in keys:
+            year_list = []
+            decade_start = result_names[decade_key]
+            for include_year in range(decade_start, decade_start + 10):
+                year_list.append(str(include_year))
+            result_names[decade_key] = year_list
+
+    for year in keys:
+        name = year
+        value = ",".join(result_names[year])
+
+        params = {}
+        params["IncludeItemTypes"] = "Movie"
+        params["CollapseBoxSetItems"] = False
+        params["GroupItemsIntoCollections"] = False
+        params["Recursive"] = True
+        params["IsMissing"] = False
+        params["ImageTypeLimit"] = 1
+        params["SortBy"] = "Name"
+        params["SortOrder"] = "Ascending"
+        params["Fields"] = "{field_filters}"
+        params["Years"] = value
+
+        if parent_id:
+            params["ParentId"] = parent_id
+
+        item_url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+
+        content_url = urllib.quote(item_url)
+        url = sys.argv[0] + ("?url=" +
+                             content_url +
+                             "&mode=GET_CONTENT" +
+                             "&media_type=movies")
+        log.debug("addMenuDirectoryItem: {0} - {1}", name, url)
+        addMenuDirectoryItem(name, url)
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 
 def show_movie_pages(params):
     log.debug("showMoviePages: {0}", params)
@@ -335,25 +480,22 @@ def display_menu(params):
     menu_type = params.get("type")
     if menu_type == "library":
         display_library_views(params)
-        return
     elif menu_type == "library_item":
         display_library_view(params)
-        return
     elif menu_type == "show_global_types":
         show_global_types(params)
-        return
     elif menu_type == "global_list_movies":
         display_movies_type(params, None)
-        return
     elif menu_type == "global_list_tvshows":
         display_tvshow_type(params, None)
-        return
     elif menu_type == "show_custom_widgets":
         show_widgets()
-        return
     elif menu_type == "addon_items":
         display_addon_menu(params)
-        return
+    elif menu_type == "show_movie_years":
+        show_movie_years(params)
+    elif menu_type == "show_movie_tags":
+        show_movie_tags(params)
 
 
 def show_global_types(params):
@@ -680,7 +822,7 @@ def display_livetv_type(params, view):
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_livetv_type(params, view):
+def display_channel_type(params, view):
     handle = int(sys.argv[1])
     xbmcplugin.setContent(handle, 'files')
 
@@ -774,6 +916,21 @@ def display_movies_type(params, view):
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     addMenuDirectoryItem(view_name + string_load(30404), path)
+
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
+    if view is not None:
+        path += "&parent_id=" + view.get("Id")
+    addMenuDirectoryItem(view_name + " - Years", path)
+
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
+    if view is not None:
+        path += "&parent_id=" + view.get("Id")
+    addMenuDirectoryItem(view_name + " - Decades", path)
+
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
+    if view is not None:
+        path += "&parent_id=" + view.get("Id")
+    addMenuDirectoryItem(view_name + " - Tags", path)
 
     xbmcplugin.endOfDirectory(handle)
 
