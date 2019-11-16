@@ -902,6 +902,22 @@ def display_movies_type(params, view):
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     addMenuDirectoryItem(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
+    params = {}
+    if view is not None:
+        params["ParentId"] = view.get("Id")
+    params["Fields"] = "{field_filters}"
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Boxset"
+    params["CollapseBoxSetItems"] = True
+    params["GroupItemsIntoCollections"] = True
+    params["Recursive"] = True
+    params["IsMissing"] = False
+
+    # Collections
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
+    addMenuDirectoryItem(view_name + string_load(30410), url)
+
     path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
@@ -920,17 +936,17 @@ def display_movies_type(params, view):
     path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
-    addMenuDirectoryItem(view_name + " - Years", path)
+    addMenuDirectoryItem(view_name + string_load(30411), path)
 
     path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
-    addMenuDirectoryItem(view_name + " - Decades", path)
+    addMenuDirectoryItem(view_name + string_load(30412), path)
 
     path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
-    addMenuDirectoryItem(view_name + " - Tags", path)
+    addMenuDirectoryItem(view_name + string_load(30413), path)
 
     xbmcplugin.endOfDirectory(handle)
 

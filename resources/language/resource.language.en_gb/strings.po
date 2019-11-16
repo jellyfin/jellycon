@@ -949,3 +949,20 @@ msgstr ""
 msgctxt "#30409"
 msgid "Add-on Actions"
 msgstr ""
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr ""
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr ""
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr ""
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr ""
+
