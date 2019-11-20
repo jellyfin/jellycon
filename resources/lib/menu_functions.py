@@ -563,28 +563,6 @@ def display_addon_menu(params):
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_collection_type(params, view):
-    handle = int(sys.argv[1])
-    view_name = view.get("Name")
-
-    params = {}
-    params["ParentId"] = view.get("Id")
-    params["Fields"] = "{field_filters}"
-    params["ImageTypeLimit"] = 1
-    params["IncludeItemTypes"] = "Boxset"
-    params["CollapseBoxSetItems"] = True
-    params["GroupItemsIntoCollections"] = True
-    params["Recursive"] = True
-    params["IsMissing"] = False
-
-    # All Collections
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
-    addMenuDirectoryItem(view_name + string_load(30405), url)
-
-    xbmcplugin.endOfDirectory(handle)
-
-
 def display_tvshow_type(params, view):
     handle = int(sys.argv[1])
 
@@ -664,23 +642,6 @@ def display_tvshow_type(params, view):
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     addMenuDirectoryItem(view_name + string_load(30404), path)
-
-    xbmcplugin.endOfDirectory(handle)
-
-
-def display_playlist_type(params, view):
-    handle = int(sys.argv[1])
-    view_name = view.get("Name")
-
-    params = {}
-    params["ParentId"] = view.get("Id")
-    params["Fields"] = "{field_filters}"
-    params["ImageTypeLimit"] = 1
-
-    # All Playlists
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=playlists"
-    addMenuDirectoryItem(view_name + string_load(30405), url)
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -975,10 +936,44 @@ def display_library_views(params):
             view_name = view.get("Name")
             art = getArt(item=view, server=server)
             art['landscape'] = downloadUtils.getArtwork(view, "Primary", server=server)
+
             plugin_path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
+
+            if collection_type == "playlists":
+                plugin_path = get_playlist_path(view)
+            elif collection_type == "boxsets":
+                plugin_path = get_collection_path(view)
+
             addMenuDirectoryItem(view_name, plugin_path, art=art)
 
     xbmcplugin.endOfDirectory(handle)
+
+
+def get_playlist_path(view_info):
+    params = {}
+    params["ParentId"] = view_info.get("Id")
+    params["Fields"] = "{field_filters}"
+    params["ImageTypeLimit"] = 1
+
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=playlists"
+    return url
+
+
+def get_collection_path(view_info):
+    params = {}
+    params["ParentId"] = view_info.get("Id")
+    params["Fields"] = "{field_filters}"
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Boxset"
+    params["CollapseBoxSetItems"] = True
+    params["GroupItemsIntoCollections"] = True
+    params["Recursive"] = True
+    params["IsMissing"] = False
+
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
+    return url
 
 
 def display_library_view(params):
@@ -996,12 +991,8 @@ def display_library_view(params):
 
     if collection_type == "movies":
         display_movies_type(params, view_info)
-    elif collection_type == "playlists":
-        display_playlist_type(params, view_info)
     elif collection_type == "tvshows":
         display_tvshow_type(params, view_info)
-    elif collection_type == "boxsets":
-        display_collection_type(params, view_info)
     elif collection_type == "homevideos":
         display_homevideos_type(params, view_info)
     elif collection_type == "music":
