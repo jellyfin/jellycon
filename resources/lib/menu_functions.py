@@ -970,7 +970,8 @@ def display_library_views(params):
 
     for view in views:
         collection_type = view.get('CollectionType', None)
-        if collection_type in view_types:
+        item_type = view.get('Type', None)
+        if collection_type in view_types or item_type == "Channel":
             view_name = view.get("Name")
             art = getArt(item=view, server=server)
             art['landscape'] = downloadUtils.getArtwork(view, "Primary", server=server)
@@ -989,7 +990,9 @@ def display_library_view(params):
 
     log.debug("VIEW_INFO : {0}", view_info)
 
-    collection_type = view_info.get("CollectionType")
+    collection_type = view_info.get("CollectionType", None)
+    if collection_type is None and view_info.get('Type', None) == "Channel":
+        collection_type = "channel"
 
     if collection_type == "movies":
         display_movies_type(params, view_info)
@@ -1007,7 +1010,7 @@ def display_library_view(params):
         display_musicvideos_type(params, view_info)
     elif collection_type == "livetv":
         display_livetv_type(params, view_info)
-    elif collection_type == "Channel":
+    elif collection_type == "channel":
         display_channel_type(params, view_info)
 
 
