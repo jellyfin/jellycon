@@ -587,6 +587,13 @@ def display_tvshow_type(params, view):
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     addMenuDirectoryItem(view_name + string_load(30405), url)
 
+    params["Filters"] = "IsFavorite"
+
+    # Favorite TV Shows
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    addMenuDirectoryItem(view_name + string_load(30414), url)
+
     params["Filters"] = "IsUnplayed"
     params["IsPlayed"] = False
 
@@ -810,6 +817,13 @@ def display_movies_type(params, view):
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     addMenuDirectoryItem(view_name + string_load(30405), url)
+
+    params["Filters"] = "IsFavorite"
+
+    # Favorite Movies
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    addMenuDirectoryItem(view_name + string_load(30414), url)
 
     params["Filters"] = "IsUnplayed"
     params["IsPlayed"] = False
