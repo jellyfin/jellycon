@@ -783,26 +783,6 @@ def display_livetv_type(params, view):
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_channel_type(params, view):
-    handle = int(sys.argv[1])
-    xbmcplugin.setContent(handle, 'files')
-
-    view_name = view.get("Name")
-
-    params = {}
-    params["ParentId"] = view.get("Id")
-    params["IsMissing"] = False
-    params["ImageTypeLimit"] = 1
-    params["Fields"] = "{field_filters}"
-
-    # channels
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=files"
-    addMenuDirectoryItem(view_name, url)
-
-    xbmcplugin.endOfDirectory(handle)
-
-
 def display_movies_type(params, view):
     handle = int(sys.argv[1])
     xbmcplugin.setContent(handle, 'files')
@@ -943,6 +923,8 @@ def display_library_views(params):
                 plugin_path = get_playlist_path(view)
             elif collection_type == "boxsets":
                 plugin_path = get_collection_path(view)
+            elif collection_type is None and view.get('Type', None) == "Channel":
+                plugin_path = get_channel_path(view)
 
             addMenuDirectoryItem(view_name, plugin_path, art=art)
 
@@ -976,6 +958,17 @@ def get_collection_path(view_info):
     return url
 
 
+def get_channel_path(view):
+    params = {}
+    params["ParentId"] = view.get("Id")
+    params["IsMissing"] = False
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = "{field_filters}"
+
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=files"
+    return url
+
 def display_library_view(params):
     node_id = params.get("view_id")
 
@@ -986,8 +979,6 @@ def display_library_view(params):
     log.debug("VIEW_INFO : {0}", view_info)
 
     collection_type = view_info.get("CollectionType", None)
-    if collection_type is None and view_info.get('Type', None) == "Channel":
-        collection_type = "channel"
 
     if collection_type == "movies":
         display_movies_type(params, view_info)
@@ -1001,8 +992,6 @@ def display_library_view(params):
         display_musicvideos_type(params, view_info)
     elif collection_type == "livetv":
         display_livetv_type(params, view_info)
-    elif collection_type == "channel":
-        display_channel_type(params, view_info)
 
 
 def displaySections():
