@@ -883,8 +883,9 @@ def sendProgress(monitor):
 
     log.debug("Sending Progress Update")
 
-    play_time = xbmc.Player().getTime()
-    total_play_time = xbmc.Player().getTotalTime()
+    player = xbmc.Player()
+    play_time = player.getTime()
+    total_play_time = player.getTotalTime()
     play_data["currentPossition"] = play_time
     play_data["duration"] = total_play_time
     play_data["currently_playing"] = True
@@ -905,6 +906,8 @@ def sendProgress(monitor):
     playlist_position = playlist.getposition()
     playlist_size = playlist.size()
 
+    volume, muted = get_volume()
+
     postdata = {
         'QueueableMediaTypes': "Video",
         'CanSeek': True,
@@ -913,17 +916,30 @@ def sendProgress(monitor):
         'PositionTicks': ticks,
         'RunTimeTicks': duration,
         'IsPaused': paused,
-        'IsMuted': False,
+        'IsMuted': muted,
         'PlayMethod': playback_type,
         'PlaySessionId': play_session_id,
         'PlaylistIndex': playlist_position,
-        'PlaylistLength': playlist_size
+        'PlaylistLength': playlist_size,
+        'VolumeLevel': volume
     }
 
     log.debug("Sending POST progress started: {0}", postdata)
 
     url = "{server}/emby/Sessions/Playing/Progress"
     download_utils.downloadUrl(url, postBody=postdata, method="POST")
+
+
+def get_volume():
+
+    json_data = xbmc.executeJSONRPC(
+        '{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["volume", "muted"]}, "id": 1 }')
+    result = json.loads(json_data)
+    result = result.get('result', {})
+    volume = result.get('volume')
+    muted = result.get('muted')
+
+    return volume, muted
 
 
 def prompt_for_stop_actions(item_id, data):
