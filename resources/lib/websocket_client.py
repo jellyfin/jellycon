@@ -79,7 +79,7 @@ class WebSocketClient(threading.Thread):
             home_screen = HomeWindow()
             home_screen.setProperty("skip_select_user", "true")
 
-            startat = data.get('StartPositionTicks', 0)
+            startat = data.get('StartPositionTicks', -1)
             log.debug("WebSocket Message PlayNow: {0}", data)
 
             media_source_id = data.get("MediaSourceId", "")
