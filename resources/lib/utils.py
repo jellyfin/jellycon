@@ -123,23 +123,22 @@ class PlayUtils():
         # do direct path playback
         elif playback_type == "0":
             playurl = media_source.get("Path")
+            playurl = playurl.replace("\\", "/")
+            playurl = playurl.strip()
 
             # handle DVD structure
-            if (media_source.get("VideoType") == "Dvd"):
+            if media_source.get("VideoType") == "Dvd":
                 playurl = playurl + "/VIDEO_TS/VIDEO_TS.IFO"
-            elif (media_source.get("VideoType") == "BluRay"):
+            elif media_source.get("VideoType") == "BluRay":
                 playurl = playurl + "/BDMV/index.bdmv"
 
-            smb_username = addonSettings.getSetting('smbusername')
-            smb_password = addonSettings.getSetting('smbpassword')
-
-            # add smb creds
-            if smb_username == '':
-                playurl = playurl.replace("\\\\", "smb://")
-            else:
-                playurl = playurl.replace("\\\\", "smb://" + smb_username + ':' + smb_password + '@')
-
-            playurl = playurl.replace("\\", "/")
+            if playurl.startswith("//"):
+                smb_username = addonSettings.getSetting('smbusername')
+                smb_password = addonSettings.getSetting('smbpassword')
+                if not smb_username:
+                    playurl = "smb://" + playurl[2:]
+                else:
+                    playurl = "smb://" + smb_username + ':' + smb_password + '@' + playurl[2:]
 
         # do direct http streaming playback
         elif playback_type == "1":
