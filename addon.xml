@@ -9,8 +9,7 @@
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video audio</provides>
   </extension>
-  <extension point="xbmc.service" library="service.py" start="login">
-  </extension>
+  <extension point="xbmc.service" library="service.py" start="login"/>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <language>en</language>
