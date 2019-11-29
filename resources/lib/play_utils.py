@@ -809,7 +809,7 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
     else:
         playurlprefs += "&AudioBitrate=192000"
 
-    if url.find("|verifypeer=false"):
+    if url.find("|verifypeer=false") != -1:
         new_url = url.replace("|verifypeer=false", playurlprefs + "|verifypeer=false")
     else:
         new_url = url + playurlprefs
