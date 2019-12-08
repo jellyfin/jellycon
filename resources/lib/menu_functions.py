@@ -818,6 +818,8 @@ def display_movies_type(params, view):
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     addMenuDirectoryItem(view_name + string_load(30405), url)
 
+    params["CollapseBoxSetItems"] = False
+    params["GroupItemsIntoCollections"] = False
     params["Filters"] = "IsFavorite"
 
     # Favorite Movies
