@@ -270,7 +270,7 @@ def show_genre_list(params):
     params["Recursive"] = True
     params["SortBy"] = "Name"
     params["SortOrder"] = "Ascending"
-    params["ImageTypeLimit"] = 0
+    params["ImageTypeLimit"] = 1
 
     if parent_id is not None:
         params["ParentId"] = parent_id
