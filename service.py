@@ -23,6 +23,7 @@ from resources.lib.server_detect import checkServer
 from resources.lib.library_change_monitor import LibraryChangeMonitor
 from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
+from resources.lib.image_server import HttpImageServerThread
 
 settings = xbmcaddon.Addon()
 
@@ -62,6 +63,10 @@ try:
     download_utils.getUserId()
 except Exception as error:
     log.error("Error with initial service auth: {0}", error)
+
+
+image_server = HttpImageServerThread()
+image_server.start()
 
 # set up all the services
 monitor = Service()
@@ -154,6 +159,8 @@ while not xbmc.abortRequested:
         log.error("{0}", traceback.format_exc())
 
     xbmc.sleep(1000)
+
+image_server.stop()
 
 # call stop on the library update monitor
 library_change_monitor.stop()

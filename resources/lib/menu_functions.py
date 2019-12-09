@@ -4,6 +4,7 @@
 import sys
 import json
 import urllib
+import base64
 
 import xbmcplugin
 import xbmcaddon
@@ -155,13 +156,15 @@ def show_movie_years(params):
 
         item_url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
 
+        art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
+
         content_url = urllib.quote(item_url)
         url = sys.argv[0] + ("?url=" +
                              content_url +
                              "&mode=GET_CONTENT" +
                              "&media_type=movies")
         log.debug("addMenuDirectoryItem: {0} - {1}", name, url)
-        addMenuDirectoryItem(name, url)
+        addMenuDirectoryItem(name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -233,6 +236,8 @@ def show_movie_pages(params):
         item_data['title'] = "Page (" + str(start_index + 1) + " - " + str(page_upper) + ")"
         item_data['path'] = item_url
         item_data['media_type'] = 'movies'
+
+        item_data["art"] = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
 
         collections.append(item_data)
         start_index = start_index + page_limit
