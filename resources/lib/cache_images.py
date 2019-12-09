@@ -151,7 +151,7 @@ class CacheArtwork(threading.Thread):
                     url = urllib.unquote(url)
                     url = url.replace("image://", "")
                     url = url[0:-1]
-                    if url.find("/emby/") > -1 and url not in emby_texture_urls:
+                    if url.find("/emby/") > -1 and url not in emby_texture_urls or url.find("localhost:24276") > -1:
                         # log.debug("adding unused texture url: {0}", url)
                         unused_texture_ids.add(texture["textureid"])
 
@@ -214,10 +214,14 @@ class CacheArtwork(threading.Thread):
     def get_emby_artwork(self, progress):
         log.debug("get_emby_artwork")
 
-        url = ('{server}/emby/Users/{userid}/Items?Recursive=true' +
-            '&IncludeItemTypes=Movie,Series,Episode,BoxSet' +
-            '&ImageTypeLimit=1' +
-            '&format=json')
+        url = ""
+        url += "{server}/emby/Users/{userid}/Items"
+        url += "?Recursive=true"
+        url += "&EnableUserData=False"
+        url += "&Fields=BasicSyncInfo"
+        url += "&IncludeItemTypes=Movie,Series,Episode,BoxSet"
+        url += "&ImageTypeLimit=1"
+        url += "&format=json"
 
         data_manager = DataManager()
         results = data_manager.GetContent(url)

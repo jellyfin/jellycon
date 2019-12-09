@@ -4,6 +4,7 @@ import xbmc
 import base64
 import re
 from urlparse import urlparse
+from random import shuffle
 
 import threading
 import httplib
@@ -26,15 +27,29 @@ def get_image_links(url):
     if server is None:
         return []
 
-    url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
-    url = url.replace("{ItemLimit}", "4")
-    url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
+    #url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
+    #url = url.replace("{ItemLimit}", "4")
+    #url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
 
-    if not re.search('limit=', url, re.IGNORECASE):
-        url += "&Limit=4"
+    #if not re.search('limit=', url, re.IGNORECASE):
+    #    url += "&Limit=4"
 
-    if not re.search('sortBy=', url, re.IGNORECASE):
-        url += "&SortBy=Random"
+    #if not re.search('sortBy=', url, re.IGNORECASE):
+    #    url += "&SortBy=Random"
+
+    url = re.sub("(?i)EnableUserData=[a-z]+", "EnableUserData=False", url)
+    url = re.sub("(?i)EnableImageTypes=[,a-z]+", "EnableImageTypes=Primary", url)
+    url = url.replace("{field_filters}", "BasicSyncInfo")
+    url = re.sub("(?i)Fields=[,a-z]+", "Fields=BasicSyncInfo", url)
+
+    if not re.search('enableimagetypes=', url, re.IGNORECASE):
+        url += "&EnableImageTypes=Primary"
+
+    if not re.search('fields=', url, re.IGNORECASE):
+        url += "&Fields=BasicSyncInfo"
+
+    if not re.search('EnableUserData=', url, re.IGNORECASE):
+        url += "&EnableUserData=False"
 
     data_manager = DataManager()
     result = data_manager.GetContent(url)
@@ -47,6 +62,8 @@ def get_image_links(url):
     for iteem in items:
         art = getArt(item=iteem, server=server)
         art_urls.append(art)
+
+    shuffle(art_urls)
 
     return art_urls
 
@@ -113,6 +130,9 @@ def build_image(path):
             del image
 
             image_count += 1
+
+        if image_count == cols * rows:
+            break
 
     del image_urls
 
