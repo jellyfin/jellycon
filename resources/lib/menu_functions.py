@@ -72,13 +72,15 @@ def show_movie_tags(params):
 
         item_url = get_emby_url("{server}/emby/Users/{userid}/Items", url_params)
 
+        art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
+
         content_url = urllib.quote(item_url)
         url = sys.argv[0] + ("?url=" +
                              content_url +
                              "&mode=GET_CONTENT" +
                              "&media_type=movies")
         log.debug("addMenuDirectoryItem: {0} - {1}", name, url)
-        addMenuDirectoryItem(name, url)
+        addMenuDirectoryItem(name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -297,11 +299,12 @@ def show_genre_list(params):
     xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
     for genre in result:
-        art = getArt(item=genre, server=server)
         item_data = {}
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = kodi_type
-        item_data['art'] = art
+
+        #art = getArt(item=genre, server=server)
+        #item_data['art'] = art
 
         params = {}
         params["Recursive"] = True
@@ -316,6 +319,9 @@ def show_genre_list(params):
             params["ParentId"] = parent_id
 
         url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+
+        art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
+        item_data['art'] = art
 
         item_data['path'] = url
         collections.append(item_data)
@@ -333,42 +339,39 @@ def show_genre_list(params):
 def show_movie_alpha_list(params):
     log.debug("== ENTER: showMovieAlphaList() ==")
 
+    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+
     settings = xbmcaddon.Addon()
     server = downloadUtils.getServer()
     if server is None:
         return
 
-    parent_id = params.get("parent_id")
-    settings = xbmcaddon.Addon()
     group_movies = settings.getSetting('group_movies') == "true"
+    parent_id = params.get("parent_id")
 
-    collections = []
-
-    item_data = {}
-    item_data['title'] = "#"
-    item_data['media_type'] = "Movies"
-
-    params = {}
-    params["Fields"] = "{field_filters}"
-    params["CollapseBoxSetItems"] = str(group_movies)
-    params["GroupItemsIntoCollections"] = str(group_movies)
-    params["Recursive"] = True
-    params["NameLessThan"] = "A"
-    params["IncludeItemTypes"] = "Movie"
-    params["SortBy"] = "Name"
-    params["SortOrder"] = "Ascending"
-    params["ImageTypeLimit"] = 1
+    url_params = {}
+    url_params["IncludeItemTypes"] = "Movie"
+    url_params["Recursive"] = True
+    url_params["GroupItemsIntoCollections"] = group_movies
+    url_params["UserId"] = "{userid}"
+    url_params["SortBy"] = "Name"
+    url_params["SortOrder"] = "Ascending"
     if parent_id is not None:
         params["ParentId"] = parent_id
-    url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    item_data['path'] = url
 
-    collections.append(item_data)
+    prefix_url = get_emby_url("{server}/emby/Items/Prefixes", url_params)
 
-    group_movies = settings.getSetting('group_movies') == "true"
-    alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-                 "U", "V", "W", "X", "Y", "Z"]
+    data_manager = DataManager()
+    result = data_manager.GetContent(prefix_url)
 
+    if not result:
+        return
+
+    alphaList = []
+    for prefix in result:
+        alphaList.append(prefix.get("Name"))
+
+    collections = []
     for alphaName in alphaList:
         item_data = {}
         item_data['title'] = alphaName
@@ -376,18 +379,27 @@ def show_movie_alpha_list(params):
 
         params = {}
         params["Fields"] = "{field_filters}"
-        params["CollapseBoxSetItems"] = str(group_movies)
-        params["GroupItemsIntoCollections"] = str(group_movies)
+        params["CollapseBoxSetItems"] = group_movies
+        params["GroupItemsIntoCollections"] = group_movies
         params["Recursive"] = True
-        params["NameStartsWith"] = alphaName
         params["IncludeItemTypes"] = "Movie"
         params["SortBy"] = "Name"
         params["SortOrder"] = "Ascending"
         params["ImageTypeLimit"] = 1
+
         if parent_id is not None:
             params["ParentId"] = parent_id
+
+        if alphaName == "#":
+            params["NameLessThan"] = "A"
+        else:
+            params["NameStartsWith"] = alphaName
+
         url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
         item_data['path'] = url
+
+        art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
+        item_data['art'] = art
 
         collections.append(item_data)
 
@@ -395,7 +407,7 @@ def show_movie_alpha_list(params):
         url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-        addMenuDirectoryItem(collection.get('title', string_load(30250)), url)
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url, art=collection.get("art"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -410,31 +422,28 @@ def show_tvshow_alpha_list(params):
 
     parent_id = params.get("parent_id")
 
-    collections = []
-
-    item_data = {}
-    item_data['title'] = "#"
-    item_data['media_type'] = "tvshows"
-
-    params = {}
-    params["Fields"] = "{field_filters}"
-    params["ImageTypeLimit"] = 1
-    params["NameLessThan"] = "A"
-    params["IncludeItemTypes"] = "Series"
-    params["SortBy"] = "Name"
-    params["SortOrder"] = "Ascending"
-    params["Recursive"] = True
-    params["IsMissing"] = False
+    url_params = {}
+    url_params["IncludeItemTypes"] = "Series"
+    url_params["Recursive"] = True
+    url_params["UserId"] = "{userid}"
+    url_params["SortBy"] = "Name"
+    url_params["SortOrder"] = "Ascending"
     if parent_id is not None:
         params["ParentId"] = parent_id
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
 
-    item_data['path'] = path
-    collections.append(item_data)
+    prefix_url = get_emby_url("{server}/emby/Items/Prefixes", url_params)
 
-    alphaList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-                 "U", "V", "W", "X", "Y", "Z"]
+    data_manager = DataManager()
+    result = data_manager.GetContent(prefix_url)
 
+    if not result:
+        return
+
+    alphaList = []
+    for prefix in result:
+        alphaList.append(prefix.get("Name"))
+
+    collections = []
     for alphaName in alphaList:
         item_data = {}
         item_data['title'] = alphaName
@@ -443,24 +452,34 @@ def show_tvshow_alpha_list(params):
         params = {}
         params["Fields"] = "{field_filters}"
         params["ImageTypeLimit"] = 1
-        params["NameStartsWith"] = alphaName
         params["IncludeItemTypes"] = "Series"
         params["SortBy"] = "Name"
         params["SortOrder"] = "Ascending"
         params["Recursive"] = True
         params["IsMissing"] = False
+
         if parent_id is not None:
             params["ParentId"] = parent_id
+
+        if alphaName == "#":
+            params["NameLessThan"] = "A"
+        else:
+            params["NameStartsWith"] = alphaName
+
         path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
 
         item_data['path'] = path
+
+        art = {"thumb": "http://localhost:24276/" + base64.b64encode(path)}
+        item_data['art'] = art
+
         collections.append(item_data)
 
     for collection in collections:
         url = (sys.argv[0] + "?url=" + urllib.quote(collection['path']) +
                "&mode=GET_CONTENT&media_type=" + collection["media_type"])
         log.debug("addMenuDirectoryItem: {0} ({1})", collection.get('title'), url)
-        addMenuDirectoryItem(collection.get('title', string_load(30250)), url)
+        addMenuDirectoryItem(collection.get('title', string_load(30250)), url, art=collection.get("art"))
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
