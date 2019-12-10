@@ -10,7 +10,13 @@ import threading
 import httplib
 import io
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from PIL import ImageFilter, Image, ImageOps
+
+pil_loaded = False
+try:
+    from PIL import ImageFilter, Image, ImageOps
+    pil_loaded = True
+except Exception as err:
+    pil_loaded = False
 
 from .simple_logging import SimpleLogging
 from .datamanager import DataManager
@@ -169,13 +175,29 @@ class HttpImageHandler(BaseHTTPRequestHandler):
 
     def serve_image(self):
 
-        image_bytes = build_image(self.path)
+        if pil_loaded:
 
-        self.send_response(200)
-        self.send_header('Content-type', 'image/jpeg')
-        self.send_header('Content-Length', str(len(image_bytes)))
-        self.end_headers()
-        self.wfile.write(image_bytes)
+            image_bytes = build_image(self.path)
+            self.send_response(200)
+            self.send_header('Content-type', 'image/jpeg')
+            self.send_header('Content-Length', str(len(image_bytes)))
+            self.end_headers()
+            self.wfile.write(image_bytes)
+
+        else:
+
+            image_path = xbmc.translatePath("special://home/addons/plugin.video.embycon/icon.png").decode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-type', 'image/png')
+            modified = xbmcvfs.Stat(image_path).st_mtime()
+            self.send_header('Last-Modified', "%s" % modified)
+            image = xbmcvfs.File(image_path)
+            size = image.size()
+            self.send_header('Content-Length', str(size))
+            self.end_headers()
+            self.wfile.write(image.readBytes())
+            image.close()
+            del image
 
 
 class HttpImageServerThread(threading.Thread):
