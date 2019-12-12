@@ -6,15 +6,9 @@ The key difference with its sibling [Emby for Kodi] addon is that EmbyCon does n
 
 ## Installation
 
-### From official **Kodi** addon repository
-
-This is the **easiest** and **safest** way of installing EmbyCon, but it does not give access to [EmbyCon SkinCloner] nor to [EmbyCon ScreenSaver]:
-
-[![Installation from official Kodi addon repository](https://img.youtube.com/vi/4FvZ2cZndiY/0.jpg)](https://www.youtube.com/watch?v=4FvZ2cZndiY)
-
 ### From **Emby** Kodi addon repository
 
-This installation method will require to perform a few additional configuation tricks, but it will also let you install [EmbyCon SkinCloner] nor to [EmbyCon ScreenSaver]:
+This installation method will require to perform a few additional configuation, but it will also let you install [EmbyCon SkinCloner] nor to [EmbyCon ScreenSaver]:
 
 [![Installation from Emby Kodi addon repository](https://img.youtube.com/vi/aH11qX4tggE/0.jpg)](https://www.youtube.com/watch?v=aH11qX4tggE)
 
