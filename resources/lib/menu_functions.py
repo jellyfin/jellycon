@@ -1888,6 +1888,9 @@ def show_widgets():
     settings = xbmcaddon.Addon()
     show_x_filtered_items = settings.getSetting("show_x_filtered_items")
 
+    addMenuDirectoryItem("All Movies",
+                         'plugin://plugin.video.embycon/library/movies')
+
     addMenuDirectoryItem(string_load(30257) + " (" + show_x_filtered_items + ")",
                          'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
     addMenuDirectoryItem(string_load(30258) + " (" + show_x_filtered_items + ")",

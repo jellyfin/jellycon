@@ -68,10 +68,7 @@ def mainEntryPoint():
     log.debug("Kodi Version: {0}", kodi_version)
     log.debug("Script argument data: {0}", sys.argv)
 
-    try:
-        params = get_params(sys.argv[2])
-    except:
-        params = {}
+    params = get_params()
 
     home_window = HomeWindow()
 
@@ -87,6 +84,7 @@ def mainEntryPoint():
 
     log.debug("Script params: {0}", params)
 
+    request_path = params.get("request_path", None)
     param_url = params.get('url', None)
 
     if param_url:
@@ -94,7 +92,13 @@ def mainEntryPoint():
 
     mode = params.get("mode", None)
 
-    if mode == "CHANGE_USER":
+    if len(params) == 1 and request_path and request_path.find("/library/movies") > -1:
+        checkServer()
+        new_params = {}
+        new_params["item_type"] = "Movie"
+        new_params["media_type"] = "movies"
+        showContent(sys.argv[0], int(sys.argv[1]), new_params)
+    elif mode == "CHANGE_USER":
         checkServer(change_user=True, notify=False)
     elif mode == "CACHE_ARTWORK":
         CacheArtwork().cache_artwork_interactive()
@@ -279,9 +283,20 @@ def delete(item):
         xbmc.executebuiltin("Container.Refresh")
 
 
-def get_params(paramstring):
+def get_params():
+
+    plugin_path = sys.argv[0]
+    paramstring = sys.argv[2]
+
     log.debug("Parameter string: {0}", paramstring)
+    log.debug("Plugin Path string: {0}", plugin_path)
+
     param = {}
+
+    #add plugin path
+    request_path = plugin_path.replace("plugin://plugin.video.embycon", "")
+    param["request_path"] = request_path
+
     if len(paramstring) >= 2:
         params = paramstring
 
