@@ -13,11 +13,13 @@ class SimpleLogging():
         settings = xbmcaddon.Addon()
         prefix = settings.getAddonInfo('name')
         self.name = prefix + '.' + name
-        params = {"setting": "debug.showloginfo"}
-        setting_result = json_rpc('Settings.getSettingValue').execute(params)
-        current_value = setting_result.get("result", None)
-        if current_value is not None:
-            self.enable_logging = current_value.get("value", False)
+        self.enable_logging = settings.getSetting('log_debug') == "true"
+
+        #params = {"setting": "debug.showloginfo"}
+        #setting_result = json_rpc('Settings.getSettingValue').execute(params)
+        #current_value = setting_result.get("result", None)
+        #if current_value is not None:
+        #    self.enable_logging = current_value.get("value", False)
         #xbmc.log("LOGGING_ENABLED %s : %s" % (self.name, str(self.enable_logging)), level=xbmc.LOGDEBUG)
 
     def __str__(self):
@@ -34,7 +36,7 @@ class SimpleLogging():
     def debug(self, fmt, *args, **kwargs):
         if self.enable_logging:
             log_line = self.name + "|DEBUG|" + self.log_line(fmt, *args)
-            xbmc.log(log_line, level=xbmc.LOGDEBUG)
+            xbmc.log(log_line, level=xbmc.LOGNOTICE)
 
     @staticmethod
     def log_line(fmt, *args):
