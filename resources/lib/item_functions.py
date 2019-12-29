@@ -333,7 +333,7 @@ def extract_item_info(item, gui_options):
 
 def add_gui_item(url, item_details, display_options, folder=True):
 
-    log.debug("item_details: {0}", item_details.__dict__)
+    #log.debug("item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
         return None
@@ -538,7 +538,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
 
         list_item.setInfo('video', info_labels)
-        log.debug("info_labels: {0}", info_labels)
+        #log.debug("info_labels: {0}", info_labels)
 
         if item_details.media_streams is not None:
             for stream in item_details.media_streams:
@@ -576,7 +576,7 @@ def add_gui_item(url, item_details, display_options, folder=True):
             info_labels["artist"] = item_details.song_artist
         info_labels["album"] = item_details.album_name
 
-        log.debug("info_labels: {0}", info_labels)
+        #log.debug("info_labels: {0}", info_labels)
         list_item.setInfo('music', info_labels)
 
     list_item.setContentLookup(False)
