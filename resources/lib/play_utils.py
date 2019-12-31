@@ -1,16 +1,13 @@
 # Gnu General Public License - see LICENSE.TXT
 
-import binascii
-
 import xbmc
 import xbmcgui
 import xbmcaddon
-import xbmcvfs
 
 from datetime import timedelta
-from datetime import datetime
 import json
 import os
+import base64
 
 from .simple_logging import SimpleLogging
 from .downloadutils import DownloadUtils
@@ -1215,9 +1212,9 @@ class PlaybackService(xbmc.Monitor):
             return
 
         data_json = json.loads(data)
-        hex_data = data_json[0]
-        log.debug("PlaybackService:onNotification:{0}", hex_data)
-        decoded_data = binascii.unhexlify(hex_data)
+        message_data = data_json[0]
+        log.debug("PlaybackService:onNotification:{0}", message_data)
+        decoded_data = base64.b64decode(message_data)
         play_info = json.loads(decoded_data)
 
         if signal == "embycon_play_action":

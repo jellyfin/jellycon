@@ -4,7 +4,6 @@ import time
 import threading
 
 import xbmc
-import xbmcaddon
 import xbmcgui
 
 from .simple_logging import SimpleLogging

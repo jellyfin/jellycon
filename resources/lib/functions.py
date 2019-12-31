@@ -8,11 +8,6 @@ import cProfile
 import pstats
 import json
 import StringIO
-import encodings
-import binascii
-import re
-import hashlib
-import cPickle
 
 import xbmcplugin
 import xbmcgui

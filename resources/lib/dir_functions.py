@@ -1,3 +1,5 @@
+# Gnu General Public License - see LICENSE.TXT
+
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
@@ -158,7 +160,9 @@ def getContent(url, params):
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
     # send display items event
+
     display_items_notification = {"view_type": view_type}
+    log.debug("Sending display_items with data {0}", display_items_notification)
     send_event_notification("display_items", display_items_notification)
 
     if (progress != None):

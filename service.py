@@ -2,14 +2,10 @@
 # Gnu General Public License - see LICENSE.TXT
 
 import time
-import json
 import traceback
-import binascii
-from threading import Timer
 
 import xbmc
 import xbmcaddon
-import xbmcgui
 
 from resources.lib.downloadutils import DownloadUtils, save_user_details
 from resources.lib.simple_logging import SimpleLogging

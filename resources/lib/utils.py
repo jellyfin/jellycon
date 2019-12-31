@@ -1,14 +1,12 @@
 # Gnu General Public License - see LICENSE.TXT
 import xbmcaddon
-import xbmcgui
-import xbmcplugin
 import xbmc
 
 import string
 import random
 import urllib
 import json
-import binascii
+import base64
 import time
 from datetime import datetime
 import _strptime
@@ -311,10 +309,11 @@ def single_urlencode(text):
 
 
 def send_event_notification(method, data):
-    next_data = json.dumps(data)
+    message_data = json.dumps(data)
     source_id = "embycon"
-    data = '\\"[\\"{0}\\"]\\"'.format(binascii.hexlify(next_data))
-    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, data)
+    base64_data = base64.b64encode(message_data)
+    escaped_data = '\\"[\\"{0}\\"]\\"'.format(base64_data)
+    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, escaped_data)
     log.debug("Sending notification event data: {0}", command)
     xbmc.executebuiltin(command)
 
