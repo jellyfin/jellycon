@@ -6,6 +6,7 @@ import traceback
 
 import xbmc
 import xbmcaddon
+import xbmcgui
 
 from resources.lib.downloadutils import DownloadUtils, save_user_details
 from resources.lib.simple_logging import SimpleLogging
@@ -100,6 +101,13 @@ background_interval = int(settings.getSetting('background_interval'))
 newcontent_interval = int(settings.getSetting('new_content_check_interval'))
 random_movie_list_interval = int(settings.getSetting('random_movie_refresh_interval'))
 random_movie_list_interval = random_movie_list_interval * 60
+
+enable_logging = settings.getSetting('log_debug') == "true"
+if enable_logging:
+    xbmcgui.Dialog().notification(settings.getAddonInfo('name'),
+                                  "Debug logging enabled!",
+                                  time=8000,
+                                  icon=xbmcgui.NOTIFICATION_WARNING)
 
 # monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
