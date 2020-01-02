@@ -220,20 +220,20 @@
 				<top>115</top>
 				<visible allowhiddenfocus="true">Integer.IsGreater(Container($PARAM[list_id]).NumItems,0) | Container($PARAM[list_id]).IsUpdating</visible>
 				<right>0</right>
-				<height>503</height>
+				<height>380</height>
 				<include content="WidgetListCommon">
 					<param name="list_id" value="$PARAM[list_id]"/>
 				</include>
-				<itemlayout width="310" height="486">
+				<itemlayout width="225" height="330">
 					<control type="group">
 						<left>68</left>
 						<top>10</top>
-						<include content="InfoWallMovieLayout">
+						<include content="MoviePosterLayout">
 							<param name="focused" value="false" />
 						</include>
 					</control>
 				</itemlayout>
-				<focusedlayout width="310" height="486">
+				<focusedlayout width="225" height="330">
 					<control type="group">
 						<depth>DepthContentPopout</depth>
 						<left>68</left>
@@ -244,12 +244,58 @@
 						<animation type="Unfocus">
 							<effect type="zoom" start="110" end="100" time="200" tween="sine" easing="inout" center="230,130" />
 						</animation>
-						<include content="InfoWallMovieLayout">
+						<include content="MoviePosterLayout">
 							<param name="focused" value="true" />
 						</include>
 					</control>
 				</focusedlayout>
 				<content sortby="$PARAM[sortby]" sortorder="$PARAM[sortorder]" target="$PARAM[widget_target]" limit="15">$PARAM[content_path]</content>
+			</control>
+		</definition>
+	</include>
+	<include name="MoviePosterLayout">
+		<param name="focused">false</param>
+		<definition>
+			<control type="group">
+				<visible>!String.IsEmpty(ListItem.Art(poster))</visible>
+				<control type="image">
+					<left>11</left>
+					<top>-14</top>
+					<width>226</width>
+					<height>308</height>
+					<texture colordiffuse="button_focus">colors/grey.png</texture>
+					<bordertexture border="21">overlays/shadow.png</bordertexture>
+					<bordersize>20</bordersize>
+					<visible>$PARAM[focused]</visible>
+					<include condition="$PARAM[focused]">Animation_FocusTextureFade</include>
+				</control>
+				<control type="image">
+					<left>15</left>
+					<top>-10</top>
+					<width>218</width>
+					<height>300</height>
+					<texture background="true">$INFO[ListItem.Art(poster)]</texture>
+					<aspectratio>scale</aspectratio>
+					<bordertexture border="21">overlays/shadow.png</bordertexture>
+					<bordersize>20</bordersize>
+				</control>
+			</control>
+			<control type="image">
+				<left>35</left>
+				<top>238</top>
+				<width>32</width>
+				<height>32</height>
+				<texture>$VAR[WallWatchedIconVar]</texture>
+			</control>
+			<control type="progress">
+				<left>35</left>
+				<top>248</top>
+				<width>180</width>
+				<height>1</height>
+				<texturebg></texturebg>
+				<midtexture colordiffuse="button_focus" border="3">progress/texturebg_alt_white.png</midtexture>
+				<info>ListItem.PercentPlayed</info>
+				<visible>!Integer.IsEqual(ListItem.PercentPlayed,0)</visible>
 			</control>
 		</definition>
 	</include>

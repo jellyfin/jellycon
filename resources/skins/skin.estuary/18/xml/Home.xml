@@ -58,8 +58,8 @@
 		</control>
 		<control type="group">
 			<animation effect="fade" start="100" end="0" time="200" tween="sine" condition="$EXP[infodialog_active]">Conditional</animation>
-			<control type="group" id="2000">
-				<left>290</left>
+			<control type="group" id="2000">				
+				<left>0</left>
 				<animation type="Conditional" condition="Control.IsVisible(20000)" reversible="false">
 					<effect type="slide" end="0,20" time="60" tween="sine" />
 					<effect type="slide" end="0,-20" time="180" tween="sine" delay="80" />
@@ -79,19 +79,19 @@
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListPoster" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
-							<param name="widget_header" value="Recently Added"/>
+							<param name="widget_header" value="Recently Added Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3800"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
-							<param name="widget_header" value="In Progress"/>
+							<param name="widget_header" value="In Progress Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3900"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-random-movies-changed)]"/>
-							<param name="widget_header" value="Random"/>
+							<param name="widget_header" value="Random Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3100"/>
 						</include>
@@ -106,19 +106,19 @@
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListEpisodes" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_tvshows&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
-							<param name="widget_header" value="Recently Added"/>
+							<param name="widget_header" value="Recently Updated Shows"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4900"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
-							<param name="widget_header" value="In Progress"/>
+							<param name="widget_header" value="In Progress Episodes"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4300"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
 							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=nextup_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
-							<param name="widget_header" value="Next Up"/>
+							<param name="widget_header" value="Next Up Episodes"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4200"/>
 						</include>  
@@ -880,6 +880,7 @@
 				</control>
 			</control>
 			<control type="group">
+				<visible allowhiddenfocus="true">Control.HasFocus(9000)</visible>
 				<depth>DepthContentPanel</depth>
 				<include>OpenClose_Left</include>
 				<include content="ContentPanel">
@@ -987,6 +988,20 @@
 							<property name="menu_id">$NUMBER[4000]</property>
 							<thumb>icons/sidemenu/tv.png</thumb>
 							<property name="id">emby_tvshows</property>
+						</item>
+						<item>
+							<label>Search</label>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SEARCH,return)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/favourites.png</thumb>
+							<property name="id">search</property>
+						</item>
+						<item>
+							<label>Change User</label>
+							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
+							<property name="menu_id">$NUMBER[-1]</property>
+							<thumb>icons/sidemenu/pictures.png</thumb>
+							<property name="id">change</property>
 						</item>
                         <!-- End Emby Menu Items -->					
 						<item>
@@ -1099,20 +1114,6 @@
 							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
 						</item>
 						<item>
-							<label>Search</label>
-							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SEARCH,return)</onclick>
-							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/favourites.png</thumb>
-							<property name="id">search</property>
-						</item>
-						<item>
-							<label>Change User</label>
-							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
-							<property name="menu_id">$NUMBER[-1]</property>
-							<thumb>icons/sidemenu/pictures.png</thumb>
-							<property name="id">change</property>
-						</item>
-						<item>
 							<label>Settings</label>
 							<onclick>ActivateWindow(settings)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
@@ -1200,6 +1201,7 @@
 				<param name="breadcrumbs_label" value="" />
 			</include>
 			<control type="group">
+				<visible>Control.HasFocus(9000)</visible>
 				<depth>DepthBars</depth>
 				<animation effect="slide" end="0,-90" time="300" tween="sine" easing="inout" condition="$EXP[infodialog_active]">conditional</animation>
 				<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
