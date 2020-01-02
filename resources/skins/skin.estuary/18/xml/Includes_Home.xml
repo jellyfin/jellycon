@@ -138,11 +138,6 @@
 				<info>ListItem.PercentPlayed</info>
 				<visible>!Integer.IsEqual(ListItem.PercentPlayed,0)</visible>
 			</control>
-			<control type="group">
-				<left>134</left>
-				<top>8</top>
-				<include>UserRatingCircle</include>
-			</control>
 		</definition>
 	</include>
 	<include name="WidgetGroupListCommon">

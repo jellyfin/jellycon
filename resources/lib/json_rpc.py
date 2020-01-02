@@ -30,3 +30,18 @@ class json_rpc(object):
 
         self.params = params
         return json.loads(xbmc.executeJSONRPC(self._query()))
+
+
+def get_value(name):
+    result = json_rpc('Settings.getSettingValue').execute({'setting': name})
+    return result['result']['value']
+
+
+def set_value(name, value):
+    params = {
+        'setting': name,
+        'value': value
+    }
+    result = json_rpc('Settings.setSettingValue').execute(params)
+    return result
+

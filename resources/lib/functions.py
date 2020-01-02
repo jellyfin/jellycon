@@ -30,6 +30,7 @@ from . import trakttokodi
 from .cache_images import CacheArtwork
 from .dir_functions import getContent, processDirectory
 from .tracking import timer
+from .skin_cloner import clone_default_skin
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -116,6 +117,8 @@ def mainEntryPoint():
         toggle_watched(params)
     elif mode == "SHOW_MENU":
         show_menu(params)
+    elif mode == "CLONE_SKIN":
+        clone_default_skin()
     elif mode == "SHOW_SETTINGS":
         __addon__.openSettings()
         WINDOW = xbmcgui.getCurrentWindowId()

@@ -582,6 +582,7 @@ def display_addon_menu(params):
     addMenuDirectoryItem(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
     addMenuDirectoryItem(string_load(30395), "plugin://plugin.video.embycon/?mode=CLEAR_CACHE")
     addMenuDirectoryItem(string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
+    addMenuDirectoryItem("Clone default skin", "plugin://plugin.video.embycon/?mode=CLONE_SKIN")
 
     handle = int(sys.argv[1])
     xbmcplugin.endOfDirectory(handle)
