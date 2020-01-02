@@ -319,6 +319,7 @@ def get_params():
 def show_menu(params):
     log.debug("showMenu(): {0}", params)
 
+    settings = xbmcaddon.Addon()
     item_id = params["item_id"]
 
     url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
@@ -411,6 +412,16 @@ def show_menu(params):
     li.setProperty('menu_id', 'info')
     action_items.append(li)
 
+    window = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+    container_view_id = window.getFocusId()
+    container_content_type = xbmc.getInfoLabel("Container.Content")
+    log.debug("View ID:{0} Content type:{1}", container_view_id, container_content_type)
+
+    if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
+        li = xbmcgui.ListItem("Set as defalt view")
+        li.setProperty('menu_id', 'set_view')
+        action_items.append(li)
+
     #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
@@ -430,6 +441,11 @@ def show_menu(params):
         #log.debug("xbmcgui.Dialog().info: {0}", result)
         PLAY(params)
 
+    elif selected_action == "set_view":
+        view_key = "view-" + container_content_type
+        log.debug("Settign view type for {0} to {1}", view_key, container_view_id)
+        settings.setSetting(view_key, str(container_view_id))
+
     elif selected_action == "refresh_server":
         url = ("{server}/emby/Items/" + item_id + "/Refresh" +
                "?Recursive=true" +
@@ -441,7 +457,6 @@ def show_menu(params):
         log.debug("Refresh Server Responce: {0}", res)
 
     elif selected_action == "hide":
-        settings = xbmcaddon.Addon()
         user_details = load_user_details(settings)
         user_name = user_details["username"]
         hide_tag_string = "hide-" + user_name

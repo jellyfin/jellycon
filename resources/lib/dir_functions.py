@@ -3,6 +3,7 @@
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
+import xbmc
 
 import urllib
 import sys
@@ -159,13 +160,22 @@ def getContent(url, params):
     xbmcplugin.addDirectoryItems(pluginhandle, dir_items)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
 
+    # set the view based on saved value
+    view_key = "view-" + content_type
+    view_id = settings.getSetting(view_key)
+    if view_id:
+        log.debug("Setting view for type:{0} to id:{1}", view_key, view_id)
+        display_items_notification = {"view_id": view_id}
+        send_event_notification("set_view", display_items_notification)
+    else:
+        log.debug("No view id for view type:{0}", view_key)
+
     # send display items event
+    # display_items_notification = {"view_type": view_type}
+    # log.debug("Sending display_items with data {0}", display_items_notification)
+    # send_event_notification("display_items", display_items_notification)
 
-    display_items_notification = {"view_type": view_type}
-    log.debug("Sending display_items with data {0}", display_items_notification)
-    send_event_notification("display_items", display_items_notification)
-
-    if (progress != None):
+    if progress is not None:
         progress.update(100, string_load(30125))
         progress.close()
 

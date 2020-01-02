@@ -1208,7 +1208,7 @@ class PlaybackService(xbmc.Monitor):
             return
 
         signal = method.split('.', 1)[-1]
-        if signal not in ("embycon_play_action", "embycon_play_youtube_trailer_action"):
+        if signal not in ("embycon_play_action", "embycon_play_youtube_trailer_action", "set_view"):
             return
 
         data_json = json.loads(data)
@@ -1224,6 +1224,10 @@ class PlaybackService(xbmc.Monitor):
             log.info("Received embycon_play_trailer_action : {0}", play_info)
             trailer_link = play_info["url"]
             xbmc.executebuiltin(trailer_link)
+        elif signal == "set_view":
+            view_id = play_info["view_id"]
+            log.debug("Setting view id: {0}", view_id)
+            xbmc.executebuiltin("Container.SetViewMode(%s)" % int(view_id))
 
     def screensaver_activated(self):
         log.debug("Screen Saver Activated")
