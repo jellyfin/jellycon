@@ -289,7 +289,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
             detected_type = item_details.item_type
 
         if item_details.item_type == "Season" and first_season_item is None:
-            log.debug("Setting First Season to : {0}", item_details)
+            log.debug("Setting First Season to : {0}", item_details.__dict__)
             first_season_item = item_details
 
         total_unwatched += item_details.unwatched_episodes
@@ -332,6 +332,8 @@ def processDirectory(url, progress, params, use_cache_data=False):
                 gui_item = add_gui_item(u, item_details, display_options)
                 if gui_item:
                     dir_items.append(gui_item)
+            else:
+                log.debug("Dropping empty folder item : {0}", item_details.__dict__)
 
         elif item_details.item_type == "MusicArtist":
             u = ('{server}/emby/Users/{userid}/items' +

@@ -890,10 +890,7 @@ def display_movies_type(params, view):
     params["Fields"] = "{field_filters}"
     params["ImageTypeLimit"] = 1
     params["IncludeItemTypes"] = "Boxset"
-    params["CollapseBoxSetItems"] = True
-    params["GroupItemsIntoCollections"] = True
     params["Recursive"] = True
-    params["IsMissing"] = False
 
     # Collections
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
