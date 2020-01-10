@@ -973,3 +973,7 @@ msgstr ""
 msgctxt "#30414"
 msgid " - Favorites"
 msgstr ""
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr ""

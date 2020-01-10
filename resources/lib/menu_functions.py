@@ -900,6 +900,12 @@ def display_movies_type(params, view):
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     addMenuDirectoryItem(view_name + string_load(30410), url)
 
+    # Favorite Collections
+    params["Filters"] = "IsFavorite"
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
+    addMenuDirectoryItem(view_name + string_load(30415), url)
+
     path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
