@@ -406,10 +406,10 @@ def show_menu(params):
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 
-    if result["Type"] in ["Movie", "Series"]:
-        li = xbmcgui.ListItem(string_load(30399))
-        li.setProperty('menu_id', 'hide')
-        action_items.append(li)
+    # if result["Type"] in ["Movie", "Series"]:
+    #     li = xbmcgui.ListItem(string_load(30399))
+    #     li.setProperty('menu_id', 'hide')
+    #     action_items.append(li)
 
     li = xbmcgui.ListItem(string_load(30401))
     li.setProperty('menu_id', 'info')
