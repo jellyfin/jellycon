@@ -74,7 +74,6 @@ def get_image_links(url):
     return art_urls
 
 
-
 def build_image(path):
     log.debug("build_image()")
 
@@ -116,24 +115,27 @@ def build_image(path):
             server = "%s:%s" % (host_name, port)
             url_full_path = url_path + "?" + url_query
 
-            log.debug("Adding Image : {0} {1} {2}", image_count, server, url_full_path)
+            log.debug("Loading image from : {0} {1} {2}", image_count, server, url_full_path)
 
-            conn = httplib.HTTPConnection(server)
-            conn.request("GET", url_full_path)#"/emby/Items/32907/Images/Primary?maxHeight=635&tag=b06948152c2c1203ceedd66721a18f6f&quality=90")
-            image_responce = conn.getresponse()
-            image_data = image_responce.read()
+            try:
+                conn = httplib.HTTPConnection(server)
+                conn.request("GET", url_full_path)
+                image_responce = conn.getresponse()
+                image_data = image_responce.read()
 
-            loaded_image = Image.open(io.BytesIO(image_data))
+                loaded_image = Image.open(io.BytesIO(image_data))
+                image = ImageOps.fit(loaded_image, (size), method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
 
-            image = ImageOps.fit(loaded_image, (size), method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
+                x = int(image_count % cols) * thumbnail_width
+                y = int(image_count/cols) * thumbnail_height
+                collage.paste(image, (x, y))
 
-            x = int(image_count % cols) * thumbnail_width
-            y = int(image_count/cols) * thumbnail_height
-            collage.paste(image, (x, y))
+                del loaded_image
+                del image
+                del image_data
 
-            del image_data
-            del loaded_image
-            del image
+            except Exception as err:
+                log.debug("Error loading image : {0}", str(err))
 
             image_count += 1
 
