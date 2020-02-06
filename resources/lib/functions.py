@@ -416,14 +416,22 @@ def show_menu(params):
     action_items.append(li)
 
     window = xbmcgui.Window(xbmcgui.getCurrentWindowId())
-    container_view_id = window.getFocusId()
+    container_view_id = str(window.getFocusId())
     container_content_type = xbmc.getInfoLabel("Container.Content")
+    view_key = "view-" + container_content_type
+    current_default_view = settings.getSetting(view_key)
+    view_match = container_view_id == current_default_view
     log.debug("View ID:{0} Content type:{1}", container_view_id, container_content_type)
 
     if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
-        li = xbmcgui.ListItem("Set as defalt view")
-        li.setProperty('menu_id', 'set_view')
-        action_items.append(li)
+        if view_match:
+            li = xbmcgui.ListItem("Unset as defalt view")
+            li.setProperty('menu_id', 'unset_view')
+            action_items.append(li)
+        else:
+            li = xbmcgui.ListItem("Set as defalt view")
+            li.setProperty('menu_id', 'set_view')
+            action_items.append(li)
 
     #xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
 
@@ -445,9 +453,12 @@ def show_menu(params):
         PLAY(params)
 
     elif selected_action == "set_view":
-        view_key = "view-" + container_content_type
         log.debug("Settign view type for {0} to {1}", view_key, container_view_id)
-        settings.setSetting(view_key, str(container_view_id))
+        settings.setSetting(view_key, container_view_id)
+
+    elif selected_action == "unset_view":
+        log.debug("Un-Settign view type for {0} to {1}", view_key, container_view_id)
+        settings.setSetting(view_key, "")
 
     elif selected_action == "refresh_server":
         url = ("{server}/emby/Items/" + item_id + "/Refresh" +
