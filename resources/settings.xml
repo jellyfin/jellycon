@@ -114,4 +114,11 @@
 		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />
 
 	</category>
+	<category label="Default Views">
+		<setting id="view-movies" type="text" label="Movies view ID" default="" visible="true" enable="false" />
+		<setting id="view-tvshows" type="text" label="TV Shows view ID" default="" visible="true" enable="false" />
+		<setting id="view-seasons" type="text" label="Seasons view ID" default="" visible="true" enable="false" />
+		<setting id="view-episodes" type="text" label="Episodes view ID" default="" visible="true" enable="false" />
+		<setting id="view-sets" type="text" label="Collections view ID" default="" visible="true" enable="false" />
+	</category>
 </settings>
