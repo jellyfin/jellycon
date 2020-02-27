@@ -267,6 +267,7 @@ class DownloadUtils:
         }
 
         url = "{server}/emby/Items/%s/PlaybackInfo" % item_id
+        # url = "{server}/emby/Items/%s/PlaybackInfo?EnableDirectPlay=false&EnableDirectStream=false" % item_id
         log.debug("PlaybackInfo : {0}", url)
         log.debug("PlaybackInfo : {0}", profile)
         play_info_result = self.downloadUrl(url, postBody=playback_info, method="POST")

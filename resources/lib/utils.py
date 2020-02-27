@@ -108,6 +108,7 @@ class PlayUtils():
                        "&MaxAudioChannels=6" +
                        "&deviceId=%s" +
                        "&VideoBitrate=%s" +
+                       "&SegmentContainer=ts" +
                        "&maxWidth=%s")
             playurl = playurl % (server, id, media_source_id, play_session_id, deviceId, bitrate, playback_max_width)
 
