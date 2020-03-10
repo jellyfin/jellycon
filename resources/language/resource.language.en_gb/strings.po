@@ -977,3 +977,7 @@ msgstr ""
 msgctxt "#30415"
 msgid " - Favorite Collections"
 msgstr ""
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr ""

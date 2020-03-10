@@ -142,7 +142,7 @@ class DataManager:
             cache_thread.cached_item = cache_item
             # copy.deepcopy(item_list)
 
-        if use_cache:
+        if use_cache and item_list is not None and len(item_list) > 0:
             cache_thread.start()
 
         return cache_file, item_list, total_records

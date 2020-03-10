@@ -623,6 +623,8 @@ class DownloadUtils:
         username = user_details.get("username", "")
         server = None
 
+        http_timeout = int(settings.getSetting("http_timeout"))
+
         if authenticate and username == "":
             return return_data
 
@@ -684,13 +686,13 @@ class DownloadUtils:
 
             if local_use_https and self.verify_cert:
                 log.debug("Connection: HTTPS, Cert checked")
-                conn = httplib.HTTPSConnection(server, timeout=40)
+                conn = httplib.HTTPSConnection(server, timeout=http_timeout)
             elif local_use_https and not self.verify_cert:
                 log.debug("Connection: HTTPS, Cert NOT checked")
-                conn = httplib.HTTPSConnection(server, timeout=40, context=ssl._create_unverified_context())
+                conn = httplib.HTTPSConnection(server, timeout=http_timeout, context=ssl._create_unverified_context())
             else:
                 log.debug("Connection: HTTP")
-                conn = httplib.HTTPConnection(server, timeout=40)
+                conn = httplib.HTTPConnection(server, timeout=http_timeout)
 
             head = self.getAuthHeader(authenticate)
 
