@@ -357,7 +357,7 @@ def show_movie_alpha_list(params):
     url_params["SortBy"] = "Name"
     url_params["SortOrder"] = "Ascending"
     if parent_id is not None:
-        params["ParentId"] = parent_id
+        url_params["ParentId"] = parent_id
 
     prefix_url = get_emby_url("{server}/emby/Items/Prefixes", url_params)
 

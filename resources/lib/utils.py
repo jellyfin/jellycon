@@ -30,7 +30,12 @@ def get_emby_url(base_url, params):
     param_list = []
     for key in params:
         if params[key] is not None:
-            param_list.append(key + "=" + str(params[key]))
+            value = params[key]
+            if isinstance(value, unicode):
+                value = value.encode("utf8")
+            else:
+                value = str(value)
+            param_list.append(key + "=" + urllib.quote_plus(value, safe="{}"))
     param_string = "&".join(param_list)
     return base_url + "?" + param_string
 
