@@ -862,6 +862,19 @@ def display_movies_type(params, view):
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     addMenuDirectoryItem(view_name + string_load(30285), url)
 
+    params["Filters"] = "IsPlayed"
+    params["IsPlayed"] = True
+    params["SortBy"] = "DatePlayed"
+    params["SortOrder"] = "Descending"
+    params["CollapseBoxSetItems"] = False
+    params["GroupItemsIntoCollections"] = False
+    params["Limit"] = "{ItemLimit}"
+
+    # Recently Watched Movies
+    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    addMenuDirectoryItem(view_name + string_load(30349) + " (" + show_x_filtered_items + ")", url)
+
     params["IsPlayed"] = None
     params["Filters"] = "IsResumable"
     params["SortBy"] = "DatePlayed"
