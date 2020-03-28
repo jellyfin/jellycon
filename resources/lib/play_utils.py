@@ -450,6 +450,8 @@ def playFile(play_info, monitor):
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
     data["play_action_type"] = "play"
+    data["item_type"] = result.get("Type", None)
+    data["can_delete"] = result.get("CanDelete", False)
     monitor.played_information[playurl] = data
     log.debug("Add to played_information: {0}", monitor.played_information)
 
@@ -508,7 +510,9 @@ def playFile(play_info, monitor):
             else:
                 log.info("PlaybackResumrAction : Playback resumed")
 
-    send_next_episode_details(result)
+    next_episode = get_next_episode(result)
+    data["next_episode"] = next_episode
+    send_next_episode_details(result, next_episode)
 
 
 def get_next_episode(item):
@@ -556,9 +560,8 @@ def get_next_episode(item):
 
     return None
 
-def send_next_episode_details(item):
 
-    next_episode = get_next_episode(item)
+def send_next_episode_details(item, next_episode):
 
     if next_episode is None:
         log.debug("No next episode")
@@ -591,7 +594,6 @@ def send_next_episode_details(item):
     current_item["episode"] = item_details.episode_number
     current_item["rating"] = item_details.critic_rating
     current_item["firstaired"] = item_details.year
-
 
     next_item = {}
     next_item["episodeid"] = next_item_details.id
@@ -940,45 +942,20 @@ def get_volume():
 
 
 def prompt_for_stop_actions(item_id, data):
+    log.debug("prompt_for_stop_actions Called : {0}", data)
 
     settings = xbmcaddon.Addon()
     current_position = data.get("currentPossition", 0)
     duration = data.get("duration", 0)
     media_source_id = data.get("source_id")
+    next_episode = data.get("next_episode")
+    item_type = data.get("item_type")
+    can_delete = data.get("can_delete", False)
 
     prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
     play_prompt = settings.getSetting('promptPlayNextEpisodePercentage_prompt') == "true"
     prompt_delete_episode_percentage = int(settings.getSetting('promptDeleteEpisodePercentage'))
     prompt_delete_movie_percentage = int(settings.getSetting('promptDeleteMoviePercentage'))
-
-    jsonData = download_utils.downloadUrl("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
-    result = json.loads(jsonData)
-
-    if result is None:
-        log.debug("prompt_for_stop_actions failed! no result from server.")
-        return
-
-    # TODO: remove this when emby server supports client duration updates
-    # Start of STRM hack
-    #
-    runtime_ticks = result.get("RunTimeTicks", 0)
-    is_strm = False
-    for media_source in result.get("MediaSources", []):
-        if media_source.get("Id") == media_source_id:
-            if media_source.get("Container") == "strm":
-                log.debug("Detected STRM Container")
-                is_strm = True
-
-    if is_strm and duration > 0 and runtime_ticks == 0:
-        percent_done = float(current_position) / float(duration)
-        if percent_done > 0.9:
-            log.debug("Marking STRM Item played at : {0}", percent_done)
-            markWatched(item_id)
-        else:
-            markUnwatched(item_id)
-    #
-    # End of STRM hack
-    #
 
     # everything is off so return
     if (prompt_next_percentage == 100 and
@@ -987,61 +964,68 @@ def prompt_for_stop_actions(item_id, data):
         return
 
     prompt_to_delete = False
-    runtime = result.get("RunTimeTicks", 0)
 
     # if no runtime we cant calculate perceantge so just return
-    if runtime == 0:
-        log.debug("No runtime so returing")
+    if duration == 0:
+        log.debug("No duration so returing")
         return
 
     # item percentage complete
-    percenatge_complete = int(((current_position * 10000000) / runtime) * 100)
+    # percenatge_complete = int(((current_position * 10000000) / runtime) * 100)
+    percenatge_complete = int((current_position / duration) * 100)
     log.debug("Episode Percentage Complete: {0}", percenatge_complete)
 
-    if (prompt_delete_episode_percentage < 100 and
-                result.get("Type", "na") == "Episode" and
-                percenatge_complete > prompt_delete_episode_percentage):
-            prompt_to_delete = True
+    if (can_delete and
+            prompt_delete_episode_percentage < 100 and
+            item_type == "Episode" and
+            percenatge_complete > prompt_delete_episode_percentage):
+        prompt_to_delete = True
 
-    if (prompt_delete_movie_percentage < 100 and
-                result.get("Type", "na") == "Movie" and
-                percenatge_complete > prompt_delete_movie_percentage):
-            prompt_to_delete = True
+    if (can_delete and
+            prompt_delete_movie_percentage < 100 and
+            item_type == "Movie" and
+            percenatge_complete > prompt_delete_movie_percentage):
+        prompt_to_delete = True
 
-    can_delete = result.get("CanDelete", False)
-    if can_delete and prompt_to_delete:
+    if prompt_to_delete:
         log.debug("Prompting for delete")
-        delete(result)
+        delete(item_id)
 
     # prompt for next episode
-    if (prompt_next_percentage < 100 and
-                result.get("Type", "na") == "Episode" and
-                percenatge_complete > prompt_next_percentage):
+    if (play_prompt and
+            next_episode is not None and
+            prompt_next_percentage < 100 and
+            item_type == "Episode" and
+            percenatge_complete > prompt_next_percentage):
 
-        next_episode = get_next_episode(result)
+        resp = True
+        index = next_episode.get("IndexNumber", -1)
+        if play_prompt:
+            series_name = next_episode.get("SeriesName")
+            next_epp_name = "Episode %02d - (%s)" % (index, next_episode.get("Name", "n/a"))
 
-        if next_episode is not None:
-            resp = True
-            index = next_episode.get("IndexNumber", -1)
-            if play_prompt:
-                next_epp_name = "%02d - %s" % (index, next_episode.get("Name", "n/a"))
-                resp = xbmcgui.Dialog().yesno(string_load(30283), string_load(30284), next_epp_name, autoclose=10000)
+            resp = xbmcgui.Dialog().yesno(string_load(30283),
+                                          series_name,
+                                          next_epp_name,
+                                          autoclose = 20000)
 
-            if resp:
-                next_item_id = next_episode.get("Id")
-                log.debug("Playing Next Episode: {0}", next_item_id)
+        if resp:
+            next_item_id = next_episode.get("Id")
+            log.debug("Playing Next Episode: {0}", next_item_id)
 
-                play_info = {}
-                play_info["item_id"] = next_item_id
-                play_info["auto_resume"] = "-1"
-                play_info["force_transcode"] = False
-                send_event_notification("embycon_play_action", play_info)
+            play_info = {}
+            play_info["item_id"] = next_item_id
+            play_info["auto_resume"] = "-1"
+            play_info["force_transcode"] = False
+            send_event_notification("embycon_play_action", play_info)
 
-            else:
-                xbmc.executebuiltin("Container.Refresh")
+        else:
+            xbmc.executebuiltin("Container.Refresh")
 
 
 def stop_all_playback(played_information):
+    log.debug("stop_all_playback : {0}", played_information)
+
     if len(played_information) == 0:
         return
 
@@ -1152,7 +1136,7 @@ class Service(xbmc.Player):
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
-        log.debug("EmbyCon Service -> onPlayBackEnded")
+        log.debug("onPlayBackEnded")
         stop_all_playback(self.played_information)
 
     def onPlayBackStopped(self):

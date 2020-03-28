@@ -254,15 +254,29 @@ def unmarkFavorite(item_id):
     xbmc.executebuiltin("Container.Refresh")
 
 
-def delete(item):
+def delete(item_id):
+
+    json_data = downloadUtils.downloadUrl("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
+    item = json.loads(json_data)
 
     item_id = item.get("Id")
-    item_name = item.get("Name")
-    series_name = item.get("SeriesName")
+    item_name = item.get("Name", "")
+    series_name = item.get("SeriesName", "")
+    ep_number = item.get("IndexNumber", -1)
+
+    final_name = ""
+
     if series_name:
-        final_name = series_name + " - " + item_name
-    else:
-        final_name = item_name
+        final_name += series_name + " - "
+
+    if ep_number != -1:
+        final_name += "Episode %02d - " % (ep_number,)
+
+    final_name += item_name
+
+    if not item.get("CanDelete", False):
+        xbmcgui.Dialog().ok(string_load(30135), string_load(30417), final_name)
+        return
 
     return_value = xbmcgui.Dialog().yesno(string_load(30091), final_name, string_load(30092))
     if return_value:
@@ -406,10 +420,10 @@ def show_menu(params):
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 
-    # if result["Type"] in ["Movie", "Series"]:
-    #     li = xbmcgui.ListItem(string_load(30399))
-    #     li.setProperty('menu_id', 'hide')
-    #     action_items.append(li)
+    if result["Type"] in ["Movie", "Series"]:
+         li = xbmcgui.ListItem(string_load(30399))
+         li.setProperty('menu_id', 'hide')
+         action_items.append(li)
 
     li = xbmcgui.ListItem(string_load(30401))
     li.setProperty('menu_id', 'info')
@@ -516,7 +530,7 @@ def show_menu(params):
         markUnwatched(item_id)
 
     elif selected_action == "delete":
-        delete(result)
+        delete(item_id)
 
     elif selected_action == "view_season":
         xbmc.executebuiltin("Dialog.Close(all,true)")

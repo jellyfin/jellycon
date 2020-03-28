@@ -471,11 +471,7 @@ msgid "No Emby servers detected on your local network."
 msgstr ""
 
 msgctxt "#30283"
-msgid "Play Next Episode"
-msgstr ""
-
-msgctxt "#30284"
-msgid "Do you want to play the next episode?"
+msgid "Play Next Episode?"
 msgstr ""
 
 msgctxt "#30285"
@@ -980,4 +976,8 @@ msgstr ""
 
 msgctxt "#30416"
 msgid "HTTP timeout seconds"
+msgstr ""
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
 msgstr ""
