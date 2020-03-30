@@ -331,7 +331,7 @@ def extract_item_info(item, gui_options):
     return item_details
 
 
-def add_gui_item(url, item_details, display_options, folder=True):
+def add_gui_item(url, item_details, display_options, folder=True, default_sort=False):
 
     #log.debug("item_details: {0}", item_details.__dict__)
 
@@ -348,6 +348,8 @@ def add_gui_item(url, item_details, display_options, folder=True):
         u = sys.argv[0] + "?url=" + urllib.quote(url) + mode + "&media_type=" + item_details.item_type
         if item_details.name_format:
             u += '&name_format=' + urllib.quote(item_details.name_format)
+        if default_sort:
+            u += '&sort=none'
     else:
         u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"# + "&session_id=" + home_window.getProperty("session_id")
 

@@ -25,6 +25,7 @@ log = SimpleLogging(__name__)
 def getContent(url, params):
     log.debug("== ENTER: getContent ==")
 
+    default_sort = params.get("sort")
     media_type = params.get("media_type", None)
     if not media_type:
         xbmcgui.Dialog().ok(string_load(30135), string_load(30139))
@@ -68,6 +69,8 @@ def getContent(url, params):
     elif media_type == "season" or media_type == "episodes":
         view_type = "Episodes"
         content_type = 'episodes'
+    elif media_type == "playlists":
+        view_type = "Playlists"
 
     log.debug("media_type:{0} content_type:{1} view_type:{2} ", media_type, content_type, view_type)
 
@@ -155,7 +158,7 @@ def getContent(url, params):
     if page_limit > 0 and media_type.startswith("movie"):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     else:
-        setSort(pluginhandle, view_type)
+        setSort(pluginhandle, view_type, default_sort)
 
     xbmcplugin.addDirectoryItems(pluginhandle, dir_items)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
@@ -182,8 +185,12 @@ def getContent(url, params):
     return
 
 
-def setSort(pluginhandle, viewType):
+def setSort(pluginhandle, viewType, default_sort):
     log.debug("SETTING_SORT for media type: {0}", viewType)
+
+    if default_sort == "none":
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+
     if viewType == "BoxSets":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
@@ -328,8 +335,10 @@ def processDirectory(url, progress, params, use_cache_data=False):
                      '&Fields={field_filters}' +
                      '&format=json')
 
+            default_sort = item_details.item_type == "Playlist"
+
             if show_empty_folders or item_details.recursive_item_count != 0:
-                gui_item = add_gui_item(u, item_details, display_options)
+                gui_item = add_gui_item(u, item_details, display_options, default_sort=default_sort)
                 if gui_item:
                     dir_items.append(gui_item)
             else:

@@ -635,7 +635,7 @@ def display_tvshow_type(params, view):
 
     # In progress episodes
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     addMenuDirectoryItem(view_name + string_load(30267) + " (" + show_x_filtered_items + ")", url)
 
@@ -645,7 +645,7 @@ def display_tvshow_type(params, view):
 
     # Latest Episodes
     path = get_emby_url("{server}/emby/Users/{userid}/Items/Latest", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows&sort=none"
     addMenuDirectoryItem(view_name + string_load(30288) + " (" + show_x_filtered_items + ")", url)
 
     params["SortBy"] = "DateCreated"
@@ -653,7 +653,7 @@ def display_tvshow_type(params, view):
 
     # Recently Added
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     addMenuDirectoryItem(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
@@ -661,7 +661,7 @@ def display_tvshow_type(params, view):
 
     # Next Up Episodes
     path = get_emby_url("{server}/emby/Shows/NextUp", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     addMenuDirectoryItem(view_name + string_load(30278) + " (" + show_x_filtered_items + ")", url)
 
@@ -872,7 +872,7 @@ def display_movies_type(params, view):
 
     # Recently Watched Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     addMenuDirectoryItem(view_name + string_load(30349) + " (" + show_x_filtered_items + ")", url)
 
     params["IsPlayed"] = None
@@ -883,7 +883,7 @@ def display_movies_type(params, view):
 
     # Resumable Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     addMenuDirectoryItem(view_name + string_load(30267) + " (" + show_x_filtered_items + ")", url)
 
     params["IsPlayed"] = False
@@ -894,7 +894,7 @@ def display_movies_type(params, view):
 
     # Recently Added Movies
     path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
-    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     addMenuDirectoryItem(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
     params = {}
