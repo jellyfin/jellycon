@@ -992,8 +992,7 @@ def prompt_for_stop_actions(item_id, data):
         delete(item_id)
 
     # prompt for next episode
-    if (play_prompt and
-            next_episode is not None and
+    if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
             percenatge_complete > prompt_next_percentage):
