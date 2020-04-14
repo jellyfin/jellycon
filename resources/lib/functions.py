@@ -386,6 +386,11 @@ def show_menu(params):
         li.setProperty('menu_id', 'view_series')
         action_items.append(li)
 
+    if result["Type"] == "Movie":
+        li = xbmcgui.ListItem("Show Extras")
+        li.setProperty('menu_id', 'show_extras')
+        action_items.append(li)
+
     user_data = result.get("UserData", None)
     if user_data:
         progress = user_data.get("PlaybackPositionTicks", 0) != 0
@@ -577,6 +582,12 @@ def show_menu(params):
         else:
             dialog.ok("Error", "Error getting safe delete confirmation")
 
+    elif selected_action == "show_extras":
+        # "http://localhost:8096/emby/Users/3138bed521e5465b9be26d2c63be94af/Items/78/SpecialFeatures"
+        u = "{server}/emby/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
+        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Videos")
+        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+        xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "view_season":
         xbmc.executebuiltin("Dialog.Close(all,true)")
