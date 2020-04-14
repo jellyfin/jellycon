@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="3301" type="dialog">
+	<defaultcontrol always="true">2</defaultcontrol>
+    <zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<top>135</top>
+		<left>240</left>
+	</coordinates>
+    <controls>
+
+		<control type="image" id="3010">
+			<left>0</left>
+			<top>0</top>
+			<width>800</width>
+			<height>450</height>
+			<texture border="40">bg.png</texture>
+		</control>
+
+		<control type="label" id="4">
+			<left>20</left>
+			<top>5</top>
+			<width>700</width>
+			<height>50</height>
+			<label>Heading</label>
+			<font>font45_title</font>
+		</control>
+
+		<control type="textbox" id="3">
+			<left>20</left>
+			<top>65</top>
+			<width>760</width>
+			<height>295</height>
+			<font>Mono26</font>
+			<scrolltime>200</scrolltime>
+   			<autoscroll delay="2000" time="750" repeat="5000">true</autoscroll>
+		</control>
+
+		<control type="button" id="1">
+			<left>225</left>
+			<top>375</top>
+			<width>150</width>
+			<height>65</height>
+			<visible>true</visible>
+			<label>Yes</label>
+			<align>center</align>
+			<onleft>2</onleft>
+      		<onright>2</onright>
+			<texture border="1" colordiffuse="ff161616">white.png</texture>
+			<font>font14</font>
+		</control>
+
+		<control type="button" id="2">
+			<left>425</left>
+			<top>375</top>
+			<width>150</width>
+			<height>65</height>
+			<visible>true</visible>
+			<label>No</label>
+			<align>center</align>
+			<onleft>1</onleft>
+      		<onright>1</onright>
+			<texture border="1" colordiffuse="ff161616">white.png</texture>
+			<font>font14</font>
+		</control>
+
+	</controls>
+</window>

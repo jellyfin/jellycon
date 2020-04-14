@@ -15,7 +15,7 @@ import xbmcaddon
 import xbmc
 
 from .downloadutils import DownloadUtils, load_user_details
-from .utils import getArt, send_event_notification
+from .utils import getArt, send_event_notification, bytesize_to_string
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
@@ -25,6 +25,7 @@ from .menu_functions import displaySections, display_main_menu, display_menu, sh
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
+from .safe_delete_dialog import SafeDeleteDialog
 from .widgets import getWidgetContent, get_widget_content_cast, checkForNewContent
 from . import trakttokodi
 from .cache_images import CacheArtwork
@@ -336,6 +337,7 @@ def get_params():
 def show_menu(params):
     log.debug("showMenu(): {0}", params)
 
+    home_window = HomeWindow()
     settings = xbmcaddon.Addon()
     item_id = params["item_id"]
 
@@ -410,6 +412,12 @@ def show_menu(params):
     if can_delete:
         li = xbmcgui.ListItem(string_load(30274))
         li.setProperty('menu_id', 'delete')
+        action_items.append(li)
+
+    safe_delete = home_window.getProperty("safe_delete_plugin_available") == "true"
+    if safe_delete:
+        li = xbmcgui.ListItem("Safe Delete")
+        li.setProperty('menu_id', 'safe_delete')
         action_items.append(li)
 
     li = xbmcgui.ListItem(string_load(30398))
@@ -495,7 +503,6 @@ def show_menu(params):
 
         checkForNewContent()
 
-        home_window = HomeWindow()
         last_url = home_window.getProperty("last_content_url")
         if last_url:
             log.debug("markUnwatched_lastUrl: {0}", last_url)
@@ -531,6 +538,45 @@ def show_menu(params):
 
     elif selected_action == "delete":
         delete(item_id)
+
+    elif selected_action == "safe_delete":
+        url = "{server}/emby_safe_delete/delete_item/" + item_id
+        delete_action = downloadUtils.downloadUrl(url)
+        result = json.loads(delete_action)
+        dialog = xbmcgui.Dialog()
+        if result:
+            log.debug("Safe_Delete_Action: {0}", result)
+            action_token = result["action_token"]
+
+            message = "You are about to delete the following files:[CR][CR]"
+            for file_info in result["file_list"]:
+                message += " - " + file_info["Key"] + " (" + bytesize_to_string(file_info["Value"]) + ")[CR]"
+            message += "[CR][CR]Are you sure?[CR][CR]"
+
+            confirm_dialog = SafeDeleteDialog("SafeDeleteDialog.xml", PLUGINPATH, "default", "720p")
+            confirm_dialog.message = message
+            confirm_dialog.heading = "Confirm delete files?"
+            confirm_dialog.doModal()
+            log.debug("safe_delete_confirm_dialog: {0}", confirm_dialog.confirm)
+
+            if confirm_dialog.confirm:
+                url = "{server}/emby_safe_delete/delete_item_action"
+                playback_info = {
+                    'item_id': item_id,
+                    'action_token': action_token
+                }
+                delete_action = downloadUtils.downloadUrl(url, method="POST", postBody=playback_info)
+                log.debug("Delete result action: {0}", delete_action)
+                delete_action_result = json.loads(delete_action)
+                if not delete_action_result:
+                    dialog.ok("Error", "Error deleteing files", "Error in responce from server")
+                elif not delete_action_result["result"]:
+                    dialog.ok("Error", "Error deleteing files", delete_action_result["message"])
+                else:
+                    dialog.ok("Deleted", "Files deleted")
+        else:
+            dialog.ok("Error", "Error getting safe delete confirmation")
+
 
     elif selected_action == "view_season":
         xbmc.executebuiltin("Dialog.Close(all,true)")

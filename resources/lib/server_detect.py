@@ -23,6 +23,32 @@ __addon__ = xbmcaddon.Addon()
 __addon_name__ = __addon__.getAddonInfo('name')
 
 
+def check_safe_delete_available():
+    log.debug("check_safe_delete_available")
+
+    du = DownloadUtils()
+    json_data = du.downloadUrl("{server}/emby/Plugins")
+    result = json.loads(json_data)
+    if result is not None:
+        log.debug("Server Plugin List: {0}", result)
+
+        safe_delete_found = False
+        for plugin in result:
+            if plugin["Name"] == "Safe Delete":
+                safe_delete_found = True
+                break
+
+        log.debug("Safe Delete Plugin Available: {0}", safe_delete_found)
+        home_window = HomeWindow()
+        if safe_delete_found:
+            home_window.setProperty("safe_delete_plugin_available", "true")
+        else:
+            home_window.clearProperty("safe_delete_plugin_available")
+
+    else:
+        log.debug("Error getting server plugin list")
+
+
 def getServerDetails():
     log.debug("Getting Server Details from Network")
     servers = []
