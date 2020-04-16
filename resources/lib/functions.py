@@ -553,7 +553,25 @@ def show_menu(params):
             log.debug("Safe_Delete_Action: {0}", result)
             action_token = result["action_token"]
 
-            message = "You are about to delete the following files:[CR][CR]"
+            message = "You are about to delete the following item[CR][CR]"
+
+            message += "Type: " + result["item_info"]["Item_type"] + "[CR]"
+
+            if result["item_info"]["Item_type"] == "Series":
+                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
+            elif result["item_info"]["Item_type"] == "Season":
+                message += "Season: " + str(result["item_info"]["season_number"]) + "[CR]"
+                message += "Name: " + result["item_info"]["season_name"] + "[CR]"
+            elif result["item_info"]["Item_type"] == "Episode":
+                message += "Series: " + result["item_info"]["series_name"] + "[CR]"
+                message += "Season: " + result["item_info"]["season_name"] + "[CR]"
+                message += "Episode: " + str(result["item_info"]["episode_number"]) + "[CR]"
+                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
+            else:
+                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
+
+            message += "[CR]File List[CR][CR]"
+
             for file_info in result["file_list"]:
                 message += " - " + file_info["Key"] + " (" + bytesize_to_string(file_info["Value"]) + ")[CR]"
             message += "[CR][CR]Are you sure?[CR][CR]"
