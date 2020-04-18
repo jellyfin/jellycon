@@ -12,7 +12,7 @@ import base64
 from .simple_logging import SimpleLogging
 from .downloadutils import DownloadUtils
 from .resume_dialog import ResumeDialog
-from .utils import PlayUtils, getArt, id_generator, send_event_notification
+from .utils import PlayUtils, getArt, id_generator, send_event_notification, convert_size
 from .kodi_utils import HomeWindow
 from .translation import string_load
 from .datamanager import DataManager, clear_old_cache_data
@@ -320,12 +320,13 @@ def playFile(play_info, monitor):
                 break
 
     elif len(media_sources) > 1:
-        sourceNames = []
+        items = []
         for source in media_sources:
-            sourceNames.append(source.get("Name", "na"))
-
+            label = source.get("Name", "na")
+            label2 = __build_label2_from(source)
+            items.append(xbmcgui.ListItem(label = label, label2 = label2))
         dialog = xbmcgui.Dialog()
-        resp = dialog.select(string_load(30309), sourceNames)
+        resp = dialog.select(string_load(30309), items, useDetails = True)
         if resp > -1:
             selected_media_source = media_sources[resp]
         else:
@@ -513,6 +514,32 @@ def playFile(play_info, monitor):
     next_episode = get_next_episode(result)
     data["next_episode"] = next_episode
     send_next_episode_details(result, next_episode)
+
+
+def __build_label2_from(source):
+    videos = [item for item in source.get('MediaStreams', {}) if item.get('Type') == "Video"]
+    audios = [item for item in source.get('MediaStreams', {}) if item.get('Type') == "Audio"]
+    subtitles = [item for item in source.get('MediaStreams', {}) if item.get('Type') == "Subtitle"]
+
+    details = [str(convert_size(source.get('Size', 0)))]
+    # details.append(source.get('Container', ''))
+    for video in videos:
+        details.append('{} {} {}bit'.format(video.get('DisplayTitle', ''),
+                                            video.get('VideoRange', ''),
+                                            video.get('BitDepth', '')))
+    aud = []
+    for audio in audios:
+        aud.append('{} {} {}'.format(audio.get('Language', ''),
+                                     audio.get('Codec', ''),
+                                     audio.get('Channels', '')))
+    if len(aud) > 0:
+        details.append(', '.join(aud).upper())
+    subs = []
+    for subtitle in subtitles:
+        subs.append(subtitle.get('Language', ''))
+    if len(subs) > 0:
+        details.append('S: {}'.format(', '.join(subs)).upper())
+    return ' | '.join(details)
 
 
 def get_next_episode(item):
