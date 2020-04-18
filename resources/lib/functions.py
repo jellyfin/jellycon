@@ -15,7 +15,7 @@ import xbmcaddon
 import xbmc
 
 from .downloadutils import DownloadUtils, load_user_details
-from .utils import getArt, send_event_notification, bytesize_to_string
+from .utils import getArt, send_event_notification, convert_size
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
@@ -573,7 +573,7 @@ def show_menu(params):
             message += "[CR]File List[CR][CR]"
 
             for file_info in result["file_list"]:
-                message += " - " + file_info["Key"] + " (" + bytesize_to_string(file_info["Value"]) + ")[CR]"
+                message += " - " + file_info["Key"] + " (" + convert_size(file_info["Value"]) + ")[CR]"
             message += "[CR][CR]Are you sure?[CR][CR]"
 
             confirm_dialog = SafeDeleteDialog("SafeDeleteDialog.xml", PLUGINPATH, "default", "720p")

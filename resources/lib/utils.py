@@ -26,19 +26,6 @@ downloadUtils = DownloadUtils()
 log = SimpleLogging(__name__)
 
 
-def bytesize_to_string(size):
-    if size > (1024 * 1024 * 1024):
-        g = size / (1024 * 1024 * 1024)
-        return str(round(g, 2)) + " GB"
-    elif size > (1024 * 1024):
-        m = size / (1024 * 1024)
-        return str(round(m, 2)) + " MB"
-    elif size > 1024:
-        k = size / 1024
-        return str(round(k, 2)) + " KB"
-    else:
-        return str(size) + " B"
-
 def get_emby_url(base_url, params):
     params["format"] = "json"
     param_list = []
