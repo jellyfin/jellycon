@@ -105,7 +105,7 @@ class DataManager:
                     item_list = None
 
         # we need to load the list item data form the server
-        if item_list is None:
+        if item_list is None or len(item_list) == 0:
             log.debug("Loading url data from server")
 
             results = self.GetContent(url)
@@ -142,7 +142,7 @@ class DataManager:
             cache_thread.cached_item = cache_item
             # copy.deepcopy(item_list)
 
-        if use_cache and item_list is not None and len(item_list) > 0:
+        if use_cache:
             cache_thread.start()
 
         return cache_file, item_list, total_records
@@ -197,7 +197,7 @@ class CacheManagerThread(threading.Thread):
                 and self.cached_item.last_action == "fresh_data"):
             is_fresh = True
 
-        if is_fresh:
+        if is_fresh and self.cached_item.item_list is not None and len(self.cached_item.item_list) > 0:
             log.debug("CacheManagerThread : Saving fresh data")
             cached_hash = self.get_data_hash(self.cached_item.item_list)
             self.cached_item.item_list_hash = cached_hash
@@ -237,6 +237,10 @@ class CacheManagerThread(threading.Thread):
             for item in results:
                 item_data = extract_item_info(item, self.gui_options)
                 loaded_items.append(item_data)
+
+            if loaded_items is None or len(loaded_items) == 0:
+                log.debug("CacheManagerThread : loaded_items is None or Empty so not saving it")
+                return
 
             loaded_hash = self.get_data_hash(loaded_items)
             log.debug("CacheManagerThread : Loaded Hash : {0}", loaded_hash)
