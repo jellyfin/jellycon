@@ -150,6 +150,13 @@ def mainEntryPoint():
         trakttokodi.entry_point(params)
     elif mode == "SHOW_ADDON_MENU":
         display_menu(params)
+    elif mode == "GET_CONTENT_BY_TV_SHOW":
+        parent_id = __get_parent_id_from(params)
+        if parent_id is not None:
+            enriched_url = param_url + "&ParentId=" + parent_id
+            getContent(enriched_url, params)
+        else:
+            log.info("Unable to find TV show parent ID.")
     else:
         log.debug("EmbyCon -> Mode: {0}", mode)
         log.debug("EmbyCon -> URL: {0}", param_url)
@@ -179,6 +186,33 @@ def mainEntryPoint():
             f.write(s.getvalue())
 
     log.debug("===== EmbyCon FINISHED =====")
+
+
+def __enrich_url(param_url, params):
+    enriched_url = param_url
+    parent_id = __get_parent_id_from(params)
+    if parent_id is not None:
+        enriched_url = param_url + "&ParentId=" + parent_id
+    return enriched_url
+
+
+def __get_parent_id_from(params):
+    result = None
+    show_provider_ids = params.get("show_ids")
+    if show_provider_ids is not None:
+        log.debug("TV show providers IDs: {}", show_provider_ids)
+        get_show_url = "{server}/emby/Users/{userid}/Items?fields=MediaStreams&Recursive=true" \
+                       "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
+                       "&AnyProviderIdEquals=" + show_provider_ids
+        content = dataManager.GetContent(get_show_url)
+        show = content.get("Items")
+        if len(show) == 1:
+            result = content.get("Items")[0].get("Id")
+        else:
+            log.debug("TV show not found for ids: {}", show_provider_ids)
+    else:
+        log.error("TV show parameter not found in request.")
+    return result
 
 
 def toggle_watched(params):
