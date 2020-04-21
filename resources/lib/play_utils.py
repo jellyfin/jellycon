@@ -1070,6 +1070,7 @@ def stop_all_playback(played_information):
             duration = data.get("duration", 0)
             emby_item_id = data.get("item_id")
             emby_source_id = data.get("source_id")
+            play_session_id = data.get("play_session_id")
 
             if emby_item_id is not None and current_position >= 0:
                 log.debug("Playback Stopped at: {0}", current_position)
@@ -1079,7 +1080,8 @@ def stop_all_playback(played_information):
                     'ItemId': emby_item_id,
                     'MediaSourceId': emby_source_id,
                     'PositionTicks': int(current_position * 10000000),
-                    'RunTimeTicks': int(duration * 10000000)
+                    'RunTimeTicks': int(duration * 10000000),
+                    'PlaySessionId': play_session_id
                 }
                 download_utils.downloadUrl(url, postBody=postdata, method="POST")
                 data["currently_playing"] = False
