@@ -252,7 +252,7 @@ def playFile(play_info, monitor):
         log.debug("Playfile item was None, so can not play!")
         return
 
-    # if this is a season, tv show or album then play all items in that parent
+    # if this is a season, playlist or album then play all items in that parent
     if result.get("Type") in ["Season", "MusicAlbum", "Playlist"]:
         log.debug("PlayAllFiles for parent item id: {0}", id)
         url = ('{server}/emby/Users/{userid}/items' +
@@ -729,7 +729,6 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
     dialog = xbmcgui.Dialog()
     audioStreamsList = {}
     audioStreams = []
-    audioStreamsChannelsList = {}
     subtitleStreamsList = {}
     subtitleStreams = ['No subtitles']
     downloadableStreams = []
@@ -755,7 +754,6 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
             except:
                 track = "%s - %s %s" % (index, codec, channelLayout)
 
-            audioStreamsChannelsList[index] = stream['Channels']
             audioStreamsList[track] = index
             audioStreams.append(track)
 
@@ -827,13 +825,6 @@ def audioSubsPref(url, list_item, media_source, item_id, audio_stream_index, sub
 
         else:  # User backed out of selection
             playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
-
-    # Get number of channels for selected audio track
-    audioChannels = audioStreamsChannelsList.get(selectAudioIndex, 0)
-    if audioChannels > 2:
-        playurlprefs += "&AudioBitrate=384000"
-    else:
-        playurlprefs += "&AudioBitrate=192000"
 
     if url.find("|verifypeer=false") != -1:
         new_url = url.replace("|verifypeer=false", playurlprefs + "|verifypeer=false")

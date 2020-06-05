@@ -31,6 +31,9 @@
 		<setting id="playback_bitrate" type="slider" label="30208" default="6400" range="400,100,20000" option="int" visible="true"/>
 		<setting id="playback_max_width" type="select" label="30212" values="640|720|1024|1280|1440|1600|1920|2600|4096" default="1920" visible="true"/>
 		<setting id="playback_video_force_8" type="bool" label="30213" default="false" visible="true" enable="true"/>
+		<setting id="audio_codec" type="select" label="30419" values="ac3|aac" default="ac3"/>
+		<setting id="audio_playback_bitrate" type="select" label="30418" values="128|160|192|256|320|384|448|640" default="256" visible="true"/>
+		<setting id="audio_max_channels" type="slider" label="30420" default="8" range="2,1,8" option="int" visible="true"/>
 
 		<setting label="30238" type="lsep"/>
 		<setting type="sep" />

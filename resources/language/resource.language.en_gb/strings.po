@@ -235,7 +235,7 @@ msgid "Playback"
 msgstr ""
 
 msgctxt "#30208"
-msgid "Transcode Bitrate (Kbits)"
+msgid "Video Bitrate (Kbits)"
 msgstr ""
 
 msgctxt "#30209"
@@ -251,11 +251,11 @@ msgid "HTTP transcode"
 msgstr ""
 
 msgctxt "#30212"
-msgid "Transcode max width"
+msgid "Video max width"
 msgstr ""
 
 msgctxt "#30213"
-msgid "Transcode force 8 bit"
+msgid "Video force 8 bit"
 msgstr ""
 
 msgctxt "#30214"
@@ -980,4 +980,16 @@ msgstr ""
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
+msgstr ""
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr ""
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr ""
+
+msgctxt "#30420"
+msgid "Audio max channels"
 msgstr ""
