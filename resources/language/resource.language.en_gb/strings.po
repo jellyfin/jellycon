@@ -993,3 +993,47 @@ msgstr ""
 msgctxt "#30420"
 msgid "Audio max channels"
 msgstr ""
+
+msgctxt "#30421"
+msgid "Views"
+msgstr ""
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr ""
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr ""
+
+msgctxt "#30424"
+msgid "Default"
+msgstr ""
+
+msgctxt "#30425"
+msgid "Year"
+msgstr ""
+
+msgctxt "#30426"
+msgid "Title"
+msgstr ""
+
+msgctxt "#30427"
+msgid "Added"
+msgstr ""
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr ""
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr ""
+
+msgctxt "#30430"
+msgid "Label"
+msgstr ""
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr ""

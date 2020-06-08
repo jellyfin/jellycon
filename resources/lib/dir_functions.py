@@ -191,6 +191,22 @@ def setSort(pluginhandle, viewType, default_sort):
     if default_sort == "none":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
 
+    sorting_order_mapping = {
+        "1": xbmcplugin.SORT_METHOD_UNSORTED,
+        "2": xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE,
+        "3": xbmcplugin.SORT_METHOD_VIDEO_YEAR,
+        "4": xbmcplugin.SORT_METHOD_DATEADDED,
+        "5": xbmcplugin.SORT_METHOD_GENRE,
+        "6": xbmcplugin.SORT_METHOD_LABEL,
+        "7": xbmcplugin.SORT_METHOD_VIDEO_RATING
+    }
+
+    settings = xbmcaddon.Addon()
+    preset_sort_order = settings.getSetting("sort-" + viewType)
+    log.debug("SETTING_SORT preset_sort_order: {0}", preset_sort_order)
+    if preset_sort_order in sorting_order_mapping:
+        xbmcplugin.addSortMethod(pluginhandle, sorting_order_mapping[preset_sort_order])
+
     if viewType == "BoxSets":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)

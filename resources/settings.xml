@@ -118,11 +118,22 @@
 		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />
 
 	</category>
-	<category label="Default Views">
+	<category label="30421">
+
 		<setting id="view-movies" type="text" label="Movies view ID" default="" visible="true" enable="false" />
 		<setting id="view-tvshows" type="text" label="TV Shows view ID" default="" visible="true" enable="false" />
 		<setting id="view-seasons" type="text" label="Seasons view ID" default="" visible="true" enable="false" />
 		<setting id="view-episodes" type="text" label="Episodes view ID" default="" visible="true" enable="false" />
 		<setting id="view-sets" type="text" label="Collections view ID" default="" visible="true" enable="false" />
+
+	</category>
+	<category label="30422">
+
+		<setting id="sort-Movies" type="select" label="30231" lvalues="30423|30424|30426|30425|30427|30429|30430|30428" default="0" visible="true"/>
+		<setting id="sort-BoxSets" type="select" label="30260" lvalues="30423|30424|30426|30425|30427|30429|30430|30428" default="0" visible="true"/>
+		<setting id="sort-Series" type="select" label="30229" lvalues="30423|30424|30426|30425|30427|30429|30430|30428" default="0" visible="true"/>
+		<setting id="sort-Seasons" type="select" label="30431" lvalues="30423|30424|30426|30425|30427|30429|30430|30428" default="0" visible="true"/>
+		<setting id="sort-Episodes" type="select" label="30235" lvalues="30423|30424|30426|30425|30427|30429|30430|30428" default="0" visible="true"/>
+
 	</category>
 </settings>
