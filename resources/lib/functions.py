@@ -651,7 +651,7 @@ def show_menu(params):
              '&seasonId=' + parent_id +
              '&IsVirtualUnAired=false' +
              '&IsMissing=false' +
-             '&Fields={field_filters}' +
+             '&Fields=SpecialEpisodeNumbers,{field_filters}' +
              '&format=json')
         action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Season")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'

@@ -268,7 +268,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
                       '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields={field_filters}' +
+                      '&Fields=SpecialEpisodeNumbers,{field_filters}' +
                       '&format=json')
         if progress is not None:
             progress.close()
@@ -340,7 +340,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
                      '&seasonId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields={field_filters}' +
+                     '&Fields=SpecialEpisodeNumbers,{field_filters}' +
                      '&format=json')
 
             else:
@@ -389,7 +389,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
                       #'&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields={field_filters}' +
+                      '&Fields=SpecialEpisodeNumbers,{field_filters}' +
                       '&format=json')
         played = 0
         overlay = "7"
