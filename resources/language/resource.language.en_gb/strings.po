@@ -1037,3 +1037,7 @@ msgstr ""
 msgctxt "#30431"
 msgid "Seasons"
 msgstr ""
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr ""

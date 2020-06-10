@@ -85,6 +85,7 @@
 		<setting id="flatten_single_season" type="bool" label="30020" default="true" visible="true" enable="true" />
 		<setting id="show_all_episodes" type="bool" label="30021" default="true" visible="true" enable="true" />
 		<setting id="show_empty_folders" type="bool" label="30328" default="false" visible="true" enable="true" />
+		<setting id="hide_watched" type="bool" label="30432" default="true" visible="true" enable="true" />
 
 		<setting label="30223" type="lsep"/>
 		<setting type="sep" />

@@ -21,7 +21,7 @@ from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
 from .server_detect import checkServer
 from .simple_logging import SimpleLogging
-from .menu_functions import displaySections, display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
+from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .translation import string_load
 from .server_sessions import showServerSessions
 from .action_menu import ActionMenu
@@ -167,7 +167,6 @@ def mainEntryPoint():
             PLAY(params)
         else:
             checkServer()
-            #displaySections()
             display_main_menu()
 
     if pr:

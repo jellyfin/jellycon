@@ -30,11 +30,14 @@ background_current_item = 0
 def set_random_movies():
     log.debug("set_random_movies Called")
 
+    settings = xbmcaddon.Addon()
+    hide_watched = settings.getSetting("hide_watched") == "true"
+
     url_params = {}
     url_params["Recursive"] = True
     url_params["limit"] = 20
-    url_params["Filters"] = "IsUnplayed"
-    url_params["IsPlayed"] = False
+    if hide_watched:
+        url_params["IsPlayed"] = False
     url_params["SortBy"] = "Random"
     url_params["IncludeItemTypes"] = "Movie"
     url_params["ImageTypeLimit"] = 0
@@ -262,6 +265,9 @@ def get_widget_content_cast(handle, params):
 def getWidgetContent(handle, params):
     log.debug("getWigetContent Called: {0}", params)
 
+    settings = xbmcaddon.Addon()
+    hide_watched = settings.getSetting("hide_watched") == "true"
+
     widget_type = params.get("type")
     if widget_type is None:
         log.error("getWigetContent type not set")
@@ -282,8 +288,9 @@ def getWidgetContent(handle, params):
         url_params["Recursive"] = True
         url_params["SortBy"] = "DateCreated"
         url_params["SortOrder"] = "Descending"
-        url_params["Filters"] = "IsUnplayed,IsNotFolder"
-        url_params["IsPlayed"] = False
+        url_params["Filters"] = "IsNotFolder"
+        if hide_watched:
+            url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Movie"
 
@@ -308,9 +315,9 @@ def getWidgetContent(handle, params):
         url_params["Recursive"] = True
         url_params["SortBy"] = "DateCreated"
         url_params["SortOrder"] = "Descending"
-        url_params["Filters"] = "IsUnplayed"
         url_params["Fields"] = "{field_filters}"
-        url_params["IsPlayed"] = False
+        if hide_watched:
+            url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
         url_params["ImageTypeLimit"] = 1
@@ -321,8 +328,9 @@ def getWidgetContent(handle, params):
         url_params["Recursive"] = True
         url_params["SortBy"] = "DateCreated"
         url_params["SortOrder"] = "Descending"
-        url_params["Filters"] = "IsUnplayed,IsNotFolder"
-        url_params["IsPlayed"] = False
+        url_params["Filters"] = "IsNotFolder"
+        if hide_watched:
+            url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
 
@@ -346,50 +354,6 @@ def getWidgetContent(handle, params):
         url_params["ImageTypeLimit"] = 1
 
     elif widget_type == "movie_recommendations":
-        '''
-        recent_movies = ("{server}/emby/Users/{userid}/Items" +
-                         "?Limit=10" +
-                         "&format=json" +
-                         # "&Fields={field_filters}" +
-                         "&ImageTypeLimit=0" +
-                         "&IsMissing=False" +
-                         "&Recursive=true" +
-                         "&SortBy=DatePlayed" +
-                         "&SortOrder=Descending" +
-                         "&Filters=IsPlayed,IsNotFolder" +
-                         "&IsPlayed=true" +
-                         "&IsMissing=False" +
-                         "&IncludeItemTypes=Movie" +
-                         "&EnableTotalRecordCount=false")
-        data_manager = DataManager()
-        recent_movie_list = data_manager.GetContent(recent_movies)
-        recent_movie_items = recent_movie_list.get("Items")
-        similar_ids = []
-        for movie in recent_movie_items:
-            item_id = movie.get("Id")
-            similar_movies_url = ("{server}/emby/Movies/" + item_id + "/Similar?userId={userid}" +
-                                  "&limit=10" +
-                                  "&IncludeItemTypes=Movies" +
-                                  "&EnableImages=false"
-                                  "&EnableTotalRecordCount=false")
-            similar_movie_list = data_manager.GetContent(similar_movies_url)
-            similar_movie_items = similar_movie_list.get("Items")
-            for similar in similar_movie_items:
-                log.debug("Similar Movie : {0} {1} - {2} {3} {4}", movie.get("Id"), movie.get("Name"), similar.get("Id"), similar.get("Name"), similar["UserData"]["Played"])
-                if similar["Type"] == "Movie" and similar.get("Id") not in similar_ids and not similar["UserData"]["Played"]:
-                    similar_ids.append(similar.get("Id"))
-
-            log.debug("Similar Ids : {0}", similar_ids)
-
-        random.shuffle(similar_ids)
-        random.shuffle(similar_ids)
-        similar_ids = similar_ids[0:20]
-        log.debug("Similar Ids : {0}", similar_ids)
-        id_list = ",".join(similar_ids)
-        log.debug("Recommended Items : {0}", len(similar_ids), id_list)
-        items_url += "&Ids=" + id_list
-        '''
-
         suggested_items_url_params = {}
         suggested_items_url_params["userId"] = "{userid}"
         suggested_items_url_params["categoryLimit"] = 15
@@ -408,7 +372,7 @@ def getWidgetContent(handle, params):
             rand = random.randint(0, len(items) - 1)
             #log.debug("random suggestions index : {0} {1}", rand, set_id)
             item = items[rand]
-            if item["Type"] == "Movie" and item["Id"] not in ids and not item["UserData"]["Played"]:
+            if item["Type"] == "Movie" and item["Id"] not in ids and (not item["UserData"]["Played"] or not hide_watched):
                 #log.debug("random suggestions adding : {0}", item["Id"])
                 ids.append(item["Id"])
             #else:
