@@ -9,14 +9,15 @@ import websocket
 import xbmc
 import xbmcgui
 
-from .functions import PLAY
+from .functions import play_action
 from .simple_logging import SimpleLogging
 from . import clientinfo
 from . import downloadutils
-from .json_rpc import json_rpc
+from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
 
 log = SimpleLogging(__name__)
+
 
 class WebSocketClient(threading.Thread):
 
@@ -32,7 +33,7 @@ class WebSocketClient(threading.Thread):
         self.monitor = xbmc.Monitor()
 
         self.client_info = clientinfo.ClientInformation()
-        self.device_id = self.client_info.getDeviceId()
+        self.device_id = self.client_info.get_device_id()
 
         self._library_monitor = library_change_monitor
 
@@ -70,14 +71,14 @@ class WebSocketClient(threading.Thread):
         log.debug("Library_Changed: {0}", data)
         self._library_monitor.check_for_updates()
 
-    def _play(cls, data):
+    def _play(self, data):
 
         item_ids = data['ItemIds']
         command = data['PlayCommand']
 
         if command == 'PlayNow':
             home_screen = HomeWindow()
-            home_screen.setProperty("skip_select_user", "true")
+            home_screen.set_property("skip_select_user", "true")
 
             startat = data.get('StartPositionTicks', -1)
             log.debug("WebSocket Message PlayNow: {0}", data)
@@ -100,10 +101,10 @@ class WebSocketClient(threading.Thread):
             params["media_source_id"] = media_source_id
             params["subtitle_stream_index"] = subtitle_stream_index
             params["audio_stream_index"] = audio_stream_index
-            PLAY(params)
+            play_action(params)
 
 
-    def _playstate(cls, data):
+    def _playstate(self, data):
 
         command = data['Command']
         player = xbmc.Player()
@@ -133,7 +134,7 @@ class WebSocketClient(threading.Thread):
             log.debug("Unknown command: {0}", command)
             return
 
-    def _general_commands(cls, data):
+    def _general_commands(self, data):
 
         command = data['Name']
         arguments = data['Arguments']
@@ -171,7 +172,7 @@ class WebSocketClient(threading.Thread):
 
         elif command == 'DisplayMessage':
 
-            header = arguments['Header']
+            # header = arguments['Header']
             text = arguments['Text']
             # show notification here
             log.debug("WebSocket DisplayMessage: {0}", text)
@@ -184,7 +185,7 @@ class WebSocketClient(threading.Thread):
                 'text': arguments['String'],
                 'done': False
             }
-            json_rpc('Input.SendText').execute(params)
+            JsonRpc('Input.SendText').execute(params)
 
         elif command in ('MoveUp', 'MoveDown', 'MoveRight', 'MoveLeft'):
             # Commands that should wake up display
@@ -195,13 +196,13 @@ class WebSocketClient(threading.Thread):
                 'MoveRight': "Input.Right",
                 'MoveLeft': "Input.Left"
             }
-            json_rpc(actions[command]).execute()
+            JsonRpc(actions[command]).execute()
 
         elif command == 'GoHome':
-            json_rpc('GUI.ActivateWindow').execute({'window': "home"})
+            JsonRpc('GUI.ActivateWindow').execute({'window': "home"})
 
         elif command == "Guide":
-            json_rpc('GUI.ActivateWindow').execute({'window': "tvguide"})
+            JsonRpc('GUI.ActivateWindow').execute({'window': "tvguide"})
 
         else:
             builtin = {
@@ -247,7 +248,7 @@ class WebSocketClient(threading.Thread):
                 return
 
         # Get the appropriate prefix for the websocket
-        server = download_utils.getServer()
+        server = download_utils.get_server()
         if "https" in server:
             server = server.replace('https', "wss")
         else:
@@ -289,5 +290,3 @@ class WebSocketClient(threading.Thread):
 
         download_utils = downloadutils.DownloadUtils()
         download_utils.post_capabilities()
-
-

@@ -3,9 +3,7 @@ import sys
 import os
 import urllib
 
-import time
-import calendar
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from collections import defaultdict
 
@@ -13,7 +11,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from .utils import getArt, datetime_from_string
+from .utils import get_art, datetime_from_string
 from .simple_logging import SimpleLogging
 from .downloadutils import DownloadUtils
 from .kodi_utils import HomeWindow
@@ -28,7 +26,8 @@ PLUGINPATH = xbmc.translatePath(os.path.join(addon_path))
 download_utils = DownloadUtils()
 home_window = HomeWindow()
 
-class ItemDetails():
+
+class ItemDetails:
 
     name = None
     sort_name = None
@@ -142,7 +141,7 @@ def extract_item_info(item, gui_options):
         item_details.album_name = item["Album"]
         artists = item["Artists"]
         if artists is not None and len(artists) > 0:
-            item_details.song_artist = artists[0] # get first artist
+            item_details.song_artist = artists[0]  # get first artist
 
     elif item_details.item_type == "MusicAlbum":
         item_details.album_artist = item["AlbumArtist"]
@@ -162,17 +161,17 @@ def extract_item_info(item, gui_options):
     name_format_type = gui_options["name_format_type"]
 
     if name_format is not None and item_details.item_type == name_format_type:
-        nameInfo = {}
-        nameInfo["ItemName"] = item["Name"]
+        name_info = {}
+        name_info["ItemName"] = item["Name"]
         season_name = item["SeriesName"]
         if season_name:
-            nameInfo["SeriesName"] = season_name
+            name_info["SeriesName"] = season_name
         else:
-            nameInfo["SeriesName"] = ""
-        nameInfo["SeasonIndex"] = u"%02d" % item_details.season_number
-        nameInfo["EpisodeIndex"] = u"%02d" % item_details.episode_number
-        log.debug("FormatName: {0} | {1}", name_format, nameInfo)
-        item_details.name = unicode(name_format).format(**nameInfo).strip()
+            name_info["SeriesName"] = ""
+        name_info["SeasonIndex"] = u"%02d" % item_details.season_number
+        name_info["EpisodeIndex"] = u"%02d" % item_details.episode_number
+        log.debug("FormatName: {0} | {1}", name_format, name_info)
+        item_details.name = unicode(name_format).format(**name_info).strip()
 
     year = item["ProductionYear"]
     prem_date = item["PremiereDate"]
@@ -250,13 +249,16 @@ def extract_item_info(item, gui_options):
             elif person_type == "Writing":
                 item_details.writer = person["Name"]
             elif person_type == "Actor":
-                #log.debug("Person: {0}", person)
+                # log.debug("Person: {0}", person)
                 person_name = person["Name"]
                 person_role = person["Role"]
                 person_id = person["Id"]
                 person_tag = person["PrimaryImageTag"]
                 if person_tag is not None:
-                    person_thumbnail = download_utils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server = gui_options["server"])
+                    person_thumbnail = download_utils.image_url(person_id,
+                                                                "Primary", 0, 400, 400,
+                                                                person_tag,
+                                                                server=gui_options["server"])
                 else:
                     person_thumbnail = ""
                 person = {"name": person_name, "role": person_role, "thumbnail": person_thumbnail}
@@ -267,7 +269,7 @@ def extract_item_info(item, gui_options):
     studios = item["Studios"]
     if studios is not None:
         for studio in studios:
-            if item_details.studio == None:  # Just take the first one
+            if item_details.studio is None:  # Just take the first one
                 studio_name = studio["Name"]
                 item_details.studio = studio_name
                 break
@@ -284,33 +286,33 @@ def extract_item_info(item, gui_options):
         item_details.genres = genres
 
     # Process UserData
-    userData = item["UserData"]
-    if userData is None:
-        userData = defaultdict(lambda: None, {})
+    user_data = item["UserData"]
+    if user_data is None:
+        user_data = defaultdict(lambda: None, {})
 
-    if userData["Played"] == True:
+    if user_data["Played"] is True:
         item_details.overlay = "6"
         item_details.play_count = 1
     else:
         item_details.overlay = "7"
         item_details.play_count = 0
 
-    if userData["IsFavorite"] == True:
+    if user_data["IsFavorite"] is True:
         item_details.overlay = "5"
         item_details.favorite = "true"
     else:
         item_details.favorite = "false"
 
-    reasonableTicks = userData["PlaybackPositionTicks"]
-    if reasonableTicks is not None:
-        reasonableTicks = int(reasonableTicks) / 1000
-        item_details.resume_time = int(reasonableTicks / 10000)
+    reasonable_ticks = user_data["PlaybackPositionTicks"]
+    if reasonable_ticks is not None:
+        reasonable_ticks = int(reasonable_ticks) / 1000
+        item_details.resume_time = int(reasonable_ticks / 10000)
 
     item_details.series_name = item["SeriesName"]
     item_details.plot = item["Overview"]
 
     runtime = item["RunTimeTicks"]
-    if item_details.is_folder == False and runtime is not None:
+    if item_details.is_folder is False and runtime is not None:
         item_details.duration = long(runtime) / 10000000
 
     child_count = item["ChildCount"]
@@ -321,14 +323,14 @@ def extract_item_info(item, gui_options):
     if recursive_item_count is not None:
         item_details.total_episodes = recursive_item_count
 
-    unplayed_item_count = userData["UnplayedItemCount"]
+    unplayed_item_count = user_data["UnplayedItemCount"]
     if unplayed_item_count is not None:
         item_details.unwatched_episodes = unplayed_item_count
         item_details.watched_episodes = item_details.total_episodes - unplayed_item_count
 
     item_details.number_episodes = item_details.total_episodes
 
-    item_details.art = getArt(item, gui_options["server"])
+    item_details.art = get_art(item, gui_options["server"])
     item_details.rating = item["OfficialRating"]
     item_details.mpaa = item["OfficialRating"]
 
@@ -342,7 +344,7 @@ def extract_item_info(item, gui_options):
 
     item_details.location_type = item["LocationType"]
     item_details.recursive_item_count = item["RecursiveItemCount"]
-    item_details.recursive_unplayed_items_count = userData["UnplayedItemCount"]
+    item_details.recursive_unplayed_items_count = user_data["UnplayedItemCount"]
 
     item_details.mode = "GET_CONTENT"
 
@@ -351,7 +353,7 @@ def extract_item_info(item, gui_options):
 
 def add_gui_item(url, item_details, display_options, folder=True, default_sort=False):
 
-    #log.debug("item_details: {0}", item_details.__dict__)
+    # log.debug("item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
         return None
@@ -369,41 +371,41 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         if default_sort:
             u += '&sort=none'
     else:
-        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"# + "&session_id=" + home_window.getProperty("session_id")
+        u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
 
     # Create the ListItem that will be displayed
-    thumbPath = item_details.art["thumb"]
+    thumb_path = item_details.art["thumb"]
 
     list_item_name = item_details.name
     item_type = item_details.item_type.lower()
     is_video = item_type not in ['musicalbum', 'audio', 'music']
 
     # calculate percentage
-    cappedPercentage = 0
+    capped_percentage = 0
     if item_details.resume_time > 0:
         duration = float(item_details.duration)
-        if (duration > 0):
+        if duration > 0:
             resume = float(item_details.resume_time)
             percentage = int((resume / duration) * 100.0)
-            cappedPercentage = percentage
+            capped_percentage = percentage
 
-    totalItems = item_details.total_episodes
-    if totalItems != 0:
+    total_items = item_details.total_episodes
+    if total_items != 0:
         watched = float(item_details.watched_episodes)
-        percentage = int((watched / float(totalItems)) * 100.0)
-        cappedPercentage = percentage
+        percentage = int((watched / float(total_items)) * 100.0)
+        capped_percentage = percentage
 
-    countsAdded = False
-    addCounts = display_options["addCounts"]
-    if addCounts and item_details.unwatched_episodes != 0:
-        countsAdded = True
+    counts_added = False
+    add_counts = display_options["addCounts"]
+    if add_counts and item_details.unwatched_episodes != 0:
+        counts_added = True
         list_item_name = list_item_name + (" (%s)" % item_details.unwatched_episodes)
 
-    addResumePercent = display_options["addResumePercent"]
-    if (not countsAdded
-            and addResumePercent
-            and cappedPercentage not in [0, 100]):
-        list_item_name = list_item_name + (" (%s%%)" % cappedPercentage)
+    add_resume_percent = display_options["addResumePercent"]
+    if (not counts_added
+            and add_resume_percent
+            and capped_percentage not in [0, 100]):
+        list_item_name = list_item_name + (" (%s%%)" % capped_percentage)
 
     subtitle_available = display_options["addSubtitleAvailable"]
     if subtitle_available and item_details.subtitle_available:
@@ -416,7 +418,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         duration = (end_time - start_time).total_seconds()
         time_done = (datetime.now() - start_time).total_seconds()
         percentage_done = (float(time_done) / float(duration)) * 100.0
-        cappedPercentage = int(percentage_done)
+        capped_percentage = int(percentage_done)
 
         start_time_string = start_time.strftime("%H:%M")
         end_time_string = end_time.strftime("%H:%M")
@@ -440,15 +442,15 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if kodi_version > 17:
         list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
     else:
-        list_item = xbmcgui.ListItem(list_item_name, iconImage=thumbPath, thumbnailImage=thumbPath)
+        list_item = xbmcgui.ListItem(list_item_name, iconImage=thumb_path, thumbnailImage=thumb_path)
 
-    #log.debug("Setting thumbnail as: {0}", thumbPath)
+    # log.debug("Setting thumbnail as: {0}", thumbPath)
 
     item_properties = {}
 
     # calculate percentage
-    if cappedPercentage != 0:
-        item_properties["complete_percentage"] = str(cappedPercentage)
+    if capped_percentage != 0:
+        item_properties["complete_percentage"] = str(capped_percentage)
 
     item_properties["IsPlayable"] = 'false'
 
@@ -458,9 +460,9 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
     list_item.setArt(item_details.art)
 
-    item_properties["fanart_image"] = item_details.art['fanart'] # back compat
-    item_properties["discart"] = item_details.art['discart'] # not avail to setArt
-    item_properties["tvshow.poster"] = item_details.art['tvshow.poster'] # not avail to setArt
+    item_properties["fanart_image"] = item_details.art['fanart']  # back compat
+    item_properties["discart"] = item_details.art['discart']  # not avail to setArt
+    item_properties["tvshow.poster"] = item_details.art['tvshow.poster']  # not avail to setArt
 
     if item_details.series_id:
         item_properties["series_id"] = item_details.series_id
@@ -560,7 +562,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
 
         list_item.setInfo('video', info_labels)
-        #log.debug("info_labels: {0}", info_labels)
+        # log.debug("info_labels: {0}", info_labels)
 
         if item_details.media_streams is not None:
             for stream in item_details.media_streams:
@@ -598,7 +600,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             info_labels["artist"] = item_details.song_artist
         info_labels["album"] = item_details.album_name
 
-        #log.debug("info_labels: {0}", info_labels)
+        # log.debug("info_labels: {0}", info_labels)
         list_item.setInfo('music', info_labels)
 
     list_item.setContentLookup(False)
@@ -608,12 +610,11 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
-    #log.debug("item_properties: {0}", item_properties)
+    # log.debug("item_properties: {0}", item_properties)
     if kodi_version > 17:
         list_item.setProperties(item_properties)
     else:
         for key, value in item_properties.iteritems():
             list_item.setProperty(key, value)
 
-    return (u, list_item, folder)
-
+    return u, list_item, folder

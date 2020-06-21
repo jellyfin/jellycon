@@ -3,7 +3,6 @@
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
-import xbmc
 
 import urllib
 import sys
@@ -14,15 +13,15 @@ from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils
 from .translation import string_load
 from .simple_logging import SimpleLogging
-from .item_functions import add_gui_item, extract_item_info, ItemDetails
-from .utils import getArt, send_event_notification
+from .item_functions import add_gui_item, ItemDetails
+from .utils import send_event_notification
 from .tracking import timer
 
 log = SimpleLogging(__name__)
 
 
 @timer
-def getContent(url, params):
+def get_content(url, params):
     log.debug("== ENTER: getContent ==")
 
     default_sort = params.get("sort")
@@ -76,7 +75,7 @@ def getContent(url, params):
 
     # show a progress indicator if needed
     progress = None
-    if (settings.getSetting('showLoadProgress') == "true"):
+    if settings.getSetting('showLoadProgress') == "true":
         progress = xbmcgui.DialogProgress()
         progress.create(string_load(30112))
         progress.update(0, string_load(30113))
@@ -84,8 +83,9 @@ def getContent(url, params):
     # update url for paging
     start_index = 0
     page_limit = int(settings.getSetting('moviePageSize'))
+    url_prev = None
+    url_next = None
     if page_limit > 0 and media_type.startswith("movie"):
-        url_prev = None
         m = re.search('StartIndex=([0-9]{1,4})', url)
         if m and m.group(1):
             log.debug("UPDATING NEXT URL: {0}", url)
@@ -106,15 +106,15 @@ def getContent(url, params):
             log.debug("ADDING NEXT URL: {0}", url_next)
 
     # use the data manager to get the data
-    #result = dataManager.GetContent(url)
+    # result = dataManager.GetContent(url)
 
-    #total_records = 0
-    #if result is not None and isinstance(result, dict):
+    # total_records = 0
+    # if result is not None and isinstance(result, dict):
     #    total_records = result.get("TotalRecordCount", 0)
 
     use_cache = params.get("use_cache", "true") == "true"
 
-    dir_items, detected_type, total_records = processDirectory(url, progress, params, use_cache)
+    dir_items, detected_type, total_records = process_directory(url, progress, params, use_cache)
     if dir_items is None:
         return
 
@@ -123,7 +123,6 @@ def getContent(url, params):
     # add paging items
     if page_limit > 0 and media_type.startswith("movie"):
         if url_prev:
-
             list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
@@ -158,7 +157,7 @@ def getContent(url, params):
     if page_limit > 0 and media_type.startswith("movie"):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     else:
-        setSort(pluginhandle, view_type, default_sort)
+        set_sort(pluginhandle, view_type, default_sort)
 
     xbmcplugin.addDirectoryItems(pluginhandle, dir_items)
     xbmcplugin.endOfDirectory(pluginhandle, cacheToDisc=False)
@@ -185,8 +184,8 @@ def getContent(url, params):
     return
 
 
-def setSort(pluginhandle, viewType, default_sort):
-    log.debug("SETTING_SORT for media type: {0}", viewType)
+def set_sort(pluginhandle, view_type, default_sort):
+    log.debug("SETTING_SORT for media type: {0}", view_type)
 
     if default_sort == "none":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
@@ -202,17 +201,17 @@ def setSort(pluginhandle, viewType, default_sort):
     }
 
     settings = xbmcaddon.Addon()
-    preset_sort_order = settings.getSetting("sort-" + viewType)
+    preset_sort_order = settings.getSetting("sort-" + view_type)
     log.debug("SETTING_SORT preset_sort_order: {0}", preset_sort_order)
     if preset_sort_order in sorting_order_mapping:
         xbmcplugin.addSortMethod(pluginhandle, sorting_order_mapping[preset_sort_order])
 
-    if viewType == "BoxSets":
+    if view_type == "BoxSets":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
-    elif viewType == "Episodes":
+    elif view_type == "Episodes":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_EPISODE)
-    elif viewType == "Music":
+    elif view_type == "Music":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_TRACKNUM)
     else:
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE)
@@ -227,13 +226,13 @@ def setSort(pluginhandle, viewType, default_sort):
 
 
 @timer
-def processDirectory(url, progress, params, use_cache_data=False):
+def process_directory(url, progress, params, use_cache_data=False):
     log.debug("== ENTER: processDirectory ==")
 
-    dataManager = DataManager()
+    data_manager = DataManager()
     settings = xbmcaddon.Addon()
-    downloadUtils = DownloadUtils()
-    server = downloadUtils.getServer()
+    download_utils = DownloadUtils()
+    server = download_utils.get_server()
 
     name_format = params.get("name_format", None)
     name_format_type = None
@@ -253,7 +252,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
     gui_options["name_format_type"] = name_format_type
 
     use_cache = settings.getSetting("use_cache") == "true" and use_cache_data
-    cache_file, item_list, total_records = dataManager.get_items(url, gui_options, use_cache)
+    cache_file, item_list, total_records = data_manager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -273,7 +272,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
         if progress is not None:
             progress.close()
         params["media_type"] = "Episodes"
-        getContent(season_url, params)
+        get_content(season_url, params)
         return None, None, None
 
     hide_unwatched_details = settings.getSetting('hide_unwatched_details') == 'true'
@@ -386,7 +385,7 @@ def processDirectory(url, progress, params, use_cache_data=False):
         series_url = ('{server}/emby/Shows/' + first_season_item.series_id +
                       '/Episodes'
                       '?userId={userid}' +
-                      #'&seasonId=' + season_id +
+                      # '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
                       '&Fields=SpecialEpisodeNumbers,{field_filters}' +
@@ -416,6 +415,6 @@ def processDirectory(url, progress, params, use_cache_data=False):
         if gui_item:
             dir_items.append(gui_item)
 
-    HomeWindow().clearProperty(cache_file)
+    HomeWindow().clear_property(cache_file)
 
     return dir_items, detected_type, total_records

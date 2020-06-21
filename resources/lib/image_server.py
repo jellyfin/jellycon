@@ -11,6 +11,11 @@ import httplib
 import io
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
+from .simple_logging import SimpleLogging
+from .datamanager import DataManager
+from .downloadutils import DownloadUtils
+from .utils import get_art
+
 pil_loaded = False
 try:
     from PIL import ImageFilter, Image, ImageOps
@@ -18,30 +23,26 @@ try:
 except Exception as err:
     pil_loaded = False
 
-from .simple_logging import SimpleLogging
-from .datamanager import DataManager
-from .downloadutils import DownloadUtils
-from .utils import getArt
-
 PORT_NUMBER = 24276
 log = SimpleLogging(__name__)
+
 
 def get_image_links(url):
 
     download_utils = DownloadUtils()
-    server = download_utils.getServer()
+    server = download_utils.get_server()
     if server is None:
         return []
 
-    #url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
-    #url = url.replace("{ItemLimit}", "4")
-    #url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
+    # url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
+    # url = url.replace("{ItemLimit}", "4")
+    # url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
 
-    #if not re.search('limit=', url, re.IGNORECASE):
-    #    url += "&Limit=4"
+    # if not re.search('limit=', url, re.IGNORECASE):
+    #     url += "&Limit=4"
 
-    #if not re.search('sortBy=', url, re.IGNORECASE):
-    #    url += "&SortBy=Random"
+    # if not re.search('sortBy=', url, re.IGNORECASE):
+    #     url += "&SortBy=Random"
 
     url = re.sub("(?i)EnableUserData=[a-z]+", "EnableUserData=False", url)
     url = re.sub("(?i)EnableImageTypes=[,a-z]+", "EnableImageTypes=Primary", url)
@@ -58,7 +59,7 @@ def get_image_links(url):
         url += "&EnableUserData=False"
 
     data_manager = DataManager()
-    result = data_manager.GetContent(url)
+    result = data_manager.get_content(url)
 
     items = result.get("Items")
     if not items:
@@ -66,7 +67,7 @@ def get_image_links(url):
 
     art_urls = []
     for iteem in items:
-        art = getArt(item=iteem, server=server)
+        art = get_art(item=iteem, server=server)
         art_urls.append(art)
 
     shuffle(art_urls)
@@ -96,7 +97,7 @@ def build_image(path):
     rows = 2
     thumbnail_width = int(width / cols)
     thumbnail_height = int(height / rows)
-    size = thumbnail_width, thumbnail_height
+    size = (thumbnail_width, thumbnail_height)
     image_count = 0
 
     for art in image_urls:
@@ -107,8 +108,8 @@ def build_image(path):
 
             host_name = url_bits.hostname
             port = url_bits.port
-            user_name = url_bits.username
-            user_password = url_bits.password
+            # user_name = url_bits.username
+            # user_password = url_bits.password
             url_path = url_bits.path
             url_query = url_bits.query
 
@@ -124,7 +125,7 @@ def build_image(path):
                 image_data = image_responce.read()
 
                 loaded_image = Image.open(io.BytesIO(image_data))
-                image = ImageOps.fit(loaded_image, (size), method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
+                image = ImageOps.fit(loaded_image, size, method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
 
                 x = int(image_count % cols) * thumbnail_width
                 y = int(image_count/cols) * thumbnail_height
@@ -134,8 +135,8 @@ def build_image(path):
                 del image
                 del image_data
 
-            except Exception as err:
-                log.debug("Error loading image : {0}", str(err))
+            except Exception as con_err:
+                log.debug("Error loading image : {0}", str(con_err))
 
             image_count += 1
 
@@ -144,9 +145,9 @@ def build_image(path):
 
     del image_urls
 
-    imgByteArr = io.BytesIO()
-    collage.save(imgByteArr, format='JPEG')
-    image_bytes = imgByteArr.getvalue()
+    img_byte_arr = io.BytesIO()
+    collage.save(img_byte_arr, format='JPEG')
+    image_bytes = img_byte_arr.getvalue()
 
     return image_bytes
 
@@ -216,7 +217,7 @@ class HttpImageServerThread(threading.Thread):
             conn = httplib.HTTPConnection("localhost:%d" % PORT_NUMBER)
             conn.request("QUIT", "/")
             conn.getresponse()
-        except Exception as err:
+        except:
             pass
 
     def run(self):

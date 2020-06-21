@@ -9,9 +9,11 @@ log = SimpleLogging(__name__)
 
 enabled = False
 
+
 def set_timing_enabled(val):
     global enabled
     enabled = val
+
 
 def timer(func):
     @functools.wraps(func)
@@ -25,6 +27,6 @@ def timer(func):
                 data = args[1]
             elif func.__name__ == "mainEntryPoint" and len(sys.argv) > 2:
                 data = sys.argv[2]
-            log.info("timing_data|{0}|{1}|{2}|{3}", func.__name__ , started, ended, data)
+            log.info("timing_data|{0}|{1}|{2}|{3}", func.__name__, started, ended, data)
         return value
     return wrapper

@@ -3,18 +3,15 @@ import xbmcplugin
 import xbmcgui
 import xbmc
 import json
-import urllib
 import hashlib
-import time
 import random
-import sys
 
 from .downloadutils import DownloadUtils
-from .utils import getArt, get_emby_url
+from .utils import get_emby_url
 from .datamanager import DataManager
 from .simple_logging import SimpleLogging
 from .kodi_utils import HomeWindow
-from .dir_functions import processDirectory
+from .dir_functions import process_directory
 from .tracking import timer
 
 log = SimpleLogging(__name__)
@@ -44,7 +41,7 @@ def set_random_movies():
 
     url = get_emby_url("{server}/emby/Users/{userid}/Items", url_params)
 
-    results = downloadUtils.downloadUrl(url, suppress=True)
+    results = downloadUtils.download_url(url, suppress=True)
     results = json.loads(results)
 
     randon_movies_list = []
@@ -62,8 +59,8 @@ def set_random_movies():
 
     log.debug("set_random_movies : {0}", movies_list_string)
     log.debug("set_random_movies : {0}", new_widget_hash)
-    home_window.setProperty("random-movies", movies_list_string)
-    home_window.setProperty("random-movies-changed", new_widget_hash)
+    home_window.set_property("random-movies", movies_list_string)
+    home_window.set_property("random-movies-changed", new_widget_hash)
 
 
 def set_background_image(force=False):
@@ -90,8 +87,8 @@ def set_background_image(force=False):
 
         url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
 
-        server = downloadUtils.getServer()
-        results = downloadUtils.downloadUrl(url, suppress=True)
+        server = downloadUtils.get_server()
+        results = downloadUtils.download_url(url, suppress=True)
         results = json.loads(results)
 
         if results is not None:
@@ -99,7 +96,7 @@ def set_background_image(force=False):
             background_current_item = 0
             background_items = []
             for item in items:
-                bg_image = downloadUtils.getArtwork(item, "Backdrop", server=server)
+                bg_image = downloadUtils.get_artwork(item, "Backdrop", server=server)
                 if bg_image:
                     label = item.get("Name")
                     item_background = {}
@@ -119,12 +116,12 @@ def set_background_image(force=False):
             background_current_item = 0
 
         home_window = HomeWindow()
-        home_window.setProperty("random-gb", bg_image)
-        home_window.setProperty("random-gb-label", label)
+        home_window.set_property("random-gb", bg_image)
+        home_window.set_property("random-gb-label", label)
 
 
 @timer
-def checkForNewContent():
+def check_for_new_content():
     log.debug("checkForNewContent Called")
 
     url_params = {}
@@ -139,7 +136,7 @@ def checkForNewContent():
 
     added_url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
 
-    added_result = downloadUtils.downloadUrl(added_url, suppress=True)
+    added_result = downloadUtils.download_url(added_url, suppress=True)
     result = json.loads(added_result)
     log.debug("LATEST_ADDED_ITEM: {0}", result)
 
@@ -163,7 +160,7 @@ def checkForNewContent():
 
     played_url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
 
-    played_result = downloadUtils.downloadUrl(played_url, suppress=True)
+    played_result = downloadUtils.download_url(played_url, suppress=True)
     result = json.loads(played_result)
     log.debug("LATEST_PLAYED_ITEM: {0}", result)
 
@@ -176,7 +173,7 @@ def checkForNewContent():
     log.debug("last_played_date: {0}", last_played_date)
 
     home_window = HomeWindow()
-    current_widget_hash = home_window.getProperty("embycon_widget_reload")
+    current_widget_hash = home_window.get_property("embycon_widget_reload")
     log.debug("Current Widget Hash: {0}", current_widget_hash)
 
     m = hashlib.md5()
@@ -185,7 +182,7 @@ def checkForNewContent():
     log.debug("New Widget Hash: {0}", new_widget_hash)
 
     if current_widget_hash != new_widget_hash:
-        home_window.setProperty("embycon_widget_reload", new_widget_hash)
+        home_window.set_property("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
         return True
     else:
@@ -195,11 +192,11 @@ def checkForNewContent():
 @timer
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}", params)
-    server = downloadUtils.getServer()
+    server = downloadUtils.get_server()
 
     item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.GetContent("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
+    result = data_manager.get_content("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
     log.debug("ItemInfo: {0}", result)
 
     if not result:
@@ -231,7 +228,7 @@ def get_widget_content_cast(handle, params):
             person_tag = person.get("PrimaryImageTag")
             person_thumbnail = None
             if person_tag:
-                person_thumbnail = downloadUtils.imageUrl(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                person_thumbnail = downloadUtils.image_url(person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
             if kodi_version > 17:
                 list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
@@ -262,7 +259,7 @@ def get_widget_content_cast(handle, params):
 
 
 @timer
-def getWidgetContent(handle, params):
+def get_widget_content(handle, params):
     log.debug("getWigetContent Called: {0}", params)
 
     settings = xbmcaddon.Addon()
@@ -362,7 +359,7 @@ def getWidgetContent(handle, params):
         suggested_items_url = get_emby_url("{server}/emby/Movies/Recommendations", suggested_items_url_params)
 
         data_manager = DataManager()
-        suggested_items = data_manager.GetContent(suggested_items_url)
+        suggested_items = data_manager.get_content(suggested_items_url)
         ids = []
         set_id = 0
         while len(ids) < 20 and suggested_items:
@@ -370,17 +367,17 @@ def getWidgetContent(handle, params):
             log.debug("BaselineItemName : {0} - {1}", set_id, items.get("BaselineItemName"))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
-            #log.debug("random suggestions index : {0} {1}", rand, set_id)
+            # log.debug("random suggestions index : {0} {1}", rand, set_id)
             item = items[rand]
             if item["Type"] == "Movie" and item["Id"] not in ids and (not item["UserData"]["Played"] or not hide_watched):
-                #log.debug("random suggestions adding : {0}", item["Id"])
+                # log.debug("random suggestions adding : {0}", item["Id"])
                 ids.append(item["Id"])
-            #else:
-            #    log.debug("random suggestions not valid : {0} - {1} - {2}", item["Id"], item["Type"], item["UserData"]["Played"])
+            # else:
+            #     log.debug("random suggestions not valid : {0} - {1} - {2}", item["Id"], item["Type"], item["UserData"]["Played"])
             del items[rand]
-            #log.debug("items len {0}", len(items))
+            # log.debug("items len {0}", len(items))
             if len(items) == 0:
-                #log.debug("Removing Set {0}", set_id)
+                # log.debug("Removing Set {0}", set_id)
                 del suggested_items[set_id]
             set_id += 1
             if set_id >= len(suggested_items):
@@ -392,7 +389,7 @@ def getWidgetContent(handle, params):
 
     items_url = get_emby_url(url_verb, url_params)
 
-    list_items, detected_type, total_records = processDirectory(items_url, None, params, False)
+    list_items, detected_type, total_records = process_directory(items_url, None, params, False)
 
     # remove resumable items from next up
     if widget_type == "nextup_episodes":
@@ -403,7 +400,7 @@ def getWidgetContent(handle, params):
                 filtered_list.append(item)
         list_items = filtered_list
 
-    #list_items = populateWidgetItems(items_url, widget_type)
+    # list_items = populateWidgetItems(items_url, widget_type)
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type

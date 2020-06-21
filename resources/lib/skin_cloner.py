@@ -6,7 +6,7 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
-from json_rpc import json_rpc, get_value, set_value
+from .jsonrpc import JsonRpc, get_value, set_value
 from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
@@ -27,8 +27,8 @@ def clone_default_skin():
     set_skin_settings()
     update_kodi_settings()
 
-    #xbmc.executebuiltin("ReloadSkin()")
-    #xbmc.executebuiltin("ActivateWindow(Home)")
+    # xbmc.executebuiltin("ReloadSkin()")
+    # xbmc.executebuiltin("ActivateWindow(Home)")
 
 
 def walk_path(root_path, relative_path, all_files):
@@ -87,7 +87,7 @@ def clone_skin():
     addon_xml_data = addon_xml_data.replace("id=\"skin.estuary\"", "id=\"skin.estuary_embycon\"")
     addon_xml_data = addon_xml_data.replace("name=\"Estuary\"", "name=\"Estuary EmbyCon\"")
 
-    #log.debug("{0}", addon_xml_data)
+    # log.debug("{0}", addon_xml_data)
 
     # update the addon.xml
     with open(addon_xml_path, "w") as addon_file:
@@ -122,7 +122,7 @@ def clone_skin():
         'addonid': "skin.estuary_embycon",
         'enabled': True
     }
-    result = json_rpc('Addons.SetAddonEnabled').execute(params)
+    result = JsonRpc('Addons.SetAddonEnabled').execute(params)
     log.debug("Addons.SetAddonEnabled : {0}", result)
 
     log.debug("SkinCloner : Current Skin : " + get_value("lookandfeel.skin"))
@@ -134,7 +134,7 @@ def clone_skin():
 def update_kodi_settings():
     log.debug("Settings Kodi Settings")
 
-    #set_value("screensaver.mode", "script.screensaver.logoff")
+    # set_value("screensaver.mode", "script.screensaver.logoff")
     set_value("videoplayer.seekdelay", 0)
     set_value("filelists.showparentdiritems", False)
     set_value("filelists.showaddsourcebuttons", False)

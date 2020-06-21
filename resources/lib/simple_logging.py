@@ -2,10 +2,10 @@
 
 import xbmc
 import xbmcaddon
-from .json_rpc import json_rpc
+from .jsonrpc import JsonRpc
 
 
-class SimpleLogging():
+class SimpleLogging:
     name = ""
     enable_logging = False
 
@@ -15,12 +15,12 @@ class SimpleLogging():
         self.name = prefix + '.' + name
         self.enable_logging = settings.getSetting('log_debug') == "true"
 
-        #params = {"setting": "debug.showloginfo"}
-        #setting_result = json_rpc('Settings.getSettingValue').execute(params)
-        #current_value = setting_result.get("result", None)
-        #if current_value is not None:
-        #    self.enable_logging = current_value.get("value", False)
-        #xbmc.log("LOGGING_ENABLED %s : %s" % (self.name, str(self.enable_logging)), level=xbmc.LOGDEBUG)
+        # params = {"setting": "debug.showloginfo"}
+        # setting_result = json_rpc('Settings.getSettingValue').execute(params)
+        # current_value = setting_result.get("result", None)
+        # if current_value is not None:
+        #     self.enable_logging = current_value.get("value", False)
+        # xbmc.log("LOGGING_ENABLED %s : %s" % (self.name, str(self.enable_logging)), level=xbmc.LOGDEBUG)
 
     def __str__(self):
         return "LoggingEnabled: " + str(self.enable_logging)

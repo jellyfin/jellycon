@@ -27,7 +27,7 @@ def check_safe_delete_available():
     log.debug("check_safe_delete_available")
 
     du = DownloadUtils()
-    json_data = du.downloadUrl("{server}/emby/Plugins")
+    json_data = du.download_url("{server}/emby/Plugins")
     result = json.loads(json_data)
     if result is not None:
         log.debug("Server Plugin List: {0}", result)
@@ -41,21 +41,21 @@ def check_safe_delete_available():
         log.debug("Safe Delete Plugin Available: {0}", safe_delete_found)
         home_window = HomeWindow()
         if safe_delete_found:
-            home_window.setProperty("safe_delete_plugin_available", "true")
+            home_window.set_property("safe_delete_plugin_available", "true")
         else:
-            home_window.clearProperty("safe_delete_plugin_available")
+            home_window.clear_property("safe_delete_plugin_available")
 
     else:
         log.debug("Error getting server plugin list")
 
 
-def getServerDetails():
+def get_server_details():
     log.debug("Getting Server Details from Network")
     servers = []
 
-    MESSAGE = "who is EmbyServer?"
-    MULTI_GROUP = ("<broadcast>", 7359)
-    #MULTI_GROUP = ("127.0.0.1", 7359)
+    message = "who is EmbyServer?"
+    multi_group = ("<broadcast>", 7359)
+    # multi_group = ("127.0.0.1", 7359)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(4.0)
@@ -65,8 +65,8 @@ def getServerDetails():
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
     sock.setsockopt(socket.IPPROTO_IP, socket.SO_REUSEADDR, 1)
 
-    log.debug("MutliGroup: {0}", MULTI_GROUP)
-    log.debug("Sending UDP Data: {0}", MESSAGE)
+    log.debug("MutliGroup: {0}", multi_group)
+    log.debug("Sending UDP Data: {0}", message)
 
     progress = xbmcgui.DialogProgress()
     progress.create(__addon_name__ + " : " + string_load(30373))
@@ -76,7 +76,7 @@ def getServerDetails():
 
     # while True:
     try:
-        sock.sendto(MESSAGE, MULTI_GROUP)
+        sock.sendto(message, multi_group)
         while True:
             try:
                 server_count += 1
@@ -95,7 +95,7 @@ def getServerDetails():
     return servers
 
 
-def checkServer(force=False, change_user=False, notify=False):
+def check_server(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
     settings = xbmcaddon.Addon()
@@ -105,7 +105,7 @@ def checkServer(force=False, change_user=False, notify=False):
 
     if force is False:
         # if not forcing use server details from settings
-        svr = du.getServer()
+        svr = du.get_server()
         if svr is not None:
             server_url = svr
 
@@ -113,7 +113,7 @@ def checkServer(force=False, change_user=False, notify=False):
     if server_url == "":
 
         # scan for local server
-        server_info = getServerDetails()
+        server_info = get_server_details()
 
         addon = xbmcaddon.Addon()
         server_icon = addon.getAddonInfo('icon')
@@ -171,7 +171,7 @@ def checkServer(force=False, change_user=False, notify=False):
                 progress = xbmcgui.DialogProgress()
                 progress.create(__addon_name__ + " : " + string_load(30376))
                 progress.update(0, string_load(30377))
-                json_data = du.downloadUrl(temp_url, authenticate=False)
+                json_data = du.download_url(temp_url, authenticate=False)
                 progress.close()
 
                 result = json.loads(json_data)
@@ -227,7 +227,7 @@ def checkServer(force=False, change_user=False, notify=False):
 
         # get a list of users
         log.debug("Getting user list")
-        json_data = du.downloadUrl(server_url + "/emby/Users/Public?format=json", authenticate=False)
+        json_data = du.download_url(server_url + "/emby/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData: {0}", json_data)
         try:
@@ -392,13 +392,13 @@ def checkServer(force=False, change_user=False, notify=False):
 
         if something_changed:
             home_window = HomeWindow()
-            home_window.clearProperty("userid")
-            home_window.clearProperty("AccessToken")
-            home_window.clearProperty("userimage")
-            home_window.clearProperty("embycon_widget_reload")
+            home_window.clear_property("userid")
+            home_window.clear_property("AccessToken")
+            home_window.clear_property("userimage")
+            home_window.clear_property("embycon_widget_reload")
             du = DownloadUtils()
             du.authenticate()
-            du.getUserId()
+            du.get_user_id()
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_embycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")

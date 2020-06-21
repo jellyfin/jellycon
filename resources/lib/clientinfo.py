@@ -10,12 +10,14 @@ from .simple_logging import SimpleLogging
 
 log = SimpleLogging(__name__)
 
-class ClientInformation():
 
-    def getDeviceId(self):
+class ClientInformation:
 
-        WINDOW = HomeWindow()
-        client_id = WINDOW.getProperty("client_id")
+    @staticmethod
+    def get_device_id():
+
+        window = HomeWindow()
+        client_id = window.get_property("client_id")
 
         if client_id:
             return client_id
@@ -36,13 +38,15 @@ class ClientInformation():
         else:
             log.debug("emby_client_id: {0}", client_id)
 
-        WINDOW.setProperty("client_id", client_id)
+        window.set_property("client_id", client_id)
         return client_id
 
-    def getVersion(self):
+    @staticmethod
+    def get_version():
         addon = xbmcaddon.Addon()
         version = addon.getAddonInfo("version")
         return version
 
-    def getClient(self):
+    @staticmethod
+    def get_client():
         return 'Kodi EmbyCon'

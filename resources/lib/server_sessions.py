@@ -6,20 +6,21 @@ import xbmcplugin
 
 from .downloadutils import DownloadUtils
 from .simple_logging import SimpleLogging
-from .utils import getArt
+from .utils import get_art
 from .datamanager import DataManager
 
 log = SimpleLogging(__name__)
 
-def showServerSessions():
+
+def show_server_sessions():
     log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
-    downloadUtils = DownloadUtils()
+    download_utils = DownloadUtils()
     data_manager = DataManager()
 
     url = "{server}/emby/Users/{userid}"
-    results = data_manager.GetContent(url)
+    results = data_manager.get_content(url)
 
     is_admin = results.get("Policy", {}).get("IsAdministrator", False)
     if not is_admin:
@@ -27,7 +28,7 @@ def showServerSessions():
         return
 
     url = "{server}/emby/Sessions"
-    results = data_manager.GetContent(url)
+    results = data_manager.get_content(url)
     log.debug("session_info: {0}", results)
 
     if results is None:
@@ -58,8 +59,8 @@ def showServerSessions():
 
         art = {}
         if now_playing:
-            server = downloadUtils.getServer()
-            art = getArt(now_playing, server)
+            server = download_utils.get_server()
+            art = get_art(now_playing, server)
 
             runtime = now_playing.get("RunTimeTicks", 0)
             if position_ticks > 0 and runtime > 0:

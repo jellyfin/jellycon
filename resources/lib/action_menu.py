@@ -52,6 +52,8 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
     selected_action = None
     action_items = None
     auto_close_thread = None
+    listControl = None
+    action_exitkeys_id = None
 
     def __init__(self, *args, **kwargs):
         log.debug("ActionMenu: __init__")
@@ -67,13 +69,13 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
         self.listControl.addItems(self.action_items)
         self.setFocus(self.listControl)
 
-        #bg_image = self.getControl(3010)
-        #bg_image.setHeight(50 * len(self.action_items) + 20)
+        # bg_image = self.getControl(3010)
+        # bg_image.setHeight(50 * len(self.action_items) + 20)
 
-    def onFocus(self, controlId):
+    def onFocus(self, control_id):
         pass
 
-    def doAction(self, actionID):
+    def doAction(self, action_id):
         pass
 
     def onMessage(self, message):
@@ -91,8 +93,8 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
             self.auto_close_thread.set_last()
             log.debug("ActionMenu: onAction: {0}", action.getId())
 
-    def onClick(self, controlID):
-        if controlID == 3000:
+    def onClick(self, control_id):
+        if control_id == 3000:
             self.selected_action = self.listControl.getSelectedItem()
             log.debug("ActionMenu: Selected Item: {0}", self.selected_action)
             self.auto_close_thread.stop()
@@ -103,4 +105,3 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
 
     def getActionItem(self):
         return self.selected_action
-

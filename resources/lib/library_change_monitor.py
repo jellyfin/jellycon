@@ -2,10 +2,9 @@ import threading
 import time
 
 import xbmc
-import xbmcaddon
 
 from .simple_logging import SimpleLogging
-from .widgets import checkForNewContent
+from .widgets import check_for_new_content
 from .tracking import timer
 
 log = SimpleLogging(__name__)
@@ -35,7 +34,7 @@ class LibraryChangeMonitor(threading.Thread):
 
             if self.library_check_triggered and (time.time() - self.last_library_change_check) > 60 and not xbmc.Player().isPlaying():
                 log.debug("Doing new content check")
-                checkForNewContent()
+                check_for_new_content()
                 self.library_check_triggered = False
                 self.last_library_change_check = time.time()
 

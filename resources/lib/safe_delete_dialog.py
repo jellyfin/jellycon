@@ -13,6 +13,7 @@ class SafeDeleteDialog(xbmcgui.WindowXMLDialog):
     confirm = False
     message = "Demo Message"
     heading = "Demo Heading"
+    action_exitkeys_id = None
 
     def __init__(self, *args, **kwargs):
         log.debug("SafeDeleteDialog: __init__")

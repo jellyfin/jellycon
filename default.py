@@ -3,7 +3,7 @@
 import xbmcaddon
 
 from resources.lib.simple_logging import SimpleLogging
-from resources.lib.functions import mainEntryPoint
+from resources.lib.functions import main_entry_point
 from resources.lib.tracking import set_timing_enabled
 
 log = SimpleLogging('default')
@@ -15,7 +15,7 @@ if log_timing_data:
 
 log.debug("About to enter mainEntryPoint()")
 
-mainEntryPoint()
+main_entry_point()
 
 # clear done and exit.
 # sys.modules.clear()

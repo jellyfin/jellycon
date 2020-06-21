@@ -34,7 +34,7 @@ def search(item_type, query):
                    '&Limit=25' +
                    '&IncludePeople=false&IncludeMedia=true&IncludeGenres=false&IncludeStudios=false&IncludeArtists=false')
 
-    result = dataManager.GetContent(content_url)
+    result = dataManager.get_content(content_url)
     return result
 
 
@@ -58,13 +58,13 @@ def get_items(video_type, item_id=None, parent_id=None):
                        '&format=json')
 
     if content_url:
-        result = dataManager.GetContent(content_url)
+        result = dataManager.get_content(content_url)
 
     return result
 
 
 def get_item(item_id):
-    result = dataManager.GetContent('{server}/emby/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
+    result = dataManager.get_content('{server}/emby/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
     return result
 
 

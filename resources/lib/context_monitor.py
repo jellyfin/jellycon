@@ -1,7 +1,5 @@
 import threading
-import sys
 import xbmc
-import xbmcgui
 
 from .simple_logging import SimpleLogging
 from resources.lib.functions import show_menu
@@ -17,8 +15,6 @@ class ContextMonitor(threading.Thread):
 
         item_id = None
         log.debug("ContextMonitor Thread Started")
-        context_up = False
-        is_embycon_item = False
 
         while not xbmc.abortRequested and not self.stop_thread:
 
@@ -38,7 +34,9 @@ class ContextMonitor(threading.Thread):
                 xbmc.sleep(100)
 
         '''
-
+        context_up = False
+        is_embycon_item = False
+        
         while not xbmc.abortRequested and not self.stop_thread:
 
             if xbmc.getCondVisibility("Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)"):

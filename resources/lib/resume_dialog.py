@@ -11,6 +11,7 @@ log = SimpleLogging(__name__)
 class ResumeDialog(xbmcgui.WindowXMLDialog):
     resumePlay = -1
     resumeTimeStamp = ""
+    action_exitkeys_id = None
 
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
@@ -29,10 +30,10 @@ class ResumeDialog(xbmcgui.WindowXMLDialog):
 
     def onClick(self, controlID):
 
-        if (controlID == 3010):
+        if controlID == 3010:
             self.resumePlay = 0
             self.close()
-        if (controlID == 3011):
+        if controlID == 3011:
             self.resumePlay = 1
             self.close()
 

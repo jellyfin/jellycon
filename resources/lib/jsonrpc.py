@@ -1,16 +1,18 @@
 import json
 import xbmc
 
-class json_rpc(object):
+
+class JsonRpc(object):
 
     id_ = 1
     jsonrpc = "2.0"
+    params = None
 
     def __init__(self, method, **kwargs):
         
         self.method = method
 
-        for arg in kwargs: # id_(int), jsonrpc(str)
+        for arg in kwargs:  # id_(int), jsonrpc(str)
             self.arg = arg
 
     def _query(self):
@@ -33,7 +35,7 @@ class json_rpc(object):
 
 
 def get_value(name):
-    result = json_rpc('Settings.getSettingValue').execute({'setting': name})
+    result = JsonRpc('Settings.getSettingValue').execute({'setting': name})
     return result['result']['value']
 
 
@@ -42,6 +44,5 @@ def set_value(name, value):
         'setting': name,
         'value': value
     }
-    result = json_rpc('Settings.setSettingValue').execute(params)
+    result = JsonRpc('Settings.setSettingValue').execute(params)
     return result
-

@@ -7,8 +7,6 @@ import hashlib
 import os
 import cPickle
 import time
-#import copy
-#import urllib
 
 from .downloadutils import DownloadUtils
 from .simple_logging import SimpleLogging
@@ -47,13 +45,14 @@ class DataManager:
         # log.debug("DataManager __init__")
         pass
 
-    def loadJasonData(self, jsonData):
-        return json.loads(jsonData, object_hook=lambda d: defaultdict(lambda: None, d))
+    @staticmethod
+    def load_json_data(json_data):
+        return json.loads(json_data, object_hook=lambda d: defaultdict(lambda: None, d))
 
     @timer
-    def GetContent(self, url):
-        jsonData = DownloadUtils().downloadUrl(url)
-        result = self.loadJasonData(jsonData)
+    def get_content(self, url):
+        json_data = DownloadUtils().download_url(url)
+        result = self.load_json_data(json_data)
         return result
 
     @timer
@@ -61,20 +60,20 @@ class DataManager:
 
         home_window = HomeWindow()
         log.debug("last_content_url : use_cache={0} url={1}", use_cache, url)
-        home_window.setProperty("last_content_url", url)
+        home_window.set_property("last_content_url", url)
 
         download_utils = DownloadUtils()
-        user_id = download_utils.getUserId()
-        server = download_utils.getServer()
+        user_id = download_utils.get_user_id()
+        server = download_utils.get_server()
 
         m = hashlib.md5()
         m.update(user_id + "|" + str(server) + "|" + url)
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
 
-        #changed_url = url + "&MinDateLastSavedForUser=" + urllib.unquote("2019-09-16T13:45:30")
-        #results = self.GetContent(changed_url)
-        #log.debug("DataManager Changes Since Date : {0}", results)
+        # changed_url = url + "&MinDateLastSavedForUser=" + urllib.unquote("2019-09-16T13:45:30")
+        # results = self.GetContent(changed_url)
+        # log.debug("DataManager Changes Since Date : {0}", results)
 
         item_list = None
         total_records = 0
@@ -82,12 +81,12 @@ class DataManager:
         cache_thread = CacheManagerThread()
         cache_thread.gui_options = gui_options
 
-        home_window.setProperty(cache_file, "true")
+        home_window.set_property(cache_file, "true")
 
-        clear_cache = home_window.getProperty("skip_cache_for_" + url)
+        clear_cache = home_window.get_property("skip_cache_for_" + url)
         if clear_cache and os.path.isfile(cache_file):
             log.debug("Clearing cache data and loading new data")
-            home_window.clearProperty("skip_cache_for_" + url)
+            home_window.clear_property("skip_cache_for_" + url)
             os.remove(cache_file)
 
         # try to load the list item data from the cache
@@ -108,7 +107,7 @@ class DataManager:
         if item_list is None or len(item_list) == 0:
             log.debug("Loading url data from server")
 
-            results = self.GetContent(url)
+            results = self.get_content(url)
 
             if results is None:
                 results = []
@@ -173,13 +172,14 @@ class CacheManagerThread(threading.Thread):
 
         return m.hexdigest()
 
-    def wait_for_save(self, home_window, file_name):
+    @staticmethod
+    def wait_for_save(home_window, file_name):
         loops = 0
-        wait_refresh = home_window.getProperty(file_name)
+        wait_refresh = home_window.get_property(file_name)
         while wait_refresh and loops < 200 and not xbmc.Monitor().abortRequested():
             xbmc.sleep(100)
             loops = loops + 1
-            wait_refresh = home_window.getProperty(file_name)
+            wait_refresh = home_window.get_property(file_name)
         return loops
 
     def run(self):
@@ -212,7 +212,7 @@ class CacheManagerThread(threading.Thread):
             with open(self.cached_item.file_path, 'wb') as handle:
                 cPickle.dump(self.cached_item, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
-            home_window.clearProperty(self.cached_item.file_path)
+            home_window.clear_property(self.cached_item.file_path)
 
         else:
             log.debug("CacheManagerThread : Reloading to recheck data hashes")
@@ -220,7 +220,7 @@ class CacheManagerThread(threading.Thread):
             log.debug("CacheManagerThread : Cache Hash : {0}", cached_hash)
 
             data_manager = DataManager()
-            results = data_manager.GetContent(self.cached_item.items_url)
+            results = data_manager.get_content(self.cached_item.items_url)
             if results is None:
                 results = []
 
@@ -262,7 +262,7 @@ class CacheManagerThread(threading.Thread):
                 with open(self.cached_item.file_path, 'wb') as handle:
                     cPickle.dump(self.cached_item, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
-                home_window.clearProperty(self.cached_item.file_path)
+                home_window.clear_property(self.cached_item.file_path)
                 log.debug("CacheManagerThread : Sending container refresh ({0})", loops)
                 xbmc.executebuiltin("Container.Refresh")
 
@@ -272,7 +272,7 @@ class CacheManagerThread(threading.Thread):
                 with open(self.cached_item.file_path, 'wb') as handle:
                     cPickle.dump(self.cached_item, handle, protocol=cPickle.HIGHEST_PROTOCOL)
                 log.debug("CacheManagerThread : Updating last used date for cache data ({0})", loops)
-                home_window.clearProperty(self.cached_item.file_path)
+                home_window.clear_property(self.cached_item.file_path)
 
         log.debug("CacheManagerThread : Exited")
 
@@ -331,5 +331,3 @@ def clear_old_cache_data():
                 xbmcvfs.delete(os.path.join(addon_dir, filename))
 
     log.debug("clear_old_cache_data() : Cache items deleted : {0}", del_count)
-
-

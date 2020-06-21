@@ -1,9 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 
-import xbmc
 import xbmcgui
 import xbmcaddon
-import xbmcvfs
 
 import httplib
 import hashlib
@@ -13,7 +11,6 @@ import gzip
 import json
 from urlparse import urlparse
 import urllib
-from datetime import datetime
 from base64 import b64encode
 from collections import defaultdict
 
@@ -35,8 +32,8 @@ def save_user_details(settings, user_name, user_password):
         settings.setSetting("username", "")
         settings.setSetting("password", "")
         home_window = HomeWindow()
-        home_window.setProperty("username", user_name)
-        home_window.setProperty("password", user_password)
+        home_window.set_property("username", user_name)
+        home_window.set_property("password", user_password)
 
 
 def load_user_details(settings):
@@ -46,8 +43,8 @@ def load_user_details(settings):
         user_password = settings.getSetting("password")
     else:
         home_window = HomeWindow()
-        user_name = home_window.getProperty("username")
-        user_password = home_window.getProperty("password")
+        user_name = home_window.get_property("username")
+        user_password = home_window.get_property("password")
 
     user_details = {}
     user_details["username"] = user_name
@@ -152,7 +149,7 @@ class DownloadUtils:
                                   "PlayMediaSource"]
         }
 
-        self.downloadUrl(url, postBody=data, method="POST")
+        self.download_url(url, post_body=data, method="POST")
         log.debug("Posted Capabilities: {0}", data)
 
     def get_item_playback_info(self, item_id):
@@ -261,7 +258,7 @@ class DownloadUtils:
         }
 
         playback_info = {
-            'UserId': self.getUserId(),
+            'UserId': self.get_user_id(),
             'DeviceProfile': profile,
             'AutoOpenLiveStream': True
         }
@@ -270,13 +267,13 @@ class DownloadUtils:
         # url = "{server}/emby/Items/%s/PlaybackInfo?EnableDirectPlay=false&EnableDirectStream=false" % item_id
         log.debug("PlaybackInfo : {0}", url)
         log.debug("PlaybackInfo : {0}", profile)
-        play_info_result = self.downloadUrl(url, postBody=playback_info, method="POST")
+        play_info_result = self.download_url(url, post_body=playback_info, method="POST")
         play_info_result = json.loads(play_info_result)
         log.debug("PlaybackInfo : {0}", play_info_result)
 
         return play_info_result
 
-    def getServer(self):
+    def get_server(self):
         settings = xbmcaddon.Addon()
         host = settings.getSetting('ipaddress')
 
@@ -323,18 +320,19 @@ class DownloadUtils:
 
         return server
 
-    def get_all_artwork(self, item, server):
+    @staticmethod
+    def get_all_artwork(item, server):
         all_art = defaultdict(lambda: "")
 
-        id = item["Id"]
+        item_id = item["Id"]
         item_type = item["Type"]
         image_tags = item["ImageTags"]
-        bg_item_tags = item["ParentBackdropImageTags"]
+        # bg_item_tags = item["ParentBackdropImageTags"]
 
         # All the image tags
         for tag_name in image_tags:
             tag = image_tags[tag_name]
-            art_url = "%s/emby/Items/%s/Images/%s/0?Format=original&Tag=%s" % (server, id, tag_name, tag)
+            art_url = "%s/emby/Items/%s/Images/%s/0?Format=original&Tag=%s" % (server, item_id, tag_name, tag)
             all_art[tag_name] = art_url
 
         # Series images
@@ -347,61 +345,61 @@ class DownloadUtils:
 
         return all_art
 
-    def getArtwork(self, data, art_type, parent=False, index=0, server=None):
+    def get_artwork(self, data, art_type, parent=False, index=0, server=None):
 
-        id = data["Id"]
+        item_id = data["Id"]
         item_type = data["Type"]
 
         if item_type in ["Episode", "Season"]:
-            if art_type != "Primary" or parent == True:
-                id = data["SeriesId"]
+            if art_type != "Primary" or parent is True:
+                item_id = data["SeriesId"]
 
-        imageTag = ""
+        image_tag = ""
         # "e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
 
         # for episodes always use the parent BG
         if item_type == "Episode" and art_type == "Backdrop":
-            id = data["ParentBackdropItemId"]
-            bgItemTags = data["ParentBackdropImageTags"]
-            if bgItemTags is not None and len(bgItemTags) > 0:
-                imageTag = bgItemTags[0]
+            item_id = data["ParentBackdropItemId"]
+            bg_item_tags = data["ParentBackdropImageTags"]
+            if bg_item_tags is not None and len(bg_item_tags) > 0:
+                image_tag = bg_item_tags[0]
         elif art_type == "Backdrop" and parent is True:
-            id = data["ParentBackdropItemId"]
-            bgItemTags = data["ParentBackdropImageTags"]
-            if bgItemTags is not None and len(bgItemTags) > 0:
-                imageTag = bgItemTags[0]
+            item_id = data["ParentBackdropItemId"]
+            bg_item_tags = data["ParentBackdropImageTags"]
+            if bg_item_tags is not None and len(bg_item_tags) > 0:
+                image_tag = bg_item_tags[0]
         elif art_type == "Backdrop":
-            BGTags = data["BackdropImageTags"]
-            if BGTags is not None and len(BGTags) > index:
-                imageTag = BGTags[index]
+            bg_tags = data["BackdropImageTags"]
+            if bg_tags is not None and len(bg_tags) > index:
+                image_tag = bg_tags[index]
                 # log.debug("Background Image Tag: {0}", imageTag)
         elif parent is False:
             image_tags = data["ImageTags"]
             if image_tags is not None:
                 image_tag_type = image_tags[art_type]
                 if image_tag_type is not None:
-                    imageTag = image_tag_type
+                    image_tag = image_tag_type
                     # log.debug("Image Tag: {0}", imageTag)
         elif parent is True:
             if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
-                tagName = 'SeriesPrimaryImageTag'
-                idName = 'SeriesId'
+                tag_name = 'SeriesPrimaryImageTag'
+                id_name = 'SeriesId'
             else:
-                tagName = 'Parent%sImageTag' % art_type
-                idName = 'Parent%sItemId' % art_type
-            parent_image_id = data[idName]
-            parent_image_tag = data[tagName]
+                tag_name = 'Parent%sImageTag' % art_type
+                id_name = 'Parent%sItemId' % art_type
+            parent_image_id = data[id_name]
+            parent_image_tag = data[tag_name]
             if parent_image_id is not None and parent_image_tag is not None:
-                id = parent_image_id
-                imageTag = parent_image_tag
+                item_id = parent_image_id
+                image_tag = parent_image_tag
                 # log.debug("Parent Image Tag: {0}", imageTag)
 
-
-        if not imageTag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):  # ParentTag not passed for Banner and Art
+        # ParentTag not passed for Banner and Art
+        if not image_tag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):
             # log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
 
         if self.use_https and not self.verify_cert:
             artwork += "|verifypeer=false"
@@ -419,10 +417,10 @@ class DownloadUtils:
 
         return artwork
 
-    def imageUrl(self, id, art_type, index, width, height, imageTag, server):
+    def image_url(self, item_id, art_type, index, width, height, image_tag, server):
 
         # test imageTag e3ab56fe27d389446754d0fb04910a34
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, id, art_type, index, imageTag)
+        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
         if int(width) > 0:
             artwork += '&MaxWidth=%s' % width
         if int(height) > 0:
@@ -439,7 +437,7 @@ class DownloadUtils:
             return ""
         user_id = user.get("Id")
         tag = user.get("PrimaryImageTag")
-        server = self.getServer()
+        server = self.get_server()
 
         artwork = "%s/emby/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
 
@@ -448,13 +446,13 @@ class DownloadUtils:
 
         return artwork
 
-    def getUserId(self):
+    def get_user_id(self):
 
-        WINDOW = HomeWindow()
-        userid = WINDOW.getProperty("userid")
-        userImage = WINDOW.getProperty("userimage")
+        window = HomeWindow()
+        userid = window.get_property("userid")
+        user_image = window.get_property("userimage")
 
-        if userid and userImage:
+        if userid and user_image:
             log.debug("EmbyCon DownloadUtils -> Returning saved UserID: {0}", userid)
             return userid
 
@@ -467,14 +465,12 @@ class DownloadUtils:
         log.debug("Looking for user name: {0}", user_name)
 
         try:
-            json_data = self.downloadUrl("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
+            json_data = self.download_url("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception as msg:
             log.error("Get User unable to connect: {0}", msg)
             return ""
 
         log.debug("GETUSER_JSONDATA_01: {0}", json_data)
-
-        result = []
 
         try:
             result = json.loads(json_data)
@@ -491,7 +487,7 @@ class DownloadUtils:
         for user in result:
             if user.get("Name") == unicode(user_name, "utf-8"):
                 userid = user.get("Id")
-                userImage = self.get_user_artwork(user, 'Primary')
+                user_image = self.get_user_artwork(user, 'Primary')
                 log.debug("Username Found: {0}", user.get("Name"))
                 if user.get("HasPassword", False):
                     secure = True
@@ -499,17 +495,17 @@ class DownloadUtils:
                 break
 
         if secure or not userid:
-            authOk = self.authenticate()
-            if authOk == "":
+            auth_ok = self.authenticate()
+            if auth_ok == "":
                 xbmcgui.Dialog().notification(string_load(30316),
                                               string_load(30044),
                                               icon="special://home/addons/plugin.video.embycon/icon.png")
                 return ""
             if not userid:
-                userid = WINDOW.getProperty("userid")
+                userid = window.get_property("userid")
 
-        if userid and not userImage:
-            userImage = 'DefaultUser.png'
+        if userid and not user_image:
+            user_image = 'DefaultUser.png'
 
         if userid == "":
             xbmcgui.Dialog().notification(string_load(30316),
@@ -518,16 +514,16 @@ class DownloadUtils:
 
         log.debug("userid: {0}", userid)
 
-        WINDOW.setProperty("userid", userid)
-        WINDOW.setProperty("userimage", userImage)
+        window.set_property("userid", userid)
+        window.set_property("userimage", user_image)
 
         return userid
 
     def authenticate(self):
 
-        WINDOW = HomeWindow()
+        window = HomeWindow()
 
-        token = WINDOW.getProperty("AccessToken")
+        token = window.get_property("AccessToken")
         if token is not None and token != "":
             log.debug("EmbyCon DownloadUtils -> Returning saved AccessToken: {0}", token)
             return token
@@ -544,77 +540,77 @@ class DownloadUtils:
         user_name = urllib.quote(user_details.get("username", ""))
         pwd_text = urllib.quote(user_details.get("password", ""))
 
-        messageData = "username=" + user_name + "&pw=" + pwd_text
+        message_data = "username=" + user_name + "&pw=" + pwd_text
 
-        resp = self.downloadUrl(url, postBody=messageData, method="POST", suppress=True, authenticate=False)
+        resp = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
         log.debug("AuthenticateByName: {0}", resp)
 
-        accessToken = None
+        access_token = None
         userid = None
         try:
             result = json.loads(resp)
-            accessToken = result.get("AccessToken")
-            #userid = result["SessionInfo"].get("UserId")
+            access_token = result.get("AccessToken")
+            # userid = result["SessionInfo"].get("UserId")
             userid = result["User"].get("Id")
         except:
             pass
 
-        if accessToken is not None:
-            log.debug("User Authenticated: {0}", accessToken)
+        if access_token is not None:
+            log.debug("User Authenticated: {0}", access_token)
             log.debug("User Id: {0}", userid)
-            WINDOW.setProperty("AccessToken", accessToken)
-            WINDOW.setProperty("userid", userid)
-            #WINDOW.setProperty("userimage", "")
+            window.set_property("AccessToken", access_token)
+            window.set_property("userid", userid)
+            # WINDOW.setProperty("userimage", "")
 
             self.post_capabilities()
 
-            return accessToken
+            return access_token
         else:
             log.debug("User NOT Authenticated")
-            WINDOW.setProperty("AccessToken", "")
-            WINDOW.setProperty("userid", "")
-            WINDOW.setProperty("userimage", "")
+            window.set_property("AccessToken", "")
+            window.set_property("userid", "")
+            window.set_property("userimage", "")
             return ""
 
-    def getAuthHeader(self, authenticate=True):
-        clientInfo = ClientInformation()
-        txt_mac = clientInfo.getDeviceId()
-        version = clientInfo.getVersion()
-        client = clientInfo.getClient()
+    def get_auth_header(self, authenticate=True):
+        client_info = ClientInformation()
+        txt_mac = client_info.get_device_id()
+        version = client_info.get_version()
+        client = client_info.get_client()
 
         settings = xbmcaddon.Addon()
-        deviceName = settings.getSetting('deviceName')
+        device_name = settings.getSetting('deviceName')
         # remove none ascii chars
-        deviceName = deviceName.decode("ascii", errors='ignore')
+        device_name = device_name.decode("ascii", errors='ignore')
         # remove some chars not valid for names
-        deviceName = deviceName.replace("\"", "_")
-        if len(deviceName) == 0:
-            deviceName = "EmbyCon"
+        device_name = device_name.replace("\"", "_")
+        if len(device_name) == 0:
+            device_name = "EmbyCon"
 
         headers = {}
         headers["Accept-encoding"] = "gzip"
         headers["Accept-Charset"] = "UTF-8,*"
 
-        if (authenticate == False):
-            authString = "MediaBrowser Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            #headers["Authorization"] = authString
-            headers['X-Emby-Authorization'] = authString
+        if authenticate is False:
+            auth_string = "MediaBrowser Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            # headers["Authorization"] = authString
+            headers['X-Emby-Authorization'] = auth_string
             return headers
         else:
-            userid = self.getUserId()
-            authString = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + deviceName + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            #headers["Authorization"] = authString
-            headers['X-Emby-Authorization'] = authString
+            userid = self.get_user_id()
+            auth_string = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            # headers["Authorization"] = authString
+            headers['X-Emby-Authorization'] = auth_string
 
-            authToken = self.authenticate()
-            if (authToken != ""):
-                headers["X-MediaBrowser-Token"] = authToken
+            auth_token = self.authenticate()
+            if auth_token != "":
+                headers["X-MediaBrowser-Token"] = auth_token
 
             log.debug("EmbyCon Authentication Header: {0}", headers)
             return headers
 
     @timer
-    def downloadUrl(self, url, suppress=False, postBody=None, method="GET", authenticate=True, headers=None):
+    def download_url(self, url, suppress=False, post_body=None, method="GET", authenticate=True, headers=None):
         log.debug("downloadUrl")
 
         return_data = "null"
@@ -634,13 +630,13 @@ class DownloadUtils:
         log.debug("Before: {0}", url)
 
         if url.find("{server}") != -1:
-            server = self.getServer()
+            server = self.get_server()
             if server is None:
                 return return_data
             url = url.replace("{server}", server)
 
         if url.find("{userid}") != -1:
-            userid = self.getUserId()
+            userid = self.get_user_id()
             if not userid:
                 return return_data
             url = url.replace("{userid}", userid)
@@ -655,12 +651,13 @@ class DownloadUtils:
 
         if url.find("{random_movies}") != -1:
             home_window = HomeWindow()
-            random_movies = home_window.getProperty("random-movies")
+            random_movies = home_window.get_property("random-movies")
             if not random_movies:
                 return return_data
             url = url.replace("{random_movies}", random_movies)
 
         log.debug("After: {0}", url)
+        conn = None
 
         try:
 
@@ -682,7 +679,7 @@ class DownloadUtils:
                 local_use_https = True
 
             server = "%s:%s" % (host_name, port)
-            urlPath = url_path + "?" + url_puery
+            url_path = url_path + "?" + url_puery
 
             if local_use_https and self.verify_cert:
                 log.debug("Connection: HTTPS, Cert checked")
@@ -694,50 +691,50 @@ class DownloadUtils:
                 log.debug("Connection: HTTP")
                 conn = httplib.HTTPConnection(server, timeout=http_timeout)
 
-            head = self.getAuthHeader(authenticate)
+            head = self.get_auth_header(authenticate)
 
             if user_name and user_password:
                 # add basic auth headers
-                userAndPass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
-                head["Authorization"] = 'Basic %s' % userAndPass
+                user_and_pass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
+                head["Authorization"] = 'Basic %s' % user_and_pass
 
-            head["User-Agent"] = "EmbyCon-" + ClientInformation().getVersion()
+            head["User-Agent"] = "EmbyCon-" + ClientInformation().get_version()
             log.debug("HEADERS: {0}", head)
 
-            if postBody is not None:
-                if isinstance(postBody, dict):
+            if post_body is not None:
+                if isinstance(post_body, dict):
                     content_type = "application/json"
-                    postBody = json.dumps(postBody)
+                    post_body = json.dumps(post_body)
                 else:
                     content_type = "application/x-www-form-urlencoded"
 
                 head["Content-Type"] = content_type
                 log.debug("Content-Type: {0}", content_type)
 
-                log.debug("POST DATA: {0}", postBody)
-                conn.request(method=method, url=urlPath, body=postBody, headers=head)
+                log.debug("POST DATA: {0}", post_body)
+                conn.request(method=method, url=url_path, body=post_body, headers=head)
             else:
-                conn.request(method=method, url=urlPath, headers=head)
+                conn.request(method=method, url=url_path, headers=head)
 
             data = conn.getresponse()
             log.debug("HTTP response: {0} {1}", data.status, data.reason)
             log.debug("GET URL HEADERS: {0}", data.getheaders())
 
             if int(data.status) == 200:
-                retData = data.read()
-                contentType = data.getheader('content-encoding')
-                log.debug("Data Len Before: {0}", len(retData))
-                if (contentType == "gzip"):
-                    retData = StringIO.StringIO(retData)
-                    gzipper = gzip.GzipFile(fileobj=retData)
+                ret_data = data.read()
+                content_type = data.getheader('content-encoding')
+                log.debug("Data Len Before: {0}", len(ret_data))
+                if content_type == "gzip":
+                    ret_data = StringIO.StringIO(ret_data)
+                    gzipper = gzip.GzipFile(fileobj=ret_data)
                     return_data = gzipper.read()
                 else:
-                    return_data = retData
+                    return_data = ret_data
                 if headers is not None and isinstance(headers, dict):
                     headers.update(data.getheaders())
                 log.debug("Data Len After: {0}", len(return_data))
                 log.debug("====== 200 returned =======")
-                log.debug("Content-Type: {0}", contentType)
+                log.debug("Content-Type: {0}", content_type)
                 log.debug("{0}", return_data)
                 log.debug("====== 200 finished ======")
 

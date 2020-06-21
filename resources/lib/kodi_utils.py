@@ -11,7 +11,8 @@ from .simple_logging import SimpleLogging
 log = SimpleLogging(__name__)
 addon = xbmcaddon.Addon()
 
-class HomeWindow():
+
+class HomeWindow:
     """
         xbmcgui.Window(10000) with add-on id prefixed to keys
     """
@@ -20,24 +21,24 @@ class HomeWindow():
         self.id_string = 'plugin.video.embycon-%s'
         self.window = xbmcgui.Window(10000)
 
-    def getProperty(self, key):
+    def get_property(self, key):
         key = self.id_string % key
         value = self.window.getProperty(key)
         # log.debug('HomeWindow: getProperty |{0}| -> |{1}|', key, value)
         return value
 
-    def setProperty(self, key, value):
+    def set_property(self, key, value):
         key = self.id_string % key
         # log.debug('HomeWindow: setProperty |{0}| -> |{1}|', key, value)
         self.window.setProperty(key, value)
 
-    def clearProperty(self, key):
+    def clear_property(self, key):
         key = self.id_string % key
         # log.debug('HomeWindow: clearProperty |{0}|', key)
         self.window.clearProperty(key)
 
 
-def addMenuDirectoryItem(label, path, folder=True, art=None):
+def add_menu_directory_item(label, path, folder=True, art=None):
     li = xbmcgui.ListItem(label, path=path)
     if art is None:
         art = {}
@@ -47,18 +48,18 @@ def addMenuDirectoryItem(label, path, folder=True, art=None):
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
 
 
-def getKodiVersion():
-    version = 0.0
-    jsonData = xbmc.executeJSONRPC(
+def get_kodi_version():
+
+    json_data = xbmc.executeJSONRPC(
         '{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["version", "name"]}, "id": 1 }')
 
-    result = json.loads(jsonData)
+    result = json.loads(json_data)
 
     try:
         result = result.get("result")
-        versionData = result.get("version")
-        version = float(str(versionData.get("major")) + "." + str(versionData.get("minor")))
-        log.debug("Version: {0} - {1}", version, versionData)
+        version_data = result.get("version")
+        version = float(str(version_data.get("major")) + "." + str(version_data.get("minor")))
+        log.debug("Version: {0} - {1}", version, version_data)
     except:
         version = 0.0
         log.error("Version Error : RAW Version Data: {0}", result)
