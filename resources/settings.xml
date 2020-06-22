@@ -20,28 +20,31 @@
 	</category>
 	<category label="30207">
 
-		<setting id="playback_type" type="select" label="30206" lvalues="30209|30210|30211" default="1" />
-		<setting label="30209" type="lsep"/>
+		<!--<setting id="playback_type" type="select" label="30206" lvalues="30209|30210|30211" default="1" />-->
+
+		<setting label="30238" type="lsep"/>
 		<setting type="sep" />
-		<setting id="smbusername" type="text" label="30007" default="" enable="true" visible="true"/>
-		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" enable="true" visible="true"/>
+		<setting id="playback_bitrate" type="slider" label="30208" default="50000" range="400,100,100000" option="int" visible="true"/>
+		<setting id="allow_direct_file_play" type="bool" label="30433" default="false" visible="true" enable="true" />
+		<setting id="force_transcode_h265" type="bool" label="30236" default="false" visible="true" enable="true" />
+		<setting id="force_transcode_mpeg2" type="bool" label="30239" default="false" visible="true" enable="true" />
+		<setting id="force_transcode_msmpeg4v3" type="bool" label="30240" default="false" visible="true" enable="true" />
+		<setting id="force_transcode_mpeg4" type="bool" label="30241" default="false" visible="true" enable="true" />
+		<setting id="direct_stream_sub_select" type="select" label="30379" lvalues="30380|30381|30382" default="0" visible="true"/>
 
 		<setting label="30211" type="lsep"/>
 		<setting type="sep" />
-		<setting id="playback_bitrate" type="slider" label="30208" default="6400" range="400,100,20000" option="int" visible="true"/>
 		<setting id="playback_max_width" type="select" label="30212" values="640|720|1024|1280|1440|1600|1920|2600|4096" default="1920" visible="true"/>
 		<setting id="playback_video_force_8" type="bool" label="30213" default="false" visible="true" enable="true"/>
 		<setting id="audio_codec" type="select" label="30419" values="ac3|aac" default="ac3"/>
 		<setting id="audio_playback_bitrate" type="select" label="30418" values="128|160|192|256|320|384|448|640" default="256" visible="true"/>
 		<setting id="audio_max_channels" type="slider" label="30420" default="8" range="2,1,8" option="int" visible="true"/>
 
-		<setting label="30238" type="lsep"/>
+		<setting label="30209" type="lsep"/>
 		<setting type="sep" />
-		<setting id="force_transcode_h265" type="bool" label="30236" default="false" visible="true" enable="true" />
-		<setting id="force_transcode_mpeg2" type="bool" label="30239" default="false" visible="true" enable="true" />
-		<setting id="force_transcode_msmpeg4v3" type="bool" label="30240" default="false" visible="true" enable="true" />
-		<setting id="force_transcode_mpeg4" type="bool" label="30241" default="false" visible="true" enable="true" />
-		<setting id="direct_stream_sub_select" type="select" label="30379" lvalues="30380|30381|30382" default="0" visible="true"/>
+		<setting id="smbusername" type="text" label="30007" default="" enable="true" visible="true"/>
+		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" enable="true" visible="true"/>
+
 	</category>
 	<category label="30214">
 

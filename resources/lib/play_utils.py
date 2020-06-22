@@ -39,7 +39,7 @@ def play_all_files(items, monitor):
         item_id = item.get("Id")
 
         # get playback info
-        playback_info = download_utils.get_item_playback_info(item_id)
+        playback_info = download_utils.get_item_playback_info(item_id, False)
         if playback_info is None:
             log.debug("playback_info was None, could not get MediaSources so can not play!")
             return
@@ -58,12 +58,8 @@ def play_all_files(items, monitor):
         selected_media_source = sources[0]
         source_id = selected_media_source.get("Id")
 
-        playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                          selected_media_source,
-                                                                          False,
-                                                                          play_session_id)
-
-        log.debug("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+        playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+        log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
         if playurl in None:
             return
@@ -136,7 +132,7 @@ def add_to_playlist(play_info, monitor):
         return
 
     # get playback info
-    playback_info = download_utils.get_item_playback_info(item_id)
+    playback_info = download_utils.get_item_playback_info(item_id, False)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -157,12 +153,8 @@ def add_to_playlist(play_info, monitor):
     selected_media_source = sources[0]
     source_id = selected_media_source.get("Id")
 
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                      selected_media_source,
-                                                                      False,
-                                                                      play_session_id)
-
-    log.debug("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
     playback_type_string = "DirectPlay"
     if playback_type == "2":
@@ -273,7 +265,7 @@ def play_file(play_info, monitor):
         return
 
     # get playback info from the server using the device profile
-    playback_info = download_utils.get_item_playback_info(item_id)
+    playback_info = download_utils.get_item_playback_info(item_id, force_transcode)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -371,12 +363,8 @@ def play_file(play_info, monitor):
                 return
 
     log.debug("play_session_id: {0}", play_session_id)
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                      selected_media_source,
-                                                                      force_transcode,
-                                                                      play_session_id)
-
-    log.debug("Play URL: {0} Playback Type: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
     if playurl is None:
         return

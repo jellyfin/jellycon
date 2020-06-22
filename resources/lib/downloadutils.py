@@ -152,7 +152,189 @@ class DownloadUtils:
         self.download_url(url, post_body=data, method="POST")
         log.debug("Posted Capabilities: {0}", data)
 
-    def get_item_playback_info(self, item_id):
+    def get_item_playback_info(self, item_id, force_transcode):
+
+        addon_settings = xbmcaddon.Addon()
+
+        # ["hevc", "h265", "h264", "mpeg4", "msmpeg4v3", "mpeg2video"]
+        direct_play_video_codecs = ["h264"]
+        if addon_settings.getSetting("force_transcode_h265") != "true":
+            direct_play_video_codecs.append("hevc")
+            direct_play_video_codecs.append("h265")
+        if addon_settings.getSetting("force_transcode_mpeg2") != "true":
+            direct_play_video_codecs.append("mpeg2video")
+        if addon_settings.getSetting("force_transcode_msmpeg4v3") != "true":
+            direct_play_video_codecs.append("msmpeg4v3")
+        if addon_settings.getSetting("force_transcode_mpeg4") != "true":
+            direct_play_video_codecs.append("mpeg4")
+
+        playback_bitrate = addon_settings.getSetting("playback_bitrate")
+        audio_codec = addon_settings.getSetting("audio_codec")
+        audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
+        audio_max_channels = addon_settings.getSetting("audio_max_channels")
+
+        audio_bitrate = int(audio_playback_bitrate) * 1000
+        bitrate = int(playback_bitrate) * 1000
+
+        profile = {
+            "Name": "Kodi",
+            "MaxStreamingBitrate": bitrate,
+            "MusicStreamingTranscodingBitrate": audio_bitrate,
+            "TimelineOffsetSeconds": 5,
+            "TranscodingProfiles": [
+                {
+                    "Type": "Audio"
+                },
+                {
+                    # "Container": "m3u8",
+                    "Container": "ts",
+                    "Protocol": "hls",
+                    "Type": "Video",
+                    "AudioCodec": audio_codec,
+                    # "AudioBitrate": audio_bitrate,
+                    "VideoCodec": "h264",
+                    "MaxAudioChannels": audio_max_channels
+                },
+                {
+                    "Container": "jpeg",
+                    "Type": "Photo"
+                }
+            ],
+            "DirectPlayProfiles": [
+                {
+                    "Type": "Video",
+                    "VideoCodec": ",".join(direct_play_video_codecs)
+                },
+                {
+                    "Type": "Audio"
+                },
+                {
+                    "Type": "Photo"
+                }
+            ],
+            "ResponseProfiles": [],
+            "ContainerProfiles": [],
+            "CodecProfiles": [],
+            "SubtitleProfiles": [
+                {
+                    "Format": "srt",
+                    "Method": "External"
+                },
+                {
+                    "Format": "srt",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "ass",
+                    "Method": "External"
+                },
+                {
+                    "Format": "ass",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "sub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "sub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "ssa",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "ssa",
+                    "Method": "External"
+                },
+                {
+                    "Format": "smi",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "smi",
+                    "Method": "External"
+                },
+                {
+                    "Format": "pgssub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "pgssub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "dvdsub",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "dvdsub",
+                    "Method": "External"
+                },
+                {
+                    "Format": "pgs",
+                    "Method": "Embed"
+                },
+                {
+                    "Format": "pgs",
+                    "Method": "External"
+                }
+            ]
+        }
+
+        if force_transcode:
+            profile['DirectPlayProfiles'] = []
+
+        if addon_settings.getSetting("playback_video_force_8") == "true":
+            profile['CodecProfiles'].append(
+                {
+                    "Type": "Video",
+                    "Codec": "h264",
+                    "Conditions": [
+                        {
+                            "Condition": "LessThanEqual",
+                            "Property": "VideoBitDepth",
+                            "Value": "8",
+                            "IsRequired": False
+                        }
+                    ]
+                }
+            )
+            profile['CodecProfiles'].append(
+                {
+                    "Type": "Video",
+                    "Codec": "h265,hevc",
+                    "Conditions": [
+                        {
+                            "Condition": "EqualsAny",
+                            "Property": "VideoProfile",
+                            "Value": "main"
+                        }
+                    ]
+                }
+            )
+
+        playback_info = {
+            'UserId': self.get_user_id(),
+            'DeviceProfile': profile,
+            'AutoOpenLiveStream': True
+        }
+
+        if force_transcode:
+            url = "{server}/emby/Items/%s/PlaybackInfo?EnableDirectPlay=false&EnableDirectStream=false" % item_id
+        else:
+            url = "{server}/emby/Items/%s/PlaybackInfo" % item_id
+
+        log.debug("PlaybackInfo : {0}", url)
+        log.debug("PlaybackInfo : {0}", profile)
+        play_info_result = self.download_url(url, post_body=playback_info, method="POST")
+        play_info_result = json.loads(play_info_result)
+        log.debug("PlaybackInfo : {0}", play_info_result)
+
+        return play_info_result
+
+    def get_item_playback_info_old(self, item_id):
 
         profile = {
             "Name": "Kodi",

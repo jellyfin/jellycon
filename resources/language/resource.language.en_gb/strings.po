@@ -235,7 +235,7 @@ msgid "Playback"
 msgstr ""
 
 msgctxt "#30208"
-msgid "Video Bitrate (Kbits)"
+msgid "Max stream bitrate (Kbits)"
 msgstr ""
 
 msgctxt "#30209"
@@ -1040,4 +1040,8 @@ msgstr ""
 
 msgctxt "#30432"
 msgid "Hide watched items in lists"
+msgstr ""
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
 msgstr ""

@@ -1,6 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 import xbmcaddon
 import xbmc
+import xbmcvfs
 
 import string
 import random
@@ -44,7 +45,108 @@ def get_emby_url(base_url, params):
 class PlayUtils:
 
     @staticmethod
-    def get_play_url(item_id, media_source, force_transcode, play_session_id):
+    def get_play_url(media_source):
+        log.debug("get_play_url - media_source: {0}", media_source)
+
+        # check if strm file Container
+        if media_source.get('Container') == 'strm':
+            log.debug("Detected STRM Container")
+            playurl, listitem_props = PlayUtils().get_strm_details(media_source)
+            if playurl is None:
+                log.debug("Error, no strm content")
+                return None, None, None
+            else:
+                return playurl, "0", listitem_props
+
+        # get all the options
+        addon_settings = xbmcaddon.Addon()
+        server = downloadUtils.get_server()
+        use_https = addon_settings.getSetting('protocol') == "1"
+        verify_cert = addon_settings.getSetting('verify_cert') == 'true'
+        allow_direct_file_play = addon_settings.getSetting('allow_direct_file_play') == 'true'
+
+        can_direct_play = media_source["SupportsDirectPlay"]
+        can_direct_stream = media_source["SupportsDirectStream"]
+        can_transcode = media_source["SupportsTranscoding"]
+        container = media_source["Container"]
+
+        playurl = None
+        playback_type = None
+
+        # check if file can be directly played
+        if allow_direct_file_play and (can_direct_play or container == "dvd" or container == "bluray"):
+            direct_path = media_source["Path"]
+            direct_path = direct_path.replace("\\", "/")
+            direct_path = direct_path.strip()
+
+            # handle DVD structure
+            if container == "dvd":
+                direct_path = direct_path + "/VIDEO_TS/VIDEO_TS.IFO"
+            elif container == "bluray":
+                direct_path = direct_path + "/BDMV/index.bdmv"
+
+            if direct_path.startswith("//"):
+                smb_username = addon_settings.getSetting('smbusername')
+                smb_password = addon_settings.getSetting('smbpassword')
+                if not smb_username:
+                    direct_path = "smb://" + direct_path[2:]
+                else:
+                    direct_path = "smb://" + smb_username + ':' + smb_password + '@' + direct_path[2:]
+
+            log.debug("playback_direct_path: {0}", direct_path)
+
+            if xbmcvfs.exists(direct_path):
+                playurl = direct_path
+                playback_type = "0"
+
+        # check if file can be direct streamed
+        if can_direct_stream and playurl is None:
+            direct_stream_path = media_source["DirectStreamUrl"]
+            direct_stream_path = server + "/emby" + direct_stream_path
+            if use_https and not verify_cert:
+                direct_stream_path += "|verifypeer=false"
+            playurl = direct_stream_path
+            playback_type = "1"
+
+        # check is file can be transcoded
+        if can_transcode and playurl is None:
+            transcode_stream_path = media_source["TranscodingUrl"]
+
+            url_path, url_params = transcode_stream_path.split('?')
+
+            params = url_params.split('&')
+            log.debug("Streaming Params Before : {0}", params)
+
+            # remove the audio and subtitle indexes
+            # this will be replaced by user selection dialogs in Kodi
+            for param in params:
+                if "AudioStreamIndex" in param or "SubtitleStreamIndex" in param or "AudioBitrate" in param:
+                    params.remove(param)
+
+            audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
+            audio_bitrate = int(audio_playback_bitrate) * 1000
+            params.append("AudioBitrate=%s" % audio_bitrate)
+
+            playback_max_width = addon_settings.getSetting("playback_max_width")
+            params.append("MaxWidth=%s" % playback_max_width)
+
+            log.debug("Streaming Params After : {0}", params)
+
+            new_url_params = "&".join(params)
+
+            transcode_stream_path = server + "/emby" + url_path + "?" + new_url_params
+
+            if use_https and not verify_cert:
+                transcode_stream_path += "|verifypeer=false"
+
+            playurl = transcode_stream_path
+            playback_type = "2"
+
+        return playurl, playback_type, []
+
+    @staticmethod
+    def get_play_url_old(item_id, media_source, force_transcode, play_session_id):
+        log.debug("get_play_url")
 
         # check if strm file, path will contain contain strm contents
         if media_source.get('Container') == 'strm':
@@ -55,8 +157,6 @@ class PlayUtils:
                 return None, None, None
             else:
                 return playurl, "0", listitem_props
-
-        log.debug("get_play_url")
 
         addon_settings = xbmcaddon.Addon()
         playback_type = addon_settings.getSetting("playback_type")
