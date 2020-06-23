@@ -40,10 +40,12 @@
 		<setting id="audio_playback_bitrate" type="select" label="30418" values="128|160|192|256|320|384|448|640" default="256" visible="true"/>
 		<setting id="audio_max_channels" type="slider" label="30420" default="8" range="2,1,8" option="int" visible="true"/>
 
+		<!--
 		<setting label="30209" type="lsep"/>
 		<setting type="sep" />
 		<setting id="smbusername" type="text" label="30007" default="" enable="true" visible="true"/>
 		<setting id="smbpassword" type="text" label="30008" default="" option="hidden" enable="true" visible="true"/>
+		-->
 
 	</category>
 	<category label="30214">

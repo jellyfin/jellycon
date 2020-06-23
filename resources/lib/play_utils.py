@@ -61,7 +61,7 @@ def play_all_files(items, monitor):
         playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
         log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
-        if playurl in None:
+        if playurl is None:
             return
 
         playback_type_string = "DirectPlay"
@@ -155,6 +155,9 @@ def add_to_playlist(play_info, monitor):
 
     playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
     log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+
+    if playurl is None:
+        return
 
     playback_type_string = "DirectPlay"
     if playback_type == "2":

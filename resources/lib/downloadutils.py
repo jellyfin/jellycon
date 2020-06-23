@@ -178,6 +178,7 @@ class DownloadUtils:
 
         profile = {
             "Name": "Kodi",
+            "MaxStaticBitrate": bitrate,
             "MaxStreamingBitrate": bitrate,
             "MusicStreamingTranscodingBitrate": audio_bitrate,
             "TimelineOffsetSeconds": 5,
@@ -186,12 +187,10 @@ class DownloadUtils:
                     "Type": "Audio"
                 },
                 {
-                    # "Container": "m3u8",
                     "Container": "ts",
                     "Protocol": "hls",
                     "Type": "Video",
                     "AudioCodec": audio_codec,
-                    # "AudioBitrate": audio_bitrate,
                     "VideoCodec": "h264",
                     "MaxAudioChannels": audio_max_channels
                 },
@@ -322,9 +321,9 @@ class DownloadUtils:
         }
 
         if force_transcode:
-            url = "{server}/emby/Items/%s/PlaybackInfo?EnableDirectPlay=false&EnableDirectStream=false" % item_id
+            url = "{server}/emby/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
         else:
-            url = "{server}/emby/Items/%s/PlaybackInfo" % item_id
+            url = "{server}/emby/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
 
         log.debug("PlaybackInfo : {0}", url)
         log.debug("PlaybackInfo : {0}", profile)

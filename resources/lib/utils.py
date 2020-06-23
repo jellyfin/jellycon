@@ -74,7 +74,7 @@ class PlayUtils:
         playback_type = None
 
         # check if file can be directly played
-        if allow_direct_file_play and (can_direct_play or container == "dvd" or container == "bluray"):
+        if allow_direct_file_play and can_direct_play:
             direct_path = media_source["Path"]
             direct_path = direct_path.replace("\\", "/")
             direct_path = direct_path.strip()
@@ -86,12 +86,7 @@ class PlayUtils:
                 direct_path = direct_path + "/BDMV/index.bdmv"
 
             if direct_path.startswith("//"):
-                smb_username = addon_settings.getSetting('smbusername')
-                smb_password = addon_settings.getSetting('smbpassword')
-                if not smb_username:
-                    direct_path = "smb://" + direct_path[2:]
-                else:
-                    direct_path = "smb://" + smb_username + ':' + smb_password + '@' + direct_path[2:]
+                direct_path = "smb://" + direct_path[2:]
 
             log.debug("playback_direct_path: {0}", direct_path)
 
