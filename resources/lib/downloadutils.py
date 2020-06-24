@@ -168,7 +168,11 @@ class DownloadUtils:
         if addon_settings.getSetting("force_transcode_mpeg4") != "true":
             direct_play_video_codecs.append("mpeg4")
 
-        playback_bitrate = addon_settings.getSetting("playback_bitrate")
+        playback_bitrate = addon_settings.getSetting("max_stream_bitrate")
+        force_playback_bitrate = addon_settings.getSetting("force_max_stream_bitrate")
+        if force_transcode:
+            playback_bitrate = force_playback_bitrate
+
         audio_codec = addon_settings.getSetting("audio_codec")
         audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
         audio_max_channels = addon_settings.getSetting("audio_max_channels")

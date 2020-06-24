@@ -25,6 +25,7 @@ from .menu_functions import display_main_menu, display_menu, show_movie_alpha_li
 from .translation import string_load
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
+from .bitrate_dialog import BitrateDialog
 from .safe_delete_dialog import SafeDeleteDialog
 from .widgets import get_widget_content, get_widget_content_cast, check_for_new_content
 from . import trakttokodi
@@ -538,6 +539,19 @@ def show_menu(params):
 
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
+
+        force_max_stream_bitrate = settings.getSetting("force_max_stream_bitrate")
+        initial_bitrate_value = int(force_max_stream_bitrate)
+        bitrate_dialog = BitrateDialog("BitrateDialog.xml", PLUGINPATH, "default", "720p")
+        bitrate_dialog.initial_bitrate_value = initial_bitrate_value
+        bitrate_dialog.doModal()
+        selected_transcode_value = bitrate_dialog.selected_transcode_value
+        del bitrate_dialog
+        log.debug("selected_transcode_value: {0}", selected_transcode_value)
+
+        if selected_transcode_value > 0:
+            settings.setSetting("force_max_stream_bitrate", str(selected_transcode_value))
+
         play_action(params)
 
     elif selected_action == "add_to_playlist":

@@ -1045,3 +1045,8 @@ msgstr ""
 msgctxt "#30433"
 msgid "Allow direct file playback"
 msgstr ""
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr ""
+

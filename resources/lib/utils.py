@@ -202,7 +202,7 @@ class PlayUtils:
         # transcode
         if playback_type == "2":
 
-            playback_bitrate = addon_settings.getSetting("playback_bitrate")
+            playback_bitrate = addon_settings.getSetting("max_stream_bitrate")
             log.debug("playback_bitrate: {0}", playback_bitrate)
 
             playback_max_width = addon_settings.getSetting("playback_max_width")
