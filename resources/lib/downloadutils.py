@@ -156,17 +156,17 @@ class DownloadUtils:
 
         addon_settings = xbmcaddon.Addon()
 
-        # ["hevc", "h265", "h264", "mpeg4", "msmpeg4v3", "mpeg2video"]
-        direct_play_video_codecs = ["h264"]
-        if addon_settings.getSetting("force_transcode_h265") != "true":
-            direct_play_video_codecs.append("hevc")
-            direct_play_video_codecs.append("h265")
-        if addon_settings.getSetting("force_transcode_mpeg2") != "true":
-            direct_play_video_codecs.append("mpeg2video")
-        if addon_settings.getSetting("force_transcode_msmpeg4v3") != "true":
-            direct_play_video_codecs.append("msmpeg4v3")
-        if addon_settings.getSetting("force_transcode_mpeg4") != "true":
-            direct_play_video_codecs.append("mpeg4")
+        # ["hevc", "h265", "h264", "mpeg4", "msmpeg4v3", "mpeg2video", "vc1"]
+        filtered_codecs = []
+        if addon_settings.getSetting("force_transcode_h265") == "true":
+            filtered_codecs.append("hevc")
+            filtered_codecs.append("h265")
+        if addon_settings.getSetting("force_transcode_mpeg2") == "true":
+            filtered_codecs.append("mpeg2video")
+        if addon_settings.getSetting("force_transcode_msmpeg4v3") == "true":
+            filtered_codecs.append("msmpeg4v3")
+        if addon_settings.getSetting("force_transcode_mpeg4") == "true":
+            filtered_codecs.append("mpeg4")
 
         playback_bitrate = addon_settings.getSetting("max_stream_bitrate")
         force_playback_bitrate = addon_settings.getSetting("force_max_stream_bitrate")
@@ -205,8 +205,7 @@ class DownloadUtils:
             ],
             "DirectPlayProfiles": [
                 {
-                    "Type": "Video",
-                    "VideoCodec": ",".join(direct_play_video_codecs)
+                    "Type": "Video"
                 },
                 {
                     "Type": "Audio"
@@ -285,6 +284,9 @@ class DownloadUtils:
                 }
             ]
         }
+
+        if len(filtered_codecs) > 0:
+            profile['DirectPlayProfiles'][0]['VideoCodec'] = "-%s" % ",".join(filtered_codecs)
 
         if force_transcode:
             profile['DirectPlayProfiles'] = []
