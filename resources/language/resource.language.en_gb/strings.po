@@ -311,7 +311,7 @@ msgid "Episodes"
 msgstr ""
 
 msgctxt "#30236"
-msgid "Force transcode h265(hevc)"
+msgid "Force transcode h265 (hevc)"
 msgstr ""
 
 msgctxt "#30237"
@@ -327,7 +327,7 @@ msgid "Force transcode mpeg2"
 msgstr ""
 
 msgctxt "#30240"
-msgid "Force transcode msmpeg4v3(divx)"
+msgid "Force transcode msmpeg4v3 (divx)"
 msgstr ""
 
 msgctxt "#30241"
@@ -1050,3 +1050,10 @@ msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
 msgstr ""
 
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr ""
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr ""

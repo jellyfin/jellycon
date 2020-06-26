@@ -123,6 +123,7 @@
 		<setting id="use_cache" type="bool" label="30345" default="true" visible="true" enable="true" />
 		<setting id="showLoadProgress" type="bool" label="30120" default="false" visible="true" enable="true" />
 		<setting id="suppressErrors" type="bool" label="30315" default="false" visible="true" enable="true" />
+		<setting id="speed_test_data_size" type="slider" label="30436" default="15" range="5,1,100" option="int" visible="true"/>
 
 	</category>
 	<category label="30421">

@@ -19,7 +19,7 @@ from .utils import get_art, send_event_notification, convert_size
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
-from .server_detect import check_server
+from .server_detect import check_server, check_connection_speed
 from .simple_logging import SimpleLogging
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .translation import string_load
@@ -91,6 +91,8 @@ def main_entry_point():
         check_server(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":
         check_server(force=True, change_user=True, notify=False)
+    elif mode == "DETECT_CONNECTION_SPEED":
+        check_connection_speed()
     elif mode == "playTrailer":
         item_id = params["id"]
         play_item_trailer(item_id)
@@ -552,7 +554,7 @@ def show_menu(params):
         if selected_transcode_value > 0:
             settings.setSetting("force_max_stream_bitrate", str(selected_transcode_value))
 
-        play_action(params)
+            play_action(params)
 
     elif selected_action == "add_to_playlist":
         params["action"] = "add_to_playlist"
