@@ -134,7 +134,7 @@ while not xbmc.abortRequested:
                 if user_changed or first_run:
                     server_speed_check_data = settings.getSetting("server_speed_check_data")
                     server_host = download_utils.get_server()
-                    if server_host != "" and server_host != "<none>" and server_host not in server_speed_check_data:
+                    if server_host is not None and server_host != "" and server_host != "<none>" and server_host not in server_speed_check_data:
                         message = "This is the first time you have connected to this server.\nDo you want to run a connection speed test?"
                         response = xbmcgui.Dialog().yesno("First Connection", message)
                         if response:

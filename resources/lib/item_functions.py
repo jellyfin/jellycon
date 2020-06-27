@@ -63,6 +63,7 @@ class ItemDetails:
     tagline = ""
     status = None
     media_streams = None
+    tags = None
 
     resume_time = 0
     duration = 0
@@ -154,6 +155,11 @@ def extract_item_info(item, gui_options):
 
     if item["Taglines"] is not None and len(item["Taglines"]) > 0:
         item_details.tagline = item["Taglines"][0]
+
+    item_details.tags = []
+    if item["TagItems"] is not None and len(item["TagItems"]) > 0:
+        for tag_info in item["TagItems"]:
+            item_details.tags.append(tag_info["Name"])
 
     # set the item name
     # override with name format string from request
@@ -554,6 +560,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         info_labels["dateadded"] = item_details.date_added
         info_labels["country"] = item_details.production_location
         info_labels["mpaa"] = item_details.mpaa
+        info_labels["tag"] = item_details.tags
 
         if display_options["addUserRatings"]:
             info_labels["userrating"] = item_details.critic_rating

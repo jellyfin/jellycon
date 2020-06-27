@@ -78,7 +78,8 @@ def get_details_string():
         "PremiereDate",
         "ProductionYear",
         "AirTime",
-        "Status"
+        "Status",
+        "Tags"
     ]
 
     if include_media:
