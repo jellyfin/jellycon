@@ -247,7 +247,7 @@ msgid "HTTP direct stream"
 msgstr ""
 
 msgctxt "#30211"
-msgid "HTTP transcode"
+msgid "Transcode options"
 msgstr ""
 
 msgctxt "#30212"
@@ -319,7 +319,7 @@ msgid "Start from beginning"
 msgstr ""
 
 msgctxt "#30238"
-msgid "Playback Options"
+msgid "Playback stream options"
 msgstr ""
 
 msgctxt "#30239"
@@ -1056,4 +1056,12 @@ msgstr ""
 
 msgctxt "#30436"
 msgid "Speed test data size (MB)"
+msgstr ""
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr ""
+
+msgctxt "#30438"
+msgid "Play cinema intros"
 msgstr ""
