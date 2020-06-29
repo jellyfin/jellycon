@@ -114,20 +114,23 @@ class PlayUtils:
 
             # remove the audio and subtitle indexes
             # this will be replaced by user selection dialogs in Kodi
+            params_to_remove = ["AudioStreamIndex", "SubtitleStreamIndex", "AudioBitrate"]
+            reduced_params = []
             for param in params:
-                if "AudioStreamIndex" in param or "SubtitleStreamIndex" in param or "AudioBitrate" in param:
-                    params.remove(param)
+                param_bits = param.split("=")
+                if param_bits[0] not in params_to_remove:
+                    reduced_params.append(param)
 
             audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
             audio_bitrate = int(audio_playback_bitrate) * 1000
-            params.append("AudioBitrate=%s" % audio_bitrate)
+            reduced_params.append("AudioBitrate=%s" % audio_bitrate)
 
             playback_max_width = addon_settings.getSetting("playback_max_width")
-            params.append("MaxWidth=%s" % playback_max_width)
+            reduced_params.append("MaxWidth=%s" % playback_max_width)
 
-            log.debug("Streaming Params After : {0}", params)
+            log.debug("Streaming Params After : {0}", reduced_params)
 
-            new_url_params = "&".join(params)
+            new_url_params = "&".join(reduced_params)
 
             transcode_stream_path = server + "/emby" + url_path + "?" + new_url_params
 
