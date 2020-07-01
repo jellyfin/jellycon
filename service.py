@@ -21,6 +21,7 @@ from resources.lib.library_change_monitor import LibraryChangeMonitor
 from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
+from resources.lib.playnext import PlayNextService
 
 settings = xbmcaddon.Addon()
 
@@ -85,6 +86,12 @@ remote_control = settings.getSetting('websocket_enabled') == "true"
 websocket_client = WebSocketClient(library_change_monitor)
 if remote_control:
     websocket_client.start()
+
+play_next_service = None
+play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
+if play_next_trigger_time > 0:
+    play_next_service = PlayNextService(monitor)
+    play_next_service.start()
 
 # Start the context menu monitor
 context_monitor = None
@@ -183,6 +190,10 @@ image_server.stop()
 
 # call stop on the library update monitor
 library_change_monitor.stop()
+
+# stop the play next episdoe service
+if play_next_service:
+    play_next_service.stop_servcie()
 
 # call stop on the context menu monitor
 if context_monitor:

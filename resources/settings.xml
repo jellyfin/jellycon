@@ -55,6 +55,10 @@
 	</category>
 	<category label="30214">
 
+		<setting label="30440" type="lsep"/>
+		<setting type="sep" />
+		<setting id="play_next_trigger_time" type="slider" label="30439" default="0" range="0,1,180" option="int" visible="true"/>
+
 		<setting label="30215" type="lsep"/>
 		<setting type="sep" />
 		<setting id="promptPlayNextEpisodePercentage" type="slider" label="30218" default="90" range="5,1,100" option="int" visible="true"/>

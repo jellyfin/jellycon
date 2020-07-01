@@ -167,7 +167,7 @@ msgid "Show load progress"
 msgstr ""
 
 msgctxt "#30121"
-msgid "On Resume"
+msgid "On resume"
 msgstr ""
 
 msgctxt "#30125"
@@ -1064,4 +1064,12 @@ msgstr ""
 
 msgctxt "#30438"
 msgid "Play cinema intros"
+msgstr ""
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr ""
+
+msgctxt "#30440"
+msgid "Play next"
 msgstr ""
