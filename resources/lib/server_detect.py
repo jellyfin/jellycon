@@ -3,6 +3,8 @@
 import socket
 import json
 from urlparse import urlparse
+import httplib
+import ssl
 import time
 import hashlib
 from datetime import datetime
@@ -16,11 +18,101 @@ from .downloadutils import DownloadUtils, save_user_details, load_user_details
 from .simple_logging import SimpleLogging
 from .translation import string_load
 from .utils import datetime_from_string
+from .clientinfo import ClientInformation
 
 log = SimpleLogging(__name__)
 
 __addon__ = xbmcaddon.Addon()
 __addon_name__ = __addon__.getAddonInfo('name')
+
+
+def check_connection_speed():
+    log.debug("check_connection_speed")
+
+    settings = xbmcaddon.Addon()
+    verify_cert = settings.getSetting('verify_cert') == 'true'
+    http_timeout = int(settings.getSetting("http_timeout"))
+    speed_test_data_size = int(settings.getSetting("speed_test_data_size"))
+    test_data_size = speed_test_data_size * 1000000
+
+    du = DownloadUtils()
+    server = du.get_server()
+
+    url = server + "/emby/playback/bitratetest?size=%s" % test_data_size
+
+    url_bits = urlparse(url.strip())
+
+    protocol = url_bits.scheme
+    host_name = url_bits.hostname
+    port = url_bits.port
+    # user_name = url_bits.username
+    # user_password = url_bits.password
+    url_path = url_bits.path
+    url_puery = url_bits.query
+
+    server = "%s:%s" % (host_name, port)
+    url_path = url_path + "?" + url_puery
+
+    local_use_https = False
+    if protocol.lower() == "https":
+        local_use_https = True
+
+    if local_use_https and verify_cert:
+        log.debug("Connection: HTTPS, Cert checked")
+        conn = httplib.HTTPSConnection(server, timeout=http_timeout)
+    elif local_use_https and not verify_cert:
+        log.debug("Connection: HTTPS, Cert NOT checked")
+        conn = httplib.HTTPSConnection(server, timeout=http_timeout, context=ssl._create_unverified_context())
+    else:
+        log.debug("Connection: HTTP")
+        conn = httplib.HTTPConnection(server, timeout=http_timeout)
+
+    head = du.get_auth_header(True)
+    head["User-Agent"] = "EmbyCon-" + ClientInformation().get_version()
+
+    conn.request(method="GET", url=url_path, headers=head)
+
+    progress_dialog = xbmcgui.DialogProgress()
+    message = 'Testing with {0} MB of data'.format(speed_test_data_size)
+    progress_dialog.create("EmbyCon connection speed test", message)
+    total_data_read = 0
+    total_time = time.time()
+
+    log.debug("Starting Connection Speed Test")
+    response = conn.getresponse()
+    last_percentage_done = 0
+    if int(response.status) == 200:
+        data = response.read(10240)
+        while len(data) > 0:
+            total_data_read += len(data)
+            percentage_done = int(float(total_data_read) / float(test_data_size) * 100.0)
+            if last_percentage_done != percentage_done:
+                progress_dialog.update(percentage_done)
+                last_percentage_done = percentage_done
+            data = response.read(10240)
+    else:
+        log.error("HTTP response error: {0} {1}", response.status, response.reason)
+        error_message = "HTTP response error: %s\n%s" % (response.status, response.reason)
+        xbmcgui.Dialog().ok("Speed Test Error", error_message)
+        return -1
+
+    total_data_read_kbits = (total_data_read * 8) / 1000
+    total_time = time.time() - total_time
+    speed = int(total_data_read_kbits / total_time)
+    log.debug("Finished Connection Speed Test, speed: {0} total_data: {1}, total_time: {2}", speed, total_data_read, total_time)
+
+    progress_dialog.close()
+    del progress_dialog
+
+    heading = "Speed Test Result : {0:,} Kbs".format(speed)
+    message = "Do you want to set this speed as your max stream bitrate for playback?\n"
+    message += "{0:,} MB over {1} sec".format(int((total_data_read / 1000000)), total_time)
+
+    response = xbmcgui.Dialog().yesno(heading, message)
+    if response:
+        settings.setSetting("max_stream_bitrate", str(speed))
+
+    return speed
 
 
 def check_safe_delete_available():

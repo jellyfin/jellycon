@@ -27,7 +27,7 @@ log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
 
 
-def play_all_files(items, monitor):
+def play_all_files(items, monitor, play_items=True):
     log.debug("playAllFiles called with items: {0}", items)
     server = download_utils.get_server()
 
@@ -39,7 +39,7 @@ def play_all_files(items, monitor):
         item_id = item.get("Id")
 
         # get playback info
-        playback_info = download_utils.get_item_playback_info(item_id)
+        playback_info = download_utils.get_item_playback_info(item_id, False)
         if playback_info is None:
             log.debug("playback_info was None, could not get MediaSources so can not play!")
             return
@@ -58,14 +58,10 @@ def play_all_files(items, monitor):
         selected_media_source = sources[0]
         source_id = selected_media_source.get("Id")
 
-        playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                          selected_media_source,
-                                                                          False,
-                                                                          play_session_id)
+        playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+        log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
-        log.debug("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
-
-        if playurl in None:
+        if playurl is None:
             return
 
         playback_type_string = "DirectPlay"
@@ -99,7 +95,11 @@ def play_all_files(items, monitor):
 
         playlist.add(playurl, list_item)
 
-    xbmc.Player().play(playlist)
+    if play_items:
+        xbmc.Player().play(playlist)
+        return None
+    else:
+        return playlist
 
 
 def play_list_of_items(id_list, monitor):
@@ -136,7 +136,7 @@ def add_to_playlist(play_info, monitor):
         return
 
     # get playback info
-    playback_info = download_utils.get_item_playback_info(item_id)
+    playback_info = download_utils.get_item_playback_info(item_id, False)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -157,12 +157,11 @@ def add_to_playlist(play_info, monitor):
     selected_media_source = sources[0]
     source_id = selected_media_source.get("Id")
 
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                      selected_media_source,
-                                                                      False,
-                                                                      play_session_id)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
-    log.debug("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+    if playurl is None:
+        return
 
     playback_type_string = "DirectPlay"
     if playback_type == "2":
@@ -196,6 +195,24 @@ def add_to_playlist(play_info, monitor):
     playlist.add(playurl, list_item)
 
 
+def get_playback_intros(item_id):
+    log.debug("get_playback_intros")
+    data_manager = DataManager()
+    url = "{server}/emby/Users/{userid}/Items/%s/Intros" % item_id
+    intro_items = data_manager.get_content(url)
+
+    if intro_items is None:
+        log.debug("get_playback_intros failed!")
+        return
+
+    into_list = []
+    intro_items = intro_items["Items"]
+    for into in intro_items:
+        into_list.append(into)
+
+    return into_list
+
+
 @timer
 def play_file(play_info, monitor):
     item_id = play_info.get("item_id")
@@ -226,6 +243,7 @@ def play_file(play_info, monitor):
     addon_path = settings.getAddonInfo('path')
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
+    play_cinema_intros = settings.getSetting('play_cinema_intros') == 'true'
 
     server = download_utils.get_server()
 
@@ -273,7 +291,7 @@ def play_file(play_info, monitor):
         return
 
     # get playback info from the server using the device profile
-    playback_info = download_utils.get_item_playback_info(item_id)
+    playback_info = download_utils.get_item_playback_info(item_id, force_transcode)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -371,12 +389,8 @@ def play_file(play_info, monitor):
                 return
 
     log.debug("play_session_id: {0}", play_session_id)
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(item_id,
-                                                                      selected_media_source,
-                                                                      force_transcode,
-                                                                      play_session_id)
-
-    log.debug("Play URL: {0} Playback Type: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
     if playurl is None:
         return
@@ -437,9 +451,19 @@ def play_file(play_info, monitor):
     list_item = set_list_item_props(item_id, list_item, result, server, listitem_props, item_title)
 
     player = xbmc.Player()
-    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    playlist.clear()
-    playlist.add(playurl, list_item)
+
+    intro_items = []
+    if play_cinema_intros and seek_time == 0:
+        intro_items = get_playback_intros(item_id)
+
+    if len(intro_items) > 0:
+        playlist = play_all_files(intro_items, monitor, play_items=False)
+        playlist.add(playurl, list_item)
+    else:
+        playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        playlist.clear()
+        playlist.add(playurl, list_item)
+
     player.play(playlist)
 
     if seek_time != 0:

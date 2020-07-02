@@ -167,7 +167,7 @@ msgid "Show load progress"
 msgstr ""
 
 msgctxt "#30121"
-msgid "On Resume"
+msgid "On resume"
 msgstr ""
 
 msgctxt "#30125"
@@ -235,7 +235,7 @@ msgid "Playback"
 msgstr ""
 
 msgctxt "#30208"
-msgid "Video Bitrate (Kbits)"
+msgid "Max stream bitrate (Kbits)"
 msgstr ""
 
 msgctxt "#30209"
@@ -247,7 +247,7 @@ msgid "HTTP direct stream"
 msgstr ""
 
 msgctxt "#30211"
-msgid "HTTP transcode"
+msgid "Transcode options"
 msgstr ""
 
 msgctxt "#30212"
@@ -311,7 +311,7 @@ msgid "Episodes"
 msgstr ""
 
 msgctxt "#30236"
-msgid "Force transcode h265(hevc)"
+msgid "Force transcode h265 (hevc)"
 msgstr ""
 
 msgctxt "#30237"
@@ -319,7 +319,7 @@ msgid "Start from beginning"
 msgstr ""
 
 msgctxt "#30238"
-msgid "Playback Options"
+msgid "Playback stream options"
 msgstr ""
 
 msgctxt "#30239"
@@ -327,7 +327,7 @@ msgid "Force transcode mpeg2"
 msgstr ""
 
 msgctxt "#30240"
-msgid "Force transcode msmpeg4v3(divx)"
+msgid "Force transcode msmpeg4v3 (divx)"
 msgstr ""
 
 msgctxt "#30241"
@@ -1040,4 +1040,36 @@ msgstr ""
 
 msgctxt "#30432"
 msgid "Hide watched items in lists"
+msgstr ""
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr ""
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr ""
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr ""
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr ""
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr ""
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr ""
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr ""
+
+msgctxt "#30440"
+msgid "Play next"
 msgstr ""

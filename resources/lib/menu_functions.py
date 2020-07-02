@@ -583,6 +583,7 @@ def display_addon_menu(params):
     add_menu_directory_item(string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
     add_menu_directory_item(string_load(30012), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
     add_menu_directory_item(string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
+    add_menu_directory_item(string_load(30435), "plugin://plugin.video.embycon/?mode=DETECT_CONNECTION_SPEED")
     add_menu_directory_item(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
     add_menu_directory_item(string_load(30395), "plugin://plugin.video.embycon/?mode=CLEAR_CACHE")
     add_menu_directory_item(string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="3301" type="dialog">
+	<defaultcontrol always="true">3013</defaultcontrol>
+    <zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<left>0</left>
+		<top>0</top>
+	</coordinates>
+    <controls>
+
+		<control type="image" id="3010">
+			<left>0</left>
+			<top>0</top>
+			<width>1280</width>
+			<height>52</height>
+			<texture border="0" colordiffuse="90FFFFFF">bg.png</texture>
+		</control>
+
+		<control type="label" id="3011">
+			<left>20</left>
+			<top>0</top>
+			<width>390</width>
+			<height>45</height>
+			<label></label>
+			<font>font45_title</font>
+			<align>left</align>
+		</control>
+
+		<control type="label" id="3012">
+			<left>390</left>
+			<top>5</top>
+			<width>500</width>
+			<height>35</height>
+			<label></label>
+			<font>font14</font>
+			<align>center</align>
+		</control>
+
+		<control type="button" id="3013">
+			<left>1020</left>
+			<top>-8</top>
+			<width>150</width>
+			<height>65</height>
+			<visible>true</visible>
+			<label>Play Next</label>
+			<align>center</align>
+			<texture border="1" colordiffuse="ff161616">white.png</texture>
+			<font>font12</font>
+			<onright>3014</onright>
+		</control>
+
+		<control type="button" id="3014">
+			<left>1140</left>
+			<top>-8</top>
+			<width>150</width>
+			<height>65</height>
+			<visible>true</visible>
+			<label>Close</label>
+			<align>center</align>
+			<texture border="1" colordiffuse="ff161616">white.png</texture>
+			<font>font12</font>
+			<onleft>3013</onleft>
+		</control>
+
+	</controls>
+</window>

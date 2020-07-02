@@ -16,11 +16,12 @@ from resources.lib.widgets import set_background_image, set_random_movies
 from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
 from resources.lib.context_monitor import ContextMonitor
-from resources.lib.server_detect import check_server, check_safe_delete_available
+from resources.lib.server_detect import check_server, check_safe_delete_available, check_connection_speed
 from resources.lib.library_change_monitor import LibraryChangeMonitor
 from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
+from resources.lib.playnext import PlayNextService
 
 settings = xbmcaddon.Addon()
 
@@ -86,6 +87,12 @@ websocket_client = WebSocketClient(library_change_monitor)
 if remote_control:
     websocket_client.start()
 
+play_next_service = None
+play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
+if play_next_trigger_time > 0:
+    play_next_service = PlayNextService(monitor)
+    play_next_service.start()
+
 # Start the context menu monitor
 context_monitor = None
 context_menu = settings.getSetting('override_contextmenu') == "true"
@@ -109,6 +116,7 @@ if enable_logging:
 # the service to exit when a user cancels an addon load action. This is a bug in Kodi.
 # I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
 prev_user_id = home_window.get_property("userid")
+first_run = True
 
 while not xbmc.abortRequested:
 
@@ -129,6 +137,19 @@ while not xbmc.abortRequested:
                     log.debug("user_change_detected")
                     prev_user_id = home_window.get_property("userid")
                     user_changed = True
+
+                if user_changed or first_run:
+                    server_speed_check_data = settings.getSetting("server_speed_check_data")
+                    server_host = download_utils.get_server()
+                    if server_host is not None and server_host != "" and server_host != "<none>" and server_host not in server_speed_check_data:
+                        message = "This is the first time you have connected to this server.\nDo you want to run a connection speed test?"
+                        response = xbmcgui.Dialog().yesno("First Connection", message)
+                        if response:
+                            speed = check_connection_speed()
+                            if speed > 0:
+                                settings.setSetting("server_speed_check_data", server_host + "-" + str(speed))
+                        else:
+                            settings.setSetting("server_speed_check_data", server_host + "-skipped")
 
                 if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_movie_update) > random_movie_list_interval):
                     last_random_movie_update = time.time()
@@ -162,12 +183,17 @@ while not xbmc.abortRequested:
         log.error("Exception in Playback Monitor: {0}", error)
         log.error("{0}", traceback.format_exc())
 
+    first_run = False
     xbmc.sleep(1000)
 
 image_server.stop()
 
 # call stop on the library update monitor
 library_change_monitor.stop()
+
+# stop the play next episdoe service
+if play_next_service:
+    play_next_service.stop_servcie()
 
 # call stop on the context menu monitor
 if context_monitor:

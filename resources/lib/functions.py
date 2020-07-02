@@ -19,12 +19,13 @@ from .utils import get_art, send_event_notification, convert_size
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
-from .server_detect import check_server
+from .server_detect import check_server, check_connection_speed
 from .simple_logging import SimpleLogging
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .translation import string_load
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
+from .bitrate_dialog import BitrateDialog
 from .safe_delete_dialog import SafeDeleteDialog
 from .widgets import get_widget_content, get_widget_content_cast, check_for_new_content
 from . import trakttokodi
@@ -90,6 +91,8 @@ def main_entry_point():
         check_server(force=True, notify=True)
     elif mode == "DETECT_SERVER_USER":
         check_server(force=True, change_user=True, notify=False)
+    elif mode == "DETECT_CONNECTION_SPEED":
+        check_connection_speed()
     elif mode == "playTrailer":
         item_id = params["id"]
         play_item_trailer(item_id)
@@ -538,7 +541,20 @@ def show_menu(params):
 
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
-        play_action(params)
+
+        force_max_stream_bitrate = settings.getSetting("force_max_stream_bitrate")
+        initial_bitrate_value = int(force_max_stream_bitrate)
+        bitrate_dialog = BitrateDialog("BitrateDialog.xml", PLUGINPATH, "default", "720p")
+        bitrate_dialog.initial_bitrate_value = initial_bitrate_value
+        bitrate_dialog.doModal()
+        selected_transcode_value = bitrate_dialog.selected_transcode_value
+        del bitrate_dialog
+        log.debug("selected_transcode_value: {0}", selected_transcode_value)
+
+        if selected_transcode_value > 0:
+            settings.setSetting("force_max_stream_bitrate", str(selected_transcode_value))
+
+            play_action(params)
 
     elif selected_action == "add_to_playlist":
         params["action"] = "add_to_playlist"
