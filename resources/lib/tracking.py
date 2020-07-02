@@ -23,9 +23,9 @@ def timer(func):
         ended = time.time()
         if enabled:
             data = ""
-            if func.__name__ == "downloadUrl" and len(args) > 1:
+            if func.__name__ == "download_url" and len(args) > 1:
                 data = args[1]
-            elif func.__name__ == "mainEntryPoint" and len(sys.argv) > 2:
+            elif func.__name__ == "main_entry_point" and len(sys.argv) > 2:
                 data = sys.argv[2]
             log.info("timing_data|{0}|{1}|{2}|{3}", func.__name__, started, ended, data)
         return value
