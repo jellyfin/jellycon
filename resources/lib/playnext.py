@@ -25,8 +25,6 @@ class PlayNextService(threading.Thread):
         settings = xbmcaddon.Addon()
         play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
 
-        plugin_path = settings.getAddonInfo('path')
-        plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
         play_next_dialog = None
         play_next_triggered = False
         is_playing = False
@@ -37,7 +35,9 @@ class PlayNextService(threading.Thread):
             if player.isPlaying():
 
                 if not is_playing:
+                    settings = xbmcaddon.Addon()
                     play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
+                    log.debug("New play_next_trigger_time value: {0}", play_next_trigger_time)
 
                 duration = player.getTotalTime()
                 position = player.getTime()
@@ -55,6 +55,11 @@ class PlayNextService(threading.Thread):
                     item_type = play_data.get("item_type")
 
                     if next_episode is not None and item_type == "Episode":
+
+                        settings = xbmcaddon.Addon()
+                        plugin_path = settings.getAddonInfo('path')
+                        plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
+
                         play_next_dialog = PlayNextDialog("PlayNextDialog.xml", plugin_path_real, "default", "720p")
                         play_next_dialog.set_episode_info(next_episode)
                         if play_next_dialog is not None:
