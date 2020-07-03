@@ -6,7 +6,7 @@ import xbmcgui
 import xbmcaddon
 
 from .simple_logging import SimpleLogging
-from .play_utils import get_playing_data, send_event_notification
+from .play_utils import send_event_notification
 
 log = SimpleLogging(__name__)
 
@@ -22,6 +22,7 @@ class PlayNextService(threading.Thread):
 
     def run(self):
 
+        from .play_utils import get_playing_data
         settings = xbmcaddon.Addon()
         play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
 
@@ -88,6 +89,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
 
     action_exitkeys_id = None
     episode_info = None
+    play_called = False
 
     def __init__(self, *args, **kwargs):
         log.debug("PlayNextDialog: __init__")
@@ -128,6 +130,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
     def onClick(self, control_id):
         if control_id == 3013:
             log.debug("PlayNextDialog: Play Next Episode")
+            self.play_called
             self.close()
             next_item_id = self.episode_info.get("Id")
             log.debug("Playing Next Episode: {0}", next_item_id)
@@ -141,3 +144,6 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
 
     def set_episode_info(self, info):
         self.episode_info = info
+
+    def get_play_called(self):
+        return self.play_called

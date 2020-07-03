@@ -22,6 +22,7 @@ from .functions import delete
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
 from .tracking import timer
+from .playnext import PlayNextDialog
 
 log = SimpleLogging(__name__)
 download_utils = DownloadUtils()
@@ -1009,17 +1010,27 @@ def prompt_for_stop_actions(item_id, data):
             item_type == "Episode" and
             percenatge_complete > prompt_next_percentage):
 
-        resp = True
+        # resp = True
         index = next_episode.get("IndexNumber", -1)
         if play_prompt:
-            series_name = next_episode.get("SeriesName")
-            next_epp_name = "Episode %02d - (%s)" % (index, next_episode.get("Name", "n/a"))
+            # series_name = next_episode.get("SeriesName")
+            # next_epp_name = "Episode %02d - (%s)" % (index, next_episode.get("Name", "n/a"))
 
-            resp = xbmcgui.Dialog().yesno(string_load(30283),
-                                          series_name,
-                                          next_epp_name,
-                                          autoclose=20000)
+            plugin_path = settings.getAddonInfo('path')
+            plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
 
+            play_next_dialog = PlayNextDialog("PlayNextDialog.xml", plugin_path_real, "default", "720p")
+            play_next_dialog.set_episode_info(next_episode)
+            play_next_dialog.doModal()
+
+            if not play_next_dialog.get_play_called():
+                xbmc.executebuiltin("Container.Refresh")
+
+            # resp = xbmcgui.Dialog().yesno(string_load(30283),
+            #                              series_name,
+            #                              next_epp_name,
+            #                              autoclose=20000)
+        """
         if resp:
             next_item_id = next_episode.get("Id")
             log.debug("Playing Next Episode: {0}", next_item_id)
@@ -1029,9 +1040,10 @@ def prompt_for_stop_actions(item_id, data):
             play_info["auto_resume"] = "-1"
             play_info["force_transcode"] = False
             send_event_notification("embycon_play_action", play_info)
-
+        
         else:
             xbmc.executebuiltin("Container.Refresh")
+        """
 
 
 def stop_all_playback(played_information):
