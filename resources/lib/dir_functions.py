@@ -252,7 +252,7 @@ def process_directory(url, progress, params, use_cache_data=False):
     gui_options["name_format_type"] = name_format_type
 
     use_cache = settings.getSetting("use_cache") == "true" and use_cache_data
-    cache_file, item_list, total_records = data_manager.get_items(url, gui_options, use_cache)
+    cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
@@ -415,6 +415,7 @@ def process_directory(url, progress, params, use_cache_data=False):
         if gui_item:
             dir_items.append(gui_item)
 
-    HomeWindow().clear_property(cache_file)
+    if cache_thread is not None:
+        cache_thread.start()
 
     return dir_items, detected_type, total_records

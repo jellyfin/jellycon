@@ -264,6 +264,7 @@ def get_widget_content(handle, params):
 
     settings = xbmcaddon.Addon()
     hide_watched = settings.getSetting("hide_watched") == "true"
+    use_cached_widget_data = settings.getSetting("use_cached_widget_data") == "true"
 
     widget_type = params.get("type")
     if widget_type is None:
@@ -389,7 +390,7 @@ def get_widget_content(handle, params):
 
     items_url = get_emby_url(url_verb, url_params)
 
-    list_items, detected_type, total_records = process_directory(items_url, None, params, False)
+    list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
 
     # remove resumable items from next up
     if widget_type == "nextup_episodes":

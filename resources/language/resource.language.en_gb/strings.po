@@ -687,7 +687,7 @@ msgid "Number of images removed from cache : %s"
 msgstr ""
 
 msgctxt "#30345"
-msgid "Cache server requests"
+msgid "Cache Emby server data requests"
 msgstr ""
 
 msgctxt "#30346"
@@ -1072,4 +1072,8 @@ msgstr ""
 
 msgctxt "#30440"
 msgid "Play next"
+msgstr ""
+
+msgctxt "#30441"
+msgid "Use cached widget data"
 msgstr ""
