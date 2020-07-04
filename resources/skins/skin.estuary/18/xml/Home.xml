@@ -20,7 +20,7 @@
 		</control>
 		<!--<include>DefaultBackground</include>-->
 		
-		<!-- Start of EmbyCon Backgrounds -->
+		<!-- Start of JellyCon Backgrounds -->
 		<control type="group">
 			<!--<animation effect="fade" start="100" end="bg_alpha" time="0" condition="!Control.IsVisible(31111)">Conditional</animation>-->
 			<animation effect="fade" start="0" end="100" time="300" condition="Window.Previous(fullscreenvideo) | Window.Previous(startup)">WindowOpen</animation>
@@ -42,7 +42,7 @@
 			<texture background="true" colordiffuse="37FFFFFF">$INFO[ListItem.Art(fanart)]</texture>
 			<visible>!String.IsEmpty(ListItem.Art(fanart))</visible>
 		</control>		
-		<!-- End of EmbyCon Backgrounds -->
+		<!-- End of JellyCon Backgrounds -->
 		
 		<control type="multiimage">
 			<depth>DepthBackground</depth>
@@ -69,7 +69,7 @@
 					<effect type="slide" end="0,20" time="180" tween="sine" delay="80" />
 				</animation>
 				<include>OpenClose_Right</include>
-                <!-- Start of Emby Widget Items -->
+                <!-- Start of Jellyfin Widget Items -->
 				<control type="group" id="3000">
 					<visible>String.IsEqual(Container(9000).ListItem.Property(id),jellyfin_movies)</visible>
 					<include content="Visible_Right_Delayed">
@@ -124,7 +124,7 @@
 						</include>  
 					</control>
 				</control>            
-                <!-- End of Emby Widget Items -->				
+                <!-- End of Jellyfin Widget Items -->				
 				<control type="group" id="5000">
 					<visible>String.IsEqual(Container(9000).ListItem.Property(id),movies)</visible>
 					<include content="Visible_Right_Delayed">
@@ -970,9 +970,9 @@
 						</control>
 					</itemlayout>
 					<content>
-                        <!-- Start Emby Menu Items -->
+                        <!-- Start Jellyfin Menu Items -->
 						<item>
-							<label>Emby Movies</label>
+							<label>Jellyfin Movies</label>
 							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
 							<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies,return)</onclick>
 							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
@@ -981,7 +981,7 @@
 							<property name="id">jellyfin_movies</property>
 						</item>
 						<item>
-							<label>Emby TV Shows</label>
+							<label>Jellyfin TV Shows</label>
 							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
 							<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows,return)</onclick>
 							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
@@ -1003,7 +1003,7 @@
 							<thumb>icons/sidemenu/pictures.png</thumb>
 							<property name="id">change</property>
 						</item>
-                        <!-- End Emby Menu Items -->					
+                        <!-- End Jellyfin Menu Items -->					
 						<item>
 							<label>$LOCALIZE[342]</label>
 							<onclick condition="Library.HasContent(movies) + Skin.HasSetting(home_no_categories_widget)">ActivateWindow(Videos,videodb://movies/,return)</onclick>

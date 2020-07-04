@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: EmbyCon\n"
+"Project-Id-Version: JellyCon\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language-Team: \n"
@@ -51,7 +51,7 @@ msgid "[Change user]"
 msgstr ""
 
 msgctxt "#30014"
-msgid "Emby"
+msgid "Jellyfin"
 msgstr ""
 
 msgctxt "#30015"
@@ -447,7 +447,7 @@ msgid "Extra Resume Prompt Detected"
 msgstr ""
 
 msgctxt "#30277"
-msgid "EmbyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
 
 msgctxt "#30278"
@@ -467,7 +467,7 @@ msgid "Refresh Cached Images"
 msgstr ""
 
 msgctxt "#30282"
-msgid "No Emby servers detected on your local network."
+msgid "No Jellyfin servers detected on your local network."
 msgstr ""
 
 msgctxt "#30283"
@@ -535,7 +535,7 @@ msgid "Cache Images"
 msgstr ""
 
 msgctxt "#30300"
-msgid "Cache all Emby images as local Kodi images?"
+msgid "Cache all Jellyfin images as local Kodi images?"
 msgstr ""
 
 msgctxt "#30301"
@@ -547,11 +547,11 @@ msgid "Existing images : "
 msgstr ""
 
 msgctxt "#30303"
-msgid "Missing Emby images : "
+msgid "Missing Jellyfin images : "
 msgstr ""
 
 msgctxt "#30304"
-msgid "Cached Emby images : "
+msgid "Cached Jellyfin images : "
 msgstr ""
 
 msgctxt "#30305"
@@ -575,7 +575,7 @@ msgid "Select Media Source"
 msgstr ""
 
 msgctxt "#30310"
-msgid "Enable Emby remote control"
+msgid "Enable Jellyfin remote control"
 msgstr ""
 
 msgctxt "#30311"
@@ -651,7 +651,7 @@ msgid "Cache artwork in the background"
 msgstr ""
 
 msgctxt "#30334"
-msgid "Use EmbyCon context menu"
+msgid "Use JellyCon context menu"
 msgstr ""
 
 msgctxt "#30337"
@@ -687,7 +687,7 @@ msgid "Number of images removed from cache : %s"
 msgstr ""
 
 msgctxt "#30345"
-msgid "Cache Emby server data requests"
+msgid "Cache Jellyfin server data requests"
 msgstr ""
 
 msgctxt "#30346"
@@ -859,7 +859,7 @@ msgid "Existing images before delete : "
 msgstr ""
 
 msgctxt "#30386"
-msgid "Unused Emby images : "
+msgid "Unused Jellyfin images : "
 msgstr ""
 
 msgctxt "#30387"
@@ -903,7 +903,7 @@ msgid " - Pages"
 msgstr ""
 
 msgctxt "#30398"
-msgid "Refresh Emby Metadata"
+msgid "Refresh Jellyfin Metadata"
 msgstr ""
 
 msgctxt "#30399"
@@ -935,7 +935,7 @@ msgid " - Show All"
 msgstr ""
 
 msgctxt "#30406"
-msgid "Emby Libraries"
+msgid "Jellyfin Libraries"
 msgstr ""
 
 msgctxt "#30407"

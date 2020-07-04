@@ -124,7 +124,7 @@
 	</category>
 	<category label="30022">
 
-		<setting id="deviceName" type="text" label="30016" default="EmbyCon" visible="true" enable="true" />
+		<setting id="deviceName" type="text" label="30016" default="JellyCon" visible="true" enable="true" />
 		<setting id="http_timeout" type="slider" label="30416" default="60" range="5,1,300" option="int" visible="true" />
 		<setting id="profile_count" type="slider" label="30010" default="0" range="0,1,20" option="int" visible="true" />
 		<setting id="log_debug" type="bool" label="30027" default="false" visible="true" enable="true" />
