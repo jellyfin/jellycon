@@ -59,7 +59,7 @@ def play_all_files(items, monitor, play_items=True):
         selected_media_source = sources[0]
         source_id = selected_media_source.get("Id")
 
-        playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+        playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
         log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
         if playurl is None:
@@ -158,7 +158,7 @@ def add_to_playlist(play_info, monitor):
     selected_media_source = sources[0]
     source_id = selected_media_source.get("Id")
 
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
     log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
     if playurl is None:
@@ -390,7 +390,7 @@ def play_file(play_info, monitor):
                 return
 
     log.debug("play_session_id: {0}", play_session_id)
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source)
+    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
     log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}", playurl, playback_type, listitem_props)
 
     if playurl is None:

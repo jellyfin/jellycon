@@ -45,7 +45,7 @@ def get_jellyfin_url(base_url, params):
 class PlayUtils:
 
     @staticmethod
-    def get_play_url(media_source):
+    def get_play_url(media_source, play_session_id):
         log.debug("get_play_url - media_source: {0}", media_source)
 
         # check if strm file Container
@@ -96,48 +96,55 @@ class PlayUtils:
 
         # check if file can be direct streamed
         if can_direct_stream and playurl is None:
-            direct_stream_path = media_source["DirectStreamUrl"]
-            direct_stream_path = server + direct_stream_path
+            item_id = media_source.get('Id')
+            playurl = ("%s/Videos/%s/stream" +
+                       "?static=true" +
+                       "&PlaySessionId=%s" +
+                       "&MediaSourceId=%s")
+            playurl = playurl % (server, item_id, play_session_id, item_id)
             if use_https and not verify_cert:
-                direct_stream_path += "|verifypeer=false"
+                playurl += "|verifypeer=false"
             playurl = direct_stream_path
             playback_type = "1"
 
         # check is file can be transcoded
         if can_transcode and playurl is None:
-            transcode_stream_path = media_source["TranscodingUrl"]
-
-            url_path, url_params = transcode_stream_path.split('?')
-
-            params = url_params.split('&')
-            log.debug("Streaming Params Before : {0}", params)
-
-            # remove the audio and subtitle indexes
-            # this will be replaced by user selection dialogs in Kodi
-            params_to_remove = ["AudioStreamIndex", "SubtitleStreamIndex", "AudioBitrate"]
-            reduced_params = []
-            for param in params:
-                param_bits = param.split("=")
-                if param_bits[0] not in params_to_remove:
-                    reduced_params.append(param)
-
+            item_id = media_source.get('Id')
+            client_info = ClientInformation()
+            device_id = client_info.get_device_id()
+            user_token = downloadUtils.authenticate()
+            playback_bitrate = addon_settings.getSetting("force_max_stream_bitrate")
+            bitrate = int(playback_bitrate) * 1000
+            playback_max_width = addon_settings.getSetting("playback_max_width")
+            audio_codec = addon_settings.getSetting("audio_codec")
             audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
             audio_bitrate = int(audio_playback_bitrate) * 1000
-            reduced_params.append("AudioBitrate=%s" % audio_bitrate)
+            audio_max_channels = addon_settings.getSetting("audio_max_channels")
+            playback_video_force_8 = addon_settings.getSetting("playback_video_force_8") == "true"
 
-            playback_max_width = addon_settings.getSetting("playback_max_width")
-            reduced_params.append("MaxWidth=%s" % playback_max_width)
+            transcode_params = {
+                "MediaSourceId": item_id,
+                "DeviceId": device_id,
+                "PlaySessionId": play_session_id,
+                "api_key": user_token,
+                "SegmentContainer": "ts",
+                "VideoCodec": "h264",
+                "VideoBitrate": bitrate,
+                "MaxWidth": playback_max_width,
+                "AudioCodec": audio_codec,
+                "TranscodingMaxAudioChannels": audio_max_channels,
+                "AudioBitrate": audio_bitrate
+            }
+            if playback_video_force_8:
+                transcode_params.update({"MaxVideoBitDepth": "8"})
 
-            log.debug("Streaming Params After : {0}", reduced_params)
+            transcode_path = urllib.urlencode(transcode_params)
 
-            new_url_params = "&".join(reduced_params)
-
-            transcode_stream_path = server + url_path + "?" + new_url_params
+            playurl = "%s/Videos/%s/master.m3u8?%s" % (server, item_id, transcode_path)
 
             if use_https and not verify_cert:
-                transcode_stream_path += "|verifypeer=false"
+                playurl += "|verifypeer=false"
 
-            playurl = transcode_stream_path
             playback_type = "2"
 
         return playurl, playback_type, []
