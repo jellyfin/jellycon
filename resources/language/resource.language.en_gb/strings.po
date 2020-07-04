@@ -1077,3 +1077,7 @@ msgstr ""
 msgctxt "#30441"
 msgid "Use cached widget data"
 msgstr ""
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr ""

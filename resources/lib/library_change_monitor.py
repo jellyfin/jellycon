@@ -15,6 +15,7 @@ class LibraryChangeMonitor(threading.Thread):
     last_library_change_check = 0
     library_check_triggered = False
     exit_now = False
+    time_between_checks = 10
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -32,13 +33,13 @@ class LibraryChangeMonitor(threading.Thread):
         monitor = xbmc.Monitor()
         while not self.exit_now and not monitor.abortRequested():
 
-            if self.library_check_triggered and (time.time() - self.last_library_change_check) > 60 and not xbmc.Player().isPlaying():
+            if self.library_check_triggered and not xbmc.Player().isPlaying():
                 log.debug("Doing new content check")
                 check_for_new_content()
                 self.library_check_triggered = False
                 self.last_library_change_check = time.time()
 
-            if self.exit_now or monitor.waitForAbort(5):
+            if self.exit_now or monitor.waitForAbort(self.time_between_checks):
                 break
 
         log.debug("Library Monitor Exited")

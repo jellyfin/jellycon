@@ -249,6 +249,11 @@ class CacheManagerThread(threading.Thread):
                     with open(self.cached_item.file_path, 'wb') as handle:
                         cPickle.dump(self.cached_item, handle, protocol=cPickle.HIGHEST_PROTOCOL)
 
+                # TODO: probably should only set this in simple check mode
+                current_time_stamp = str(time.time())
+                home_window.set_property("embycon_widget_reload", current_time_stamp)
+                log.debug("Setting New Widget Hash: {0}", current_time_stamp)
+
                 log.debug("CacheManagerThread : Sending container refresh")
                 xbmc.executebuiltin("Container.Refresh")
 

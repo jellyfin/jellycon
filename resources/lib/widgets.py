@@ -5,6 +5,7 @@ import xbmc
 import json
 import hashlib
 import random
+import time
 
 from .downloadutils import DownloadUtils
 from .utils import get_emby_url
@@ -124,6 +125,17 @@ def set_background_image(force=False):
 def check_for_new_content():
     log.debug("checkForNewContent Called")
 
+    home_window = HomeWindow()
+    settings = xbmcaddon.Addon()
+    simple_new_content_check = settings.getSetting("simple_new_content_check") == "true"
+
+    if simple_new_content_check:
+        log.debug("Using simple new content check")
+        current_time_stamp = str(time.time())
+        home_window.set_property("embycon_widget_reload", current_time_stamp)
+        log.debug("Setting New Widget Hash: {0}", current_time_stamp)
+        return
+
     url_params = {}
     url_params["Recursive"] = True
     url_params["limit"] = 1
@@ -169,10 +181,13 @@ def check_for_new_content():
         items = result.get("Items", [])
         if len(items) > 0:
             item = items[0]
-            last_played_date = item.get("Etag", "")
+            # last_played_date = item.get("Etag", "")
+            user_data = item.get("UserData", None)
+            if user_data is not None:
+                last_played_date = user_data.get("LastPlayedDate", "")
+
     log.debug("last_played_date: {0}", last_played_date)
 
-    home_window = HomeWindow()
     current_widget_hash = home_window.get_property("embycon_widget_reload")
     log.debug("Current Widget Hash: {0}", current_widget_hash)
 
@@ -184,9 +199,6 @@ def check_for_new_content():
     if current_widget_hash != new_widget_hash:
         home_window.set_property("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
-        return True
-    else:
-        return False
 
 
 @timer

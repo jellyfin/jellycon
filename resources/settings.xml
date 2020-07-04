@@ -118,6 +118,7 @@
 		<setting id="override_contextmenu" type="bool" label="30334" default="true" visible="true"/>
 		<setting id="background_interval" type="slider" label="30341" default="20" range="0,1,120" option="int" visible="true"/>
 		<setting id="new_content_check_interval" type="slider" label="30342" default="0" range="0,1,300" option="int" visible="true"/>
+		<setting id="simple_new_content_check" type="bool" label="30442" default="true" visible="true" enable="true" />
 		<setting id="random_movie_refresh_interval" type="slider" label="30384" default="5" range="0,1,60" option="int" visible="true"/>
 
 	</category>
