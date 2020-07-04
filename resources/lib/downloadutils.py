@@ -661,13 +661,13 @@ class DownloadUtils:
         if authenticate is False:
             auth_string = "MediaBrowser Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             # headers["Authorization"] = authString
-            headers['X-Jellyfin-Authorization'] = auth_string
+            headers['X-Emby-Authorization'] = auth_string
             return headers
         else:
             userid = self.get_user_id()
             auth_string = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             # headers["Authorization"] = authString
-            headers['X-Jellyfin-Authorization'] = auth_string
+            headers['X-Emby-Authorization'] = auth_string
 
             auth_token = self.authenticate()
             if auth_token != "":
