@@ -26,7 +26,7 @@ downloadUtils = DownloadUtils()
 log = SimpleLogging(__name__)
 
 
-def get_emby_url(base_url, params):
+def get_jellyfin_url(base_url, params):
     params["format"] = "json"
     param_list = []
     for key in params:
@@ -97,7 +97,7 @@ class PlayUtils:
         # check if file can be direct streamed
         if can_direct_stream and playurl is None:
             direct_stream_path = media_source["DirectStreamUrl"]
-            direct_stream_path = server + "/emby" + direct_stream_path
+            direct_stream_path = server + direct_stream_path
             if use_https and not verify_cert:
                 direct_stream_path += "|verifypeer=false"
             playurl = direct_stream_path
@@ -132,7 +132,7 @@ class PlayUtils:
 
             new_url_params = "&".join(reduced_params)
 
-            transcode_stream_path = server + "/emby" + url_path + "?" + new_url_params
+            transcode_stream_path = server + url_path + "?" + new_url_params
 
             if use_https and not verify_cert:
                 transcode_stream_path += "|verifypeer=false"
@@ -297,7 +297,7 @@ def single_urlencode(text):
 
 def send_event_notification(method, data):
     message_data = json.dumps(data)
-    source_id = "embycon"
+    source_id = "jellycon"
     base64_data = base64.b64encode(message_data)
     escaped_data = '\\"[\\"{0}\\"]\\"'.format(base64_data)
     command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, escaped_data)

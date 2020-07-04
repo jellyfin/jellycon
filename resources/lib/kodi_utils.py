@@ -18,7 +18,7 @@ class HomeWindow:
     """
 
     def __init__(self):
-        self.id_string = 'plugin.video.embycon-%s'
+        self.id_string = 'plugin.video.jellycon-%s'
         self.window = xbmcgui.Window(10000)
 
     def get_property(self, key):

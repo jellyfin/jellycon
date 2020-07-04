@@ -8,7 +8,7 @@ import random
 import time
 
 from .downloadutils import DownloadUtils
-from .utils import get_emby_url
+from .utils import get_jellyfin_url
 from .datamanager import DataManager
 from .simple_logging import SimpleLogging
 from .kodi_utils import HomeWindow
@@ -40,7 +40,7 @@ def set_random_movies():
     url_params["IncludeItemTypes"] = "Movie"
     url_params["ImageTypeLimit"] = 0
 
-    url = get_emby_url("{server}/emby/Users/{userid}/Items", url_params)
+    url = get_jellyfin_url("{server}/Users/{userid}/Items", url_params)
 
     results = downloadUtils.download_url(url, suppress=True)
     results = json.loads(results)
@@ -86,7 +86,7 @@ def set_background_image(force=False):
         url_params["IncludeItemTypes"] = "Movie,Series"
         url_params["ImageTypeLimit"] = 1
 
-        url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
+        url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
         server = downloadUtils.get_server()
         results = downloadUtils.download_url(url, suppress=True)
@@ -132,7 +132,7 @@ def check_for_new_content():
     if simple_new_content_check:
         log.debug("Using simple new content check")
         current_time_stamp = str(time.time())
-        home_window.set_property("embycon_widget_reload", current_time_stamp)
+        home_window.set_property("jellycon_widget_reload", current_time_stamp)
         log.debug("Setting New Widget Hash: {0}", current_time_stamp)
         return
 
@@ -146,7 +146,7 @@ def check_for_new_content():
     url_params["ImageTypeLimit"] = 0
     url_params["format"] = "json"
 
-    added_url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
+    added_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
     added_result = downloadUtils.download_url(added_url, suppress=True)
     result = json.loads(added_result)
@@ -170,7 +170,7 @@ def check_for_new_content():
     url_params["ImageTypeLimit"] = 0
     url_params["format"] = "json"
 
-    played_url = get_emby_url('{server}/emby/Users/{userid}/Items', url_params)
+    played_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
     played_result = downloadUtils.download_url(played_url, suppress=True)
     result = json.loads(played_result)
@@ -188,7 +188,7 @@ def check_for_new_content():
 
     log.debug("last_played_date: {0}", last_played_date)
 
-    current_widget_hash = home_window.get_property("embycon_widget_reload")
+    current_widget_hash = home_window.get_property("jellycon_widget_reload")
     log.debug("Current Widget Hash: {0}", current_widget_hash)
 
     m = hashlib.md5()
@@ -197,7 +197,7 @@ def check_for_new_content():
     log.debug("New Widget Hash: {0}", new_widget_hash)
 
     if current_widget_hash != new_widget_hash:
-        home_window.set_property("embycon_widget_reload", new_widget_hash)
+        home_window.set_property("jellycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}", new_widget_hash)
 
 
@@ -208,7 +208,7 @@ def get_widget_content_cast(handle, params):
 
     item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.get_content("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
+    result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id + "?format=json")
     log.debug("ItemInfo: {0}", result)
 
     if not result:
@@ -285,7 +285,7 @@ def get_widget_content(handle, params):
 
     log.debug("widget_type: {0}", widget_type)
 
-    url_verb = "{server}/emby/Users/{userid}/Items"
+    url_verb = "{server}/Users/{userid}/Items"
     url_params = {}
     url_params["Limit"] = "{ItemLimit}"
     url_params["format"] = "json"
@@ -319,7 +319,7 @@ def get_widget_content(handle, params):
 
     elif widget_type == "recent_tvshows":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb = '{server}/emby/Users/{userid}/Items/Latest'
+        url_verb = '{server}/Users/{userid}/Items/Latest'
         url_params["GroupItems"] = True
         url_params["Limit"] = 45
         url_params["Recursive"] = True
@@ -355,7 +355,7 @@ def get_widget_content(handle, params):
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb = "{server}/emby/Shows/NextUp"
+        url_verb = "{server}/Shows/NextUp"
         url_params["Limit"] = "{ItemLimit}"
         url_params["userid"] = "{userid}"
         url_params["Recursive"] = True
@@ -369,7 +369,7 @@ def get_widget_content(handle, params):
         suggested_items_url_params["categoryLimit"] = 15
         suggested_items_url_params["ItemLimit"] = 20
         suggested_items_url_params["ImageTypeLimit"] = 0
-        suggested_items_url = get_emby_url("{server}/emby/Movies/Recommendations", suggested_items_url_params)
+        suggested_items_url = get_jellyfin_url("{server}/Movies/Recommendations", suggested_items_url_params)
 
         data_manager = DataManager()
         suggested_items = data_manager.get_content(suggested_items_url)
@@ -400,7 +400,7 @@ def get_widget_content(handle, params):
         log.debug("Recommended Items : {0}", len(ids), id_list)
         url_params["Ids"] = id_list
 
-    items_url = get_emby_url(url_verb, url_params)
+    items_url = get_jellyfin_url(url_verb, url_params)
 
     list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
 

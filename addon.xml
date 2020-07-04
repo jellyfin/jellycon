@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon  id="plugin.video.embycon" 
-        name="EmbyCon"
+<addon  id="plugin.video.jellycon" 
+        name="JellyCon"
         version="1.9.100"
         provider-name="Team B">
   <requires>
@@ -16,11 +16,11 @@
     <platform>all</platform>
     <language>en</language>
     <license>GPL-2.0-only</license>
-    <forum>https://github.com/faush01/plugin.video.embycon/issues</forum>
-    <website>https://github.com/faush01/plugin.video.embycon/wiki</website>
-    <source>https://github.com/faush01/plugin.video.embycon</source>
-    <summary lang="en_GB">Browse and play your Emby server media library.</summary>
-    <description lang="en_GB">An addon to allow you to browse and playback your Emby (www.emby.media) Movie, TV Show and Music collections.</description>
+    <forum>https://github.com/jellyfin/jellycon/issues</forum>
+    <website>https://github.com/jellyfin/jellycon/wiki</website>
+    <source>https://github.com/jellyfin/jellycon</source>
+    <summary lang="en_GB">Browse and play your Jellyfin server media library.</summary>
+    <description lang="en_GB">An addon to allow you to browse and playback your Jellyfin (www.jellyfin.org) Movie, TV Show and Music collections.</description>
     <assets>
         <icon>icon.png</icon>
         <fanart>fanart.jpg</fanart>

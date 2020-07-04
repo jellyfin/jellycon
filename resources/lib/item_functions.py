@@ -566,7 +566,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             info_labels["userrating"] = item_details.critic_rating
 
         if item_type in ('movie', 'series'):
-            info_labels["trailer"] = "plugin://plugin.video.embycon?mode=playTrailer&id=" + item_details.id
+            info_labels["trailer"] = "plugin://plugin.video.jellycon?mode=playTrailer&id=" + item_details.id
 
         list_item.setInfo('video', info_labels)
         # log.debug("info_labels: {0}", info_labels)

@@ -48,7 +48,7 @@ def play_all_files(items, monitor, play_items=True):
             error_string = playback_info.get("ErrorCode")
             xbmcgui.Dialog().notification(string_load(30316),
                                           error_string,
-                                          icon="special://home/addons/plugin.video.embycon/icon.png")
+                                          icon="special://home/addons/plugin.video.jellycon/icon.png")
             return
 
         play_session_id = playback_info.get("PlaySessionId")
@@ -109,7 +109,7 @@ def play_list_of_items(id_list, monitor):
     items = []
 
     for item_id in id_list:
-        url = "{server}/emby/Users/{userid}/Items/%s?format=json"
+        url = "{server}/Users/{userid}/Items/%s?format=json"
         url = url % (item_id,)
         result = data_manager.get_content(url)
         if result is None:
@@ -128,7 +128,7 @@ def add_to_playlist(play_info, monitor):
 
     item_id = play_info.get("item_id")
 
-    url = "{server}/emby/Users/{userid}/Items/%s?format=json"
+    url = "{server}/Users/{userid}/Items/%s?format=json"
     url = url % (item_id,)
     data_manager = DataManager()
     item = data_manager.get_content(url)
@@ -145,7 +145,7 @@ def add_to_playlist(play_info, monitor):
         error_string = playback_info.get("ErrorCode")
         xbmcgui.Dialog().notification(string_load(30316),
                                       error_string,
-                                      icon="special://home/addons/plugin.video.embycon/icon.png")
+                                      icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
 
     # play_session_id = id_generator()
@@ -199,7 +199,7 @@ def add_to_playlist(play_info, monitor):
 def get_playback_intros(item_id):
     log.debug("get_playback_intros")
     data_manager = DataManager()
-    url = "{server}/emby/Users/{userid}/Items/%s/Intros" % item_id
+    url = "{server}/Users/{userid}/Items/%s/Intros" % item_id
     intro_items = data_manager.get_content(url)
 
     if intro_items is None:
@@ -248,7 +248,7 @@ def play_file(play_info, monitor):
 
     server = download_utils.get_server()
 
-    url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (item_id,)
+    url = "{server}/Users/{userid}/Items/%s?format=json" % (item_id,)
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("Playfile item: {0}", result)
@@ -260,7 +260,7 @@ def play_file(play_info, monitor):
     # if this is a season, playlist or album then play all items in that parent
     if result.get("Type") in ["Season", "MusicAlbum", "Playlist"]:
         log.debug("PlayAllFiles for parent item id: {0}", item_id)
-        url = ('{server}/emby/Users/{userid}/items' +
+        url = ('{server}/Users/{userid}/items' +
                '?ParentId=%s' +
                '&Fields=MediaSources' +
                '&format=json')
@@ -277,12 +277,12 @@ def play_file(play_info, monitor):
     # if this is a program from live tv epg then play the actual channel
     if result.get("Type") == "Program":
         channel_id = result.get("ChannelId")
-        url = "{server}/emby/Users/{userid}/Items/%s?format=json" % (channel_id,)
+        url = "{server}/Users/{userid}/Items/%s?format=json" % (channel_id,)
         result = data_manager.get_content(url)
         item_id = result["Id"]
 
     if result.get("Type") == "Photo":
-        play_url = "%s/emby/Items/%s/Images/Primary"
+        play_url = "%s/Items/%s/Images/Primary"
         play_url = play_url % (server, item_id)
 
         plugin_path = xbmc.translatePath(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
@@ -300,7 +300,7 @@ def play_file(play_info, monitor):
         error_string = playback_info.get("ErrorCode")
         xbmcgui.Dialog().notification(string_load(30316),
                                       error_string,
-                                      icon="special://home/addons/plugin.video.embycon/icon.png")
+                                      icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
 
     play_session_id = playback_info.get("PlaySessionId")
@@ -560,7 +560,7 @@ def get_next_episode(item):
         log.debug("No episode number, can not get next")
         return None
 
-    url = ('{server}/emby/Users/{userid}/Items?' +
+    url = ('{server}/Users/{userid}/Items?' +
            '?Recursive=true' +
            '&ParentId=' + parent_id +
            '&IsVirtualUnaired=false' +
@@ -712,7 +712,7 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
             season_number = result.get("IndexNumber", -1)
             details["season"] = str(season_number)
 
-        details["plotoutline"] = "emby_id:%s" % (item_id,)
+        details["plotoutline"] = "jellyfin_id:%s" % (item_id,)
 
         list_item.setInfo("Video", infoLabels=details)
 
@@ -740,7 +740,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     media_streams = media_source['MediaStreams']
 
     for stream in media_streams:
-        # Since Emby returns all possible tracks together, have to sort them.
+        # Since Jellyfin returns all possible tracks together, have to sort them.
         index = stream['Index']
 
         if 'Audio' in stream['Type']:
@@ -793,7 +793,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     if select_subs_index is not None:
         # Load subtitles in the listitem if downloadable
         if select_subs_index in downloadable_streams:
-            subtitle_url = "%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+            subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
             subtitle_url = subtitle_url % (download_utils.get_server(), item_id, source_id, select_subs_index)
             log.debug("Streaming subtitles url: {0} {1}", select_subs_index, subtitle_url)
             list_item.setSubtitles([subtitle_url])
@@ -813,7 +813,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
 
             # Load subtitles in the listitem if downloadable
             if select_subs_index in downloadable_streams:
-                subtitle_url = "%s/emby/Videos/%s/%s/Subtitles/%s/Stream.srt"
+                subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
                 subtitle_url = subtitle_url % (download_utils.get_server(), item_id, source_id, select_subs_index)
                 log.debug("Streaming subtitles url: {0} {1}", select_subs_index, subtitle_url)
                 list_item.setSubtitles([subtitle_url])
@@ -855,9 +855,9 @@ def external_subs(media_source, list_item, item_id):
             token = download_utils.authenticate()
 
             if stream.get('DeliveryUrl', '').lower().startswith('/videos'):
-                url = "%s/emby%s" % (server, stream.get('DeliveryUrl'))
+                url = "%s%s" % (server, stream.get('DeliveryUrl'))
             else:
-                url = ("%s/emby/Videos/%s/%s/Subtitles/%s/Stream.%s?api_key=%s"
+                url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s?api_key=%s"
                        % (server, item_id, source_id, index, stream['Codec'], token))
 
             default = ""
@@ -939,7 +939,7 @@ def send_progress(monitor):
 
     log.debug("Sending POST progress started: {0}", postdata)
 
-    url = "{server}/emby/Sessions/Playing/Progress"
+    url = "{server}/Sessions/Playing/Progress"
     download_utils.download_url(url, post_body=postdata, method="POST")
 
 
@@ -1039,8 +1039,8 @@ def prompt_for_stop_actions(item_id, data):
             play_info["item_id"] = next_item_id
             play_info["auto_resume"] = "-1"
             play_info["force_transcode"] = False
-            send_event_notification("embycon_play_action", play_info)
-        
+            send_event_notification("jellycon_play_action", play_info)
+
         else:
             xbmc.executebuiltin("Container.Refresh")
         """
@@ -1065,17 +1065,17 @@ def stop_all_playback(played_information):
 
             current_position = data.get("currentPossition", 0)
             duration = data.get("duration", 0)
-            emby_item_id = data.get("item_id")
-            emby_source_id = data.get("source_id")
+            jellyfin_item_id = data.get("item_id")
+            jellyfin_source_id = data.get("source_id")
             play_session_id = data.get("play_session_id")
 
-            if emby_item_id is not None and current_position >= 0:
+            if jellyfin_item_id is not None and current_position >= 0:
                 log.debug("Playback Stopped at: {0}", current_position)
 
-                url = "{server}/emby/Sessions/Playing/Stopped"
+                url = "{server}/Sessions/Playing/Stopped"
                 postdata = {
-                    'ItemId': emby_item_id,
-                    'MediaSourceId': emby_source_id,
+                    'ItemId': jellyfin_item_id,
+                    'MediaSourceId': jellyfin_source_id,
                     'PositionTicks': int(current_position * 10000000),
                     'RunTimeTicks': int(duration * 10000000),
                     'PlaySessionId': play_session_id
@@ -1084,10 +1084,10 @@ def stop_all_playback(played_information):
                 data["currently_playing"] = False
 
                 if data.get("play_action_type", "") == "play":
-                    prompt_for_stop_actions(emby_item_id, data)
+                    prompt_for_stop_actions(jellyfin_item_id, data)
 
     device_id = ClientInformation().get_device_id()
-    url = "{server}/emby/Videos/ActiveEncodings?DeviceId=%s" % device_id
+    url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
     download_utils.download_url(url, method="DELETE")
 
 
@@ -1132,32 +1132,32 @@ class Service(xbmc.Player):
         play_data["paused"] = False
         play_data["currently_playing"] = True
 
-        emby_item_id = play_data["item_id"]
-        emby_source_id = play_data["source_id"]
+        jellyfin_item_id = play_data["item_id"]
+        jellyfin_source_id = play_data["source_id"]
         playback_type = play_data["playback_type"]
         play_session_id = play_data["play_session_id"]
 
         # if we could not find the ID of the current item then return
-        if emby_item_id is None:
+        if jellyfin_item_id is None:
             return
 
         log.debug("Sending Playback Started")
         postdata = {
             'QueueableMediaTypes': "Video",
             'CanSeek': True,
-            'ItemId': emby_item_id,
-            'MediaSourceId': emby_source_id,
+            'ItemId': jellyfin_item_id,
+            'MediaSourceId': jellyfin_source_id,
             'PlayMethod': playback_type,
             'PlaySessionId': play_session_id
         }
 
         log.debug("Sending POST play started: {0}", postdata)
 
-        url = "{server}/emby/Sessions/Playing"
+        url = "{server}/Sessions/Playing"
         download_utils.download_url(url, post_body=postdata, method="POST")
 
         home_screen = HomeWindow()
-        home_screen.set_property("currently_playing_id", str(emby_item_id))
+        home_screen.set_property("currently_playing_id", str(jellyfin_item_id))
 
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
@@ -1216,7 +1216,7 @@ class PlaybackService(xbmc.Monitor):
             return
 
         signal = method.split('.', 1)[-1]
-        if signal not in ("embycon_play_action", "embycon_play_youtube_trailer_action", "set_view"):
+        if signal not in ("jellycon_play_action", "jellycon_play_youtube_trailer_action", "set_view"):
             return
 
         data_json = json.loads(data)
@@ -1225,11 +1225,11 @@ class PlaybackService(xbmc.Monitor):
         decoded_data = base64.b64decode(message_data)
         play_info = json.loads(decoded_data)
 
-        if signal == "embycon_play_action":
-            log.info("Received embycon_play_action : {0}", play_info)
+        if signal == "jellycon_play_action":
+            log.info("Received jellycon_play_action : {0}", play_info)
             play_file(play_info, self.monitor)
-        elif signal == "embycon_play_youtube_trailer_action":
-            log.info("Received embycon_play_trailer_action : {0}", play_info)
+        elif signal == "jellycon_play_youtube_trailer_action":
+            log.info("Received jellycon_play_trailer_action : {0}", play_info)
             trailer_link = play_info["url"]
             xbmc.executebuiltin(trailer_link)
         elif signal == "set_view":
@@ -1252,7 +1252,7 @@ class PlaybackService(xbmc.Monitor):
                 log.debug("Screen Saver Activated : isPlayingVideo() = true")
                 play_data = get_playing_data(self.monitor.played_information)
                 if play_data:
-                    log.debug("Screen Saver Activated : this is an EmbyCon item so stop it")
+                    log.debug("Screen Saver Activated : this is an JellyCon item so stop it")
                     player.stop()
 
         # xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
@@ -1278,4 +1278,4 @@ class PlaybackService(xbmc.Monitor):
             skip_select_user = home_screen.get_property("skip_select_user")
             if skip_select_user is not None and skip_select_user == "true":
                 return
-            xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
+            xbmc.executebuiltin("RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)")

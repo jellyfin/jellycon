@@ -19,7 +19,7 @@ def show_server_sessions():
     download_utils = DownloadUtils()
     data_manager = DataManager()
 
-    url = "{server}/emby/Users/{userid}"
+    url = "{server}/Users/{userid}"
     results = data_manager.get_content(url)
 
     is_admin = results.get("Policy", {}).get("IsAdministrator", False)
@@ -27,7 +27,7 @@ def show_server_sessions():
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
         return
 
-    url = "{server}/emby/Sessions"
+    url = "{server}/Sessions"
     results = data_manager.get_content(url)
     log.debug("session_info: {0}", results)
 

@@ -49,7 +49,7 @@ class CacheArtwork(threading.Thread):
         monitor.waitForAbort(5)
 
         while not self.stop_all_activity and not monitor.abortRequested() and xbmc.getCondVisibility("System.ScreenSaverActive"):
-            content_hash = home_window.get_property("embycon_widget_reload")
+            content_hash = home_window.get_property("jellycon_widget_reload")
             if (check_interval != 0 and (time.time() - last_update) > check_interval) or (latest_content_hash != content_hash):
                 log.debug("CacheArtwork background thread - triggered")
                 if monitor.waitForAbort(10):
@@ -72,7 +72,7 @@ class CacheArtwork(threading.Thread):
         progress.create(string_load(30281))
         progress.update(30, string_load(30347))
 
-        item_image_url_part = "emby/Items/%s/Images/" % item_id
+        item_image_url_part = "Items/%s/Images/" % item_id
         item_image_url_part = item_image_url_part.replace("/", "%2f")
         log.debug("texture ids: {0}", item_image_url_part)
 
@@ -139,12 +139,12 @@ class CacheArtwork(threading.Thread):
             json_result = JsonRpc('Textures.GetTextures').execute(params)
             textures = json_result.get("result", {}).get("textures", [])
 
-            emby_texture_urls = self.get_emby_artwork(delete_pdialog)
+            jellyfin_texture_urls = self.get_jellyfin_artwork(delete_pdialog)
 
             log.debug("kodi textures: {0}", textures)
-            log.debug("emby texture urls: {0}", emby_texture_urls)
+            log.debug("jellyfin texture urls: {0}", jellyfin_texture_urls)
 
-            if emby_texture_urls is not None:
+            if jellyfin_texture_urls is not None:
 
                 unused_texture_ids = set()
                 for texture in textures:
@@ -152,7 +152,7 @@ class CacheArtwork(threading.Thread):
                     url = urllib.unquote(url)
                     url = url.replace("image://", "")
                     url = url[0:-1]
-                    if url.find("/emby/") > -1 and url not in emby_texture_urls or url.find("localhost:24276") > -1:
+                    if url.find("/") > -1 and url not in jellyfin_texture_urls or url.find("localhost:24276") > -1:
                         # log.debug("adding unused texture url: {0}", url)
                         unused_texture_ids.add(texture["textureid"])
 
@@ -176,7 +176,7 @@ class CacheArtwork(threading.Thread):
                 result_report.append(string_load(30387) + str(index))
 
             del textures
-            del emby_texture_urls
+            del jellyfin_texture_urls
             del unused_texture_ids
             delete_pdialog.close()
             del delete_pdialog
@@ -212,11 +212,11 @@ class CacheArtwork(threading.Thread):
         if result_text is not None:
             log.debug("Cache Images reuslt : {0}", " - ".join(result_text))
 
-    def get_emby_artwork(self, progress):
-        log.debug("get_emby_artwork")
+    def get_jellyfin_artwork(self, progress):
+        log.debug("get_jellyfin_artwork")
 
         url = ""
-        url += "{server}/emby/Users/{userid}/Items"
+        url += "{server}/Users/{userid}/Items"
         url += "?Recursive=true"
         url += "&EnableUserData=False"
         url += "&Fields=BasicSyncInfo"
@@ -233,7 +233,7 @@ class CacheArtwork(threading.Thread):
             results = results.get("Items")
 
         server = downloadUtils.get_server()
-        log.debug("Emby Item Count Count: {0}", len(results))
+        log.debug("Jellyfin Item Count Count: {0}", len(results))
 
         if self.stop_all_activity:
             return None
@@ -308,13 +308,13 @@ class CacheArtwork(threading.Thread):
 
         progress.update(0, string_load(30358))
 
-        emby_texture_urls = self.get_emby_artwork(progress)
-        if emby_texture_urls is None:
+        jellyfin_texture_urls = self.get_jellyfin_artwork(progress)
+        if jellyfin_texture_urls is None:
             return
 
         missing_texture_urls = set()
         # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
-        for image_url in emby_texture_urls:
+        for image_url in jellyfin_texture_urls:
             if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
                 missing_texture_urls.add(image_url)
 

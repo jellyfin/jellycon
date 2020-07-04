@@ -38,7 +38,7 @@ def check_connection_speed():
     du = DownloadUtils()
     server = du.get_server()
 
-    url = server + "/emby/playback/bitratetest?size=%s" % test_data_size
+    url = server + "/playback/bitratetest?size=%s" % test_data_size
 
     url_bits = urlparse(url.strip())
 
@@ -68,13 +68,13 @@ def check_connection_speed():
         conn = httplib.HTTPConnection(server, timeout=http_timeout)
 
     head = du.get_auth_header(True)
-    head["User-Agent"] = "EmbyCon-" + ClientInformation().get_version()
+    head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
 
     conn.request(method="GET", url=url_path, headers=head)
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
-    progress_dialog.create("EmbyCon connection speed test", message)
+    progress_dialog.create("JellyCon connection speed test", message)
     total_data_read = 0
     total_time = time.time()
 
@@ -119,7 +119,7 @@ def check_safe_delete_available():
     log.debug("check_safe_delete_available")
 
     du = DownloadUtils()
-    json_data = du.download_url("{server}/emby/Plugins")
+    json_data = du.download_url("{server}/Plugins")
     result = json.loads(json_data)
     if result is not None:
         log.debug("Server Plugin List: {0}", result)
@@ -145,7 +145,7 @@ def get_server_details():
     log.debug("Getting Server Details from Network")
     servers = []
 
-    message = "who is EmbyServer?"
+    message = "who is JellyfinServer?"
     multi_group = ("<broadcast>", 7359)
     # multi_group = ("127.0.0.1", 7359)
 
@@ -255,9 +255,9 @@ def check_server(force=False, change_user=False, notify=False):
                 user_password = url_bits.password
 
                 if user_name and user_password:
-                    temp_url = "%s://%s:%s@%s:%s/emby/Users/Public?format=json" % (server_protocol, user_name, user_password, server_address, server_port)
+                    temp_url = "%s://%s:%s@%s:%s/Users/Public?format=json" % (server_protocol, user_name, user_password, server_address, server_port)
                 else:
-                    temp_url = "%s://%s:%s/emby/Users/Public?format=json" % (server_protocol, server_address, server_port)
+                    temp_url = "%s://%s:%s/Users/Public?format=json" % (server_protocol, server_address, server_port)
 
                 log.debug("Testing_Url: {0}", temp_url)
                 progress = xbmcgui.DialogProgress()
@@ -319,7 +319,7 @@ def check_server(force=False, change_user=False, notify=False):
 
         # get a list of users
         log.debug("Getting user list")
-        json_data = du.download_url(server_url + "/emby/Users/Public?format=json", authenticate=False)
+        json_data = du.download_url(server_url + "/Users/Public?format=json", authenticate=False)
 
         log.debug("jsonData: {0}", json_data)
         try:
@@ -487,11 +487,11 @@ def check_server(force=False, change_user=False, notify=False):
             home_window.clear_property("userid")
             home_window.clear_property("AccessToken")
             home_window.clear_property("userimage")
-            home_window.clear_property("embycon_widget_reload")
+            home_window.clear_property("jellycon_widget_reload")
             du = DownloadUtils()
             du.authenticate()
             du.get_user_id()
             xbmc.executebuiltin("ActivateWindow(Home)")
-            if "estuary_embycon" in xbmc.getSkinDir():
+            if "estuary_jellycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")

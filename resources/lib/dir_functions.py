@@ -261,7 +261,7 @@ def process_directory(url, progress, params, use_cache_data=False):
     if flatten_single_season and len(item_list) == 1 and item_list[0].item_type == "Season":
         season_id = item_list[0].id
         series_id = item_list[0].series_id
-        season_url = ('{server}/emby/Shows/' + series_id +
+        season_url = ('{server}/Shows/' + series_id +
                       '/Episodes'
                       '?userId={userid}' +
                       '&seasonId=' + season_id +
@@ -326,14 +326,14 @@ def process_directory(url, progress, params, use_cache_data=False):
 
         if item_details.is_folder is True:
             if item_details.item_type == "Series":
-                u = ('{server}/emby/Shows/' + item_details.id +
+                u = ('{server}/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={userid}' +
                      '&Fields={field_filters}' +
                      '&format=json')
 
             elif item_details.item_type == "Season":
-                u = ('{server}/emby/Shows/' + item_details.series_id +
+                u = ('{server}/Shows/' + item_details.series_id +
                      '/Episodes'
                      '?userId={userid}' +
                      '&seasonId=' + item_details.id +
@@ -343,7 +343,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                      '&format=json')
 
             else:
-                u = ('{server}/emby/Users/{userid}/items' +
+                u = ('{server}/Users/{userid}/items' +
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
@@ -360,7 +360,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                 log.debug("Dropping empty folder item : {0}", item_details.__dict__)
 
         elif item_details.item_type == "MusicArtist":
-            u = ('{server}/emby/Users/{userid}/items' +
+            u = ('{server}/Users/{userid}/items' +
                  '?ArtistIds=' + item_details.id +
                  '&IncludeItemTypes=MusicAlbum' +
                  '&CollapseBoxSetItems=false' +
@@ -382,7 +382,7 @@ def process_directory(url, progress, params, use_cache_data=False):
             and first_season_item is not None
             and len(dir_items) > 1
             and first_season_item.series_id is not None):
-        series_url = ('{server}/emby/Shows/' + first_season_item.series_id +
+        series_url = ('{server}/Shows/' + first_season_item.series_id +
                       '/Episodes'
                       '?userId={userid}' +
                       # '&seasonId=' + season_id +

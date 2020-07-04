@@ -14,7 +14,7 @@ from .kodi_utils import add_menu_directory_item, HomeWindow
 from .simple_logging import SimpleLogging
 from .translation import string_load
 from .datamanager import DataManager
-from .utils import get_art, get_emby_url
+from .utils import get_art, get_jellyfin_url
 
 log = SimpleLogging(__name__)
 downloadUtils = DownloadUtils()
@@ -41,7 +41,7 @@ def show_movie_tags(menu_params):
     if parent_id:
         url_params["ParentId"] = parent_id
 
-    url = get_emby_url("{server}/emby/Tags", url_params)
+    url = get_jellyfin_url("{server}/Tags", url_params)
     data_manager = DataManager()
     result = data_manager.get_content(url)
 
@@ -71,7 +71,7 @@ def show_movie_tags(menu_params):
         if parent_id:
             menu_params["ParentId"] = parent_id
 
-        item_url = get_emby_url("{server}/emby/Users/{userid}/Items", url_params)
+        item_url = get_jellyfin_url("{server}/Users/{userid}/Items", url_params)
 
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
 
@@ -106,7 +106,7 @@ def show_movie_years(menu_params):
     if parent_id:
         url_params["ParentId"] = parent_id
 
-    url = get_emby_url("{server}/emby/Years", url_params)
+    url = get_jellyfin_url("{server}/Years", url_params)
 
     data_manager = DataManager()
     result = data_manager.get_content(url)
@@ -157,7 +157,7 @@ def show_movie_years(menu_params):
         if parent_id:
             params["ParentId"] = parent_id
 
-        item_url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+        item_url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
 
@@ -190,7 +190,7 @@ def show_movie_pages(menu_params):
     if parent_id:
         params["ParentId"] = parent_id
 
-    url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
     data_manager = DataManager()
     result = data_manager.get_content(url)
@@ -229,7 +229,7 @@ def show_movie_pages(menu_params):
         if parent_id:
             params["ParentId"] = parent_id
 
-        item_url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+        item_url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
         page_upper = start_index + page_limit
         if page_upper > total_results:
@@ -267,13 +267,13 @@ def show_genre_list(menu_params):
     item_type = menu_params.get("item_type")
 
     kodi_type = "Movies"
-    emby_type = "Movie"
+    jellyfin_type = "Movie"
     if item_type is not None and item_type == "tvshow":
-        emby_type = "Series"
+        jellyfin_type = "Series"
         kodi_type = "tvshows"
 
     params = {}
-    params["IncludeItemTypes"] = emby_type
+    params["IncludeItemTypes"] = jellyfin_type
     params["UserId"] = "{userid}"
     params["Recursive"] = True
     params["SortBy"] = "Name"
@@ -283,7 +283,7 @@ def show_genre_list(menu_params):
     if parent_id is not None:
         params["ParentId"] = parent_id
 
-    url = get_emby_url("{server}/emby/Genres", params)
+    url = get_jellyfin_url("{server}/Genres", params)
 
     data_manager = DataManager()
     result = data_manager.get_content(url)
@@ -312,14 +312,14 @@ def show_genre_list(menu_params):
         params["CollapseBoxSetItems"] = str(group_movies)
         params["GroupItemsIntoCollections"] = str(group_movies)
         params["GenreIds"] = genre.get("Id")
-        params["IncludeItemTypes"] = emby_type
+        params["IncludeItemTypes"] = jellyfin_type
         params["ImageTypeLimit"] = 1
         params["Fields"] = "{field_filters}"
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
-        url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+        url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
         item_data['art'] = art
@@ -360,7 +360,7 @@ def show_movie_alpha_list(menu_params):
     if parent_id is not None:
         url_params["ParentId"] = parent_id
 
-    prefix_url = get_emby_url("{server}/emby/Items/Prefixes", url_params)
+    prefix_url = get_jellyfin_url("{server}/Items/Prefixes", url_params)
 
     data_manager = DataManager()
     result = data_manager.get_content(prefix_url)
@@ -396,7 +396,7 @@ def show_movie_alpha_list(menu_params):
         else:
             params["NameStartsWith"] = alphaName
 
-        url = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+        url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
         item_data['path'] = url
 
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
@@ -430,7 +430,7 @@ def show_tvshow_alpha_list(menu_params):
     url_params["SortOrder"] = "Ascending"
     if parent_id is not None:
         menu_params["ParentId"] = parent_id
-    prefix_url = get_emby_url("{server}/emby/Items/Prefixes", url_params)
+    prefix_url = get_jellyfin_url("{server}/Items/Prefixes", url_params)
 
     data_manager = DataManager()
     result = data_manager.get_content(prefix_url)
@@ -465,7 +465,7 @@ def show_tvshow_alpha_list(menu_params):
         else:
             params["NameStartsWith"] = alpha_name
 
-        path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+        path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
         item_data['path'] = path
 
@@ -488,13 +488,13 @@ def display_main_menu():
     xbmcplugin.setContent(handle, 'files')
 
     add_menu_directory_item(string_load(30406),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=library")
     add_menu_directory_item(string_load(30407),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_global_types")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_global_types")
     add_menu_directory_item(string_load(30408),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
     add_menu_directory_item(string_load(30409),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=addon_items")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=addon_items")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -525,9 +525,9 @@ def show_global_types(params):
     handle = int(sys.argv[1])
 
     add_menu_directory_item(string_load(30256),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
     add_menu_directory_item(string_load(30261),
-                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -546,7 +546,7 @@ def display_homevideos_type(menu_params, view):
     base_params["IsMissing"] = False
     base_params["Fields"] = "{field_filters}"
     base_params["ImageTypeLimit"] = 1
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", base_params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + string_load(30405), url)
 
@@ -556,7 +556,7 @@ def display_homevideos_type(menu_params, view):
     params["Filters"] = "IsResumable"
     params["Recursive"] = True
     params["Limit"] = "{ItemLimit}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + string_load(30267) + " (" + show_x_filtered_items + ")", url)
 
@@ -570,7 +570,7 @@ def display_homevideos_type(menu_params, view):
     if hide_watched:
         params["IsPlayed"] = False
     params["Limit"] = "{ItemLimit}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
@@ -579,15 +579,15 @@ def display_homevideos_type(menu_params, view):
 
 def display_addon_menu(params):
 
-    add_menu_directory_item(string_load(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
-    add_menu_directory_item(string_load(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
-    add_menu_directory_item(string_load(30012), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
-    add_menu_directory_item(string_load(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
-    add_menu_directory_item(string_load(30435), "plugin://plugin.video.embycon/?mode=DETECT_CONNECTION_SPEED")
-    add_menu_directory_item(string_load(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
-    add_menu_directory_item(string_load(30395), "plugin://plugin.video.embycon/?mode=CLEAR_CACHE")
-    add_menu_directory_item(string_load(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
-    add_menu_directory_item("Clone default skin", "plugin://plugin.video.embycon/?mode=CLONE_SKIN")
+    add_menu_directory_item(string_load(30246), "plugin://plugin.video.jellycon/?mode=SEARCH")
+    add_menu_directory_item(string_load(30017), "plugin://plugin.video.jellycon/?mode=SHOW_SERVER_SESSIONS")
+    add_menu_directory_item(string_load(30012), "plugin://plugin.video.jellycon/?mode=CHANGE_USER")
+    add_menu_directory_item(string_load(30011), "plugin://plugin.video.jellycon/?mode=DETECT_SERVER_USER")
+    add_menu_directory_item(string_load(30435), "plugin://plugin.video.jellycon/?mode=DETECT_CONNECTION_SPEED")
+    add_menu_directory_item(string_load(30254), "plugin://plugin.video.jellycon/?mode=SHOW_SETTINGS")
+    add_menu_directory_item(string_load(30395), "plugin://plugin.video.jellycon/?mode=CLEAR_CACHE")
+    add_menu_directory_item(string_load(30293), "plugin://plugin.video.jellycon/?mode=CACHE_ARTWORK")
+    add_menu_directory_item("Clone default skin", "plugin://plugin.video.jellycon/?mode=CLONE_SKIN")
 
     handle = int(sys.argv[1])
     xbmcplugin.endOfDirectory(handle)
@@ -612,7 +612,7 @@ def display_tvshow_type(menu_params, view):
     base_params["IsMissing"] = False
     base_params["IncludeItemTypes"] = "Series"
     base_params["Recursive"] = True
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", base_params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + string_load(30405), url)
 
@@ -620,7 +620,7 @@ def display_tvshow_type(menu_params, view):
     params = {}
     params.update(base_params)
     params["Filters"] = "IsFavorite"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + string_load(30414), url)
 
@@ -628,7 +628,7 @@ def display_tvshow_type(menu_params, view):
     params = {}
     params.update(base_params)
     params["IsPlayed"] = False
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + string_load(30285), url)
 
@@ -640,7 +640,7 @@ def display_tvshow_type(menu_params, view):
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsResumable"
     params["IncludeItemTypes"] = "Episode"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     add_menu_directory_item(view_name + string_load(30267) + " (" + show_x_filtered_items + ")", url)
@@ -652,7 +652,7 @@ def display_tvshow_type(menu_params, view):
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["IncludeItemTypes"] = "Episode"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items/Latest", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=tvshows&sort=none"
     add_menu_directory_item(view_name + string_load(30288) + " (" + show_x_filtered_items + ")", url)
 
@@ -664,7 +664,7 @@ def display_tvshow_type(menu_params, view):
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
     params["IncludeItemTypes"] = "Episode"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     add_menu_directory_item(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
@@ -678,19 +678,19 @@ def display_tvshow_type(menu_params, view):
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
     params["IncludeItemTypes"] = "Episode"
-    path = get_emby_url("{server}/emby/Shows/NextUp", params)
+    path = get_jellyfin_url("{server}/Shows/NextUp", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + urllib.quote('Episode|episode_name_format')
     add_menu_directory_item(view_name + string_load(30278) + " (" + show_x_filtered_items + ")", url)
 
     # TV Show Genres
-    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow"
+    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=tvshow"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30325), path)
 
     # TV Show Alpha picker
-    path = "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA"
+    path = "plugin://plugin.video.jellycon/?mode=TVSHOW_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30404), path)
@@ -711,7 +711,7 @@ def display_music_type(menu_params, view):
     params["Recursive"] = True
     params["ImageTypeLimit"] = 1
     params["IncludeItemTypes"] = "MusicAlbum"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
     add_menu_directory_item(view_name + string_load(30320), url)
 
@@ -721,7 +721,7 @@ def display_music_type(menu_params, view):
     params["ImageTypeLimit"] = 1
     params["IncludeItemTypes"] = "Audio"
     params["Limit"] = "{ItemLimit}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items/Latest", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
     add_menu_directory_item(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
@@ -735,7 +735,7 @@ def display_music_type(menu_params, view):
     params["IsPlayed"] = True
     params["SortBy"] = "DatePlayed"
     params["SortOrder"] = "Descending"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
     add_menu_directory_item(view_name + string_load(30349) + " (" + show_x_filtered_items + ")", url)
 
@@ -749,7 +749,7 @@ def display_music_type(menu_params, view):
     params["IsPlayed"] = True
     params["SortBy"] = "PlayCount"
     params["SortOrder"] = "Descending"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
     add_menu_directory_item(view_name + string_load(30353) + " (" + show_x_filtered_items + ")", url)
 
@@ -758,7 +758,7 @@ def display_music_type(menu_params, view):
     params["ParentId"] = view.get("Id")
     params["Recursive"] = True
     params["ImageTypeLimit"] = 1
-    path = get_emby_url("{server}/emby/Artists/AlbumArtists", params)
+    path = get_jellyfin_url("{server}/Artists/AlbumArtists", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=MusicArtists"
     add_menu_directory_item(view_name + string_load(30321), url)
 
@@ -778,7 +778,7 @@ def display_musicvideos_type(params, view):
     params["ImageTypeLimit"] = 1
     params["IsMissing"] = False
     params["Fields"] = "{field_filters}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=musicvideos"
     add_menu_directory_item(view_name + string_load(30405), url)
 
@@ -797,7 +797,7 @@ def display_livetv_type(menu_params, view):
     params["Recursive"] = False
     params["ImageTypeLimit"] = 1
     params["Fields"] = "{field_filters}"
-    path = get_emby_url("{server}/emby/LiveTv/Channels", params)
+    path = get_jellyfin_url("{server}/LiveTv/Channels", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
     add_menu_directory_item(view_name + string_load(30360), url)
 
@@ -808,7 +808,7 @@ def display_livetv_type(menu_params, view):
     params["ImageTypeLimit"] = 1
     params["Fields"] = "ChannelInfo,{field_filters}"
     params["EnableTotalRecordCount"] = False
-    path = get_emby_url("{server}/emby/LiveTv/Programs/Recommended", params)
+    path = get_jellyfin_url("{server}/LiveTv/Programs/Recommended", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
     add_menu_directory_item(view_name + string_load(30361), url)
 
@@ -819,7 +819,7 @@ def display_livetv_type(menu_params, view):
     params["ImageTypeLimit"] = 1
     params["Fields"] = "{field_filters}"
     params["EnableTotalRecordCount"] = False
-    path = get_emby_url("{server}/emby/LiveTv/Recordings", params)
+    path = get_jellyfin_url("{server}/LiveTv/Recordings", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=livetv"
     add_menu_directory_item(view_name + string_load(30362), url)
 
@@ -851,7 +851,7 @@ def display_movies_type(menu_params, view):
     base_params["ImageTypeLimit"] = 1
 
     # All Movies
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", base_params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item(view_name + string_load(30405), url)
 
@@ -861,7 +861,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["Filters"] = "IsFavorite"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item(view_name + string_load(30414), url)
 
@@ -871,7 +871,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["IsPlayed"] = False
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item(view_name + string_load(30285), url)
 
@@ -884,7 +884,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["Limit"] = "{ItemLimit}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item(view_name + string_load(30349) + " (" + show_x_filtered_items + ")", url)
 
@@ -895,7 +895,7 @@ def display_movies_type(menu_params, view):
     params["SortBy"] = "DatePlayed"
     params["SortOrder"] = "Descending"
     params["Limit"] = "{ItemLimit}"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item(view_name + string_load(30267) + " (" + show_x_filtered_items + ")", url)
 
@@ -907,7 +907,7 @@ def display_movies_type(menu_params, view):
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item(view_name + string_load(30268) + " (" + show_x_filtered_items + ")", url)
 
@@ -919,48 +919,48 @@ def display_movies_type(menu_params, view):
     params["ImageTypeLimit"] = 1
     params["IncludeItemTypes"] = "Boxset"
     params["Recursive"] = True
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     add_menu_directory_item(view_name + string_load(30410), url)
 
     # Favorite Collections
     params["Filters"] = "IsFavorite"
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     add_menu_directory_item(view_name + string_load(30415), url)
 
     # Genres
-    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie"
+    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=movie"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30325), path)
 
     # Pages
-    path = "plugin://plugin.video.embycon/?mode=MOVIE_PAGES"
+    path = "plugin://plugin.video.jellycon/?mode=MOVIE_PAGES"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30397), path)
 
     # Alpha Picker
-    path = "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA"
+    path = "plugin://plugin.video.jellycon/?mode=MOVIE_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30404), path)
 
     # Years
-    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
+    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30411), path)
 
     # Decades
-    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
+    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30412), path)
 
     # Tags
-    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
+    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + string_load(30413), path)
@@ -977,7 +977,7 @@ def display_library_views(params):
         return
 
     data_manager = DataManager()
-    views_url = "{server}/emby/Users/{userid}/Views?format=json"
+    views_url = "{server}/Users/{userid}/Views?format=json"
     views = data_manager.get_content(views_url)
     if not views:
         return []
@@ -993,7 +993,7 @@ def display_library_views(params):
             art = get_art(item=view, server=server)
             art['landscape'] = downloadUtils.get_artwork(view, "Primary", server=server)
 
-            plugin_path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
+            plugin_path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
 
             if collection_type == "playlists":
                 plugin_path = get_playlist_path(view)
@@ -1013,7 +1013,7 @@ def get_playlist_path(view_info):
     params["Fields"] = "{field_filters}"
     params["ImageTypeLimit"] = 1
 
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=playlists"
     return url
 
@@ -1029,7 +1029,7 @@ def get_collection_path(view_info):
     params["Recursive"] = True
     params["IsMissing"] = False
 
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     return url
 
@@ -1041,7 +1041,7 @@ def get_channel_path(view):
     params["ImageTypeLimit"] = 1
     params["Fields"] = "{field_filters}"
 
-    path = get_emby_url("{server}/emby/Users/{userid}/Items", params)
+    path = get_jellyfin_url("{server}/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + urllib.quote(path) + "&mode=GET_CONTENT&media_type=files"
     return url
 
@@ -1049,7 +1049,7 @@ def get_channel_path(view):
 def display_library_view(params):
     node_id = params.get("view_id")
 
-    view_info_url = "{server}/emby/Users/{userid}/Items/" + node_id
+    view_info_url = "{server}/Users/{userid}/Items/" + node_id
     data_manager = DataManager()
     view_info = data_manager.get_content(view_info_url)
 
@@ -1076,36 +1076,36 @@ def show_widgets():
     show_x_filtered_items = settings.getSetting("show_x_filtered_items")
 
     add_menu_directory_item("All Movies",
-                            'plugin://plugin.video.embycon/library/movies')
+                            'plugin://plugin.video.jellycon/library/movies')
 
     add_menu_directory_item(string_load(30257) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_movies')
     add_menu_directory_item(string_load(30258) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
     add_menu_directory_item(string_load(30269) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=random_movies')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=random_movies')
     add_menu_directory_item(string_load(30403) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
 
     add_menu_directory_item(string_load(30287) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
     add_menu_directory_item(string_load(30263) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_episodes')
     add_menu_directory_item(string_load(30264) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
     add_menu_directory_item(string_load(30265) + " (" + show_x_filtered_items + ")",
-                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_search():
-    add_menu_directory_item(string_load(30231), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
-    add_menu_directory_item(string_load(30229), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
-    add_menu_directory_item(string_load(30235), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
-    add_menu_directory_item(string_load(30337), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
-    add_menu_directory_item(string_load(30338), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
-    add_menu_directory_item(string_load(30339), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
+    add_menu_directory_item(string_load(30231), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Movie')
+    add_menu_directory_item(string_load(30229), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Series')
+    add_menu_directory_item(string_load(30235), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Episode')
+    add_menu_directory_item(string_load(30337), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Audio')
+    add_menu_directory_item(string_load(30338), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
+    add_menu_directory_item(string_load(30339), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Person')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -1125,7 +1125,7 @@ def set_library_window_values(force=False):
         home_window.clear_property("view_item.%i.thumb" % index)
 
     data_manager = DataManager()
-    url = "{server}/emby/Users/{userid}/Views"
+    url = "{server}/Users/{userid}/Views"
     result = data_manager.get_content(url)
 
     if result is None:
@@ -1142,22 +1142,22 @@ def set_library_window_values(force=False):
             name = item.get("Name")
             item_id = item.get("Id")
 
-            # plugin.video.embycon-
+            # plugin.video.jellycon-
             prop_name = "view_item.%i.name" % index
             home_window.set_property(prop_name, name)
-            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, name)
+            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}", prop_name, name)
 
             prop_name = "view_item.%i.id" % index
             home_window.set_property(prop_name, item_id)
-            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, item_id)
+            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}", prop_name, item_id)
 
             prop_name = "view_item.%i.type" % index
             home_window.set_property(prop_name, collection_type)
-            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, collection_type)
+            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}", prop_name, collection_type)
 
             thumb = downloadUtils.get_artwork(item, "Primary", server=server)
             prop_name = "view_item.%i.thumb" % index
             home_window.set_property(prop_name, thumb)
-            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}", prop_name, thumb)
+            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}", prop_name, thumb)
 
             index += 1

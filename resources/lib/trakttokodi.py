@@ -15,19 +15,19 @@ log = SimpleLogging(__name__)
 dataManager = DataManager()
 
 details_string = 'EpisodeCount,SeasonCount,Path,Etag,MediaStreams'
-icon = xbmc.translatePath('special://home/addons/plugin.video.embycon/icon.png')
+icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png')
 
 
 def not_found(content_string):
-    xbmcgui.Dialog().notification('EmbyCon', string_load(30305) % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', string_load(30305) % content_string, icon=icon, sound=False)
 
 
 def playback_starting(content_string):
-    xbmcgui.Dialog().notification('EmbyCon', string_load(30306) % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', string_load(30306) % content_string, icon=icon, sound=False)
 
 
 def search(item_type, query):
-    content_url = ('{server}/emby/Search/Hints?searchTerm=' + query +
+    content_url = ('{server}/Search/Hints?searchTerm=' + query +
                    '&IncludeItemTypes=' + item_type +
                    '&UserId={userid}'
                    '&StartIndex=0' +
@@ -43,14 +43,14 @@ def get_items(video_type, item_id=None, parent_id=None):
     result = dict()
 
     if video_type == 'season':
-        content_url = ('{server}/emby/Shows/' + item_id +
+        content_url = ('{server}/Shows/' + item_id +
                        '/Seasons'
                        '?userId={userid}' +
                        '&Fields=' + details_string +
                        '&format=json')
 
     elif video_type == 'movie' or video_type == 'episode':
-        content_url = ('{server}/emby/Users/{userid}/items' +
+        content_url = ('{server}/Users/{userid}/items' +
                        '?ParentId=' + parent_id +
                        '&IsVirtualUnAired=false' +
                        '&IsMissing=false' +
@@ -64,7 +64,7 @@ def get_items(video_type, item_id=None, parent_id=None):
 
 
 def get_item(item_id):
-    result = dataManager.get_content('{server}/emby/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
+    result = dataManager.get_content('{server}/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
     return result
 
 
@@ -205,7 +205,7 @@ def entry_point(parameters):
                 playback_starting('{title} ({year}) - S{season}E{episode}'.format(title=title, year=year, season=str_season, episode=str_episode))
             else:
                 playback_starting('{title} ({year})'.format(title=title, year=year))
-            xbmc.executebuiltin('RunPlugin(plugin://plugin.video.embycon/?mode=PLAY&item_id={item_id})'.format(item_id=play_item_id))
+            xbmc.executebuiltin('RunPlugin(plugin://plugin.video.jellycon/?mode=PLAY&item_id={item_id})'.format(item_id=play_item_id))
 
     elif action == 'open':
         url = media_type = None
@@ -214,7 +214,7 @@ def entry_point(parameters):
             if match:
                 item_id = match.get('ItemId')
                 media_type = 'series'
-                url = ('{server}/emby/Shows/' + item_id +
+                url = ('{server}/Shows/' + item_id +
                        '/Seasons'
                        '?userId={userid}' +
                        '&Fields=' + details_string +
@@ -234,7 +234,7 @@ def entry_point(parameters):
                 if season_id:
                     media_type = 'episodes'
 
-                    url = ('{server}/emby/Users/{userid}/items' +
+                    url = ('{server}/Users/{userid}/items' +
                            '?ParentId=' + season_id +
                            '&IsVirtualUnAired=false' +
                            '&IsMissing=false' +
@@ -245,4 +245,4 @@ def entry_point(parameters):
                 not_found('{title} ({year}) - S{season}'.format(title=title, year=year, season=str_season))
 
         if url and media_type:
-            xbmc.executebuiltin('ActivateWindow(Videos, plugin://plugin.video.embycon/?mode=GET_CONTENT&url={url}&media_type={media_type})'.format(url=urllib.quote(url), media_type=media_type))
+            xbmc.executebuiltin('ActivateWindow(Videos, plugin://plugin.video.jellycon/?mode=GET_CONTENT&url={url}&media_type={media_type})'.format(url=urllib.quote(url), media_type=media_type))

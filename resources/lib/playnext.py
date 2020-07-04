@@ -138,7 +138,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
             play_info["item_id"] = next_item_id
             play_info["auto_resume"] = "-1"
             play_info["force_transcode"] = False
-            send_event_notification("embycon_play_action", play_info)
+            send_event_notification("jellycon_play_action", play_info)
         elif control_id == 3014:
             self.close()
 

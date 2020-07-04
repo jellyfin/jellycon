@@ -4,14 +4,14 @@ Log into Libreelec and run the following commands and then restart Libreelec.
 
 cp -r /usr/share/kodi/addons/skin.estuary /storage/.kodi/addons
 
-cp /storage/.kodi/addons/plugin.video.embycon/resources/skins/skin.estuary/xml/Home-17.1.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
+cp /storage/.kodi/addons/plugin.video.jellycon/resources/skins/skin.estuary/xml/Home-17.1.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
 or
-cp /storage/.kodi/addons/plugin.video.embycon/resources/skins/skin.estuary/xml/Home-17.3.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
+cp /storage/.kodi/addons/plugin.video.jellycon/resources/skins/skin.estuary/xml/Home-17.3.xml /storage/.kodi/addons/skin.estuary/xml/Home.xml
 
 Windows
 
 xcopy /S /Y "c:\Program Files (x86)\Kodi\addons\skin.estuary\*" "%APPDATA%\Kodi\addons\skin.estuary\"
 
-xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.1.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
+xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.jellycon\resources\skins\skin.estuary\xml\Home-17.1.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
 or
-xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.embycon\resources\skins\skin.estuary\xml\Home-17.3.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"
+xcopy /Y "%APPDATA%\Kodi\addons\plugin.video.jellycon\resources\skins\skin.estuary\xml\Home-17.3.xml" "%APPDATA%\Kodi\addons\skin.estuary\xml\Home.xml"

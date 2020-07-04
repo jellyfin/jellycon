@@ -111,9 +111,9 @@ class DownloadUtils:
 
     def post_capabilities(self):
 
-        url = "{server}/emby/Sessions/Capabilities/Full?format=json"
+        url = "{server}/Sessions/Capabilities/Full?format=json"
         data = {
-            'IconUrl': "https://raw.githubusercontent.com/faush01/plugin.video.embycon/develop/kodi.png",
+            'IconUrl': "https://raw.githubusercontent.com/faush01/plugin.video.jellycon/develop/kodi.png",
             'SupportsMediaControl': True,
             'PlayableMediaTypes': ["Video", "Audio"],
             'SupportedCommands': ["MoveUp",
@@ -328,9 +328,9 @@ class DownloadUtils:
         }
 
         if force_transcode:
-            url = "{server}/emby/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
+            url = "{server}/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
         else:
-            url = "{server}/emby/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
+            url = "{server}/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
 
         log.debug("PlaybackInfo : {0}", url)
         log.debug("PlaybackInfo : {0}", profile)
@@ -399,7 +399,7 @@ class DownloadUtils:
         # All the image tags
         for tag_name in image_tags:
             tag = image_tags[tag_name]
-            art_url = "%s/emby/Items/%s/Images/%s/0?Format=original&Tag=%s" % (server, item_id, tag_name, tag)
+            art_url = "%s/Items/%s/Images/%s/0?Format=original&Tag=%s" % (server, item_id, tag_name, tag)
             all_art[tag_name] = art_url
 
         # Series images
@@ -407,7 +407,7 @@ class DownloadUtils:
             image_tag = item["SeriesPrimaryImageTag"]
             series_id = item["SeriesId"]
             if image_tag and series_id:
-                art_url = "%s/emby/Items/%s/Images/Primary/0?Format=original&Tag=%s" % (server, series_id, image_tag)
+                art_url = "%s/Items/%s/Images/Primary/0?Format=original&Tag=%s" % (server, series_id, image_tag)
                 all_art["Primary.Series"] = art_url
 
         return all_art
@@ -466,7 +466,7 @@ class DownloadUtils:
             # log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
+        artwork = "%s/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
 
         if self.use_https and not self.verify_cert:
             artwork += "|verifypeer=false"
@@ -487,7 +487,7 @@ class DownloadUtils:
     def image_url(self, item_id, art_type, index, width, height, image_tag, server):
 
         # test imageTag e3ab56fe27d389446754d0fb04910a34
-        artwork = "%s/emby/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
+        artwork = "%s/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
         if int(width) > 0:
             artwork += '&MaxWidth=%s' % width
         if int(height) > 0:
@@ -506,7 +506,7 @@ class DownloadUtils:
         tag = user.get("PrimaryImageTag")
         server = self.get_server()
 
-        artwork = "%s/emby/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
+        artwork = "%s/Users/%s/Images/%s?Format=original&tag=%s" % (server, user_id, item_type, tag)
 
         if self.use_https and not self.verify_cert:
             artwork += "|verifypeer=false"
@@ -520,7 +520,7 @@ class DownloadUtils:
         user_image = window.get_property("userimage")
 
         if userid and user_image:
-            log.debug("EmbyCon DownloadUtils -> Returning saved UserID: {0}", userid)
+            log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}", userid)
             return userid
 
         settings = xbmcaddon.Addon()
@@ -532,7 +532,7 @@ class DownloadUtils:
         log.debug("Looking for user name: {0}", user_name)
 
         try:
-            json_data = self.download_url("{server}/emby/Users/Public?format=json", suppress=True, authenticate=False)
+            json_data = self.download_url("{server}/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception as msg:
             log.error("Get User unable to connect: {0}", msg)
             return ""
@@ -566,7 +566,7 @@ class DownloadUtils:
             if auth_ok == "":
                 xbmcgui.Dialog().notification(string_load(30316),
                                               string_load(30044),
-                                              icon="special://home/addons/plugin.video.embycon/icon.png")
+                                              icon="special://home/addons/plugin.video.jellycon/icon.png")
                 return ""
             if not userid:
                 userid = window.get_property("userid")
@@ -577,7 +577,7 @@ class DownloadUtils:
         if userid == "":
             xbmcgui.Dialog().notification(string_load(30316),
                                           string_load(30045),
-                                          icon="special://home/addons/plugin.video.embycon/icon.png")
+                                          icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         log.debug("userid: {0}", userid)
 
@@ -592,7 +592,7 @@ class DownloadUtils:
 
         token = window.get_property("AccessToken")
         if token is not None and token != "":
-            log.debug("EmbyCon DownloadUtils -> Returning saved AccessToken: {0}", token)
+            log.debug("JellyCon DownloadUtils -> Returning saved AccessToken: {0}", token)
             return token
 
         settings = xbmcaddon.Addon()
@@ -601,7 +601,7 @@ class DownloadUtils:
         if host is None or host == "" or port is None or port == "":
             return ""
 
-        url = "{server}/emby/Users/AuthenticateByName?format=json"
+        url = "{server}/Users/AuthenticateByName?format=json"
 
         user_details = load_user_details(settings)
         user_name = urllib.quote(user_details.get("username", ""))
@@ -652,7 +652,7 @@ class DownloadUtils:
         # remove some chars not valid for names
         device_name = device_name.replace("\"", "_")
         if len(device_name) == 0:
-            device_name = "EmbyCon"
+            device_name = "JellyCon"
 
         headers = {}
         headers["Accept-encoding"] = "gzip"
@@ -661,19 +661,19 @@ class DownloadUtils:
         if authenticate is False:
             auth_string = "MediaBrowser Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             # headers["Authorization"] = authString
-            headers['X-Emby-Authorization'] = auth_string
+            headers['X-Jellyfin-Authorization'] = auth_string
             return headers
         else:
             userid = self.get_user_id()
             auth_string = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
             # headers["Authorization"] = authString
-            headers['X-Emby-Authorization'] = auth_string
+            headers['X-Jellyfin-Authorization'] = auth_string
 
             auth_token = self.authenticate()
             if auth_token != "":
                 headers["X-MediaBrowser-Token"] = auth_token
 
-            log.debug("EmbyCon Authentication Header: {0}", headers)
+            log.debug("JellyCon Authentication Header: {0}", headers)
             return headers
 
     @timer
@@ -765,7 +765,7 @@ class DownloadUtils:
                 user_and_pass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
                 head["Authorization"] = 'Basic %s' % user_and_pass
 
-            head["User-Agent"] = "EmbyCon-" + ClientInformation().get_version()
+            head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
             log.debug("HEADERS: {0}", head)
 
             if post_body is not None:
@@ -820,14 +820,14 @@ class DownloadUtils:
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
                                                   string_load(30200) % str(data.reason),
-                                                  icon="special://home/addons/plugin.video.embycon/icon.png")
+                                                  icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         except Exception as msg:
             log.error("Unable to connect to {0} : {1}", server, msg)
             if suppress is False:
                 xbmcgui.Dialog().notification(string_load(30316),
                                               str(msg),
-                                              icon="special://home/addons/plugin.video.embycon/icon.png")
+                                              icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         finally:
             try:

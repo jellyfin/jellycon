@@ -49,7 +49,7 @@ dataManager = DataManager()
 
 @timer
 def main_entry_point():
-    log.debug("===== EmbyCon START =====")
+    log.debug("===== JellyCon START =====")
 
     settings = xbmcaddon.Addon()
     profile_count = int(settings.getSetting('profile_count'))
@@ -61,7 +61,7 @@ def main_entry_point():
         pr.enable()
 
     log.debug("Running Python: {0}", sys.version_info)
-    log.debug("Running EmbyCon: {0}", ClientInformation().get_version())
+    log.debug("Running JellyCon: {0}", ClientInformation().get_version())
     log.debug("Kodi BuildVersion: {0}", xbmc.getInfoLabel("System.BuildVersion"))
     log.debug("Kodi Version: {0}", kodi_version)
     log.debug("Script argument data: {0}", sys.argv)
@@ -123,11 +123,11 @@ def main_entry_point():
     elif mode == "WIDGET_CONTENT_CAST":
         get_widget_content_cast(int(sys.argv[1]), params)
     elif mode == "SHOW_CONTENT":
-        # plugin://plugin.video.embycon?mode=SHOW_CONTENT&item_type=Movie|Series
+        # plugin://plugin.video.jellycon?mode=SHOW_CONTENT&item_type=Movie|Series
         check_server()
         show_content(params)
     elif mode == "SEARCH":
-        # plugin://plugin.video.embycon?mode=SEARCH
+        # plugin://plugin.video.jellycon?mode=SEARCH
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
         show_search()
     elif mode == "NEW_SEARCH":
@@ -148,8 +148,8 @@ def main_entry_point():
         else:
             log.info("Unable to find TV show parent ID.")
     else:
-        log.debug("EmbyCon -> Mode: {0}", mode)
-        log.debug("EmbyCon -> URL: {0}", param_url)
+        log.debug("JellyCon -> Mode: {0}", mode)
+        log.debug("JellyCon -> URL: {0}", param_url)
 
         if mode == "GET_CONTENT":
             get_content(param_url, params)
@@ -174,7 +174,7 @@ def main_entry_point():
         with open(tab_file_name, 'wb') as f:
             f.write(s.getvalue())
 
-    log.debug("===== EmbyCon FINISHED =====")
+    log.debug("===== JellyCon FINISHED =====")
 
 
 def __enrich_url(param_url, params):
@@ -190,7 +190,7 @@ def __get_parent_id_from(params):
     show_provider_ids = params.get("show_ids")
     if show_provider_ids is not None:
         log.debug("TV show providers IDs: {}", show_provider_ids)
-        get_show_url = "{server}/emby/Users/{userid}/Items?fields=MediaStreams&Recursive=true" \
+        get_show_url = "{server}/Users/{userid}/Items?fields=MediaStreams&Recursive=true" \
                        "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
                        "&AnyProviderIdEquals=" + show_provider_ids
         content = dataManager.get_content(get_show_url)
@@ -209,7 +209,7 @@ def toggle_watched(params):
     item_id = params.get("item_id", None)
     if item_id is None:
         return
-    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
+    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("toggle_watched item info: {0}", result)
@@ -226,7 +226,7 @@ def toggle_watched(params):
 
 def mark_item_watched(item_id):
     log.debug("Mark Item Watched: {0}", item_id)
-    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
+    url = "{server}/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.download_url(url, post_body="", method="POST")
     check_for_new_content()
     home_window = HomeWindow()
@@ -240,7 +240,7 @@ def mark_item_watched(item_id):
 
 def mark_item_unwatched(item_id):
     log.debug("Mark Item UnWatched: {0}", item_id)
-    url = "{server}/emby/Users/{userid}/PlayedItems/" + item_id
+    url = "{server}/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.download_url(url, method="DELETE")
     check_for_new_content()
     home_window = HomeWindow()
@@ -254,7 +254,7 @@ def mark_item_unwatched(item_id):
 
 def mark_item_favorite(item_id):
     log.debug("Add item to favourites: {0}", item_id)
-    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
+    url = "{server}/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.download_url(url, post_body="", method="POST")
     check_for_new_content()
     home_window = HomeWindow()
@@ -267,7 +267,7 @@ def mark_item_favorite(item_id):
 
 def unmark_item_favorite(item_id):
     log.debug("Remove item from favourites: {0}", item_id)
-    url = "{server}/emby/Users/{userid}/FavoriteItems/" + item_id
+    url = "{server}/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.download_url(url, method="DELETE")
     check_for_new_content()
     home_window = HomeWindow()
@@ -280,7 +280,7 @@ def unmark_item_favorite(item_id):
 
 def delete(item_id):
 
-    json_data = downloadUtils.download_url("{server}/emby/Users/{userid}/Items/" + item_id + "?format=json")
+    json_data = downloadUtils.download_url("{server}/Users/{userid}/Items/" + item_id + "?format=json")
     item = json.loads(json_data)
 
     item_id = item.get("Id")
@@ -305,7 +305,7 @@ def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(string_load(30091), final_name, string_load(30092))
     if return_value:
         log.debug('Deleting Item: {0}', item_id)
-        url = '{server}/emby/Items/' + item_id
+        url = '{server}/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(string_load(30052), string_load(30053))
         downloadUtils.download_url(url, method="DELETE")
@@ -330,7 +330,7 @@ def get_params():
     param = {}
 
     # add plugin path
-    request_path = plugin_path.replace("plugin://plugin.video.embycon", "")
+    request_path = plugin_path.replace("plugin://plugin.video.jellycon", "")
     param["request_path"] = request_path
 
     if len(paramstring) >= 2:
@@ -348,7 +348,7 @@ def get_params():
             elif (len(splitparams)) == 3:
                 param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
 
-    log.debug("EmbyCon -> Detected parameters: {0}", param)
+    log.debug("JellyCon -> Detected parameters: {0}", param)
     return param
 
 
@@ -359,7 +359,7 @@ def show_menu(params):
     settings = xbmcaddon.Addon()
     item_id = params["item_id"]
 
-    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
+    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("Menu item info: {0}", result)
@@ -424,11 +424,11 @@ def show_menu(params):
 
         if user_data.get("IsFavorite", False) is False:
             li = xbmcgui.ListItem(string_load(30272))
-            li.setProperty('menu_id', 'emby_set_favorite')
+            li.setProperty('menu_id', 'jellyfin_set_favorite')
             action_items.append(li)
         else:
             li = xbmcgui.ListItem(string_load(30273))
-            li.setProperty('menu_id', 'emby_unset_favorite')
+            li.setProperty('menu_id', 'jellyfin_unset_favorite')
             action_items.append(li)
 
     can_delete = result.get("CanDelete", False)
@@ -506,7 +506,7 @@ def show_menu(params):
         settings.setSetting(view_key, "")
 
     elif selected_action == "refresh_server":
-        url = ("{server}/emby/Items/" + item_id + "/Refresh" +
+        url = ("{server}/Items/" + item_id + "/Refresh" +
                "?Recursive=true" +
                "&ImageRefreshMode=FullRefresh" +
                "&MetadataRefreshMode=FullRefresh" +
@@ -519,7 +519,7 @@ def show_menu(params):
         user_details = load_user_details(settings)
         user_name = user_details["username"]
         hide_tag_string = "hide-" + user_name
-        url = "{server}/emby/Items/" + item_id + "/Tags/Add"
+        url = "{server}/Items/" + item_id + "/Tags/Add"
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
         res = downloadUtils.download_url(url, post_body=post_tag_data, method="POST")
         log.debug("Add Tag Responce: {0}", res)
@@ -560,10 +560,10 @@ def show_menu(params):
         params["action"] = "add_to_playlist"
         play_action(params)
 
-    elif selected_action == "emby_set_favorite":
+    elif selected_action == "jellyfin_set_favorite":
         mark_item_favorite(item_id)
 
-    elif selected_action == "emby_unset_favorite":
+    elif selected_action == "jellyfin_unset_favorite":
         unmark_item_favorite(item_id)
 
     elif selected_action == "mark_watched":
@@ -576,7 +576,7 @@ def show_menu(params):
         delete(item_id)
 
     elif selected_action == "safe_delete":
-        url = "{server}/emby_safe_delete/delete_item/" + item_id
+        url = "{server}/jellyfin_safe_delete/delete_item/" + item_id
         delete_action = downloadUtils.download_url(url)
         result = json.loads(delete_action)
         dialog = xbmcgui.Dialog()
@@ -614,7 +614,7 @@ def show_menu(params):
             log.debug("safe_delete_confirm_dialog: {0}", confirm_dialog.confirm)
 
             if confirm_dialog.confirm:
-                url = "{server}/emby_safe_delete/delete_item_action"
+                url = "{server}/jellyfin_safe_delete/delete_item_action"
                 playback_info = {
                     'item_id': item_id,
                     'action_token': action_token
@@ -632,9 +632,9 @@ def show_menu(params):
             dialog.ok("Error", "Error getting safe delete confirmation")
 
     elif selected_action == "show_extras":
-        # "http://localhost:8096/emby/Users/3138bed521e5465b9be26d2c63be94af/Items/78/SpecialFeatures"
-        u = "{server}/emby/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
-        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Videos")
+        # "http://localhost:8096/Users/3138bed521e5465b9be26d2c63be94af/Items/78/SpecialFeatures"
+        u = "{server}/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
+        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Videos")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         xbmc.executebuiltin(built_in_command)
 
@@ -642,7 +642,7 @@ def show_menu(params):
         xbmc.executebuiltin("Dialog.Close(all,true)")
         parent_id = result["ParentId"]
         series_id = result["SeriesId"]
-        u = ('{server}/emby/Shows/' + series_id +
+        u = ('{server}/Shows/' + series_id +
              '/Episodes'
              '?userId={userid}' +
              '&seasonId=' + parent_id +
@@ -650,7 +650,7 @@ def show_menu(params):
              '&IsMissing=false' +
              '&Fields=SpecialEpisodeNumbers,{field_filters}' +
              '&format=json')
-        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Season")
+        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Season")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         xbmc.executebuiltin(built_in_command)
 
@@ -661,13 +661,13 @@ def show_menu(params):
         if not series_id:
             series_id = item_id
 
-        u = ('{server}/emby/Shows/' + series_id +
+        u = ('{server}/Shows/' + series_id +
              '/Seasons'
              '?userId={userid}' +
              '&Fields={field_filters}' +
              '&format=json')
 
-        action_url = ("plugin://plugin.video.embycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Series")
+        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Series")
 
         if xbmc.getCondVisibility("Window.IsActive(home)"):
             built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
@@ -688,7 +688,7 @@ def show_menu(params):
 def populate_listitem(item_id):
     log.debug("populate_listitem: {0}", item_id)
 
-    url = "{server}/emby/Users/{userid}/Items/" + item_id + "?format=json"
+    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     json_data = downloadUtils.download_url(url)
     result = json.loads(json_data)
     log.debug("populate_listitem item info: {0}", result)
@@ -747,7 +747,7 @@ def show_content(params):
     if item_type.lower().find("movie") == -1:
         group_movies = False
 
-    content_url = ("{server}/emby/Users/{userid}/Items" +
+    content_url = ("{server}/Users/{userid}/Items" +
                    "?format=json" +
                    "&ImageTypeLimit=1" +
                    "&IsMissing=False" +
@@ -769,7 +769,7 @@ def search_results_person(params):
     handle = int(sys.argv[1])
 
     person_id = params.get("person_id")
-    details_url = ('{server}/emby/Users/{userid}/items' +
+    details_url = ('{server}/Users/{userid}/items' +
                    '?PersonIds=' + person_id +
                    # '&IncludeItemTypes=Movie' +
                    '&Recursive=true' +
@@ -889,7 +889,7 @@ def search_results(params):
 
     # what type of search
     if item_type == "person":
-        search_url = ("{server}/emby/Persons" +
+        search_url = ("{server}/Persons" +
                       "?searchTerm=" + query +
                       "&IncludePeople=true" +
                       "&IncludeMedia=false" +
@@ -939,7 +939,7 @@ def search_results(params):
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     else:
-        search_url = ("{server}/emby/Users/{userid}/Items" +
+        search_url = ("{server}/Users/{userid}/Items" +
                       "?searchTerm=" + query +
                       "&IncludePeople=false" +
                       "&IncludeMedia=true" +
@@ -1001,14 +1001,14 @@ def play_action(params):
     play_info["media_source_id"] = media_source_id
     play_info["subtitle_stream_index"] = subtitle_stream_index
     play_info["audio_stream_index"] = audio_stream_index
-    log.info("Sending embycon_play_action : {0}", play_info)
-    send_event_notification("embycon_play_action", play_info)
+    log.info("Sending jellycon_play_action : {0}", play_info)
+    send_event_notification("jellycon_play_action", play_info)
 
 
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
 
-    url = ("{server}/emby/Users/{userid}/Items/%s/LocalTrailers?format=json" % item_id)
+    url = ("{server}/Users/{userid}/Items/%s/LocalTrailers?format=json" % item_id)
 
     json_data = downloadUtils.download_url(url)
     result = json.loads(json_data)
@@ -1034,7 +1034,7 @@ def play_item_trailer(item_id):
         trailer_names.append(name)
         trailer_list.append(info)
 
-    url = ("{server}/emby/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % item_id)
+    url = ("{server}/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % item_id)
     json_data = downloadUtils.download_url(url)
     result = json.loads(json_data)
     log.debug("RemoteTrailers: {0}", result)
@@ -1083,6 +1083,6 @@ def play_item_trailer(item_id):
 
             # play_info = {}
             # play_info["url"] = youtube_plugin
-            # log.info("Sending embycon_play_trailer_action : {0}", play_info)
-            # send_event_notification("embycon_play_youtube_trailer_action", play_info)
+            # log.info("Sending jellycon_play_trailer_action : {0}", play_info)
+            # send_event_notification("jellycon_play_youtube_trailer_action", play_info)
             xbmc.executebuiltin(youtube_plugin)

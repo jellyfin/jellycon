@@ -35,7 +35,7 @@ class ContextMonitor(threading.Thread):
 
         '''
         context_up = False
-        is_embycon_item = False
+        is_jellycon_item = False
         
         while not xbmc.abortRequested and not self.stop_thread:
 
@@ -44,7 +44,7 @@ class ContextMonitor(threading.Thread):
             else:
                 if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
                     context_up = True
-                    if is_embycon_item:
+                    if is_jellycon_item:
                         xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
                 else:
                     if context_up:  # context now down, do something
@@ -60,9 +60,9 @@ class ContextMonitor(threading.Thread):
 
                 container_id = xbmc.getInfoLabel("System.CurrentControlID")
                 condition = ("String.StartsWith(Container(" + str(container_id) +
-                             ").ListItem.Path,plugin://plugin.video.embycon) + !String.IsEmpty(Container(" +
+                             ").ListItem.Path,plugin://plugin.video.jellycon) + !String.IsEmpty(Container(" +
                              str(container_id) + ").ListItem.Property(id))")
-                is_embycon_item = xbmc.getCondVisibility(condition)
+                is_jellycon_item = xbmc.getCondVisibility(condition)
 
                 xbmc.sleep(200)
                 
