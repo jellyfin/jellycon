@@ -102,7 +102,6 @@ class PlayUtils:
                        "&PlaySessionId=%s" +
                        "&MediaSourceId=%s")
             playurl = playurl % (server, item_id, play_session_id, item_id)
-            import web_pdb; web_pdb.set_trace()
             if use_https and not verify_cert:
                 playurl += "|verifypeer=false"
             playback_type = "1"
