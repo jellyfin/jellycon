@@ -70,7 +70,7 @@ def check_connection_speed():
     head = du.get_auth_header(True)
     head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
 
-    conn.request(method="GET", url=url_path, headers=head)
+    conn.request(method="GET", url=url, headers=head)
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
