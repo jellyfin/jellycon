@@ -28,7 +28,7 @@ __addon_name__ = __addon__.getAddonInfo('name')
 
 def check_connection_speed():
     log.debug("check_connection_speed")
-
+    import web_pdb; web_pdb.set_trace()
     settings = xbmcaddon.Addon()
     verify_cert = settings.getSetting('verify_cert') == 'true'
     http_timeout = int(settings.getSetting("http_timeout"))
@@ -70,7 +70,7 @@ def check_connection_speed():
     head = du.get_auth_header(True)
     head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
 
-    conn.request(method="GET", url=url_path, headers=head)
+    conn.request(method="GET", url=url, headers=head)
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
