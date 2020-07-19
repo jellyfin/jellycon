@@ -745,12 +745,16 @@ class DownloadUtils:
 
             if post_body:
 
-                head["Content-Type"] = "application/json" if isinstance(post_body, dict) else "application/x-www-form-urlencoded"
+                if isinstance(post_body, dict): 
+                    head["Content-Type"] = "application/json"            
+                    post_body = json.dumps(post_body)   
+                else:   
+                    head["Content-Type"] = "application/x-www-form-urlencoded"
 
                 log.debug("Content-Type: {0}", head["Content-Type"])
                 log.debug("POST DATA: {0}", post_body)
 
-                data = http_request(url, data=json.dumps(post_body), headers=head)
+                data = http_request(url, data=post_body, headers=head)
             else:
                 data = http_request(url, headers=head)
 
