@@ -343,50 +343,15 @@ class DownloadUtils:
 
     def get_server(self):
         settings = xbmcaddon.Addon()
-        host = settings.getSetting('ipaddress')
 
-        if len(host) == 0 or host == "<none>":
-            return None
+        #For migration from storing URL parts to just one URL
+        if settings.getSetting('ipaddress') != "" and settings.getSetting('ipaddress') != "&lt;none&gt;":
+            log.info("Migrating to new server url storage")
+            url = ("http://" if settings.getSetting('protocol') == "0" else "https://") + settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
+            settings.setSetting('server_address', url)
+            settings.setSetting('ipaddress', "")
 
-        port = settings.getSetting('port')
-
-        if not port and self.use_https:
-            port = "443"
-            settings.setSetting("port", port)
-        elif not port:
-            port = "80"
-            settings.setSetting("port", port)
-
-        # if user entered a full path i.e. http://some_host:port
-        if host.lower().strip().startswith("http://") or host.lower().strip().startswith("https://"):
-            log.debug("Extracting host info from url: {0}", host)
-            url_bits = urlparse(host.strip())
-
-            if host.lower().strip().startswith("http://"):
-                settings.setSetting('protocol', '0')
-                self.use_https = False
-            elif host.lower().strip().startswith("https://"):
-                settings.setSetting('protocol', '1')
-                self.use_https = True
-
-            if url_bits.hostname is not None and len(url_bits.hostname) > 0:
-                host = url_bits.hostname
-
-                if url_bits.username and url_bits.password:
-                    host = "%s:%s@" % (url_bits.username, url_bits.password) + host
-
-                settings.setSetting("ipaddress", host)
-
-            if url_bits.port is not None and url_bits.port > 0:
-                port = str(url_bits.port)
-                settings.setSetting("port", port)
-
-        if self.use_https:
-            server = "https://" + host + ":" + port
-        else:
-            server = "http://" + host + ":" + port
-
-        return server
+        return settings.getSetting('server_address')
 
     @staticmethod
     def get_all_artwork(item, server):
@@ -597,10 +562,7 @@ class DownloadUtils:
             return token
 
         settings = xbmcaddon.Addon()
-        port = settings.getSetting("port")
-        host = settings.getSetting("ipaddress")
-        if host is None or host == "" or port is None or port == "":
-            return ""
+        server_address = settings.getSetting("server_address")
 
         url = "{server}/Users/AuthenticateByName?format=json"
 

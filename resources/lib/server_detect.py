@@ -225,30 +225,20 @@ def check_server(force=False, change_user=False, notify=False):
                 else:
                     xbmc.executebuiltin("ActivateWindow(Home)")
                     return
+              
+                public_lookup_url = "%s/Users/Public?format=json" % (server_url)
 
-                url_bits = urlparse(server_url)
-                server_address = url_bits.hostname
-                server_port = str(url_bits.port)
-                server_protocol = url_bits.scheme
-                user_name = url_bits.username
-                user_password = url_bits.password
-
-                if user_name and user_password:
-                    temp_url = "%s://%s:%s@%s:%s/Users/Public?format=json" % (server_protocol, user_name, user_password, server_address, server_port)
-                else:
-                    temp_url = "%s://%s:%s/Users/Public?format=json" % (server_protocol, server_address, server_port)
-
-                log.debug("Testing_Url: {0}", temp_url)
+                log.debug("Testing_Url: {0}", public_lookup_url)
                 progress = xbmcgui.DialogProgress()
                 progress.create(__addon_name__ + " : " + string_load(30376))
                 progress.update(0, string_load(30377))
-                json_data = du.download_url(temp_url, authenticate=False)
+                json_data = du.download_url(public_lookup_url, authenticate=False)
                 progress.close()
 
                 result = json.loads(json_data)
                 if result is not None:
                     xbmcgui.Dialog().ok(__addon_name__ + " : " + string_load(30167),
-                                        "%s://%s:%s/" % (server_protocol, server_address, server_port))
+                                        server_url)
                     break
                 else:
                     return_index = xbmcgui.Dialog().yesno(__addon_name__ + " : " + string_load(30135),
@@ -259,29 +249,7 @@ def check_server(force=False, change_user=False, notify=False):
                         return
 
         log.debug("Selected server: {0}", server_url)
-
-        # parse the url
-        url_bits = urlparse(server_url)
-        server_address = url_bits.hostname
-        server_port = str(url_bits.port)
-        server_protocol = url_bits.scheme
-        user_name = url_bits.username
-        user_password = url_bits.password
-        log.debug("Detected server info {0} - {1} - {2}", server_protocol, server_address, server_port)
-
-        # save the server info
-        settings.setSetting("port", server_port)
-
-        if user_name and user_password:
-            server_address = "%s:%s@%s" % (url_bits.username, url_bits.password, server_address)
-
-        settings.setSetting("ipaddress", server_address)
-
-        if server_protocol == "https":
-            settings.setSetting("protocol", "1")
-        else:
-            settings.setSetting("protocol", "0")
-
+        settings.setSetting("server_address", server_url)
         something_changed = True
 
     # do we need to change the user
