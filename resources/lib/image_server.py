@@ -1,4 +1,3 @@
-
 import xbmcvfs
 import xbmc
 import base64
@@ -7,7 +6,7 @@ from urlparse import urlparse
 from random import shuffle
 
 import threading
-import httplib
+import requests
 import io
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
@@ -119,10 +118,9 @@ def build_image(path):
             log.debug("Loading image from : {0} {1} {2}", image_count, server, url_full_path)
 
             try:
-                conn = httplib.HTTPConnection(server)
-                conn.request("GET", url_full_path)
-                image_responce = conn.getresponse()
-                image_data = image_responce.read()
+
+                image_responce = requests.get(thumb_url)
+                image_data = image_responce.content
 
                 loaded_image = Image.open(io.BytesIO(image_data))
                 image = ImageOps.fit(loaded_image, size, method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
@@ -170,12 +168,6 @@ class HttpImageHandler(BaseHTTPRequestHandler):
         self.end_headers()
         return
 
-    def do_QUIT(self):
-        log.debug("HttpImageHandler:do_QUIT()")
-        self.send_response(200)
-        self.end_headers()
-        return
-
     def serve_image(self):
 
         if pil_loaded:
@@ -211,14 +203,8 @@ class HttpImageServerThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def stop(self):
-        self.keep_running = False
         log.debug("HttpImageServerThread:stop called")
-        try:
-            conn = httplib.HTTPConnection("localhost:%d" % PORT_NUMBER)
-            conn.request("QUIT", "/")
-            conn.getresponse()
-        except:
-            pass
+        self.keep_running = False
 
     def run(self):
         log.debug("HttpImageServerThread:started")

@@ -3,7 +3,7 @@
 import socket
 import json
 from urlparse import urlparse
-import httplib
+import requests
 import ssl
 import time
 import hashlib
@@ -39,65 +39,44 @@ def check_connection_speed():
     server = du.get_server()
 
     url = server + "/playback/bitratetest?size=%s" % test_data_size
-
-    url_bits = urlparse(url.strip())
-
-    protocol = url_bits.scheme
-    host_name = url_bits.hostname
-    port = url_bits.port
-    # user_name = url_bits.username
-    # user_password = url_bits.password
-    url_path = url_bits.path
-    url_puery = url_bits.query
-
-    server = "%s:%s" % (host_name, port)
-    url_path = url_path + "?" + url_puery
-
-    local_use_https = False
-    if protocol.lower() == "https":
-        local_use_https = True
-
-    if local_use_https and verify_cert:
-        log.debug("Connection: HTTPS, Cert checked")
-        conn = httplib.HTTPSConnection(server, timeout=http_timeout)
-    elif local_use_https and not verify_cert:
-        log.debug("Connection: HTTPS, Cert NOT checked")
-        conn = httplib.HTTPSConnection(server, timeout=http_timeout, context=ssl._create_unverified_context())
-    else:
-        log.debug("Connection: HTTP")
-        conn = httplib.HTTPConnection(server, timeout=http_timeout)
-
+    
     head = du.get_auth_header(True)
     head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
 
-    conn.request(method="GET", url=url, headers=head)
+    request_details = {
+        "stream": True,
+        "headers": head
+    }
+
+    if not verify_cert:
+        request_details["verify"] = False
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
     progress_dialog.create("JellyCon connection speed test", message)
-    total_data_read = 0
-    total_time = time.time()
+    start_time = time.time()
 
     log.debug("Starting Connection Speed Test")
-    response = conn.getresponse()
+    
+    response = requests.get(url, **request_details)
+
     last_percentage_done = 0
-    if int(response.status) == 200:
-        data = response.read(10240)
-        while len(data) > 0:
+    total_data_read = 0
+    if response.status_code == 200:
+        for data in response.iter_content(chunk_size=10240):
             total_data_read += len(data)
             percentage_done = int(float(total_data_read) / float(test_data_size) * 100.0)
             if last_percentage_done != percentage_done:
                 progress_dialog.update(percentage_done)
                 last_percentage_done = percentage_done
-            data = response.read(10240)
     else:
-        log.error("HTTP response error: {0} {1}", response.status, response.reason)
-        error_message = "HTTP response error: %s\n%s" % (response.status, response.reason)
+        log.error("HTTP response error: {0} {1}", response.status_code, response.content)
+        error_message = "HTTP response error: %s\n%s" % (response.status_code, response.content)
         xbmcgui.Dialog().ok("Speed Test Error", error_message)
         return -1
 
     total_data_read_kbits = (total_data_read * 8) / 1000
-    total_time = time.time() - total_time
+    total_time = time.time() - start_time
     speed = int(total_data_read_kbits / total_time)
     log.debug("Finished Connection Speed Test, speed: {0} total_data: {1}, total_time: {2}", speed, total_data_read, total_time)
 
