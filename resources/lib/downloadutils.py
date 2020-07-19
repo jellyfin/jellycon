@@ -3,7 +3,7 @@
 import xbmcgui
 import xbmcaddon
 
-import httplib
+import requests
 import hashlib
 import ssl
 import StringIO
@@ -13,6 +13,7 @@ from urlparse import urlparse
 import urllib
 from base64 import b64encode
 from collections import defaultdict
+from traceback import format_exc
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -680,7 +681,6 @@ class DownloadUtils:
     def download_url(self, url, suppress=False, post_body=None, method="GET", authenticate=True, headers=None):
         log.debug("downloadUrl")
 
-        return_data = "null"
         settings = xbmcaddon.Addon()
         user_details = load_user_details(settings)
         username = user_details.get("username", "")
@@ -689,7 +689,7 @@ class DownloadUtils:
         http_timeout = int(settings.getSetting("http_timeout"))
 
         if authenticate and username == "":
-            return return_data
+            return "null"
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
@@ -699,13 +699,13 @@ class DownloadUtils:
         if url.find("{server}") != -1:
             server = self.get_server()
             if server is None:
-                return return_data
+                return "null"
             url = url.replace("{server}", server)
 
         if url.find("{userid}") != -1:
             userid = self.get_user_id()
             if not userid:
-                return return_data
+                return "null"
             url = url.replace("{userid}", userid)
 
         if url.find("{ItemLimit}") != -1:
@@ -720,47 +720,20 @@ class DownloadUtils:
             home_window = HomeWindow()
             random_movies = home_window.get_property("random-movies")
             if not random_movies:
-                return return_data
+                return "null"
             url = url.replace("{random_movies}", random_movies)
 
         log.debug("After: {0}", url)
-        conn = None
-
+        
         try:
-
             url_bits = urlparse(url.strip())
-
-            protocol = url_bits.scheme
-            host_name = url_bits.hostname
-            port = url_bits.port
             user_name = url_bits.username
             user_password = url_bits.password
-            url_path = url_bits.path
-            url_puery = url_bits.query
-
-            if not host_name or host_name == "<none>":
-                return return_data
-
-            local_use_https = False
-            if protocol.lower() == "https":
-                local_use_https = True
-
-            server = "%s:%s" % (host_name, port)
-            url_path = url_path + "?" + url_puery
-
-            if local_use_https and self.verify_cert:
-                log.debug("Connection: HTTPS, Cert checked")
-                conn = httplib.HTTPSConnection(server, timeout=http_timeout)
-            elif local_use_https and not self.verify_cert:
-                log.debug("Connection: HTTPS, Cert NOT checked")
-                conn = httplib.HTTPSConnection(server, timeout=http_timeout, context=ssl._create_unverified_context())
-            else:
-                log.debug("Connection: HTTP")
-                conn = httplib.HTTPConnection(server, timeout=http_timeout)
 
             head = self.get_auth_header(authenticate)
 
             if user_name and user_password:
+                log.info("Replacing username & Password info")
                 # add basic auth headers
                 user_and_pass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
                 head["Authorization"] = 'Basic %s' % user_and_pass
@@ -768,46 +741,40 @@ class DownloadUtils:
             head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
             log.debug("HEADERS: {0}", head)
 
-            if post_body is not None:
-                if isinstance(post_body, dict):
-                    content_type = "application/json"
-                    post_body = json.dumps(post_body)
-                else:
-                    content_type = "application/x-www-form-urlencoded"
+            http_request = getattr(requests, method.lower())
 
-                head["Content-Type"] = content_type
-                log.debug("Content-Type: {0}", content_type)
+            if post_body:
 
+                if isinstance(post_body, dict): 
+                    head["Content-Type"] = "application/json"            
+                    post_body = json.dumps(post_body)   
+                else:   
+                    head["Content-Type"] = "application/x-www-form-urlencoded"
+
+                log.debug("Content-Type: {0}", head["Content-Type"])
                 log.debug("POST DATA: {0}", post_body)
-                conn.request(method=method, url=url_path, body=post_body, headers=head)
+
+                data = http_request(url, data=post_body, headers=head)
             else:
-                conn.request(method=method, url=url_path, headers=head)
+                data = http_request(url, headers=head)
 
-            data = conn.getresponse()
-            log.debug("HTTP response: {0} {1}", data.status, data.reason)
-            log.debug("GET URL HEADERS: {0}", data.getheaders())
 
-            if int(data.status) == 200:
-                ret_data = data.read()
-                content_type = data.getheader('content-encoding')
-                log.debug("Data Len Before: {0}", len(ret_data))
-                if content_type == "gzip":
-                    ret_data = StringIO.StringIO(ret_data)
-                    gzipper = gzip.GzipFile(fileobj=ret_data)
-                    return_data = gzipper.read()
-                else:
-                    return_data = ret_data
+            log.debug("HTTP response: {0} {1}", data.status_code, data.content)
+            log.debug("{0} URL HEADERS: {1}", method, data.headers)
+
+            if data.status_code == 200:
+
                 if headers is not None and isinstance(headers, dict):
-                    headers.update(data.getheaders())
-                log.debug("Data Len After: {0}", len(return_data))
+                    headers.update(data.headers)
+                log.debug("Data Length: {0}", len(data.content))
                 log.debug("====== 200 returned =======")
-                log.debug("Content-Type: {0}", content_type)
-                log.debug("{0}", return_data)
+                log.debug("Content-Type: {0}", data.headers.get("content-type"))
+                log.debug("{0}", str(data.content))
                 log.debug("====== 200 finished ======")
 
-            elif int(data.status) >= 400:
+            elif data.status_code >= 400:
 
-                if int(data.status) == 401:
+                if data.status_code == 401:
                     # remove any saved password
                     m = hashlib.md5()
                     m.update(username)
@@ -816,24 +783,16 @@ class DownloadUtils:
                     settings.setSetting("saved_user_password_" + hashed_username, "")
                     save_user_details(settings, "", "")
 
-                log.error("HTTP response error: {0} {1}", data.status, data.reason)
+                log.error("HTTP response error: {0} {1}", data.status_code, data.content)
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
-                                                  string_load(30200) % str(data.reason),
+                                                  string_load(30200) % str(data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
-
+            return data.content or "null"
         except Exception as msg:
+            log.error("{0}", format_exc())
             log.error("Unable to connect to {0} : {1}", server, msg)
-            if suppress is False:
+            if not suppress:
                 xbmcgui.Dialog().notification(string_load(30316),
                                               str(msg),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")
-
-        finally:
-            try:
-                log.debug("Closing HTTP connection: {0}", conn)
-                conn.close()
-            except:
-                pass
-
-        return return_data
