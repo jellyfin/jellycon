@@ -2,7 +2,7 @@
 # Gnu General Public License - see LICENSE.TXT
 
 import urllib
-import httplib
+import requests
 import base64
 import sys
 import threading
@@ -15,7 +15,7 @@ import xbmcaddon
 
 from .downloadutils import DownloadUtils
 from .simple_logging import SimpleLogging
-from .jsonrpc import JsonRpc
+from .jsonrpc import JsonRpc, get_value
 from .translation import string_load
 from .datamanager import DataManager
 from .utils import get_art, double_urlencode
@@ -254,29 +254,20 @@ class CacheArtwork(threading.Thread):
         log.debug("cache_artwork")
 
         # is the web server enabled
-        web_query = {"setting": "services.webserver"}
-        result = JsonRpc('Settings.GetSettingValue').execute(web_query)
-        xbmc_webserver_enabled = result['result']['value']
-        if not xbmc_webserver_enabled:
+        if not get_value("services.webserver"):
             log.error("Kodi web server not enabled, can not cache images")
             return
 
         # get the port
-        web_port = {"setting": "services.webserverport"}
-        result = JsonRpc('Settings.GetSettingValue').execute(web_port)
-        xbmc_port = result['result']['value']
+        xbmc_port = get_value("services.webserverport")
         log.debug("xbmc_port: {0}", xbmc_port)
 
         # get the user
-        web_user = {"setting": "services.webserverusername"}
-        result = JsonRpc('Settings.GetSettingValue').execute(web_user)
-        xbmc_username = result['result']['value']
+        xbmc_username = get_value("services.webserverusername")
         log.debug("xbmc_username: {0}", xbmc_username)
 
         # get the password
-        web_pass = {"setting": "services.webserverpassword"}
-        result = JsonRpc('Settings.GetSettingValue').execute(web_pass)
-        xbmc_password = result['result']['value']
+        xbmc_password = get_value("services.webserverpassword")
 
         progress.update(0, string_load(30356))
 
@@ -313,6 +304,7 @@ class CacheArtwork(threading.Thread):
             return
 
         missing_texture_urls = set()
+
         # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for image_url in jellyfin_texture_urls:
             if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
@@ -320,7 +312,7 @@ class CacheArtwork(threading.Thread):
 
             if self.stop_all_activity:
                 return
-
+        
         log.debug("texture_urls: {0}", texture_urls)
         log.debug("missing_texture_urls: {0}", missing_texture_urls)
         log.debug("Number of existing textures: {0}", len(texture_urls))
@@ -333,10 +325,9 @@ class CacheArtwork(threading.Thread):
             headers = {'Authorization': 'Basic %s' % base64.b64encode(auth)}
 
         total = len(missing_texture_urls)
-        index = 1
 
         count_done = 0
-        for get_url in missing_texture_urls:
+        for index, get_url in enumerate(missing_texture_urls, 1):
             # log.debug("texture_url: {0}", get_url)
             url = double_urlencode(get_url)
             kodi_texture_url = ("/image/image://%s" % url)
@@ -346,14 +337,13 @@ class CacheArtwork(threading.Thread):
             message = "%s of %s" % (index, total)
             progress.update(percentage, message)
 
-            conn = httplib.HTTPConnection(kodi_http_server, timeout=20)
-            conn.request(method="GET", url=kodi_texture_url, headers=headers)
-            data = conn.getresponse()
-            if data.status == 200:
-                count_done += 1
-            log.debug("Get Image Result: {0}", data.status)
+            cache_url = "http://%s%s" % (kodi_http_server, kodi_texture_url)
+            data = requests.get(cache_url, timeout=20, headers=headers)
 
-            index += 1
+            if data.status_code == 200:
+                count_done += 1
+            log.debug("Get Image Result: {0}", data.status_code)
+
             # if progress.iscanceled():
             # if "iscanceled" in dir(progress) and progress.iscanceled():
             if isinstance(progress, xbmcgui.DialogProgress) and progress.iscanceled():
