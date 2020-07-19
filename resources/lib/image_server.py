@@ -118,9 +118,8 @@ def build_image(path):
             log.debug("Loading image from : {0} {1} {2}", image_count, server, url_full_path)
 
             try:
-
-                image_responce = requests.get(thumb_url)
-                image_data = image_responce.content
+                image_response = requests.get(thumb_url)
+                image_data = image_response.content
 
                 loaded_image = Image.open(io.BytesIO(image_data))
                 image = ImageOps.fit(loaded_image, size, method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
