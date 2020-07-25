@@ -10,6 +10,7 @@ import traceback
 
 from six import ensure_text
 from kodi_six import xbmc, xbmcaddon
+from urlparse import urlparse
 
 #from .utils import get_filesystem_encoding
 
@@ -39,6 +40,12 @@ class LogHandler(logging.StreamHandler):
 
         self.sensitive = {'Token': [], 'Server': []}
 
+        settings = xbmcaddon.Addon()
+        server = settings.getSetting('server_address')
+        if server:
+            url_bits = urlparse(server)
+            server = url_bits.netloc
+            self.sensitive['Server'].append(server)
         #for server in database.get_credentials()['Servers']:
 
         #    if server.get('AccessToken'):
@@ -55,8 +62,8 @@ class LogHandler(logging.StreamHandler):
             string = self.format(record)
 
             #if self.mask_info:
-            #    for server in self.sensitive['Server']:
-            #        string = string.replace(server or "{server}", "{jellyfin-server}")
+            for server in self.sensitive['Server']:
+                string = string.replace(server or "{server}", "{jellyfin-server}")
 
             #    for token in self.sensitive['Token']:
             #        string = string.replace(token or "{token}", "{jellyfin-token}")
