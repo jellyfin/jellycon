@@ -6,12 +6,12 @@ import encodings
 import xbmc
 import xbmcgui
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .datamanager import DataManager
 
 from .translation import string_load
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 dataManager = DataManager()
 
 details_string = 'EpisodeCount,SeasonCount,Path,Etag,MediaStreams'
@@ -111,7 +111,7 @@ def get_match(item_type, title, year, imdb_id):
     results = results.get('SearchHints')
     if results is None:
         results = []
-    log.debug('SearchHints jsonData: {0}', results)
+    log.debug('SearchHints jsonData: {0}'.format(results))
 
     potential_matches = []
 
@@ -121,12 +121,12 @@ def get_match(item_type, title, year, imdb_id):
         if (name == title and int(year) == production_year) or (int(year) == production_year):
             potential_matches.append(item)
 
-    log.debug('Potential matches: {0}', potential_matches)
+    log.debug('Potential matches: {0}'.format(potential_matches))
 
     for item in potential_matches:
         item_imdb_id = get_imdb_id(item.get('ItemId'))
         if item_imdb_id == imdb_id:
-            log.debug('Found match: {0}', item)
+            log.debug('Found match: {0}'.format(item))
             return item
 
     return None

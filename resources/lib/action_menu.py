@@ -6,9 +6,9 @@ import threading
 import xbmc
 import xbmcgui
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class ActionAutoClose(threading.Thread):
@@ -27,7 +27,7 @@ class ActionAutoClose(threading.Thread):
         log.debug("ActionAutoClose Running")
         while not xbmc.abortRequested and not self.stop_thread:
             time_since_last = time.time() - self.last_interaction
-            log.debug("ActionAutoClose time_since_last : {0}", time_since_last)
+            log.debug("ActionAutoClose time_since_last : {0}".format(time_since_last))
 
             if time_since_last > 20:
                 log.debug("ActionAutoClose Closing Parent")
@@ -40,7 +40,7 @@ class ActionAutoClose(threading.Thread):
 
     def set_last(self):
         self.last_interaction = time.time()
-        log.debug("ActionAutoClose set_last : {0}", self.last_interaction)
+        log.debug("ActionAutoClose set_last : {0}".format(self.last_interaction))
 
     def stop(self):
         log.debug("ActionAutoClose stop_thread called")
@@ -79,7 +79,7 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
         pass
 
     def onMessage(self, message):
-        log.debug("ActionMenu: onMessage: {0}", message)
+        log.debug("ActionMenu: onMessage: {0}".format(message))
 
     def onAction(self, action):
 
@@ -91,12 +91,12 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
             self.close()
         else:
             self.auto_close_thread.set_last()
-            log.debug("ActionMenu: onAction: {0}", action.getId())
+            log.debug("ActionMenu: onAction: {0}".format(action.getId()))
 
     def onClick(self, control_id):
         if control_id == 3000:
             self.selected_action = self.listControl.getSelectedItem()
-            log.debug("ActionMenu: Selected Item: {0}", self.selected_action)
+            log.debug("ActionMenu: Selected Item: {0}".format(self.selected_action))
             self.auto_close_thread.stop()
             self.close()
 

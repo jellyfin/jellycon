@@ -5,11 +5,11 @@ import xbmcgui
 import xbmcplugin
 
 from .downloadutils import DownloadUtils
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .utils import get_art
 from .datamanager import DataManager
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 def show_server_sessions():
@@ -29,7 +29,7 @@ def show_server_sessions():
 
     url = "{server}/Sessions"
     results = data_manager.get_content(url)
-    log.debug("session_info: {0}", results)
+    log.debug("session_info: {0}".format(results))
 
     if results is None:
         return

@@ -7,6 +7,8 @@
     <import addon="xbmc.python" version="2.25.0"/>
     <import addon="script.module.pil" version="1.1.7"/>
     <import addon="script.module.requests" version="2.22.0"/>
+    <import addon="script.module.six" version="1.13.0"/>
+    <import addon="script.module.kodi-six" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video audio</provides>

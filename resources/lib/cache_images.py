@@ -14,7 +14,7 @@ import xbmc
 import xbmcaddon
 
 from .downloadutils import DownloadUtils
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .translation import string_load
 from .datamanager import DataManager
@@ -22,7 +22,7 @@ from .utils import get_art, double_urlencode
 from .kodi_utils import HomeWindow
 
 downloadUtils = DownloadUtils()
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class CacheArtwork(threading.Thread):
@@ -62,7 +62,7 @@ class CacheArtwork(threading.Thread):
 
             monitor.waitForAbort(5)
 
-        log.debug("CacheArtwork background thread exited : stop_all_activity : {0}", self.stop_all_activity)
+        log.debug("CacheArtwork background thread exited : stop_all_activity : {0}".format(self.stop_all_activity))
 
     @staticmethod
     def delete_cached_images(item_id):
@@ -74,7 +74,7 @@ class CacheArtwork(threading.Thread):
 
         item_image_url_part = "Items/%s/Images/" % item_id
         item_image_url_part = item_image_url_part.replace("/", "%2f")
-        log.debug("texture ids: {0}", item_image_url_part)
+        log.debug("texture ids: {0}".format(item_image_url_part))
 
         # is the web server enabled
         web_query = {"setting": "services.webserver"}
@@ -87,7 +87,7 @@ class CacheArtwork(threading.Thread):
         params = {"properties": ["url"]}
         json_result = JsonRpc('Textures.GetTextures').execute(params)
         textures = json_result.get("result", {}).get("textures", [])
-        log.debug("texture ids: {0}", textures)
+        log.debug("texture ids: {0}".format(textures))
 
         progress.update(70, string_load(30346))
 
@@ -97,7 +97,7 @@ class CacheArtwork(threading.Thread):
             texture_url = texture["url"]
             if item_image_url_part in texture_url:
                 delete_count += 1
-                log.debug("removing texture id: {0}", texture_id)
+                log.debug("removing texture id: {0}".format(texture_id))
                 params = {"textureid": int(texture_id)}
                 JsonRpc('Textures.RemoveTexture').execute(params)
 
@@ -141,8 +141,8 @@ class CacheArtwork(threading.Thread):
 
             jellyfin_texture_urls = self.get_jellyfin_artwork(delete_pdialog)
 
-            log.debug("kodi textures: {0}", textures)
-            log.debug("jellyfin texture urls: {0}", jellyfin_texture_urls)
+            log.debug("kodi textures: {0}".format(textures))
+            log.debug("jellyfin texture urls: {0}".format(jellyfin_texture_urls))
 
             if jellyfin_texture_urls is not None:
 
@@ -157,7 +157,7 @@ class CacheArtwork(threading.Thread):
                         unused_texture_ids.add(texture["textureid"])
 
                 total = len(unused_texture_ids)
-                log.debug("unused texture ids: {0}", unused_texture_ids)
+                log.debug("unused texture ids: {0}".format(unused_texture_ids))
 
                 for texture_id in unused_texture_ids:
                     params = {"textureid": int(texture_id)}
@@ -206,11 +206,11 @@ class CacheArtwork(threading.Thread):
         try:
             result_text = self.cache_artwork(dp)
         except Exception as err:
-            log.error("Cache Images Failed : {0}", err)
+            log.error("Cache Images Failed : {0}".format(err))
         dp.close()
         del dp
         if result_text is not None:
-            log.debug("Cache Images reuslt : {0}", " - ".join(result_text))
+            log.debug("Cache Images reuslt : {0}".format(" - ".join(result_text)))
 
     def get_jellyfin_artwork(self, progress):
         log.debug("get_jellyfin_artwork")
@@ -233,7 +233,7 @@ class CacheArtwork(threading.Thread):
             results = results.get("Items")
 
         server = downloadUtils.get_server()
-        log.debug("Jellyfin Item Count Count: {0}", len(results))
+        log.debug("Jellyfin Item Count Count: {0}".format(len(results)))
 
         if self.stop_all_activity:
             return None
@@ -260,11 +260,11 @@ class CacheArtwork(threading.Thread):
 
         # get the port
         xbmc_port = get_value("services.webserverport")
-        log.debug("xbmc_port: {0}", xbmc_port)
+        log.debug("xbmc_port: {0}".format(xbmc_port))
 
         # get the user
         xbmc_username = get_value("services.webserverusername")
-        log.debug("xbmc_username: {0}", xbmc_username)
+        log.debug("xbmc_username: {0}".format(xbmc_username))
 
         # get the password
         xbmc_password = get_value("services.webserverpassword")
@@ -274,7 +274,7 @@ class CacheArtwork(threading.Thread):
         params = {"properties": ["url"]}
         json_result = JsonRpc('Textures.GetTextures').execute(params)
         textures = json_result.get("result", {}).get("textures", [])
-        log.debug("Textures.GetTextures Count: {0}", len(textures))
+        log.debug("Textures.GetTextures Count: {0}".format(len(textures)))
 
         if self.stop_all_activity:
             return
@@ -292,7 +292,7 @@ class CacheArtwork(threading.Thread):
         del textures
         del json_result
 
-        log.debug("texture_urls Count: {0}", len(texture_urls))
+        log.debug("texture_urls Count: {0}".format(len(texture_urls)))
 
         if self.stop_all_activity:
             return
@@ -312,11 +312,11 @@ class CacheArtwork(threading.Thread):
 
             if self.stop_all_activity:
                 return
-        
-        log.debug("texture_urls: {0}", texture_urls)
-        log.debug("missing_texture_urls: {0}", missing_texture_urls)
-        log.debug("Number of existing textures: {0}", len(texture_urls))
-        log.debug("Number of missing textures: {0}", len(missing_texture_urls))
+
+        log.debug("texture_urls: {0}".format(texture_urls))
+        log.debug("missing_texture_urls: {0}".format(missing_texture_urls))
+        log.debug("Number of existing textures: {0}".format(len(texture_urls)))
+        log.debug("Number of missing textures: {0}".format(len(missing_texture_urls)))
 
         kodi_http_server = "localhost:" + str(xbmc_port)
         headers = {}
@@ -331,7 +331,7 @@ class CacheArtwork(threading.Thread):
             # log.debug("texture_url: {0}", get_url)
             url = double_urlencode(get_url)
             kodi_texture_url = ("/image/image://%s" % url)
-            log.debug("kodi_texture_url: {0}", kodi_texture_url)
+            log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
 
             percentage = int((float(index) / float(total)) * 100)
             message = "%s of %s" % (index, total)
@@ -342,7 +342,7 @@ class CacheArtwork(threading.Thread):
 
             if data.status_code == 200:
                 count_done += 1
-            log.debug("Get Image Result: {0}", data.status_code)
+            log.debug("Get Image Result: {0}".format(data.status_code))
 
             # if progress.iscanceled():
             # if "iscanceled" in dir(progress) and progress.iscanceled():

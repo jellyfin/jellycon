@@ -1,7 +1,7 @@
 import xbmcaddon
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 addon = xbmcaddon.Addon()
 
 

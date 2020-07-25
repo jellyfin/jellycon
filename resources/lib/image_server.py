@@ -10,7 +10,7 @@ import requests
 import io
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .datamanager import DataManager
 from .downloadutils import DownloadUtils
 from .utils import get_art
@@ -23,7 +23,7 @@ except Exception as err:
     pil_loaded = False
 
 PORT_NUMBER = 24276
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 def get_image_links(url):
@@ -77,7 +77,7 @@ def get_image_links(url):
 def build_image(path):
     log.debug("build_image()")
 
-    log.debug("Request Path : {0}", path)
+    log.debug("Request Path : {0}".format(path))
 
     request_path = path[1:]
 
@@ -85,7 +85,7 @@ def build_image(path):
         return []
 
     decoded_url = base64.b64decode(request_path)
-    log.debug("decoded_url : {0}", decoded_url)
+    log.debug("decoded_url : {0}".format(decoded_url))
 
     image_urls = get_image_links(decoded_url)
 
@@ -115,7 +115,7 @@ def build_image(path):
             server = "%s:%s" % (host_name, port)
             url_full_path = url_path + "?" + url_query
 
-            log.debug("Loading image from : {0} {1} {2}", image_count, server, url_full_path)
+            log.debug("Loading image from : {0} {1} {2}".format(image_count, server, url_full_path))
 
             try:
                 image_response = requests.get(thumb_url)
@@ -133,7 +133,7 @@ def build_image(path):
                 del image_data
 
             except Exception as con_err:
-                log.debug("Error loading image : {0}", str(con_err))
+                log.debug("Error loading image : {0}".format(con_err))
 
             image_count += 1
 

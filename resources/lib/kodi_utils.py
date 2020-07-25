@@ -6,9 +6,9 @@ import xbmcaddon
 import sys
 import json
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 addon = xbmcaddon.Addon()
 
 
@@ -59,9 +59,9 @@ def get_kodi_version():
         result = result.get("result")
         version_data = result.get("version")
         version = float(str(version_data.get("major")) + "." + str(version_data.get("minor")))
-        log.debug("Version: {0} - {1}", version, version_data)
+        log.debug("Version: {0} - {1}".format(version, version_data))
     except:
         version = 0.0
-        log.error("Version Error : RAW Version Data: {0}", result)
+        log.error("Version Error : RAW Version Data: {0}".format(result))
 
     return version

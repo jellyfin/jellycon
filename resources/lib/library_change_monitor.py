@@ -3,11 +3,11 @@ import time
 
 import xbmc
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .widgets import check_for_new_content
 from .tracking import timer
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class LibraryChangeMonitor(threading.Thread):

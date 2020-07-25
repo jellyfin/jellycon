@@ -20,7 +20,7 @@ from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
 from .datamanager import DataManager, clear_cached_server_data
 from .server_detect import check_server, check_connection_speed
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .translation import string_load
 from .server_sessions import show_server_sessions
@@ -39,7 +39,7 @@ __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
 __cwd__ = __addon__.getAddonInfo('path')
 PLUGINPATH = xbmc.translatePath(os.path.join(__cwd__))
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
@@ -60,14 +60,14 @@ def main_entry_point():
         pr = cProfile.Profile()
         pr.enable()
 
-    log.debug("Running Python: {0}", sys.version_info)
-    log.debug("Running JellyCon: {0}", ClientInformation().get_version())
-    log.debug("Kodi BuildVersion: {0}", xbmc.getInfoLabel("System.BuildVersion"))
-    log.debug("Kodi Version: {0}", kodi_version)
-    log.debug("Script argument data: {0}", sys.argv)
+    log.debug("Running Python: {0}".format(sys.version_info))
+    log.debug("Running JellyCon: {0}".format(ClientInformation().get_version()))
+    log.debug("Kodi BuildVersion: {0}".format(xbmc.getInfoLabel("System.BuildVersion")))
+    log.debug("Kodi Version: {0}".format(kodi_version))
+    log.debug("Script argument data: {0}".format(sys.argv))
 
     params = get_params()
-    log.debug("Script params: {0}", params)
+    log.debug("Script params: {0}".format(params))
 
     request_path = params.get("request_path", None)
     param_url = params.get('url', None)
@@ -148,8 +148,8 @@ def main_entry_point():
         else:
             log.info("Unable to find TV show parent ID.")
     else:
-        log.debug("JellyCon -> Mode: {0}", mode)
-        log.debug("JellyCon -> URL: {0}", param_url)
+        log.debug("JellyCon -> Mode: {0}".format(mode))
+        log.debug("JellyCon -> URL: {0}".format(param_url))
 
         if mode == "GET_CONTENT":
             get_content(param_url, params)
@@ -189,7 +189,7 @@ def __get_parent_id_from(params):
     result = None
     show_provider_ids = params.get("show_ids")
     if show_provider_ids is not None:
-        log.debug("TV show providers IDs: {}", show_provider_ids)
+        log.debug("TV show providers IDs: {}".format(show_provider_ids))
         get_show_url = "{server}/Users/{userid}/Items?fields=MediaStreams&Recursive=true" \
                        "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
                        "&AnyProviderIdEquals=" + show_provider_ids
@@ -198,21 +198,21 @@ def __get_parent_id_from(params):
         if len(show) == 1:
             result = content.get("Items")[0].get("Id")
         else:
-            log.debug("TV show not found for ids: {}", show_provider_ids)
+            log.debug("TV show not found for ids: {}".format(show_provider_ids))
     else:
         log.error("TV show parameter not found in request.")
     return result
 
 
 def toggle_watched(params):
-    log.debug("toggle_watched: {0}", params)
+    log.debug("toggle_watched: {0}".format(params))
     item_id = params.get("item_id", None)
     if item_id is None:
         return
     url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.get_content(url)
-    log.debug("toggle_watched item info: {0}", result)
+    log.debug("toggle_watched item info: {0}".format(result))
 
     user_data = result.get("UserData", None)
     if user_data is None:
@@ -225,35 +225,35 @@ def toggle_watched(params):
 
 
 def mark_item_watched(item_id):
-    log.debug("Mark Item Watched: {0}", item_id)
+    log.debug("Mark Item Watched: {0}".format(item_id))
     url = "{server}/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.download_url(url, post_body="", method="POST")
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
-        log.debug("markWatched_lastUrl: {0}", last_url)
+        log.debug("markWatched_lastUrl: {0}".format(last_url))
         home_window.set_property("skip_cache_for_" + last_url, "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def mark_item_unwatched(item_id):
-    log.debug("Mark Item UnWatched: {0}", item_id)
+    log.debug("Mark Item UnWatched: {0}".format(item_id))
     url = "{server}/Users/{userid}/PlayedItems/" + item_id
     downloadUtils.download_url(url, method="DELETE")
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
-        log.debug("markUnwatched_lastUrl: {0}", last_url)
+        log.debug("markUnwatched_lastUrl: {0}".format(last_url))
         home_window.set_property("skip_cache_for_" + last_url, "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def mark_item_favorite(item_id):
-    log.debug("Add item to favourites: {0}", item_id)
+    log.debug("Add item to favourites: {0}".format(item_id))
     url = "{server}/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.download_url(url, post_body="", method="POST")
     check_for_new_content()
@@ -266,7 +266,7 @@ def mark_item_favorite(item_id):
 
 
 def unmark_item_favorite(item_id):
-    log.debug("Remove item from favourites: {0}", item_id)
+    log.debug("Remove item from favourites: {0}".format(item_id))
     url = "{server}/Users/{userid}/FavoriteItems/" + item_id
     downloadUtils.download_url(url, method="DELETE")
     check_for_new_content()
@@ -304,7 +304,7 @@ def delete(item_id):
 
     return_value = xbmcgui.Dialog().yesno(string_load(30091), final_name, string_load(30092))
     if return_value:
-        log.debug('Deleting Item: {0}', item_id)
+        log.debug('Deleting Item: {0}'.format(item_id))
         url = '{server}/Items/' + item_id
         progress = xbmcgui.DialogProgress()
         progress.create(string_load(30052), string_load(30053))
@@ -324,8 +324,8 @@ def get_params():
     plugin_path = sys.argv[0]
     paramstring = sys.argv[2]
 
-    log.debug("Parameter string: {0}", paramstring)
-    log.debug("Plugin Path string: {0}", plugin_path)
+    log.debug("Parameter string: {0}".format(paramstring))
+    log.debug("Plugin Path string: {0}".format(plugin_path))
 
     param = {}
 
@@ -348,12 +348,12 @@ def get_params():
             elif (len(splitparams)) == 3:
                 param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
 
-    log.debug("JellyCon -> Detected parameters: {0}", param)
+    log.debug("JellyCon -> Detected parameters: {0}".format(param))
     return param
 
 
 def show_menu(params):
-    log.debug("showMenu(): {0}", params)
+    log.debug("showMenu(): {0}".format(params))
 
     home_window = HomeWindow()
     settings = xbmcaddon.Addon()
@@ -362,7 +362,7 @@ def show_menu(params):
     url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     data_manager = DataManager()
     result = data_manager.get_content(url)
-    log.debug("Menu item info: {0}", result)
+    log.debug("Menu item info: {0}".format(result))
 
     if result is None:
         return
@@ -466,7 +466,7 @@ def show_menu(params):
     view_key = "view-" + container_content_type
     current_default_view = settings.getSetting(view_key)
     view_match = container_view_id == current_default_view
-    log.debug("View ID:{0} Content type:{1}", container_view_id, container_content_type)
+    log.debug("View ID:{0} Content type:{1}".format(container_view_id, container_content_type))
 
     if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
         if view_match:
@@ -487,7 +487,7 @@ def show_menu(params):
     selected_action = ""
     if selected_action_item is not None:
         selected_action = selected_action_item.getProperty('menu_id')
-    log.debug("Menu Action Selected: {0}", selected_action)
+    log.debug("Menu Action Selected: {0}".format(selected_action))
     del action_menu
 
     if selected_action == "play":
@@ -498,11 +498,11 @@ def show_menu(params):
         play_action(params)
 
     elif selected_action == "set_view":
-        log.debug("Settign view type for {0} to {1}", view_key, container_view_id)
+        log.debug("Settign view type for {0} to {1}".format(view_key, container_view_id))
         settings.setSetting(view_key, container_view_id)
 
     elif selected_action == "unset_view":
-        log.debug("Un-Settign view type for {0} to {1}", view_key, container_view_id)
+        log.debug("Un-Settign view type for {0} to {1}".format(view_key, container_view_id))
         settings.setSetting(view_key, "")
 
     elif selected_action == "refresh_server":
@@ -513,7 +513,7 @@ def show_menu(params):
                "&ReplaceAllImages=true" +
                "&ReplaceAllMetadata=true")
         res = downloadUtils.download_url(url, post_body="", method="POST")
-        log.debug("Refresh Server Responce: {0}", res)
+        log.debug("Refresh Server Responce: {0}".format(res))
 
     elif selected_action == "hide":
         user_details = load_user_details(settings)
@@ -522,13 +522,13 @@ def show_menu(params):
         url = "{server}/Items/" + item_id + "/Tags/Add"
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
         res = downloadUtils.download_url(url, post_body=post_tag_data, method="POST")
-        log.debug("Add Tag Responce: {0}", res)
+        log.debug("Add Tag Responce: {0}".format(res))
 
         check_for_new_content()
 
         last_url = home_window.get_property("last_content_url")
         if last_url:
-            log.debug("markUnwatched_lastUrl: {0}", last_url)
+            log.debug("markUnwatched_lastUrl: {0}".format(last_url))
             home_window.set_property("skip_cache_for_" + last_url, "true")
 
         xbmc.executebuiltin("Container.Refresh")
@@ -549,7 +549,7 @@ def show_menu(params):
         bitrate_dialog.doModal()
         selected_transcode_value = bitrate_dialog.selected_transcode_value
         del bitrate_dialog
-        log.debug("selected_transcode_value: {0}", selected_transcode_value)
+        log.debug("selected_transcode_value: {0}".format(selected_transcode_value))
 
         if selected_transcode_value > 0:
             settings.setSetting("force_max_stream_bitrate", str(selected_transcode_value))
@@ -581,7 +581,7 @@ def show_menu(params):
         result = json.loads(delete_action)
         dialog = xbmcgui.Dialog()
         if result:
-            log.debug("Safe_Delete_Action: {0}", result)
+            log.debug("Safe_Delete_Action: {0}".format(result))
             action_token = result["action_token"]
 
             message = "You are about to delete the following item[CR][CR]"
@@ -611,7 +611,7 @@ def show_menu(params):
             confirm_dialog.message = message
             confirm_dialog.heading = "Confirm delete files?"
             confirm_dialog.doModal()
-            log.debug("safe_delete_confirm_dialog: {0}", confirm_dialog.confirm)
+            log.debug("safe_delete_confirm_dialog: {0}".format(confirm_dialog.confirm))
 
             if confirm_dialog.confirm:
                 url = "{server}/jellyfin_safe_delete/delete_item_action"
@@ -620,12 +620,12 @@ def show_menu(params):
                     'action_token': action_token
                 }
                 delete_action = downloadUtils.download_url(url, method="POST", post_body=playback_info)
-                log.debug("Delete result action: {0}", delete_action)
+                log.debug("Delete result action: {0}".format(delete_action))
                 delete_action_result = json.loads(delete_action)
                 if not delete_action_result:
-                    dialog.ok("Error", "Error deleteing files", "Error in responce from server")
+                    dialog.ok("Error", "Error deleting files", "Error in responce from server")
                 elif not delete_action_result["result"]:
-                    dialog.ok("Error", "Error deleteing files", delete_action_result["message"])
+                    dialog.ok("Error", "Error deleting files", delete_action_result["message"])
                 else:
                     dialog.ok("Deleted", "Files deleted")
         else:
@@ -686,29 +686,12 @@ def show_menu(params):
 
 
 def populate_listitem(item_id):
-    log.debug("populate_listitem: {0}", item_id)
+    log.debug("populate_listitem: {0}".format(item_id))
 
     url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
     json_data = downloadUtils.download_url(url)
     result = json.loads(json_data)
-    log.debug("populate_listitem item info: {0}", result)
-
-    '''
-    server = downloadUtils.getServer()
-    gui_options = {}
-    gui_options["server"] = server
-
-    gui_options["name_format"] = None
-    gui_options["name_format_type"] = None
-
-    details, extraData = extract_item_info(result,gui_options )
-    u, list_item, folder = add_gui_item(result["Id"], details, extraData, {}, folder=False)
-
-    log.debug("list_item path: {0}", u)
-
-    #list_item.setProperty('IsPlayable', 'false')
-    #list_item.setPath(u)
-    '''
+    log.debug("populate_listitem item info: {0}".format(result))
 
     item_title = result.get("Name", string_load(30280))
 
@@ -738,7 +721,7 @@ def populate_listitem(item_id):
 
 
 def show_content(params):
-    log.debug("showContent Called: {0}", params)
+    log.debug("showContent Called: {0}".format(params))
 
     item_type = params.get("item_type")
     settings = xbmcaddon.Addon()
@@ -760,7 +743,7 @@ def show_content(params):
                    "&IsVirtualUnaired=false" +
                    "&IncludeItemTypes=" + item_type)
 
-    log.debug("showContent Content Url: {0}", content_url)
+    log.debug("showContent Content Url: {0}".format(content_url))
     get_content(content_url, params)
 
 
@@ -776,28 +759,16 @@ def search_results_person(params):
                    '&Fields={field_filters}' +
                    '&format=json')
 
-    '''
-    details_result = dataManager.GetContent(details_url)
-    log.debug("Search Results Details: {0}", details_result)
-
-    if details_result:
-        items = details_result.get("Items")
-        found_types = set()
-        for item in items:
-            found_types.add(item.get("Type"))
-        log.debug("search_results_person found_types: {0}", found_types)
-    '''
-
     params["name_format"] = "Episode|episode_name_format"
 
     dir_items, detected_type, total_records = process_directory(details_url, None, params)
 
-    log.debug('search_results_person results: {0}', dir_items)
-    log.debug('search_results_person detect_type: {0}', detected_type)
+    log.debug('search_results_person results: {0}'.format(dir_items))
+    log.debug('search_results_person detect_type: {0}'.format(detected_type))
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
-        log.debug("Detected content type: {0}", detected_type)
+        log.debug("Detected content type: {0}".format(detected_type))
         content_type = None
 
         if detected_type == "Movie":
@@ -825,9 +796,9 @@ def search_results(params):
     item_type = params.get('item_type')
     query_string = params.get('query')
     if query_string:
-        log.debug("query_string : {0}", query_string)
+        log.debug("query_string : {0}".format(query_string))
         query_string = urllib.unquote(query_string)
-        log.debug("query_string : {0}", query_string)
+        log.debug("query_string : {0}".format(query_string))
 
     item_type = item_type.lower()
 
@@ -867,14 +838,14 @@ def search_results(params):
             return
 
         home_window.set_property("last_search", user_input)
-        log.debug('searchResults Called: {0}', params)
+        log.debug('searchResults Called: {0}'.format(params))
         query = user_input
 
     else:
         query = query_string
 
     query = urllib.quote(query)
-    log.debug("query : {0}", query)
+    log.debug("query : {0}".format(query))
 
     if (not item_type) or (not query):
         return
@@ -904,7 +875,7 @@ def search_results(params):
                       "&userId={userid}")
 
         person_search_results = dataManager.get_content(search_url)
-        log.debug("Person Search Result : {0}", person_search_results)
+        log.debug("Person Search Result : {0}".format(person_search_results))
         if person_search_results is None:
             return
 
@@ -967,23 +938,23 @@ def search_results(params):
 def play_action(params):
     log.debug("== ENTER: PLAY ==")
 
-    log.debug("PLAY ACTION PARAMS: {0}", params)
+    log.debug("PLAY ACTION PARAMS: {0}".format(params))
     item_id = params.get("item_id")
 
     auto_resume = int(params.get("auto_resume", "-1"))
-    log.debug("AUTO_RESUME: {0}", auto_resume)
+    log.debug("AUTO_RESUME: {0}".format(auto_resume))
 
     force_transcode = params.get("force_transcode", None) is not None
-    log.debug("FORCE_TRANSCODE: {0}", force_transcode)
+    log.debug("FORCE_TRANSCODE: {0}".format(force_transcode))
 
     media_source_id = params.get("media_source_id", "")
-    log.debug("media_source_id: {0}", media_source_id)
+    log.debug("media_source_id: {0}".format(media_source_id))
 
     subtitle_stream_index = params.get("subtitle_stream_index")
-    log.debug("subtitle_stream_index: {0}", subtitle_stream_index)
+    log.debug("subtitle_stream_index: {0}".format(subtitle_stream_index))
 
     audio_stream_index = params.get("audio_stream_index")
-    log.debug("audio_stream_index: {0}", audio_stream_index)
+    log.debug("audio_stream_index: {0}".format(audio_stream_index))
 
     action = params.get("action", "play")
 
@@ -1001,7 +972,7 @@ def play_action(params):
     play_info["media_source_id"] = media_source_id
     play_info["subtitle_stream_index"] = subtitle_stream_index
     play_info["audio_stream_index"] = audio_stream_index
-    log.info("Sending jellycon_play_action : {0}", play_info)
+    log.info("Sending jellycon_play_action : {0}".format(play_info))
     send_event_notification("jellycon_play_action", play_info)
 
 
@@ -1016,7 +987,7 @@ def play_item_trailer(item_id):
     if result is None:
         return
 
-    log.debug("LocalTrailers {0}", result)
+    log.debug("LocalTrailers {0}".format(result))
     count = 1
 
     trailer_names = []
@@ -1037,7 +1008,7 @@ def play_item_trailer(item_id):
     url = ("{server}/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % item_id)
     json_data = downloadUtils.download_url(url)
     result = json.loads(json_data)
-    log.debug("RemoteTrailers: {0}", result)
+    log.debug("RemoteTrailers: {0}".format(result))
     count = 1
 
     if result is None:
@@ -1058,7 +1029,7 @@ def play_item_trailer(item_id):
             trailer_names.append(name)
             trailer_list.append(info)
 
-    log.debug("TrailerList: {0}", trailer_list)
+    log.debug("TrailerList: {0}".format(trailer_list))
 
     trailer_text = []
     for trailer in trailer_list:
@@ -1069,7 +1040,7 @@ def play_item_trailer(item_id):
     resp = dialog.select(string_load(30308), trailer_text)
     if resp > -1:
         trailer = trailer_list[resp]
-        log.debug("SelectedTrailer: {0}", trailer)
+        log.debug("SelectedTrailer: {0}".format(trailer))
 
         if trailer.get("type") == "local":
             params = {}
@@ -1079,7 +1050,7 @@ def play_item_trailer(item_id):
         elif trailer.get("type") == "remote":
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
             youtube_plugin = "RunPlugin(plugin://plugin.video.youtube/play/?video_id=%s)" % youtube_id
-            log.debug("youtube_plugin: {0}", youtube_plugin)
+            log.debug("youtube_plugin: {0}".format(youtube_plugin))
 
             # play_info = {}
             # play_info["url"] = youtube_plugin

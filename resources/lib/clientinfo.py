@@ -6,9 +6,9 @@ import xbmc
 import xbmcvfs
 
 from .kodi_utils import HomeWindow
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class ClientInformation:
@@ -23,20 +23,20 @@ class ClientInformation:
             return client_id
 
         jellyfin_guid_path = xbmc.translatePath("special://temp/jellycon_guid").decode('utf-8')
-        log.debug("jellyfin_guid_path: {0}", jellyfin_guid_path)
+        log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
         guid = xbmcvfs.File(jellyfin_guid_path)
         client_id = guid.read()
         guid.close()
 
         if not client_id:
             client_id = str("%012X" % uuid4())
-            log.debug("Generating a new guid: {0}", client_id)
+            log.debug("Generating a new guid: {0}".format(client_id))
             guid = xbmcvfs.File(jellyfin_guid_path, 'w')
             guid.write(client_id)
             guid.close()
-            log.debug("jellyfin_client_id (NEW): {0}", client_id)
+            log.debug("jellyfin_client_id (NEW): {0}".format(client_id))
         else:
-            log.debug("jellyfin_client_id: {0}", client_id)
+            log.debug("jellyfin_client_id: {0}".format(client_id))
 
         window.set_property("client_id", client_id)
         return client_id

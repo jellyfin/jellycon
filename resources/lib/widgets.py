@@ -10,12 +10,12 @@ import time
 from .downloadutils import DownloadUtils
 from .utils import get_jellyfin_url
 from .datamanager import DataManager
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
 from .tracking import timer
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 downloadUtils = DownloadUtils()
 dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
@@ -58,14 +58,14 @@ def set_random_movies():
     m.update(movies_list_string)
     new_widget_hash = m.hexdigest()
 
-    log.debug("set_random_movies : {0}", movies_list_string)
-    log.debug("set_random_movies : {0}", new_widget_hash)
+    log.debug("set_random_movies : {0}".format(movies_list_string))
+    log.debug("set_random_movies : {0}".format(new_widget_hash))
     home_window.set_property("random-movies", movies_list_string)
     home_window.set_property("random-movies-changed", new_widget_hash)
 
 
 def set_background_image(force=False):
-    log.debug("set_background_image Called forced={0}", force)
+    log.debug("set_background_image Called forced={0}".format(force))
 
     global background_current_item
     global background_items
@@ -76,8 +76,8 @@ def set_background_image(force=False):
         background_items = []
 
     if len(background_items) == 0:
-        log.debug("set_background_image: Need to load more backgrounds {0} - {1}",
-                  len(background_items), background_current_item)
+        log.debug("set_background_image: Need to load more backgrounds {0} - {1}".format(
+             len(background_items), background_current_item))
 
         url_params = {}
         url_params["Recursive"] = True
@@ -105,12 +105,12 @@ def set_background_image(force=False):
                     item_background["name"] = label
                     background_items.append(item_background)
 
-        log.debug("set_background_image: Loaded {0} more backgrounds", len(background_items))
+        log.debug("set_background_image: Loaded {0} more backgrounds".format(len(background_items)))
 
     if len(background_items) > 0:
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
-        log.debug("set_background_image: {0} - {1} - {2}", background_current_item, label, bg_image)
+        log.debug("set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
 
         background_current_item += 1
         if background_current_item >= len(background_items):
@@ -133,7 +133,7 @@ def check_for_new_content():
         log.debug("Using simple new content check")
         current_time_stamp = str(time.time())
         home_window.set_property("jellycon_widget_reload", current_time_stamp)
-        log.debug("Setting New Widget Hash: {0}", current_time_stamp)
+        log.debug("Setting New Widget Hash: {0}".format(current_time_stamp))
         return
 
     url_params = {}
@@ -150,7 +150,7 @@ def check_for_new_content():
 
     added_result = downloadUtils.download_url(added_url, suppress=True)
     result = json.loads(added_result)
-    log.debug("LATEST_ADDED_ITEM: {0}", result)
+    log.debug("LATEST_ADDED_ITEM: {0}".format(result))
 
     last_added_date = ""
     if result is not None:
@@ -158,7 +158,7 @@ def check_for_new_content():
         if len(items) > 0:
             item = items[0]
             last_added_date = item.get("Etag", "")
-    log.debug("last_added_date: {0}", last_added_date)
+    log.debug("last_added_date: {0}".format(last_added_date))
 
     url_params = {}
     url_params["Recursive"] = True
@@ -174,7 +174,7 @@ def check_for_new_content():
 
     played_result = downloadUtils.download_url(played_url, suppress=True)
     result = json.loads(played_result)
-    log.debug("LATEST_PLAYED_ITEM: {0}", result)
+    log.debug("LATEST_PLAYED_ITEM: {0}".format(result))
 
     last_played_date = ""
     if result is not None:
@@ -186,30 +186,30 @@ def check_for_new_content():
             if user_data is not None:
                 last_played_date = user_data.get("LastPlayedDate", "")
 
-    log.debug("last_played_date: {0}", last_played_date)
+    log.debug("last_played_date: {0}".format(last_played_date))
 
     current_widget_hash = home_window.get_property("jellycon_widget_reload")
-    log.debug("Current Widget Hash: {0}", current_widget_hash)
+    log.debug("Current Widget Hash: {0}".format(current_widget_hash))
 
     m = hashlib.md5()
     m.update(last_played_date + last_added_date)
     new_widget_hash = m.hexdigest()
-    log.debug("New Widget Hash: {0}", new_widget_hash)
+    log.debug("New Widget Hash: {0}".format(new_widget_hash))
 
     if current_widget_hash != new_widget_hash:
         home_window.set_property("jellycon_widget_reload", new_widget_hash)
-        log.debug("Setting New Widget Hash: {0}", new_widget_hash)
+        log.debug("Setting New Widget Hash: {0}".format(new_widget_hash))
 
 
 @timer
 def get_widget_content_cast(handle, params):
-    log.debug("getWigetContentCast Called: {0}", params)
+    log.debug("getWigetContentCast Called: {0}".format(params))
     server = downloadUtils.get_server()
 
     item_id = params["id"]
     data_manager = DataManager()
     result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id + "?format=json")
-    log.debug("ItemInfo: {0}", result)
+    log.debug("ItemInfo: {0}".format(result))
 
     if not result:
         return
@@ -272,7 +272,7 @@ def get_widget_content_cast(handle, params):
 
 @timer
 def get_widget_content(handle, params):
-    log.debug("getWigetContent Called: {0}", params)
+    log.debug("getWigetContent Called: {0}".format(params))
 
     settings = xbmcaddon.Addon()
     hide_watched = settings.getSetting("hide_watched") == "true"
@@ -283,7 +283,7 @@ def get_widget_content(handle, params):
         log.error("getWigetContent type not set")
         return
 
-    log.debug("widget_type: {0}", widget_type)
+    log.debug("widget_type: {0}".format(widget_type))
 
     url_verb = "{server}/Users/{userid}/Items"
     url_params = {}
@@ -377,7 +377,7 @@ def get_widget_content(handle, params):
         set_id = 0
         while len(ids) < 20 and suggested_items:
             items = suggested_items[set_id]
-            log.debug("BaselineItemName : {0} - {1}", set_id, items.get("BaselineItemName"))
+            log.debug("BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
             # log.debug("random suggestions index : {0} {1}", rand, set_id)
@@ -397,7 +397,7 @@ def get_widget_content(handle, params):
                 set_id = 0
 
         id_list = ",".join(ids)
-        log.debug("Recommended Items : {0}", len(ids), id_list)
+        log.debug("Recommended Items : {0}".format(len(ids), id_list))
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
@@ -417,7 +417,7 @@ def get_widget_content(handle, params):
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
-        log.debug("Detected content type: {0}", detected_type)
+        log.debug("Detected content type: {0}".format(detected_type))
         content_type = None
 
         if detected_type == "Movie":

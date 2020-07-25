@@ -15,7 +15,7 @@ import calendar
 import re
 
 from .downloadutils import DownloadUtils
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .clientinfo import ClientInformation
 
 # hack to get datetime strptime loaded
@@ -23,7 +23,7 @@ throwaway = time.strptime('20110101', '%Y%m%d')
 
 # define our global download utils
 downloadUtils = DownloadUtils()
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 def get_jellyfin_url(base_url, params):
@@ -88,7 +88,7 @@ class PlayUtils:
             if direct_path.startswith("//"):
                 direct_path = "smb://" + direct_path[2:]
 
-            log.debug("playback_direct_path: {0}", direct_path)
+            log.debug("playback_direct_path: {0}".format(direct_path))
 
             if xbmcvfs.exists(direct_path):
                 playurl = direct_path
@@ -164,13 +164,13 @@ class PlayUtils:
         lines = contents.split(line_break)
         for line in lines:
             line = line.strip()
-            log.debug("STRM Line: {0}", line)
+            log.debug("STRM Line: {0}".format(line))
             if line.startswith('#KODIPROP:'):
                 match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
                 if match:
                     item_property = match.group('item_property')
                     property_value = match.group('property_value')
-                    log.debug("STRM property found: {0} value: {1}", item_property, property_value)
+                    log.debug("STRM property found: {0} value: {1}".format(item_property, property_value))
                     listitem_props.append((item_property, property_value))
                 else:
                     log.debug("STRM #KODIPROP incorrect format")
@@ -181,7 +181,7 @@ class PlayUtils:
                 playurl = line
                 log.debug("STRM playback url found")
 
-        log.debug("Playback URL: {0} ListItem Properties: {1}", playurl, listitem_props)
+        log.debug("Playback URL: {0} ListItem Properties: {1}".format(playurl, listitem_props))
         return playurl, listitem_props
 
 
@@ -307,7 +307,7 @@ def send_event_notification(method, data):
     base64_data = base64.b64encode(message_data)
     escaped_data = '\\"[\\"{0}\\"]\\"'.format(base64_data)
     command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, escaped_data)
-    log.debug("Sending notification event data: {0}", command)
+    log.debug("Sending notification event data: {0}".format(command))
     xbmc.executebuiltin(command)
 
 
@@ -317,7 +317,7 @@ def datetime_from_string(time_string):
         time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
     elif time_string[-6:] == "+00:00":
         time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)
-    log.debug("New Time String : {0}", time_string)
+    log.debug("New Time String : {0}".format(time_string))
 
     start_time = time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
     dt = datetime(*(start_time[0:6]))

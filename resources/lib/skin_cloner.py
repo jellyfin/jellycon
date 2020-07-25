@@ -7,9 +7,9 @@ import xbmcgui
 import xbmcvfs
 
 from .jsonrpc import JsonRpc, get_value, set_value
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 ver = xbmc.getInfoLabel('System.BuildVersion')[:2]
 
 
@@ -52,7 +52,7 @@ def clone_skin():
 
     kodi_path = xbmc.translatePath("special://xbmc")
     kodi_skin_source = os.path.join(kodi_path, "addons", "skin.estuary")
-    log.debug("Kodi Skin Source: {0}", kodi_skin_source)
+    log.debug("Kodi Skin Source: {0}".format(kodi_skin_source))
 
     pdialog = xbmcgui.DialogProgress()
     pdialog.create("JellyCon Skin Cloner", "")
@@ -60,11 +60,11 @@ def clone_skin():
     all_files = []
     walk_path(kodi_skin_source, "", all_files)
     for found in all_files:
-        log.debug("Found Path: {0}", found)
+        log.debug("Found Path: {0}".format(found))
 
     kodi_home_path = xbmc.translatePath("special://home")
     kodi_skin_destination = os.path.join(kodi_home_path, "addons", "skin.estuary_jellycon")
-    log.debug("Kodi Skin Destination: {0}", kodi_skin_destination)
+    log.debug("Kodi Skin Destination: {0}".format(kodi_skin_destination))
 
     # copy all skin files (clone)
     count = 0
@@ -96,7 +96,7 @@ def clone_skin():
     # get jellycon path
     jellycon_path = os.path.join(kodi_home_path, "addons", "plugin.video.jellycon")
 
-    log.debug("Major Version: {0}", ver)
+    log.debug("Major Version: {0}".format(ver))
 
     file_list = ["Home.xml",
                  "Includes_Home.xml",
@@ -123,11 +123,11 @@ def clone_skin():
         'enabled': True
     }
     result = JsonRpc('Addons.SetAddonEnabled').execute(params)
-    log.debug("Addons.SetAddonEnabled : {0}", result)
+    log.debug("Addons.SetAddonEnabled : {0}".format(result))
 
     log.debug("SkinCloner : Current Skin : " + get_value("lookandfeel.skin"))
     set_result = set_value("lookandfeel.skin", "skin.estuary_jellycon")
-    log.debug("Save Setting : lookandfeel.skin : {0}", set_result)
+    log.debug("Save Setting : lookandfeel.skin : {0}".format(set_result))
     log.debug("SkinCloner : Current Skin : " + get_value("lookandfeel.skin"))
 
 

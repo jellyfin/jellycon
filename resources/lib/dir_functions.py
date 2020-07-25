@@ -12,12 +12,12 @@ from .datamanager import DataManager
 from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils
 from .translation import string_load
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .item_functions import add_gui_item, ItemDetails
 from .utils import send_event_notification
 from .tracking import timer
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 @timer
@@ -29,8 +29,8 @@ def get_content(url, params):
     if not media_type:
         xbmcgui.Dialog().ok(string_load(30135), string_load(30139))
 
-    log.debug("URL: {0}", url)
-    log.debug("MediaType: {0}", media_type)
+    log.debug("URL: {0}".format(url))
+    log.debug("MediaType: {0}".format(media_type))
     pluginhandle = int(sys.argv[1])
 
     settings = xbmcaddon.Addon()
@@ -71,7 +71,7 @@ def get_content(url, params):
     elif media_type == "playlists":
         view_type = "Playlists"
 
-    log.debug("media_type:{0} content_type:{1} view_type:{2} ", media_type, content_type, view_type)
+    log.debug("media_type:{0} content_type:{1} view_type:{2} ".format(media_type, content_type, view_type))
 
     # show a progress indicator if needed
     progress = None
@@ -88,22 +88,22 @@ def get_content(url, params):
     if page_limit > 0 and media_type.startswith("movie"):
         m = re.search('StartIndex=([0-9]{1,4})', url)
         if m and m.group(1):
-            log.debug("UPDATING NEXT URL: {0}", url)
+            log.debug("UPDATING NEXT URL: {0}".format(url))
             start_index = int(m.group(1))
-            log.debug("current_start : {0}", start_index)
+            log.debug("current_start : {0}".format(start_index))
             if start_index > 0:
                 prev_index = start_index - page_limit
                 if prev_index < 0:
                     prev_index = 0
                 url_prev = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(prev_index), url)
             url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + page_limit), url)
-            log.debug("UPDATING NEXT URL: {0}", url_next)
+            log.debug("UPDATING NEXT URL: {0}".format(url_next))
 
         else:
-            log.debug("ADDING NEXT URL: {0}", url)
+            log.debug("ADDING NEXT URL: {0}".format(url))
             url_next = url + "&StartIndex=" + str(start_index + page_limit) + "&Limit=" + str(page_limit)
             url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(page_limit)
-            log.debug("ADDING NEXT URL: {0}", url_next)
+            log.debug("ADDING NEXT URL: {0}".format(url_next))
 
     # use the data manager to get the data
     # result = dataManager.GetContent(url)
@@ -118,7 +118,7 @@ def get_content(url, params):
     if dir_items is None:
         return
 
-    log.debug("total_records: {0}", total_records)
+    log.debug("total_records: {0}".format(total_records))
 
     # add paging items
     if page_limit > 0 and media_type.startswith("movie"):
@@ -126,7 +126,7 @@ def get_content(url, params):
             list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
-            log.debug("ADDING PREV ListItem: {0} - {1}", u, list_item)
+            log.debug("ADDING PREV ListItem: {0} - {1}".format(u, list_item))
             dir_items.insert(0, (u, list_item, True))
 
         if start_index + page_limit < total_records:
@@ -136,7 +136,7 @@ def get_content(url, params):
             list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
                                          str(upper_count) + " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
-            log.debug("ADDING NEXT ListItem: {0} - {1}", u, list_item)
+            log.debug("ADDING NEXT ListItem: {0} - {1}".format(u, list_item))
             dir_items.append((u, list_item, True))
 
     # set the Kodi content type
@@ -144,7 +144,7 @@ def get_content(url, params):
         xbmcplugin.setContent(pluginhandle, content_type)
     elif detected_type is not None:
         # if the media type is not set then try to use the detected type
-        log.debug("Detected content type: {0}", detected_type)
+        log.debug("Detected content type: {0}".format(detected_type))
         if detected_type == "Movie":
             view_type = "Movies"
             content_type = 'movies'
@@ -166,11 +166,11 @@ def get_content(url, params):
     view_key = "view-" + content_type
     view_id = settings.getSetting(view_key)
     if view_id:
-        log.debug("Setting view for type:{0} to id:{1}", view_key, view_id)
+        log.debug("Setting view for type:{0} to id:{1}".format(view_key, view_id))
         display_items_notification = {"view_id": view_id}
         send_event_notification("set_view", display_items_notification)
     else:
-        log.debug("No view id for view type:{0}", view_key)
+        log.debug("No view id for view type:{0}".format(view_key))
 
     # send display items event
     # display_items_notification = {"view_type": view_type}
@@ -185,7 +185,7 @@ def get_content(url, params):
 
 
 def set_sort(pluginhandle, view_type, default_sort):
-    log.debug("SETTING_SORT for media type: {0}", view_type)
+    log.debug("SETTING_SORT for media type: {0}".format(view_type))
 
     if default_sort == "none":
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
@@ -202,7 +202,7 @@ def set_sort(pluginhandle, view_type, default_sort):
 
     settings = xbmcaddon.Addon()
     preset_sort_order = settings.getSetting("sort-" + view_type)
-    log.debug("SETTING_SORT preset_sort_order: {0}", preset_sort_order)
+    log.debug("SETTING_SORT preset_sort_order: {0}".format(preset_sort_order))
     if preset_sort_order in sorting_order_mapping:
         xbmcplugin.addSortMethod(pluginhandle, sorting_order_mapping[preset_sort_order])
 
@@ -311,7 +311,7 @@ def process_directory(url, progress, params, use_cache_data=False):
             detected_type = item_details.item_type
 
         if item_details.item_type == "Season" and first_season_item is None:
-            log.debug("Setting First Season to : {0}", item_details.__dict__)
+            log.debug("Setting First Season to : {0}".format(item_details.__dict__))
             first_season_item = item_details
 
         total_unwatched += item_details.unwatched_episodes
@@ -357,7 +357,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                 if gui_item:
                     dir_items.append(gui_item)
             else:
-                log.debug("Dropping empty folder item : {0}", item_details.__dict__)
+                log.debug("Dropping empty folder item : {0}".format(item_details.__dict__))
 
         elif item_details.item_type == "MusicArtist":
             u = ('{server}/Users/{userid}/items' +
