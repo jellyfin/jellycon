@@ -115,7 +115,6 @@ class DownloadUtils:
 
         url = "{server}/Sessions/Capabilities/Full?format=json"
         data = {
-            'IconUrl': "https://raw.githubusercontent.com/faush01/plugin.video.jellycon/develop/kodi.png",
             'SupportsMediaControl': True,
             'PlayableMediaTypes': ["Video", "Audio"],
             'SupportedCommands': ["MoveUp",
@@ -624,13 +623,11 @@ class DownloadUtils:
 
         if authenticate is False:
             auth_string = "MediaBrowser Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            # headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = auth_string
             return headers
         else:
             userid = self.get_user_id()
             auth_string = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
-            # headers["Authorization"] = authString
             headers['X-Emby-Authorization'] = auth_string
 
             auth_token = self.authenticate()
@@ -702,7 +699,6 @@ class DownloadUtils:
                 head["Authorization"] = 'Basic %s' % user_and_pass
 
             head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
-            log.debug("HEADERS: {0}".format(head))
 
             http_request = getattr(requests, method.lower())
 
@@ -722,19 +718,11 @@ class DownloadUtils:
                 data = http_request(url, headers=head)
 
 
-            #import web_pdb; web_pdb.set_trace()
-            #log.debug("HTTP response: {0} {1}".format(data.status_code, data.content))
-            log.debug("{0} URL HEADERS: {1}".format(method, data.headers))
-
             if data.status_code == 200:
 
                 if headers is not None and isinstance(headers, dict):
                     headers.update(data.headers)
-                log.debug("Data Length: {0}".format(len(data.content)))
-                log.debug("====== 200 returned =======")
-                log.debug("Content-Type: {0}".format(data.headers.get("content-type")))
                 log.debug("{0}".format(data.json()))
-                log.debug("====== 200 finished ======")
 
             elif data.status_code >= 400:
 
