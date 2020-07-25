@@ -12,11 +12,11 @@ import xbmcaddon
 import xbmcgui
 
 from .utils import get_art, datetime_from_string
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
 from .kodi_utils import HomeWindow
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 addon_instance = xbmcaddon.Addon()
@@ -176,7 +176,7 @@ def extract_item_info(item, gui_options):
             name_info["SeriesName"] = ""
         name_info["SeasonIndex"] = u"%02d" % item_details.season_number
         name_info["EpisodeIndex"] = u"%02d" % item_details.episode_number
-        log.debug("FormatName: {0} | {1}", name_format, name_info)
+        log.debug("FormatName: {0} | {1}".format(name_format, name_info))
         item_details.name = unicode(name_format).format(**name_info).strip()
 
     year = item["ProductionYear"]

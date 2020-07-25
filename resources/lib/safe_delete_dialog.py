@@ -3,9 +3,9 @@
 import xbmc
 import xbmcgui
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class SafeDeleteDialog(xbmcgui.WindowXMLDialog):
@@ -36,7 +36,7 @@ class SafeDeleteDialog(xbmcgui.WindowXMLDialog):
         pass
 
     def onMessage(self, message):
-        log.debug("SafeDeleteDialog: onMessage: {0}", message)
+        log.debug("SafeDeleteDialog: onMessage: {0}".format(message))
 
     def onAction(self, action):
 
@@ -45,7 +45,7 @@ class SafeDeleteDialog(xbmcgui.WindowXMLDialog):
         elif action.getId() == 92:  # ACTION_NAV_BACK
             self.close()
         else:
-            log.debug("SafeDeleteDialog: onAction: {0}", action.getId())
+            log.debug("SafeDeleteDialog: onAction: {0}".format(action.getId()))
 
     def onClick(self, controlID):
         if controlID == 1:

@@ -9,7 +9,7 @@ import cPickle
 import time
 
 from .downloadutils import DownloadUtils
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .translation import string_load
@@ -21,7 +21,7 @@ import xbmcaddon
 import xbmcvfs
 import xbmcgui
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class CacheItem:
@@ -60,7 +60,7 @@ class DataManager:
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()
-        log.debug("last_content_url : use_cache={0} url={1}", use_cache, url)
+        log.debug("last_content_url : use_cache={0} url={1}".format(use_cache, url))
         home_window.set_property("last_content_url", url)
 
         download_utils = DownloadUtils()
@@ -102,7 +102,7 @@ class DataManager:
                         item_list = cache_item.item_list
                         total_records = cache_item.total_records
                     except Exception as err:
-                        log.error("Pickle Data Load Failed : {0}", err)
+                        log.error("Pickle Data Load Failed : {0}".format(err))
                         item_list = None
 
         # we need to load the list item data form the server
@@ -206,7 +206,7 @@ class CacheManagerThread(threading.Thread):
         else:
             log.debug("CacheManagerThread : Reloading to recheck data hashes")
             cached_hash = self.cached_item.item_list_hash
-            log.debug("CacheManagerThread : Cache Hash : {0}", cached_hash)
+            log.debug("CacheManagerThread : Cache Hash : {0}".format(cached_hash))
 
             data_manager = DataManager()
             results = data_manager.get_content(self.cached_item.items_url)
@@ -232,7 +232,7 @@ class CacheManagerThread(threading.Thread):
                 return
 
             loaded_hash = self.get_data_hash(loaded_items)
-            log.debug("CacheManagerThread : Loaded Hash : {0}", loaded_hash)
+            log.debug("CacheManagerThread : Loaded Hash : {0}".format(loaded_hash))
 
             # if they dont match then save the data and trigger a content reload
             if cached_hash != loaded_hash:
@@ -252,7 +252,7 @@ class CacheManagerThread(threading.Thread):
                 # TODO: probably should only set this in simple check mode
                 current_time_stamp = str(time.time())
                 home_window.set_property("jellycon_widget_reload", current_time_stamp)
-                log.debug("Setting New Widget Hash: {0}", current_time_stamp)
+                log.debug("Setting New Widget Hash: {0}".format(current_time_stamp))
 
                 log.debug("CacheManagerThread : Sending container refresh")
                 xbmc.executebuiltin("Container.Refresh")
@@ -276,7 +276,7 @@ def clear_cached_server_data():
     del_count = 0
     for filename in files:
         if filename.startswith("cache_") and filename.endswith(".pickle"):
-            log.debug("Deleteing CacheFile: {0}", filename)
+            log.debug("Deleteing CacheFile: {0}".format(filename))
             xbmcvfs.delete(os.path.join(addon_dir, filename))
             del_count += 1
 
@@ -293,7 +293,7 @@ def clear_old_cache_data():
     del_count = 0
     for filename in files:
         if filename.startswith("cache_") and filename.endswith(".pickle"):
-            log.debug("clear_old_cache_data() : Checking CacheFile : {0}", filename)
+            log.debug("clear_old_cache_data() : Checking CacheFile : {0}".format(filename))
 
             cache_item = None
             for x in range(0, 5):
@@ -304,7 +304,7 @@ def clear_old_cache_data():
                             cache_item = cPickle.load(handle)
                     break
                 except Exception as error:
-                    log.debug("clear_old_cache_data() : Pickle load error : {0}", error)
+                    log.debug("clear_old_cache_data() : Pickle load error : {0}".format(error))
                     cache_item = None
                     xbmc.sleep(1000)
 
@@ -313,9 +313,9 @@ def clear_old_cache_data():
                 if cache_item.date_last_used is not None:
                     item_last_used = time.time() - cache_item.date_last_used
 
-                log.debug("clear_old_cache_data() : Cache item last used : {0} sec ago", item_last_used)
+                log.debug("clear_old_cache_data() : Cache item last used : {0} sec ago".format(item_last_used))
                 if item_last_used == -1 or item_last_used > (3600 * 24 * 7):
-                    log.debug("clear_old_cache_data() : Deleting cache item age : {0}", item_last_used)
+                    log.debug("clear_old_cache_data() : Deleting cache item age : {0}".format(item_last_used))
                     data_file = os.path.join(addon_dir, filename)
                     with FileLock(data_file + ".locked", timeout=5):
                         xbmcvfs.delete(data_file)
@@ -326,4 +326,4 @@ def clear_old_cache_data():
                 with FileLock(data_file + ".locked", timeout=5):
                     xbmcvfs.delete(data_file)
 
-    log.debug("clear_old_cache_data() : Cache items deleted : {0}", del_count)
+    log.debug("clear_old_cache_data() : Cache items deleted : {0}".format(del_count))

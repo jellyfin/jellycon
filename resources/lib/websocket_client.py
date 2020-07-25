@@ -10,13 +10,13 @@ import xbmc
 import xbmcgui
 
 from .functions import play_action
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from . import clientinfo
 from . import downloadutils
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class WebSocketClient(threading.Thread):
@@ -65,10 +65,10 @@ class WebSocketClient(threading.Thread):
             self._general_commands(data)
 
         else:
-            log.debug("WebSocket Message Type: {0}", message)
+            log.debug("WebSocket Message Type: {0}".format(message))
 
     def _library_changed(self, data):
-        log.debug("Library_Changed: {0}", data)
+        log.debug("Library_Changed: {0}".format(data))
         self._library_monitor.check_for_updates()
 
     def _play(self, data):
@@ -81,7 +81,7 @@ class WebSocketClient(threading.Thread):
             home_screen.set_property("skip_select_user", "true")
 
             startat = data.get('StartPositionTicks', -1)
-            log.debug("WebSocket Message PlayNow: {0}", data)
+            log.debug("WebSocket Message PlayNow: {0}".format(data))
 
             media_source_id = data.get("MediaSourceId", "")
             subtitle_stream_index = data.get("SubtitleStreamIndex", None)
@@ -124,14 +124,14 @@ class WebSocketClient(threading.Thread):
                 seek_to = data['SeekPositionTicks']
                 seek_time = seek_to / 10000000.0
                 player.seekTime(seek_time)
-                log.debug("Seek to {0}", seek_time)
+                log.debug("Seek to {0}".format(seek_time))
 
         elif command in actions:
             actions[command]()
-            log.debug("Command: {0} completed",  command)
+            log.debug("Command: {0} completed".format(command))
 
         else:
-            log.debug("Unknown command: {0}", command)
+            log.debug("Unknown command: {0}".format(command))
             return
 
     def _general_commands(self, data):
@@ -175,7 +175,7 @@ class WebSocketClient(threading.Thread):
             # header = arguments['Header']
             text = arguments['Text']
             # show notification here
-            log.debug("WebSocket DisplayMessage: {0}", text)
+            log.debug("WebSocket DisplayMessage: {0}".format(text))
             xbmcgui.Dialog().notification("JellyCon", text)
 
         elif command == 'SendString':
@@ -234,7 +234,7 @@ class WebSocketClient(threading.Thread):
         self.post_capabilities()
 
     def on_error(self, ws, error):
-        log.debug("Error: {0}", error)
+        log.debug("Error: {0}".format(error))
 
     def run(self):
 
@@ -255,7 +255,7 @@ class WebSocketClient(threading.Thread):
             server = server.replace('http', "ws")
 
         websocket_url = "%s/websocket?api_key=%s&deviceId=%s" % (server, token, self.device_id)
-        log.debug("websocket url: {0}", websocket_url)
+        log.debug("websocket url: {0}".format(websocket_url))
 
         self._client = websocket.WebSocketApp(websocket_url,
                                               on_open=self.on_open,

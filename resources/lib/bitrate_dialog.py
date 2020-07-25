@@ -1,9 +1,9 @@
 import xbmc
 import xbmcgui
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class BitrateDialog(xbmcgui.WindowXMLDialog):
@@ -35,7 +35,7 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
         pass
 
     def onMessage(self, message):
-        log.debug("ActionMenu: onMessage: {0}", message)
+        log.debug("ActionMenu: onMessage: {0}".format(message))
 
     def onAction(self, action):
 
@@ -54,5 +54,5 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
 
     def onClick(self, control_id):
         if control_id == 3000:
-            log.debug("ActionMenu: Selected Item: {0}", control_id)
+            log.debug("ActionMenu: Selected Item: {0}".format(control_id))
             #self.close()

@@ -90,10 +90,6 @@ import sys
 import time
 import errno
 
-# from .simple_logging import SimpleLogging
-# log = SimpleLogging(__name__)
-
-
 class FileLock(object):
     """ A file locking mechanism that has context-manager support so
         you can use it in a ``with`` statement. This should be relatively cross
@@ -201,7 +197,7 @@ if __name__ == "__main__":
     import threading
     import tempfile
     from builtins import range
-    
+
 
     temp_dir = tempfile.mkdtemp()
     protected_filepath = os.path.join(temp_dir, "somefile.txt")

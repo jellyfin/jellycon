@@ -9,7 +9,7 @@ import xbmcaddon
 import xbmcgui
 
 from resources.lib.downloadutils import DownloadUtils, save_user_details
-from resources.lib.simple_logging import SimpleLogging
+from resources.lib.loghandler import LazyLogger
 from resources.lib.play_utils import Service, PlaybackService, send_progress
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.widgets import set_background_image, set_random_movies
@@ -35,13 +35,13 @@ home_window.clear_property("userid")
 home_window.clear_property("AccessToken")
 home_window.clear_property("Params")
 
-log = SimpleLogging('service')
+log = LazyLogger('service')
 monitor = xbmc.Monitor()
 
 try:
     clear_old_cache_data()
 except Exception as error:
-    log.error("Error in clear_old_cache_data() : {0}", error)
+    log.error("Error in clear_old_cache_data() : {0}".format(error))
 
 # wait for 10 seconds for the Kodi splash screen to close
 i = 0
@@ -60,7 +60,7 @@ try:
     download_utils.authenticate()
     download_utils.get_user_id()
 except Exception as error:
-    log.error("Error with initial service auth: {0}", error)
+    log.error("Error with initial service auth: {0}".format(error))
 
 
 image_server = HttpImageServerThread()
@@ -181,8 +181,8 @@ while not xbmc.abortRequested:
                     set_background_image(False)
 
     except Exception as error:
-        log.error("Exception in Playback Monitor: {0}", error)
-        log.error("{0}", traceback.format_exc())
+        log.error("Exception in Playback Monitor: {0}".format(error))
+        log.error("{0}".format(traceback.format_exc()))
 
     first_run = False
     xbmc.sleep(1000)

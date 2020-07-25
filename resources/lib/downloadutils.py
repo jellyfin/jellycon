@@ -1,4 +1,5 @@
 # Gnu General Public License - see LICENSE.TXT
+from __future__ import unicode_literals
 
 import xbmcgui
 import xbmcaddon
@@ -17,11 +18,11 @@ from traceback import format_exc
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .translation import string_load
 from .tracking import timer
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 def save_user_details(settings, user_name, user_password):
@@ -105,10 +106,10 @@ class DownloadUtils:
         self.use_https = False
         if settings.getSetting('protocol') == "1":
             self.use_https = True
-        log.debug("use_https: {0}", self.use_https)
+        log.debug("use_https: {0}".format(self.use_https))
 
         self.verify_cert = settings.getSetting('verify_cert') == 'true'
-        log.debug("verify_cert: {0}", self.verify_cert)
+        log.debug("verify_cert: {0}".format(self.verify_cert))
 
     def post_capabilities(self):
 
@@ -152,7 +153,7 @@ class DownloadUtils:
         }
 
         self.download_url(url, post_body=data, method="POST")
-        log.debug("Posted Capabilities: {0}", data)
+        log.debug("Posted Capabilities: {0}".format(data))
 
     def get_item_playback_info(self, item_id, force_transcode):
 
@@ -333,11 +334,11 @@ class DownloadUtils:
         else:
             url = "{server}/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
 
-        log.debug("PlaybackInfo : {0}", url)
-        log.debug("PlaybackInfo : {0}", profile)
+        log.debug("PlaybackInfo : {0}".format(url))
+        log.debug("PlaybackInfo : {0}".format(profile))
         play_info_result = self.download_url(url, post_body=playback_info, method="POST")
         play_info_result = json.loads(play_info_result)
-        log.debug("PlaybackInfo : {0}", play_info_result)
+        log.debug("PlaybackInfo : {0}".format(play_info_result))
 
         return play_info_result
 
@@ -486,7 +487,7 @@ class DownloadUtils:
         user_image = window.get_property("userimage")
 
         if userid and user_image:
-            log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}", userid)
+            log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}".format(userid))
             return userid
 
         settings = xbmcaddon.Addon()
@@ -495,33 +496,33 @@ class DownloadUtils:
 
         if not user_name:
             return ""
-        log.debug("Looking for user name: {0}", user_name)
+        log.debug("Looking for user name: {0}".format(user_name))
 
         try:
             json_data = self.download_url("{server}/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception as msg:
-            log.error("Get User unable to connect: {0}", msg)
+            log.error("Get User unable to connect: {0}".format(msg))
             return ""
 
-        log.debug("GETUSER_JSONDATA_01: {0}", json_data)
+        log.debug("GETUSER_JSONDATA_01: {0}".format(json_data))
 
         try:
             result = json.loads(json_data)
         except Exception as e:
-            log.debug("Could not load user data: {0}", e)
+            log.debug("Could not load user data: {0}".format(e))
             return ""
 
         if result is None:
             return ""
 
-        log.debug("GETUSER_JSONDATA_02: {0}", result)
+        log.debug("GETUSER_JSONDATA_02: {0}".format(result))
 
         secure = False
         for user in result:
             if user.get("Name") == unicode(user_name, "utf-8"):
                 userid = user.get("Id")
                 user_image = self.get_user_artwork(user, 'Primary')
-                log.debug("Username Found: {0}", user.get("Name"))
+                log.debug("Username Found: {0}".format(user.get("Name")))
                 if user.get("HasPassword", False):
                     secure = True
                     log.debug("Username Is Secure (HasPassword=True)")
@@ -545,7 +546,7 @@ class DownloadUtils:
                                           string_load(30045),
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
 
-        log.debug("userid: {0}", userid)
+        log.debug("userid: {0}".format(userid))
 
         window.set_property("userid", userid)
         window.set_property("userimage", user_image)
@@ -558,7 +559,7 @@ class DownloadUtils:
 
         token = window.get_property("AccessToken")
         if token is not None and token != "":
-            log.debug("JellyCon DownloadUtils -> Returning saved AccessToken: {0}", token)
+            log.debug("JellyCon DownloadUtils -> Returning saved AccessToken: {0}".format(token))
             return token
 
         settings = xbmcaddon.Addon()
@@ -573,7 +574,7 @@ class DownloadUtils:
         message_data = "username=" + user_name + "&pw=" + pwd_text
 
         resp = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
-        log.debug("AuthenticateByName: {0}", resp)
+        log.debug("AuthenticateByName: {0}".format(resp))
 
         access_token = None
         userid = None
@@ -586,8 +587,8 @@ class DownloadUtils:
             pass
 
         if access_token is not None:
-            log.debug("User Authenticated: {0}", access_token)
-            log.debug("User Id: {0}", userid)
+            log.debug("User Authenticated: {0}".format(access_token))
+            log.debug("User Id: {0}".format(userid))
             window.set_property("AccessToken", access_token)
             window.set_property("userid", userid)
             # WINDOW.setProperty("userimage", "")
@@ -636,7 +637,7 @@ class DownloadUtils:
             if auth_token != "":
                 headers["X-MediaBrowser-Token"] = auth_token
 
-            log.debug("JellyCon Authentication Header: {0}", headers)
+            log.debug("JellyCon Authentication Header: {0}".format(headers))
             return headers
 
     @timer
@@ -656,7 +657,7 @@ class DownloadUtils:
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
 
-        log.debug("Before: {0}", url)
+        log.debug("Before: {0}".format(url))
 
         if url.find("{server}") != -1:
             server = self.get_server()
@@ -685,8 +686,8 @@ class DownloadUtils:
                 return "null"
             url = url.replace("{random_movies}", random_movies)
 
-        log.debug("After: {0}", url)
-        
+        log.debug("After: {0}".format(url))
+
         try:
             url_bits = urlparse(url.strip())
             user_name = url_bits.username
@@ -701,37 +702,38 @@ class DownloadUtils:
                 head["Authorization"] = 'Basic %s' % user_and_pass
 
             head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
-            log.debug("HEADERS: {0}", head)
+            log.debug("HEADERS: {0}".format(head))
 
             http_request = getattr(requests, method.lower())
 
             if post_body:
 
-                if isinstance(post_body, dict): 
-                    head["Content-Type"] = "application/json"            
-                    post_body = json.dumps(post_body)   
-                else:   
+                if isinstance(post_body, dict):
+                    head["Content-Type"] = "application/json"
+                    post_body = json.dumps(post_body)
+                else:
                     head["Content-Type"] = "application/x-www-form-urlencoded"
 
-                log.debug("Content-Type: {0}", head["Content-Type"])
-                log.debug("POST DATA: {0}", post_body)
+                log.debug("Content-Type: {0}".format(head["Content-Type"]))
+                log.debug("POST DATA: {0}".format(post_body))
 
                 data = http_request(url, data=post_body, headers=head)
             else:
                 data = http_request(url, headers=head)
 
 
-            log.debug("HTTP response: {0} {1}", data.status_code, data.content)
-            log.debug("{0} URL HEADERS: {1}", method, data.headers)
+            #import web_pdb; web_pdb.set_trace()
+            #log.debug("HTTP response: {0} {1}".format(data.status_code, data.content))
+            log.debug("{0} URL HEADERS: {1}".format(method, data.headers))
 
             if data.status_code == 200:
 
                 if headers is not None and isinstance(headers, dict):
                     headers.update(data.headers)
-                log.debug("Data Length: {0}", len(data.content))
+                log.debug("Data Length: {0}".format(len(data.content)))
                 log.debug("====== 200 returned =======")
-                log.debug("Content-Type: {0}", data.headers.get("content-type"))
-                log.debug("{0}", str(data.content))
+                log.debug("Content-Type: {0}".format(data.headers.get("content-type")))
+                log.debug("{0}".format(data.json()))
                 log.debug("====== 200 finished ======")
 
             elif data.status_code >= 400:
@@ -741,19 +743,19 @@ class DownloadUtils:
                     m = hashlib.md5()
                     m.update(username)
                     hashed_username = m.hexdigest()
-                    log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}", hashed_username)
+                    log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}".format(hashed_username))
                     settings.setSetting("saved_user_password_" + hashed_username, "")
                     save_user_details(settings, "", "")
 
-                log.error("HTTP response error: {0} {1}", data.status_code, data.content)
+                log.error("HTTP response error: {0} {1}".format(data.status_code, data.content))
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
                                                   string_load(30200) % str(data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
             return data.content or "null"
         except Exception as msg:
-            log.error("{0}", format_exc())
-            log.error("Unable to connect to {0} : {1}", server, msg)
+            log.error("{0}".format(format_exc()))
+            log.error("Unable to connect to {0} : {1}".format(server, msg))
             if not suppress:
                 xbmcgui.Dialog().notification(string_load(30316),
                                               str(msg),

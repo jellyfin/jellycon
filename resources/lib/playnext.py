@@ -5,10 +5,10 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .play_utils import send_event_notification
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class PlayNextService(threading.Thread):
@@ -38,7 +38,7 @@ class PlayNextService(threading.Thread):
                 if not is_playing:
                     settings = xbmcaddon.Addon()
                     play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
-                    log.debug("New play_next_trigger_time value: {0}", play_next_trigger_time)
+                    log.debug("New play_next_trigger_time value: {0}".format(play_next_trigger_time))
 
                 duration = player.getTotalTime()
                 position = player.getTime()
@@ -47,10 +47,10 @@ class PlayNextService(threading.Thread):
 
                 if not play_next_triggered and (trigger_time > time_to_end) and play_next_dialog is None:
                     play_next_triggered = True
-                    log.debug("play_next_triggered hit at {0} seconds from end", time_to_end)
+                    log.debug("play_next_triggered hit at {0} seconds from end".format(time_to_end))
 
                     play_data = get_playing_data(self.monitor.played_information)
-                    log.debug("play_next_triggered play_data : {0}", play_data)
+                    log.debug("play_next_triggered play_data : {0}".format(play_data))
 
                     next_episode = play_data.get("next_episode")
                     item_type = play_data.get("item_type")
@@ -116,7 +116,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
         pass
 
     def onMessage(self, message):
-        log.debug("PlayNextDialog: onMessage: {0}", message)
+        log.debug("PlayNextDialog: onMessage: {0}".format(message))
 
     def onAction(self, action):
 
@@ -125,7 +125,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
         elif action.getId() == 92:  # ACTION_NAV_BACK
             self.close()
         else:
-            log.debug("PlayNextDialog: onAction: {0}", action.getId())
+            log.debug("PlayNextDialog: onAction: {0}".format(action.getId()))
 
     def onClick(self, control_id):
         if control_id == 3013:
@@ -133,7 +133,7 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
             self.play_called
             self.close()
             next_item_id = self.episode_info.get("Id")
-            log.debug("Playing Next Episode: {0}", next_item_id)
+            log.debug("Playing Next Episode: {0}".format(next_item_id))
             play_info = {}
             play_info["item_id"] = next_item_id
             play_info["auto_resume"] = "-1"

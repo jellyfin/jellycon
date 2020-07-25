@@ -2,10 +2,10 @@
 
 import xbmcgui
 
-from .simple_logging import SimpleLogging
+from .loghandler import LazyLogger
 from .translation import string_load
 
-log = SimpleLogging(__name__)
+log = LazyLogger(__name__)
 
 
 class ResumeDialog(xbmcgui.WindowXMLDialog):
