@@ -470,11 +470,11 @@ def show_menu(params):
 
     if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
         if view_match:
-            li = xbmcgui.ListItem("Unset as defalt view")
+            li = xbmcgui.ListItem("Unset as default view")
             li.setProperty('menu_id', 'unset_view')
             action_items.append(li)
         else:
-            li = xbmcgui.ListItem("Set as defalt view")
+            li = xbmcgui.ListItem("Set as default view")
             li.setProperty('menu_id', 'set_view')
             action_items.append(li)
 
