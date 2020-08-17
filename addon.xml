@@ -2,7 +2,7 @@
 <addon  id="plugin.video.jellycon" 
         name="JellyCon"
         version="0.2.0"
-        provider-name="Team B">
+        provider-name="Jellyfin Contributors">
   <requires>
     <import addon="xbmc.python" version="2.25.0"/>
     <import addon="script.module.pil" version="1.1.7"/>
@@ -23,7 +23,7 @@
     <website>https://github.com/jellyfin/jellycon/wiki</website>
     <source>https://github.com/jellyfin/jellycon</source>
     <summary lang="en_GB">Browse and play your Jellyfin server media library.</summary>
-    <description lang="en_GB">An addon to allow you to browse and playback your Jellyfin (www.jellyfin.org) Movie, TV Show and Music collections.</description>
+    <description lang="en_GB">An addon to allow you to browse and playback your Jellyfin (https://jellyfin.org) Movie, TV Show and Music collections.</description>
     <assets>
         <icon>icon.png</icon>
         <fanart>fanart.jpg</fanart>
