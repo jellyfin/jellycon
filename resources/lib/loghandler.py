@@ -12,10 +12,6 @@ from six import ensure_text
 from kodi_six import xbmc, xbmcaddon
 from urlparse import urlparse
 
-#from .utils import get_filesystem_encoding
-
-#from . import settings
-
 ##################################################################################################
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.jellycon')
@@ -41,37 +37,20 @@ class LogHandler(logging.StreamHandler):
         self.sensitive = {'Token': [], 'Server': []}
 
         settings = xbmcaddon.Addon()
-        server = settings.getSetting('server_address')
-        if server:
-            url_bits = urlparse(server)
-            server = url_bits.netloc
-            self.sensitive['Server'].append(server)
-        #for server in database.get_credentials()['Servers']:
-
-        #    if server.get('AccessToken'):
-        #        self.sensitive['Token'].append(server['AccessToken'])
-
-        #    if server.get('address'):
-        #        self.sensitive['Server'].append(server['address'].split('://')[1])
-
-        #self.mask_info = settings('maskInfo.bool')
+        self.server = settings.getSetting('server_address')
+        self.debug = settings.getSetting('log_debug')
 
     def emit(self, record):
 
         if self._get_log_level(record.levelno):
             string = self.format(record)
 
-            #if self.mask_info:
-            for server in self.sensitive['Server']:
-                string = string.replace(server or "{server}", "{jellyfin-server}")
-
-            #    for token in self.sensitive['Token']:
-            #        string = string.replace(token or "{token}", "{jellyfin-token}")
+            # Hide server URL in logs
+            string = string.replace(self.server or "{server}", "{jellyfin-server}")
 
             xbmc.log(string, level=xbmc.LOGNOTICE)
 
-    @classmethod
-    def _get_log_level(cls, level):
+    def _get_log_level(self, level):
 
         levels = {
             logging.ERROR: 0,
@@ -79,12 +58,10 @@ class LogHandler(logging.StreamHandler):
             logging.INFO: 1,
             logging.DEBUG: 2
         }
-        ### TODO
-        log_level = 2
-        #try:
-        #    log_level = int(settings('logLevel'))
-        #except ValueError:
-        #    log_level = 2  # If getting settings fail, we probably want debug logging.
+        if self.debug == 'true':
+            log_level = 2
+        else:
+            log_level = 1
 
         return log_level >= levels[level]
 
