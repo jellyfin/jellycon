@@ -941,7 +941,14 @@ def play_action(params):
     log.debug("PLAY ACTION PARAMS: {0}".format(params))
     item_id = params.get("item_id")
 
-    auto_resume = int(params.get("auto_resume", "-1"))
+    auto_resume = params.get("auto_resume", "-1")
+    if auto_resume == 'None':
+        auto_resume = '-1'
+    if auto_resume:
+        auto_resume = int(auto_resume)
+    else:
+        auto_resume = -1
+
     log.debug("AUTO_RESUME: {0}".format(auto_resume))
 
     force_transcode = params.get("force_transcode", None) is not None
