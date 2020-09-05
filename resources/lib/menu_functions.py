@@ -5,6 +5,7 @@ import sys
 import json
 import urllib
 import base64
+import string
 
 import xbmcplugin
 import xbmcaddon
@@ -360,22 +361,12 @@ def show_movie_alpha_list(menu_params):
     if parent_id is not None:
         url_params["ParentId"] = parent_id
 
-    prefix_url = get_jellyfin_url("{server}/Items/Prefixes", url_params)
-
-    data_manager = DataManager()
-    result = data_manager.get_content(prefix_url)
-
-    if not result:
-        return
-
-    alpha_list = []
-    for prefix in result:
-        alpha_list.append(prefix.get("Name"))
+    prefixes = '#' + string.ascii_uppercase
 
     collections = []
-    for alphaName in alpha_list:
+    for alpha_name in prefixes:
         item_data = {}
-        item_data['title'] = alphaName
+        item_data['title'] = alpha_name
         item_data['media_type'] = "Movies"
 
         params = {}
@@ -391,13 +382,15 @@ def show_movie_alpha_list(menu_params):
         if parent_id is not None:
             params["ParentId"] = parent_id
 
-        if alphaName == "#":
+        if alpha_name == "#":
             params["NameLessThan"] = "A"
         else:
-            params["NameStartsWith"] = alphaName
+            params["NameStartsWith"] = alpha_name
 
         url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
         item_data['path'] = url
+
+        log.info('url: {}'.format(url))
 
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
         item_data['art'] = art
@@ -430,20 +423,11 @@ def show_tvshow_alpha_list(menu_params):
     url_params["SortOrder"] = "Ascending"
     if parent_id is not None:
         menu_params["ParentId"] = parent_id
-    prefix_url = get_jellyfin_url("{server}/Items/Prefixes", url_params)
 
-    data_manager = DataManager()
-    result = data_manager.get_content(prefix_url)
-
-    if not result:
-        return
-
-    alpha_list = []
-    for prefix in result:
-        alpha_list.append(prefix.get("Name"))
+    prefixes = '#' + string.ascii_uppercase
 
     collections = []
-    for alpha_name in alpha_list:
+    for alpha_name in prefixes:
         item_data = {}
         item_data['title'] = alpha_name
         item_data['media_type'] = "tvshows"
