@@ -390,8 +390,6 @@ def show_movie_alpha_list(menu_params):
         url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
         item_data['path'] = url
 
-        log.info('url: {}'.format(url))
-
         art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
         item_data['art'] = art
 
