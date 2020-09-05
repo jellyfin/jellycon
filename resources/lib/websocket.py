@@ -73,7 +73,7 @@ STATUS_INVALID_EXTENSION = 1010
 STATUS_UNEXPECTED_CONDITION = 1011
 STATUS_TLS_HANDSHAKE_ERROR = 1015
 
-logger = logging.getLogger()
+#logger = logging.getLogger()
 
 
 class WebSocketException(Exception):
@@ -108,10 +108,10 @@ def enableTrace(tracable):
     """
     global traceEnabled
     traceEnabled = tracable
-    if tracable:
-        if not logger.handlers:
-            logger.addHandler(logging.StreamHandler())
-        logger.setLevel(logging.DEBUG)
+    #if tracable:
+    #    if not logger.handlers:
+    #        logger.addHandler(logging.StreamHandler())
+    #    logger.setLevel(logging.DEBUG)
 
 
 def setdefaulttimeout(timeout):
@@ -512,10 +512,10 @@ class WebSocket(object):
 
         header_str = "\r\n".join(headers)
         self._send(header_str)
-        if traceEnabled:
-            logger.debug("--- request header ---")
-            logger.debug(header_str)
-            logger.debug("-----------------------")
+        #if traceEnabled:
+        #    logger.debug("--- request header ---")
+        #    logger.debug(header_str)
+        #    logger.debug("-----------------------")
 
         status, resp_headers = self._read_headers()
         if status != 101:
@@ -550,16 +550,16 @@ class WebSocket(object):
     def _read_headers(self):
         status = None
         headers = {}
-        if traceEnabled:
-            logger.debug("--- response header ---")
+        #if traceEnabled:
+        #    logger.debug("--- response header ---")
 
         while True:
             line = self._recv_line()
             if line == "\r\n":
                 break
             line = line.strip()
-            if traceEnabled:
-                logger.debug(line)
+            #if traceEnabled:
+            #    logger.debug(line)
             if not status:
                 status_info = line.split(" ", 2)
                 status = int(status_info[1])
@@ -571,8 +571,8 @@ class WebSocket(object):
                 else:
                     raise WebSocketException("Invalid header")
 
-        if traceEnabled:
-            logger.debug("-----------------------")
+        #if traceEnabled:
+        #    logger.debug("-----------------------")
 
         return status, headers
 
@@ -591,8 +591,8 @@ class WebSocket(object):
             frame.get_mask_key = self.get_mask_key
         data = frame.format()
         length = len(data)
-        if traceEnabled:
-            logger.debug("send: " + repr(data))
+        #if traceEnabled:
+        #    logger.debug("send: " + repr(data))
         while data:
             l = self._send(data)
             data = data[l:]
@@ -645,7 +645,7 @@ class WebSocket(object):
                     self._cont_data[1] += frame.data
                 else:
                     self._cont_data = [frame.opcode, frame.data]
-                
+
                 if frame.fin:
                     data = self._cont_data
                     self._cont_data = None
@@ -718,12 +718,12 @@ class WebSocket(object):
 
         reason: the reason to close. This must be string.
         """
-        
+
         try:
             self.sock.shutdown(socket.SHUT_RDWR)
         except:
             pass
-            
+
         '''
         if self.connected:
             if status < 0 or status >= ABNF.LENGTH_16:
@@ -735,10 +735,10 @@ class WebSocket(object):
                 self.sock.settimeout(3)
                 try:
                     frame = self.recv_frame()
-                    if logger.isEnabledFor(logging.ERROR):
+                    if #logger.isEnabledFor(logging.ERROR):
                         recv_status = struct.unpack("!H", frame.data)[0]
                         if recv_status != STATUS_NORMAL:
-                            logger.error("close status: " + repr(recv_status))
+                            #logger.error("close status: " + repr(recv_status))
                 except:
                     pass
                 self.sock.settimeout(timeout)
@@ -856,7 +856,7 @@ class WebSocketApp(object):
         """
         self.keep_running = False
         if(self.sock != None):
-            self.sock.close()        
+            self.sock.close()
 
     def _send_ping(self, interval):
         while True:
@@ -897,14 +897,14 @@ class WebSocketApp(object):
                 thread.start()
 
             while self.keep_running:
-            
+
                 try:
                     data = self.sock.recv()
-                    
+
                     if data is None or self.keep_running == False:
                         break
-                    self._callback(self.on_message, data)                    
-                    
+                    self._callback(self.on_message, data)
+
                 except Exception as e:
                     found_timeout = False
                     for arg in e.args:
@@ -928,7 +928,7 @@ class WebSocketApp(object):
             try:
                 callback(self, *args)
             except Exception as e:
-                logger.error(e)
+                #logger.error(e)
                 if True:#logger.isEnabledFor(logging.DEBUG):
                     _, _, tb = sys.exc_info()
                     traceback.print_tb(tb)

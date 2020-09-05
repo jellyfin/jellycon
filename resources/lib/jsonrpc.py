@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import, print_function, unicode_literals
+
 import json
 import xbmc
 
@@ -9,7 +11,7 @@ class JsonRpc(object):
     params = None
 
     def __init__(self, method, **kwargs):
-        
+
         self.method = method
 
         for arg in kwargs:  # id_(int), jsonrpc(str)
@@ -18,7 +20,7 @@ class JsonRpc(object):
     def _query(self):
 
         query = {
-            
+
             'jsonrpc': self.jsonrpc,
             'id': self.id_,
             'method': self.method,
