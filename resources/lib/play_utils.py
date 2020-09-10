@@ -1202,8 +1202,6 @@ class PlaybackService(xbmc.Monitor):
         self.monitor = monitor
 
     def onNotification(self, sender, method, data):
-        log.debug("PlaybackService:onNotification:{0}:{1}:{2}".format(sender, method, data))
-
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return

@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import, print_function, unicode_literals
+
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
@@ -81,7 +83,7 @@ def set_background_image(force=False):
 
         url_params = {}
         url_params["Recursive"] = True
-        # url_params["limit"] = 60
+        url_params["limit"] = 100
         url_params["SortBy"] = "Random"
         url_params["IncludeItemTypes"] = "Movie,Series"
         url_params["ImageTypeLimit"] = 1
