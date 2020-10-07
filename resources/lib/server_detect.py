@@ -13,6 +13,7 @@ from datetime import datetime
 import xbmcaddon
 import xbmcgui
 import xbmc
+from kodi_six.utils import py2_decode
 
 from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils, save_user_details, load_user_details
@@ -269,7 +270,7 @@ def check_server(force=False, change_user=False, notify=False):
         log.debug("Getting user list")
         json_data = du.download_url(server_url + "/Users/Public?format=json", authenticate=False)
 
-        log.debug("jsonData: {0}".format(json_data))
+        log.debug("jsonData: {0}".format(py2_decode(json_data)))
         try:
             result = json.loads(json_data)
         except:

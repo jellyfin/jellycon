@@ -15,6 +15,7 @@ import urllib
 from base64 import b64encode
 from collections import defaultdict
 from traceback import format_exc
+from kodi_six.utils import py2_decode
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -503,7 +504,7 @@ class DownloadUtils:
             log.error("Get User unable to connect: {0}".format(msg))
             return ""
 
-        log.debug("GETUSER_JSONDATA_01: {0}".format(json_data))
+        log.debug("GETUSER_JSONDATA_01: {0}".format(py2_decode(json_data)))
 
         try:
             result = json.loads(json_data)
