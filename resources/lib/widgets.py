@@ -45,7 +45,6 @@ def set_random_movies():
     url = get_jellyfin_url("{server}/Users/{userid}/Items", url_params)
 
     results = downloadUtils.download_url(url, suppress=True)
-    results = json.loads(results)
 
     randon_movies_list = []
     if results is not None:
@@ -92,7 +91,6 @@ def set_background_image(force=False):
 
         server = downloadUtils.get_server()
         results = downloadUtils.download_url(url, suppress=True)
-        results = json.loads(results)
 
         if results is not None:
             items = results.get("Items", [])
@@ -150,8 +148,7 @@ def check_for_new_content():
 
     added_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
-    added_result = downloadUtils.download_url(added_url, suppress=True)
-    result = json.loads(added_result)
+    result = downloadUtils.download_url(added_url, suppress=True)
     log.debug("LATEST_ADDED_ITEM: {0}".format(result))
 
     last_added_date = ""
@@ -174,8 +171,7 @@ def check_for_new_content():
 
     played_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
-    played_result = downloadUtils.download_url(played_url, suppress=True)
-    result = json.loads(played_result)
+    result = downloadUtils.download_url(played_url, suppress=True)
     log.debug("LATEST_PLAYED_ITEM: {0}".format(result))
 
     last_played_date = ""

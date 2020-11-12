@@ -337,7 +337,6 @@ class DownloadUtils:
         log.debug("PlaybackInfo : {0}".format(url))
         log.debug("PlaybackInfo : {0}".format(profile))
         play_info_result = self.download_url(url, post_body=playback_info, method="POST")
-        play_info_result = json.loads(play_info_result)
         log.debug("PlaybackInfo : {0}".format(play_info_result))
 
         return play_info_result
@@ -393,25 +392,25 @@ class DownloadUtils:
 
         # for episodes always use the parent BG
         if item_type == "Episode" and art_type == "Backdrop":
-            item_id = data["ParentBackdropItemId"]
-            bg_item_tags = data["ParentBackdropImageTags"]
+            item_id = data.get("ParentBackdropItemId")
+            bg_item_tags = data.get("ParentBackdropImageTags", [])
             if bg_item_tags is not None and len(bg_item_tags) > 0:
                 image_tag = bg_item_tags[0]
         elif art_type == "Backdrop" and parent is True:
-            item_id = data["ParentBackdropItemId"]
-            bg_item_tags = data["ParentBackdropImageTags"]
+            item_id = data.get("ParentBackdropItemId")
+            bg_item_tags = data.get("ParentBackdropImageTags", [])
             if bg_item_tags is not None and len(bg_item_tags) > 0:
                 image_tag = bg_item_tags[0]
         elif art_type == "Backdrop":
-            bg_tags = data["BackdropImageTags"]
+            bg_tags = data.get("BackdropImageTags", [])
             if bg_tags is not None and len(bg_tags) > index:
                 image_tag = bg_tags[index]
                 # log.debug("Background Image Tag: {0}", imageTag)
         elif parent is False:
-            image_tags = data["ImageTags"]
-            if image_tags is not None:
-                image_tag_type = image_tags[art_type]
-                if image_tag_type is not None:
+            image_tags = data.get("ImageTags", [])
+            if image_tags:
+                image_tag_type = image_tags.get(art_type)
+                if image_tag_type:
                     image_tag = image_tag_type
                     # log.debug("Image Tag: {0}", imageTag)
         elif parent is True:
@@ -421,8 +420,8 @@ class DownloadUtils:
             else:
                 tag_name = 'Parent%sImageTag' % art_type
                 id_name = 'Parent%sItemId' % art_type
-            parent_image_id = data[id_name]
-            parent_image_tag = data[tag_name]
+            parent_image_id = data.get(id_name)
+            parent_image_tag = data.get(tag_name)
             if parent_image_id is not None and parent_image_tag is not None:
                 item_id = parent_image_id
                 image_tag = parent_image_tag
@@ -499,20 +498,14 @@ class DownloadUtils:
         log.debug("Looking for user name: {0}".format(user_name))
 
         try:
-            json_data = self.download_url("{server}/Users/Public?format=json", suppress=True, authenticate=False)
+            result = self.download_url("{server}/Users/Public?format=json", suppress=True, authenticate=False)
         except Exception as msg:
             log.error("Get User unable to connect: {0}".format(msg))
             return ""
 
-        log.debug("GETUSER_JSONDATA_01: {0}".format(py2_decode(json_data)))
+        log.debug("GETUSER_JSONDATA_01: {0}".format(py2_decode(result)))
 
-        try:
-            result = json.loads(json_data)
-        except Exception as e:
-            log.debug("Could not load user data: {0}".format(e))
-            return ""
-
-        if result is None:
+        if not result:
             return ""
 
         log.debug("GETUSER_JSONDATA_02: {0}".format(result))
@@ -573,18 +566,13 @@ class DownloadUtils:
 
         message_data = "username=" + user_name + "&pw=" + pwd_text
 
-        resp = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
-        log.debug("AuthenticateByName: {0}".format(resp))
+        result = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
+        log.debug("AuthenticateByName: {0}".format(result))
 
         access_token = None
         userid = None
-        try:
-            result = json.loads(resp)
-            access_token = result.get("AccessToken")
-            # userid = result["SessionInfo"].get("UserId")
-            userid = result["User"].get("Id")
-        except:
-            pass
+        access_token = result.get("AccessToken")
+        userid = result["User"].get("Id")
 
         if access_token is not None:
             log.debug("User Authenticated: {0}".format(access_token))
@@ -650,7 +638,7 @@ class DownloadUtils:
         http_timeout = int(settings.getSetting("http_timeout"))
 
         if authenticate and username == "":
-            return "null"
+            return {}
 
         if settings.getSetting("suppressErrors") == "true":
             suppress = True
@@ -660,13 +648,13 @@ class DownloadUtils:
         if url.find("{server}") != -1:
             server = self.get_server()
             if server is None:
-                return "null"
+                return {}
             url = url.replace("{server}", server)
 
         if url.find("{userid}") != -1:
             userid = self.get_user_id()
             if not userid:
-                return "null"
+                return {}
             url = url.replace("{userid}", userid)
 
         if url.find("{ItemLimit}") != -1:
@@ -681,7 +669,7 @@ class DownloadUtils:
             home_window = HomeWindow()
             random_movies = home_window.get_property("random-movies")
             if not random_movies:
-                return "null"
+                return {}
             url = url.replace("{random_movies}", random_movies)
 
         log.debug("After: {0}".format(url))
@@ -741,7 +729,11 @@ class DownloadUtils:
                     xbmcgui.Dialog().notification(string_load(30316),
                                                   string_load(30200) % str(data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
-            return data.content or "null"
+            try:
+                result = data.json()
+            except:
+                result = {}
+            return result
         except Exception as msg:
             log.error("{0}".format(format_exc()))
             log.error("Unable to connect to {0} : {1}".format(server, msg))

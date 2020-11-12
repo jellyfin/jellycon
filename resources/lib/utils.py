@@ -220,8 +220,8 @@ def get_art(item, server):
         'tvshow.landscape': ''
     }
 
-    image_tags = item["ImageTags"]
-    if image_tags is not None and image_tags["Primary"] is not None:
+    image_tags = item.get("ImageTags", {})
+    if image_tags and image_tags.get("Primary"):
         # image_tag = image_tags["Primary"]
         art['thumb'] = downloadUtils.get_artwork(item, "Primary", server=server)
 
