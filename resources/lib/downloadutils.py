@@ -394,16 +394,16 @@ class DownloadUtils:
         if item_type == "Episode" and art_type == "Backdrop":
             item_id = data.get("ParentBackdropItemId")
             bg_item_tags = data.get("ParentBackdropImageTags", [])
-            if bg_item_tags is not None and len(bg_item_tags) > 0:
+            if bg_item_tags:
                 image_tag = bg_item_tags[0]
         elif art_type == "Backdrop" and parent is True:
             item_id = data.get("ParentBackdropItemId")
             bg_item_tags = data.get("ParentBackdropImageTags", [])
-            if bg_item_tags is not None and len(bg_item_tags) > 0:
+            if bg_item_tags:
                 image_tag = bg_item_tags[0]
         elif art_type == "Backdrop":
             bg_tags = data.get("BackdropImageTags", [])
-            if bg_tags is not None and len(bg_tags) > index:
+            if bg_tags:
                 image_tag = bg_tags[index]
                 # log.debug("Background Image Tag: {0}", imageTag)
         elif parent is False:

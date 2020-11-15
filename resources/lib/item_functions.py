@@ -141,8 +141,8 @@ def extract_item_info(item, gui_options):
     elif item_details.item_type == "Audio":
         item_details.track_number = item.get("IndexNumber")
         item_details.album_name = item.get("Album")
-        artists = item.get("Artists")
-        if artists and len(artists) > 0:
+        artists = item.get("Artists", [])
+        if artists:
             item_details.song_artist = artists[0]  # get first artist
 
     elif item_details.item_type == "MusicAlbum":
@@ -154,11 +154,11 @@ def extract_item_info(item, gui_options):
     if item_details.episode_number is None:
         item_details.episode_number = 0
 
-    if item.get("Taglines", []) and len(item.get("Taglines")) > 0:
+    if item.get("Taglines", []):
         item_details.tagline = item.get("Taglines")[0]
 
     item_details.tags = []
-    if item.get("TagItems", []) and len(item.get("TagItems", [])) > 0:
+    if item.get("TagItems", []):
         for tag_info in item.get("TagItems"):
             item_details.tags.append(tag_info.get("Name"))
 
@@ -282,14 +282,14 @@ def extract_item_info(item, gui_options):
                 break
 
     # production location
-    prod_location = item.get("ProductionLocations")
+    prod_location = item.get("ProductionLocations", [])
     # log.debug("ProductionLocations : {0}", prod_location)
-    if prod_location and len(prod_location) > 0:
+    if prod_location:
         item_details.production_location = prod_location[0]
 
     # Process Genres
     genres = item.get("Genres", [])
-    if genres and len(genres) > 0:
+    if genres:
         item_details.genres = genres
 
     # Process UserData
@@ -496,7 +496,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     info_labels["rating"] = item_details.rating
     info_labels["year"] = item_details.year
 
-    if item_details.genres is not None and len(item_details.genres) > 0:
+    if item_details.genres:
         genres_list = []
         for genre in item_details.genres:
             genres_list.append(urllib.quote(genre.encode('utf8')))
