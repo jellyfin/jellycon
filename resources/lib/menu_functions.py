@@ -49,7 +49,6 @@ def show_movie_tags(menu_params):
     if not result:
         return
 
-    import web_pdb; web_pdb.set_trace()
     tags = result.get("Items")
 
     log.debug("Tags : {0}".format(result))
