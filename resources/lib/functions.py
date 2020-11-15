@@ -281,8 +281,7 @@ def unmark_item_favorite(item_id):
 
 def delete(item_id):
 
-    json_data = downloadUtils.download_url("{server}/Users/{userid}/Items/" + item_id + "?format=json")
-    item = json.loads(json_data)
+    item = downloadUtils.download_url("{server}/Users/{userid}/Items/" + item_id + "?format=json")
 
     item_id = item.get("Id")
     item_name = item.get("Name", "")
@@ -578,8 +577,7 @@ def show_menu(params):
 
     elif selected_action == "safe_delete":
         url = "{server}/jellyfin_safe_delete/delete_item/" + item_id
-        delete_action = downloadUtils.download_url(url)
-        result = json.loads(delete_action)
+        result = downloadUtils.download_url(url)
         dialog = xbmcgui.Dialog()
         if result:
             log.debug("Safe_Delete_Action: {0}".format(result))
@@ -622,11 +620,10 @@ def show_menu(params):
                 }
                 delete_action = downloadUtils.download_url(url, method="POST", post_body=playback_info)
                 log.debug("Delete result action: {0}".format(delete_action))
-                delete_action_result = json.loads(delete_action)
-                if not delete_action_result:
+                if not delete_action:
                     dialog.ok("Error", "Error deleting files", "Error in responce from server")
-                elif not delete_action_result["result"]:
-                    dialog.ok("Error", "Error deleting files", delete_action_result["message"])
+                elif not delete_action.get("result"):
+                    dialog.ok("Error", "Error deleting files", delete_action["message"])
                 else:
                     dialog.ok("Deleted", "Files deleted")
         else:
@@ -690,8 +687,7 @@ def populate_listitem(item_id):
     log.debug("populate_listitem: {0}".format(item_id))
 
     url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
-    json_data = downloadUtils.download_url(url)
-    result = json.loads(json_data)
+    result = downloadUtils.download_url(url)
     log.debug("populate_listitem item info: {0}".format(result))
 
     item_title = result.get("Name", string_load(30280))
@@ -989,8 +985,7 @@ def play_item_trailer(item_id):
 
     url = ("{server}/Users/{userid}/Items/%s/LocalTrailers?format=json" % item_id)
 
-    json_data = downloadUtils.download_url(url)
-    result = json.loads(json_data)
+    result = downloadUtils.download_url(url)
 
     if result is None:
         return
@@ -1014,8 +1009,7 @@ def play_item_trailer(item_id):
         trailer_list.append(info)
 
     url = ("{server}/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % item_id)
-    json_data = downloadUtils.download_url(url)
-    result = json.loads(json_data)
+    result = downloadUtils.download_url(url)
     log.debug("RemoteTrailers: {0}".format(result))
     count = 1
 

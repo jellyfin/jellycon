@@ -3,7 +3,6 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import sys
-import json
 import urllib
 import base64
 import string

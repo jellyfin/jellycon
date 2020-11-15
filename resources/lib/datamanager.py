@@ -1,7 +1,6 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import json
 from collections import defaultdict
 import threading
 import hashlib
@@ -47,15 +46,9 @@ class DataManager:
         # log.debug("DataManager __init__")
         pass
 
-    @staticmethod
-    def load_json_data(json_data):
-        return json.loads(json_data, object_hook=lambda d: defaultdict(lambda: None, d))
-
     @timer
     def get_content(self, url):
-        json_data = DownloadUtils().download_url(url)
-        result = self.load_json_data(json_data)
-        return result
+        return DownloadUtils().download_url(url)
 
     @timer
     def get_items(self, url, gui_options, use_cache=False):

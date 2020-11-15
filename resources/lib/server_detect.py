@@ -100,9 +100,8 @@ def check_safe_delete_available():
     log.debug("check_safe_delete_available")
 
     du = DownloadUtils()
-    json_data = du.download_url("{server}/Plugins")
-    result = json.loads(json_data)
-    if result is not None:
+    result = du.download_url("{server}/Plugins")
+    if result:
         log.debug("Server Plugin List: {0}".format(result))
 
         safe_delete_found = False
@@ -234,11 +233,10 @@ def check_server(force=False, change_user=False, notify=False):
                 progress = xbmcgui.DialogProgress()
                 progress.create(__addon_name__ + " : " + string_load(30376))
                 progress.update(0, string_load(30377))
-                json_data = du.download_url(public_lookup_url, authenticate=False)
+                result = du.download_url(public_lookup_url, authenticate=False)
                 progress.close()
 
-                result = json.loads(json_data)
-                if result is not None:
+                if result:
                     xbmcgui.Dialog().ok(__addon_name__ + " : " + string_load(30167),
                                         server_url)
                     break
@@ -268,15 +266,11 @@ def check_server(force=False, change_user=False, notify=False):
 
         # get a list of users
         log.debug("Getting user list")
-        json_data = du.download_url(server_url + "/Users/Public?format=json", authenticate=False)
+        result = du.download_url(server_url + "/Users/Public?format=json", authenticate=False)
 
-        log.debug("jsonData: {0}".format(py2_decode(json_data)))
-        try:
-            result = json.loads(json_data)
-        except:
-            result = None
+        log.debug("jsonData: {0}".format(py2_decode(result)))
 
-        if result is None:
+        if not result:
             xbmcgui.Dialog().ok(string_load(30135),
                                 string_load(30201),
                                 string_load(30169) + server_url)

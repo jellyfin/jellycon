@@ -101,27 +101,27 @@ def extract_item_info(item, gui_options):
 
     item_details = ItemDetails()
 
-    item_details.id = item["Id"]
-    item_details.etag = item["Etag"]
-    item_details.is_folder = item["IsFolder"]
-    item_details.item_type = item["Type"]
-    item_details.location_type = item["LocationType"]
-    item_details.name = item["Name"]
-    item_details.sort_name = item["SortName"]
+    item_details.id = item.get("Id")
+    item_details.etag = item.get("Etag")
+    item_details.is_folder = item.get("IsFolder")
+    item_details.item_type = item.get("Type")
+    item_details.location_type = item.get("LocationType")
+    item_details.name = item.get("Name")
+    item_details.sort_name = item.get("SortName")
     item_details.original_title = item_details.name
 
     if item_details.item_type == "Episode":
-        item_details.episode_number = item["IndexNumber"]
-        item_details.season_number = item["ParentIndexNumber"]
-        item_details.series_id = item["SeriesId"]
+        item_details.episode_number = item.get("IndexNumber")
+        item_details.season_number = item.get("ParentIndexNumber")
+        item_details.series_id = item.get("SeriesId")
 
         if item_details.season_number != 0:
             item_details.season_sort_number = item_details.season_number
             item_details.episode_sort_number = item_details.episode_number
         else:
-            special_after_season = item["AirsAfterSeasonNumber"]
-            special_before_season = item["AirsBeforeSeasonNumber"]
-            special_before_episode = item["AirsBeforeEpisodeNumber"]
+            special_after_season = item.get("AirsAfterSeasonNumber")
+            special_before_season = item.get("AirsBeforeSeasonNumber")
+            special_before_episode = item.get("AirsBeforeEpisodeNumber")
 
             if special_after_season:
                 item_details.season_sort_number = special_after_season + 1
@@ -132,21 +132,21 @@ def extract_item_info(item, gui_options):
                 item_details.episode_sort_number = special_before_episode - 1
 
     elif item_details.item_type == "Season":
-        item_details.season_number = item["IndexNumber"]
-        item_details.series_id = item["SeriesId"]
+        item_details.season_number = item.get("IndexNumber")
+        item_details.series_id = item.get("SeriesId")
 
     elif item_details.item_type == "Series":
-        item_details.status = item["Status"]
+        item_details.status = item.get("Status")
 
     elif item_details.item_type == "Audio":
-        item_details.track_number = item["IndexNumber"]
-        item_details.album_name = item["Album"]
-        artists = item["Artists"]
-        if artists is not None and len(artists) > 0:
+        item_details.track_number = item.get("IndexNumber")
+        item_details.album_name = item.get("Album")
+        artists = item.get("Artists", [])
+        if artists:
             item_details.song_artist = artists[0]  # get first artist
 
     elif item_details.item_type == "MusicAlbum":
-        item_details.album_artist = item["AlbumArtist"]
+        item_details.album_artist = item.get("AlbumArtist")
         item_details.album_name = item_details.name
 
     if item_details.season_number is None:
@@ -154,23 +154,23 @@ def extract_item_info(item, gui_options):
     if item_details.episode_number is None:
         item_details.episode_number = 0
 
-    if item["Taglines"] is not None and len(item["Taglines"]) > 0:
-        item_details.tagline = item["Taglines"][0]
+    if item.get("Taglines", []):
+        item_details.tagline = item.get("Taglines")[0]
 
     item_details.tags = []
-    if item["TagItems"] is not None and len(item["TagItems"]) > 0:
-        for tag_info in item["TagItems"]:
-            item_details.tags.append(tag_info["Name"])
+    if item.get("TagItems", []):
+        for tag_info in item.get("TagItems"):
+            item_details.tags.append(tag_info.get("Name"))
 
     # set the item name
     # override with name format string from request
-    name_format = gui_options["name_format"]
-    name_format_type = gui_options["name_format_type"]
+    name_format = gui_options.get("name_format")
+    name_format_type = gui_options.get("name_format_type")
 
     if name_format is not None and item_details.item_type == name_format_type:
         name_info = {}
-        name_info["ItemName"] = item["Name"]
-        season_name = item["SeriesName"]
+        name_info["ItemName"] = item.get("Name")
+        season_name = item.get("SeriesName")
         if season_name:
             name_info["SeriesName"] = season_name
         else:
@@ -180,8 +180,8 @@ def extract_item_info(item, gui_options):
         log.debug("FormatName: {0} | {1}".format(name_format, name_info))
         item_details.name = unicode(name_format).format(**name_info).strip()
 
-    year = item["ProductionYear"]
-    prem_date = item["PremiereDate"]
+    year = item.get("ProductionYear")
+    prem_date = item.get("PremiereDate")
 
     if year is not None:
         item_details.year = year
@@ -192,35 +192,35 @@ def extract_item_info(item, gui_options):
         tokens = prem_date.split("T")
         item_details.premiere_date = tokens[0]
 
-    create_date = item["DateCreated"]
-    if create_date is not None:
+    create_date = item.get("DateCreated")
+    if create_date:
         item_details.date_added = create_date.split('.')[0].replace('T', " ")
 
     # add the premiered date for Upcoming TV
     if item_details.location_type == "Virtual":
-        airtime = item["AirTime"]
+        airtime = item.get("AirTime")
         item_details.name = item_details.name + ' - ' + item_details.premiere_date + ' - ' + str(airtime)
 
     if item_details.item_type == "Program":
-        item_details.program_channel_name = item["ChannelName"]
-        item_details.program_start_date = item["StartDate"]
-        item_details.program_end_date = item["EndDate"]
+        item_details.program_channel_name = item.get("ChannelName")
+        item_details.program_start_date = item.get("StartDate")
+        item_details.program_end_date = item.get("EndDate")
 
     # Process MediaStreams
-    media_streams = item["MediaStreams"]
-    if media_streams is not None:
+    media_streams = item.get("MediaStreams", [])
+    if media_streams:
         media_info_list = []
         for mediaStream in media_streams:
-            stream_type = mediaStream["Type"]
+            stream_type = mediaStream.get("Type")
             if stream_type == "Video":
                 media_info = {}
                 media_info["type"] = "video"
-                media_info["codec"] = mediaStream["Codec"]
-                media_info["height"] = mediaStream["Height"]
-                media_info["width"] = mediaStream["Width"]
-                aspect_ratio = mediaStream["AspectRatio"]
+                media_info["codec"] = mediaStream.get("Codec")
+                media_info["height"] = mediaStream.get("Height")
+                media_info["width"] = mediaStream.get("Width")
+                aspect_ratio = mediaStream.get("AspectRatio")
                 media_info["apect"] = aspect_ratio
-                if aspect_ratio is not None and len(aspect_ratio) >= 3:
+                if aspect_ratio and len(aspect_ratio) >= 3:
                     try:
                         aspect_width, aspect_height = aspect_ratio.split(':')
                         media_info["apect_ratio"] = float(aspect_width) / float(aspect_height)
@@ -232,36 +232,36 @@ def extract_item_info(item, gui_options):
             if stream_type == "Audio":
                 media_info = {}
                 media_info["type"] = "audio"
-                media_info["codec"] = mediaStream["Codec"]
-                media_info["channels"] = mediaStream["Channels"]
-                media_info["language"] = mediaStream["Language"]
+                media_info["codec"] = mediaStream.get("Codec")
+                media_info["channels"] = mediaStream.get("Channels")
+                media_info["language"] = mediaStream.get("Language")
                 media_info_list.append(media_info)
             if stream_type == "Subtitle":
                 item_details.subtitle_available = True
                 media_info = {}
                 media_info["type"] = "sub"
-                media_info["language"] = mediaStream["Language"]
+                media_info["language"] = mediaStream.get("Language", '')
                 media_info_list.append(media_info)
 
         item_details.media_streams = media_info_list
 
     # Process People
-    people = item["People"]
+    people = item.get("People", [])
     if people is not None:
         cast = []
         for person in people:
-            person_type = person["Type"]
+            person_type = person.get("Type")
             if person_type == "Director":
-                item_details.director = item_details.director + person["Name"] + ' '
+                item_details.director = item_details.director + person.get("Name") + ' '
             elif person_type == "Writing":
                 item_details.writer = person["Name"]
             elif person_type == "Actor":
                 # log.debug("Person: {0}", person)
-                person_name = person["Name"]
-                person_role = person["Role"]
-                person_id = person["Id"]
-                person_tag = person["PrimaryImageTag"]
-                if person_tag is not None:
+                person_name = person.get("Name")
+                person_role = person.get("Role")
+                person_id = person.get("Id")
+                person_tag = person.get("PrimaryImageTag")
+                if person_tag:
                     person_thumbnail = download_utils.image_url(person_id,
                                                                 "Primary", 0, 400, 400,
                                                                 person_tag,
@@ -273,64 +273,62 @@ def extract_item_info(item, gui_options):
         item_details.cast = cast
 
     # Process Studios
-    studios = item["Studios"]
+    studios = item.get("Studios", [])
     if studios is not None:
         for studio in studios:
             if item_details.studio is None:  # Just take the first one
-                studio_name = studio["Name"]
+                studio_name = studio.get("Name")
                 item_details.studio = studio_name
                 break
 
     # production location
-    prod_location = item["ProductionLocations"]
+    prod_location = item.get("ProductionLocations", [])
     # log.debug("ProductionLocations : {0}", prod_location)
-    if prod_location and len(prod_location) > 0:
+    if prod_location:
         item_details.production_location = prod_location[0]
 
     # Process Genres
-    genres = item["Genres"]
-    if genres is not None and len(genres) > 0:
+    genres = item.get("Genres", [])
+    if genres:
         item_details.genres = genres
 
     # Process UserData
-    user_data = item["UserData"]
-    if user_data is None:
-        user_data = defaultdict(lambda: None, {})
+    user_data = item.get("UserData", {})
 
-    if user_data["Played"] is True:
+    if user_data.get("Played"):
         item_details.overlay = "6"
         item_details.play_count = 1
     else:
         item_details.overlay = "7"
         item_details.play_count = 0
 
-    if user_data["IsFavorite"] is True:
+    if user_data.get("IsFavorite"):
         item_details.overlay = "5"
         item_details.favorite = "true"
     else:
         item_details.favorite = "false"
 
-    reasonable_ticks = user_data["PlaybackPositionTicks"]
-    if reasonable_ticks is not None:
+    reasonable_ticks = user_data.get("PlaybackPositionTicks", 0)
+    if reasonable_ticks:
         reasonable_ticks = int(reasonable_ticks) / 1000
         item_details.resume_time = int(reasonable_ticks / 10000)
 
-    item_details.series_name = item["SeriesName"]
-    item_details.plot = item["Overview"]
+    item_details.series_name = item.get("SeriesName", '')
+    item_details.plot = item.get("Overview", '')
 
-    runtime = item["RunTimeTicks"]
-    if item_details.is_folder is False and runtime is not None:
+    runtime = item.get("RunTimeTicks")
+    if item_details.is_folder is False and runtime:
         item_details.duration = long(runtime) / 10000000
 
-    child_count = item["ChildCount"]
-    if child_count is not None:
+    child_count = item.get("ChildCount")
+    if child_count:
         item_details.total_seasons = child_count
 
-    recursive_item_count = item["RecursiveItemCount"]
-    if recursive_item_count is not None:
+    recursive_item_count = item.get("RecursiveItemCount")
+    if recursive_item_count:
         item_details.total_episodes = recursive_item_count
 
-    unplayed_item_count = user_data["UnplayedItemCount"]
+    unplayed_item_count = user_data.get("UnplayedItemCount")
     if unplayed_item_count is not None:
         item_details.unwatched_episodes = unplayed_item_count
         item_details.watched_episodes = item_details.total_episodes - unplayed_item_count
@@ -338,20 +336,20 @@ def extract_item_info(item, gui_options):
     item_details.number_episodes = item_details.total_episodes
 
     item_details.art = get_art(item, gui_options["server"])
-    item_details.rating = item["OfficialRating"]
-    item_details.mpaa = item["OfficialRating"]
+    item_details.rating = item.get("OfficialRating")
+    item_details.mpaa = item.get("OfficialRating")
 
-    item_details.community_rating = item["CommunityRating"]
-    if item_details.community_rating is None:
+    item_details.community_rating = item.get("CommunityRating")
+    if not item_details.community_rating:
         item_details.community_rating = 0.0
 
-    item_details.critic_rating = item["CriticRating"]
-    if item_details.critic_rating is None:
+    item_details.critic_rating = item.get("CriticRating")
+    if not item_details.critic_rating:
         item_details.critic_rating = 0.0
 
-    item_details.location_type = item["LocationType"]
-    item_details.recursive_item_count = item["RecursiveItemCount"]
-    item_details.recursive_unplayed_items_count = user_data["UnplayedItemCount"]
+    item_details.location_type = item.get("LocationType")
+    item_details.recursive_item_count = item.get("RecursiveItemCount")
+    item_details.recursive_unplayed_items_count = user_data.get("UnplayedItemCount")
 
     item_details.mode = "GET_CONTENT"
 
@@ -498,7 +496,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     info_labels["rating"] = item_details.rating
     info_labels["year"] = item_details.year
 
-    if item_details.genres is not None and len(item_details.genres) > 0:
+    if item_details.genres:
         genres_list = []
         for genre in item_details.genres:
             genres_list.append(urllib.quote(genre.encode('utf8')))

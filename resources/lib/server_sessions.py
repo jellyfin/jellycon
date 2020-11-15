@@ -1,6 +1,5 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import json
 import sys
 import xbmcgui
 import xbmcplugin
