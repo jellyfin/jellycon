@@ -485,7 +485,7 @@ class DownloadUtils:
         userid = window.get_property("userid")
         user_image = window.get_property("userimage")
 
-        if userid and user_image:
+        if userid:
             log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}".format(userid))
             return userid
 
@@ -564,7 +564,7 @@ class DownloadUtils:
         user_name = urllib.quote(user_details.get("username", ""))
         pwd_text = urllib.quote(user_details.get("password", ""))
 
-        message_data = "username=" + user_name + "&pw=" + pwd_text
+        message_data = {'username': user_name, 'pw': pwd_text}
 
         result = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
         log.debug("AuthenticateByName: {0}".format(result))
