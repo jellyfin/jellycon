@@ -227,7 +227,7 @@ def check_server(force=False, change_user=False, notify=False):
                     xbmc.executebuiltin("ActivateWindow(Home)")
                     return
 
-                public_lookup_url = "%s/Users/Public?format=json" % (server_url)
+                public_lookup_url = "%s/System/Info/Public?format=json" % (server_url)
 
                 log.debug("Testing_Url: {0}".format(public_lookup_url))
                 progress = xbmcgui.DialogProgress()
