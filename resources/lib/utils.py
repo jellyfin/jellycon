@@ -32,6 +32,9 @@ log = LazyLogger(__name__)
 def get_jellyfin_url(base_url, params):
     params["format"] = "json"
     url_params = urlencode(params)
+    # Filthy hack until I get around to reworking the network flow
+    # It relies on {thing} strings in downloadutils.py
+    url_params = url_params.replace('%7B', '{').replace('%7D', '}')
     return base_url + "?" + url_params
 
 
