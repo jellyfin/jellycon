@@ -4,7 +4,6 @@ import xbmcaddon
 import xbmcplugin
 import xbmcgui
 import xbmc
-import json
 import hashlib
 import random
 import time
@@ -144,7 +143,6 @@ def check_for_new_content():
     url_params["SortOrder"] = "Descending"
     url_params["IncludeItemTypes"] = "Movie,Episode"
     url_params["ImageTypeLimit"] = 0
-    url_params["format"] = "json"
 
     added_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
@@ -167,7 +165,6 @@ def check_for_new_content():
     url_params["SortOrder"] = "Descending"
     url_params["IncludeItemTypes"] = "Movie,Episode"
     url_params["ImageTypeLimit"] = 0
-    url_params["format"] = "json"
 
     played_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
 
@@ -206,7 +203,7 @@ def get_widget_content_cast(handle, params):
 
     item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id + "?format=json")
+    result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id)
     log.debug("ItemInfo: {0}".format(result))
 
     if not result:
@@ -286,7 +283,6 @@ def get_widget_content(handle, params):
     url_verb = "{server}/Users/{userid}/Items"
     url_params = {}
     url_params["Limit"] = "{ItemLimit}"
-    url_params["format"] = "json"
     url_params["Fields"] = "{field_filters}"
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
@@ -329,7 +325,6 @@ def get_widget_content(handle, params):
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
         url_params["ImageTypeLimit"] = 1
-        url_params["format"] = "json"
 
     elif widget_type == "recent_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -358,7 +353,6 @@ def get_widget_content(handle, params):
         url_params["userid"] = "{userid}"
         url_params["Recursive"] = True
         url_params["Fields"] = "{field_filters}"
-        url_params["format"] = "json"
         url_params["ImageTypeLimit"] = 1
 
     elif widget_type == "movie_recommendations":
