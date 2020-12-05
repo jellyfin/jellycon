@@ -724,7 +724,7 @@ class DownloadUtils:
                     settings.setSetting("saved_user_password_" + hashed_username, "")
                     save_user_details(settings, "", "")
 
-                log.error("HTTP response error: {0} {1}".format(data.status_code, data.content))
+                log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
                                                   string_load(30200) % str(data.content),
