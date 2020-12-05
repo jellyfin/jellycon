@@ -1086,9 +1086,10 @@ def stop_all_playback(played_information):
                 if data.get("play_action_type", "") == "play":
                     prompt_for_stop_actions(jellyfin_item_id, data)
 
-    device_id = ClientInformation().get_device_id()
-    url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
-    download_utils.download_url(url, method="DELETE")
+            if data.get('playback_type') == 'Transcode':
+                device_id = ClientInformation().get_device_id()
+                url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
+                download_utils.download_url(url, method="DELETE")
 
 
 def get_playing_data(play_data_map):
