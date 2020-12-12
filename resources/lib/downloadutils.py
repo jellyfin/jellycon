@@ -485,7 +485,7 @@ class DownloadUtils:
         userid = window.get_property("userid")
         user_image = window.get_property("userimage")
 
-        if userid and user_image:
+        if userid:
             log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}".format(userid))
             return userid
 
@@ -564,7 +564,7 @@ class DownloadUtils:
         user_name = urllib.quote(user_details.get("username", ""))
         pwd_text = urllib.quote(user_details.get("password", ""))
 
-        message_data = "username=" + user_name + "&pw=" + pwd_text
+        message_data = {'username': user_name, 'pw': pwd_text}
 
         result = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
         log.debug("AuthenticateByName: {0}".format(result))
@@ -724,7 +724,7 @@ class DownloadUtils:
                     settings.setSetting("saved_user_password_" + hashed_username, "")
                     save_user_details(settings, "", "")
 
-                log.error("HTTP response error: {0} {1}".format(data.status_code, data.content))
+                log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
                                                   string_load(30200) % str(data.content),
