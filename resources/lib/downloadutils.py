@@ -11,7 +11,6 @@ import StringIO
 import gzip
 import json
 from urlparse import urlparse
-import urllib
 from base64 import b64encode
 from collections import defaultdict
 from traceback import format_exc
@@ -561,8 +560,8 @@ class DownloadUtils:
         url = "{server}/Users/AuthenticateByName?format=json"
 
         user_details = load_user_details(settings)
-        user_name = urllib.quote(user_details.get("username", ""))
-        pwd_text = urllib.quote(user_details.get("password", ""))
+        user_name = user_details.get("username", "")
+        pwd_text = user_details.get("password", "")
 
         message_data = {'username': user_name, 'pw': pwd_text}
 
