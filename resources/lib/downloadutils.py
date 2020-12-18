@@ -695,14 +695,14 @@ class DownloadUtils:
 
                 if isinstance(post_body, dict):
                     head["Content-Type"] = "application/json"
-                    post_body = json.dumps(post_body)
+                    data = http_request(url, json=post_body, headers=head)
                 else:
                     head["Content-Type"] = "application/x-www-form-urlencoded"
+                    data = http_request(url, data=post_body, headers=head)
 
                 log.debug("Content-Type: {0}".format(head["Content-Type"]))
                 log.debug("POST DATA: {0}".format(post_body))
 
-                data = http_request(url, data=post_body, headers=head)
             else:
                 data = http_request(url, headers=head)
 
