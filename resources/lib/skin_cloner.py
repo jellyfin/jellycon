@@ -2,6 +2,7 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import os
+import xml.etree.ElementTree as ET
 
 import xbmc
 import xbmcgui
@@ -27,9 +28,6 @@ def clone_default_skin():
     clone_skin()
     set_skin_settings()
     update_kodi_settings()
-
-    # xbmc.executebuiltin("ReloadSkin()")
-    # xbmc.executebuiltin("ActivateWindow(Home)")
 
 
 def walk_path(root_path, relative_path, all_files):
@@ -82,17 +80,13 @@ def clone_skin():
 
     # alter skin addon.xml
     addon_xml_path = os.path.join(kodi_skin_destination, "addon.xml")
-    with open(addon_xml_path, "r") as addon_file:
-        addon_xml_data = addon_file.read()
+    addon_tree = ET.parse(addon_xml_path)
+    addon_root = addon_tree.getroot()
 
-    addon_xml_data = addon_xml_data.replace("id=\"skin.estuary\"", "id=\"skin.estuary_jellycon\"")
-    addon_xml_data = addon_xml_data.replace("name=\"Estuary\"", "name=\"Estuary JellyCon\"")
+    addon_root.attrib['id'] = 'skin.estuary_jellycon'
+    addon_root.attrib['name'] = 'Estuary JellyCon'
 
-    # log.debug("{0}", addon_xml_data)
-
-    # update the addon.xml
-    with open(addon_xml_path, "w") as addon_file:
-        addon_file.write(addon_xml_data)
+    addon_tree.write(addon_xml_path)
 
     # get jellycon path
     jellycon_path = os.path.join(kodi_home_path, "addons", "plugin.video.jellycon")
@@ -105,6 +99,7 @@ def clone_skin():
                  "DialogSeekBar.xml",
                  "VideoOSD.xml"]
 
+    # Copy customized skin files from our addon into cloned skin
     for file_name in file_list:
         source = os.path.join(jellycon_path, "resources", "skins", "skin.estuary", ver, "xml", file_name)
         destination = os.path.join(kodi_skin_destination, "xml", file_name)
