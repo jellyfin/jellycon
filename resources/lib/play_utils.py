@@ -853,12 +853,15 @@ def external_subs(media_source, list_item, item_id):
             source_id = media_source['Id']
             server = download_utils.get_server()
             token = download_utils.authenticate()
+            language = stream.get('Language', '')
+            codec = stream.get('Codec', '')
 
-            if stream.get('DeliveryUrl', '').lower().startswith('/videos'):
-                url = "%s%s" % (server, stream.get('DeliveryUrl'))
+            url_root = '{}/Videos/{}/{}/Subtitles/{}'.format(server, item_id, source_id, index)
+            if language:
+                url = '{}/Stream.{}.{}?api_key={}'.format(
+                    url_root, language, codec, token)
             else:
-                url = ("%s/Videos/%s/%s/Subtitles/%s/Stream.%s?api_key=%s"
-                       % (server, item_id, source_id, index, stream['Codec'], token))
+                url = '{}/Stream.{}?api_key={}'.format(url_root, codec, token)
 
             default = ""
             if stream['IsDefault']:
@@ -867,7 +870,7 @@ def external_subs(media_source, list_item, item_id):
             if stream['IsForced']:
                 forced = "forced"
 
-            sub_name = stream.get('Language', "n/a") + " (" + stream.get('Codec', "n/a") + ") " + default + " " + forced
+            sub_name = '{} ( {} ) {} {}'.format(language, codec, default, forced)
 
             sub_names.append(sub_name)
             externalsubs.append(url)
