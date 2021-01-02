@@ -274,6 +274,7 @@ def clear_cached_server_data():
             xbmcvfs.delete(os.path.join(addon_dir, filename))
             del_count += 1
 
+    log.debug('Deleted {} files'.format(del_count))
     msg = string_load(30394)
     xbmcgui.Dialog().ok(string_load(30393), msg)
 
