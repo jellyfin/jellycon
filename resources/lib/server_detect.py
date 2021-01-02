@@ -3,7 +3,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import socket
 import json
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 import requests
 import ssl
 import time
@@ -125,7 +125,7 @@ def get_server_details():
     log.debug("Getting Server Details from Network")
     servers = []
 
-    message = "who is JellyfinServer?"
+    message = b"who is JellyfinServer?"
     multi_group = ("<broadcast>", 7359)
     # multi_group = ("127.0.0.1", 7359)
 
@@ -141,7 +141,7 @@ def get_server_details():
     log.debug("Sending UDP Data: {0}".format(message))
 
     progress = xbmcgui.DialogProgress()
-    progress.create(__addon_name__ + " : " + string_load(30373))
+    progress.create('{} : {}'.format(__addon_name__, string_load(30373)))
     progress.update(0, string_load(30374))
     xbmc.sleep(1000)
     server_count = 0
@@ -201,7 +201,7 @@ def check_server(force=False, change_user=False, notify=False):
             server_list.append(server_item)
 
         if len(server_list) > 0:
-            return_index = xbmcgui.Dialog().select(__addon_name__ + " : " + string_load(30166),
+            return_index = xbmcgui.Dialog().select('{} : {}'.format(__addon_name__, string_load(30166)),
                                                    server_list,
                                                    useDetails=True)
             if return_index != -1:

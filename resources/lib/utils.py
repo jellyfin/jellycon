@@ -7,7 +7,6 @@ import xbmcvfs
 
 import string
 import random
-import urllib
 import json
 import base64
 import time
@@ -15,7 +14,7 @@ import math
 from datetime import datetime
 import calendar
 import re
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
@@ -134,7 +133,7 @@ class PlayUtils:
             if playback_video_force_8:
                 transcode_params.update({"MaxVideoBitDepth": "8"})
 
-            transcode_path = urllib.urlencode(transcode_params)
+            transcode_path = urlencode(transcode_params)
 
             playurl = "%s/Videos/%s/master.m3u8?%s" % (server, item_id, transcode_path)
 
@@ -293,7 +292,7 @@ def double_urlencode(text):
 
 def single_urlencode(text):
     # urlencode needs a utf- string
-    text = urllib.urlencode({'blahblahblah': text.encode('utf-8')})
+    text = urlencode({'blahblahblah': text.encode('utf-8')})
     text = text[13:]
     return text.decode('utf-8')  # return the result again as unicode
 

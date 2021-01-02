@@ -5,8 +5,8 @@ from collections import defaultdict
 import threading
 import hashlib
 import os
-import cPickle
 import time
+from six.moves import cPickle
 
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger

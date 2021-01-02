@@ -34,7 +34,7 @@ except ImportError:
 
     HAVE_SSL = False
 
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 import os
 import array
 import struct

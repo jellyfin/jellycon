@@ -10,7 +10,7 @@ import traceback
 
 from six import ensure_text
 from kodi_six import xbmc, xbmcaddon
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 
 ##################################################################################################
 
@@ -48,7 +48,13 @@ class LogHandler(logging.StreamHandler):
             # Hide server URL in logs
             string = string.replace(self.server or "{server}", "{jellyfin-server}")
 
-            xbmc.log(string, level=xbmc.LOGNOTICE)
+            py_version = sys.version_info.major
+            # Log level notation changed in Kodi v19
+            if py_version > 2:
+                log_level = xbmc.LOGINFO
+            else:
+                log_level = xbmc.LOGNOTICE
+            xbmc.log(string, level=log_level)
 
     def _get_log_level(self, level):
 

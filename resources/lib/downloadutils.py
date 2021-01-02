@@ -7,10 +7,9 @@ import xbmcaddon
 import requests
 import hashlib
 import ssl
-import StringIO
 import gzip
 import json
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 from base64 import b64encode
 from collections import defaultdict
 from traceback import format_exc

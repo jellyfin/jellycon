@@ -4,13 +4,13 @@ import xbmcvfs
 import xbmc
 import base64
 import re
-from urlparse import urlparse
 from random import shuffle
+from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from six.moves.urllib.parse import urlparse
 
 import threading
 import requests
 import io
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 from .loghandler import LazyLogger
 from .datamanager import DataManager

@@ -8,7 +8,7 @@ import time
 import cProfile
 import pstats
 import json
-import StringIO
+from six import StringIO
 
 import xbmcplugin
 import xbmcgui
