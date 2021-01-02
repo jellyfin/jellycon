@@ -20,11 +20,11 @@ icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png'
 
 
 def not_found(content_string):
-    xbmcgui.Dialog().notification('JellyCon', string_load(30305) % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(string_load(30305), content_string), icon=icon, sound=False)
 
 
 def playback_starting(content_string):
-    xbmcgui.Dialog().notification('JellyCon', string_load(30306) % content_string, icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(string_load(30306), content_string), icon=icon, sound=False)
 
 
 def search(item_type, query):
