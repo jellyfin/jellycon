@@ -726,7 +726,7 @@ class DownloadUtils:
                 log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
                     xbmcgui.Dialog().notification(string_load(30316),
-                                                  string_load(30200) % str(data.content),
+                                                  '{}: {}'.format(string_load(30200), data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
             try:
                 result = data.json()

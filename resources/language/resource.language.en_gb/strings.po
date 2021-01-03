@@ -219,7 +219,7 @@ msgid "Include people"
 msgstr ""
 
 msgctxt "#30200"
-msgid "URL error: %s"
+msgid "URL error"
 msgstr ""
 
 msgctxt "#30201"
@@ -555,11 +555,11 @@ msgid "Cached Jellyfin images : "
 msgstr ""
 
 msgctxt "#30305"
-msgid "Not Found: %s"
+msgid "Not Found"
 msgstr ""
 
 msgctxt "#30306"
-msgid "Playback starting: %s"
+msgid "Playback starting"
 msgstr ""
 
 msgctxt "#30307"
@@ -683,7 +683,7 @@ msgid "Changes Require Kodi Restart"
 msgstr ""
 
 msgctxt "#30344"
-msgid "Number of images removed from cache : %s"
+msgid "Number of images removed from cache"
 msgstr ""
 
 msgctxt "#30345"
@@ -815,7 +815,7 @@ msgid "Sending request"
 msgstr ""
 
 msgctxt "#30375"
-msgid "Receiving data packet: %s"
+msgid "Receiving data packet"
 msgstr ""
 
 msgctxt "#30376"
@@ -891,7 +891,7 @@ msgid "Clear Cache Result"
 msgstr ""
 
 msgctxt "#30394"
-msgid "%s cache files deleted"
+msgid "Cache files deleted"
 msgstr ""
 
 msgctxt "#30395"

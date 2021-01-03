@@ -107,7 +107,7 @@ class CacheArtwork(threading.Thread):
         progress.update(100, string_load(30125))
         progress.close()
 
-        xbmcgui.Dialog().ok(string_load(30281), string_load(30344) % delete_count)
+        xbmcgui.Dialog().ok(string_load(30281), '{}: {}'.format(string_load(30344), delete_count))
 
     def cache_artwork_interactive(self):
         log.debug("cache_artwork_interactive")

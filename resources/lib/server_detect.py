@@ -152,7 +152,7 @@ def get_server_details():
         while True:
             try:
                 server_count += 1
-                progress.update(server_count * 10, string_load(30375) % server_count)
+                progress.update(server_count * 10, '{}: {}'.format(string_load(30375), server_count))
                 xbmc.sleep(1000)
                 data, addr = sock.recvfrom(1024)
                 servers.append(json.loads(data))
