@@ -67,7 +67,6 @@ image_server = HttpImageServerThread()
 image_server.start()
 
 # set up all the services
-monitor = Service()
 playback_service = PlaybackService(monitor)
 
 home_window = HomeWindow()
@@ -112,13 +111,10 @@ if enable_logging:
                                   time=8000,
                                   icon=xbmcgui.NOTIFICATION_WARNING)
 
-# monitor.abortRequested() is causes issues, it currently triggers for all addon cancelations which causes
-# the service to exit when a user cancels an addon load action. This is a bug in Kodi.
-# I am switching back to xbmc.abortRequested approach until kodi is fixed or I find a work arround
 prev_user_id = home_window.get_property("userid")
 first_run = True
 
-while not xbmc.abortRequested:
+while not xbmc.Monitor().abortRequested():
 
     try:
         if xbmc.Player().isPlaying():
@@ -126,7 +122,7 @@ while not xbmc.abortRequested:
             # if playing every 10 seconds updated the server with progress
             if (time.time() - last_progress_update) > 10:
                 last_progress_update = time.time()
-                send_progress(monitor)
+                send_progress()
 
         else:
             screen_saver_active = xbmc.getCondVisibility("System.ScreenSaverActive")
