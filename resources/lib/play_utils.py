@@ -8,6 +8,7 @@ from datetime import timedelta
 import json
 import os
 import base64
+from six.moves.urllib.parse import urlparse
 
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
@@ -18,7 +19,7 @@ from .translation import string_load
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
-from .functions import delete
+#from .functions import delete
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
 from .tracking import timer
@@ -28,7 +29,8 @@ log = LazyLogger(__name__)
 download_utils = DownloadUtils()
 
 
-def play_all_files(items, monitor, play_items=True):
+def play_all_files(items, play_items=True):
+    home_window = HomeWindow()
     log.debug("playAllFiles called with items: {0}", items)
     server = download_utils.get_server()
 
@@ -88,8 +90,9 @@ def play_all_files(items, monitor, play_items=True):
         data["playback_type"] = playback_type_string
         data["play_session_id"] = play_session_id
         data["play_action_type"] = "play_all"
-        monitor.played_information[playurl] = data
-        log.debug("Add to played_information: {0}".format(monitor.played_information))
+        home_window.set_property('now_playing', json.dumps(data))
+        #monitor.played_information[playurl] = data
+        #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
         list_item.setPath(playurl)
         list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -103,7 +106,7 @@ def play_all_files(items, monitor, play_items=True):
         return playlist
 
 
-def play_list_of_items(id_list, monitor):
+def play_list_of_items(id_list):
     log.debug("Loading  all items in the list")
     data_manager = DataManager()
     items = []
@@ -117,10 +120,10 @@ def play_list_of_items(id_list, monitor):
             return
         items.append(result)
 
-    return play_all_files(items, monitor)
+    return play_all_files(items)
 
 
-def add_to_playlist(play_info, monitor):
+def add_to_playlist(play_info):
     log.debug("Adding item to playlist : {0}".format(play_info))
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -187,8 +190,8 @@ def add_to_playlist(play_info, monitor):
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
     data["play_action_type"] = "play_all"
-    monitor.played_information[playurl] = data
-    log.debug("Add to played_information: {0}".format(monitor.played_information))
+    #monitor.played_information[playurl] = data
+    #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -215,7 +218,7 @@ def get_playback_intros(item_id):
 
 
 @timer
-def play_file(play_info, monitor):
+def play_file(play_info):
     item_id = play_info.get("item_id")
 
     home_window = HomeWindow()
@@ -225,12 +228,12 @@ def play_file(play_info, monitor):
 
     action = play_info.get("action", "play")
     if action == "add_to_playlist":
-        add_to_playlist(play_info, monitor)
+        add_to_playlist(play_info)
         return
 
     # if this is a list of items them add them all to the play list
     if isinstance(item_id, list):
-        return play_list_of_items(item_id, monitor)
+        return play_list_of_items(item_id)
 
     auto_resume = play_info.get("auto_resume", "-1")
     force_transcode = play_info.get("force_transcode", False)
@@ -272,7 +275,7 @@ def play_file(play_info, monitor):
         items = result["Items"]
         if items is None:
             items = []
-        return play_all_files(items, monitor)
+        return play_all_files(items)
 
     # if this is a program from live tv epg then play the actual channel
     if result.get("Type") == "Program":
@@ -445,8 +448,9 @@ def play_file(play_info, monitor):
     data["play_action_type"] = "play"
     data["item_type"] = result.get("Type", None)
     data["can_delete"] = result.get("CanDelete", False)
-    monitor.played_information[playurl] = data
-    log.debug("Add to played_information: {0}".format(monitor.played_information))
+    home_window.set_property('now_playing', json.dumps(data))
+    #monitor.played_information[playurl] = data
+    #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, result, server, listitem_props, item_title)
@@ -458,7 +462,7 @@ def play_file(play_info, monitor):
         intro_items = get_playback_intros(item_id)
 
     if len(intro_items) > 0:
-        playlist = play_all_files(intro_items, monitor, play_items=False)
+        playlist = play_all_files(intro_items, play_items=False)
         playlist.add(playurl, list_item)
     else:
         playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -657,9 +661,6 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
     # set up item and item info
 
     art = get_art(result, server=server)
-    list_item.setIconImage(art['thumb'])  # back compat
-    list_item.setProperty('fanart_image', art['fanart'])  # back compat
-    list_item.setProperty('discart', art['discart'])  # not avail to setArt
     list_item.setArt(art)
 
     list_item.setProperty('IsPlayable', 'false')
@@ -891,8 +892,11 @@ def external_subs(media_source, list_item, item_id):
             list_item.setSubtitles([selected_sub])
 
 
-def send_progress(monitor):
-    play_data = get_playing_data(monitor.played_information)
+def send_progress():
+    home_window = HomeWindow()
+    play_data_string = home_window.get_property('now_playing')
+    play_data = json.loads(play_data_string)
+    #play_data = get_playing_data()
 
     if play_data is None:
         return
@@ -1003,9 +1007,9 @@ def prompt_for_stop_actions(item_id, data):
             percenatge_complete > prompt_delete_movie_percentage):
         prompt_to_delete = True
 
-    if prompt_to_delete:
-        log.debug("Prompting for delete")
-        delete(item_id)
+    #if prompt_to_delete:
+    #    log.debug("Prompting for delete")
+    #    delete(item_id)
 
     # prompt for next episode
     if (next_episode is not None and
@@ -1095,21 +1099,26 @@ def stop_all_playback(played_information):
                 download_utils.download_url(url, method="DELETE")
 
 
-def get_playing_data(play_data_map):
+def get_playing_data():
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
     try:
         playing_file = xbmc.Player().getPlayingFile()
     except Exception as e:
         log.error("get_playing_data : getPlayingFile() : {0}".format(e))
         return None
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
-    if playing_file not in play_data_map:
-        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-        log.debug("get_playing_data : Filenameandpath : {0}".format(infolabel_path_and_file))
-        if infolabel_path_and_file not in play_data_map:
-            log.debug("get_playing_data : play data not found")
-            return None
-        else:
-            playing_file = infolabel_path_and_file
+    if server in playing_file:
+        url_data = urlparse(playing_file)
+        query = parse_qs(url_data.query)
+    #if playing_file not in play_data_map:
+    #    infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
+    #    log.debug("get_playing_data : Filenameandpath : {0}".format(infolabel_path_and_file))
+    #    if infolabel_path_and_file not in play_data_map:
+    #        log.debug("get_playing_data : play data not found")
+    #        return None
+    #    else:
+    #        playing_file = infolabel_path_and_file
 
     return play_data_map.get(playing_file)
 
@@ -1181,7 +1190,7 @@ class Service(xbmc.Player):
 
         if play_data is not None:
             play_data['paused'] = True
-            send_progress(self)
+            send_progress()
 
     def onPlayBackResumed(self):
         # Will be called when kodi resumes the video
@@ -1204,8 +1213,10 @@ class PlaybackService(xbmc.Monitor):
 
     def __init__(self, monitor):
         self.monitor = monitor
+        log.info("WE'RE STARTING THE NOTIFICATION THREAD HERE")
 
     def onNotification(self, sender, method, data):
+        log.info('HEY, WE RECEIVED A NOTIFICATION HERE')
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return
