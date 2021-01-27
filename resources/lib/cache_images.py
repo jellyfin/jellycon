@@ -2,7 +2,7 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import urllib
+from six.moves.urllib.parse import unquote
 import requests
 import base64
 import sys
@@ -150,7 +150,7 @@ class CacheArtwork(threading.Thread):
                 unused_texture_ids = set()
                 for texture in textures:
                     url = texture.get("url")
-                    url = urllib.unquote(url)
+                    url = unquote(url)
                     url = url.replace("image://", "")
                     url = url[0:-1]
                     if url.find("/") > -1 and url not in jellyfin_texture_urls or url.find("localhost:24276") > -1:
@@ -285,7 +285,7 @@ class CacheArtwork(threading.Thread):
         texture_urls = set()
         for texture in textures:
             url = texture.get("url")
-            url = urllib.unquote(url)
+            url = unquote(url)
             url = url.replace("image://", "")
             url = url[0:-1]
             texture_urls.add(url)

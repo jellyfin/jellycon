@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import urllib
+from six.moves.urllib.parse import quote, unquote
 import encodings
 
 import xbmc
@@ -106,7 +106,7 @@ def get_episode_id(parent_id, episode):
 
 
 def get_match(item_type, title, year, imdb_id):
-    query = urllib.quote(title)
+    query = quote(title)
 
     results = search(item_type, query=query)
     results = results.get('SearchHints')
@@ -138,7 +138,7 @@ def entry_point(parameters):
     action = parameters.get('action', None)
     video_type = parameters.get('video_type', None)
 
-    title = urllib.unquote(parameters.get('title', ''))
+    title = unquote(parameters.get('title', ''))
 
     year = parameters.get('year', '')
     episode = parameters.get('episode', '')
@@ -246,4 +246,4 @@ def entry_point(parameters):
                 not_found('{title} ({year}) - S{season}'.format(title=title, year=year, season=str_season))
 
         if url and media_type:
-            xbmc.executebuiltin('ActivateWindow(Videos, plugin://plugin.video.jellycon/?mode=GET_CONTENT&url={url}&media_type={media_type})'.format(url=urllib.quote(url), media_type=media_type))
+            xbmc.executebuiltin('ActivateWindow(Videos, plugin://plugin.video.jellycon/?mode=GET_CONTENT&url={url}&media_type={media_type})'.format(url=quote(url), media_type=media_type))

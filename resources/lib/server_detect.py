@@ -231,17 +231,17 @@ def check_server(force=False, change_user=False, notify=False):
 
                 log.debug("Testing_Url: {0}".format(public_lookup_url))
                 progress = xbmcgui.DialogProgress()
-                progress.create(__addon_name__ + " : " + string_load(30376))
+                progress.create('{} : {}'.format(__addon_name__, string_load(30376)))
                 progress.update(0, string_load(30377))
                 result = du.download_url(public_lookup_url, authenticate=False)
                 progress.close()
 
                 if result:
-                    xbmcgui.Dialog().ok(__addon_name__ + " : " + string_load(30167),
+                    xbmcgui.Dialog().ok('{} : {}'.format(__addon_name__, string_load(30167)),
                                         server_url)
                     break
                 else:
-                    return_index = xbmcgui.Dialog().yesno(__addon_name__ + " : " + string_load(30135),
+                    return_index = xbmcgui.Dialog().yesno('{} : {}'.format(__addon_name__, string_load(30135)),
                                                           server_url,
                                                           string_load(30371))
                     if not return_index:
@@ -255,7 +255,7 @@ def check_server(force=False, change_user=False, notify=False):
     # do we need to change the user
     user_details = load_user_details(settings)
     current_username = user_details.get("username", "")
-    current_username = unicode(current_username, "utf-8")
+    current_username = py2_decode(current_username)
 
     # if asked or we have no current user then show user selection screen
     if something_changed or change_user or len(current_username) == 0:
@@ -384,7 +384,7 @@ def check_server(force=False, change_user=False, notify=False):
             if secured:
                 # we need a password, check the settings first
                 m = hashlib.md5()
-                m.update(selected_user_name)
+                m.update(selected_user_name.encode())
                 hashed_username = m.hexdigest()
                 saved_password = settings.getSetting("saved_user_password_" + hashed_username)
                 allow_password_saving = settings.getSetting("allow_password_saving") == "true"

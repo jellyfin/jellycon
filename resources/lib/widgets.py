@@ -55,7 +55,7 @@ def set_random_movies():
     movies_list_string = ",".join(randon_movies_list)
     home_window = HomeWindow()
     m = hashlib.md5()
-    m.update(movies_list_string)
+    m.update(movies_list_string.encode())
     new_widget_hash = m.hexdigest()
 
     log.debug("set_random_movies : {0}".format(movies_list_string))

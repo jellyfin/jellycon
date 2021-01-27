@@ -26,7 +26,7 @@ class ActionAutoClose(threading.Thread):
 
     def run(self):
         log.debug("ActionAutoClose Running")
-        while not xbmc.abortRequested and not self.stop_thread:
+        while not xbmc.Monitor().abortRequested() and not self.stop_thread:
             time_since_last = time.time() - self.last_interaction
             log.debug("ActionAutoClose time_since_last : {0}".format(time_since_last))
 

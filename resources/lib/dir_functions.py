@@ -5,7 +5,7 @@ import xbmcaddon
 import xbmcplugin
 import xbmcgui
 
-import urllib
+from six.moves.urllib.parse import quote, unquote
 import sys
 import re
 
@@ -126,7 +126,7 @@ def get_content(url, params):
         if url_prev:
             list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
-            u = sys.argv[0] + "?url=" + urllib.quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
+            u = sys.argv[0] + "?url=" + quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
             log.debug("ADDING PREV ListItem: {0} - {1}".format(u, list_item))
             dir_items.insert(0, (u, list_item, True))
 
@@ -136,7 +136,7 @@ def get_content(url, params):
                 upper_count = total_records
             list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
                                          str(upper_count) + " of " + str(total_records) + ")")
-            u = sys.argv[0] + "?url=" + urllib.quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
+            u = sys.argv[0] + "?url=" + quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
             log.debug("ADDING NEXT ListItem: {0} - {1}".format(u, list_item))
             dir_items.append((u, list_item, True))
 
@@ -238,7 +238,7 @@ def process_directory(url, progress, params, use_cache_data=False):
     name_format = params.get("name_format", None)
     name_format_type = None
     if name_format is not None:
-        name_format = urllib.unquote(name_format)
+        name_format = unquote(name_format)
         tokens = name_format.split("|")
         if len(tokens) == 2:
             name_format_type = tokens[0]

@@ -1,7 +1,8 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-from uuid import uuid4 as uuid4
+from uuid import uuid4
+from kodi_six.utils import py2_decode
 import xbmcaddon
 import xbmc
 import xbmcvfs
@@ -23,14 +24,15 @@ class ClientInformation:
         if client_id:
             return client_id
 
-        jellyfin_guid_path = xbmc.translatePath("special://temp/jellycon_guid").decode('utf-8')
+        jellyfin_guid_path = py2_decode(xbmc.translatePath("special://temp/jellycon_guid"))
         log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
         guid = xbmcvfs.File(jellyfin_guid_path)
         client_id = guid.read()
         guid.close()
 
         if not client_id:
-            client_id = str("%012X" % uuid4())
+            # Needs to be captilized for backwards compat
+            client_id = uuid4().hex.upper()
             log.debug("Generating a new guid: {0}".format(client_id))
             guid = xbmcvfs.File(jellyfin_guid_path, 'w')
             guid.write(client_id)

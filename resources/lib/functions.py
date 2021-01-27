@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import urllib
+from six.moves.urllib.parse import quote, unquote
 import sys
 import os
 import time
@@ -34,6 +34,7 @@ from .cache_images import CacheArtwork
 from .dir_functions import get_content, process_directory
 from .tracking import timer
 from .skin_cloner import clone_default_skin
+from .play_utils import play_file
 
 __addon__ = xbmcaddon.Addon()
 __addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
@@ -74,7 +75,7 @@ def main_entry_point():
     param_url = params.get('url', None)
 
     if param_url:
-        param_url = urllib.unquote(param_url)
+        param_url = unquote(param_url)
 
     mode = params.get("mode", None)
 
@@ -632,7 +633,7 @@ def show_menu(params):
     elif selected_action == "show_extras":
         # "http://localhost:8096/Users/3138bed521e5465b9be26d2c63be94af/Items/78/SpecialFeatures"
         u = "{server}/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
-        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Videos")
+        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Videos")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         xbmc.executebuiltin(built_in_command)
 
@@ -648,7 +649,7 @@ def show_menu(params):
              '&IsMissing=false' +
              '&Fields=SpecialEpisodeNumbers,{field_filters}' +
              '&format=json')
-        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Season")
+        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Season")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         xbmc.executebuiltin(built_in_command)
 
@@ -665,7 +666,7 @@ def show_menu(params):
              '&Fields={field_filters}' +
              '&format=json')
 
-        action_url = ("plugin://plugin.video.jellycon/?url=" + urllib.quote(u) + "&mode=GET_CONTENT&media_type=Series")
+        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Series")
 
         if xbmc.getCondVisibility("Window.IsActive(home)"):
             built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
@@ -794,7 +795,7 @@ def search_results(params):
     query_string = params.get('query')
     if query_string:
         log.debug("query_string : {0}".format(query_string))
-        query_string = urllib.unquote(query_string)
+        query_string = unquote(query_string)
         log.debug("query_string : {0}".format(query_string))
 
     item_type = item_type.lower()
@@ -841,7 +842,7 @@ def search_results(params):
     else:
         query = query_string
 
-    query = urllib.quote(query)
+    query = quote(query)
     log.debug("query : {0}".format(query))
 
     if (not item_type) or (not query):
@@ -977,7 +978,8 @@ def play_action(params):
     play_info["subtitle_stream_index"] = subtitle_stream_index
     play_info["audio_stream_index"] = audio_stream_index
     log.info("Sending jellycon_play_action : {0}".format(play_info))
-    send_event_notification("jellycon_play_action", play_info)
+    play_file(play_info)
+    #send_event_notification("jellycon_play_action", play_info)
 
 
 def play_item_trailer(item_id):

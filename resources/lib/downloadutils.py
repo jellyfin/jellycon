@@ -598,7 +598,7 @@ class DownloadUtils:
         settings = xbmcaddon.Addon()
         device_name = settings.getSetting('deviceName')
         # remove none ascii chars
-        device_name = device_name.decode("ascii", errors='ignore')
+        device_name = py2_decode(device_name)
         # remove some chars not valid for names
         device_name = device_name.replace("\"", "_")
         if len(device_name) == 0:
