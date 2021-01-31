@@ -1213,16 +1213,18 @@ class PlaybackService(xbmc.Monitor):
 
     def __init__(self, monitor):
         self.monitor = monitor
-        log.info("WE'RE STARTING THE NOTIFICATION THREAD HERE")
 
     def onNotification(self, sender, method, data):
-        log.info('HEY, WE RECEIVED A NOTIFICATION HERE')
+        log.info('Received notification: {} - {} - {}'.format(sender, method, data))
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return
-
-        if method == 'GUI.OnScreensaverDeactivated':
+        elif method == 'GUI.OnScreensaverDeactivated':
             self.screensaver_deactivated()
+            return
+        elif method == 'System.OnQuit':
+            home_window = HomeWindow()
+            home_window.set_property('exit', 'True')
             return
 
         if sender[-7:] != '.SIGNAL':
