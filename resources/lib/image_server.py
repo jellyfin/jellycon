@@ -198,20 +198,22 @@ class HttpImageHandler(BaseHTTPRequestHandler):
 
 class HttpImageServerThread(threading.Thread):
 
-    keep_running = True
 
     def __init__(self):
         threading.Thread.__init__(self)
+        self.keep_running = True
 
     def stop(self):
         log.debug("HttpImageServerThread:stop called")
         self.keep_running = False
+        self.server.shutdown()
 
     def run(self):
         log.debug("HttpImageServerThread:started")
-        server = HTTPServer(('', PORT_NUMBER), HttpImageHandler)
+        self.server = HTTPServer(('', PORT_NUMBER), HttpImageHandler)
 
         while self.keep_running:
-            server.handle_request()
+            self.server.serve_forever()
+            xbmc.sleep(1000)
 
         log.debug("HttpImageServerThread:exiting")
