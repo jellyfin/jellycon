@@ -119,7 +119,7 @@ class CacheArtwork(threading.Thread):
         result = JsonRpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            xbmcgui.Dialog().ok(string_load(30294), string_load(30295), string_load(30355))
+            xbmcgui.Dialog().ok(string_load(30294), '{} - {}'.format(string_load(30295), string_load(30355)))
             xbmc.executebuiltin('ActivateWindow(servicesettings)')
             return
 
