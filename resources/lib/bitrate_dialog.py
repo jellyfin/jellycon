@@ -55,4 +55,3 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
     def onClick(self, control_id):
         if control_id == 3000:
             log.debug("ActionMenu: Selected Item: {0}".format(control_id))
-            #self.close()

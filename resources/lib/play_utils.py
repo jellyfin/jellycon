@@ -90,8 +90,6 @@ def play_all_files(items, play_items=True):
         data["play_session_id"] = play_session_id
         data["play_action_type"] = "play_all"
         home_window.set_property('now_playing', json.dumps(data))
-        #monitor.played_information[playurl] = data
-        #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
         list_item.setPath(playurl)
         list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -188,8 +186,6 @@ def add_to_playlist(play_info):
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
     data["play_action_type"] = "play_all"
-    #monitor.played_information[playurl] = data
-    #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -431,8 +427,6 @@ def play_file(play_info):
     data["item_type"] = result.get("Type", None)
     data["can_delete"] = result.get("CanDelete", False)
     home_window.set_property('now_playing', json.dumps(data))
-    #monitor.played_information[playurl] = data
-    #log.debug("Add to played_information: {0}".format(monitor.played_information))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, result, server, listitem_props, item_title)
@@ -877,7 +871,6 @@ def send_progress():
     home_window = HomeWindow()
     play_data_string = home_window.get_property('now_playing')
     play_data = json.loads(play_data_string)
-    #play_data = get_playing_data()
 
     if play_data is None:
         return
