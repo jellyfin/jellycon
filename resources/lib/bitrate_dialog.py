@@ -41,8 +41,6 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
 
-        # log.debug("onAction: onAction: {0} {1}", action.getId(), self.slider_control.getInt())
-
         bitrate_label_string = str(self.slider_control.getInt()) + " Kbs"
         self.bitrate_label.setLabel(bitrate_label_string)
 

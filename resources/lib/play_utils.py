@@ -19,7 +19,6 @@ from .translation import string_load
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
-#from .functions import delete
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
 from .tracking import timer
@@ -155,7 +154,6 @@ def add_to_playlist(play_info):
     play_session_id = playback_info.get("PlaySessionId")
 
     # select the media source to use
-    # sources = item.get("MediaSources")
     sources = playback_info.get('MediaSources')
 
     selected_media_source = sources[0]
@@ -371,22 +369,6 @@ def play_file(play_info):
             del resume_dialog
             log.debug("Resume Dialog Result: {0}".format(resume_result))
 
-            # check system settings for play action
-            # if prompt is set ask to set it to auto resume
-            # remove for now as the context dialog is now handeled in the monitor thread
-            # params = {"setting": "myvideos.selectaction"}
-            # setting_result = json_rpc('Settings.getSettingValue').execute(params)
-            # log.debug("Current Setting (myvideos.selectaction): {0}", setting_result)
-            # current_value = setting_result.get("result", None)
-            # if current_value is not None:
-            #     current_value = current_value.get("value", -1)
-            # if current_value not in (2,3):
-            #     return_value = xbmcgui.Dialog().yesno(string_load(30276), string_load(30277))
-            #     if return_value:
-            #         params = {"setting": "myvideos.selectaction", "value": 2}
-            #         json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
-            #         log.debug("Save Setting (myvideos.selectaction): {0}", json_rpc_result)
-
             if resume_result == 1:
                 seek_time = 0
             elif resume_result == -1:
@@ -528,7 +510,6 @@ def __build_label2_from(source):
     subtitles = [item for item in source.get('MediaStreams', {}) if item.get('Type') == "Subtitle"]
 
     details = [str(convert_size(source.get('Size', 0)))]
-    # details.append(source.get('Container', ''))
     for video in videos:
         details.append('{} {} {}bit'.format(video.get('DisplayTitle', ''),
                                             video.get('VideoRange', ''),
@@ -991,7 +972,6 @@ def prompt_for_stop_actions(item_id, data):
         return
 
     # item percentage complete
-    # percenatge_complete = int(((current_position * 10000000) / runtime) * 100)
     percenatge_complete = int((current_position / duration) * 100)
     log.debug("Episode Percentage Complete: {0}".format(percenatge_complete))
 
@@ -1007,21 +987,14 @@ def prompt_for_stop_actions(item_id, data):
             percenatge_complete > prompt_delete_movie_percentage):
         prompt_to_delete = True
 
-    #if prompt_to_delete:
-    #    log.debug("Prompting for delete")
-    #    delete(item_id)
-
     # prompt for next episode
     if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
             percenatge_complete > prompt_next_percentage):
 
-        # resp = True
         index = next_episode.get("IndexNumber", -1)
         if play_prompt:
-            # series_name = next_episode.get("SeriesName")
-            # next_epp_name = "Episode %02d - (%s)" % (index, next_episode.get("Name", "n/a"))
 
             plugin_path = settings.getAddonInfo('path')
             plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
@@ -1032,25 +1005,6 @@ def prompt_for_stop_actions(item_id, data):
 
             if not play_next_dialog.get_play_called():
                 xbmc.executebuiltin("Container.Refresh")
-
-            # resp = xbmcgui.Dialog().yesno(string_load(30283),
-            #                              series_name,
-            #                              next_epp_name,
-            #                              autoclose=20000)
-        """
-        if resp:
-            next_item_id = next_episode.get("Id")
-            log.debug("Playing Next Episode: {0}", next_item_id)
-
-            play_info = {}
-            play_info["item_id"] = next_item_id
-            play_info["auto_resume"] = "-1"
-            play_info["force_transcode"] = False
-            send_event_notification("jellycon_play_action", play_info)
-
-        else:
-            xbmc.executebuiltin("Container.Refresh")
-        """
 
 
 def stop_all_playback(played_information):
@@ -1111,14 +1065,6 @@ def get_playing_data():
     if server in playing_file:
         url_data = urlparse(playing_file)
         query = parse_qs(url_data.query)
-    #if playing_file not in play_data_map:
-    #    infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-    #    log.debug("get_playing_data : Filenameandpath : {0}".format(infolabel_path_and_file))
-    #    if infolabel_path_and_file not in play_data_map:
-    #        log.debug("get_playing_data : play data not found")
-    #        return None
-    #    else:
-    #        playing_file = infolabel_path_and_file
 
     return play_data_map.get(playing_file)
 
@@ -1215,7 +1161,7 @@ class PlaybackService(xbmc.Monitor):
         self.monitor = monitor
 
     def onNotification(self, sender, method, data):
-        log.info('Received notification: {} - {} - {}'.format(sender, method, data))
+        log.debug('Received notification: {} - {} - {}'.format(sender, method, data))
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return
@@ -1269,8 +1215,6 @@ class PlaybackService(xbmc.Monitor):
                 if play_data:
                     log.debug("Screen Saver Activated : this is an JellyCon item so stop it")
                     player.stop()
-
-        # xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
 
         clear_old_cache_data()
 

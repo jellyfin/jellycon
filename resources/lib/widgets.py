@@ -176,7 +176,6 @@ def check_for_new_content():
         items = result.get("Items", [])
         if len(items) > 0:
             item = items[0]
-            # last_played_date = item.get("Etag", "")
             user_data = item.get("UserData", None)
             if user_data is not None:
                 last_played_date = user_data.get("LastPlayedDate", "")
@@ -222,12 +221,6 @@ def get_widget_content_cast(handle, params):
         people = []
 
     for person in people:
-        # if (person.get("Type") == "Director"):
-        #     director = director + person.get("Name") + ' '
-        # if (person.get("Type") == "Writing"):
-        #     writer = person.get("Name")
-        # if (person.get("Type") == "Writer"):
-        #    writer = person.get("Name")
         if person.get("Type") == "Actor":
             person_name = person.get("Name")
             person_role = person.get("Role")
@@ -372,17 +365,11 @@ def get_widget_content(handle, params):
             log.debug("BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
-            # log.debug("random suggestions index : {0} {1}", rand, set_id)
             item = items[rand]
             if item["Type"] == "Movie" and item["Id"] not in ids and (not item["UserData"]["Played"] or not hide_watched):
-                # log.debug("random suggestions adding : {0}", item["Id"])
                 ids.append(item["Id"])
-            # else:
-            #     log.debug("random suggestions not valid : {0} - {1} - {2}", item["Id"], item["Type"], item["UserData"]["Played"])
             del items[rand]
-            # log.debug("items len {0}", len(items))
             if len(items) == 0:
-                # log.debug("Removing Set {0}", set_id)
                 del suggested_items[set_id]
             set_id += 1
             if set_id >= len(suggested_items):
@@ -404,8 +391,6 @@ def get_widget_content(handle, params):
             if resume_time is None or float(resume_time) == 0.0:
                 filtered_list.append(item)
         list_items = filtered_list
-
-    # list_items = populateWidgetItems(items_url, widget_type)
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type

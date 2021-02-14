@@ -216,7 +216,6 @@ def get_art(item, server):
 
     image_tags = item.get("ImageTags", {})
     if image_tags and image_tags.get("Primary"):
-        # image_tag = image_tags["Primary"]
         art['thumb'] = downloadUtils.get_artwork(item, "Primary", server=server)
 
     item_type = item["Type"]
@@ -225,7 +224,6 @@ def get_art(item, server):
         art['poster'] = downloadUtils.get_artwork(item, "Primary", server=server)
     elif item_type == "Episode":
         art['tvshow.poster'] = downloadUtils.get_artwork(item, "Primary", parent=True, server=server)
-        # art['poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
         art['tvshow.clearart'] = downloadUtils.get_artwork(item, "Art", parent=True, server=server)
         art['clearart'] = downloadUtils.get_artwork(item, "Art", parent=True, server=server)
         art['tvshow.clearlogo'] = downloadUtils.get_artwork(item, "Logo", parent=True, server=server)

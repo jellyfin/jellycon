@@ -173,11 +173,6 @@ def get_content(url, params):
     else:
         log.debug("No view id for view type:{0}".format(view_key))
 
-    # send display items event
-    # display_items_notification = {"view_type": view_type}
-    # log.debug("Sending display_items with data {0}", display_items_notification)
-    # send_event_notification("display_items", display_items_notification)
-
     if progress is not None:
         progress.update(100, string_load(30125))
         progress.close()

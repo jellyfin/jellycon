@@ -479,8 +479,6 @@ def show_menu(params):
             li.setProperty('menu_id', 'set_view')
             action_items.append(li)
 
-    # xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
-
     action_menu = ActionMenu("ActionMenu.xml", PLUGINPATH, "default", "720p")
     action_menu.setActionItems(action_items)
     action_menu.doModal()
@@ -493,9 +491,6 @@ def show_menu(params):
 
     if selected_action == "play":
         log.debug("Play Item")
-        # list_item = populate_listitem(params["item_id"])
-        # result = xbmcgui.Dialog().info(list_item)
-        # log.debug("xbmcgui.Dialog().info: {0}", result)
         play_action(params)
 
     elif selected_action == "set_view":
@@ -671,7 +666,6 @@ def show_menu(params):
         if xbmc.getCondVisibility("Window.IsActive(home)"):
             built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         else:
-            # built_in_command = 'Container.Update(' + action_url + ', replace)'
             built_in_command = 'Container.Update(' + action_url + ')'
 
         xbmc.executebuiltin(built_in_command)
@@ -752,7 +746,6 @@ def search_results_person(params):
     person_id = params.get("person_id")
     details_url = ('{server}/Users/{userid}/items' +
                    '?PersonIds=' + person_id +
-                   # '&IncludeItemTypes=Movie' +
                    '&Recursive=true' +
                    '&Fields={field_filters}' +
                    '&format=json')
@@ -780,8 +773,6 @@ def search_results_person(params):
 
         if content_type:
             xbmcplugin.setContent(handle, content_type)
-
-    # xbmcplugin.setContent(handle, detected_type)
 
     if dir_items is not None:
         xbmcplugin.addDirectoryItems(handle, dir_items)
@@ -884,8 +875,6 @@ def search_results(params):
         for item in person_items:
             person_id = item.get('Id')
             person_name = item.get('Name')
-            # image_tags = item.get('ImageTags', {})
-            # image_tag = image_tags.get('PrimaryImageTag', '')
             person_thumbnail = downloadUtils.get_artwork(item, "Primary", server=server)
 
             action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
@@ -979,7 +968,6 @@ def play_action(params):
     play_info["audio_stream_index"] = audio_stream_index
     log.info("Sending jellycon_play_action : {0}".format(play_info))
     play_file(play_info)
-    #send_event_notification("jellycon_play_action", play_info)
 
 
 def play_item_trailer(item_id):
@@ -1056,8 +1044,4 @@ def play_item_trailer(item_id):
             youtube_plugin = "RunPlugin(plugin://plugin.video.youtube/play/?video_id=%s)" % youtube_id
             log.debug("youtube_plugin: {0}".format(youtube_plugin))
 
-            # play_info = {}
-            # play_info["url"] = youtube_plugin
-            # log.info("Sending jellycon_play_trailer_action : {0}", play_info)
-            # send_event_notification("jellycon_play_youtube_trailer_action", play_info)
             xbmc.executebuiltin(youtube_plugin)

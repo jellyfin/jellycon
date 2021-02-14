@@ -35,16 +35,6 @@ def get_image_links(url):
     if server is None:
         return []
 
-    # url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
-    # url = url.replace("{ItemLimit}", "4")
-    # url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
-
-    # if not re.search('limit=', url, re.IGNORECASE):
-    #     url += "&Limit=4"
-
-    # if not re.search('sortBy=', url, re.IGNORECASE):
-    #     url += "&SortBy=Random"
-
     url = re.sub("(?i)EnableUserData=[a-z]+", "EnableUserData=False", url)
     url = re.sub("(?i)EnableImageTypes=[,a-z]+", "EnableImageTypes=Primary", url)
     url = url.replace("{field_filters}", "BasicSyncInfo")
@@ -109,8 +99,6 @@ def build_image(path):
 
             host_name = url_bits.hostname
             port = url_bits.port
-            # user_name = url_bits.username
-            # user_password = url_bits.password
             url_path = url_bits.path
             url_query = url_bits.query
 

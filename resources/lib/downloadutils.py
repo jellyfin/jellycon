@@ -157,7 +157,6 @@ class DownloadUtils:
 
         addon_settings = xbmcaddon.Addon()
 
-        # ["hevc", "h265", "h264", "mpeg4", "msmpeg4v3", "mpeg2video", "vc1"]
         filtered_codecs = []
         if addon_settings.getSetting("force_transcode_h265") == "true":
             filtered_codecs.append("hevc")
@@ -358,7 +357,6 @@ class DownloadUtils:
         item_id = item["Id"]
         item_type = item["Type"]
         image_tags = item["ImageTags"]
-        # bg_item_tags = item["ParentBackdropImageTags"]
 
         # All the image tags
         for tag_name in image_tags:
@@ -386,7 +384,6 @@ class DownloadUtils:
                 item_id = data["SeriesId"]
 
         image_tag = ""
-        # "e3ab56fe27d389446754d0fb04910a34" # a place holder tag, needs to be in this format
 
         # for episodes always use the parent BG
         if item_type == "Episode" and art_type == "Backdrop":
@@ -403,14 +400,12 @@ class DownloadUtils:
             bg_tags = data.get("BackdropImageTags", [])
             if bg_tags:
                 image_tag = bg_tags[index]
-                # log.debug("Background Image Tag: {0}", imageTag)
         elif parent is False:
             image_tags = data.get("ImageTags", [])
             if image_tags:
                 image_tag_type = image_tags.get(art_type)
                 if image_tag_type:
                     image_tag = image_tag_type
-                    # log.debug("Image Tag: {0}", imageTag)
         elif parent is True:
             if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
                 tag_name = 'SeriesPrimaryImageTag'
@@ -423,11 +418,9 @@ class DownloadUtils:
             if parent_image_id is not None and parent_image_tag is not None:
                 item_id = parent_image_id
                 image_tag = parent_image_tag
-                # log.debug("Parent Image Tag: {0}", imageTag)
 
         # ParentTag not passed for Banner and Art
         if not image_tag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):
-            # log.debug("No Image Tag for request:{0} item:{1} parent:{2}", art_type, item_type, parent)
             return ""
 
         artwork = "%s/Items/%s/Images/%s/%s?Format=original&Tag=%s" % (server, item_id, art_type, index, image_tag)
@@ -435,18 +428,8 @@ class DownloadUtils:
         if self.use_https and not self.verify_cert:
             artwork += "|verifypeer=false"
 
-        # log.debug("getArtwork: request:{0} item:{1} parent:{2} link:{3}", art_type, item_type, parent, artwork)
-
-        '''
-        # do not return non-existing images
-        if (    (art_type != "Backdrop" and imageTag == "") |
-                (art_type == "Backdrop" and data.get("BackdropImageTags") != None and len(data.get("BackdropImageTags")) == 0) |
-                (art_type == "Backdrop" and data.get("BackdropImageTag") != None and len(data.get("BackdropImageTag")) == 0)
-                ):
-            artwork = ''
-        '''
-
         return artwork
+
 
     def image_url(self, item_id, art_type, index, width, height, image_tag, server):
 
@@ -577,7 +560,6 @@ class DownloadUtils:
             log.debug("User Id: {0}".format(userid))
             window.set_property("AccessToken", access_token)
             window.set_property("userid", userid)
-            # WINDOW.setProperty("userimage", "")
 
             self.post_capabilities()
 

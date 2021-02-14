@@ -154,7 +154,6 @@ class CacheArtwork(threading.Thread):
                     url = url.replace("image://", "")
                     url = url[0:-1]
                     if url.find("/") > -1 and url not in jellyfin_texture_urls or url.find("localhost:24276") > -1:
-                        # log.debug("adding unused texture url: {0}", url)
                         unused_texture_ids.add(texture["textureid"])
 
                 total = len(unused_texture_ids)
@@ -243,7 +242,6 @@ class CacheArtwork(threading.Thread):
 
         texture_urls = set()
 
-        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for item in results:
             art = get_art(item, server)
             for art_type in art:
@@ -306,7 +304,6 @@ class CacheArtwork(threading.Thread):
 
         missing_texture_urls = set()
 
-        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for image_url in jellyfin_texture_urls:
             if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
                 missing_texture_urls.add(image_url)
@@ -329,7 +326,6 @@ class CacheArtwork(threading.Thread):
 
         count_done = 0
         for index, get_url in enumerate(missing_texture_urls, 1):
-            # log.debug("texture_url: {0}", get_url)
             url = double_urlencode(get_url)
             kodi_texture_url = ("/image/image://%s" % url)
             log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
@@ -345,8 +341,6 @@ class CacheArtwork(threading.Thread):
                 count_done += 1
             log.debug("Get Image Result: {0}".format(data.status_code))
 
-            # if progress.iscanceled():
-            # if "iscanceled" in dir(progress) and progress.iscanceled():
             if isinstance(progress, xbmcgui.DialogProgress) and progress.iscanceled():
                 break
 

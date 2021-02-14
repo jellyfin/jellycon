@@ -256,7 +256,6 @@ def extract_item_info(item, gui_options):
             elif person_type == "Writing":
                 item_details.writer = person["Name"]
             elif person_type == "Actor":
-                # log.debug("Person: {0}", person)
                 person_name = person.get("Name")
                 person_role = person.get("Role")
                 person_id = person.get("Id")
@@ -283,7 +282,6 @@ def extract_item_info(item, gui_options):
 
     # production location
     prod_location = item.get("ProductionLocations", [])
-    # log.debug("ProductionLocations : {0}", prod_location)
     if prod_location:
         item_details.production_location = prod_location[0]
 
@@ -357,8 +355,6 @@ def extract_item_info(item, gui_options):
 
 
 def add_gui_item(url, item_details, display_options, folder=True, default_sort=False):
-
-    # log.debug("item_details: {0}", item_details.__dict__)
 
     if not item_details.name:
         return None
@@ -448,8 +444,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
     else:
         list_item = xbmcgui.ListItem(list_item_name, iconImage=thumb_path, thumbnailImage=thumb_path)
-
-    # log.debug("Setting thumbnail as: {0}", thumbPath)
 
     item_properties = {}
 
@@ -568,7 +562,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             info_labels["trailer"] = "plugin://plugin.video.jellycon?mode=playTrailer&id=" + item_details.id
 
         list_item.setInfo('video', info_labels)
-        # log.debug("info_labels: {0}", info_labels)
 
         if item_details.media_streams is not None:
             for stream in item_details.media_streams:
@@ -595,7 +588,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         item_properties["NumEpisodes"] = str(item_details.number_episodes)
 
         list_item.setRating("imdb", item_details.community_rating, 0, True)
-        # list_item.setRating("rt", item_details.critic_rating, 0, False)
         item_properties["TotalTime"] = str(item_details.duration)
 
     else:
@@ -606,7 +598,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             info_labels["artist"] = item_details.song_artist
         info_labels["album"] = item_details.album_name
 
-        # log.debug("info_labels: {0}", info_labels)
         list_item.setInfo('music', info_labels)
 
     list_item.setContentLookup(False)
@@ -616,7 +607,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
-    # log.debug("item_properties: {0}", item_properties)
     if kodi_version > 17:
         list_item.setProperties(item_properties)
     else:
