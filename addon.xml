@@ -9,6 +9,7 @@
     <import addon="script.module.requests" version="2.22.0"/>
     <import addon="script.module.six" version="1.13.0"/>
     <import addon="script.module.kodi-six" />
+    <import addon="script.module.websocket" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video audio</provides>
