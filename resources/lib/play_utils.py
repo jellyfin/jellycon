@@ -1076,7 +1076,7 @@ class Service(xbmc.Player):
             log.debug("onPlayBackStarted: not playing file!")
             return
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is None:
             return
@@ -1125,7 +1125,7 @@ class Service(xbmc.Player):
         # Will be called when kodi pauses the video
         log.debug("onPlayBackPaused")
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is not None:
             play_data['paused'] = True
@@ -1135,16 +1135,16 @@ class Service(xbmc.Player):
         # Will be called when kodi resumes the video
         log.debug("onPlayBackResumed")
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is not None:
             play_data['paused'] = False
-            send_progress(self)
+            send_progress()
 
     def onPlayBackSeek(self, time, seek_offset):
         # Will be called when kodi seeks in video
         log.debug("onPlayBackSeek")
-        send_progress(self)
+        send_progress()
 
 
 class PlaybackService(xbmc.Monitor):
@@ -1204,7 +1204,7 @@ class PlaybackService(xbmc.Monitor):
             player = xbmc.Player()
             if player.isPlayingVideo():
                 log.debug("Screen Saver Activated : isPlayingVideo() = true")
-                play_data = get_playing_data(self.monitor.played_information)
+                play_data = get_playing_data()
                 if play_data:
                     log.debug("Screen Saver Activated : this is an JellyCon item so stop it")
                     player.stop()
