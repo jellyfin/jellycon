@@ -16,7 +16,7 @@ class ContextMonitor(threading.Thread):
         item_id = None
         log.debug("ContextMonitor Thread Started")
 
-        while not xbmc.abortRequested and not self.stop_thread:
+        while not xbmc.Monitor().abortRequested() and not self.stop_thread:
 
             if xbmc.getCondVisibility("Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)"):
                 xbmc.sleep(1000)

@@ -5,8 +5,8 @@ from collections import defaultdict
 import threading
 import hashlib
 import os
-import cPickle
 import time
+from six.moves import cPickle
 
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
@@ -62,7 +62,7 @@ class DataManager:
         server = download_utils.get_server()
 
         m = hashlib.md5()
-        m.update(user_id + "|" + str(server) + "|" + url)
+        m.update('{}|{}|{}'.format(user_id, server, url).encode())
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
 

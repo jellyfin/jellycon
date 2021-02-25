@@ -26,17 +26,14 @@ class HomeWindow:
     def get_property(self, key):
         key = self.id_string % key
         value = self.window.getProperty(key)
-        # log.debug('HomeWindow: getProperty |{0}| -> |{1}|', key, value)
         return value
 
     def set_property(self, key, value):
         key = self.id_string % key
-        # log.debug('HomeWindow: setProperty |{0}| -> |{1}|', key, value)
         self.window.setProperty(key, value)
 
     def clear_property(self, key):
         key = self.id_string % key
-        # log.debug('HomeWindow: clearProperty |{0}|', key)
         self.window.clearProperty(key)
 
 

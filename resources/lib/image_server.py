@@ -4,13 +4,13 @@ import xbmcvfs
 import xbmc
 import base64
 import re
-from urlparse import urlparse
 from random import shuffle
+from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from six.moves.urllib.parse import urlparse
 
 import threading
 import requests
 import io
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 from .loghandler import LazyLogger
 from .datamanager import DataManager
@@ -34,16 +34,6 @@ def get_image_links(url):
     server = download_utils.get_server()
     if server is None:
         return []
-
-    # url = re.sub("(?i)limit=[0-9]+", "limit=4", url)
-    # url = url.replace("{ItemLimit}", "4")
-    # url = re.sub("(?i)SortBy=[a-zA-Z]+", "SortBy=Random", url)
-
-    # if not re.search('limit=', url, re.IGNORECASE):
-    #     url += "&Limit=4"
-
-    # if not re.search('sortBy=', url, re.IGNORECASE):
-    #     url += "&SortBy=Random"
 
     url = re.sub("(?i)EnableUserData=[a-z]+", "EnableUserData=False", url)
     url = re.sub("(?i)EnableImageTypes=[,a-z]+", "EnableImageTypes=Primary", url)
@@ -109,8 +99,6 @@ def build_image(path):
 
             host_name = url_bits.hostname
             port = url_bits.port
-            # user_name = url_bits.username
-            # user_password = url_bits.password
             url_path = url_bits.path
             url_query = url_bits.query
 
@@ -198,20 +186,22 @@ class HttpImageHandler(BaseHTTPRequestHandler):
 
 class HttpImageServerThread(threading.Thread):
 
-    keep_running = True
 
     def __init__(self):
         threading.Thread.__init__(self)
+        self.keep_running = True
 
     def stop(self):
         log.debug("HttpImageServerThread:stop called")
         self.keep_running = False
+        self.server.shutdown()
 
     def run(self):
         log.debug("HttpImageServerThread:started")
-        server = HTTPServer(('', PORT_NUMBER), HttpImageHandler)
+        self.server = HTTPServer(('', PORT_NUMBER), HttpImageHandler)
 
         while self.keep_running:
-            server.handle_request()
+            self.server.serve_forever()
+            xbmc.sleep(1000)
 
         log.debug("HttpImageServerThread:exiting")

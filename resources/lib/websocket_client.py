@@ -257,11 +257,13 @@ class WebSocketClient(threading.Thread):
         websocket_url = "%s/socket?api_key=%s&deviceId=%s" % (server, token, self.device_id)
         log.debug("websocket url: {0}".format(websocket_url))
 
-        self._client = websocket.WebSocketApp(websocket_url,
-                                              on_open=self.on_open,
-                                              on_message=self.on_message,
-                                              on_error=self.on_error,
-                                              on_close=self.on_close)
+        self._client = websocket.WebSocketApp(
+            websocket_url,
+            on_open=lambda ws, message: self.on_open(ws),
+            on_message=lambda ws, message: self.on_message(ws, message),
+            on_error=lambda ws, error: self.on_error(ws, error),
+            on_close=lambda ws, error: self.on_close(ws))
+
         log.debug("Starting WebSocketClient")
 
         while not self.monitor.abortRequested():

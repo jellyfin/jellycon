@@ -2,7 +2,7 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import urllib
+from six.moves.urllib.parse import unquote
 import requests
 import base64
 import sys
@@ -119,7 +119,7 @@ class CacheArtwork(threading.Thread):
         result = JsonRpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            xbmcgui.Dialog().ok(string_load(30294), string_load(30295), string_load(30355))
+            xbmcgui.Dialog().ok(string_load(30294), '{} - {}'.format(string_load(30295), string_load(30355)))
             xbmc.executebuiltin('ActivateWindow(servicesettings)')
             return
 
@@ -150,11 +150,10 @@ class CacheArtwork(threading.Thread):
                 unused_texture_ids = set()
                 for texture in textures:
                     url = texture.get("url")
-                    url = urllib.unquote(url)
+                    url = unquote(url)
                     url = url.replace("image://", "")
                     url = url[0:-1]
                     if url.find("/") > -1 and url not in jellyfin_texture_urls or url.find("localhost:24276") > -1:
-                        # log.debug("adding unused texture url: {0}", url)
                         unused_texture_ids.add(texture["textureid"])
 
                 total = len(unused_texture_ids)
@@ -243,7 +242,6 @@ class CacheArtwork(threading.Thread):
 
         texture_urls = set()
 
-        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for item in results:
             art = get_art(item, server)
             for art_type in art:
@@ -285,7 +283,7 @@ class CacheArtwork(threading.Thread):
         texture_urls = set()
         for texture in textures:
             url = texture.get("url")
-            url = urllib.unquote(url)
+            url = unquote(url)
             url = url.replace("image://", "")
             url = url[0:-1]
             texture_urls.add(url)
@@ -306,7 +304,6 @@ class CacheArtwork(threading.Thread):
 
         missing_texture_urls = set()
 
-        # image_types = ["thumb", "poster", "banner", "clearlogo", "tvshow.poster", "tvshow.banner", "tvshow.landscape"]
         for image_url in jellyfin_texture_urls:
             if image_url not in texture_urls and not image_url.endswith("&Tag=") and len(image_url) > 0:
                 missing_texture_urls.add(image_url)
@@ -329,7 +326,6 @@ class CacheArtwork(threading.Thread):
 
         count_done = 0
         for index, get_url in enumerate(missing_texture_urls, 1):
-            # log.debug("texture_url: {0}", get_url)
             url = double_urlencode(get_url)
             kodi_texture_url = ("/image/image://%s" % url)
             log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
@@ -345,8 +341,6 @@ class CacheArtwork(threading.Thread):
                 count_done += 1
             log.debug("Get Image Result: {0}".format(data.status_code))
 
-            # if progress.iscanceled():
-            # if "iscanceled" in dir(progress) and progress.iscanceled():
             if isinstance(progress, xbmcgui.DialogProgress) and progress.iscanceled():
                 break
 

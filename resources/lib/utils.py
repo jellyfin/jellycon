@@ -7,7 +7,6 @@ import xbmcvfs
 
 import string
 import random
-import urllib
 import json
 import base64
 import time
@@ -15,7 +14,7 @@ import math
 from datetime import datetime
 import calendar
 import re
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
@@ -134,7 +133,7 @@ class PlayUtils:
             if playback_video_force_8:
                 transcode_params.update({"MaxVideoBitDepth": "8"})
 
-            transcode_path = urllib.urlencode(transcode_params)
+            transcode_path = urlencode(transcode_params)
 
             playurl = "%s/Videos/%s/master.m3u8?%s" % (server, item_id, transcode_path)
 
@@ -217,7 +216,6 @@ def get_art(item, server):
 
     image_tags = item.get("ImageTags", {})
     if image_tags and image_tags.get("Primary"):
-        # image_tag = image_tags["Primary"]
         art['thumb'] = downloadUtils.get_artwork(item, "Primary", server=server)
 
     item_type = item["Type"]
@@ -226,7 +224,6 @@ def get_art(item, server):
         art['poster'] = downloadUtils.get_artwork(item, "Primary", server=server)
     elif item_type == "Episode":
         art['tvshow.poster'] = downloadUtils.get_artwork(item, "Primary", parent=True, server=server)
-        # art['poster'] = downloadUtils.getArtwork(item, "Primary", parent=True, server=server)
         art['tvshow.clearart'] = downloadUtils.get_artwork(item, "Art", parent=True, server=server)
         art['clearart'] = downloadUtils.get_artwork(item, "Art", parent=True, server=server)
         art['tvshow.clearlogo'] = downloadUtils.get_artwork(item, "Logo", parent=True, server=server)
@@ -293,7 +290,7 @@ def double_urlencode(text):
 
 def single_urlencode(text):
     # urlencode needs a utf- string
-    text = urllib.urlencode({'blahblahblah': text.encode('utf-8')})
+    text = urlencode({'blahblahblah': text.encode('utf-8')})
     text = text[13:]
     return text.decode('utf-8')  # return the result again as unicode
 
@@ -301,7 +298,7 @@ def single_urlencode(text):
 def send_event_notification(method, data):
     message_data = json.dumps(data)
     source_id = "jellycon"
-    base64_data = base64.b64encode(message_data)
+    base64_data = base64.b64encode(message_data.encode())
     escaped_data = '\\"[\\"{0}\\"]\\"'.format(base64_data)
     command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, escaped_data)
     log.debug("Sending notification event data: {0}".format(command))

@@ -26,7 +26,7 @@ class ActionAutoClose(threading.Thread):
 
     def run(self):
         log.debug("ActionAutoClose Running")
-        while not xbmc.abortRequested and not self.stop_thread:
+        while not xbmc.Monitor().abortRequested() and not self.stop_thread:
             time_since_last = time.time() - self.last_interaction
             log.debug("ActionAutoClose time_since_last : {0}".format(time_since_last))
 
@@ -69,9 +69,6 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
         self.listControl = self.getControl(3000)
         self.listControl.addItems(self.action_items)
         self.setFocus(self.listControl)
-
-        # bg_image = self.getControl(3010)
-        # bg_image.setHeight(50 * len(self.action_items) + 20)
 
     def onFocus(self, control_id):
         pass

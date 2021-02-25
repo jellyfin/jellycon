@@ -8,6 +8,7 @@ from datetime import timedelta
 import json
 import os
 import base64
+from six.moves.urllib.parse import urlparse
 
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
@@ -18,7 +19,6 @@ from .translation import string_load
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item
 from .clientinfo import ClientInformation
-from .functions import delete
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
 from .tracking import timer
@@ -28,7 +28,8 @@ log = LazyLogger(__name__)
 download_utils = DownloadUtils()
 
 
-def play_all_files(items, monitor, play_items=True):
+def play_all_files(items, play_items=True):
+    home_window = HomeWindow()
     log.debug("playAllFiles called with items: {0}", items)
     server = download_utils.get_server()
 
@@ -88,8 +89,7 @@ def play_all_files(items, monitor, play_items=True):
         data["playback_type"] = playback_type_string
         data["play_session_id"] = play_session_id
         data["play_action_type"] = "play_all"
-        monitor.played_information[playurl] = data
-        log.debug("Add to played_information: {0}".format(monitor.played_information))
+        home_window.set_property('now_playing', json.dumps(data))
 
         list_item.setPath(playurl)
         list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -103,7 +103,7 @@ def play_all_files(items, monitor, play_items=True):
         return playlist
 
 
-def play_list_of_items(id_list, monitor):
+def play_list_of_items(id_list):
     log.debug("Loading  all items in the list")
     data_manager = DataManager()
     items = []
@@ -117,10 +117,10 @@ def play_list_of_items(id_list, monitor):
             return
         items.append(result)
 
-    return play_all_files(items, monitor)
+    return play_all_files(items)
 
 
-def add_to_playlist(play_info, monitor):
+def add_to_playlist(play_info):
     log.debug("Adding item to playlist : {0}".format(play_info))
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -152,7 +152,6 @@ def add_to_playlist(play_info, monitor):
     play_session_id = playback_info.get("PlaySessionId")
 
     # select the media source to use
-    # sources = item.get("MediaSources")
     sources = playback_info.get('MediaSources')
 
     selected_media_source = sources[0]
@@ -187,8 +186,6 @@ def add_to_playlist(play_info, monitor):
     data["playback_type"] = playback_type_string
     data["play_session_id"] = play_session_id
     data["play_action_type"] = "play_all"
-    monitor.played_information[playurl] = data
-    log.debug("Add to played_information: {0}".format(monitor.played_information))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -215,7 +212,7 @@ def get_playback_intros(item_id):
 
 
 @timer
-def play_file(play_info, monitor):
+def play_file(play_info):
     item_id = play_info.get("item_id")
 
     home_window = HomeWindow()
@@ -225,12 +222,12 @@ def play_file(play_info, monitor):
 
     action = play_info.get("action", "play")
     if action == "add_to_playlist":
-        add_to_playlist(play_info, monitor)
+        add_to_playlist(play_info)
         return
 
     # if this is a list of items them add them all to the play list
     if isinstance(item_id, list):
-        return play_list_of_items(item_id, monitor)
+        return play_list_of_items(item_id)
 
     auto_resume = play_info.get("auto_resume", "-1")
     force_transcode = play_info.get("force_transcode", False)
@@ -272,7 +269,7 @@ def play_file(play_info, monitor):
         items = result["Items"]
         if items is None:
             items = []
-        return play_all_files(items, monitor)
+        return play_all_files(items)
 
     # if this is a program from live tv epg then play the actual channel
     if result.get("Type") == "Program":
@@ -368,22 +365,6 @@ def play_file(play_info, monitor):
             del resume_dialog
             log.debug("Resume Dialog Result: {0}".format(resume_result))
 
-            # check system settings for play action
-            # if prompt is set ask to set it to auto resume
-            # remove for now as the context dialog is now handeled in the monitor thread
-            # params = {"setting": "myvideos.selectaction"}
-            # setting_result = json_rpc('Settings.getSettingValue').execute(params)
-            # log.debug("Current Setting (myvideos.selectaction): {0}", setting_result)
-            # current_value = setting_result.get("result", None)
-            # if current_value is not None:
-            #     current_value = current_value.get("value", -1)
-            # if current_value not in (2,3):
-            #     return_value = xbmcgui.Dialog().yesno(string_load(30276), string_load(30277))
-            #     if return_value:
-            #         params = {"setting": "myvideos.selectaction", "value": 2}
-            #         json_rpc_result = json_rpc('Settings.setSettingValue').execute(params)
-            #         log.debug("Save Setting (myvideos.selectaction): {0}", json_rpc_result)
-
             if resume_result == 1:
                 seek_time = 0
             elif resume_result == -1:
@@ -445,8 +426,7 @@ def play_file(play_info, monitor):
     data["play_action_type"] = "play"
     data["item_type"] = result.get("Type", None)
     data["can_delete"] = result.get("CanDelete", False)
-    monitor.played_information[playurl] = data
-    log.debug("Add to played_information: {0}".format(monitor.played_information))
+    home_window.set_property('now_playing', json.dumps(data))
 
     list_item.setPath(playurl)
     list_item = set_list_item_props(item_id, list_item, result, server, listitem_props, item_title)
@@ -458,7 +438,7 @@ def play_file(play_info, monitor):
         intro_items = get_playback_intros(item_id)
 
     if len(intro_items) > 0:
-        playlist = play_all_files(intro_items, monitor, play_items=False)
+        playlist = play_all_files(intro_items, play_items=False)
         playlist.add(playurl, list_item)
     else:
         playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -524,7 +504,6 @@ def __build_label2_from(source):
     subtitles = [item for item in source.get('MediaStreams', {}) if item.get('Type') == "Subtitle"]
 
     details = [str(convert_size(source.get('Size', 0)))]
-    # details.append(source.get('Container', ''))
     for video in videos:
         details.append('{} {} {}bit'.format(video.get('DisplayTitle', ''),
                                             video.get('VideoRange', ''),
@@ -657,9 +636,6 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
     # set up item and item info
 
     art = get_art(result, server=server)
-    list_item.setIconImage(art['thumb'])  # back compat
-    list_item.setProperty('fanart_image', art['fanart'])  # back compat
-    list_item.setProperty('discart', art['discart'])  # not avail to setArt
     list_item.setArt(art)
 
     list_item.setProperty('IsPlayable', 'false')
@@ -891,8 +867,10 @@ def external_subs(media_source, list_item, item_id):
             list_item.setSubtitles([selected_sub])
 
 
-def send_progress(monitor):
-    play_data = get_playing_data(monitor.played_information)
+def send_progress():
+    home_window = HomeWindow()
+    play_data_string = home_window.get_property('now_playing')
+    play_data = json.loads(play_data_string)
 
     if play_data is None:
         return
@@ -987,7 +965,6 @@ def prompt_for_stop_actions(item_id, data):
         return
 
     # item percentage complete
-    # percenatge_complete = int(((current_position * 10000000) / runtime) * 100)
     percenatge_complete = int((current_position / duration) * 100)
     log.debug("Episode Percentage Complete: {0}".format(percenatge_complete))
 
@@ -1003,21 +980,14 @@ def prompt_for_stop_actions(item_id, data):
             percenatge_complete > prompt_delete_movie_percentage):
         prompt_to_delete = True
 
-    if prompt_to_delete:
-        log.debug("Prompting for delete")
-        delete(item_id)
-
     # prompt for next episode
     if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
             percenatge_complete > prompt_next_percentage):
 
-        # resp = True
         index = next_episode.get("IndexNumber", -1)
         if play_prompt:
-            # series_name = next_episode.get("SeriesName")
-            # next_epp_name = "Episode %02d - (%s)" % (index, next_episode.get("Name", "n/a"))
 
             plugin_path = settings.getAddonInfo('path')
             plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
@@ -1028,25 +998,6 @@ def prompt_for_stop_actions(item_id, data):
 
             if not play_next_dialog.get_play_called():
                 xbmc.executebuiltin("Container.Refresh")
-
-            # resp = xbmcgui.Dialog().yesno(string_load(30283),
-            #                              series_name,
-            #                              next_epp_name,
-            #                              autoclose=20000)
-        """
-        if resp:
-            next_item_id = next_episode.get("Id")
-            log.debug("Playing Next Episode: {0}", next_item_id)
-
-            play_info = {}
-            play_info["item_id"] = next_item_id
-            play_info["auto_resume"] = "-1"
-            play_info["force_transcode"] = False
-            send_event_notification("jellycon_play_action", play_info)
-
-        else:
-            xbmc.executebuiltin("Container.Refresh")
-        """
 
 
 def stop_all_playback(played_information):
@@ -1095,21 +1046,18 @@ def stop_all_playback(played_information):
                 download_utils.download_url(url, method="DELETE")
 
 
-def get_playing_data(play_data_map):
+def get_playing_data():
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
     try:
         playing_file = xbmc.Player().getPlayingFile()
     except Exception as e:
         log.error("get_playing_data : getPlayingFile() : {0}".format(e))
         return None
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
-    if playing_file not in play_data_map:
-        infolabel_path_and_file = xbmc.getInfoLabel("Player.Filenameandpath")
-        log.debug("get_playing_data : Filenameandpath : {0}".format(infolabel_path_and_file))
-        if infolabel_path_and_file not in play_data_map:
-            log.debug("get_playing_data : play data not found")
-            return None
-        else:
-            playing_file = infolabel_path_and_file
+    if server in playing_file:
+        url_data = urlparse(playing_file)
+        query = parse_qs(url_data.query)
 
     return play_data_map.get(playing_file)
 
@@ -1128,7 +1076,7 @@ class Service(xbmc.Player):
             log.debug("onPlayBackStarted: not playing file!")
             return
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is None:
             return
@@ -1177,26 +1125,26 @@ class Service(xbmc.Player):
         # Will be called when kodi pauses the video
         log.debug("onPlayBackPaused")
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is not None:
             play_data['paused'] = True
-            send_progress(self)
+            send_progress()
 
     def onPlayBackResumed(self):
         # Will be called when kodi resumes the video
         log.debug("onPlayBackResumed")
 
-        play_data = get_playing_data(self.played_information)
+        play_data = get_playing_data()
 
         if play_data is not None:
             play_data['paused'] = False
-            send_progress(self)
+            send_progress()
 
     def onPlayBackSeek(self, time, seek_offset):
         # Will be called when kodi seeks in video
         log.debug("onPlayBackSeek")
-        send_progress(self)
+        send_progress()
 
 
 class PlaybackService(xbmc.Monitor):
@@ -1206,12 +1154,16 @@ class PlaybackService(xbmc.Monitor):
         self.monitor = monitor
 
     def onNotification(self, sender, method, data):
+        log.debug('Received notification: {} - {} - {}'.format(sender, method, data))
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return
-
-        if method == 'GUI.OnScreensaverDeactivated':
+        elif method == 'GUI.OnScreensaverDeactivated':
             self.screensaver_deactivated()
+            return
+        elif method == 'System.OnQuit':
+            home_window = HomeWindow()
+            home_window.set_property('exit', 'True')
             return
 
         if sender[-7:] != '.SIGNAL':
@@ -1252,12 +1204,10 @@ class PlaybackService(xbmc.Monitor):
             player = xbmc.Player()
             if player.isPlayingVideo():
                 log.debug("Screen Saver Activated : isPlayingVideo() = true")
-                play_data = get_playing_data(self.monitor.played_information)
+                play_data = get_playing_data()
                 if play_data:
                     log.debug("Screen Saver Activated : this is an JellyCon item so stop it")
                     player.stop()
-
-        # xbmc.executebuiltin("Dialog.Close(selectdialog, true)")
 
         clear_old_cache_data()
 

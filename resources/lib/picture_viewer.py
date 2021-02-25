@@ -23,11 +23,6 @@ class PictureViewer(xbmcgui.WindowXMLDialog):
         picture_control = self.getControl(3010)
 
         picture_control.setImage(self.picture_url)
-        # self.listControl.addItems(self.action_items)
-        # self.setFocus(self.listControl)
-
-        # bg_image = self.getControl(3010)
-        # bg_image.setHeight(50 * len(self.action_items) + 20)
 
     def onFocus(self, controlId):
         pass
