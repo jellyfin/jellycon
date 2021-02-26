@@ -1,4 +1,5 @@
 # Gnu General Public License - see LICENSE.TXT
+from __future__ import division, absolute_import, print_function, unicode_literals
 
 import xbmc
 import xbmcgui
@@ -1154,7 +1155,6 @@ class PlaybackService(xbmc.Monitor):
         self.monitor = monitor
 
     def onNotification(self, sender, method, data):
-        log.debug('Received notification: {} - {} - {}'.format(sender, method, data))
         if method == 'GUI.OnScreensaverActivated':
             self.screensaver_activated()
             return
