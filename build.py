@@ -103,8 +103,6 @@ if __name__ == '__main__':
     with open(config_path, 'r') as fh:
         config = yaml.safe_load(fh)
 
-    #py_version = 'py{}'.format(args.version)
-
     create_addon_xml(config, args.source, args.version)
 
     zip_files(args.version, args.source, args.target)
