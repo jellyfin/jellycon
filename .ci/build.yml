@@ -16,7 +16,7 @@ steps:
     - task: CopyFiles@2
       displayName: 'Create clean addon directory'
       inputs:
-        sourceFolder: 'jellyfin-kodi'
+        sourceFolder: 'jellycon'
         cleanTargetFolder: true
         contents: |
           **/*
