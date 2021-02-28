@@ -1,0 +1,45 @@
+parameters:
+  python_versions : []
+
+steps:
+  - ${{ each py_version in parameters.py_versions }}:
+    - task: usePythonVersion@0
+      inputs:
+        versionSpec: '3.6'
+
+    - checkout: self
+      clean: true
+
+    - script: python3 -m pip install --user -r jellycon/requirements-dev.txt
+      displayName: 'Install dev dependencies'
+
+    - task: CopyFiles@2
+      displayName: 'Create clean addon directory'
+      inputs:
+        sourceFolder: 'jellycon'
+        cleanTargetFolder: true
+        contents: |
+          **/*
+          !.ci/*
+          !.git/**/*
+          !.github/*
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/plugin.video.jellycon'
+
+    - script: python3 '$(Build.ArtifactStagingDirectory)/plugin.video.jellycon/build.py' --version ${{ py_version }} --target '$(Build.ArtifactStagingDirectory)/'
+      displayName: 'Create ${{ py_version }} addon.xml'
+
+    - task: ArchiveFiles@2
+      displayName: 'Create ${{ py_version }} zip file'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/plugin.video.jellycon'
+        includeRootFolder: True
+        archiveType: 'zip'
+        tarCompression: 'none'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/plugin.video.jellycon-${{ py_version }}.zip'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish ${{ py_version }} artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/plugin.video.jellycon'
+        artifactName: 'plugin.video.jellycon-${{ py_version }}-$(Build.BuildNumber)'
+
