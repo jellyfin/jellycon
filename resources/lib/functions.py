@@ -303,7 +303,7 @@ def delete(item_id):
         xbmcgui.Dialog().ok(string_load(30135), string_load(30417), final_name)
         return
 
-    return_value = xbmcgui.Dialog().yesno(string_load(30091), final_name, string_load(30092))
+    return_value = xbmcgui.Dialog().yesno(string_load(30091), '{}\n{}'.format(final_name, string_load(30092)))
     if return_value:
         log.debug('Deleting Item: {0}'.format(item_id))
         url = '{server}/Items/' + item_id
