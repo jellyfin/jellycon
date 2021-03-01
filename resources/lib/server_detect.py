@@ -208,7 +208,7 @@ def check_server(force=False, change_user=False, notify=False):
                 server_url = server_info[return_index]["Address"]
 
         if not server_url:
-            return_index = xbmcgui.Dialog().yesno(__addon_name__, string_load(30282), string_load(30370))
+            return_index = xbmcgui.Dialog().yesno(__addon_name__, '{}\n{}'.format(string_load(30282), string_load(30370)))
             if not return_index:
                 xbmc.executebuiltin("ActivateWindow(Home)")
                 return
