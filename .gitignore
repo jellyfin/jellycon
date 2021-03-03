@@ -220,3 +220,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Addon files
+addon.xml

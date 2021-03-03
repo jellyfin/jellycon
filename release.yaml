@@ -1,8 +1,10 @@
-version: '0.3.1'
+version: '0.4.0'
 changelog: |
-  - #37 - Don't urlencode auth json payload
-  - #39 - Fix clone skin function
-  - #40 - Show proper language names for external subs
+  - #44 - Stop doing string manipulations on translations
+  - #50 - Add support for Kodi Matrix
+  - #52 - Use future imports for all library files
+  - #53 - Add build script and set up pipeline
+  - #54 - Fix yesno dialogs in Kodi 19
 dependencies:
   py2:
     - addon: 'xbmc.python'
