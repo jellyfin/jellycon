@@ -3,6 +3,7 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import sys
+from six import ensure_binary, ensure_text
 from six.moves.urllib.parse import quote
 import base64
 import string
@@ -74,7 +75,7 @@ def show_movie_tags(menu_params):
 
         item_url = get_jellyfin_url("{server}/Users/{userid}/Items", url_params)
 
-        art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
 
         content_url = quote(item_url)
         url = sys.argv[0] + ("?url=" +
@@ -160,7 +161,7 @@ def show_movie_years(menu_params):
 
         item_url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
-        art = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
 
         content_url = quote(item_url)
         url = sys.argv[0] + ("?url=" +
@@ -241,7 +242,7 @@ def show_movie_pages(menu_params):
         item_data['path'] = item_url
         item_data['media_type'] = 'movies'
 
-        item_data["art"] = {"thumb": "http://localhost:24276/" + base64.b64encode(item_url)}
+        item_data['art'] = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
 
         collections.append(item_data)
         start_index = start_index + page_limit
@@ -322,7 +323,7 @@ def show_genre_list(menu_params):
 
         url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
 
-        art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
         item_data['art'] = art
 
         item_data['path'] = url
@@ -390,7 +391,7 @@ def show_movie_alpha_list(menu_params):
         url = get_jellyfin_url("{server}/Users/{userid}/Items", params)
         item_data['path'] = url
 
-        art = {"thumb": "http://localhost:24276/" + base64.b64encode(url)}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
         item_data['art'] = art
 
         collections.append(item_data)
@@ -451,7 +452,7 @@ def show_tvshow_alpha_list(menu_params):
 
         item_data['path'] = path
 
-        art = {"thumb": "http://localhost:24276/" + base64.b64encode(path)}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
         item_data['art'] = art
 
         collections.append(item_data)

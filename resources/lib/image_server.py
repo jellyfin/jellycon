@@ -7,6 +7,7 @@ import re
 from random import shuffle
 from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from six.moves.urllib.parse import urlparse
+from six import ensure_text
 
 import threading
 import requests
@@ -76,7 +77,7 @@ def build_image(path):
     if request_path == "favicon.ico":
         return []
 
-    decoded_url = base64.b64decode(request_path)
+    decoded_url = ensure_text(base64.b64decode(request_path))
     log.debug("decoded_url : {0}".format(decoded_url))
 
     image_urls = get_image_links(decoded_url)
