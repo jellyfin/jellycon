@@ -1,10 +1,6 @@
-version: '0.4.0'
+version: '0.4.1'
 changelog: |
-  - #44 - Stop doing string manipulations on translations
-  - #50 - Add support for Kodi Matrix
-  - #52 - Use future imports for all library files
-  - #53 - Add build script and set up pipeline
-  - #54 - Fix yesno dialogs in Kodi 19
+  - #57 - Fix browsing by pages
 dependencies:
   py2:
     - addon: 'xbmc.python'
