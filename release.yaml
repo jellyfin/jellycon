@@ -1,6 +1,6 @@
-version: '0.4.1'
+version: '0.4.2'
 changelog: |
-  - #57 - Fix browsing by pages
+  - #60 - Remove multicast socket options from autodiscovery
 dependencies:
   py2:
     - addon: 'xbmc.python'
