@@ -14,6 +14,7 @@ from base64 import b64encode
 from collections import defaultdict
 from traceback import format_exc
 from kodi_six.utils import py2_decode
+from six import ensure_text
 
 from .kodi_utils import HomeWindow
 from .clientinfo import ClientInformation
@@ -493,7 +494,7 @@ class DownloadUtils:
 
         secure = False
         for user in result:
-            if user.get("Name") == unicode(user_name, "utf-8"):
+            if user.get("Name") == ensure_text(user_name, "utf-8"):
                 userid = user.get("Id")
                 user_image = self.get_user_artwork(user, 'Primary')
                 log.debug("Username Found: {0}".format(user.get("Name")))
