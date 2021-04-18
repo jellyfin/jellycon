@@ -1,6 +1,7 @@
-version: '0.4.2'
+version: '0.4.3'
 changelog: |
-  - #60 - Remove multicast socket options from autodiscovery
+  - #62 - Change unicode to str 
+  - #63 - Fix displaying public user list
 dependencies:
   py2:
     - addon: 'xbmc.python'
