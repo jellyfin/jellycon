@@ -13,6 +13,7 @@ from datetime import datetime
 import xbmcaddon
 import xbmcgui
 import xbmc
+from six import ensure_binary
 from kodi_six.utils import py2_decode
 
 from .kodi_utils import HomeWindow
@@ -315,7 +316,7 @@ def check_server(force=False, change_user=False, notify=False):
                         user_item.setProperty("secure", "true")
 
                         m = hashlib.md5()
-                        m.update(name)
+                        m.update(ensure_binary(name))
                         hashed_username = m.hexdigest()
                         saved_password = settings.getSetting("saved_user_password_" + hashed_username)
                         if saved_password:
