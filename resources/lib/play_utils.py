@@ -835,10 +835,10 @@ def external_subs(media_source, list_item, item_id):
 
             url_root = '{}/Videos/{}/{}/Subtitles/{}'.format(server, item_id, source_id, index)
             if language:
-                url = '{}/Stream.{}.{}?api_key={}'.format(
+                url = '{}/0/Stream.{}.{}?api_key={}'.format(
                     url_root, language, codec, token)
             else:
-                url = '{}/Stream.{}?api_key={}'.format(url_root, codec, token)
+                url = '{}/0/Stream.{}?api_key={}'.format(url_root, codec, token)
 
             default = ""
             if stream['IsDefault']:
