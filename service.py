@@ -67,6 +67,7 @@ image_server = HttpImageServerThread()
 image_server.start()
 
 # set up all the services
+monitor = Service()
 playback_service = PlaybackService(monitor)
 
 home_window = HomeWindow()
