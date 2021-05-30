@@ -5,6 +5,7 @@ import xbmcaddon
 import xbmc
 import xbmcvfs
 
+import binascii
 import string
 import random
 import json
@@ -14,6 +15,7 @@ import math
 from datetime import datetime
 import calendar
 import re
+from six import ensure_text, ensure_binary
 from six.moves.urllib.parse import urlencode
 
 from .downloadutils import DownloadUtils
@@ -295,14 +297,19 @@ def single_urlencode(text):
     return text.decode('utf-8')  # return the result again as unicode
 
 
-def send_event_notification(method, data):
-    message_data = json.dumps(data)
-    source_id = "jellycon"
-    base64_data = base64.b64encode(message_data.encode())
-    escaped_data = '\\"[\\"{0}\\"]\\"'.format(base64_data)
-    command = 'XBMC.NotifyAll({0}.SIGNAL,{1},{2})'.format(source_id, method, escaped_data)
-    log.debug("Sending notification event data: {0}".format(command))
-    xbmc.executebuiltin(command)
+def send_event_notification(method, data=None, hexlify=False):
+    '''
+    Send events through Kodi's notification system
+    '''
+    data = data or {}
+
+    if hexlify:
+        # Used exclusively for the upnext plugin
+        data = ensure_text(binascii.hexlify(ensure_binary(json.dumps(data))))
+    sender = 'plugin.video.jellycon'
+    data = '"[%s]"' % json.dumps(data).replace('"', '\\"')
+
+    xbmc.executebuiltin('NotifyAll(%s, %s, %s)' % (sender, method, data))
 
 
 def datetime_from_string(time_string):

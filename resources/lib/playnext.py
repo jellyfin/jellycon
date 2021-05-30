@@ -1,5 +1,6 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
+import json
 import os
 import threading
 
@@ -9,6 +10,7 @@ import xbmcaddon
 
 from .loghandler import LazyLogger
 from .play_utils import send_event_notification
+from .kodi_utils import HomeWindow
 
 log = LazyLogger(__name__)
 
@@ -32,6 +34,8 @@ class PlayNextService(threading.Thread):
         play_next_triggered = False
         is_playing = False
 
+        now_playing = None
+
         while not xbmc.Monitor().abortRequested() and not self.stop_thread:
 
             player = xbmc.Player()
@@ -42,6 +46,13 @@ class PlayNextService(threading.Thread):
                     play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
                     log.debug("New play_next_trigger_time value: {0}".format(play_next_trigger_time))
 
+                now_playing_file = player.getPlayingFile()
+                if now_playing_file != now_playing:
+                    # If the playing file has changed, reset the play next values
+                    play_next_dialog = None
+                    play_next_triggered = False
+                    now_playing = now_playing_file
+
                 duration = player.getTotalTime()
                 position = player.getTime()
                 trigger_time = play_next_trigger_time  # 300
@@ -51,7 +62,7 @@ class PlayNextService(threading.Thread):
                     play_next_triggered = True
                     log.debug("play_next_triggered hit at {0} seconds from end".format(time_to_end))
 
-                    play_data = get_playing_data(self.monitor.played_information)
+                    play_data = get_playing_data()
                     log.debug("play_next_triggered play_data : {0}".format(play_data))
 
                     next_episode = play_data.get("next_episode")
@@ -78,6 +89,7 @@ class PlayNextService(threading.Thread):
                     play_next_dialog = None
 
                 is_playing = False
+                now_playing = None
 
             if xbmc.Monitor().waitForAbort(1):
                 break

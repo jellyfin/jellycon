@@ -427,6 +427,12 @@ def play_file(play_info):
     data["play_action_type"] = "play"
     data["item_type"] = result.get("Type", None)
     data["can_delete"] = result.get("CanDelete", False)
+
+    # Check for next episodes
+    if result.get('Type') == 'Episode':
+        next_episode = get_next_episode(result)
+        data["next_episode"] = next_episode
+
     home_window.set_property('now_playing', json.dumps(data))
 
     list_item.setPath(playurl)
@@ -493,10 +499,6 @@ def play_file(play_info):
                 log.info("PlaybackResumrAction : Could not unpause")
             else:
                 log.info("PlaybackResumrAction : Playback resumed")
-
-    next_episode = get_next_episode(result)
-    data["next_episode"] = next_episode
-    send_next_episode_details(result, next_episode)
 
 
 def __build_label2_from(source):
@@ -630,7 +632,7 @@ def send_next_episode_details(item, next_episode):
             "force_transcode": False
         }
     }
-    send_event_notification("upnext_data", next_info)
+    send_event_notification("upnext_data", next_info, True)
 
 
 def set_list_item_props(item_id, list_item, result, server, extra_props, title):
@@ -1048,6 +1050,10 @@ def stop_all_playback(played_information):
 
 
 def get_playing_data():
+    home_window = HomeWindow()
+    play_data_string = home_window.get_property('now_playing')
+    play_data = json.loads(play_data_string)
+
     settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
     try:
@@ -1057,10 +1063,9 @@ def get_playing_data():
         return None
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
     if server in playing_file:
-        url_data = urlparse(playing_file)
-        query = parse_qs(url_data.query)
-
-    return play_data_map.get(playing_file)
+        return play_data
+    else:
+        return {}
 
 
 class Service(xbmc.Player):
@@ -1166,7 +1171,7 @@ class PlaybackService(xbmc.Monitor):
             home_window.set_property('exit', 'True')
             return
 
-        if sender[-7:] != '.SIGNAL':
+        if sender != 'plugin.video.jellycon':
             return
 
         signal = method.split('.', 1)[-1]
@@ -1174,16 +1179,12 @@ class PlaybackService(xbmc.Monitor):
             return
 
         data_json = json.loads(data)
-        message_data = data_json[0]
-        log.debug("PlaybackService:onNotification:{0}".format(message_data))
-        decoded_data = base64.b64decode(message_data)
-        play_info = json.loads(decoded_data)
+        play_info = data_json[0]
+        log.debug("PlaybackService:onNotification:{0}".format(play_info))
 
         if signal == "jellycon_play_action":
-            log.info("Received jellycon_play_action : {0}".format(play_info))
-            play_file(play_info, self.monitor)
+            play_file(play_info)
         elif signal == "jellycon_play_youtube_trailer_action":
-            log.info("Received jellycon_play_trailer_action : {0}".format(play_info))
             trailer_link = play_info["url"]
             xbmc.executebuiltin(trailer_link)
         elif signal == "set_view":
