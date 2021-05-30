@@ -46,11 +46,12 @@ class PlayNextService(threading.Thread):
                     play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
                     log.debug("New play_next_trigger_time value: {0}".format(play_next_trigger_time))
 
-                if player.getPlayingFile() != now_playing:
+                now_playing_file = player.getPlayingFile()
+                if now_playing_file != now_playing:
                     # If the playing file has changed, reset the play next values
                     play_next_dialog = None
                     play_next_triggered = False
-                    now_playing = player.getPlayingFile()
+                    now_playing = now_playing_file
 
                 duration = player.getTotalTime()
                 position = player.getTime()
@@ -88,6 +89,7 @@ class PlayNextService(threading.Thread):
                     play_next_dialog = None
 
                 is_playing = False
+                now_playing = None
 
             if xbmc.Monitor().waitForAbort(1):
                 break
