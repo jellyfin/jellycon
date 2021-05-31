@@ -1,7 +1,8 @@
-version: '0.4.3'
+version: '0.4.4'
 changelog: |
-  - #62 - Change unicode to str 
-  - #63 - Fix displaying public user list
+  - #67 - Optimize images
+  - #72 - Include position ticks in external sub call
+  - #73 - Fix next episode dialog
 dependencies:
   py2:
     - addon: 'xbmc.python'
