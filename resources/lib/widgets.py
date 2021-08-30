@@ -279,6 +279,12 @@ def get_widget_content(handle, params):
     url_params["Fields"] = "{field_filters}"
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
+    url_verb2 = "{server}/Users/{userid}/Items"
+    url_params2 = {}
+    url_params2["Limit"] = "{ItemLimit}"
+    url_params2["Fields"] = "{field_filters}"
+    url_params2["ImageTypeLimit"] = 1
+    url_params2["IsMissing"] = False
 
     if widget_type == "recent_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -341,12 +347,19 @@ def get_widget_content(handle, params):
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb = "{server}/Shows/NextUp"
-        url_params["Limit"] = "{ItemLimit}"
-        url_params["userid"] = "{userid}"
+        url_verb2 = "{server}/Shows/NextUp"
+        url_params2["Limit"] = "{ItemLimit}"
+        url_params2["userid"] = "{userid}"
+        url_params2["Recursive"] = True
+        url_params2["Fields"] = "{field_filters}"
+        url_params2["ImageTypeLimit"] = 1
         url_params["Recursive"] = True
-        url_params["Fields"] = "{field_filters}"
-        url_params["ImageTypeLimit"] = 1
+        url_params["ParentId"] = "4f54eaa471c63d72342c137359de719d"
+        url_params["SortBy"] = "DatePlayed"
+        url_params["SortOrder"] = "Descending"
+        url_params["Filters"] = "IsResumable"
+        url_params["IsVirtualUnaired"] = False
+        url_params["IncludeItemTypes"] = "Episode"
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
@@ -379,18 +392,30 @@ def get_widget_content(handle, params):
         log.debug("Recommended Items : {0}".format(len(ids), id_list))
         url_params["Ids"] = id_list
 
+    # items_url = get_jellyfin_url(url_verb, url_params)
+    #
+    # list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
+
+    # remove resumable items from next up
+    # if widget_type == "nextup_episodes":
+    #     filtered_list = []
+    #     for item in list_items:
+    #         resume_time = item[1].getProperty("ResumeTime")
+    #         if resume_time is None or float(resume_time) == 0.0:
+    #             filtered_list.append(item)
+    #     list_items = filtered_list
+
     items_url = get_jellyfin_url(url_verb, url_params)
+    items_url2 = get_jellyfin_url(url_verb2, url_params2)
 
     list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
+    list_items2, detected_type, total_records = process_directory(items_url2, None, params, use_cached_widget_data)
 
     # remove resumable items from next up
     if widget_type == "nextup_episodes":
-        filtered_list = []
-        for item in list_items:
-            resume_time = item[1].getProperty("ResumeTime")
-            if resume_time is None or float(resume_time) == 0.0:
-                filtered_list.append(item)
-        list_items = filtered_list
+    #xbmcplugin.addSortMethod(handle, xbmcplugin.SORT_METHOD_LASTPLAYED)
+        for item in list_items2:
+            list_items.append(item)
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
