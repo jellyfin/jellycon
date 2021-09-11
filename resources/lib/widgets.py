@@ -354,7 +354,7 @@ def get_widget_content(handle, params):
         url_params2["Fields"] = "{field_filters}"
         url_params2["ImageTypeLimit"] = 1
         url_params["Recursive"] = True
-        url_params["ParentId"] = "4f54eaa471c63d72342c137359de719d"
+        # url_params["ParentId"] = "xxxxxxxxxxxxxxxxxxxx" # Add a ParrentID here to constrain to a single library
         url_params["SortBy"] = "DatePlayed"
         url_params["SortOrder"] = "Descending"
         url_params["Filters"] = "IsResumable"
