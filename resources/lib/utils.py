@@ -92,7 +92,7 @@ class PlayUtils:
                 playurl = direct_path
                 playback_type = "0"
 
-        # check if file can be direct streamed
+        # check if file can be direct streamed/played
         if (can_direct_stream or can_direct_play) and playurl is None:
             item_id = media_source.get('Id')
             playurl = ("%s/Videos/%s/stream" +
