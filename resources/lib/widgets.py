@@ -77,7 +77,7 @@ def set_background_image(force=False):
 
     if len(background_items) == 0:
         log.debug("set_background_image: Need to load more backgrounds {0} - {1}".format(
-             len(background_items), background_current_item))
+            len(background_items), background_current_item))
 
         url_params = {}
         url_params["Recursive"] = True
@@ -96,7 +96,8 @@ def set_background_image(force=False):
             background_current_item = 0
             background_items = []
             for item in items:
-                bg_image = downloadUtils.get_artwork(item, "Backdrop", server=server)
+                bg_image = downloadUtils.get_artwork(
+                    item, "Backdrop", server=server)
                 if bg_image:
                     label = item.get("Name")
                     item_background = {}
@@ -104,12 +105,14 @@ def set_background_image(force=False):
                     item_background["name"] = label
                     background_items.append(item_background)
 
-        log.debug("set_background_image: Loaded {0} more backgrounds".format(len(background_items)))
+        log.debug("set_background_image: Loaded {0} more backgrounds".format(
+            len(background_items)))
 
     if len(background_items) > 0:
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
-        log.debug("set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
+        log.debug(
+            "set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
 
         background_current_item += 1
         if background_current_item >= len(background_items):
@@ -126,7 +129,8 @@ def check_for_new_content():
 
     home_window = HomeWindow()
     settings = xbmcaddon.Addon()
-    simple_new_content_check = settings.getSetting("simple_new_content_check") == "true"
+    simple_new_content_check = settings.getSetting(
+        "simple_new_content_check") == "true"
 
     if simple_new_content_check:
         log.debug("Using simple new content check")
@@ -202,7 +206,8 @@ def get_widget_content_cast(handle, params):
 
     item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id)
+    result = data_manager.get_content(
+        "{server}/Users/{userid}/Items/" + item_id)
     log.debug("ItemInfo: {0}".format(result))
 
     if not result:
@@ -228,7 +233,8 @@ def get_widget_content_cast(handle, params):
             person_tag = person.get("PrimaryImageTag")
             person_thumbnail = None
             if person_tag:
-                person_thumbnail = downloadUtils.image_url(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                person_thumbnail = downloadUtils.image_url(
+                    person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
             if kodi_version > 17:
                 list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
@@ -264,7 +270,8 @@ def get_widget_content(handle, params):
 
     settings = xbmcaddon.Addon()
     hide_watched = settings.getSetting("hide_watched") == "true"
-    use_cached_widget_data = settings.getSetting("use_cached_widget_data") == "true"
+    use_cached_widget_data = settings.getSetting(
+        "use_cached_widget_data") == "true"
 
     widget_type = params.get("type")
     if widget_type is None:
@@ -367,7 +374,8 @@ def get_widget_content(handle, params):
         suggested_items_url_params["categoryLimit"] = 15
         suggested_items_url_params["ItemLimit"] = 20
         suggested_items_url_params["ImageTypeLimit"] = 0
-        suggested_items_url = get_jellyfin_url("{server}/Movies/Recommendations", suggested_items_url_params)
+        suggested_items_url = get_jellyfin_url(
+            "{server}/Movies/Recommendations", suggested_items_url_params)
 
         data_manager = DataManager()
         suggested_items = data_manager.get_content(suggested_items_url)
@@ -375,7 +383,8 @@ def get_widget_content(handle, params):
         set_id = 0
         while len(ids) < 20 and suggested_items:
             items = suggested_items[set_id]
-            log.debug("BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
+            log.debug(
+                "BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
             item = items[rand]
@@ -392,28 +401,17 @@ def get_widget_content(handle, params):
         log.debug("Recommended Items : {0}".format(len(ids), id_list))
         url_params["Ids"] = id_list
 
-    # items_url = get_jellyfin_url(url_verb, url_params)
-    #
-    # list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
-
-    # remove resumable items from next up
-    # if widget_type == "nextup_episodes":
-    #     filtered_list = []
-    #     for item in list_items:
-    #         resume_time = item[1].getProperty("ResumeTime")
-    #         if resume_time is None or float(resume_time) == 0.0:
-    #             filtered_list.append(item)
-    #     list_items = filtered_list
-
     items_url = get_jellyfin_url(url_verb, url_params)
     items_url2 = get_jellyfin_url(url_verb2, url_params2)
 
-    list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
-    list_items2, detected_type, total_records = process_directory(items_url2, None, params, use_cached_widget_data)
+    list_items, detected_type, total_records = process_directory(
+        items_url, None, params, use_cached_widget_data)
+    list_items2, detected_type, total_records = process_directory(
+        items_url2, None, params, use_cached_widget_data)
 
     # remove resumable items from next up
     if widget_type == "nextup_episodes":
-    #xbmcplugin.addSortMethod(handle, xbmcplugin.SORT_METHOD_LASTPLAYED)
+        #xbmcplugin.addSortMethod(handle, xbmcplugin.SORT_METHOD_LASTPLAYED)
         for item in list_items2:
             list_items.append(item)
 
