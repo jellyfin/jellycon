@@ -349,20 +349,21 @@ def get_widget_content(handle, params):
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
-        nextup_url_verb = "{server}/Shows/NextUp"
-        nextup_url_params = url_params.copy()
-        nextup_url_params["Limit"] = "{ItemLimit}"
-        nextup_url_params["userid"] = "{userid}"
-        nextup_url_params["Recursive"] = True
-        nextup_url_params["ImageTypeLimit"] = 1
+        url_verb = "{server}/Shows/NextUp"
+        url_params = url_params.copy()
+        url_params["Limit"] = "{ItemLimit}"
+        url_params["userid"] = "{userid}"
         url_params["Recursive"] = True
-        # url_params["ParentId"] = "xxxxxxxxxxxxxxxxxxxx" # Add a ParrentID here to constrain to a single library
-        # Simple comment here
-        url_params["SortBy"] = "DatePlayed"
-        url_params["SortOrder"] = "Descending"
-        url_params["Filters"] = "IsResumable"
-        url_params["IsVirtualUnaired"] = False
-        url_params["IncludeItemTypes"] = "Episode"
+        url_params["ImageTypeLimit"] = 1
+        # Collect InProgress items to be combined with NextUp
+        inprogress_url_verb = "{server}/Users/{userid}/Items"
+        inprogress_url_params = url_params.copy()
+        inprogress_url_params["Recursive"] = True
+        inprogress_url_params["SortBy"] = "DatePlayed"
+        inprogress_url_params["SortOrder"] = "Descending"
+        inprogress_url_params["Filters"] = "IsResumable"
+        inprogress_url_params["IsVirtualUnaired"] = False
+        inprogress_url_params["IncludeItemTypes"] = "Episode"
         in_progress = True
 
     elif widget_type == "movie_recommendations":
@@ -399,17 +400,17 @@ def get_widget_content(handle, params):
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
+    inprogress_url = get_jellyfin_url(
+        inprogress_url_verb, inprogress_url_params)
 
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
-    list_items2, detected_type, total_records = process_directory(
-        items_url2, None, params, use_cached_widget_data)
+    list_items_inprogress, detected_type, total_records = process_directory(
+        inprogress_url, None, params, use_cached_widget_data)
 
-    # remove resumable items from next up
+    # Combine In Progress and Next Up Episodes, apend next up after In Progress
     if widget_type == "nextup_episodes":
-        #xbmcplugin.addSortMethod(handle, xbmcplugin.SORT_METHOD_LASTPLAYED)
-        for item in list_items2:
-            list_items.append(item)
+        list_items = list_items_inprogress + list_items
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
