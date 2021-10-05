@@ -286,12 +286,7 @@ def get_widget_content(handle, params):
     url_params["Fields"] = "{field_filters}"
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
-    url_verb2 = "{server}/Users/{userid}/Items"
-    url_params2 = {}
-    url_params2["Limit"] = "{ItemLimit}"
-    url_params2["Fields"] = "{field_filters}"
-    url_params2["ImageTypeLimit"] = 1
-    url_params2["IsMissing"] = False
+    in_progress = False
 
     if widget_type == "recent_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -354,19 +349,21 @@ def get_widget_content(handle, params):
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb2 = "{server}/Shows/NextUp"
-        url_params2["Limit"] = "{ItemLimit}"
-        url_params2["userid"] = "{userid}"
-        url_params2["Recursive"] = True
-        url_params2["Fields"] = "{field_filters}"
-        url_params2["ImageTypeLimit"] = 1
+        nextup_url_verb = "{server}/Shows/NextUp"
+        nextup_url_params = url_params.copy()
+        nextup_url_params["Limit"] = "{ItemLimit}"
+        nextup_url_params["userid"] = "{userid}"
+        nextup_url_params["Recursive"] = True
+        nextup_url_params["ImageTypeLimit"] = 1
         url_params["Recursive"] = True
         # url_params["ParentId"] = "xxxxxxxxxxxxxxxxxxxx" # Add a ParrentID here to constrain to a single library
+        # Simple comment here
         url_params["SortBy"] = "DatePlayed"
         url_params["SortOrder"] = "Descending"
         url_params["Filters"] = "IsResumable"
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
+        in_progress = True
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
@@ -402,7 +399,6 @@ def get_widget_content(handle, params):
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
-    items_url2 = get_jellyfin_url(url_verb2, url_params2)
 
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
