@@ -527,18 +527,18 @@ def __build_label2_from(source):
 
 
 def get_next_episode(item):
-    if item.get("Type", "na") != "Episode":
+    if item.get("Type") != "Episode":
         log.debug("Not an episode, can not get next")
         return None
 
-    parent_id = item.get("ParentId", "na")
-    item_index = item.get("IndexNumber", -1)
+    parent_id = item.get("ParentId")
+    item_index = item.get("IndexNumber")
 
-    if parent_id == "na":
+    if parent_id is None:
         log.debug("No parent id, can not get next")
         return None
 
-    if item_index == -1:
+    if item_index is None:
         log.debug("No episode number, can not get next")
         return None
 
@@ -559,12 +559,11 @@ def get_next_episode(item):
         log.debug("get_next_episode no results")
         return None
 
-    item_list = items_result.get("Items", [])
+    item_list = items_result.get("Items") or []
 
     for item in item_list:
-        index = item.get("IndexNumber", -1)
         # find the very next episode in the season
-        if index == item_index + 1:
+        if item.get("IndexNumber") == item_index + 1:
             log.debug("get_next_episode, found next episode: {0}".format(item))
             return item
 
