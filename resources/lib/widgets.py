@@ -77,7 +77,7 @@ def set_background_image(force=False):
 
     if len(background_items) == 0:
         log.debug("set_background_image: Need to load more backgrounds {0} - {1}".format(
-             len(background_items), background_current_item))
+            len(background_items), background_current_item))
 
         url_params = {}
         url_params["Recursive"] = True
@@ -96,7 +96,8 @@ def set_background_image(force=False):
             background_current_item = 0
             background_items = []
             for item in items:
-                bg_image = downloadUtils.get_artwork(item, "Backdrop", server=server)
+                bg_image = downloadUtils.get_artwork(
+                    item, "Backdrop", server=server)
                 if bg_image:
                     label = item.get("Name")
                     item_background = {}
@@ -104,12 +105,14 @@ def set_background_image(force=False):
                     item_background["name"] = label
                     background_items.append(item_background)
 
-        log.debug("set_background_image: Loaded {0} more backgrounds".format(len(background_items)))
+        log.debug("set_background_image: Loaded {0} more backgrounds".format(
+            len(background_items)))
 
     if len(background_items) > 0:
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
-        log.debug("set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
+        log.debug(
+            "set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
 
         background_current_item += 1
         if background_current_item >= len(background_items):
@@ -126,7 +129,8 @@ def check_for_new_content():
 
     home_window = HomeWindow()
     settings = xbmcaddon.Addon()
-    simple_new_content_check = settings.getSetting("simple_new_content_check") == "true"
+    simple_new_content_check = settings.getSetting(
+        "simple_new_content_check") == "true"
 
     if simple_new_content_check:
         log.debug("Using simple new content check")
@@ -202,7 +206,8 @@ def get_widget_content_cast(handle, params):
 
     item_id = params["id"]
     data_manager = DataManager()
-    result = data_manager.get_content("{server}/Users/{userid}/Items/" + item_id)
+    result = data_manager.get_content(
+        "{server}/Users/{userid}/Items/" + item_id)
     log.debug("ItemInfo: {0}".format(result))
 
     if not result:
@@ -228,7 +233,8 @@ def get_widget_content_cast(handle, params):
             person_tag = person.get("PrimaryImageTag")
             person_thumbnail = None
             if person_tag:
-                person_thumbnail = downloadUtils.image_url(person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                person_thumbnail = downloadUtils.image_url(
+                    person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
             if kodi_version > 17:
                 list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
@@ -264,7 +270,8 @@ def get_widget_content(handle, params):
 
     settings = xbmcaddon.Addon()
     hide_watched = settings.getSetting("hide_watched") == "true"
-    use_cached_widget_data = settings.getSetting("use_cached_widget_data") == "true"
+    use_cached_widget_data = settings.getSetting(
+        "use_cached_widget_data") == "true"
 
     widget_type = params.get("type")
     if widget_type is None:
@@ -279,6 +286,7 @@ def get_widget_content(handle, params):
     url_params["Fields"] = "{field_filters}"
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
+    in_progress = False
 
     if widget_type == "recent_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -342,11 +350,21 @@ def get_widget_content(handle, params):
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
         url_verb = "{server}/Shows/NextUp"
+        url_params = url_params.copy()
         url_params["Limit"] = "{ItemLimit}"
         url_params["userid"] = "{userid}"
         url_params["Recursive"] = True
-        url_params["Fields"] = "{field_filters}"
         url_params["ImageTypeLimit"] = 1
+        # Collect InProgress items to be combined with NextUp
+        inprogress_url_verb = "{server}/Users/{userid}/Items"
+        inprogress_url_params = url_params.copy()
+        inprogress_url_params["Recursive"] = True
+        inprogress_url_params["SortBy"] = "DatePlayed"
+        inprogress_url_params["SortOrder"] = "Descending"
+        inprogress_url_params["Filters"] = "IsResumable"
+        inprogress_url_params["IsVirtualUnaired"] = False
+        inprogress_url_params["IncludeItemTypes"] = "Episode"
+        in_progress = True
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
@@ -354,7 +372,8 @@ def get_widget_content(handle, params):
         suggested_items_url_params["categoryLimit"] = 15
         suggested_items_url_params["ItemLimit"] = 20
         suggested_items_url_params["ImageTypeLimit"] = 0
-        suggested_items_url = get_jellyfin_url("{server}/Movies/Recommendations", suggested_items_url_params)
+        suggested_items_url = get_jellyfin_url(
+            "{server}/Movies/Recommendations", suggested_items_url_params)
 
         data_manager = DataManager()
         suggested_items = data_manager.get_content(suggested_items_url)
@@ -362,7 +381,8 @@ def get_widget_content(handle, params):
         set_id = 0
         while len(ids) < 20 and suggested_items:
             items = suggested_items[set_id]
-            log.debug("BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
+            log.debug(
+                "BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
             item = items[rand]
@@ -380,17 +400,17 @@ def get_widget_content(handle, params):
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
+    inprogress_url = get_jellyfin_url(
+        inprogress_url_verb, inprogress_url_params)
 
-    list_items, detected_type, total_records = process_directory(items_url, None, params, use_cached_widget_data)
+    list_items, detected_type, total_records = process_directory(
+        items_url, None, params, use_cached_widget_data)
+    list_items_inprogress, detected_type, total_records = process_directory(
+        inprogress_url, None, params, use_cached_widget_data)
 
-    # remove resumable items from next up
+    # Combine In Progress and Next Up Episodes, apend next up after In Progress
     if widget_type == "nextup_episodes":
-        filtered_list = []
-        for item in list_items:
-            resume_time = item[1].getProperty("ResumeTime")
-            if resume_time is None or float(resume_time) == 0.0:
-                filtered_list.append(item)
-        list_items = filtered_list
+        list_items = list_items_inprogress + list_items
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
