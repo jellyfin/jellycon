@@ -67,14 +67,14 @@ def zip_files(py_version, source, target):
     '''
     Create installable addon zip archive
     '''
-    archive_name = 'plugin.video.jellyfin+{}.zip'.format(py_version)
+    archive_name = 'plugin.video.jellycon+{}.zip'.format(py_version)
 
     with zipfile.ZipFile('{}/{}'.format(target, archive_name), 'w') as z:
         for root, dirs, files in os.walk(args.source):
             for filename in files:
-                if 'plugin.video.jellyfin' not in filename and 'pyo' not in filename:
+                if 'plugin.video.jellycon' not in filename and 'pyo' not in filename:
                     file_path = os.path.join(root, filename)
-                    relative_path = os.path.join('plugin.video.jellyfin', os.path.relpath(file_path, source))
+                    relative_path = os.path.join('plugin.video.jellycon', os.path.relpath(file_path, source))
                     z.write(file_path, relative_path)
 
 
