@@ -1,2 +1,592 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-11-08 11:41+0000\n"
+"Last-Translator: WWWesten <wwwesten@gmail.com>\n"
+"Language-Team: Esperanto <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/eo/>\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Montri parametrojn de aldonaĵo"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Filmoj - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Filmoj - Ĝenroj"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Enhavo de Laŭmenda Kromprogrameto"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forci transkodadon de mpeg4"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forci transkodadon de mpeg2"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Opcioj de ludada elsendfluo"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Lanĉi de la komenco"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Maksimuma larĝo de video"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP rekta elsendfluo"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Dosiera rekta serĉvojo"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Elektita Servilo-Adreso"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Montri ŝarĝadan progreson"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Salti reen sekundojn"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Uzantnomo ne trovita"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Ebligi sencimigan ĵurnaladon"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Platigi ununuran sezonon"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Montri konektitajn klientojn"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Montrata nomo de aparato"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Ĵurnali tempomezuradan datenon"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Detekti lokan servilon]"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Konfirmi HTTPS-atestilon"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Ludadaj opcioj"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Aŭdiokodeko"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favorataj"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Etikedoj"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Jardekoj"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Jaroj"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Kolektoj"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Agoj de Aldonaĵo"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Laŭmendaj Kromprogrametoj"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Ĝeneralaj Listoj"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Plurmeditekoj de Jellyfin"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Paĝoj"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Detaloj pri uzanto"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Persisti detalojn pri uzanto"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Mane tajpi detalojn pri uzanto"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Detaloj pri Ajo"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Kaŝi detalojn pri nespektitaj epizodoj"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Detaloj pri servilo"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Sistemo -"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Sendante peton"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Sendante peton"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Servila URL-o"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Ĉu forigi pasvorton?"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Ensalutu Mane"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Ĉu savi pasvorton?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Rikordadoj"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programoj"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanaloj"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Ĝenroj"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Daŭrigi aŭtomate"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Konektada Eraro"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Ĉiuj -"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Elekti Filmanoncon"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Ludi Filmanoncon"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Ludado lanĉis"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Ne Trovita"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Ekzistantaj bildoj:"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Staplante Bildojn"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Stapli Bildojn"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Stapli bildojn"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Mankanta Titolo"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Malstarigi Favoritan"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Starigi Favoritan"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Marki Nespektita"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Aĵa Aranĝo"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Ludada tipo"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL-eraro"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Inkluzivi homojn"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Inkluzivi intrigon"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Elekti Uzanton"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Procezante Aĵon:"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Dum daŭrigo"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Ricevante Datenon"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Ŝarĝante Enhavon"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Ĉu konfirmi forigon?"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Malĝusta Uzantnomo/Pasvorto"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Pasvorto por Samba"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Uzantnomo por Samba"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Forigo"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adreso:"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Servoj"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Ludi sekvan"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albumoj"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Ludu Ĉiujn"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Plurmediteko -"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Plej novaj"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Nespektita"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Forci transkodadon"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Marki Spektita"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TV-serioj"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV-serioj"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Transkodaj opcioj"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Elektu Servilon"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etikedo"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Aldonita"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Ordigo"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Rimarko"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interago"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Eventoj"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Ŝanĝi uzanton]"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Sezonoj"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Ĝenro"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Taksado"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Titolo"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Jaro"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Defaŭlte"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Vidoj"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informo"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Kaŝu"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokolo"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Ĉiam"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Neniam"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Persono"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Albumo"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Kanto"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Ekrankurteno"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Ludu"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menuo"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Forigu"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Ĉiuj"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Forigu"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Kolektoj"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Filmoj"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Nekonata"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Serĉu"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Epizodoj"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Filmoj"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Ludado"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Eraro"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Farite"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interfaco"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Pasvorto:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Uzantnomo:"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Aldone"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Pasvorto"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Uzantnomo"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Pordo"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Gastigo"
