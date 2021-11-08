@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-08 19:00+0000\n"
+"PO-Revision-Date: 2021-11-09 04:12+0000\n"
 "Last-Translator: WWWesten <wwwesten@gmail.com>\n"
 "Language-Team: Esperanto <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/eo/>\n"
@@ -702,3 +702,43 @@ msgstr "Elekti Plurmedian Fonton"
 msgctxt "#30304"
 msgid "Cached Jellyfin images : "
 msgstr "Staplitaj Jellyfin-bildoj:"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Nombro de rendimenta profiloj por kapti"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Grupigi filmojn en kolektojn"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Uzi la kuntekstan menuon de JellyCon"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Neniuj Jellyfin-serviloj detektitaj en via loka reto."
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Nombro de aĵoj por montri en filtritaj listoj"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "Montru ludi la sekvan epizodon en la tempo restanta"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Intervalo de staplitaj bildoj, en minutoj (0 = malebligita)"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Intervalo de hazardaj filmoj, en minutoj (0 = malebligita)"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Ĉu vi volas savi la pasvorton?"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Intervalo de kontrolo por nova enhavo (0 = malebligita)"
