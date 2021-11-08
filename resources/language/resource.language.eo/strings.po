@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-08 12:38+0000\n"
+"PO-Revision-Date: 2021-11-08 19:00+0000\n"
 "Last-Translator: WWWesten <wwwesten@gmail.com>\n"
 "Language-Team: Esperanto <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/eo/>\n"
@@ -646,3 +646,59 @@ msgstr "Filmoj - Paĝoj"
 msgctxt "#30259"
 msgid "Movies - Favorites"
 msgstr "Filmoj - Favorataj"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Kontrolante servilan URL-on"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Ricevante datenpaketon"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Iru al Serio"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Ofte Ludita"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Albumaj Artistoj"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Lastatempe Ludita"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Aldoni uzantajn taksadojn"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Akirante Ekzistantajn Bildojn"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Forigante Staplitojn Bildojn"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Filmoj po paĝo"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Iri al Sezono"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Muziko - Albumoj"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Elekti Plurmedian Fonton"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Staplitaj Jellyfin-bildoj:"
