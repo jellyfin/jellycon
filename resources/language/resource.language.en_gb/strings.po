@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JellyCon\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-11-08 11:41+0000\n"
+"PO-Revision-Date: 2021-11-12 19:59+0000\n"
 "Last-Translator: WWWesten <wwwesten@gmail.com>\n"
 "Language-Team: English <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/en/>\n"
@@ -83,7 +83,7 @@ msgstr "Flatten single season"
 
 msgctxt "#30021"
 msgid "Show all episodes item"
-msgstr "Show all episodes item"
+msgstr "Show all episodes"
 
 msgctxt "#30022"
 msgid "Advanced"
@@ -167,7 +167,7 @@ msgstr "Add resume percent to names"
 
 msgctxt "#30120"
 msgid "Show load progress"
-msgstr "Show load progress"
+msgstr "Show the load progress"
 
 msgctxt "#30121"
 msgid "On resume"
@@ -179,7 +179,7 @@ msgstr "Done"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "Processing Item:"
+msgstr "Processing the Item:"
 
 msgctxt "#30135"
 msgid "Error"
@@ -239,7 +239,7 @@ msgstr "Playback"
 
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
-msgstr "Max stream bitrate (Kbits)"
+msgstr "Max stream bitrate (Kbps)"
 
 msgctxt "#30209"
 msgid "File direct path"
@@ -750,7 +750,7 @@ msgstr "Loading existing image list"
 
 msgctxt "#30357"
 msgid "Processing existing image list"
-msgstr "Processing existing image list"
+msgstr "Processing the existing image list"
 
 msgctxt "#30358"
 msgid "Retreiving remote image list"
@@ -790,7 +790,7 @@ msgstr "Manually enter user details"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
-msgstr "Allow fast user switching password saving"
+msgstr "Allow fast saving of the switched user password"
 
 msgctxt "#30368"
 msgid "Clear Password?"
@@ -990,7 +990,7 @@ msgstr "You do not have permision to delete this item"
 
 msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
-msgstr "Audio bitrate (Kbits)"
+msgstr "Audio bitrate (Kbps)"
 
 msgctxt "#30419"
 msgid "Audio codec"
@@ -1010,7 +1010,7 @@ msgstr "Sorting"
 
 msgctxt "#30423"
 msgid "NotSet"
-msgstr "NotSet"
+msgstr "Not Set"
 
 msgctxt "#30424"
 msgid "Default"
@@ -1054,7 +1054,7 @@ msgstr "Allow direct file playback"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
-msgstr "Force transcode stream bitrate (Kbits)"
+msgstr "Force transcode stream bitrate (Kbps)"
 
 msgctxt "#30435"
 msgid "Connection speed test"
