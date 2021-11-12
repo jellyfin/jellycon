@@ -1,2 +1,149 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-11-12 19:59+0000\n"
+"Last-Translator: Moritz <moritz.leick@googlemail.com>\n"
+"Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/de/>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Anzeige des Ladefortschritts"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Sekunden zurückspringen"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Abrufen von Daten"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Laden von Inhalten"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Dienste"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Schnittstelle"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr ""
+"Warnung: Bei dieser Aktion werden die Mediendateien vom Server gelöscht."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Bestätigen Sie das Löschen?"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Warten auf Server zum Löschen"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Löschen"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Benutzername nicht gefunden"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Falscher Benutzername/Passwort"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Debug-Protokollierung einschalten"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Passwort:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Benutzername:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Details zu nicht gesehenen Episoden ausblenden"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Erweiterte"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Einzelne Staffel reduzieren"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Gefiltertes Format für Episodennamen"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Anzahl der Elemente, die in gefilterten Listen angezeigt werden sollen"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Verbundene Clients anzeigen"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Anzeigename des Geräts"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Zeitdaten protokollieren"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Benutzer wechseln]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Lokalen Server ermitteln]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Anzahl der zu erfassenden Leistungsprofile"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba-Passwort"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba-Benutzername"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Passwort"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Benutzername"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "HTTPS-Zertifikat prüfen"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
