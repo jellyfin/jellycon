@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-09 04:12+0000\n"
+"PO-Revision-Date: 2021-11-14 13:05+0000\n"
 "Last-Translator: WWWesten <wwwesten@gmail.com>\n"
 "Language-Team: Esperanto <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/eo/>\n"
@@ -53,15 +53,15 @@ msgstr "HTTP rekta elsendfluo"
 
 msgctxt "#30209"
 msgid "File direct path"
-msgstr "Dosiera rekta serĉvojo"
+msgstr "Rekta serĉvojo al dosiero"
 
 msgctxt "#30167"
 msgid "Selected Server Address"
-msgstr "Elektita Servilo-Adreso"
+msgstr "Adreso de Elektita Servilo"
 
 msgctxt "#30120"
 msgid "Show load progress"
-msgstr "Montri ŝarĝadan progreson"
+msgstr "Montri la ŝarĝadan progreson"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
@@ -725,11 +725,11 @@ msgstr "Nombro de aĵoj por montri en filtritaj listoj"
 
 msgctxt "#30439"
 msgid "Show play next episode at time left"
-msgstr "Montru ludi la sekvan epizodon en la tempo restanta"
+msgstr "Montri ludadon de sekva epizodo en tempo restanta"
 
 msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
-msgstr "Intervalo de staplitaj bildoj, en minutoj (0 = malebligita)"
+msgstr "Intervalo por stapli bildojn, en minutoj (0 = malebligita)"
 
 msgctxt "#30384"
 msgid "Random movies interval minutes (0 = disabled)"
@@ -742,3 +742,346 @@ msgstr "Ĉu vi volas savi la pasvorton?"
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
 msgstr "Intervalo de kontrolo por nova enhavo (0 = malebligita)"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Ekstra Invito Detektita por Daŭrigo"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Procezante liston de ekzistantaj bildoj"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Konstruante plenan liston de bildoj"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Nestarigita"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon bezonas inviti daŭrigon por parteluditaj aĵoj, Kodi ankaŭ povas "
+"inviti, tio povas kaŭzi duoblajn invitojn. Ĉu vi volas forigi la duoblajn "
+"invitojn?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Ne eblas konektiĝi al la URL, kiun vi enigis, ĉu vi volas provi denove?"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Vi ne havas permeson forigi ĉi tiun aĵon"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Ĉu vi volas mane tajpi servilan URL-on?"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Por uzi ĉi tiun funkcion, vi bezonas ebligitan HTTP-kontrolon"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Ĉu vi volas forigi vian savitan pasvorton?"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Ĉu stapli ĉiujn Jellyfin-bildojn kiel lokaj Kodi-bildoj?"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Intervalo de fona ĝisdatigo de bildo (0 = malebligita)"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Permesi rapidan savadon de la ŝanĝita uzanta pasvorto"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Parametroj de Kodi -> Servoj -> Permesi teleregilo per HTTP"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Nombro da bildoj forigitaj el staplo"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Halti plurmedian ludadon ĉe aktivigo de ekrankurteno"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Montri malplenajn dosierujojn (serioj, sezonoj, kolektoj)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Grandeco de datenoj por bitrapida testado (MiB)"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Kaŝi spektitajn aĵojn en listoj"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Muziko - Ĉiuj Albumartistoj"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Stapli datenpetoj de Jellyfin-servilo"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Stapli ilustraĵojn fone"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Malebligi sciigojn pri konektadaj eraroj"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Simpla kontrolo de nova enhavo"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Uzi staplitajn datenojn de kromprogrameto"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Permesi rektan ludadon de dosiero"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Aldoni al Kodi-Ludlisto"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Forigi staplitajn datenojn de servilo"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Ekzistantaj bildoj antaŭ forigo:"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Skanado por lokaj serviloj"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Ricevante liston de foraj bildoj"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Ŝarĝante ekzistantan bildliston"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Muziko - Ofte Ludita"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Muziko - Lastatempe Ludita"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Muziko - Lastatempe Aldonita"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Ŝanĝoj Bezonas Relanĉon de Kodi"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Montri dialogon pri ŝanĝi uzanton"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Ludi kinejajn enkondukojn"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Testi konektan rapidon"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maksimumo de aŭdiokanaloj"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP-templimo, en sekundoj"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Favorataj Kolektoj"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Montri Ĉion"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmoj - Rekomendoj"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Refreŝigi Metadatenarojn de Jellyfin"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Staplitaj dosieroj forigitaj"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Malplenigi Staplan Rezulton"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Neuzataj bildoj forigitaj:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Neuzataj Jellyfin-bildoj:"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Pli ol unu"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Invito por ekstera subteksto"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Ebligi Jellyfin-teleregilon"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TV-serioj - Ĝenroj"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TV-serioj - Plej Novaj"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV-serioj - Nespektitaj"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Epizodoj - Sekva Plue"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Epizodoj - Progresantaj"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Epizodoj - Lastatempe Aldonitaj"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TV-serioj - Favorataj"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Filmoj - Progresantaj"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Filmoj - Lastatempe Aldonitaj"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TV-serioj - A-Z"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Aŭdia bitrapido (Kibit/s)"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maksimuma elsendflua bitrapido (Kibit/s)"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Forci transkodadon de elsendflua bitrapido (Kibit/s)"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Forci transkodadon de msmpeg4v3 (divx)"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Forci transkodadon de h265 (hevc)"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Paĝa Grandeco kaj Filtrado"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Inviti forigon de filmo post %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Inviti antaŭ ludado"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Ludi sekvan epizodon post %"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Inviti forigon de epizodo post %"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Dum halto de ludado (100% = malebligita)"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Video force 8 bitoj"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Ne eblas konektiĝi al servilo"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Inkluzivi informon pri plurmedia elsendfluo"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Aldoni (cc) se subteksto disponeblas"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Neniu Plurmedia Tipo Starigita"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Aldoni daŭrigeblajn procentojn al nomoj"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Aldoni nespektitajn kalkulojn al nomoj"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Averto: Ĉi tiu ago forigos la plurmediajn dosierojn de la servilo."
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Atendante servilon por forigo"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Ago elekti kromprogrametan aĵon"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Montri ĉiujn epizodojn"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Noma formato de filtrita epizodo"
