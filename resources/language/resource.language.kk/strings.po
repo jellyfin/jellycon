@@ -1,2 +1,1091 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-11-14 13:05+0000\n"
+"Last-Translator: WWWesten <wwwesten@gmail.com>\n"
+"Language-Team: Kazakh <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/kk/>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Engızilgen URL mekenjaiyna qosylu mümkın bolmady, äreket qaytalauyn qalaisyz "
+"ba?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Paidalanuşynyñ auystyrylğan parölın jyldam saqtauğa ruqsat etu"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Barlyq Jellyfin suretterın jergılıkti Kodi suretterı retinde keşteuın "
+"qalaisyz ba?"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Būl mümkındıktı paydalanu üşin HTTP arqyly basqarudy qosu qajet"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon ışınara oinatylğan tarmaqtardy jalğastyru üşın şaqyrudy qajet "
+"etedı, Kodi de şaqyru mümkın, būl qos şaqyrudy tudyrmaq. Qos şaqyrudy "
+"alastauyn qalaisyz ba?"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Būl tarmaqty joiuğa ruqsatyñyz joq"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Eskertu: Bul äreket tasyğyşderek faildardy serverden joiady."
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Serverdıñ URL mekenjaiyn qolmen engızudı qalaisyz ba?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Saqtalğan paröldı tazartudy qalaisyz ba?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Paröldı saqtağudy qalaisyz ba?"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Jergılıktı jelıde eşqandai Jellyfin serverlerı anyqtalmady."
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "Qalğan uaqytta kelesı telebölım oinatuyn körsetu"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Keşten alastatylğan suretter sany"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Ekran saqtağyş belsendırılgende tasyğyşderekter oınatudy toqtatu"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Bos qaltalardy körsetu (körsetimder, mausymdar, jiyntyqtar)"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Suretterdı keşteu aralyğy, minutter (0 = ajyratylğan)"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Kezdeisoq filmder aralyğy, minutter (0 = ajyratylğan)"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Jaña mazmūndy tekseru aralyğy (0 = ajyratylğan)"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Fondyq surettı jañartu aralyğy (0 = ajyratylğan)"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Telebölımdi % keiın joiuğa şaqyru"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Filmdı % keiın joiuğa şaqyru"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Oinatudy toqtatqanda (100% = ajyratylğan)"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Subtitr qoljetımdı bolsa (cc) üsteu"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Jyldamdyq synağı derekterınıñ ölşemı (MB)"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Mäjbürlep ağyn qarqynyn qaita kodtauy (Kibit/s)"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Qaralğan tarmaqtardy tızımderde jasyru"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Bar suretter tızımı öñdetude"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Derekter üşın Jellyfin serverı saualdaryn keşteu"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Suretterdı fondyq rejımde keşteu"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Qosylym qatelerı turaly habarlandyrulardy basu"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Kelesi telebölımdi % keiın oinatu"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Ataularğa jalğasudyñ paiyzyn üsteu"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Ataularğa qaralmağandardyñ sanyn üsteu"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Jaña mazmūndy qarapaiym tekseru"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Keştelgen vijet derekterın paidalanu"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Faildy tıkelei oynatuğa ruqsat etu"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Kodi oynatu tızımıne üsteu"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Keştelgen server derekterın tazartu"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Joiuğa deyın bar suretter:"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Jergılıktı serverler üşın skanerleu"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Paydalanuşy egjeilerın qolmen engızu"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Suretterdıñ tolyq tızımın quru"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Qaşyqtağy suretter tızımı şyğaryluda"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Bar suretter tızımı jüktelude"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Özgerıster Kodi qayta ıske qosudy talap etedı"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "JellyCon mänmätındık mäzırın paydalanu"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Paidalanuşyny auystyru tılqatysuyn körsetu"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Jellyfin qaşyqtan basqaruyn qosu"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Jalğastyru Üşin Qosymşa Şaqyru Anyqtaldy"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Mäjbürlep msmpeg4v3 (divx) qaita kodtauy"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Mäjbürlep h265 (hevc) qaita kodtauy"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Bet ölşemı jäne süzu"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Beine mäjbürleude 8 bit"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Ağyn qarqynyñ eñ köbı (Kibit/s)"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Tasyğyşderekter ağyny turaly aqpardy qosu"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Tasyğyşderekter türı ornatylmağan"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Kinoteatrdyq kırıspelerdı oinatu"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Qosılym jyldamdyğynyñ synağy"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Dubys qarqyny (Kibit/s)"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP kütu uaqyty, sekundtar"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Jellyfin metaderekterın jañğyrtu"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Keştelgen faildar joiylğan"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Keş nätijesın tazartu"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Paidalanylmağan suretter alastalğandar:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Paidalanylmağan Jellyfin suretterı:"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Bıreuden artyq"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Syrtqy subtitrler şaqyruy"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Paidalanuşy egjeilerın tūraqtandyru"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Serverdıñ URL-mekenjaiy tekserılude"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Derekter destesin qabyldauda"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Paidalanuşy bağalauyn üsteu"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Bar suretterdı aluda"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Keştelgen suretter joiyluda"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Tasyğyşderekter közın tañdau"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Keştelgen Jellyfin suretterı:"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Kelesı telebölım oinalsyn ba?"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Keştelgen surertterdı jañğyrtu"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Qondyrma parametrlerın körsetu"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Teñşeletın vijet mazmūny"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Mäjbürlep mpeg4 qaita kodtauy"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Mäjbürlep mpeg2 qaita kodtauy"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Oinatu ağynynyñ opsialary"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Basynan bastau"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Beinenıñ eñ köp enı"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP tikelei ağyny"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Faildyñ tıkelei joly"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Tañdalğan serverdıñ mekenjaiy"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Jükteu barysyn körsetu"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Sekundtar artqa ötu"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Ornatylmağan"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Paidalanuşy egjeilerı"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Server egjeilerı"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Saual jıberılude"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Saual jıberılude"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Paröl tazartylsyn ba?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Paröl saqtalsyn ba?"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Avtomatty jalğastyru"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Qosylym qatesı"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Treilerdı tañdau"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Tabylmady"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Bar suretter:"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Suretterdi keşteude"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Suretterdi keşteu"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Suretterdi keşteu"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Joq atau"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Tañdauly ornatpau"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Tañdauly ornatu"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Tarmaq ornalastyruy"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Tarmaq egjeileri"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Adamdaryn kırıstıru"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Bastamasyn kırıstıru"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Tarmaqty öñdeu:"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Tañdauly jiyntyqtar"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Qondyrma äreketterı"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Barlyğyn körsetu"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmder - Usynystar"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi parametrlerı->Qyzmetter->HTTP arqyly qaşyqtan basqaruğa ruqsat etu"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Muzyka - Barlyq Älbom oryndauşylary"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Muzyka - Jiı oinatylğan"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Muzyka - Juyqta oinatylğan"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Muzyka - Juyqta üstelgen"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Bärı -"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TD-körsetımder - Janrlar"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TD-körsetimder - Eñ keiıngi"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TD-körsetımder - Qaralmağan"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Telebölimder - Kezektı"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Juyqta üstelgender"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Filmder - Better"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Telebölimder - Oryndaluda"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Telebölimder - Juyqta üstelgender"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TD-körsetımder - Tañdaulylar"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Filmder - Tañdaulylar"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Filmder - Oryndaluda"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Filmder - Juyqta üstelgender"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TD-körsetımder - A-Z"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Filmder - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Filmder ‐ Janrlar"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Oinatu aldynda şaqyru"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Älbom oryndauşylary"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Är bettegı film sany"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Mausymğa ötu"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Muzyka - Älbomdar"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Jellyfin suretterı joq:"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Kodi suretterı joiyluda"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Paidalanylmağan suretter joiylsyn ba?"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Subtitr ağynyn tañdau"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Dybys ağynyn tañdau"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Filmder - Qaralmağan"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Filmder - Kezdeisoq"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Joiudy serverden kütude"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Vijet tarmağyn tañdau äreketı"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Qaralmağan telebölım egjeilerın jasyru"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Barlyq telebölımderdı körsetu"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Jalğyz mausymdy tegısteu"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Süzgılengen telebölımnıñ atau pışımı"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Süzgılengen tızımderde körsetıletın tarmaqtar sany"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Qosylğan tūtynğyştardy körsetu"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Qūrylğynyñ beinelenetın aty"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Uaqyt ölşeu derekterın jūrnaldau"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Jergılıktı serverdı anyqtau]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Tüsıru üşın önımdılık profailderınıñ sany"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "HTTPS kuälıgın rastau"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Paydalanuşyny tañdau"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Jalğastyrğan kezde"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Derekter alynuda"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Mazmūn jüktelude"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba parölı"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba paidalanuşy aty"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Paidalanuşy aty tabylmady"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Küikeltırudıñ jūrnaldauyn qosu"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Oinatu opsialary"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Teñşeletın vijetter"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Ğalamdyq tızımder"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfin tasyğyşhanalary"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Serverlık URL"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Arnalar"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Oinatu bastaldy"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Qaita kodtaudy mäjbürleu"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Oinaty türi"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL qatesı"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Serverge qosylu mümkın emes"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Filmderdı jiyntyqtar ışıne toptastyru"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Dybys arnalarynyñ eñ köbı"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Telehikaiağa ötu"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Jiı oinatylğandar"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Juyqta oinatylğan"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Kezektı"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Oryndaluda"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Kelesını oinatu"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Dybystyq kodek"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Tañdaulylar"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tegder"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Onjyldyqtar"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Jyldar"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Jiyntyqtar"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Better"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Jüie -"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Qolmen kıru"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Jazbalar"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Berılımder"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Janrlar"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Älbomdar"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Bärın oinatu"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Tasyğyşhana -"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Treilerdı oinatu"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Eñ keiıngı"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Qaralmağan"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Qaralmağan"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Qaralğan"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TD-körsetımder"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TD-körsetımder"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Qaita kodtau opsialary"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Serverdı tañdau"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Joiu rastalsyn ba?"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Qate paidalanuşy aty/paröl"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Paidalanuşyny auystyru]"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Mausymdar"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Belgı"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Janr"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Bağalau"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Üstelgen"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Atauy"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Jyl"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Ädepkı"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Sūryptau"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Körınıster"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Aqpar"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Jasyru"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Äldeqaşan"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Eşqaşan"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Tūlğa"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Älbom"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Äuen"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Ekran qorğauyş"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Oinatu"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Mäzır"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Joiu"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Eskertu"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Bärı"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Joiu"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Jiyntyqtar"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Filmder"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Belgısız"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "İzdeu"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Telebölımder"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Filmder"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Ärekettesu"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Oqiğalar"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Oinatu"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Mekenjai:"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Qate"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Daiyn"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Qyzmetter"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "İnterfeis"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Q/J"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Joiu"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Paröl:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Paidalanuşy aty:"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Keñeitılgen"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Paröl"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Paidalanuşy aty"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Порт"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Tüiın"
