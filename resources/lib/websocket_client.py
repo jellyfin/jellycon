@@ -6,6 +6,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import json
 import threading
 import websocket
+import time
 
 import xbmc
 import xbmcgui
@@ -227,9 +228,6 @@ class WebSocketClient(threading.Thread):
             if command in builtin:
                 xbmc.executebuiltin(builtin[command])
 
-    def on_close(self, ws):
-        log.debug("Closed")
-
     def on_open(self, ws):
         log.debug("Connected")
         self.post_capabilities()
@@ -260,15 +258,16 @@ class WebSocketClient(threading.Thread):
 
         self._client = websocket.WebSocketApp(
             websocket_url,
-            on_open=lambda ws, message: self.on_open(ws),
+            on_open=lambda ws: self.on_open(ws),
             on_message=lambda ws, message: self.on_message(ws, message),
-            on_error=lambda ws, error: self.on_error(ws, error),
-            on_close=lambda ws, error: self.on_close(ws))
+            on_error=lambda ws, error: self.on_error(ws, error))
 
         log.debug("Starting WebSocketClient")
 
+        retry_count = 0
         while not self.monitor.abortRequested():
 
+            time.sleep(retry_count * 5)
             self._client.run_forever(ping_interval=10)
 
             if self._stop_websocket:
@@ -278,6 +277,8 @@ class WebSocketClient(threading.Thread):
                 # Abort was requested, exit
                 break
 
+            if retry_count < 12:
+                retry_count += 1
             log.debug("Reconnecting WebSocket")
 
         log.debug("WebSocketClient Stopped")
