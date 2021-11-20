@@ -1,2 +1,164 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-11-21 19:05+0000\n"
+"Last-Translator: Alfonso Scarpino <alfonso.scarpino@gmail.com>\n"
+"Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/it/>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Mostra avanzamento del caricamento"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Aggiungi percentuale guardata ai nomi"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Aggiungi il contatore non guardati ai nomi"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Recupero dati in corso"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Caricamento contenuto in corso"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Servizi"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interfaccia"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Attenzione: questa operazione eliminerà i file multimediali dal server."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Confermi l'eliminazione?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/D"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "In attesa di eliminazione sul server"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Eliminazione in corso"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Nome utente sconosciuto"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Nome utente/Password errati"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Attiva log a debug"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Azione di selezione elemento widget"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Password:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Nome utente:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Nascondi dettagli episodi non guardati"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Avanzate"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Mostra elemento tutti gli episodi"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Appiattisci stagione unica"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Formato nome episodio filtrato"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Numero di elementi da mostrare nelle liste filtrate"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Mostra client connessi"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Nome dispositivo visualizzato"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Dati di temporizzazione dei log"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Cambia utente]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Rileva server locale]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Numero di profili di performance da acquisire"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Password Samba"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Nome utente Samba"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Password"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Nome utente"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifica certificato HTTPS"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Porta"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
