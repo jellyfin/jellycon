@@ -6,6 +6,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import json
 import threading
 import websocket
+import time
 
 import xbmc
 import xbmcgui
@@ -32,6 +33,7 @@ class WebSocketClient(threading.Thread):
 
         self.__dict__ = self._shared_state
         self.monitor = xbmc.Monitor()
+        self.retry_count = 0
 
         self.client_info = clientinfo.ClientInformation()
         self.device_id = self.client_info.get_device_id()
@@ -227,11 +229,9 @@ class WebSocketClient(threading.Thread):
             if command in builtin:
                 xbmc.executebuiltin(builtin[command])
 
-    def on_close(self, ws):
-        log.debug("Closed")
-
     def on_open(self, ws):
         log.debug("Connected")
+        self.retry_count = 0
         self.post_capabilities()
 
     def on_error(self, ws, error):
@@ -250,25 +250,25 @@ class WebSocketClient(threading.Thread):
 
         # Get the appropriate prefix for the websocket
         server = download_utils.get_server()
-        if "https" in server:
-            server = server.replace('https', "wss")
+        if "https://" in server:
+            server = server.replace('https://', 'wss://')
         else:
-            server = server.replace('http', "ws")
+            server = server.replace('http://', 'ws://')
 
         websocket_url = "%s/socket?api_key=%s&deviceId=%s" % (server, token, self.device_id)
         log.debug("websocket url: {0}".format(websocket_url))
 
         self._client = websocket.WebSocketApp(
             websocket_url,
-            on_open=lambda ws, message: self.on_open(ws),
+            on_open=lambda ws: self.on_open(ws),
             on_message=lambda ws, message: self.on_message(ws, message),
-            on_error=lambda ws, error: self.on_error(ws, error),
-            on_close=lambda ws, error: self.on_close(ws))
+            on_error=lambda ws, error: self.on_error(ws, error))
 
         log.debug("Starting WebSocketClient")
 
         while not self.monitor.abortRequested():
 
+            time.sleep(self.retry_count * 5)
             self._client.run_forever(ping_interval=10)
 
             if self._stop_websocket:
@@ -278,6 +278,8 @@ class WebSocketClient(threading.Thread):
                 # Abort was requested, exit
                 break
 
+            if self.retry_count < 12:
+                self.retry_count += 1
             log.debug("Reconnecting WebSocket")
 
         log.debug("WebSocketClient Stopped")
