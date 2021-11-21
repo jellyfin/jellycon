@@ -406,16 +406,18 @@ def get_widget_content(handle, params):
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
-    inprogress_url = get_jellyfin_url(
-        inprogress_url_verb, inprogress_url_params)
 
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
-    list_items_inprogress, detected_type, total_records = process_directory(
-        inprogress_url, None, params, use_cached_widget_data)
 
     # Combine In Progress and Next Up Episodes, apend next up after In Progress
     if widget_type == "nextup_episodes":
+        inprogress_url = get_jellyfin_url(
+            inprogress_url_verb, inprogress_url_params)
+
+        list_items_inprogress, detected_type, total_records = process_directory(
+            inprogress_url, None, params, use_cached_widget_data)
+
         list_items = list_items_inprogress + list_items
 
     if detected_type is not None:
