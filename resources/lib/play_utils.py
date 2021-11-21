@@ -882,13 +882,14 @@ def send_progress():
     player = xbmc.Player()
     play_time = player.getTime()
     total_play_time = player.getTotalTime()
-    play_data["currentPossition"] = play_time
+    play_data["current_position"] = play_time
     play_data["duration"] = total_play_time
     play_data["currently_playing"] = True
 
     item_id = play_data.get("item_id")
     if item_id is None:
         return
+    home_window.set_property('now_playing', json.dumps(play_data))
 
     source_id = play_data.get("source_id")
 
@@ -941,7 +942,7 @@ def prompt_for_stop_actions(item_id, data):
     log.debug("prompt_for_stop_actions Called : {0}".format(data))
 
     settings = xbmcaddon.Addon()
-    current_position = data.get("currentPossition", 0)
+    current_position = data.get("current_position", 0)
     duration = data.get("duration", 0)
     # media_source_id = data.get("source_id")
     next_episode = data.get("next_episode")
@@ -1009,17 +1010,17 @@ def stop_all_playback(played_information):
         return
 
     log.debug("played_information: {0}".format(played_information))
+    clear_entries = []
 
     home_screen = HomeWindow()
     home_screen.clear_property("currently_playing_id")
 
-    for item_url in played_information:
-        data = played_information.get(item_url)
+    for item in played_information:
+        data = played_information.get(item)
         if data.get("currently_playing", False) is True:
-            log.debug("item_url: {0}".format(item_url))
             log.debug("item_data: {0}".format(data))
 
-            current_position = data.get("currentPossition", 0)
+            current_position = data.get("current_position", 0)
             duration = data.get("duration", 0)
             jellyfin_item_id = data.get("item_id")
             jellyfin_source_id = data.get("source_id")
@@ -1042,10 +1043,15 @@ def stop_all_playback(played_information):
                 if data.get("play_action_type", "") == "play":
                     prompt_for_stop_actions(jellyfin_item_id, data)
 
+                clear_entries.append(item)
+
             if data.get('playback_type') == 'Transcode':
                 device_id = ClientInformation().get_device_id()
                 url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
                 download_utils.download_url(url, method="DELETE")
+
+    for entry in clear_entries:
+        del played_information[entry]
 
 
 def get_playing_data():
@@ -1098,6 +1104,7 @@ class Service(xbmc.Player):
         if jellyfin_item_id is None:
             return
 
+        self.played_information[jellyfin_item_id] = play_data
         log.debug("Sending Playback Started")
         postdata = {
             'QueueableMediaTypes': "Video",
