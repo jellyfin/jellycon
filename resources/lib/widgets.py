@@ -298,6 +298,7 @@ def get_widget_content(handle, params):
             url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Movie"
+        url_params["Limit"] = 20
 
     elif widget_type == "inprogress_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -307,6 +308,7 @@ def get_widget_content(handle, params):
         url_params["Filters"] = "IsResumable"
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Movie"
+        url_params["Limit"] = 20
 
     elif widget_type == "random_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -326,6 +328,7 @@ def get_widget_content(handle, params):
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
         url_params["ImageTypeLimit"] = 1
+        url_params["Limit"] = 20
 
     elif widget_type == "recent_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -337,6 +340,7 @@ def get_widget_content(handle, params):
             url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
+        url_params["Limit"] = 20
 
     elif widget_type == "inprogress_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -346,6 +350,7 @@ def get_widget_content(handle, params):
         url_params["Filters"] = "IsResumable"
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
+        url_params["Limit"] = 20
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -364,6 +369,7 @@ def get_widget_content(handle, params):
         inprogress_url_params["Filters"] = "IsResumable"
         inprogress_url_params["IsVirtualUnaired"] = False
         inprogress_url_params["IncludeItemTypes"] = "Episode"
+        inprogres_surl_params["Limit"] = 20
         in_progress = True
 
     elif widget_type == "movie_recommendations":

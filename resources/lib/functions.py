@@ -1,7 +1,7 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-from six.moves.urllib.parse import quote, unquote
+from six.moves.urllib.parse import quote, unquote, parse_qsl
 import sys
 import os
 import time
@@ -69,7 +69,7 @@ def main_entry_point():
     log.debug("Script argument data: {0}".format(sys.argv))
 
     params = get_params()
-    log.debug("Script params: {0}".format(params))
+    log.info("Script params: {0}".format(params))
 
     request_path = params.get("request_path", None)
     param_url = params.get('url', None)
@@ -321,6 +321,9 @@ def delete(item_id):
 
 
 def get_params():
+    '''
+    Retrieve the request data from Kodi
+    '''
 
     plugin_path = sys.argv[0]
     paramstring = sys.argv[2]
@@ -328,26 +331,11 @@ def get_params():
     log.debug("Parameter string: {0}".format(paramstring))
     log.debug("Plugin Path string: {0}".format(plugin_path))
 
-    param = {}
+    param = dict(parse_qsl(paramstring[1:]))
 
     # add plugin path
     request_path = plugin_path.replace("plugin://plugin.video.jellycon", "")
     param["request_path"] = request_path
-
-    if len(paramstring) >= 2:
-        if paramstring[0] == "?":
-            paramstring = paramstring[1:]
-
-        if paramstring[len(paramstring) - 1] == '/':
-            paramstring = paramstring[0:len(paramstring) - 2]
-
-        pairsofparams = paramstring.split('&')
-        for i in range(len(pairsofparams)):
-            splitparams = pairsofparams[i].split('=')
-            if (len(splitparams)) == 2:
-                param[splitparams[0]] = splitparams[1]
-            elif (len(splitparams)) == 3:
-                param[splitparams[0]] = splitparams[1] + "=" + splitparams[2]
 
     log.debug("JellyCon -> Detected parameters: {0}".format(param))
     return param
