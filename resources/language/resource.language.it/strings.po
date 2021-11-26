@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-21 19:05+0000\n"
+"PO-Revision-Date: 2021-11-27 16:05+0000\n"
 "Last-Translator: Alfonso Scarpino <alfonso.scarpino@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
@@ -162,3 +162,67 @@ msgstr "Porta"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Host"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Riproduzione"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Tipo riproduzione"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Impossibile connettersi al server"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Errore URL"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Includi persone"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Includi info flusso multimediale"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Includi trama"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Seleziona Utente"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Indirizzo:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Indirizzo server selezionato"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Seleziona Server"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Aggiungi (cc) se sono disponibili i sottotitoli"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Nessun formato media impostato"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Errore"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Elaborazione Elemento:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Finito"
