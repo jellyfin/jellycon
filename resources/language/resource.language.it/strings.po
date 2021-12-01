@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-27 16:05+0000\n"
+"PO-Revision-Date: 2021-12-02 18:05+0000\n"
 "Last-Translator: Alfonso Scarpino <alfonso.scarpino@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
@@ -226,3 +226,203 @@ msgstr "Elaborazione Elemento:"
 msgctxt "#30125"
 msgid "Done"
 msgstr "Finito"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Forza transcodifica"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Elimina"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Rimuovi dai preferiti"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Aggiungi ai preferiti"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Segna come non guardato"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Segna come guardato"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Film - Casuale"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Aggiunti di recente"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- In corso"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Film - Pagine"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Episodi - Prossimo"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Episodi - In corso"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Episodi - Aggiunti di recente"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Serie TV - Preferiti"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Serie TV"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Collezioni"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Film - Preferiti"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Film - In corso"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Film - Aggiunti di recente"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Serie TV - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Mostra impostazioni add-on"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Film - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Film - Generi"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Contenuto personalizzato widget"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Cerca"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forza transcodifica mpeg4"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Forza transcodifica msmpeg4v3 (divx)"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forza transcodifica mpeg2"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Opzioni di riproduzione flusso"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Ricomincia dall'inizio"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Forza transcodifica h265 (hevc)"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Episodi"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Serie TV"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interazione"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Dimensione pagina e filtri"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Disposizione elemento"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Chiedi se eliminare il film dopo %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Chiedi prima di riprodurre"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Riproduci il prossimo episodio dopo %"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Chiedi se eliminare l'episodio dopo %"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Dettagli elemento"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Eventi"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Larghezza massima video"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Opzioni di transcodifica"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Flusso diretto HTTP"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Percorso diretto del file"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Bitrate massimo del flusso (Kbits)"
