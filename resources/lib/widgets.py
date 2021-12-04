@@ -369,7 +369,7 @@ def get_widget_content(handle, params):
         inprogress_url_params["Filters"] = "IsResumable"
         inprogress_url_params["IsVirtualUnaired"] = False
         inprogress_url_params["IncludeItemTypes"] = "Episode"
-        inprogres_surl_params["Limit"] = 20
+        inprogress_url_params["Limit"] = 20
         in_progress = True
 
     elif widget_type == "movie_recommendations":

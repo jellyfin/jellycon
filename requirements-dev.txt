@@ -1,1 +1,16 @@
 pyyaml
+setuptools >= 44.1.1  # Old setuptools causes script.module.addon.signals to fail installing
+six >= 1.13
+python-dateutil >= 2.8.1
+requests >= 2.22
+futures >= 2.2; python_version < '3.0'
+
+Kodistubs ~= 18.0; python_version < '3.0'
+Kodistubs ~= 19.0; python_version >= '3.6'
+
+git+https://github.com/romanvm/kodi.six
+git+https://github.com/ruuk/script.module.addon.signals
+
+flake8 >= 3.8
+flake8-import-order >= 0.18
+websocket-client >= 0.57.0
