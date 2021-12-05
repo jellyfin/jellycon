@@ -284,12 +284,6 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def double_urlencode(text):
-    text = single_urlencode(text)
-    text = single_urlencode(text)
-    return text
-
-
 def single_urlencode(text):
     # urlencode needs a utf- string
     text = urlencode({'blahblahblah': text.encode('utf-8')})
