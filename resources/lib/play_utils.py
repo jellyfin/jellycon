@@ -886,7 +886,6 @@ def send_progress():
     log.debug("Sending Progress Update")
 
     player = xbmc.Player()
-    playing_file = player.getPlayingFile()
     item_id = play_data.get("item_id")
 
     if item_id is None:
@@ -1089,8 +1088,8 @@ def get_playing_data():
             home_window.set_property('now_playing', json.dumps(play_data))
             home_window.set_property('playlist', json.dumps(playlist_data))
             return play_data
-    else:
-        return {}
+
+    return {}
 
 
 class Service(xbmc.Player):
