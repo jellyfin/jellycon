@@ -19,7 +19,7 @@ from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .translation import string_load
 from .datamanager import DataManager
-from .utils import get_art, double_urlencode
+from .utils import get_art
 from .kodi_utils import HomeWindow
 
 downloadUtils = DownloadUtils()
@@ -326,8 +326,7 @@ class CacheArtwork(threading.Thread):
 
         count_done = 0
         for index, get_url in enumerate(missing_texture_urls, 1):
-            url = double_urlencode(get_url)
-            kodi_texture_url = ("/image/image://%s" % url)
+            kodi_texture_url = "/image/image://{0}".format(get_url)
             log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
 
             percentage = int((float(index) / float(total)) * 100)
