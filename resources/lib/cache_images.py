@@ -326,7 +326,7 @@ class CacheArtwork(threading.Thread):
 
         count_done = 0
         for index, get_url in enumerate(missing_texture_urls, 1):
-            kodi_texture_url = ("/image/image://%s" % get_url)
+            kodi_texture_url = "/image/image://{0}".format(get_url)
             log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
 
             percentage = int((float(index) / float(total)) * 100)
