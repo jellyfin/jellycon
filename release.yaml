@@ -1,8 +1,29 @@
-version: '0.4.4'
-changelog: |
-  - #67 - Optimize images
-  - #72 - Include position ticks in external sub call
-  - #73 - Fix next episode dialog
+version: '0.4.5'
+changelog: |-
+  New features and improvements
+  -----------------------------
+  + Attempt to reestablish websocket connection if it fails (#93) @mcarlton00
+  + Combine NextUp and InProgress (#82) @Ozymandyaz
+
+  Bug Fixes
+  ---------
+  + Report tracks correctly when a playlist is playing (#102) @mcarlton00
+  + Fix image caching (#101) @mcarlton00
+  + Properly report stopped playback to the server (#95) @mcarlton00
+  + Make API calls respect limits indicated in UI (#90) @mcarlton00
+  + Fix #87 (#88) @oddstr13
+  + Fix direct play logic for 10.8 (#84) @mcarlton00
+
+  Code or Repo Maintenance
+  ------------------------
+  + Move inprogress call into relevant if block (#91) @mcarlton00
+  + Disable screensaver settings by default (#85) @mcarlton00
+
+  CI & build changes
+  ------------------
+  + Ci dependencies (#100) @mcarlton00
+  + Migrate CI to github actions (#96) @mcarlton00
+  + Correct addon name in build.py (#89) @mcarlton00
 dependencies:
   py2:
     - addon: 'xbmc.python'
