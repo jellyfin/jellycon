@@ -37,6 +37,8 @@ def play_all_files(items, play_items=True):
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
 
+    playlist_data = {}
+
     for item in items:
 
         item_id = item.get("Id")
@@ -84,13 +86,17 @@ def play_all_files(items, play_items=True):
         list_item = xbmcgui.ListItem(label=item_title)
 
         # add playurl and data to the monitor
-        data = {}
-        data["item_id"] = item_id
-        data["source_id"] = source_id
-        data["playback_type"] = playback_type_string
-        data["play_session_id"] = play_session_id
-        data["play_action_type"] = "play_all"
-        home_window.set_property('now_playing', json.dumps(data))
+        playlist_data[playurl] = {}
+        playlist_data[playurl]["item_id"] = item_id
+        playlist_data[playurl]["source_id"] = source_id
+        playlist_data[playurl]["playback_type"] = playback_type_string
+        playlist_data[playurl]["play_session_id"] = play_session_id
+        playlist_data[playurl]["play_action_type"] = "play_all"
+        home_window.set_property('playlist', json.dumps(playlist_data))
+
+        # Set now_playing to the first track
+        if len(playlist_data) == 1:
+            home_window.set_property('now_playing', json.dumps(playlist_data[playurl]))
 
         list_item.setPath(playurl)
         list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
@@ -880,15 +886,17 @@ def send_progress():
     log.debug("Sending Progress Update")
 
     player = xbmc.Player()
+    item_id = play_data.get("item_id")
+
+    if item_id is None:
+        return
+
     play_time = player.getTime()
     total_play_time = player.getTotalTime()
     play_data["current_position"] = play_time
     play_data["duration"] = total_play_time
     play_data["currently_playing"] = True
 
-    item_id = play_data.get("item_id")
-    if item_id is None:
-        return
     home_window.set_property('now_playing', json.dumps(play_data))
 
     source_id = play_data.get("source_id")
@@ -1058,6 +1066,9 @@ def get_playing_data():
     home_window = HomeWindow()
     play_data_string = home_window.get_property('now_playing')
     play_data = json.loads(play_data_string)
+    playlist_data_string = home_window.get_property('playlist')
+    playlist_data = json.loads(playlist_data_string)
+    item_id = play_data.get("item_id")
 
     settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
@@ -1068,9 +1079,17 @@ def get_playing_data():
         return None
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
     if server in playing_file:
-        return play_data
-    else:
-        return {}
+        if item_id is not None and item_id in playing_file:
+            return play_data
+        elif item_id is not None and item_id not in playing_file and playing_file in playlist_data:
+            # if the current now_playing data isn't correct, pull it from the playlist_data
+            play_data = playlist_data.pop(playing_file)
+            # Update now_playing data
+            home_window.set_property('now_playing', json.dumps(play_data))
+            home_window.set_property('playlist', json.dumps(playlist_data))
+            return play_data
+
+    return {}
 
 
 class Service(xbmc.Player):
