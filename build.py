@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
 import argparse
-from datetime import datetime
 import os
-from pathlib import Path
 import xml.etree.ElementTree as ET
 import zipfile
+from datetime import datetime
+from pathlib import Path
 
 import yaml
 
 
-def indent(elem, level=0):
-    '''
+def indent(elem: ET.Element, level: int = 0) -> None:
+    """
     Nicely formats output xml with newlines and spaces
     https://stackoverflow.com/a/33956544
-    '''
-    i = "\n" + level*"  "
+    """
+    i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():
             elem.text = i + "  "
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
         for elem in elem:
-            indent(elem, level+1)
+            indent(elem, level + 1)
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
     else:
@@ -30,10 +30,10 @@ def indent(elem, level=0):
             elem.tail = i
 
 
-def create_addon_xml(config, source, py_version):
-    '''
+def create_addon_xml(config: dict, source: str, py_version: str) -> None:
+    """
     Create addon.xml from template file
-    '''
+    """
     # Load template file
     with open('{}/.config/template.xml'.format(source), 'r') as f:
         tree = ET.parse(f)
@@ -63,19 +63,52 @@ def create_addon_xml(config, source, py_version):
     tree.write('{}/addon.xml'.format(source), encoding='utf-8', xml_declaration=True)
 
 
-def zip_files(py_version, source, target):
-    '''
+def zip_files(py_version: str, source: str, target: str, dev: bool) -> None:
+    """
     Create installable addon zip archive
-    '''
+    """
     archive_name = 'plugin.video.jellycon+{}.zip'.format(py_version)
 
     with zipfile.ZipFile('{}/{}'.format(target, archive_name), 'w') as z:
         for root, dirs, files in os.walk(args.source):
-            for filename in files:
-                if 'plugin.video.jellycon' not in filename and 'pyo' not in filename:
-                    file_path = os.path.join(root, filename)
+            for filename in filter(file_filter, files):
+                file_path = os.path.join(root, filename)
+                if dev or folder_filter(file_path):
                     relative_path = os.path.join('plugin.video.jellycon', os.path.relpath(file_path, source))
                     z.write(file_path, relative_path)
+
+
+def file_filter(file_name: str) -> bool:
+    """
+    True if file_name is meant to be included
+    """
+    return (
+        not (file_name.startswith('plugin.video.jellycon') and file_name.endswith('.zip'))
+        and not file_name.endswith('.pyo')
+        and not file_name.endswith('.pyc')
+        and not file_name.endswith('.pyd')
+    )
+
+
+def folder_filter(folder_name: str) -> bool:
+    """
+    True if folder_name is meant to be included
+    """
+    filters = [
+        '.ci',
+        '.git',
+        '.github',
+        '.config',
+        '.mypy_cache',
+        '.pytest_cache',
+        '__pycache__',
+    ]
+    for f in filters:
+        if f in folder_name.split(os.path.sep):
+            return False
+
+    return True
+
 
 
 if __name__ == '__main__':
@@ -96,13 +129,16 @@ if __name__ == '__main__':
         type=Path,
         default=Path(__file__).absolute().parent)
 
+    parser.add_argument('--dev', dest='dev', action='store_true')
+    parser.set_defaults(dev=False)
+
     args = parser.parse_args()
 
     # Load config file
     config_path = os.path.join(args.source, 'release.yaml')
     with open(config_path, 'r') as fh:
-        config = yaml.safe_load(fh)
+        release_config = yaml.safe_load(fh)
 
-    create_addon_xml(config, args.source, args.version)
+    create_addon_xml(release_config, args.source, args.version)
 
-    zip_files(args.version, args.source, args.target)
+    zip_files(args.version, args.source, args.target, args.dev)
