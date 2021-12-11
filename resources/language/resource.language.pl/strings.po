@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-23 03:05+0000\n"
+"PO-Revision-Date: 2021-12-13 17:05+0000\n"
 "Last-Translator: Marcin Woliński <cierdek@gmail.com>\n"
 "Language-Team: Polish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/pl/>\n"
@@ -659,3 +659,433 @@ msgstr "Zweryfikuj certyfikat HTTPS"
 msgctxt "#30001"
 msgid "Port"
 msgstr "Port"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Rozmiar danych testu prędkości (MB)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Test prędkości połączenia"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Wymuś szybkość transmisji strumienia transkodowania (Kb/s)"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Zezwalaj na bezpośrednie odtwarzanie plików"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Ukryj obejrzane rzeczy na listach"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Sezony"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etykieta"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Gatunek"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Ocena"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Dodane"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Tytuł"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Rok"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Domyślne"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Nie ustawione"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Sortowanie"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Wyświetlenia"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maksymalna liczba kanałów audio"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Kodek audio"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Szybkość transmisji dźwięku (Kb/s)"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Nie masz uprawnień do usunięcia tego elementu"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "Sekundy limitu czasu HTTP"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Ulubione kolekcje"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Ulubione"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tagi"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Dekady"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Lata"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Kolekcje"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Akcje dodatkowe"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Niestandardowe widżety"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Listy globalne"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Biblioteki Jellyfin"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Pokaż wszystko"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmy – rekomendacje"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Dodaj do listy odtwarzania Kodi"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informacja"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Interwał obrazów w pamięci podręcznej w minutach (0 = wyłączone)"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Ukryj"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Odśwież metadane Jellyfin"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Strony"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Wyczyść dane serwera z pamięci podręcznej"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Usunięto pliki pamięci podręcznej"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Wyczyść wynik pamięci podręcznej"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokół"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Dane użytkownika"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Szczegóły serwera"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Usunięto nieużywane obrazy:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Nieużywane obrazy Jellyfin:"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Istniejące obrazy przed usunięciem:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Interwał losowania filmów w minutach (0 = wyłączone)"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "System -"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Zawsze"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Więcej niż jeden"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Nigdy"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Monit o napisy zewnętrzne"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Utrwal dane użytkownika"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Wysyłanie prośby"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Sprawdzam adres URL serwera"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Odbieranie pakietu danych"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Wyślij prośbę"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Skanowanie w poszukiwaniu serwerów lokalnych"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Adres URL serwera"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Nie można połączyć się z wprowadzonym adresem URL, czy chcesz spróbować "
+"ponownie?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Czy chcesz ręcznie wprowadzić adres URL serwera?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Czy chcesz wyczyścić zapisane hasło?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Wyczyścić hasło?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Zezwalaj na szybkie zapisywanie hasła przełączanego użytkownika"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Wprowadź ręcznie dane użytkownika"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Logowanie ręczne"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Czy chcesz zapisać hasło?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Zapisać hasło?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Nagrania"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programy"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanały"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Budowanie pełnej listy obrazów"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Pobieranie zdalnej listy obrazów"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Przetwarzanie istniejącej listy obrazów"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Ładowanie istniejącej listy obrazów"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Ustawienia Kodi->Usługi->Zezwalaj na zdalne sterowanie przez HTTP"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Przejdź do serii"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Często odtwarzane"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Muzyka — często odtwarzana"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Muzyka — ostatnio odtwarzane"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Muzyka — ostatnio dodane"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Ostatnio odtwarzane"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Dodaj oceny użytkowników"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Pobieranie istniejących obrazów"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Usuwanie obrazów z pamięci podręcznej"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Pamięć podręczna żądań danych serwera Jellyfin"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Liczba obrazów usuniętych z pamięci podręcznej"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Zmiany wymagają restartu Kodi"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Interwał sprawdzania nowej zawartości (0 = wyłączone)"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Interwał aktualizacji obrazu tła (0 = wyłączone)"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Grupuj filmy w kolekcję"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Osoba"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Piosenka"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Użyj menu kontekstowego JellyCon"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Zbieraj grafikę w tle"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Proste sprawdzanie nowej zawartości"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Użyj buforowanych danych widżetów"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Odtwórz następny"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "Pokaż odtwórz następny odcinek w pozostałym czasie"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Odtwórz kinowe intro"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Opcje odtwarzania"
