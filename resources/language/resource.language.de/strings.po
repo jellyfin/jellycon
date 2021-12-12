@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-11-12 19:59+0000\n"
-"Last-Translator: Moritz <moritz.leick@googlemail.com>\n"
+"PO-Revision-Date: 2021-12-13 17:05+0000\n"
+"Last-Translator: Martin Schmidt <lpkkjhd@gmail.com>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
 "Language: de\n"
@@ -147,3 +147,31 @@ msgstr "Port"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Host"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL-Fehler"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Benutzer auswählen"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adresse:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Ausgewählte Serveradresse"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Server auswählen"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Fehler"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Fertig"
