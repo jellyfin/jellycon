@@ -471,7 +471,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     info_labels = {}
 
     # add cast
-    if item_details.cast is not None:
+    if item_details.cast:
         if kodi_version >= 17:
             list_item.setCast(item_details.cast)
         else:
