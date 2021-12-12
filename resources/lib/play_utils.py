@@ -877,8 +877,7 @@ def external_subs(media_source, list_item, item_id):
 
 def send_progress():
     home_window = HomeWindow()
-    play_data_string = home_window.get_property('now_playing')
-    play_data = json.loads(play_data_string)
+    play_data = get_playing_data()
 
     if play_data is None:
         return
@@ -1011,7 +1010,15 @@ def prompt_for_stop_actions(item_id, data):
                 xbmc.executebuiltin("Container.Refresh")
 
 
-def stop_all_playback(played_information):
+def stop_all_playback():
+
+    home_window = HomeWindow()
+    played_information_string = home_window.get_property('played_information')
+    if played_information_string:
+        played_information = json.loads(played_information_string)
+    else:
+        played_information = {}
+
     log.debug("stop_all_playback : {0}".format(played_information))
 
     if len(played_information) == 0:
@@ -1020,8 +1027,7 @@ def stop_all_playback(played_information):
     log.debug("played_information: {0}".format(played_information))
     clear_entries = []
 
-    home_screen = HomeWindow()
-    home_screen.clear_property("currently_playing_id")
+    home_window.clear_property("currently_playing_id")
 
     for item in played_information:
         data = played_information.get(item)
@@ -1061,33 +1067,53 @@ def stop_all_playback(played_information):
     for entry in clear_entries:
         del played_information[entry]
 
+    home_window.set_property('played_information', json.dumps(played_information))
+
 
 def get_playing_data():
+    player = xbmc.Player()
     home_window = HomeWindow()
     play_data_string = home_window.get_property('now_playing')
     play_data = json.loads(play_data_string)
+
+    played_information_string = home_window.get_property('played_information')
+    if played_information_string:
+        played_information = json.loads(played_information_string)
+    else:
+        played_information = {}
+
     playlist_data_string = home_window.get_property('playlist')
-    playlist_data = json.loads(playlist_data_string)
+    if playlist_data_string:
+        playlist_data = json.loads(playlist_data_string)
+    else:
+        playlist_data = {}
+
     item_id = play_data.get("item_id")
 
     settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
     try:
-        playing_file = xbmc.Player().getPlayingFile()
+        playing_file = player.getPlayingFile()
     except Exception as e:
         log.error("get_playing_data : getPlayingFile() : {0}".format(e))
         return None
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
-    if server in playing_file:
-        if item_id is not None and item_id in playing_file:
-            return play_data
-        elif item_id is not None and item_id not in playing_file and playing_file in playlist_data:
+    if server in playing_file and item_id is not None:
+        play_time = player.getTime()
+        total_play_time = player.getTotalTime()
+
+        if item_id is not None and item_id not in playing_file and playing_file in playlist_data:
             # if the current now_playing data isn't correct, pull it from the playlist_data
             play_data = playlist_data.pop(playing_file)
             # Update now_playing data
-            home_window.set_property('now_playing', json.dumps(play_data))
             home_window.set_property('playlist', json.dumps(playlist_data))
-            return play_data
+
+        play_data["current_position"] = play_time
+        play_data["duration"] = total_play_time
+        played_information[item_id] = play_data
+        home_window.set_property('now_playing', json.dumps(play_data))
+        home_window.set_property('played_information', json.dumps(played_information))
+        return play_data
 
     return {}
 
@@ -1096,11 +1122,10 @@ class Service(xbmc.Player):
 
     def __init__(self, *args):
         log.debug("Starting monitor service: {0}".format(args))
-        self.played_information = {}
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
-        stop_all_playback(self.played_information)
+        stop_all_playback()
 
         if not xbmc.Player().isPlaying():
             log.debug("onPlayBackStarted: not playing file!")
@@ -1123,7 +1148,12 @@ class Service(xbmc.Player):
         if jellyfin_item_id is None:
             return
 
-        self.played_information[jellyfin_item_id] = play_data
+        home_window = HomeWindow()
+        played_information_string = home_window.get_property('played_information')
+        played_information = json.loads(played_information_string)
+        played_information[jellyfin_item_id] = play_data
+        home_window.set_property('played_information', json.dumps(played_information))
+
         log.debug("Sending Playback Started")
         postdata = {
             'QueueableMediaTypes': "Video",
@@ -1145,12 +1175,12 @@ class Service(xbmc.Player):
     def onPlayBackEnded(self):
         # Will be called when kodi stops playing a file
         log.debug("onPlayBackEnded")
-        stop_all_playback(self.played_information)
+        stop_all_playback()
 
     def onPlayBackStopped(self):
         # Will be called when user stops kodi playing a file
         log.debug("onPlayBackStopped")
-        stop_all_playback(self.played_information)
+        stop_all_playback()
 
     def onPlayBackPaused(self):
         # Will be called when kodi pauses the video
