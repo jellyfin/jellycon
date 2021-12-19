@@ -1,2 +1,80 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-12-21 00:05+0000\n"
+"Last-Translator: LowHigh <lowhigh.ytb@gmail.com>\n"
+"Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/fr/>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Nombre d'éléments à afficher dans les listes filtrées"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Afficher les clients connectés"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Nom d'affichage de l'appareil"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Enregistrer les données de synchronisation"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Changer d'utilisateur]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Détecter le serveur local]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Nombre de profils de performances à capturer"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Hôte"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Nom d'utilisateur introuvable"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Mot de passe:"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Mot de passe Samba"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Nom d'utilisateur Samba"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Mot de passe"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Vérifier le certificat HTTPS"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
