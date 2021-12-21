@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-12-21 00:05+0000\n"
-"Last-Translator: LowHigh <lowhigh.ytb@gmail.com>\n"
+"PO-Revision-Date: 2021-12-22 14:05+0000\n"
+"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -78,3 +78,27 @@ msgstr "Vérifier le certificat HTTPS"
 msgctxt "#30001"
 msgid "Port"
 msgstr "Port"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Utilisateur/Mot de passe incorrect"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Activer le débogage dans le journal d’évènements"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Nom d'utilisateur :"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Cacher les détails des épisodes non-visionnés"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Avancés"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Afficher tous les épisodes"
