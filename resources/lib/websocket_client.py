@@ -239,7 +239,6 @@ class WebSocketClient(threading.Thread):
 
     def run(self):
 
-        # websocket.enableTrace(True)
         download_utils = downloadutils.DownloadUtils()
 
         token = None

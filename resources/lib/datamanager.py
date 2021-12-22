@@ -43,7 +43,6 @@ class DataManager:
     addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
 
     def __init__(self, *args):
-        # log.debug("DataManager __init__")
         pass
 
     @timer
@@ -65,10 +64,6 @@ class DataManager:
         m.update('{}|{}|{}'.format(user_id, server, url).encode())
         url_hash = m.hexdigest()
         cache_file = os.path.join(self.addon_dir, "cache_" + url_hash + ".pickle")
-
-        # changed_url = url + "&MinDateLastSavedForUser=" + urllib.unquote("2019-09-16T13:45:30")
-        # results = self.GetContent(changed_url)
-        # log.debug("DataManager Changes Since Date : {0}", results)
 
         item_list = None
         total_records = 0
@@ -135,7 +130,6 @@ class DataManager:
             cache_item.total_records = total_records
 
             cache_thread.cached_item = cache_item
-            # copy.deepcopy(item_list)
 
         if not use_cache:
             cache_thread = None
@@ -171,7 +165,6 @@ class CacheManagerThread(threading.Thread):
     def run(self):
 
         log.debug("CacheManagerThread : Started")
-        # log.debug("CacheManagerThread : Cache Item : {0}", self.cached_item.__dict__)
 
         home_window = HomeWindow()
         is_fresh = False
