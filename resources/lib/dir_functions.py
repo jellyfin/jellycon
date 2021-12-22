@@ -106,13 +106,6 @@ def get_content(url, params):
             url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(page_limit)
             log.debug("ADDING NEXT URL: {0}".format(url_next))
 
-    # use the data manager to get the data
-    # result = dataManager.GetContent(url)
-
-    # total_records = 0
-    # if result is not None and isinstance(result, dict):
-    #    total_records = result.get("TotalRecordCount", 0)
-
     use_cache = params.get("use_cache", "true") == "true"
 
     dir_items, detected_type, total_records = process_directory(url, progress, params, use_cache)
@@ -381,7 +374,6 @@ def process_directory(url, progress, params, use_cache_data=False):
         series_url = ('{server}/Shows/' + first_season_item.series_id +
                       '/Episodes'
                       '?userId={userid}' +
-                      # '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
                       '&Fields=SpecialEpisodeNumbers,{field_filters}' +

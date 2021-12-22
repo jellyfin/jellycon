@@ -125,11 +125,9 @@ def main_entry_point():
     elif mode == "WIDGET_CONTENT_CAST":
         get_widget_content_cast(int(sys.argv[1]), params)
     elif mode == "SHOW_CONTENT":
-        # plugin://plugin.video.jellycon?mode=SHOW_CONTENT&item_type=Movie|Series
         check_server()
         show_content(params)
     elif mode == "SEARCH":
-        # plugin://plugin.video.jellycon?mode=SEARCH
         xbmcplugin.setContent(int(sys.argv[1]), 'files')
         show_search()
     elif mode == "NEW_SEARCH":
@@ -614,7 +612,6 @@ def show_menu(params):
             dialog.ok("Error", "Error getting safe delete confirmation")
 
     elif selected_action == "show_extras":
-        # "http://localhost:8096/Users/3138bed521e5465b9be26d2c63be94af/Items/78/SpecialFeatures"
         u = "{server}/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
         action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Videos")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'

@@ -128,7 +128,6 @@ def get_server_details():
 
     message = b"who is JellyfinServer?"
     multi_group = ("<broadcast>", 7359)
-    # multi_group = ("127.0.0.1", 7359)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(4.0)
@@ -144,7 +143,6 @@ def get_server_details():
     xbmc.sleep(1000)
     server_count = 0
 
-    # while True:
     try:
         sock.sendto(message, multi_group)
         while True:

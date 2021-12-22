@@ -155,7 +155,6 @@ def add_to_playlist(play_info):
                                       icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
 
-    # play_session_id = id_generator()
     play_session_id = playback_info.get("PlaySessionId")
 
     # select the media source to use
@@ -951,7 +950,6 @@ def prompt_for_stop_actions(item_id, data):
     settings = xbmcaddon.Addon()
     current_position = data.get("current_position", 0)
     duration = data.get("duration", 0)
-    # media_source_id = data.get("source_id")
     next_episode = data.get("next_episode")
     item_type = data.get("item_type")
     can_delete = data.get("can_delete", False)

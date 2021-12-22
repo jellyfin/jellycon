@@ -130,7 +130,6 @@ def clone_skin():
 def update_kodi_settings():
     log.debug("Settings Kodi Settings")
 
-    # set_value("screensaver.mode", "script.screensaver.logoff")
     set_value("videoplayer.seekdelay", 0)
     set_value("filelists.showparentdiritems", False)
     set_value("filelists.showaddsourcebuttons", False)

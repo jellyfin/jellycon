@@ -16,6 +16,3 @@ if log_timing_data:
 log.debug("About to enter mainEntryPoint()")
 
 main_entry_point()
-
-# clear done and exit.
-# sys.modules.clear()
