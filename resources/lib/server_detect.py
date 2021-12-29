@@ -19,9 +19,7 @@ from kodi_six.utils import py2_decode
 from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils, save_user_details, load_user_details
 from .loghandler import LazyLogger
-from .translation import string_load
-from .utils import datetime_from_string
-from .clientinfo import ClientInformation
+from .utils import datetime_from_string, translate, get_version
 
 log = LazyLogger(__name__)
 
@@ -44,7 +42,7 @@ def check_connection_speed():
     url = server + "/playback/bitratetest?size=%s" % test_data_size
 
     head = du.get_auth_header(True)
-    head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
+    head["User-Agent"] = "JellyCon-{}".format(get_version())
 
     request_details = {
         "stream": True,
@@ -138,8 +136,8 @@ def get_server_details():
     log.debug("Sending UDP Data: {0}".format(message))
 
     progress = xbmcgui.DialogProgress()
-    progress.create('{} : {}'.format(__addon_name__, string_load(30373)))
-    progress.update(0, string_load(30374))
+    progress.create('{} : {}'.format(__addon_name__, translate(30373)))
+    progress.update(0, translate(30374))
     xbmc.sleep(1000)
     server_count = 0
 
@@ -148,7 +146,7 @@ def get_server_details():
         while True:
             try:
                 server_count += 1
-                progress.update(server_count * 10, '{}: {}'.format(string_load(30375), server_count))
+                progress.update(server_count * 10, '{}: {}'.format(translate(30375), server_count))
                 xbmc.sleep(1000)
                 data, addr = sock.recvfrom(1024)
                 servers.append(json.loads(data))
@@ -188,7 +186,7 @@ def check_server(force=False, change_user=False, notify=False):
 
         server_list = []
         for server in server_info:
-            server_item = xbmcgui.ListItem(server.get("Name", string_load(30063)))
+            server_item = xbmcgui.ListItem(server.get("Name", translate(30063)))
             sub_line = server.get("Address")
             server_item.setLabel2(sub_line)
             server_item.setProperty("address", server.get("Address"))
@@ -197,21 +195,21 @@ def check_server(force=False, change_user=False, notify=False):
             server_list.append(server_item)
 
         if len(server_list) > 0:
-            return_index = xbmcgui.Dialog().select('{} : {}'.format(__addon_name__, string_load(30166)),
+            return_index = xbmcgui.Dialog().select('{} : {}'.format(__addon_name__, translate(30166)),
                                                    server_list,
                                                    useDetails=True)
             if return_index != -1:
                 server_url = server_info[return_index]["Address"]
 
         if not server_url:
-            return_index = xbmcgui.Dialog().yesno(__addon_name__, '{}\n{}'.format(string_load(30282), string_load(30370)))
+            return_index = xbmcgui.Dialog().yesno(__addon_name__, '{}\n{}'.format(translate(30282), translate(30370)))
             if not return_index:
                 xbmc.executebuiltin("ActivateWindow(Home)")
                 return
 
             while True:
                 kb = xbmc.Keyboard()
-                kb.setHeading(string_load(30372))
+                kb.setHeading(translate(30372))
                 if server_url:
                     kb.setDefault(server_url)
                 else:
@@ -227,19 +225,19 @@ def check_server(force=False, change_user=False, notify=False):
 
                 log.debug("Testing_Url: {0}".format(public_lookup_url))
                 progress = xbmcgui.DialogProgress()
-                progress.create('{} : {}'.format(__addon_name__, string_load(30376)))
-                progress.update(0, string_load(30377))
+                progress.create('{} : {}'.format(__addon_name__, translate(30376)))
+                progress.update(0, translate(30377))
                 result = du.download_url(public_lookup_url, authenticate=False)
                 progress.close()
 
                 if result:
-                    xbmcgui.Dialog().ok('{} : {}'.format(__addon_name__, string_load(30167)),
+                    xbmcgui.Dialog().ok('{} : {}'.format(__addon_name__, translate(30167)),
                                         server_url)
                     break
                 else:
-                    return_index = xbmcgui.Dialog().yesno('{} : {}'.format(__addon_name__, string_load(30135)),
+                    return_index = xbmcgui.Dialog().yesno('{} : {}'.format(__addon_name__, translate(30135)),
                                                           server_url,
-                                                          string_load(30371))
+                                                          translate(30371))
                     if not return_index:
                         xbmc.executebuiltin("ActivateWindow(Home)")
                         return
@@ -336,15 +334,15 @@ def check_server(force=False, change_user=False, notify=False):
                         selected_id = len(users) - 1
 
         if current_username:
-            selection_title = string_load(30180) + " (" + current_username + ")"
+            selection_title = translate(30180) + " (" + current_username + ")"
         else:
-            selection_title = string_load(30180)
+            selection_title = translate(30180)
 
         # add manual login
-        user_item = xbmcgui.ListItem(string_load(30365))
+        user_item = xbmcgui.ListItem(translate(30365))
         art = {"Thumb": "DefaultUser.png"}
         user_item.setArt(art)
-        user_item.setLabel2(string_load(30366))
+        user_item.setLabel2(translate(30366))
         user_item.setProperty("secure", "true")
         user_item.setProperty("manual", "true")
         users.append(user_item)
@@ -367,7 +365,7 @@ def check_server(force=False, change_user=False, notify=False):
 
             if manual:
                 kb = xbmc.Keyboard()
-                kb.setHeading(string_load(30005))
+                kb.setHeading(translate(30005))
                 if current_username:
                     kb.setDefault(current_username)
                 kb.doModal()
@@ -387,7 +385,7 @@ def check_server(force=False, change_user=False, notify=False):
 
                 # if not saving passwords but have a saved ask to clear it
                 if not allow_password_saving and saved_password:
-                    clear_password = xbmcgui.Dialog().yesno(string_load(30368), string_load(30369))
+                    clear_password = xbmcgui.Dialog().yesno(translate(30368), translate(30369))
                     if clear_password:
                         settings.setSetting("saved_user_password_" + hashed_username, "")
 
@@ -398,7 +396,7 @@ def check_server(force=False, change_user=False, notify=False):
 
                 else:
                     kb = xbmc.Keyboard()
-                    kb.setHeading(string_load(30006))
+                    kb.setHeading(translate(30006))
                     kb.setHiddenInput(True)
                     kb.doModal()
                     if kb.isConfirmed():
@@ -407,7 +405,7 @@ def check_server(force=False, change_user=False, notify=False):
 
                         # should we save the password
                         if allow_password_saving:
-                            save_password = xbmcgui.Dialog().yesno(string_load(30363), string_load(30364))
+                            save_password = xbmcgui.Dialog().yesno(translate(30363), translate(30364))
                             if save_password:
                                 log.debug("Saving password for fast user switching: {0}".format(hashed_username))
                                 settings.setSetting("saved_user_password_" + hashed_username, kb.getText())

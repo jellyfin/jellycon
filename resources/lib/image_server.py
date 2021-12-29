@@ -16,7 +16,7 @@ import io
 from .loghandler import LazyLogger
 from .datamanager import DataManager
 from .downloadutils import DownloadUtils
-from .utils import get_art
+from .item_functions import get_art
 
 pil_loaded = False
 try:

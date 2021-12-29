@@ -13,13 +13,11 @@ from six.moves.urllib.parse import urlparse
 
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
-from .resume_dialog import ResumeDialog
-from .utils import PlayUtils, get_art, send_event_notification, convert_size
+from .dialogs import ResumeDialog
+from .utils import send_event_notification, convert_size, translate, get_device_id
 from .kodi_utils import HomeWindow
-from .translation import string_load
 from .datamanager import DataManager, clear_old_cache_data
-from .item_functions import extract_item_info, add_gui_item
-from .clientinfo import ClientInformation
+from .item_functions import extract_item_info, add_gui_item, get_art
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
 from .tracking import timer
@@ -50,7 +48,7 @@ def play_all_files(items, play_items=True):
             return
         if playback_info.get("ErrorCode") is not None:
             error_string = playback_info.get("ErrorCode")
-            xbmcgui.Dialog().notification(string_load(30316),
+            xbmcgui.Dialog().notification((30316),
                                           error_string,
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
             return
@@ -63,7 +61,7 @@ def play_all_files(items, play_items=True):
         selected_media_source = sources[0]
         source_id = selected_media_source.get("Id")
 
-        playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
+        playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id)
         log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}".format(playurl, playback_type, listitem_props))
 
         if playurl is None:
@@ -82,7 +80,7 @@ def play_all_files(items, play_items=True):
             item["Overview"] = playback_type_string
 
         # add title decoration is needed
-        item_title = item.get("Name", string_load(30280))
+        item_title = item.get("Name", (30280))
         list_item = xbmcgui.ListItem(label=item_title)
 
         # add playurl and data to the monitor
@@ -150,7 +148,7 @@ def add_to_playlist(play_info):
         return
     if playback_info.get("ErrorCode") is not None:
         error_string = playback_info.get("ErrorCode")
-        xbmcgui.Dialog().notification(string_load(30316),
+        xbmcgui.Dialog().notification((30316),
                                       error_string,
                                       icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
@@ -163,7 +161,7 @@ def add_to_playlist(play_info):
     selected_media_source = sources[0]
     source_id = selected_media_source.get("Id")
 
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
+    playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id)
     log.info("Play URL: {0} PlaybackType: {1} ListItem Properties: {2}".format(playurl, playback_type, listitem_props))
 
     if playurl is None:
@@ -182,7 +180,7 @@ def add_to_playlist(play_info):
         item["Overview"] = playback_type_string
 
     # add title decoration is needed
-    item_title = item.get("Name", string_load(30280))
+    item_title = item.get("Name", (30280))
     list_item = xbmcgui.ListItem(label=item_title)
 
     # add playurl and data to the monitor
@@ -301,7 +299,7 @@ def play_file(play_info):
         return
     if playback_info.get("ErrorCode") is not None:
         error_string = playback_info.get("ErrorCode")
-        xbmcgui.Dialog().notification(string_load(30316),
+        xbmcgui.Dialog().notification((30316),
                                       error_string,
                                       icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
@@ -332,7 +330,7 @@ def play_file(play_info):
             label2 = __build_label2_from(source)
             items.append(xbmcgui.ListItem(label=label, label2=label2))
         dialog = xbmcgui.Dialog()
-        resp = dialog.select(string_load(30309), items, useDetails=True)
+        resp = dialog.select((30309), items, useDetails=True)
         if resp > -1:
             selected_media_source = media_sources[resp]
         else:
@@ -377,7 +375,7 @@ def play_file(play_info):
                 return
 
     log.debug("play_session_id: {0}".format(play_session_id))
-    playurl, playback_type, listitem_props = PlayUtils().get_play_url(selected_media_source, play_session_id)
+    playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id)
     log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}".format(playurl, playback_type, listitem_props))
 
     if playurl is None:
@@ -396,7 +394,7 @@ def play_file(play_info):
         result["Overview"] = playback_type_string
 
     # add title decoration is needed
-    item_title = result.get("Name", string_load(30280))
+    item_title = result.get("Name", (30280))
 
     # extract item info from result
     gui_options = {}
@@ -763,7 +761,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         playurlprefs += "&AudioStreamIndex=%s" % select_audio_index
 
     elif len(audio_streams) > 1:
-        resp = dialog.select(string_load(30291), audio_streams)
+        resp = dialog.select((30291), audio_streams)
         if resp > -1:
             # User selected audio
             selected = audio_streams[resp]
@@ -785,7 +783,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
             playurlprefs += "&SubtitleStreamIndex=%s" % select_subs_index
 
     elif len(subtitle_streams) > 1:
-        resp = dialog.select(string_load(30292), subtitle_streams)
+        resp = dialog.select((30292), subtitle_streams)
         if resp == 0:
             # User selected no subtitles
             pass
@@ -867,7 +865,7 @@ def external_subs(media_source, list_item, item_id):
     if direct_stream_sub_select == "0" or (len(externalsubs) == 1 and not direct_stream_sub_select == "2"):
         list_item.setSubtitles(externalsubs)
     else:
-        resp = xbmcgui.Dialog().select(string_load(30292), sub_names)
+        resp = xbmcgui.Dialog().select((30292), sub_names)
         if resp > -1:
             selected_sub = externalsubs[resp]
             log.debug("External Subtitle Selected: {0}".format(selected_sub))
@@ -1058,7 +1056,7 @@ def stop_all_playback():
                 clear_entries.append(item)
 
             if data.get('playback_type') == 'Transcode':
-                device_id = ClientInformation().get_device_id()
+                device_id = get_device_id()
                 url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
                 download_utils.download_url(url, method="DELETE")
 
@@ -1114,6 +1112,144 @@ def get_playing_data():
         return play_data
 
     return {}
+
+
+def get_play_url(media_source, play_session_id):
+    log.debug("get_play_url - media_source: {0}", media_source)
+
+    # check if strm file Container
+    if media_source.get('Container') == 'strm':
+        log.debug("Detected STRM Container")
+        playurl, listitem_props = get_strm_details(media_source)
+        if playurl is None:
+            log.debug("Error, no strm content")
+            return None, None, None
+        else:
+            return playurl, "0", listitem_props
+
+    # get all the options
+    addon_settings = xbmcaddon.Addon()
+    server = download_utils.get_server()
+    use_https = addon_settings.getSetting('protocol') == "1"
+    verify_cert = addon_settings.getSetting('verify_cert') == 'true'
+    allow_direct_file_play = addon_settings.getSetting('allow_direct_file_play') == 'true'
+
+    can_direct_play = media_source["SupportsDirectPlay"]
+    can_direct_stream = media_source["SupportsDirectStream"]
+    can_transcode = media_source["SupportsTranscoding"]
+    container = media_source["Container"]
+
+    playurl = None
+    playback_type = None
+
+    # check if file can be directly played
+    if allow_direct_file_play and can_direct_play:
+        direct_path = media_source["Path"]
+        direct_path = direct_path.replace("\\", "/")
+        direct_path = direct_path.strip()
+
+        # handle DVD structure
+        if container == "dvd":
+            direct_path = direct_path + "/VIDEO_TS/VIDEO_TS.IFO"
+        elif container == "bluray":
+            direct_path = direct_path + "/BDMV/index.bdmv"
+
+        if direct_path.startswith("//"):
+            direct_path = "smb://" + direct_path[2:]
+
+        log.debug("playback_direct_path: {0}".format(direct_path))
+
+        if xbmcvfs.exists(direct_path):
+            playurl = direct_path
+            playback_type = "0"
+
+    # check if file can be direct streamed/played
+    if (can_direct_stream or can_direct_play) and playurl is None:
+        item_id = media_source.get('Id')
+        playurl = ("%s/Videos/%s/stream" +
+                   "?static=true" +
+                   "&PlaySessionId=%s" +
+                   "&MediaSourceId=%s")
+        playurl = playurl % (server, item_id, play_session_id, item_id)
+        if use_https and not verify_cert:
+            playurl += "|verifypeer=false"
+        playback_type = "1"
+
+    # check is file can be transcoded
+    if can_transcode and playurl is None:
+        item_id = media_source.get('Id')
+        device_id = get_device_id()
+        user_token = download_utils.authenticate()
+        playback_bitrate = addon_settings.getSetting("force_max_stream_bitrate")
+        bitrate = int(playback_bitrate) * 1000
+        playback_max_width = addon_settings.getSetting("playback_max_width")
+        audio_codec = addon_settings.getSetting("audio_codec")
+        audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
+        audio_bitrate = int(audio_playback_bitrate) * 1000
+        audio_max_channels = addon_settings.getSetting("audio_max_channels")
+        playback_video_force_8 = addon_settings.getSetting("playback_video_force_8") == "true"
+
+        transcode_params = {
+            "MediaSourceId": item_id,
+            "DeviceId": device_id,
+            "PlaySessionId": play_session_id,
+            "api_key": user_token,
+            "SegmentContainer": "ts",
+            "VideoCodec": "h264",
+            "VideoBitrate": bitrate,
+            "MaxWidth": playback_max_width,
+            "AudioCodec": audio_codec,
+            "TranscodingMaxAudioChannels": audio_max_channels,
+            "AudioBitrate": audio_bitrate
+        }
+        if playback_video_force_8:
+            transcode_params.update({"MaxVideoBitDepth": "8"})
+
+        transcode_path = urlencode(transcode_params)
+
+        playurl = "%s/Videos/%s/master.m3u8?%s" % (server, item_id, transcode_path)
+
+        if use_https and not verify_cert:
+            playurl += "|verifypeer=false"
+
+        playback_type = "2"
+
+    return playurl, playback_type, []
+
+def get_strm_details(media_source):
+    playurl = None
+    listitem_props = []
+
+    contents = media_source.get('Path').encode('utf-8')  # contains contents of strm file with linebreaks
+
+    line_break = '\r'
+    if '\r\n' in contents:
+        line_break = '\r\n'
+    elif '\n' in contents:
+        line_break = '\n'
+
+    lines = contents.split(line_break)
+    for line in lines:
+        line = line.strip()
+        log.debug("STRM Line: {0}".format(line))
+        if line.startswith('#KODIPROP:'):
+            match = re.search('#KODIPROP:(?P<item_property>[^=]+?)=(?P<property_value>.+)', line)
+            if match:
+                item_property = match.group('item_property')
+                property_value = match.group('property_value')
+                log.debug("STRM property found: {0} value: {1}".format(item_property, property_value))
+                listitem_props.append((item_property, property_value))
+            else:
+                log.debug("STRM #KODIPROP incorrect format")
+        elif line.startswith('#'):
+            #  unrecognized, treat as comment
+            log.debug("STRM unrecognized line identifier, ignored")
+        elif line != '':
+            playurl = line
+            log.debug("STRM playback url found")
+
+    log.debug("Playback URL: {0} ListItem Properties: {1}".format(playurl, listitem_props))
+    return playurl, listitem_props
 
 
 class Service(xbmc.Player):

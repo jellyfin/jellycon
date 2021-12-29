@@ -13,10 +13,10 @@ import xbmcgui
 
 from .functions import play_action
 from .loghandler import LazyLogger
-from . import clientinfo
 from . import downloadutils
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
+from .utils import get_device_id
 
 log = LazyLogger(__name__)
 
@@ -35,8 +35,7 @@ class WebSocketClient(threading.Thread):
         self.monitor = xbmc.Monitor()
         self.retry_count = 0
 
-        self.client_info = clientinfo.ClientInformation()
-        self.device_id = self.client_info.get_device_id()
+        self.device_id = get_device_id()
 
         self._library_monitor = library_change_monitor
 

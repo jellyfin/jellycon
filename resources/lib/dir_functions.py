@@ -12,10 +12,9 @@ import re
 from .datamanager import DataManager
 from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils
-from .translation import string_load
 from .loghandler import LazyLogger
 from .item_functions import add_gui_item, ItemDetails
-from .utils import send_event_notification
+from .utils import send_event_notification, translate
 from .tracking import timer
 
 log = LazyLogger(__name__)
@@ -28,7 +27,7 @@ def get_content(url, params):
     default_sort = params.get("sort")
     media_type = params.get("media_type", None)
     if not media_type:
-        xbmcgui.Dialog().ok(string_load(30135), string_load(30139))
+        xbmcgui.Dialog().ok(translate(30135), translate(30139))
 
     log.debug("URL: {0}".format(url))
     log.debug("MediaType: {0}".format(media_type))
@@ -78,8 +77,8 @@ def get_content(url, params):
     progress = None
     if settings.getSetting('showLoadProgress') == "true":
         progress = xbmcgui.DialogProgress()
-        progress.create(string_load(30112))
-        progress.update(0, string_load(30113))
+        progress.create(translate(30112))
+        progress.update(0, translate(30113))
 
     # update url for paging
     start_index = 0
@@ -167,7 +166,7 @@ def get_content(url, params):
         log.debug("No view id for view type:{0}".format(view_key))
 
     if progress is not None:
-        progress.update(100, string_load(30125))
+        progress.update(100, translate(30125))
         progress.close()
 
     return
@@ -290,7 +289,7 @@ def process_directory(url, progress, params, use_cache_data=False):
 
         if progress is not None:
             percent_done = (float(current_item) / float(item_count)) * 100
-            progress.update(int(percent_done), string_load(30126) + str(current_item))
+            progress.update(int(percent_done), translate(30126) + str(current_item))
             current_item = current_item + 1
 
         if detected_type is not None:
@@ -387,7 +386,7 @@ def process_directory(url, progress, params, use_cache_data=False):
         item_details = ItemDetails()
 
         item_details.id = first_season_item.id
-        item_details.name = string_load(30290)
+        item_details.name = translate(30290)
         item_details.art = first_season_item.art
         item_details.play_count = played
         item_details.overlay = overlay

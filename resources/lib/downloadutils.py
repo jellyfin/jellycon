@@ -17,10 +17,9 @@ from kodi_six.utils import py2_decode
 from six import ensure_text
 
 from .kodi_utils import HomeWindow
-from .clientinfo import ClientInformation
 from .loghandler import LazyLogger
-from .translation import string_load
 from .tracking import timer
+from .utils import translate, get_device_id, get_version
 
 log = LazyLogger(__name__)
 
@@ -506,8 +505,8 @@ class DownloadUtils:
         if secure or not userid:
             auth_ok = self.authenticate()
             if auth_ok == "":
-                xbmcgui.Dialog().notification(string_load(30316),
-                                              string_load(30044),
+                xbmcgui.Dialog().notification((30316),
+                                              (30044),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")
                 return ""
             if not userid:
@@ -517,8 +516,8 @@ class DownloadUtils:
             user_image = 'DefaultUser.png'
 
         if userid == "":
-            xbmcgui.Dialog().notification(string_load(30316),
-                                          string_load(30045),
+            xbmcgui.Dialog().notification((30316),
+                                          (30045),
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         log.debug("userid: {0}".format(userid))
@@ -573,10 +572,9 @@ class DownloadUtils:
             return ""
 
     def get_auth_header(self, authenticate=True):
-        client_info = ClientInformation()
-        txt_mac = client_info.get_device_id()
-        version = client_info.get_version()
-        client = client_info.get_client()
+        txt_mac = get_device_id()
+        version = get_version()
+        client = 'Kodi JellyCon'
 
         settings = xbmcaddon.Addon()
         device_name = settings.getSetting('deviceName')
@@ -668,7 +666,7 @@ class DownloadUtils:
                 user_and_pass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
                 head["Authorization"] = 'Basic %s' % user_and_pass
 
-            head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
+            head["User-Agent"] = "JellyCon-" + get_version()
 
             http_request = getattr(requests, method.lower())
 
@@ -707,8 +705,8 @@ class DownloadUtils:
 
                 log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
-                    xbmcgui.Dialog().notification(string_load(30316),
-                                                  '{}: {}'.format(string_load(30200), data.content),
+                    xbmcgui.Dialog().notification((30316),
+                                                  '{}: {}'.format((30200), data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
             try:
                 result = data.json()
@@ -719,6 +717,6 @@ class DownloadUtils:
             log.error("{0}".format(format_exc()))
             log.error("Unable to connect to {0} : {1}".format(server, msg))
             if not suppress:
-                xbmcgui.Dialog().notification(string_load(30316),
+                xbmcgui.Dialog().notification((30316),
                                               str(msg),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")

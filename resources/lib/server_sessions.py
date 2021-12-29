@@ -6,7 +6,7 @@ import xbmcplugin
 
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
-from .utils import get_art
+from .item_functions import get_art
 from .datamanager import DataManager
 
 log = LazyLogger(__name__)
