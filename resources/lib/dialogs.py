@@ -1,10 +1,9 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import xbmc
 import xbmcgui
 
 from .loghandler import LazyLogger
-from .utils import translate_string
+from .utils import translate_string, send_event_notification
 
 log = LazyLogger(__name__)
 

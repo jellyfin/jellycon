@@ -7,7 +7,6 @@ import os
 import time
 import cProfile
 import pstats
-import json
 from six import StringIO
 
 import xbmcplugin
@@ -16,7 +15,7 @@ import xbmcaddon
 import xbmc
 
 from .downloadutils import DownloadUtils, load_user_details
-from .utils import send_event_notification, convert_size, translate_string, get_version
+from .utils import convert_size, translate_string, get_version
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_cached_server_data

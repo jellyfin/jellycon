@@ -6,8 +6,6 @@ import xbmcaddon
 
 import requests
 import hashlib
-import ssl
-import gzip
 import json
 from six.moves.urllib.parse import urlparse
 from base64 import b64encode
@@ -341,7 +339,7 @@ class DownloadUtils:
     def get_server(self):
         settings = xbmcaddon.Addon()
 
-        #For migration from storing URL parts to just one URL
+        # For migration from storing URL parts to just one URL
         if settings.getSetting('ipaddress') != "" and settings.getSetting('ipaddress') != "&lt;none&gt;":
             log.info("Migrating to new server url storage")
             url = ("http://" if settings.getSetting('protocol') == "0" else "https://") + settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
@@ -429,7 +427,6 @@ class DownloadUtils:
             artwork += "|verifypeer=false"
 
         return artwork
-
 
     def image_url(self, item_id, art_type, index, width, height, image_tag, server):
 
@@ -684,7 +681,6 @@ class DownloadUtils:
                 data = http_request(url, data=post_body, headers=head)
             else:
                 data = http_request(url, headers=head)
-
 
             if data.status_code == 200:
 

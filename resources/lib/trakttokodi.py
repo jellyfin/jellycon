@@ -2,7 +2,6 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 from six.moves.urllib.parse import quote, unquote
-import encodings
 
 import xbmc
 import xbmcgui

@@ -6,8 +6,6 @@ from six.moves.urllib.parse import quote
 
 from datetime import datetime
 
-from collections import defaultdict
-
 import xbmc
 import xbmcaddon
 import xbmcgui

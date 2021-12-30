@@ -10,7 +10,6 @@ import sys
 import re
 
 from .datamanager import DataManager
-from .kodi_utils import HomeWindow
 from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .item_functions import add_gui_item, ItemDetails

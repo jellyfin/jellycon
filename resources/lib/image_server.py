@@ -187,7 +187,6 @@ class HttpImageHandler(BaseHTTPRequestHandler):
 
 class HttpImageServerThread(threading.Thread):
 
-
     def __init__(self):
         threading.Thread.__init__(self)
         self.keep_running = True

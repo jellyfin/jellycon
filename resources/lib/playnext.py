@@ -1,16 +1,12 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import json
 import os
 import threading
 
 import xbmc
-import xbmcgui
 import xbmcaddon
 
 from .loghandler import LazyLogger
-from .play_utils import send_event_notification
-from .kodi_utils import HomeWindow
 from .dialogs import PlayNextDialog
 
 log = LazyLogger(__name__)

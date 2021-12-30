@@ -4,12 +4,13 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcvfs
 
 from datetime import timedelta
 import json
 import os
-import base64
-from six.moves.urllib.parse import urlparse
+import re
+from six.moves.urllib.parse import urlencode
 
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
@@ -1215,6 +1216,7 @@ def get_play_url(media_source, play_session_id):
         playback_type = "2"
 
     return playurl, playback_type, []
+
 
 def get_strm_details(media_source):
     playurl = None

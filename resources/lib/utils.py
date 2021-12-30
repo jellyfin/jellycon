@@ -10,7 +10,6 @@ import binascii
 import string
 import random
 import json
-import base64
 import time
 import math
 from datetime import datetime
@@ -141,6 +140,7 @@ def get_device_id():
 
     window.set_property("client_id", client_id)
     return client_id
+
 
 def get_version():
     addon = xbmcaddon.Addon()

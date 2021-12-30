@@ -3,9 +3,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import socket
 import json
-from six.moves.urllib.parse import urlparse
 import requests
-import ssl
 import time
 import hashlib
 from datetime import datetime

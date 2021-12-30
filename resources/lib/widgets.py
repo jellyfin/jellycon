@@ -286,7 +286,6 @@ def get_widget_content(handle, params):
     url_params["Fields"] = "{field_filters}"
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
-    in_progress = False
 
     if widget_type == "recent_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -370,7 +369,6 @@ def get_widget_content(handle, params):
         inprogress_url_params["IsVirtualUnaired"] = False
         inprogress_url_params["IncludeItemTypes"] = "Episode"
         inprogress_url_params["Limit"] = 20
-        in_progress = True
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
@@ -402,7 +400,7 @@ def get_widget_content(handle, params):
                 set_id = 0
 
         id_list = ",".join(ids)
-        log.debug("Recommended Items : {0}".format(len(ids), id_list))
+        log.debug("Recommended Items : {0}".format(len(ids)))
         url_params["Ids"] = id_list
 
     items_url = get_jellyfin_url(url_verb, url_params)
@@ -410,7 +408,7 @@ def get_widget_content(handle, params):
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
 
-    # Combine In Progress and Next Up Episodes, apend next up after In Progress
+    # Combine In Progress and Next Up Episodes, append next up after In Progress
     if widget_type == "nextup_episodes":
         inprogress_url = get_jellyfin_url(
             inprogress_url_verb, inprogress_url_params)

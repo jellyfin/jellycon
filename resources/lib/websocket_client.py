@@ -105,7 +105,6 @@ class WebSocketClient(threading.Thread):
             params["audio_stream_index"] = audio_stream_index
             play_action(params)
 
-
     def _playstate(self, data):
 
         command = data['Command']
