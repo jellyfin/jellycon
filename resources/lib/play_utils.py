@@ -14,7 +14,7 @@ from six.moves.urllib.parse import urlparse
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id
+from .utils import send_event_notification, convert_size, get_device_id, translate_string
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -48,7 +48,7 @@ def play_all_files(items, play_items=True):
             return
         if playback_info.get("ErrorCode") is not None:
             error_string = playback_info.get("ErrorCode")
-            xbmcgui.Dialog().notification((30316),
+            xbmcgui.Dialog().notification(translate_string(30316),
                                           error_string,
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
             return
@@ -80,7 +80,7 @@ def play_all_files(items, play_items=True):
             item["Overview"] = playback_type_string
 
         # add title decoration is needed
-        item_title = item.get("Name", (30280))
+        item_title = item.get("Name", translate_string(30280))
         list_item = xbmcgui.ListItem(label=item_title)
 
         # add playurl and data to the monitor
@@ -148,7 +148,7 @@ def add_to_playlist(play_info):
         return
     if playback_info.get("ErrorCode") is not None:
         error_string = playback_info.get("ErrorCode")
-        xbmcgui.Dialog().notification((30316),
+        xbmcgui.Dialog().notification(translate_string(30316),
                                       error_string,
                                       icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
@@ -180,7 +180,7 @@ def add_to_playlist(play_info):
         item["Overview"] = playback_type_string
 
     # add title decoration is needed
-    item_title = item.get("Name", (30280))
+    item_title = item.get("Name", translate_string(30280))
     list_item = xbmcgui.ListItem(label=item_title)
 
     # add playurl and data to the monitor
@@ -299,7 +299,7 @@ def play_file(play_info):
         return
     if playback_info.get("ErrorCode") is not None:
         error_string = playback_info.get("ErrorCode")
-        xbmcgui.Dialog().notification((30316),
+        xbmcgui.Dialog().notification(translate_string(30316),
                                       error_string,
                                       icon="special://home/addons/plugin.video.jellycon/icon.png")
         return
@@ -330,7 +330,7 @@ def play_file(play_info):
             label2 = __build_label2_from(source)
             items.append(xbmcgui.ListItem(label=label, label2=label2))
         dialog = xbmcgui.Dialog()
-        resp = dialog.select((30309), items, useDetails=True)
+        resp = dialog.select(translate_string(30309), items, useDetails=True)
         if resp > -1:
             selected_media_source = media_sources[resp]
         else:
@@ -394,7 +394,7 @@ def play_file(play_info):
         result["Overview"] = playback_type_string
 
     # add title decoration is needed
-    item_title = result.get("Name", (30280))
+    item_title = result.get("Name", translate_string(30280))
 
     # extract item info from result
     gui_options = {}
@@ -761,7 +761,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         playurlprefs += "&AudioStreamIndex=%s" % select_audio_index
 
     elif len(audio_streams) > 1:
-        resp = dialog.select((30291), audio_streams)
+        resp = dialog.select(translate_string(30291), audio_streams)
         if resp > -1:
             # User selected audio
             selected = audio_streams[resp]
@@ -783,7 +783,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
             playurlprefs += "&SubtitleStreamIndex=%s" % select_subs_index
 
     elif len(subtitle_streams) > 1:
-        resp = dialog.select((30292), subtitle_streams)
+        resp = dialog.select(translate_string(30292), subtitle_streams)
         if resp == 0:
             # User selected no subtitles
             pass
@@ -865,7 +865,7 @@ def external_subs(media_source, list_item, item_id):
     if direct_stream_sub_select == "0" or (len(externalsubs) == 1 and not direct_stream_sub_select == "2"):
         list_item.setSubtitles(externalsubs)
     else:
-        resp = xbmcgui.Dialog().select((30292), sub_names)
+        resp = xbmcgui.Dialog().select(translate_string(30292), sub_names)
         if resp > -1:
             selected_sub = externalsubs[resp]
             log.debug("External Subtitle Selected: {0}".format(selected_sub))

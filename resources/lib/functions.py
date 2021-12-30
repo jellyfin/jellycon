@@ -1028,5 +1028,3 @@ def play_item_trailer(item_id):
             log.debug("youtube_plugin: {0}".format(youtube_plugin))
 
             xbmc.executebuiltin(youtube_plugin)
-
-

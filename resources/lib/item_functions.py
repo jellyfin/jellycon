@@ -15,7 +15,6 @@ import xbmcgui
 from .utils import datetime_from_string
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
-from .kodi_utils import HomeWindow
 from six import ensure_text
 
 log = LazyLogger(__name__)
