@@ -1,6 +1,7 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import threading
+import time
 
 import xbmc
 from .functions import show_menu
