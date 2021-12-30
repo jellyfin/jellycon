@@ -1,2 +1,72 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2021-12-31 09:05+0000\n"
+"Last-Translator: rimasx <riks_12@hot.ee>\n"
+"Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/et/>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.5.2\n"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Kuva kõik episoodid"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Filtreeritud loendites kuvatavate üksuste arv"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Kuva ühendatud kliendid"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Seadme kuvatav nimi"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Logi ajakirjed"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Muuda kasutajat]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Tuvasta kohalik server]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Jäädvustavate jõudlusprofiilide arv"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba parool"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba kasutajanimi"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Parool"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Kasutajanimi"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Kinnita HTTPS sertifikaat"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
