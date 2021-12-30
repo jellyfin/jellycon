@@ -19,7 +19,7 @@ from six import ensure_text
 from .kodi_utils import HomeWindow
 from .loghandler import LazyLogger
 from .tracking import timer
-from .utils import get_device_id, get_version
+from .utils import get_device_id, get_version, translate_string
 
 log = LazyLogger(__name__)
 
@@ -505,8 +505,8 @@ class DownloadUtils:
         if secure or not userid:
             auth_ok = self.authenticate()
             if auth_ok == "":
-                xbmcgui.Dialog().notification((30316),
-                                              (30044),
+                xbmcgui.Dialog().notification(translate_string(30316),
+                                              translate_string(30044),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")
                 return ""
             if not userid:
@@ -516,8 +516,8 @@ class DownloadUtils:
             user_image = 'DefaultUser.png'
 
         if userid == "":
-            xbmcgui.Dialog().notification((30316),
-                                          (30045),
+            xbmcgui.Dialog().notification(translate_string(30316),
+                                          translate_string(30045),
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         log.debug("userid: {0}".format(userid))
@@ -705,8 +705,8 @@ class DownloadUtils:
 
                 log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
-                    xbmcgui.Dialog().notification((30316),
-                                                  '{}: {}'.format((30200), data.content),
+                    xbmcgui.Dialog().notification(translate_string(30316),
+                                                  '{}: {}'.format(translate_string(30200), data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
             try:
                 result = data.json()
@@ -717,6 +717,6 @@ class DownloadUtils:
             log.error("{0}".format(format_exc()))
             log.error("Unable to connect to {0} : {1}".format(server, msg))
             if not suppress:
-                xbmcgui.Dialog().notification((30316),
+                xbmcgui.Dialog().notification(translate_string(30316),
                                               str(msg),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")
