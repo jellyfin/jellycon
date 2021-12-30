@@ -18,7 +18,7 @@ from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .datamanager import DataManager
-from .utils import translate
+from .utils import translate_string
 from .kodi_utils import HomeWindow
 from .item_functions import get_art
 
@@ -70,8 +70,8 @@ class CacheArtwork(threading.Thread):
         log.debug("cache_delete_for_links")
 
         progress = xbmcgui.DialogProgress()
-        progress.create(translate(30281))
-        progress.update(30, translate(30347))
+        progress.create(translate_string(30281))
+        progress.update(30, translate_string(30347))
 
         item_image_url_part = "Items/%s/Images/" % item_id
         item_image_url_part = item_image_url_part.replace("/", "%2f")
@@ -82,7 +82,7 @@ class CacheArtwork(threading.Thread):
         result = JsonRpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            xbmcgui.Dialog().ok(translate(30294), translate(30295))
+            xbmcgui.Dialog().ok(translate_string(30294), translate_string(30295))
             return
 
         params = {"properties": ["url"]}
@@ -90,7 +90,7 @@ class CacheArtwork(threading.Thread):
         textures = json_result.get("result", {}).get("textures", [])
         log.debug("texture ids: {0}".format(textures))
 
-        progress.update(70, translate(30346))
+        progress.update(70, translate_string(30346))
 
         delete_count = 0
         for texture in textures:
@@ -104,10 +104,10 @@ class CacheArtwork(threading.Thread):
 
         del textures
 
-        progress.update(100, translate(30125))
+        progress.update(100, translate_string(30125))
         progress.close()
 
-        xbmcgui.Dialog().ok(translate(30281), '{}: {}'.format(translate(30344), delete_count))
+        xbmcgui.Dialog().ok(translate_string(30281), '{}: {}'.format(translate_string(30344), delete_count))
 
     def cache_artwork_interactive(self):
         log.debug("cache_artwork_interactive")
@@ -119,21 +119,21 @@ class CacheArtwork(threading.Thread):
         result = JsonRpc('Settings.GetSettingValue').execute(web_query)
         xbmc_webserver_enabled = result['result']['value']
         if not xbmc_webserver_enabled:
-            xbmcgui.Dialog().ok(translate(30294), '{} - {}'.format(translate(30295), translate(30355)))
+            xbmcgui.Dialog().ok(translate_string(30294), '{} - {}'.format(translate_string(30295), translate_string(30355)))
             xbmc.executebuiltin('ActivateWindow(servicesettings)')
             return
 
         result_report = []
 
         # ask questions
-        question_delete_unused = xbmcgui.Dialog().yesno(translate(30296), translate(30297))
-        question_cache_images = xbmcgui.Dialog().yesno(translate(30299), translate(30300))
+        question_delete_unused = xbmcgui.Dialog().yesno(translate_string(30296), translate_string(30297))
+        question_cache_images = xbmcgui.Dialog().yesno(translate_string(30299), translate_string(30300))
 
         delete_canceled = False
         # now do work - delete unused
         if question_delete_unused:
             delete_pdialog = xbmcgui.DialogProgress()
-            delete_pdialog.create(translate(30298), "")
+            delete_pdialog.create(translate_string(30298), "")
             index = 0
 
             params = {"properties": ["url"]}
@@ -171,9 +171,9 @@ class CacheArtwork(threading.Thread):
                         delete_canceled = True
                         break
 
-                result_report.append(translate(30385) + str(len(textures)))
-                result_report.append(translate(30386) + str(len(unused_texture_ids)))
-                result_report.append(translate(30387) + str(index))
+                result_report.append(translate_string(30385) + str(len(textures)))
+                result_report.append(translate_string(30386) + str(len(unused_texture_ids)))
+                result_report.append(translate_string(30387) + str(index))
 
             del textures
             del jellyfin_texture_urls
@@ -187,7 +187,7 @@ class CacheArtwork(threading.Thread):
         # now do work - cache images
         if question_cache_images:
             cache_pdialog = xbmcgui.DialogProgress()
-            cache_pdialog.create(translate(30301), "")
+            cache_pdialog.create(translate_string(30301), "")
             cache_report = self.cache_artwork(cache_pdialog)
             cache_pdialog.close()
             del cache_pdialog
@@ -196,12 +196,12 @@ class CacheArtwork(threading.Thread):
 
         if len(result_report) > 0:
             msg = "\r\n".join(result_report)
-            xbmcgui.Dialog().textviewer(translate(30125), msg, usemono=True)
+            xbmcgui.Dialog().textviewer(translate_string(30125), msg, usemono=True)
 
     def cache_artwork_background(self):
         log.debug("cache_artwork_background")
         dp = xbmcgui.DialogProgressBG()
-        dp.create(translate(30301), "")
+        dp.create(translate_string(30301), "")
         result_text = None
         try:
             result_text = self.cache_artwork(dp)
@@ -238,7 +238,7 @@ class CacheArtwork(threading.Thread):
         if self.stop_all_activity:
             return None
 
-        progress.update(0, translate(30359))
+        progress.update(0, translate_string(30359))
 
         texture_urls = set()
 
@@ -268,7 +268,7 @@ class CacheArtwork(threading.Thread):
         # get the password
         xbmc_password = get_value("services.webserverpassword")
 
-        progress.update(0, translate(30356))
+        progress.update(0, translate_string(30356))
 
         params = {"properties": ["url"]}
         json_result = JsonRpc('Textures.GetTextures').execute(params)
@@ -278,7 +278,7 @@ class CacheArtwork(threading.Thread):
         if self.stop_all_activity:
             return
 
-        progress.update(0, translate(30357))
+        progress.update(0, translate_string(30357))
 
         texture_urls = set()
         for texture in textures:
@@ -296,7 +296,7 @@ class CacheArtwork(threading.Thread):
         if self.stop_all_activity:
             return
 
-        progress.update(0, translate(30358))
+        progress.update(0, translate_string(30358))
 
         jellyfin_texture_urls = self.get_jellyfin_artwork(progress)
         if jellyfin_texture_urls is None:
@@ -347,7 +347,7 @@ class CacheArtwork(threading.Thread):
                 break
 
         result_report = []
-        result_report.append(translate(30302) + str(len(texture_urls)))
-        result_report.append(translate(30303) + str(len(missing_texture_urls)))
-        result_report.append(translate(30304) + str(count_done))
+        result_report.append(translate_string(30302) + str(len(texture_urls)))
+        result_report.append(translate_string(30303) + str(len(missing_texture_urls)))
+        result_report.append(translate_string(30304) + str(count_done))
         return result_report

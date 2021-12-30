@@ -19,7 +19,7 @@ from six import ensure_text
 from .kodi_utils import HomeWindow
 from .loghandler import LazyLogger
 from .tracking import timer
-from .utils import translate, get_device_id, get_version
+from .utils import get_device_id, get_version
 
 log = LazyLogger(__name__)
 

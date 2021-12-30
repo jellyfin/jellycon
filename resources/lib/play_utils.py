@@ -14,7 +14,7 @@ from six.moves.urllib.parse import urlparse
 from .loghandler import LazyLogger
 from .downloadutils import DownloadUtils
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, translate, get_device_id
+from .utils import send_event_notification, convert_size, get_device_id
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art

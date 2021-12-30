@@ -4,7 +4,7 @@ import xbmc
 import xbmcgui
 
 from .loghandler import LazyLogger
-from .utils import translate
+from .utils import translate_string
 
 log = LazyLogger(__name__)
 
@@ -70,7 +70,7 @@ class ResumeDialog(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.action_exitkeys_id = [10, 13]
         self.getControl(3010).setLabel(self.resumeTimeStamp)
-        self.getControl(3011).setLabel(translate(30237))
+        self.getControl(3011).setLabel(translate_string(30237))
 
     def onFocus(self, controlId):
         pass

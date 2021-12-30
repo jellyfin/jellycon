@@ -9,7 +9,7 @@ import xbmcgui
 
 from .loghandler import LazyLogger
 from .datamanager import DataManager
-from .utils import translate
+from .utils import translate_string
 
 log = LazyLogger(__name__)
 dataManager = DataManager()
@@ -19,11 +19,11 @@ icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png'
 
 
 def not_found(content_string):
-    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(translate(30305), content_string), icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(translate_string(30305), content_string), icon=icon, sound=False)
 
 
 def playback_starting(content_string):
-    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(translate(30306), content_string), icon=icon, sound=False)
+    xbmcgui.Dialog().notification('JellyCon', '{}: {}'.format(translate_string(30306), content_string), icon=icon, sound=False)
 
 
 def search(item_type, query):

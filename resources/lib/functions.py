@@ -16,7 +16,7 @@ import xbmcaddon
 import xbmc
 
 from .downloadutils import DownloadUtils, load_user_details
-from .utils import send_event_notification, convert_size, translate, get_version
+from .utils import send_event_notification, convert_size, translate_string, get_version
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_cached_server_data
@@ -296,15 +296,15 @@ def delete(item_id):
     final_name += item_name
 
     if not item.get("CanDelete", False):
-        xbmcgui.Dialog().ok(translate(30135), translate(30417), final_name)
+        xbmcgui.Dialog().ok(translate_string(30135), translate_string(30417), final_name)
         return
 
-    return_value = xbmcgui.Dialog().yesno(translate(30091), '{}\n{}'.format(final_name, translate(30092)))
+    return_value = xbmcgui.Dialog().yesno(translate_string(30091), '{}\n{}'.format(final_name, translate_string(30092)))
     if return_value:
         log.debug('Deleting Item: {0}'.format(item_id))
         url = '{server}/Items/' + item_id
         progress = xbmcgui.DialogProgress()
-        progress.create(translate(30052), translate(30053))
+        progress.create(translate_string(30052), translate_string(30053))
         downloadUtils.download_url(url, method="DELETE")
         progress.close()
         check_for_new_content()
@@ -355,37 +355,37 @@ def show_menu(params):
     action_items = []
 
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio", "TvChannel", "Program"]:
-        li = xbmcgui.ListItem(translate(30314))
+        li = xbmcgui.ListItem(translate_string(30314))
         li.setProperty('menu_id', 'play')
         action_items.append(li)
 
     if result["Type"] in ["Season", "MusicAlbum", "Playlist"]:
-        li = xbmcgui.ListItem(translate(30317))
+        li = xbmcgui.ListItem(translate_string(30317))
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
     if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program"]:
-        li = xbmcgui.ListItem(translate(30275))
+        li = xbmcgui.ListItem(translate_string(30275))
         li.setProperty('menu_id', 'transcode')
         action_items.append(li)
 
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio"]:
-        li = xbmcgui.ListItem(translate(30402))
+        li = xbmcgui.ListItem(translate_string(30402))
         li.setProperty('menu_id', 'add_to_playlist')
         action_items.append(li)
 
     if result["Type"] in ("Movie", "Series"):
-        li = xbmcgui.ListItem(translate(30307))
+        li = xbmcgui.ListItem(translate_string(30307))
         li.setProperty('menu_id', 'play_trailer')
         action_items.append(li)
 
     if result["Type"] == "Episode" and result["ParentId"] is not None:
-        li = xbmcgui.ListItem(translate(30327))
+        li = xbmcgui.ListItem(translate_string(30327))
         li.setProperty('menu_id', 'view_season')
         action_items.append(li)
 
     if result["Type"] in ("Series", "Season", "Episode"):
-        li = xbmcgui.ListItem(translate(30354))
+        li = xbmcgui.ListItem(translate_string(30354))
         li.setProperty('menu_id', 'view_series')
         action_items.append(li)
 
@@ -399,26 +399,26 @@ def show_menu(params):
         progress = user_data.get("PlaybackPositionTicks", 0) != 0
         played = user_data.get("Played", False)
         if not played or progress:
-            li = xbmcgui.ListItem(translate(30270))
+            li = xbmcgui.ListItem(translate_string(30270))
             li.setProperty('menu_id', 'mark_watched')
             action_items.append(li)
         if played or progress:
-            li = xbmcgui.ListItem(translate(30271))
+            li = xbmcgui.ListItem(translate_string(30271))
             li.setProperty('menu_id', 'mark_unwatched')
             action_items.append(li)
 
         if user_data.get("IsFavorite", False) is False:
-            li = xbmcgui.ListItem(translate(30272))
+            li = xbmcgui.ListItem(translate_string(30272))
             li.setProperty('menu_id', 'jellyfin_set_favorite')
             action_items.append(li)
         else:
-            li = xbmcgui.ListItem(translate(30273))
+            li = xbmcgui.ListItem(translate_string(30273))
             li.setProperty('menu_id', 'jellyfin_unset_favorite')
             action_items.append(li)
 
     can_delete = result.get("CanDelete", False)
     if can_delete:
-        li = xbmcgui.ListItem(translate(30274))
+        li = xbmcgui.ListItem(translate_string(30274))
         li.setProperty('menu_id', 'delete')
         action_items.append(li)
 
@@ -428,20 +428,20 @@ def show_menu(params):
         li.setProperty('menu_id', 'safe_delete')
         action_items.append(li)
 
-    li = xbmcgui.ListItem(translate(30398))
+    li = xbmcgui.ListItem(translate_string(30398))
     li.setProperty('menu_id', 'refresh_server')
     action_items.append(li)
 
-    li = xbmcgui.ListItem(translate(30281))
+    li = xbmcgui.ListItem(translate_string(30281))
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 
     if result["Type"] in ["Movie", "Series"]:
-        li = xbmcgui.ListItem(translate(30399))
+        li = xbmcgui.ListItem(translate_string(30399))
         li.setProperty('menu_id', 'hide')
         action_items.append(li)
 
-    li = xbmcgui.ListItem(translate(30401))
+    li = xbmcgui.ListItem(translate_string(30401))
     li.setProperty('menu_id', 'info')
     action_items.append(li)
 
@@ -668,7 +668,7 @@ def populate_listitem(item_id):
     result = downloadUtils.download_url(url)
     log.debug("populate_listitem item info: {0}".format(result))
 
-    item_title = result.get("Name", translate(30280))
+    item_title = result.get("Name", translate_string(30280))
 
     list_item = xbmcgui.ListItem(label=item_title)
 
@@ -775,13 +775,13 @@ def search_results(params):
     item_type = item_type.lower()
 
     if item_type == 'movie':
-        heading_type = translate(30231)
+        heading_type = translate_string(30231)
         content_type = 'movies'
     elif item_type == 'series':
-        heading_type = translate(30229)
+        heading_type = translate_string(30229)
         content_type = 'tvshows'
     elif item_type == 'episode':
-        heading_type = translate(30235)
+        heading_type = translate_string(30235)
         content_type = 'episodes'
         params["name_format"] = "Episode|episode_name_format"
     elif item_type == "music" or item_type == "audio" or item_type == "musicalbum":
@@ -800,7 +800,7 @@ def search_results(params):
         home_window = HomeWindow()
         last_search = home_window.get_property("last_search")
         kb = xbmc.Keyboard()
-        kb.setHeading(heading_type.capitalize() + ' ' + translate(30246).lower())
+        kb.setHeading(heading_type.capitalize() + ' ' + translate_string(30246).lower())
         kb.setDefault(last_search)
         kb.doModal()
 
@@ -827,8 +827,8 @@ def search_results(params):
     progress = None
     if settings.getSetting('showLoadProgress') == "true":
         progress = xbmcgui.DialogProgress()
-        progress.create(translate(30112))
-        progress.update(0, translate(30113))
+        progress.create(translate_string(30112))
+        progress.update(0, translate_string(30113))
 
     # what type of search
     if item_type == "person":
@@ -901,7 +901,7 @@ def search_results(params):
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     if progress is not None:
-        progress.update(100, translate(30125))
+        progress.update(100, translate_string(30125))
         progress.close()
 
 
@@ -1012,7 +1012,7 @@ def play_item_trailer(item_id):
         trailer_text.append(name)
 
     dialog = xbmcgui.Dialog()
-    resp = dialog.select(translate(30308), trailer_text)
+    resp = dialog.select(translate_string(30308), trailer_text)
     if resp > -1:
         trailer = trailer_list[resp]
         log.debug("SelectedTrailer: {0}".format(trailer))

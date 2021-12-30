@@ -14,7 +14,6 @@ from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .tracking import timer
 from .filelock import FileLock
-from .utils import translate
 
 import xbmc
 import xbmcaddon

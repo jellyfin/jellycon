@@ -105,7 +105,7 @@ def convert_size(size_bytes):
     return "%s %s" % (s, size_name[i])
 
 
-def translate(string_id):
+def translate_string(string_id):
     try:
         addon = xbmcaddon.Addon()
         return py2_encode(addon.getLocalizedString(string_id))
