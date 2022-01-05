@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-12-26 09:05+0000\n"
-"Last-Translator: WWWesten <wwwesten@gmail.com>\n"
+"PO-Revision-Date: 2022-01-06 21:13+0000\n"
+"Last-Translator: LowHigh <lowhigh.ytb@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.5.2\n"
+"X-Generator: Weblate 4.10.1\n"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
@@ -102,3 +102,53 @@ msgstr "Avancés"
 msgctxt "#30021"
 msgid "Show all episodes item"
 msgstr "Afficher tous les épisodes"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Options de transcodage"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Chemin d'accès du fichier"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Impossible de se connecter au serveur"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Erreur d'URL"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Sélectionner l'utilisateur"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr ""
+"Avertissement : Cette action va supprimer tous les fichier multimédias "
+"serveur."
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Sélectionner l'adresse du serveur"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Sélectionner le serveur"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Erreur"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Services"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interface"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Confirmer la suppression ?"
