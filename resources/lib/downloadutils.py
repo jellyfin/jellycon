@@ -6,8 +6,6 @@ import xbmcaddon
 
 import requests
 import hashlib
-import ssl
-import gzip
 import json
 from six.moves.urllib.parse import urlparse
 from base64 import b64encode
@@ -17,10 +15,9 @@ from kodi_six.utils import py2_decode
 from six import ensure_text
 
 from .kodi_utils import HomeWindow
-from .clientinfo import ClientInformation
 from .loghandler import LazyLogger
-from .translation import string_load
 from .tracking import timer
+from .utils import get_device_id, get_version, translate_string
 
 log = LazyLogger(__name__)
 
@@ -342,7 +339,7 @@ class DownloadUtils:
     def get_server(self):
         settings = xbmcaddon.Addon()
 
-        #For migration from storing URL parts to just one URL
+        # For migration from storing URL parts to just one URL
         if settings.getSetting('ipaddress') != "" and settings.getSetting('ipaddress') != "&lt;none&gt;":
             log.info("Migrating to new server url storage")
             url = ("http://" if settings.getSetting('protocol') == "0" else "https://") + settings.getSetting('ipaddress') + ":" + settings.getSetting('port')
@@ -431,7 +428,6 @@ class DownloadUtils:
 
         return artwork
 
-
     def image_url(self, item_id, art_type, index, width, height, image_tag, server):
 
         # test imageTag e3ab56fe27d389446754d0fb04910a34
@@ -506,8 +502,8 @@ class DownloadUtils:
         if secure or not userid:
             auth_ok = self.authenticate()
             if auth_ok == "":
-                xbmcgui.Dialog().notification(string_load(30316),
-                                              string_load(30044),
+                xbmcgui.Dialog().notification(translate_string(30316),
+                                              translate_string(30044),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")
                 return ""
             if not userid:
@@ -517,8 +513,8 @@ class DownloadUtils:
             user_image = 'DefaultUser.png'
 
         if userid == "":
-            xbmcgui.Dialog().notification(string_load(30316),
-                                          string_load(30045),
+            xbmcgui.Dialog().notification(translate_string(30316),
+                                          translate_string(30045),
                                           icon="special://home/addons/plugin.video.jellycon/icon.png")
 
         log.debug("userid: {0}".format(userid))
@@ -573,10 +569,9 @@ class DownloadUtils:
             return ""
 
     def get_auth_header(self, authenticate=True):
-        client_info = ClientInformation()
-        txt_mac = client_info.get_device_id()
-        version = client_info.get_version()
-        client = client_info.get_client()
+        txt_mac = get_device_id()
+        version = get_version()
+        client = 'Kodi JellyCon'
 
         settings = xbmcaddon.Addon()
         device_name = settings.getSetting('deviceName')
@@ -668,7 +663,7 @@ class DownloadUtils:
                 user_and_pass = b64encode(b"%s:%s" % (user_name, user_password)).decode("ascii")
                 head["Authorization"] = 'Basic %s' % user_and_pass
 
-            head["User-Agent"] = "JellyCon-" + ClientInformation().get_version()
+            head["User-Agent"] = "JellyCon-" + get_version()
 
             http_request = getattr(requests, method.lower())
 
@@ -686,7 +681,6 @@ class DownloadUtils:
                 data = http_request(url, data=post_body, headers=head)
             else:
                 data = http_request(url, headers=head)
-
 
             if data.status_code == 200:
 
@@ -707,8 +701,8 @@ class DownloadUtils:
 
                 log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
-                    xbmcgui.Dialog().notification(string_load(30316),
-                                                  '{}: {}'.format(string_load(30200), data.content),
+                    xbmcgui.Dialog().notification(translate_string(30316),
+                                                  '{}: {}'.format(translate_string(30200), data.content),
                                                   icon="special://home/addons/plugin.video.jellycon/icon.png")
             try:
                 result = data.json()
@@ -719,6 +713,6 @@ class DownloadUtils:
             log.error("{0}".format(format_exc()))
             log.error("Unable to connect to {0} : {1}".format(server, msg))
             if not suppress:
-                xbmcgui.Dialog().notification(string_load(30316),
+                xbmcgui.Dialog().notification(translate_string(30316),
                                               str(msg),
                                               icon="special://home/addons/plugin.video.jellycon/icon.png")

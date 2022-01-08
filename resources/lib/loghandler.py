@@ -10,7 +10,6 @@ import traceback
 
 from six import ensure_text
 from kodi_six import xbmc, xbmcaddon
-from six.moves.urllib.parse import urlparse
 
 ##################################################################################################
 

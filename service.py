@@ -15,9 +15,8 @@ from resources.lib.kodi_utils import HomeWindow
 from resources.lib.widgets import set_background_image, set_random_movies
 from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
-from resources.lib.context_monitor import ContextMonitor
 from resources.lib.server_detect import check_server, check_safe_delete_available, check_connection_speed
-from resources.lib.library_change_monitor import LibraryChangeMonitor
+from resources.lib.monitors import LibraryChangeMonitor, ContextMonitor
 from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread

@@ -1,7 +1,6 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-from collections import defaultdict
 import threading
 import hashlib
 import os
@@ -12,9 +11,9 @@ from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
-from .translation import string_load
 from .tracking import timer
 from .filelock import FileLock
+from .utils import translate_string
 
 import xbmc
 import xbmcaddon
@@ -268,8 +267,8 @@ def clear_cached_server_data():
             del_count += 1
 
     log.debug('Deleted {} files'.format(del_count))
-    msg = string_load(30394)
-    xbmcgui.Dialog().ok(string_load(30393), msg)
+    msg = translate_string(30394)
+    xbmcgui.Dialog().ok(translate_string(30393), msg)
 
 
 def clear_old_cache_data():

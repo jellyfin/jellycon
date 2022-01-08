@@ -1,16 +1,13 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import json
 import os
 import threading
 
 import xbmc
-import xbmcgui
 import xbmcaddon
 
 from .loghandler import LazyLogger
-from .play_utils import send_event_notification
-from .kodi_utils import HomeWindow
+from .dialogs import PlayNextDialog
 
 log = LazyLogger(__name__)
 
@@ -97,67 +94,3 @@ class PlayNextService(threading.Thread):
     def stop_servcie(self):
         log.debug("PlayNextService Stop Called")
         self.stop_thread = True
-
-
-class PlayNextDialog(xbmcgui.WindowXMLDialog):
-
-    action_exitkeys_id = None
-    episode_info = None
-    play_called = False
-
-    def __init__(self, *args, **kwargs):
-        log.debug("PlayNextDialog: __init__")
-        xbmcgui.WindowXML.__init__(self, *args, **kwargs)
-
-    def onInit(self):
-        log.debug("PlayNextDialog: onInit")
-        self.action_exitkeys_id = [10, 13]
-
-        index = self.episode_info.get("IndexNumber", -1)
-        series_name = self.episode_info.get("SeriesName")
-        next_epp_name = "Episode %02d - (%s)" % (index, self.episode_info.get("Name", "n/a"))
-
-        series_label = self.getControl(3011)
-        series_label.setLabel(series_name)
-
-        series_label = self.getControl(3012)
-        series_label.setLabel(next_epp_name)
-
-    def onFocus(self, control_id):
-        pass
-
-    def doAction(self, action_id):
-        pass
-
-    def onMessage(self, message):
-        log.debug("PlayNextDialog: onMessage: {0}".format(message))
-
-    def onAction(self, action):
-
-        if action.getId() == 10:  # ACTION_PREVIOUS_MENU
-            self.close()
-        elif action.getId() == 92:  # ACTION_NAV_BACK
-            self.close()
-        else:
-            log.debug("PlayNextDialog: onAction: {0}".format(action.getId()))
-
-    def onClick(self, control_id):
-        if control_id == 3013:
-            log.debug("PlayNextDialog: Play Next Episode")
-            self.play_called
-            self.close()
-            next_item_id = self.episode_info.get("Id")
-            log.debug("Playing Next Episode: {0}".format(next_item_id))
-            play_info = {}
-            play_info["item_id"] = next_item_id
-            play_info["auto_resume"] = "-1"
-            play_info["force_transcode"] = False
-            send_event_notification("jellycon_play_action", play_info)
-        elif control_id == 3014:
-            self.close()
-
-    def set_episode_info(self, info):
-        self.episode_info = info
-
-    def get_play_called(self):
-        return self.play_called

@@ -1,12 +1,11 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import xbmc
-import xbmcaddon
 import xbmcgui
 
 from .loghandler import LazyLogger
 
 log = LazyLogger(__name__)
+
 
 class PictureViewer(xbmcgui.WindowXMLDialog):
     picture_url = None
