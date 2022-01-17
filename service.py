@@ -8,7 +8,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from resources.lib.downloadutils import DownloadUtils, save_user_details
+from resources.lib.downloadutils import DownloadUtils
 from resources.lib.loghandler import LazyLogger
 from resources.lib.play_utils import Service, PlaybackService, send_progress
 from resources.lib.kodi_utils import HomeWindow

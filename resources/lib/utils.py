@@ -12,11 +12,11 @@ import random
 import json
 import time
 import math
+import os
 from datetime import datetime
-import calendar
 import re
 from uuid import uuid4
-from six import ensure_text, ensure_binary
+from six import ensure_text, ensure_binary, text_type
 from six.moves.urllib.parse import urlencode
 
 from .loghandler import LazyLogger
@@ -80,18 +80,15 @@ def send_event_notification(method, data=None, hexlify=False):
 
 def datetime_from_string(time_string):
 
+    # Builtin python library can't handle ISO-8601 well. Make it compatible
     if time_string[-1:] == "Z":
         time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
     elif time_string[-6:] == "+00:00":
         time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)
-    log.debug("New Time String : {0}".format(time_string))
 
-    start_time = time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
-    dt = datetime(*(start_time[0:6]))
-    timestamp = calendar.timegm(dt.timetuple())
-    local_dt = datetime.fromtimestamp(timestamp)
-    local_dt.replace(microsecond=dt.microsecond)
-    return local_dt
+    dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
+
+    return dt
 
 
 def convert_size(size_bytes):
@@ -128,8 +125,7 @@ def get_device_id():
     guid.close()
 
     if not client_id:
-        # Needs to be captilized for backwards compat
-        client_id = uuid4().hex.upper()
+        client_id = uuid4().hex
         log.debug("Generating a new guid: {0}".format(client_id))
         guid = xbmcvfs.File(jellyfin_guid_path, 'w')
         guid.write(client_id)
@@ -146,3 +142,68 @@ def get_version():
     addon = xbmcaddon.Addon()
     version = addon.getAddonInfo("version")
     return version
+
+
+def save_user_details(user_name, user_id, token):
+    settings = xbmcaddon.Addon()
+    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    addon_data = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+
+    # Save to a config file for reference later if desired
+    if save_user_to_settings:
+        try:
+            with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
+                auth_data = json.load(infile)
+        except:
+            # File doesn't exist or is empty
+            auth_data = {}
+
+        auth_data[user_name] = {
+            'user_id': user_id,
+            'token': token
+        }
+
+        with open(os.path.join(addon_data, 'auth.json'), 'wb') as outfile:
+            data = json.dumps(auth_data, sort_keys=True, indent=4, ensure_ascii=False)
+            if isinstance(data, text_type):
+                data = data.encode('utf-8')
+            outfile.write(data)
+
+    # Make the username available for easy lookup
+    window = HomeWindow()
+    settings.setSetting('username', user_name)
+    window.set_property('user_name', user_name)
+
+
+def load_user_details():
+    settings = xbmcaddon.Addon()
+    window = HomeWindow()
+    # Check current variables first, then check settings
+    user_name = window.get_property('user_name')
+    if not user_name:
+        user_name = settings.getSetting('username')
+        #settings_user_name = settings.getSetting('username')
+    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    addon_data = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+
+    if save_user_to_settings:
+        try:
+            with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
+                auth_data = json.load(infile)
+        except:
+            # File doesn't exist yet
+            return {}
+
+        user_data = auth_data.get(user_name, {})
+        user_id = user_data.get('user_id')
+        auth_token = user_data.get('token')
+
+        # Payload to return to calling function
+        user_details = {}
+        user_details['user_name'] = user_name
+        user_details['user_id'] = user_id
+        user_details['token'] = auth_token
+        return user_details
+
+    else:
+        return {}

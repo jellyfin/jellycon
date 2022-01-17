@@ -5,50 +5,19 @@ import xbmcgui
 import xbmcaddon
 
 import requests
-import hashlib
 import json
 from six.moves.urllib.parse import urlparse
 from base64 import b64encode
 from collections import defaultdict
 from traceback import format_exc
 from kodi_six.utils import py2_decode
-from six import ensure_text
 
 from .kodi_utils import HomeWindow
 from .loghandler import LazyLogger
 from .tracking import timer
-from .utils import get_device_id, get_version, translate_string
+from .utils import get_device_id, get_version, translate_string, load_user_details, save_user_details
 
 log = LazyLogger(__name__)
-
-
-def save_user_details(settings, user_name, user_password):
-    save_user_to_settings = settings.getSetting("save_user_to_settings") == "true"
-    if save_user_to_settings:
-        settings.setSetting("username", user_name)
-        settings.setSetting("password", user_password)
-    else:
-        settings.setSetting("username", "")
-        settings.setSetting("password", "")
-        home_window = HomeWindow()
-        home_window.set_property("username", user_name)
-        home_window.set_property("password", user_password)
-
-
-def load_user_details(settings):
-    save_user_to_settings = settings.getSetting("save_user_to_settings") == "true"
-    if save_user_to_settings:
-        user_name = settings.getSetting("username")
-        user_password = settings.getSetting("password")
-    else:
-        home_window = HomeWindow()
-        user_name = home_window.get_property("username")
-        user_password = home_window.get_property("password")
-
-    user_details = {}
-    user_details["username"] = user_name
-    user_details["password"] = user_password
-    return user_details
 
 
 def get_details_string():
@@ -457,116 +426,51 @@ class DownloadUtils:
 
         return artwork
 
+
     def get_user_id(self):
+        user_details = load_user_details()
+        user_id = user_details.get('user_id', '')
+        return user_id
 
-        window = HomeWindow()
-        userid = window.get_property("userid")
-        user_image = window.get_property("userimage")
-
-        if userid:
-            log.debug("JellyCon DownloadUtils -> Returning saved UserID: {0}".format(userid))
-            return userid
-
-        settings = xbmcaddon.Addon()
-        user_details = load_user_details(settings)
-        user_name = user_details.get("username", "")
-
-        if not user_name:
-            return ""
-        log.debug("Looking for user name: {0}".format(user_name))
-
-        try:
-            result = self.download_url("{server}/Users/Public?format=json", suppress=True, authenticate=False)
-        except Exception as msg:
-            log.error("Get User unable to connect: {0}".format(msg))
-            return ""
-
-        log.debug("GETUSER_JSONDATA_01: {0}".format(py2_decode(result)))
-
-        if not result:
-            return ""
-
-        log.debug("GETUSER_JSONDATA_02: {0}".format(result))
-
-        secure = False
-        for user in result:
-            if user.get("Name") == ensure_text(user_name, "utf-8"):
-                userid = user.get("Id")
-                user_image = self.get_user_artwork(user, 'Primary')
-                log.debug("Username Found: {0}".format(user.get("Name")))
-                if user.get("HasPassword", False):
-                    secure = True
-                    log.debug("Username Is Secure (HasPassword=True)")
-                break
-
-        if secure or not userid:
-            auth_ok = self.authenticate()
-            if auth_ok == "":
-                xbmcgui.Dialog().notification(translate_string(30316),
-                                              translate_string(30044),
-                                              icon="special://home/addons/plugin.video.jellycon/icon.png")
-                return ""
-            if not userid:
-                userid = window.get_property("userid")
-
-        if userid and not user_image:
-            user_image = 'DefaultUser.png'
-
-        if userid == "":
-            xbmcgui.Dialog().notification(translate_string(30316),
-                                          translate_string(30045),
-                                          icon="special://home/addons/plugin.video.jellycon/icon.png")
-
-        log.debug("userid: {0}".format(userid))
-
-        window.set_property("userid", userid)
-        window.set_property("userimage", user_image)
-
-        return userid
 
     def authenticate(self):
-
         window = HomeWindow()
+        user_name = window.get_property('user_name')
+        user_details = load_user_details()
 
-        token = window.get_property("AccessToken")
-        if token is not None and token != "":
-            log.debug("JellyCon DownloadUtils -> Returning saved AccessToken: {0}".format(token))
-            return token
+        if user_details.get('token', ''):
+            log.debug("JellyCon DownloadUtils -> Returning saved AccessToken")
+            # Resave credentials to update settings file
+            save_user_details(user_details.get('user_name'),
+                              user_details.get('user_id'),
+                              user_details.get('token'))
+            return user_details.get('token')
 
         settings = xbmcaddon.Addon()
         server_address = settings.getSetting("server_address")
 
-        url = "{server}/Users/AuthenticateByName?format=json"
+        url = "{server}/Users/AuthenticateByName"
 
-        user_details = load_user_details(settings)
-        user_name = user_details.get("username", "")
-        pwd_text = user_details.get("password", "")
-
-        message_data = {'username': user_name, 'pw': pwd_text}
+        '''
+        TODO: Make the authenticate function operate with arguments during
+        network rework.  Password could be leaked like this, but it's better
+        than it was previously
+        '''
+        password = window.get_property('password')
+        window.clear_property('password')
+        message_data = {'username': user_name, 'pw': password}
 
         result = self.download_url(url, post_body=message_data, method="POST", suppress=True, authenticate=False)
-        log.debug("AuthenticateByName: {0}".format(result))
 
-        access_token = None
-        userid = None
         access_token = result.get("AccessToken")
         userid = result["User"].get("Id")
 
         if access_token is not None:
-            log.debug("User Authenticated: {0}".format(access_token))
-            log.debug("User Id: {0}".format(userid))
-            window.set_property("AccessToken", access_token)
-            window.set_property("userid", userid)
-
+            log.debug('User authenticated successfully')
+            save_user_details(user_name, userid, access_token)
             self.post_capabilities()
-
-            return access_token
         else:
             log.debug("User NOT Authenticated")
-            window.set_property("AccessToken", "")
-            window.set_property("userid", "")
-            window.set_property("userimage", "")
-            return ""
 
     def get_auth_header(self, authenticate=True):
         txt_mac = get_device_id()
@@ -574,6 +478,7 @@ class DownloadUtils:
         client = 'Kodi JellyCon'
 
         settings = xbmcaddon.Addon()
+        username = settings.getSetting('username')
         device_name = settings.getSetting('deviceName')
         # remove none ascii chars
         device_name = py2_decode(device_name)
@@ -587,12 +492,12 @@ class DownloadUtils:
         headers["Accept-Charset"] = "UTF-8,*"
 
         if authenticate is False:
-            auth_string = "MediaBrowser Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            auth_string = 'MediaBrowser Client="{}",Device="{}",DeviceId="{}{}",Version="{}'.format(client, device_name, txt_mac, username, version)
             headers['X-Emby-Authorization'] = auth_string
             return headers
         else:
             userid = self.get_user_id()
-            auth_string = "MediaBrowser UserId=\"" + userid + "\",Client=\"" + client + "\",Device=\"" + device_name + "\",DeviceId=\"" + txt_mac + "\",Version=\"" + version + "\""
+            auth_string = 'MediaBrowser UserId="{}",Client="{}",Device="{}",DeviceId="{}{}",Version="{}"'.format(userid, client, device_name, txt_mac, username, version)
             headers['X-Emby-Authorization'] = auth_string
 
             auth_token = self.authenticate()
@@ -606,9 +511,11 @@ class DownloadUtils:
     def download_url(self, url, suppress=False, post_body=None, method="GET", authenticate=True, headers=None):
         log.debug("downloadUrl")
 
+        home_window = HomeWindow()
         settings = xbmcaddon.Addon()
-        user_details = load_user_details(settings)
-        username = user_details.get("username", "")
+        user_details = load_user_details()
+        username = user_details.get('user_name')
+        user_id = user_details.get('user_id', '')
         server = None
 
         http_timeout = int(settings.getSetting("http_timeout"))
@@ -628,10 +535,7 @@ class DownloadUtils:
             url = url.replace("{server}", server)
 
         if url.find("{userid}") != -1:
-            userid = self.get_user_id()
-            if not userid:
-                return {}
-            url = url.replace("{userid}", userid)
+            url = url.replace("{userid}", user_id)
 
         if url.find("{ItemLimit}") != -1:
             show_x_filtered_items = settings.getSetting("show_x_filtered_items")
@@ -642,7 +546,6 @@ class DownloadUtils:
             url = url.replace("{field_filters}", filter_string)
 
         if url.find("{random_movies}") != -1:
-            home_window = HomeWindow()
             random_movies = home_window.get_property("random-movies")
             if not random_movies:
                 return {}
@@ -692,12 +595,8 @@ class DownloadUtils:
 
                 if data.status_code == 401:
                     # remove any saved password
-                    m = hashlib.md5()
-                    m.update(username)
-                    hashed_username = m.hexdigest()
-                    log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}".format(hashed_username))
-                    settings.setSetting("saved_user_password_" + hashed_username, "")
-                    save_user_details(settings, "", "")
+                    log.error("HTTP response error 401 auth error, removing any saved passwords for user: {0}".format(username))
+                    save_user_details(username, user_id, '')
 
                 log.error("HTTP response error for {0}: {1} {2}".format(url, data.status_code, data.content))
                 if suppress is False:
