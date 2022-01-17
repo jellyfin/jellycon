@@ -278,6 +278,7 @@ def check_server(force=False, change_user=False, notify=False):
                     return
 
             # Ask for password if user has one
+            password = ''
             if secured and not user_details.get('token'):
                 kb = xbmc.Keyboard()
                 kb.setHeading(translate_string(30006))
@@ -285,8 +286,6 @@ def check_server(force=False, change_user=False, notify=False):
                 kb.doModal()
                 if kb.isConfirmed():
                     password = kb.getText()
-            else:
-                password = ''
 
             # TODO: Make the authenticate function operate normally.  Network rework
             home_window.set_property('password', password)
