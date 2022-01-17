@@ -13,6 +13,7 @@ import json
 import time
 import math
 import os
+import hashlib
 from datetime import datetime
 import re
 from uuid import uuid4
@@ -113,10 +114,12 @@ def translate_string(string_id):
 def get_device_id():
 
     window = HomeWindow()
+    username = window.get_property('username')
     client_id = window.get_property("client_id")
+    hashed_name = hashlib.md5(username.encode()).hexdigest()
 
     if client_id:
-        return client_id
+        return '{}-{}'.format(client_id, hashed_name)
 
     jellyfin_guid_path = py2_decode(xbmc.translatePath("special://temp/jellycon_guid"))
     log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
@@ -135,7 +138,7 @@ def get_device_id():
         log.debug("jellyfin_client_id: {0}".format(client_id))
 
     window.set_property("client_id", client_id)
-    return client_id
+    return '{}-{}'.format(client_id, hashed_name)
 
 
 def get_version():

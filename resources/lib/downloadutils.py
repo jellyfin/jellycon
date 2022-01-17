@@ -6,6 +6,7 @@ import xbmcaddon
 
 import requests
 import json
+import hashlib
 from six.moves.urllib.parse import urlparse
 from base64 import b64encode
 from collections import defaultdict
@@ -473,12 +474,11 @@ class DownloadUtils:
             log.debug("User NOT Authenticated")
 
     def get_auth_header(self, authenticate=True):
-        txt_mac = get_device_id()
+        device_id = get_device_id()
         version = get_version()
         client = 'Kodi JellyCon'
 
         settings = xbmcaddon.Addon()
-        username = settings.getSetting('username')
         device_name = settings.getSetting('deviceName')
         # remove none ascii chars
         device_name = py2_decode(device_name)
@@ -492,12 +492,12 @@ class DownloadUtils:
         headers["Accept-Charset"] = "UTF-8,*"
 
         if authenticate is False:
-            auth_string = 'MediaBrowser Client="{}",Device="{}",DeviceId="{}{}",Version="{}'.format(client, device_name, txt_mac, username, version)
+            auth_string = 'MediaBrowser Client="{}",Device="{}",DeviceId="{}",Version="{}'.format(client, device_name, device_id, version)
             headers['X-Emby-Authorization'] = auth_string
             return headers
         else:
             userid = self.get_user_id()
-            auth_string = 'MediaBrowser UserId="{}",Client="{}",Device="{}",DeviceId="{}{}",Version="{}"'.format(userid, client, device_name, txt_mac, username, version)
+            auth_string = 'MediaBrowser UserId="{}",Client="{}",Device="{}",DeviceId="{}",Version="{}"'.format(userid, client, device_name, device_id, version)
             headers['X-Emby-Authorization'] = auth_string
 
             auth_token = self.authenticate()
