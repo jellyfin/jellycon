@@ -6,7 +6,6 @@ import xbmcaddon
 
 import requests
 import json
-import hashlib
 from six.moves.urllib.parse import urlparse
 from base64 import b64encode
 from collections import defaultdict
@@ -448,7 +447,6 @@ class DownloadUtils:
             return user_details.get('token')
 
         settings = xbmcaddon.Addon()
-        server_address = settings.getSetting("server_address")
 
         url = "{server}/Users/AuthenticateByName"
 
