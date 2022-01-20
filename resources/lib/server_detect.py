@@ -5,19 +5,16 @@ import socket
 import json
 import requests
 import time
-import hashlib
 from datetime import datetime
 
 import xbmcaddon
 import xbmcgui
 import xbmc
-from six import ensure_binary
-from kodi_six.utils import py2_decode
 
 from .kodi_utils import HomeWindow
-from .downloadutils import DownloadUtils, save_user_details, load_user_details
+from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
-from .utils import datetime_from_string, translate_string, get_version
+from .utils import datetime_from_string, translate_string, get_version, load_user_details
 
 log = LazyLogger(__name__)
 
@@ -211,7 +208,7 @@ def check_server(force=False, change_user=False, notify=False):
                 if server_url:
                     kb.setDefault(server_url)
                 else:
-                    kb.setDefault("http://<server address>:8096")
+                    kb.setDefault("http://")
                 kb.doModal()
                 if kb.isConfirmed():
                     server_url = kb.getText()
@@ -245,122 +242,29 @@ def check_server(force=False, change_user=False, notify=False):
         something_changed = True
 
     # do we need to change the user
-    user_details = load_user_details(settings)
-    current_username = user_details.get("username", "")
-    current_username = py2_decode(current_username)
+    current_username = settings.getSetting('username')
 
     # if asked or we have no current user then show user selection screen
     if something_changed or change_user or len(current_username) == 0:
 
         # stop playback when switching users
         xbmc.Player().stop()
-        du = DownloadUtils()
 
-        # get a list of users
-        log.debug("Getting user list")
-        result = du.download_url(server_url + "/Users/Public?format=json", authenticate=False)
+        users, user_selection = user_select(server_url, current_username)
 
-        log.debug("jsonData: {0}".format(py2_decode(result)))
-
-        selected_id = -1
-        users = []
-        for user in result:
-            config = user.get("Configuration")
-            if config is not None:
-                if config.get("IsHidden", False) is False:
-                    name = user.get("Name")
-                    admin = user.get("Policy", {}).get("IsAdministrator", False)
-
-                    time_ago = ""
-                    last_active = user.get("LastActivityDate")
-                    if last_active:
-                        last_active_date = datetime_from_string(last_active)
-                        log.debug("LastActivityDate: {0}".format(last_active_date))
-                        ago = datetime.now() - last_active_date
-                        log.debug("LastActivityDate: {0}".format(ago))
-                        days = divmod(ago.seconds, 86400)
-                        hours = divmod(days[1], 3600)
-                        minutes = divmod(hours[1], 60)
-                        log.debug("LastActivityDate: {0} {1} {2}".format(days[0], hours[0], minutes[0]))
-                        if days[0]:
-                            time_ago += " %sd" % days[0]
-                        if hours[0]:
-                            time_ago += " %sh" % hours[0]
-                        if minutes[0]:
-                            time_ago += " %sm" % minutes[0]
-                        time_ago = time_ago.strip()
-                        if not time_ago:
-                            time_ago = "Active: now"
-                        else:
-                            time_ago = "Active: %s ago" % time_ago
-                        log.debug("LastActivityDate: {0}".format(time_ago))
-
-                    user_item = xbmcgui.ListItem(name)
-                    user_image = du.get_user_artwork(user, 'Primary')
-                    if not user_image:
-                        user_image = "DefaultUser.png"
-                    art = {"Thumb": user_image}
-                    user_item.setArt(art)
-                    user_item.setLabel2("TEST")
-
-                    sub_line = time_ago
-
-                    if user.get("HasPassword", False) is True:
-                        sub_line += ", Password"
-                        user_item.setProperty("secure", "true")
-
-                        m = hashlib.md5()
-                        m.update(ensure_binary(name))
-                        hashed_username = m.hexdigest()
-                        saved_password = settings.getSetting("saved_user_password_" + hashed_username)
-                        if saved_password:
-                            sub_line += ": Saved"
-
-                    else:
-                        user_item.setProperty("secure", "false")
-
-                    if admin:
-                        sub_line += ", Admin"
-                    else:
-                        sub_line += ", User"
-
-                    user_item.setProperty("manual", "false")
-                    user_item.setLabel2(sub_line)
-                    users.append(user_item)
-
-                    if current_username == name:
-                        selected_id = len(users) - 1
-
-        if current_username:
-            selection_title = translate_string(30180) + " (" + current_username + ")"
-        else:
-            selection_title = translate_string(30180)
-
-        # add manual login
-        user_item = xbmcgui.ListItem(translate_string(30365))
-        art = {"Thumb": "DefaultUser.png"}
-        user_item.setArt(art)
-        user_item.setLabel2(translate_string(30366))
-        user_item.setProperty("secure", "true")
-        user_item.setProperty("manual", "true")
-        users.append(user_item)
-
-        return_value = xbmcgui.Dialog().select(selection_title,
-                                               users,
-                                               preselect=selected_id,
-                                               autoclose=20000,
-                                               useDetails=True)
-
-        if return_value > -1 and return_value != selected_id:
+        if user_selection > -1:
 
             something_changed = True
-            selected_user = users[return_value]
+            selected_user = users[user_selection]
+            selected_user_name = selected_user.getLabel()
             secured = selected_user.getProperty("secure") == "true"
             manual = selected_user.getProperty("manual") == "true"
-            selected_user_name = selected_user.getLabel()
 
-            log.debug("Selected User Name: {0} : {1}".format(return_value, selected_user_name))
+            home_window = HomeWindow()
+            home_window.set_property('user_name', selected_user_name)
+            user_details = load_user_details()
 
+            # If using a manual login, ask for username
             if manual:
                 kb = xbmc.Keyboard()
                 kb.setHeading(translate_string(30005))
@@ -373,54 +277,121 @@ def check_server(force=False, change_user=False, notify=False):
                 else:
                     return
 
-            if secured:
-                # we need a password, check the settings first
-                m = hashlib.md5()
-                m.update(selected_user_name.encode())
-                hashed_username = m.hexdigest()
-                saved_password = settings.getSetting("saved_user_password_" + hashed_username)
-                allow_password_saving = settings.getSetting("allow_password_saving") == "true"
+            # Ask for password if user has one
+            password = ''
+            if secured and not user_details.get('token'):
+                kb = xbmc.Keyboard()
+                kb.setHeading(translate_string(30006))
+                kb.setHiddenInput(True)
+                kb.doModal()
+                if kb.isConfirmed():
+                    password = kb.getText()
 
-                # if not saving passwords but have a saved ask to clear it
-                if not allow_password_saving and saved_password:
-                    clear_password = xbmcgui.Dialog().yesno(translate_string(30368), translate_string(30369))
-                    if clear_password:
-                        settings.setSetting("saved_user_password_" + hashed_username, "")
-
-                if saved_password:
-                    log.debug("Saving username and password: {0}".format(selected_user_name))
-                    log.debug("Using stored password for user: {0}".format(hashed_username))
-                    save_user_details(settings, selected_user_name, saved_password)
-
-                else:
-                    kb = xbmc.Keyboard()
-                    kb.setHeading(translate_string(30006))
-                    kb.setHiddenInput(True)
-                    kb.doModal()
-                    if kb.isConfirmed():
-                        log.debug("Saving username and password: {0}".format(selected_user_name))
-                        save_user_details(settings, selected_user_name, kb.getText())
-
-                        # should we save the password
-                        if allow_password_saving:
-                            save_password = xbmcgui.Dialog().yesno(translate_string(30363), translate_string(30364))
-                            if save_password:
-                                log.debug("Saving password for fast user switching: {0}".format(hashed_username))
-                                settings.setSetting("saved_user_password_" + hashed_username, kb.getText())
-            else:
-                log.debug("Saving username with no password: {0}".format(selected_user_name))
-                save_user_details(settings, selected_user_name, "")
+            # TODO: Make the authenticate function operate normally.  Network rework
+            home_window.set_property('password', password)
 
         if something_changed:
             home_window = HomeWindow()
-            home_window.clear_property("userid")
-            home_window.clear_property("AccessToken")
-            home_window.clear_property("userimage")
             home_window.clear_property("jellycon_widget_reload")
-            du = DownloadUtils()
             du.authenticate()
-            du.get_user_id()
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_jellycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
+
+
+def user_select(server_url, current_username):
+    '''
+    Display user selection screen
+    '''
+    du = DownloadUtils()
+
+    # Retrieve list of public users from server
+    result = du.download_url('{}/Users/Public'.format(server_url), authenticate=False)
+
+    # Build user display
+    selected_id = -1
+    users = []
+    for user in result:
+        user_item = create_user_listitem(du, user)
+        if user_item:
+            users.append(user_item)
+        name = user.get("Name")
+
+        # Highlight currently logged in user
+        if current_username == name:
+            selected_id = len(users) - 1
+
+    if current_username:
+        selection_title = translate_string(30180) + " (" + current_username + ")"
+    else:
+        selection_title = translate_string(30180)
+
+    # Add manual login item
+    user_item = xbmcgui.ListItem(translate_string(30365))
+    art = {"Thumb": "DefaultUser.png"}
+    user_item.setArt(art)
+    user_item.setLabel2(translate_string(30366))
+    user_item.setProperty("secure", "true")
+    user_item.setProperty("manual", "true")
+    users.append(user_item)
+
+    user_selection = xbmcgui.Dialog().select(selection_title,
+                                           users,
+                                           preselect=selected_id,
+                                           autoclose=20000,
+                                           useDetails=True)
+
+    return (users, user_selection)
+
+
+def create_user_listitem(du, user):
+    '''
+    Create a user listitem for the user selection screen
+    '''
+    config = user.get("Configuration")
+    if config is not None:
+        name = user.get("Name")
+        time_ago = ""
+        last_active = user.get("LastActivityDate")
+        # Calculate how long it's been since the user was last active
+        if last_active:
+            last_active_date = datetime_from_string(last_active)
+            ago = datetime.now() - last_active_date
+            # Check days
+            if ago.days > 0:
+                time_ago += ' {}d'.format(ago.days)
+            # Check minutes
+            if ago.seconds > 60:
+                hours = 0
+                # Check hours
+                if ago.seconds > 3600:
+                    hours = int(ago.seconds/3600)
+                    time_ago += ' {}h'.format(hours)
+                minutes = int((ago.seconds - (hours * 3600)) / 60)
+                time_ago += ' {}m'.format(minutes)
+            time_ago = time_ago.strip()
+            if not time_ago:
+                time_ago = "Active: now"
+            else:
+                time_ago = "Active: {} ago".format(time_ago)
+
+        user_item = xbmcgui.ListItem(name)
+        user_image = du.get_user_artwork(user, 'Primary')
+        if not user_image:
+            user_image = "DefaultUser.png"
+        art = {"Thumb": user_image}
+        user_item.setArt(art)
+
+        sub_line = time_ago
+
+        if user.get("HasPassword", False) is True:
+            user_item.setProperty("secure", "true")
+        else:
+            user_item.setProperty("secure", "false")
+
+        user_item.setProperty("manual", "false")
+        user_item.setLabel2(sub_line)
+
+        return user_item
+    return None

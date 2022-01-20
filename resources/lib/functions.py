@@ -14,8 +14,8 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from .downloadutils import DownloadUtils, load_user_details
-from .utils import convert_size, translate_string, get_version
+from .downloadutils import DownloadUtils
+from .utils import convert_size, translate_string, get_version, load_user_details
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_cached_server_data
@@ -495,8 +495,8 @@ def show_menu(params):
         log.debug("Refresh Server Responce: {0}".format(res))
 
     elif selected_action == "hide":
-        user_details = load_user_details(settings)
-        user_name = user_details["username"]
+        user_details = load_user_details()
+        user_name = user_details["user_name"]
         hide_tag_string = "hide-" + user_name
         url = "{server}/Items/" + item_id + "/Tags/Add"
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}

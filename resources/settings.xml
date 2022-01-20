@@ -14,7 +14,6 @@
 		<setting type="sep" />
 		<setting label="30012" type="action" action="RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)" option="close"/>
 		<setting id="username" type="text" label="30024" />
-		<setting id="password" type="text" option="hidden" label="30025" />
 		<setting id="save_user_to_settings" type="bool" label="30378" default="true" visible="true" enable="true" />
 		<setting id="allow_password_saving" type="bool" label="30367" default="true" visible="true" enable="true" />
 
