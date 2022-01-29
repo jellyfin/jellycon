@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-01-06 21:13+0000\n"
-"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
+"PO-Revision-Date: 2022-01-30 18:13+0000\n"
+"Last-Translator: MrFish1604 <mmrfishc@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -156,3 +156,66 @@ msgstr "Confirmer la suppression ?"
 msgctxt "#30052"
 msgid "Deleting"
 msgstr "Suppression"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Évènement"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Largeur vidéo max"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Stream direct HTTP"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Max stream bitrate (Kbps)"
+
+#, fuzzy
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Lecture"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Inclure info du flux media"
+
+#, fuzzy
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Inclure graphique"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Ajouter (cc) si sous-titre disponible"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Type de média non configurer"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Fait"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Afficher la progression du chargement"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Récupération des données"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Chargement du contenu"
+
+#, fuzzy
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "En attente de suppression par le serveur"
