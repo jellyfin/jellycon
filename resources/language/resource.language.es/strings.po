@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-12-07 18:05+0000\n"
-"Last-Translator: oxixes <adrianquevedobenito@gmail.com>\n"
+"PO-Revision-Date: 2022-02-02 17:13+0000\n"
+"Last-Translator: Angel Sandoval <portico-tersa0f@icloud.com>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.2\n"
+"X-Generator: Weblate 4.10.1\n"
 
 msgctxt "#30442"
 msgid "Simple new content check"
@@ -106,7 +106,7 @@ msgstr "No tienes permiso para borrar este elemento"
 
 msgctxt "#30416"
 msgid "HTTP timeout seconds"
-msgstr "Segundos del tiempo de espera de HTTP"
+msgstr "Maximo tiempo de espera de HTTP en segundos"
 
 msgctxt "#30415"
 msgid " - Favorite Collections"
@@ -284,7 +284,7 @@ msgstr "¿Borrar contraseña?"
 #, fuzzy
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
-msgstr "Permitir guardado rápido de la contraseña de usuario cambiada"
+msgstr "Al cambiar usuario, permitir guardado rápido de contraseña"
 
 msgctxt "#30366"
 msgid "Manually enter user details"
@@ -541,7 +541,6 @@ msgctxt "#30296"
 msgid "Delete"
 msgstr "Borrar"
 
-#, fuzzy
 msgctxt "#30295"
 msgid "To use this feature you need HTTP control enabled"
 msgstr "Para usar esta característica necesitas activar el control HTTP"
@@ -986,3 +985,107 @@ msgstr "Verificar certificado HTTPS"
 msgctxt "#30001"
 msgid "Port"
 msgstr "Puerto"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Usar información en cache del control"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "No establecido"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Vistas"
+
+#, fuzzy
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Controles personalizados"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Intervalo de almacenamiento de imágenes en caché (0 = deshabilitado)"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Intervalo de películas aleatorias en minutos (0 = deshabilitado)"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Confirmación de subtítulos externos"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Hacer caché de solicitudes al servidor Jellyfin"
+
+#, fuzzy
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Hacer cache del material gráfico en segundo plano"
+
+#, fuzzy
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Cache de imágenes"
+
+#, fuzzy
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon Necesita confirmar para reanudar archivos reproducidos "
+"parcialmente, Kodi también puede solicitar confirmación , esto puede causar "
+"una doble confirmación. Desea eliminar la doble confirmación?"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Contenido del widget personalizado"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Al detener la reproducción (100% = deshabilitado)"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Transmisión directa por HTTP"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Incluir información de la transmisión"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Agregar (cc) si los subtítulos están disponibles"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "No se ha establecido el tipo de medio"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Al reanudar"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Agregar contador de no vistos a nombres"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Regresar en segundos"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Acción al seleccionar un ítem del widget"
+
+#, fuzzy
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Reducir una temporada"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Frecuencia de registro de datos"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
