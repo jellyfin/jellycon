@@ -1,2 +1,100 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-02-09 03:13+0000\n"
+"Last-Translator: Andrew Lee <andrewjkes@hotmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://translate.jellyfin.org/"
+"projects/jellycon/jellycon/zh_Hant/>\n"
+"Language: zh_Hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "撥放"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "撥放類型"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "無法連接到伺服器"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "網址錯誤"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "選擇使用者"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "選擇伺服器位置"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "選擇伺服器"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "錯誤"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "是否確認刪除?"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "密碼:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "使用者名稱:"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "介面"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "進階"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[變更使用者]"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba 密碼"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba 使用者名稱"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "驗證 HTTPS 憑證"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "密碼"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "使用者名稱"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "埠"
