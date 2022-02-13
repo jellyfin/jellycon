@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-02-02 17:13+0000\n"
-"Last-Translator: Romain Eggermont <rom.eggermont@gmail.com>\n"
+"PO-Revision-Date: 2022-02-14 15:13+0000\n"
+"Last-Translator: Ocuriz <lucas.ducourneau@hotmail.fr>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -89,7 +89,7 @@ msgstr "Activer le débogage dans le journal d’évènements"
 
 msgctxt "#30024"
 msgid "Username:"
-msgstr "Nom d'utilisateur :"
+msgstr "Nom d'utilisateur :"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
@@ -290,7 +290,7 @@ msgstr "Lire l'épisode suivant ?"
 
 msgctxt "#30282"
 msgid "No Jellyfin servers detected on your local network."
-msgstr "Aucun serveur Jellyfin détecté sur le réseau local"
+msgstr "Aucun serveur Jellyfin détecté sur le réseau local."
 
 msgctxt "#30281"
 msgid "Refresh Cached Images"
