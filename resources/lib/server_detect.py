@@ -261,8 +261,6 @@ def check_server(force=False, change_user=False, notify=False):
             manual = selected_user.getProperty("manual") == "true"
 
             home_window = HomeWindow()
-            home_window.set_property('user_name', selected_user_name)
-            user_details = load_user_details()
 
             # If using a manual login, ask for username
             if manual:
@@ -276,6 +274,9 @@ def check_server(force=False, change_user=False, notify=False):
                     log.debug("Manual entered username: {0}".format(selected_user_name))
                 else:
                     return
+
+            home_window.set_property('user_name', selected_user_name)
+            user_details = load_user_details()
 
             # Ask for password if user has one
             password = ''
