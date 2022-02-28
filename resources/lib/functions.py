@@ -78,9 +78,6 @@ def main_entry_point():
     request_path = params.get("request_path", None)
     param_url = params.get('url', None)
 
-    #if param_url:
-    #    param_url = unquote(param_url)
-
     mode = params.get("mode", None)
 
     if len(params) == 1 and request_path and request_path.find("/library/movies") > -1:
@@ -244,7 +241,7 @@ def mark_item_watched(item_id):
 
 def mark_item_unwatched(item_id):
     log.debug("Mark Item UnWatched: {0}".format(item_id))
-    url = "/Users/{}/PlayedItems/".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/PlayedItems/{}".format(user_details.get('user_id'), item_id)
     api.delete(url)
     check_for_new_content()
     home_window = HomeWindow()
@@ -908,7 +905,7 @@ def play_action(params):
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
 
-    url = "/Users/{}/Items//LocalTrailers?format=json".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(user_details.get('user_id'), item_id)
 
     result = api.get(url)
 
