@@ -3,6 +3,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import sys
 import xbmcgui
 import xbmcplugin
+import xbmcaddon
 
 from .loghandler import LazyLogger
 from .item_functions import get_art

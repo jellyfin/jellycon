@@ -24,7 +24,7 @@ from .loghandler import LazyLogger
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
-from .dialogs import BitrateDialog, SafeDeleteDialog
+from .dialogs import BitrateDialog
 from .widgets import get_widget_content, get_widget_content_cast, check_for_new_content
 from . import trakttokodi
 from .cache_images import CacheArtwork
