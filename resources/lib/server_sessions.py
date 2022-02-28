@@ -4,7 +4,6 @@ import sys
 import xbmcgui
 import xbmcplugin
 
-from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .item_functions import get_art
 from .datamanager import DataManager
@@ -16,10 +15,9 @@ def show_server_sessions():
     log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
-    download_utils = DownloadUtils()
     data_manager = DataManager()
 
-    url = "{server}/Users/{userid}"
+    url = "/Users/{}".format(data_manager.api.user_id)
     results = data_manager.get_content(url)
 
     is_admin = results.get("Policy", {}).get("IsAdministrator", False)
@@ -27,7 +25,7 @@ def show_server_sessions():
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
         return
 
-    url = "{server}/Sessions"
+    url = "/Sessions"
     results = data_manager.get_content(url)
     log.debug("session_info: {0}".format(results))
 
@@ -59,7 +57,7 @@ def show_server_sessions():
 
         art = {}
         if now_playing:
-            server = download_utils.get_server()
+            server = settings.getSetting('server_address')
             art = get_art(now_playing, server)
 
             runtime = now_playing.get("RunTimeTicks", 0)

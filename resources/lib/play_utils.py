@@ -12,10 +12,10 @@ import os
 import re
 from six.moves.urllib.parse import urlencode
 
+from .api import API
 from .loghandler import LazyLogger
-from .downloadutils import DownloadUtils
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -25,13 +25,20 @@ from .tracking import timer
 from .playnext import PlayNextDialog
 
 log = LazyLogger(__name__)
-download_utils = DownloadUtils()
+user_details = load_user_details()
+settings = xbmcaddon.Addon()
+
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 
 def play_all_files(items, play_items=True):
     home_window = HomeWindow()
     log.debug("playAllFiles called with items: {0}", items)
-    server = download_utils.get_server()
+    server = settings.getSetting('server_address')
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     playlist.clear()
@@ -43,7 +50,7 @@ def play_all_files(items, play_items=True):
         item_id = item.get("Id")
 
         # get playback info
-        playback_info = download_utils.get_item_playback_info(item_id, False)
+        playback_info = get_item_playback_info(item_id, False)
         if playback_info is None:
             log.debug("playback_info was None, could not get MediaSources so can not play!")
             return
@@ -115,8 +122,7 @@ def play_list_of_items(id_list):
     items = []
 
     for item_id in id_list:
-        url = "{server}/Users/{userid}/Items/%s?format=json"
-        url = url % (item_id,)
+        url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
         result = data_manager.get_content(url)
         if result is None:
             log.debug("Playfile item was None, so can not play!")
@@ -130,12 +136,11 @@ def add_to_playlist(play_info):
     log.debug("Adding item to playlist : {0}".format(play_info))
 
     playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    server = download_utils.get_server()
+    server = settings.getSetting('server_address')
 
     item_id = play_info.get("item_id")
 
-    url = "{server}/Users/{userid}/Items/%s?format=json"
-    url = url % (item_id,)
+    url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
     data_manager = DataManager()
     item = data_manager.get_content(url)
     if item is None:
@@ -143,7 +148,7 @@ def add_to_playlist(play_info):
         return
 
     # get playback info
-    playback_info = download_utils.get_item_playback_info(item_id, False)
+    playback_info = get_item_playback_info(item_id, False)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -201,7 +206,7 @@ def add_to_playlist(play_info):
 def get_playback_intros(item_id):
     log.debug("get_playback_intros")
     data_manager = DataManager()
-    url = "{server}/Users/{userid}/Items/%s/Intros" % item_id
+    url = "/Users/{}/Items/{}/Intros".format(api.user_id, item_id)
     intro_items = data_manager.get_content(url)
 
     if intro_items is None:
@@ -242,15 +247,14 @@ def play_file(play_info):
 
     log.debug("playFile id({0}) resume({1}) force_transcode({2})".format(item_id, auto_resume, force_transcode))
 
-    settings = xbmcaddon.Addon()
     addon_path = settings.getAddonInfo('path')
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
     play_cinema_intros = settings.getSetting('play_cinema_intros') == 'true'
 
-    server = download_utils.get_server()
+    server = settings.getSetting('server_address')
 
-    url = "{server}/Users/{userid}/Items/%s?format=json" % (item_id,)
+    url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("Playfile item: {0}".format(result))
@@ -262,7 +266,7 @@ def play_file(play_info):
     # if this is a season, playlist or album then play all items in that parent
     if result.get("Type") in ["Season", "MusicAlbum", "Playlist"]:
         log.debug("PlayAllFiles for parent item id: {0}".format(item_id))
-        url = ('{server}/Users/{userid}/items' +
+        url = ('/Users/{}/items'.format(api.user_id) +
                '?ParentId=%s' +
                '&Fields=MediaSources' +
                '&format=json')
@@ -279,7 +283,7 @@ def play_file(play_info):
     # if this is a program from live tv epg then play the actual channel
     if result.get("Type") == "Program":
         channel_id = result.get("ChannelId")
-        url = "{server}/Users/{userid}/Items/%s?format=json" % (channel_id,)
+        url = "/Users/{}/Items/{}?format=json".format(api.user_id, channel_id)
         result = data_manager.get_content(url)
         item_id = result["Id"]
 
@@ -294,7 +298,7 @@ def play_file(play_info):
         return
 
     # get playback info from the server using the device profile
-    playback_info = download_utils.get_item_playback_info(item_id, force_transcode)
+    playback_info = get_item_playback_info(item_id, force_transcode)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
         return
@@ -546,7 +550,7 @@ def get_next_episode(item):
         log.debug("No episode number, can not get next")
         return None
 
-    url = ('{server}/Users/{userid}/Items?' +
+    url = ('/Users/{}/Items?'.format(api.user_id) +
            '?Recursive=true' +
            '&ParentId=' + parent_id +
            '&IsVirtualUnaired=false' +
@@ -580,7 +584,7 @@ def send_next_episode_details(item, next_episode):
         return
 
     gui_options = {}
-    gui_options["server"] = download_utils.get_server()
+    gui_options["server"] = settings.getSetting('server_address')
 
     gui_options["name_format"] = None
     gui_options["name_format_type"] = ""
@@ -776,7 +780,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         # Load subtitles in the listitem if downloadable
         if select_subs_index in downloadable_streams:
             subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-            subtitle_url = subtitle_url % (download_utils.get_server(), item_id, source_id, select_subs_index)
+            subtitle_url = subtitle_url % (settings.getSetting('server_address'), item_id, source_id, select_subs_index)
             log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
             list_item.setSubtitles([subtitle_url])
         else:
@@ -796,7 +800,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
             # Load subtitles in the listitem if downloadable
             if select_subs_index in downloadable_streams:
                 subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                subtitle_url = subtitle_url % (download_utils.get_server(), item_id, source_id, select_subs_index)
+                subtitle_url = subtitle_url % (settings.getSetting('server_address'), item_id, source_id, select_subs_index)
                 log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
                 list_item.setSubtitles([subtitle_url])
             else:
@@ -824,6 +828,10 @@ def external_subs(media_source, list_item, item_id):
     externalsubs = []
     sub_names = []
 
+    server = settings.getSetting('server_address')
+    user_details = load_user_details()
+    token = user_details.get('token')
+
     for stream in media_streams:
 
         if (stream['Type'] == "Subtitle"
@@ -833,8 +841,7 @@ def external_subs(media_source, list_item, item_id):
 
             index = stream['Index']
             source_id = media_source['Id']
-            server = download_utils.get_server()
-            token = download_utils.authenticate()
+
             language = stream.get('Language', '')
             codec = stream.get('Codec', '')
 
@@ -860,7 +867,6 @@ def external_subs(media_source, list_item, item_id):
     if len(externalsubs) == 0:
         return
 
-    settings = xbmcaddon.Addon()
     direct_stream_sub_select = settings.getSetting("direct_stream_sub_select")
 
     if direct_stream_sub_select == "0" or (len(externalsubs) == 1 and not direct_stream_sub_select == "2"):
@@ -928,8 +934,8 @@ def send_progress():
 
     log.debug("Sending POST progress started: {0}".format(postdata))
 
-    url = "{server}/Sessions/Playing/Progress"
-    download_utils.download_url(url, post_body=postdata, method="POST")
+    url = "/Sessions/Playing/Progress"
+    api.post(url, postdata)
 
 
 def get_volume():
@@ -946,7 +952,6 @@ def get_volume():
 def prompt_for_stop_actions(item_id, data):
     log.debug("prompt_for_stop_actions Called : {0}".format(data))
 
-    settings = xbmcaddon.Addon()
     current_position = data.get("current_position", 0)
     duration = data.get("duration", 0)
     next_episode = data.get("next_episode")
@@ -1040,7 +1045,7 @@ def stop_all_playback():
             if jellyfin_item_id is not None and current_position >= 0:
                 log.debug("Playback Stopped at: {0}".format(current_position))
 
-                url = "{server}/Sessions/Playing/Stopped"
+                url = "/Sessions/Playing/Stopped"
                 postdata = {
                     'ItemId': jellyfin_item_id,
                     'MediaSourceId': jellyfin_source_id,
@@ -1048,7 +1053,7 @@ def stop_all_playback():
                     'RunTimeTicks': int(duration * 10000000),
                     'PlaySessionId': play_session_id
                 }
-                download_utils.download_url(url, post_body=postdata, method="POST")
+                api.post(url, postdata)
                 data["currently_playing"] = False
 
                 if data.get("play_action_type", "") == "play":
@@ -1058,8 +1063,8 @@ def stop_all_playback():
 
             if data.get('playback_type') == 'Transcode':
                 device_id = get_device_id()
-                url = "{server}/Videos/ActiveEncodings?DeviceId=%s" % device_id
-                download_utils.download_url(url, method="DELETE")
+                url = "/Videos/ActiveEncodings?DeviceId=%s" % device_id
+                api.delete(url)
 
     for entry in clear_entries:
         del played_information[entry]
@@ -1087,7 +1092,6 @@ def get_playing_data():
 
     item_id = play_data.get("item_id")
 
-    settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
     try:
         playing_file = player.getPlayingFile()
@@ -1129,11 +1133,10 @@ def get_play_url(media_source, play_session_id):
             return playurl, "0", listitem_props
 
     # get all the options
-    addon_settings = xbmcaddon.Addon()
-    server = download_utils.get_server()
-    use_https = addon_settings.getSetting('protocol') == "1"
-    verify_cert = addon_settings.getSetting('verify_cert') == 'true'
-    allow_direct_file_play = addon_settings.getSetting('allow_direct_file_play') == 'true'
+    server = settings.getSetting('server_address')
+    use_https = settings.getSetting('protocol') == "1"
+    verify_cert = settings.getSetting('verify_cert') == 'true'
+    allow_direct_file_play = settings.getSetting('allow_direct_file_play') == 'true'
 
     can_direct_play = media_source["SupportsDirectPlay"]
     can_direct_stream = media_source["SupportsDirectStream"]
@@ -1180,15 +1183,16 @@ def get_play_url(media_source, play_session_id):
     if can_transcode and playurl is None:
         item_id = media_source.get('Id')
         device_id = get_device_id()
-        user_token = download_utils.authenticate()
-        playback_bitrate = addon_settings.getSetting("force_max_stream_bitrate")
+
+        user_token = user_details.get('token')
+        playback_bitrate = settings.getSetting("force_max_stream_bitrate")
         bitrate = int(playback_bitrate) * 1000
-        playback_max_width = addon_settings.getSetting("playback_max_width")
-        audio_codec = addon_settings.getSetting("audio_codec")
-        audio_playback_bitrate = addon_settings.getSetting("audio_playback_bitrate")
+        playback_max_width = settings.getSetting("playback_max_width")
+        audio_codec = settings.getSetting("audio_codec")
+        audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
         audio_bitrate = int(audio_playback_bitrate) * 1000
-        audio_max_channels = addon_settings.getSetting("audio_max_channels")
-        playback_video_force_8 = addon_settings.getSetting("playback_video_force_8") == "true"
+        audio_max_channels = settings.getSetting("audio_max_channels")
+        playback_video_force_8 = settings.getSetting("playback_video_force_8") == "true"
 
         transcode_params = {
             "MediaSourceId": item_id,
@@ -1302,8 +1306,8 @@ class Service(xbmc.Player):
 
         log.debug("Sending POST play started: {0}".format(postdata))
 
-        url = "{server}/Sessions/Playing"
-        download_utils.download_url(url, post_body=postdata, method="POST")
+        url = "/Sessions/Playing"
+        api.post(url, postdata)
 
         home_screen = HomeWindow()
         home_screen.set_property("currently_playing_id", str(jellyfin_item_id))
@@ -1389,7 +1393,6 @@ class PlaybackService(xbmc.Monitor):
         home_screen = HomeWindow()
         home_screen.clear_property("skip_select_user")
 
-        settings = xbmcaddon.Addon()
         stop_playback = settings.getSetting("stopPlaybackOnScreensaver") == 'true'
 
         if stop_playback:
@@ -1415,7 +1418,6 @@ class PlaybackService(xbmc.Monitor):
             self.background_image_cache_thread.stop_activity()
             self.background_image_cache_thread = None
 
-        settings = xbmcaddon.Addon()
         show_change_user = settings.getSetting('changeUserOnScreenSaver') == 'true'
         if show_change_user:
             home_screen = HomeWindow()
@@ -1423,3 +1425,188 @@ class PlaybackService(xbmc.Monitor):
             if skip_select_user is not None and skip_select_user == "true":
                 return
             xbmc.executebuiltin("RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)")
+
+
+
+def get_item_playback_info(item_id, force_transcode):
+
+    filtered_codecs = []
+    if settings.getSetting("force_transcode_h265") == "true":
+        filtered_codecs.append("hevc")
+        filtered_codecs.append("h265")
+    if settings.getSetting("force_transcode_mpeg2") == "true":
+        filtered_codecs.append("mpeg2video")
+    if settings.getSetting("force_transcode_msmpeg4v3") == "true":
+        filtered_codecs.append("msmpeg4v3")
+    if settings.getSetting("force_transcode_mpeg4") == "true":
+        filtered_codecs.append("mpeg4")
+
+    playback_bitrate = settings.getSetting("max_stream_bitrate")
+    force_playback_bitrate = settings.getSetting("force_max_stream_bitrate")
+    if force_transcode:
+        playback_bitrate = force_playback_bitrate
+
+    audio_codec = settings.getSetting("audio_codec")
+    audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
+    audio_max_channels = settings.getSetting("audio_max_channels")
+
+    audio_bitrate = int(audio_playback_bitrate) * 1000
+    bitrate = int(playback_bitrate) * 1000
+
+    profile = {
+        "Name": "Kodi",
+        "MaxStaticBitrate": bitrate,
+        "MaxStreamingBitrate": bitrate,
+        "MusicStreamingTranscodingBitrate": audio_bitrate,
+        "TimelineOffsetSeconds": 5,
+        "TranscodingProfiles": [
+            {
+                "Type": "Audio"
+            },
+            {
+                "Container": "ts",
+                "Protocol": "hls",
+                "Type": "Video",
+                "AudioCodec": audio_codec,
+                "VideoCodec": "h264",
+                "MaxAudioChannels": audio_max_channels
+            },
+            {
+                "Container": "jpeg",
+                "Type": "Photo"
+            }
+        ],
+        "DirectPlayProfiles": [
+            {
+                "Type": "Video"
+            },
+            {
+                "Type": "Audio"
+            },
+            {
+                "Type": "Photo"
+            }
+        ],
+        "ResponseProfiles": [],
+        "ContainerProfiles": [],
+        "CodecProfiles": [],
+        "SubtitleProfiles": [
+            {
+                "Format": "srt",
+                "Method": "External"
+            },
+            {
+                "Format": "srt",
+                "Method": "Embed"
+            },
+            {
+                "Format": "ass",
+                "Method": "External"
+            },
+            {
+                "Format": "ass",
+                "Method": "Embed"
+            },
+            {
+                "Format": "sub",
+                "Method": "Embed"
+            },
+            {
+                "Format": "sub",
+                "Method": "External"
+            },
+            {
+                "Format": "ssa",
+                "Method": "Embed"
+            },
+            {
+                "Format": "ssa",
+                "Method": "External"
+            },
+            {
+                "Format": "smi",
+                "Method": "Embed"
+            },
+            {
+                "Format": "smi",
+                "Method": "External"
+            },
+            {
+                "Format": "pgssub",
+                "Method": "Embed"
+            },
+            {
+                "Format": "pgssub",
+                "Method": "External"
+            },
+            {
+                "Format": "dvdsub",
+                "Method": "Embed"
+            },
+            {
+                "Format": "dvdsub",
+                "Method": "External"
+            },
+            {
+                "Format": "pgs",
+                "Method": "Embed"
+            },
+            {
+                "Format": "pgs",
+                "Method": "External"
+            }
+        ]
+    }
+
+    if len(filtered_codecs) > 0:
+        profile['DirectPlayProfiles'][0]['VideoCodec'] = "-%s" % ",".join(filtered_codecs)
+
+    if force_transcode:
+        profile['DirectPlayProfiles'] = []
+
+    if settings.getSetting("playback_video_force_8") == "true":
+        profile['CodecProfiles'].append(
+            {
+                "Type": "Video",
+                "Codec": "h264",
+                "Conditions": [
+                    {
+                        "Condition": "LessThanEqual",
+                        "Property": "VideoBitDepth",
+                        "Value": "8",
+                        "IsRequired": False
+                    }
+                ]
+            }
+        )
+        profile['CodecProfiles'].append(
+            {
+                "Type": "Video",
+                "Codec": "h265,hevc",
+                "Conditions": [
+                    {
+                        "Condition": "EqualsAny",
+                        "Property": "VideoProfile",
+                        "Value": "main"
+                    }
+                ]
+            }
+        )
+
+    playback_info = {
+        'UserId': api.user_id,
+        'DeviceProfile': profile,
+        'AutoOpenLiveStream': True
+    }
+
+    if force_transcode:
+        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
+    else:
+        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
+
+    log.debug("PlaybackInfo : {0}".format(url))
+    log.debug("PlaybackInfo : {0}".format(profile))
+    play_info_result = api.post(url, playback_info)
+    log.debug("PlaybackInfo : {0}".format(play_info_result))
+
+    return play_info_result

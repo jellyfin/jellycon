@@ -9,14 +9,14 @@ import websocket
 import time
 
 import xbmc
+import xbmcaddon
 import xbmcgui
 
 from .functions import play_action
 from .loghandler import LazyLogger
-from . import downloadutils
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
-from .utils import get_device_id
+from .utils import get_device_id, load_user_details
 
 log = LazyLogger(__name__)
 
@@ -237,16 +237,16 @@ class WebSocketClient(threading.Thread):
 
     def run(self):
 
-        download_utils = downloadutils.DownloadUtils()
-
         token = None
         while token is None or token == "":
-            token = download_utils.authenticate()
+            user_details = load_user_details()
+            token = user_details.get('token')
             if self.monitor.waitForAbort(10):
                 return
 
         # Get the appropriate prefix for the websocket
-        server = download_utils.get_server()
+        settings = xbmcaddon.Addon()
+        server = settings.getSetting('server_address')
         if "https://" in server:
             server = server.replace('https://', 'wss://')
         else:
@@ -290,5 +290,12 @@ class WebSocketClient(threading.Thread):
 
     def post_capabilities(self):
 
-        download_utils = downloadutils.DownloadUtils()
-        download_utils.post_capabilities()
+        user_details = load_user_details()
+
+        api = API(
+            settings.getSetting('server_address'),
+            user_details.get('user_id'),
+            user_details.get('token')
+        )
+
+        api.post_capabilities()

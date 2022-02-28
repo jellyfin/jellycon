@@ -14,15 +14,13 @@ import xbmcplugin
 import xbmc
 import xbmcaddon
 
-from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .datamanager import DataManager
-from .utils import translate_string
+from .utils import translate_string, load_user_details
 from .kodi_utils import HomeWindow
 from .item_functions import get_art
 
-downloadUtils = DownloadUtils()
 log = LazyLogger(__name__)
 
 
@@ -214,9 +212,11 @@ class CacheArtwork(threading.Thread):
 
     def get_jellyfin_artwork(self, progress):
         log.debug("get_jellyfin_artwork")
+        user_details = load_user_details()
+        user_id = user_details.get('user_id')
 
         url = ""
-        url += "{server}/Users/{userid}/Items"
+        url += "/Users/{}/Items".format(user_id)
         url += "?Recursive=true"
         url += "&EnableUserData=False"
         url += "&Fields=BasicSyncInfo"
@@ -232,7 +232,7 @@ class CacheArtwork(threading.Thread):
         if isinstance(results, dict):
             results = results.get("Items")
 
-        server = downloadUtils.get_server()
+        server = settings.getSetting('server_address')
         log.debug("Jellyfin Item Count Count: {0}".format(len(results)))
 
         if self.stop_all_activity:

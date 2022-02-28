@@ -10,10 +10,9 @@ import sys
 import re
 
 from .datamanager import DataManager
-from .downloadutils import DownloadUtils
 from .loghandler import LazyLogger
 from .item_functions import add_gui_item, ItemDetails
-from .utils import send_event_notification, translate_string
+from .utils import send_event_notification, translate_string, load_user_details, get_default_filters
 from .tracking import timer
 
 log = LazyLogger(__name__)
@@ -218,8 +217,9 @@ def process_directory(url, progress, params, use_cache_data=False):
 
     data_manager = DataManager()
     settings = xbmcaddon.Addon()
-    download_utils = DownloadUtils()
-    server = download_utils.get_server()
+    server = settings.getSetting('server_address')
+    user_details = load_user_details()
+    user_id = user_details.get('user_id')
 
     name_format = params.get("name_format", None)
     name_format_type = None
@@ -248,13 +248,13 @@ def process_directory(url, progress, params, use_cache_data=False):
     if flatten_single_season and len(item_list) == 1 and item_list[0].item_type == "Season":
         season_id = item_list[0].id
         series_id = item_list[0].series_id
-        season_url = ('{server}/Shows/' + series_id +
+        season_url = ('/Shows/' + series_id +
                       '/Episodes'
-                      '?userId={userid}' +
+                      '?userId={}'.format(user_id) +
                       '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=SpecialEpisodeNumbers,{field_filters}' +
+                      '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
                       '&format=json')
         if progress is not None:
             progress.close()
@@ -313,28 +313,28 @@ def process_directory(url, progress, params, use_cache_data=False):
 
         if item_details.is_folder is True:
             if item_details.item_type == "Series":
-                u = ('{server}/Shows/' + item_details.id +
+                u = ('/Shows/' + item_details.id +
                      '/Seasons'
-                     '?userId={userid}' +
-                     '&Fields={field_filters}' +
+                     '?userId={}'.format(user_id) +
+                     '&Fields={}'.format(get_default_filters()) +
                      '&format=json')
 
             elif item_details.item_type == "Season":
-                u = ('{server}/Shows/' + item_details.series_id +
+                u = ('/Shows/' + item_details.series_id +
                      '/Episodes'
-                     '?userId={userid}' +
+                     '?userId={}'.format(user_id) +
                      '&seasonId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields=SpecialEpisodeNumbers,{field_filters}' +
+                     '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
                      '&format=json')
 
             else:
-                u = ('{server}/Users/{userid}/items' +
+                u = ('/Users/{}/items'.format(user_id) +
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields={field_filters}' +
+                     '&Fields={}'.format(get_default_filters()) +
                      '&format=json')
 
             default_sort = item_details.item_type == "Playlist"
@@ -347,7 +347,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                 log.debug("Dropping empty folder item : {0}".format(item_details.__dict__))
 
         elif item_details.item_type == "MusicArtist":
-            u = ('{server}/Users/{userid}/items' +
+            u = ('/Users/{}/items'.format(user_id) +
                  '?ArtistIds=' + item_details.id +
                  '&IncludeItemTypes=MusicAlbum' +
                  '&CollapseBoxSetItems=false' +
@@ -369,12 +369,12 @@ def process_directory(url, progress, params, use_cache_data=False):
             and first_season_item is not None
             and len(dir_items) > 1
             and first_season_item.series_id is not None):
-        series_url = ('{server}/Shows/' + first_season_item.series_id +
+        series_url = ('/Shows/' + first_season_item.series_id +
                       '/Episodes'
-                      '?userId={userid}' +
+                      '?userId={}'.format(user_id) +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=SpecialEpisodeNumbers,{field_filters}' +
+                      '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
                       '&format=json')
         played = 0
         overlay = "7"

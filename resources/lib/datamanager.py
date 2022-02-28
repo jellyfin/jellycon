@@ -7,13 +7,13 @@ import os
 import time
 from six.moves import cPickle
 
-from .downloadutils import DownloadUtils
+from .api import API
 from .loghandler import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .tracking import timer
 from .filelock import FileLock
-from .utils import translate_string
+from .utils import translate_string, load_user_details
 
 import xbmc
 import xbmcaddon
@@ -42,11 +42,18 @@ class DataManager:
     addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
 
     def __init__(self, *args):
-        pass
+        self.user_details = load_user_details()
+
+        settings = xbmcaddon.Addon()
+        self.api = API(
+            settings.getSetting('server_address'),
+            self.user_details.get('user_id'),
+            self.user_details.get('token')
+        )
 
     @timer
     def get_content(self, url):
-        return DownloadUtils().download_url(url)
+        return self.api.get(url)
 
     @timer
     def get_items(self, url, gui_options, use_cache=False):
@@ -55,9 +62,8 @@ class DataManager:
         log.debug("last_content_url : use_cache={0} url={1}".format(use_cache, url))
         home_window.set_property("last_content_url", url)
 
-        download_utils = DownloadUtils()
-        user_id = download_utils.get_user_id()
-        server = download_utils.get_server()
+        user_id = self.user_details.get('user_id')
+        server = self.api.server
 
         m = hashlib.md5()
         m.update('{}|{}|{}'.format(user_id, server, url).encode())

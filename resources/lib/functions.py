@@ -14,8 +14,8 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from .downloadutils import DownloadUtils
-from .utils import convert_size, translate_string, get_version, load_user_details
+from .api import API
+from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import DataManager, clear_cached_server_data
@@ -42,7 +42,14 @@ log = LazyLogger(__name__)
 
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
-downloadUtils = DownloadUtils()
+settings = xbmcaddon.Addon()
+user_details = load_user_details()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
+
 dataManager = DataManager()
 
 
@@ -66,13 +73,13 @@ def main_entry_point():
     log.debug("Script argument data: {0}".format(sys.argv))
 
     params = get_params()
-    log.info("Script params: {0}".format(params))
+    log.debug("Script params: {0}".format(params))
 
     request_path = params.get("request_path", None)
     param_url = params.get('url', None)
 
-    if param_url:
-        param_url = unquote(param_url)
+    #if param_url:
+    #    param_url = unquote(param_url)
 
     mode = params.get("mode", None)
 
@@ -187,9 +194,9 @@ def __get_parent_id_from(params):
     show_provider_ids = params.get("show_ids")
     if show_provider_ids is not None:
         log.debug("TV show providers IDs: {}".format(show_provider_ids))
-        get_show_url = "{server}/Users/{userid}/Items?fields=MediaStreams&Recursive=true" \
+        get_show_url = "/Users/{}/Items?fields=MediaStreams&Recursive=true" \
                        "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
-                       "&AnyProviderIdEquals=" + show_provider_ids
+                       "&AnyProviderIdEquals={}".format(api.user_id, item_id, show_provider_ids)
         content = dataManager.get_content(get_show_url)
         show = content.get("Items")
         if len(show) == 1:
@@ -206,7 +213,7 @@ def toggle_watched(params):
     item_id = params.get("item_id", None)
     if item_id is None:
         return
-    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
+    url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("toggle_watched item info: {0}".format(result))
@@ -223,8 +230,8 @@ def toggle_watched(params):
 
 def mark_item_watched(item_id):
     log.debug("Mark Item Watched: {0}".format(item_id))
-    url = "{server}/Users/{userid}/PlayedItems/" + item_id
-    downloadUtils.download_url(url, post_body="", method="POST")
+    url = "/Users/{}/PlayedItems/{}".format(user_details.get('user_id'), item_id)
+    api.post(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
@@ -237,8 +244,8 @@ def mark_item_watched(item_id):
 
 def mark_item_unwatched(item_id):
     log.debug("Mark Item UnWatched: {0}".format(item_id))
-    url = "{server}/Users/{userid}/PlayedItems/" + item_id
-    downloadUtils.download_url(url, method="DELETE")
+    url = "/Users/{}/PlayedItems/".format(user_details.get('user_id'), item_id)
+    api.delete(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
@@ -251,8 +258,8 @@ def mark_item_unwatched(item_id):
 
 def mark_item_favorite(item_id):
     log.debug("Add item to favourites: {0}".format(item_id))
-    url = "{server}/Users/{userid}/FavoriteItems/" + item_id
-    downloadUtils.download_url(url, post_body="", method="POST")
+    url = "/Users/{}/FavoriteItems/{}".format(user_details.get('user_id'), item_id)
+    api.post(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
@@ -264,8 +271,8 @@ def mark_item_favorite(item_id):
 
 def unmark_item_favorite(item_id):
     log.debug("Remove item from favourites: {0}".format(item_id))
-    url = "{server}/Users/{userid}/FavoriteItems/" + item_id
-    downloadUtils.download_url(url, method="DELETE")
+    url = "/Users/{}/FavoriteItems/{}".format(user_details.get('user_id'), item_id)
+    api.delete(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
@@ -277,7 +284,7 @@ def unmark_item_favorite(item_id):
 
 def delete(item_id):
 
-    item = downloadUtils.download_url("{server}/Users/{userid}/Items/" + item_id + "?format=json")
+    item = api.delete("/Users/{}/Items/{}".format(user_details.get('user_id'), item_id))
 
     item_id = item.get("Id")
     item_name = item.get("Name", "")
@@ -301,10 +308,10 @@ def delete(item_id):
     return_value = xbmcgui.Dialog().yesno(translate_string(30091), '{}\n{}'.format(final_name, translate_string(30092)))
     if return_value:
         log.debug('Deleting Item: {0}'.format(item_id))
-        url = '{server}/Items/' + item_id
+        url = '/Items/{}'.format(item_id)
         progress = xbmcgui.DialogProgress()
         progress.create(translate_string(30052), translate_string(30053))
-        downloadUtils.download_url(url, method="DELETE")
+        api.delete(url)
         progress.close()
         check_for_new_content()
         home_window = HomeWindow()
@@ -343,7 +350,7 @@ def show_menu(params):
     settings = xbmcaddon.Addon()
     item_id = params["item_id"]
 
-    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
+    url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
     data_manager = DataManager()
     result = data_manager.get_content(url)
     log.debug("Menu item info: {0}".format(result))
@@ -485,22 +492,22 @@ def show_menu(params):
         settings.setSetting(view_key, "")
 
     elif selected_action == "refresh_server":
-        url = ("{server}/Items/" + item_id + "/Refresh" +
+        url = ("/Items/" + item_id + "/Refresh" +
                "?Recursive=true" +
                "&ImageRefreshMode=FullRefresh" +
                "&MetadataRefreshMode=FullRefresh" +
                "&ReplaceAllImages=true" +
                "&ReplaceAllMetadata=true")
-        res = downloadUtils.download_url(url, post_body="", method="POST")
+        res = api.post(url)
         log.debug("Refresh Server Responce: {0}".format(res))
 
     elif selected_action == "hide":
         user_details = load_user_details()
         user_name = user_details["user_name"]
         hide_tag_string = "hide-" + user_name
-        url = "{server}/Items/" + item_id + "/Tags/Add"
+        url = "/Items/{}/Tags/Add".format(item_id)
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
-        res = downloadUtils.download_url(url, post_body=post_tag_data, method="POST")
+        res = api.post(url, post_tag_data)
         log.debug("Add Tag Responce: {0}".format(res))
 
         check_for_new_content()
@@ -554,62 +561,8 @@ def show_menu(params):
     elif selected_action == "delete":
         delete(item_id)
 
-    elif selected_action == "safe_delete":
-        url = "{server}/jellyfin_safe_delete/delete_item/" + item_id
-        result = downloadUtils.download_url(url)
-        dialog = xbmcgui.Dialog()
-        if result:
-            log.debug("Safe_Delete_Action: {0}".format(result))
-            action_token = result["action_token"]
-
-            message = "You are about to delete the following item[CR][CR]"
-
-            message += "Type: " + result["item_info"]["Item_type"] + "[CR]"
-
-            if result["item_info"]["Item_type"] == "Series":
-                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
-            elif result["item_info"]["Item_type"] == "Season":
-                message += "Season: " + str(result["item_info"]["season_number"]) + "[CR]"
-                message += "Name: " + result["item_info"]["season_name"] + "[CR]"
-            elif result["item_info"]["Item_type"] == "Episode":
-                message += "Series: " + result["item_info"]["series_name"] + "[CR]"
-                message += "Season: " + result["item_info"]["season_name"] + "[CR]"
-                message += "Episode: " + str(result["item_info"]["episode_number"]) + "[CR]"
-                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
-            else:
-                message += "Name: " + result["item_info"]["item_name"] + "[CR]"
-
-            message += "[CR]File List[CR][CR]"
-
-            for file_info in result["file_list"]:
-                message += " - " + file_info["Key"] + " (" + convert_size(file_info["Value"]) + ")[CR]"
-            message += "[CR][CR]Are you sure?[CR][CR]"
-
-            confirm_dialog = SafeDeleteDialog("SafeDeleteDialog.xml", PLUGINPATH, "default", "720p")
-            confirm_dialog.message = message
-            confirm_dialog.heading = "Confirm delete files?"
-            confirm_dialog.doModal()
-            log.debug("safe_delete_confirm_dialog: {0}".format(confirm_dialog.confirm))
-
-            if confirm_dialog.confirm:
-                url = "{server}/jellyfin_safe_delete/delete_item_action"
-                playback_info = {
-                    'item_id': item_id,
-                    'action_token': action_token
-                }
-                delete_action = downloadUtils.download_url(url, method="POST", post_body=playback_info)
-                log.debug("Delete result action: {0}".format(delete_action))
-                if not delete_action:
-                    dialog.ok("Error", "Error deleting files", "Error in responce from server")
-                elif not delete_action.get("result"):
-                    dialog.ok("Error", "Error deleting files", delete_action["message"])
-                else:
-                    dialog.ok("Deleted", "Files deleted")
-        else:
-            dialog.ok("Error", "Error getting safe delete confirmation")
-
     elif selected_action == "show_extras":
-        u = "{server}/Users/{userid}/Items/" + item_id + "/SpecialFeatures"
+        u = "/Users/{}/Items/{}/SpecialFeatures".format(api.user_id, item_id)
         action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Videos")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
         xbmc.executebuiltin(built_in_command)
@@ -618,13 +571,13 @@ def show_menu(params):
         xbmc.executebuiltin("Dialog.Close(all,true)")
         parent_id = result["ParentId"]
         series_id = result["SeriesId"]
-        u = ('{server}/Shows/' + series_id +
+        u = ('/Shows/' + series_id +
              '/Episodes'
-             '?userId={userid}' +
+             '?userId={}'.format(api.user_id) +
              '&seasonId=' + parent_id +
              '&IsVirtualUnAired=false' +
              '&IsMissing=false' +
-             '&Fields=SpecialEpisodeNumbers,{field_filters}' +
+             '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
              '&format=json')
         action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Season")
         built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
@@ -637,10 +590,10 @@ def show_menu(params):
         if not series_id:
             series_id = item_id
 
-        u = ('{server}/Shows/' + series_id +
+        u = ('/Shows/' + series_id +
              '/Seasons'
-             '?userId={userid}' +
-             '&Fields={field_filters}' +
+             '?userId={}'.format(api.user_id) +
+             '&Fields={}'.format(get_default_filters()) +
              '&format=json')
 
         action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Series")
@@ -663,15 +616,15 @@ def show_menu(params):
 def populate_listitem(item_id):
     log.debug("populate_listitem: {0}".format(item_id))
 
-    url = "{server}/Users/{userid}/Items/" + item_id + "?format=json"
-    result = downloadUtils.download_url(url)
+    url = "/Users/{}/Items/{}".format(user_details.get('user_id'), item_id)
+    result = api.get(url)
     log.debug("populate_listitem item info: {0}".format(result))
 
     item_title = result.get("Name", translate_string(30280))
 
     list_item = xbmcgui.ListItem(label=item_title)
 
-    server = downloadUtils.get_server()
+    server = settings.getSetting('server_address')
 
     art = get_art(result, server=server)
     list_item.setIconImage(art['thumb'])  # back compat
@@ -704,11 +657,11 @@ def show_content(params):
     if item_type.lower().find("movie") == -1:
         group_movies = False
 
-    content_url = ("{server}/Users/{userid}/Items" +
+    content_url = ("/Users/{}/Items".format(api.user_id) +
                    "?format=json" +
                    "&ImageTypeLimit=1" +
                    "&IsMissing=False" +
-                   "&Fields={field_filters}" +
+                   "&Fields={}".format(get_default_filters()) +
                    '&CollapseBoxSetItems=' + str(group_movies) +
                    '&GroupItemsIntoCollections=' + str(group_movies) +
                    "&Recursive=true" +
@@ -726,10 +679,10 @@ def search_results_person(params):
     handle = int(sys.argv[1])
 
     person_id = params.get("person_id")
-    details_url = ('{server}/Users/{userid}/items' +
+    details_url = ('/Users/{}/Items'.format(api.user_id) +
                    '?PersonIds=' + person_id +
                    '&Recursive=true' +
-                   '&Fields={field_filters}' +
+                   '&Fields={}'.format(get_default_filters()) +
                    '&format=json')
 
     params["name_format"] = "Episode|episode_name_format"
@@ -831,7 +784,7 @@ def search_results(params):
 
     # what type of search
     if item_type == "person":
-        search_url = ("{server}/Persons" +
+        search_url = ("/Persons" +
                       "?searchTerm=" + query +
                       "&IncludePeople=true" +
                       "&IncludeMedia=false" +
@@ -843,7 +796,7 @@ def search_results(params):
                       "&Recursive=true" +
                       "&EnableTotalRecordCount=false" +
                       "&ImageTypeLimit=1" +
-                      "&userId={userid}")
+                      "&userId={}".format(api.user_id))
 
         person_search_results = dataManager.get_content(search_url)
         log.debug("Person Search Result : {0}".format(person_search_results))
@@ -852,12 +805,12 @@ def search_results(params):
 
         person_items = person_search_results.get("Items", [])
 
-        server = downloadUtils.get_server()
+        server = settings.getSetting('server_address')
         list_items = []
         for item in person_items:
             person_id = item.get('Id')
             person_name = item.get('Name')
-            person_thumbnail = downloadUtils.get_artwork(item, "Primary", server=server)
+            person_thumbnail = get_art_url(item, "Primary", server=server)
 
             action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
 
@@ -879,7 +832,7 @@ def search_results(params):
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     else:
-        search_url = ("{server}/Users/{userid}/Items" +
+        search_url = ("/Users/{}/Items".format(api.user_id) +
                       "?searchTerm=" + query +
                       "&IncludePeople=false" +
                       "&IncludeMedia=true" +
@@ -888,7 +841,7 @@ def search_results(params):
                       "&IncludeArtists=false" +
                       "&IncludeItemTypes=" + item_type +
                       "&Limit=16" +
-                      "&Fields={field_filters}" +
+                      "&Fields={}".format(get_default_filters()) +
                       "&Recursive=true" +
                       "&EnableTotalRecordCount=false" +
                       "&ImageTypeLimit=1")
@@ -955,9 +908,9 @@ def play_action(params):
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
 
-    url = ("{server}/Users/{userid}/Items/%s/LocalTrailers?format=json" % item_id)
+    url = "/Users/{}/Items//LocalTrailers?format=json".format(user_details.get('user_id'), item_id)
 
-    result = downloadUtils.download_url(url)
+    result = api.get(url)
 
     if result is None:
         return
@@ -980,8 +933,8 @@ def play_item_trailer(item_id):
         trailer_names.append(name)
         trailer_list.append(info)
 
-    url = ("{server}/Users/{userid}/Items/%s?format=json&Fields=RemoteTrailers" % item_id)
-    result = downloadUtils.download_url(url)
+    url = "/Users/{}/Items/{}?format=json&Fields=RemoteTrailers".format(user_details.get('user_id'), item_id)
+    result = api.get(url)
     log.debug("RemoteTrailers: {0}".format(result))
     count = 1
 

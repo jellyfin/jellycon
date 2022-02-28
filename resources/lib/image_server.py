@@ -2,6 +2,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import xbmcvfs
 import xbmc
+import xbmcaddon
 import base64
 import re
 from random import shuffle
@@ -15,7 +16,6 @@ import io
 
 from .loghandler import LazyLogger
 from .datamanager import DataManager
-from .downloadutils import DownloadUtils
 from .item_functions import get_art
 
 pil_loaded = False
@@ -31,8 +31,8 @@ log = LazyLogger(__name__)
 
 def get_image_links(url):
 
-    download_utils = DownloadUtils()
-    server = download_utils.get_server()
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
     if server is None:
         return []
 
