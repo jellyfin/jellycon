@@ -12,6 +12,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
+from .api import API
 from .functions import play_action
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc
@@ -290,6 +291,7 @@ class WebSocketClient(threading.Thread):
 
     def post_capabilities(self):
 
+        settings = xbmcaddon.Addon()
         user_details = load_user_details()
 
         api = API(

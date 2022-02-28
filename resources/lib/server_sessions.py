@@ -33,6 +33,8 @@ def show_server_sessions():
         return
 
     list_items = []
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
     for session in results:
         device_name = session.get("DeviceName", "na")
         user_name = session.get("UserName", "na")
@@ -57,7 +59,6 @@ def show_server_sessions():
 
         art = {}
         if now_playing:
-            server = settings.getSetting('server_address')
             art = get_art(now_playing, server)
 
             runtime = now_playing.get("RunTimeTicks", 0)

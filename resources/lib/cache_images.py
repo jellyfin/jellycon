@@ -232,6 +232,7 @@ class CacheArtwork(threading.Thread):
         if isinstance(results, dict):
             results = results.get("Items")
 
+        settings = xbmcaddon.Addon()
         server = settings.getSetting('server_address')
         log.debug("Jellyfin Item Count Count: {0}".format(len(results)))
 

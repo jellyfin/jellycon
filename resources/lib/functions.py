@@ -196,7 +196,7 @@ def __get_parent_id_from(params):
         log.debug("TV show providers IDs: {}".format(show_provider_ids))
         get_show_url = "/Users/{}/Items?fields=MediaStreams&Recursive=true" \
                        "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
-                       "&AnyProviderIdEquals={}".format(api.user_id, item_id, show_provider_ids)
+                       "&AnyProviderIdEquals={}".format(api.user_id, show_provider_ids)
         content = dataManager.get_content(get_show_url)
         show = content.get("Items")
         if len(show) == 1:
