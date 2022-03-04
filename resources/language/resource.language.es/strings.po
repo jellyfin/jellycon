@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-02-02 17:13+0000\n"
-"Last-Translator: Angel Sandoval <portico-tersa0f@icloud.com>\n"
+"PO-Revision-Date: 2022-03-05 18:13+0000\n"
+"Last-Translator: Jorge IG <jigpubli@gmail.com>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -281,10 +281,9 @@ msgctxt "#30368"
 msgid "Clear Password?"
 msgstr "¿Borrar contraseña?"
 
-#, fuzzy
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
-msgstr "Al cambiar usuario, permitir guardado rápido de contraseña"
+msgstr "Permitir guardado rápido de la contraseña de usuario cambiada"
 
 msgctxt "#30366"
 msgid "Manually enter user details"
@@ -1019,23 +1018,20 @@ msgctxt "#30345"
 msgid "Cache Jellyfin server data requests"
 msgstr "Hacer caché de solicitudes al servidor Jellyfin"
 
-#, fuzzy
 msgctxt "#30333"
 msgid "Cache artwork in the background"
-msgstr "Hacer cache del material gráfico en segundo plano"
+msgstr "Almacenar en la memoria caché el material gráfico en segundo plano"
 
-#, fuzzy
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Cache de imágenes"
+msgstr "Almacenar Imágenes en caché"
 
-#, fuzzy
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
 "JellyCon Necesita confirmar para reanudar archivos reproducidos "
 "parcialmente, Kodi también puede solicitar confirmación , esto puede causar "
-"una doble confirmación. Desea eliminar la doble confirmación?"
+"una doble confirmación. ¿Desea eliminar la doble confirmación?"
 
 msgctxt "#30247"
 msgid "Custom Widget Content"
@@ -1080,7 +1076,7 @@ msgstr "Acción al seleccionar un ítem del widget"
 #, fuzzy
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "Reducir una temporada"
+msgstr "Reducir única temporada"
 
 msgctxt "#30015"
 msgid "Log timing data"
@@ -1089,3 +1085,11 @@ msgstr "Frecuencia de registro de datos"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Host"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Detectada solicitud adicional a reanudar"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Colecciones"
