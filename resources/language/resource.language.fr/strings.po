@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-02-14 15:13+0000\n"
-"Last-Translator: Ocuriz <lucas.ducourneau@hotmail.fr>\n"
+"PO-Revision-Date: 2022-03-07 17:06+0000\n"
+"Last-Translator: axel <lexa44@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -151,7 +151,7 @@ msgstr "Interface"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "Confirmer la suppression ?"
+msgstr "Confirmer la suppression ?"
 
 msgctxt "#30052"
 msgid "Deleting"
@@ -519,3 +519,16 @@ msgstr "Format de nom d'épisode filtré"
 msgctxt "#30114"
 msgid "Jump back seconds"
 msgstr "Revenir en arrière"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Ajouté récemment"
+
+#, fuzzy
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- En cours de réalisation"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adresse :"
