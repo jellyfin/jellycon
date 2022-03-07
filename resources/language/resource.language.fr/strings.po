@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-07 17:06+0000\n"
-"Last-Translator: axel <lexa44@gmail.com>\n"
+"PO-Revision-Date: 2022-03-08 00:04+0000\n"
+"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -169,11 +169,11 @@ msgctxt "#30210"
 msgid "HTTP direct stream"
 msgstr "Stream direct HTTP"
 
+#, fuzzy
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
-msgstr "Max stream bitrate (Kbps)"
+msgstr "Bitrate maximum du flux (Kbps)"
 
-#, fuzzy
 msgctxt "#30207"
 msgid "Playback"
 msgstr "Lecture"
@@ -182,7 +182,6 @@ msgctxt "#30182"
 msgid "Include media stream info"
 msgstr "Inclure info du flux media"
 
-#, fuzzy
 msgctxt "#30181"
 msgid "Include plot"
 msgstr "Inclure l'intrigue"
@@ -503,10 +502,9 @@ msgctxt "#30118"
 msgid "Add resume percent to names"
 msgstr "Ajouter le pourcentage de continuation aux noms"
 
-#, fuzzy
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Ajouter un compteur l'éléments non-vus aux noms"
+msgstr "Ajouter un compteur d'éléments non-vus aux noms"
 
 msgctxt "#30020"
 msgid "Flatten single season"
@@ -524,11 +522,379 @@ msgctxt "#30268"
 msgid " - Recently Added"
 msgstr "- Ajouté récemment"
 
-#, fuzzy
 msgctxt "#30267"
 msgid " - In Progress"
-msgstr "- En cours de réalisation"
+msgstr "- En cours"
 
 msgctxt "#30169"
 msgid "Address: "
 msgstr "Adresse :"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Options de lecture"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Saisons"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Critique"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Ajouté"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Titre"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Année"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Défaut"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Non-défini"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Tri"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Vues"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Nombre maximal de canaux audio"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Codec audio"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Vous n'avez pas les permissions pour supprimer cet élément"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Collections Favorites"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favoris"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Décennies"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Années"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Collections"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Listes globales"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Bibliothèques Jellyfin"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Tout afficher"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A - Z"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Films - Recommendations"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Ajouter à la liste de lecture Kodi"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informations"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Cacher"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Rafraîchir les métadonnées Jellyfin"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Pages"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protocole"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Détails utilisateur"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Images Jellyfin inutilisées :"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Système -"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Toujours"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Plus d'un(e)"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Jamais"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "URL du serveur"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Connexion manuelle"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Voulez-vous sauver le mot de passe ?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Sauver le mot de passe ?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Enregistrements"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programmes"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Canaux"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Fréquemment lus"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Artistes de l'album"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musique - Joués fréquemment"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Musique - Joués récemment"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Musique - Ajoutés récemment"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Lus récemment"
+
+#, fuzzy
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Récupération des images existantes"
+
+#, fuzzy
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Suppression des images en cache"
+
+#, fuzzy
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Garder les requêtes de données serveur de Jellyfin en cache"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Nombre d'images enlevées du cache"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Intervalle de vérification de nouveau contenu (0 = désactivé)"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Reprise automatique"
+
+#, fuzzy
+msgctxt "#30314"
+msgid "Play"
+msgstr "Lecture"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Annonce"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Grouper les films en collections"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Personne"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Chanson"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Utiliser le menu contextuel JellyCon"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr ""
+"Arrêter la lecture du média lors de l'activation de l'économiseur d'écran"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Films par page"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Afficher le dialogue de changement d'utilisateur"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Économiseur d'écran"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Afficher les dossiers vides (séries, saisons, collections)"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Aller à la saison"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genres"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albums"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Musique - Albums"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Lire tout"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Erreur de connexion"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Cacher les notifications pour des erreurs de connexion"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menu"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Tout -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Médiathèque -"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Activer le contrôle à distance Jellyfin"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Sélectionner la source de média"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Sélectionner la bande-annonce"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Lire la bande-annonce"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Images Jellyfin en cache :"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Images Jellyfin manquantes :"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Images existantes :"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Derniers"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Non-vus"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- À suivre"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Afficher avant de lire"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Traitement de l'élément :"
