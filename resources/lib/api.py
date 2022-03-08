@@ -22,7 +22,6 @@ class API:
         self.headers = {}
         self.create_headers()
 
-
     def get(self, path):
         if not self.headers:
             self.create_headers()
@@ -48,11 +47,7 @@ class API:
     def delete(self, url):
         url = '{}{}'.format(self.server, url)
 
-        r = requests.delete(url, headers=self.headers)
-
-    def get_user_items(self, path):
-        url = '/Users/{}/{}'.format(self.user_id, path)
-        r = self.get('url')
+        requests.delete(url, headers=self.headers)
 
     def authenticate(self, auth_data):
         response = self.post('/Users/AuthenticateByName', auth_data)
@@ -99,7 +94,6 @@ class API:
 
         # Make headers available to api calls
         self.headers = headers
-
 
     def post_capabilities(self):
         url = '{}/Sessions/Capabilities/Full'.format(self.server)
