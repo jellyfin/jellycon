@@ -52,10 +52,6 @@ class DataManager:
         )
 
     @timer
-    def get_content(self, url):
-        return self.api.get(url)
-
-    @timer
     def get_items(self, url, gui_options, use_cache=False):
 
         home_window = HomeWindow()
@@ -103,7 +99,7 @@ class DataManager:
         if item_list is None or len(item_list) == 0:
             log.debug("Loading url data from server")
 
-            results = self.get_content(url)
+            results = self.api.get(url)
 
             if results is None:
                 results = []
@@ -201,7 +197,7 @@ class CacheManagerThread(threading.Thread):
             log.debug("CacheManagerThread : Cache Hash : {0}".format(cached_hash))
 
             data_manager = DataManager()
-            results = data_manager.get_content(self.cached_item.items_url)
+            results = data_manager.api.get(self.cached_item.items_url)
             if results is None:
                 results = []
 

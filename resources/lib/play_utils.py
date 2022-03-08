@@ -17,7 +17,7 @@ from .loghandler import LazyLogger
 from .dialogs import ResumeDialog
 from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details
 from .kodi_utils import HomeWindow
-from .datamanager import DataManager, clear_old_cache_data
+from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
 from .cache_images import CacheArtwork
 from .picture_viewer import PictureViewer
@@ -27,7 +27,6 @@ from .playnext import PlayNextDialog
 log = LazyLogger(__name__)
 user_details = load_user_details()
 settings = xbmcaddon.Addon()
-
 api = API(
     settings.getSetting('server_address'),
     user_details.get('user_id'),
@@ -118,12 +117,11 @@ def play_all_files(items, play_items=True):
 
 def play_list_of_items(id_list):
     log.debug("Loading  all items in the list")
-    data_manager = DataManager()
     items = []
 
     for item_id in id_list:
         url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
-        result = data_manager.get_content(url)
+        result = api.get(url)
         if result is None:
             log.debug("Playfile item was None, so can not play!")
             return
@@ -141,8 +139,7 @@ def add_to_playlist(play_info):
     item_id = play_info.get("item_id")
 
     url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
-    data_manager = DataManager()
-    item = data_manager.get_content(url)
+    item = api.get(url)
     if item is None:
         log.debug("Playfile item was None, so can not play!")
         return
@@ -205,9 +202,8 @@ def add_to_playlist(play_info):
 
 def get_playback_intros(item_id):
     log.debug("get_playback_intros")
-    data_manager = DataManager()
     url = "/Users/{}/Items/{}/Intros".format(api.user_id, item_id)
-    intro_items = data_manager.get_content(url)
+    intro_items = api.get(url)
 
     if intro_items is None:
         log.debug("get_playback_intros failed!")
@@ -255,8 +251,7 @@ def play_file(play_info):
     server = settings.getSetting('server_address')
 
     url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
     log.debug("Playfile item: {0}".format(result))
 
     if result is None:
@@ -271,7 +266,7 @@ def play_file(play_info):
                '&Fields=MediaSources' +
                '&format=json')
         url = url % (item_id,)
-        result = data_manager.get_content(url)
+        result = api.get(url)
         log.debug("PlayAllFiles items: {0}".format(result))
 
         # process each item
@@ -284,7 +279,7 @@ def play_file(play_info):
     if result.get("Type") == "Program":
         channel_id = result.get("ChannelId")
         url = "/Users/{}/Items/{}?format=json".format(api.user_id, channel_id)
-        result = data_manager.get_content(url)
+        result = api.get(url)
         item_id = result["Id"]
 
     if result.get("Type") == "Photo":
@@ -559,8 +554,7 @@ def get_next_episode(item):
            '&ImageTypeLimit=1' +
            '&format=json')
 
-    data_manager = DataManager()
-    items_result = data_manager.get_content(url)
+    items_result = api.get(url)
     log.debug("get_next_episode, sibling list: {0}".format(items_result))
 
     if items_result is None:
@@ -1425,7 +1419,6 @@ class PlaybackService(xbmc.Monitor):
             if skip_select_user is not None and skip_select_user == "true":
                 return
             xbmc.executebuiltin("RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)")
-
 
 
 def get_item_playback_info(item_id, force_transcode):

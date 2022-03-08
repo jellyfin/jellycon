@@ -10,7 +10,6 @@ import time
 
 from .api import API
 from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters
-from .datamanager import DataManager
 from .loghandler import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
@@ -25,7 +24,6 @@ api = API(
     user_id,
     user_details.get('token')
 )
-dataManager = DataManager()
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 background_items = []
@@ -214,8 +212,7 @@ def get_widget_content_cast(handle, params):
     server = settings.getSetting('server_address')
 
     item_id = params["id"]
-    data_manager = DataManager()
-    result = data_manager.get_content(
+    result = api.get(
         "/Users/{}/Items/{}".format(user_id, item_id))
     log.debug("ItemInfo: {0}".format(result))
 
@@ -390,8 +387,7 @@ def get_widget_content(handle, params):
         suggested_items_url = get_jellyfin_url(
             "{server}/Movies/Recommendations", suggested_items_url_params)
 
-        data_manager = DataManager()
-        suggested_items = data_manager.get_content(suggested_items_url)
+        suggested_items = api.get(suggested_items_url)
         ids = []
         set_id = 0
         while len(ids) < item_limit and suggested_items:

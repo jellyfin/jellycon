@@ -5,13 +5,21 @@ from six.moves.urllib.parse import quote, unquote
 
 import xbmc
 import xbmcgui
+import xbmcaddon
 
+from .api import API
 from .loghandler import LazyLogger
-from .datamanager import DataManager
-from .utils import translate_string
+from .utils import translate_string, load_user_details
 
 log = LazyLogger(__name__)
-dataManager = DataManager()
+
+user_details = load_user_details()
+settings = xbmcaddon.Addon()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 details_string = 'EpisodeCount,SeasonCount,Path,Etag,MediaStreams'
 icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png')
@@ -33,7 +41,7 @@ def search(item_type, query):
                    '&Limit=25' +
                    '&IncludePeople=false&IncludeMedia=true&IncludeGenres=false&IncludeStudios=false&IncludeArtists=false')
 
-    result = dataManager.get_content(content_url)
+    result = api.get(content_url)
     return result
 
 
@@ -57,13 +65,13 @@ def get_items(video_type, item_id=None, parent_id=None):
                        '&format=json')
 
     if content_url:
-        result = dataManager.get_content(content_url)
+        result = api.get(content_url)
 
     return result
 
 
 def get_item(item_id):
-    result = dataManager.get_content('{server}/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
+    result = api.get('{server}/Users/{userid}/Items/' + item_id + '?Fields=ProviderIds&format=json')
     return result
 
 

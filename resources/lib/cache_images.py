@@ -14,14 +14,22 @@ import xbmcplugin
 import xbmc
 import xbmcaddon
 
+from .api import API
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
-from .datamanager import DataManager
 from .utils import translate_string, load_user_details
 from .kodi_utils import HomeWindow
 from .item_functions import get_art
 
 log = LazyLogger(__name__)
+
+user_details = load_user_details()
+settings = xbmcaddon.Addon()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 
 class CacheArtwork(threading.Thread):
@@ -224,8 +232,7 @@ class CacheArtwork(threading.Thread):
         url += "&ImageTypeLimit=1"
         url += "&format=json"
 
-        data_manager = DataManager()
-        results = data_manager.get_content(url)
+        results = api.get(url)
         if results is None:
             results = []
 

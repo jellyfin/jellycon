@@ -7,19 +7,25 @@ import xbmcaddon
 
 from .loghandler import LazyLogger
 from .item_functions import get_art
-from .datamanager import DataManager
+from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
+settings = xbmcaddon.Addon()
+user_details = load_user_details()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 def show_server_sessions():
     log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
-    data_manager = DataManager()
 
-    url = "/Users/{}".format(data_manager.api.user_id)
-    results = data_manager.get_content(url)
+    url = "/Users/{}".format(user_details.get('user_id'))
+    results = api.get(url)
 
     is_admin = results.get("Policy", {}).get("IsAdministrator", False)
     if not is_admin:
@@ -27,7 +33,7 @@ def show_server_sessions():
         return
 
     url = "/Sessions"
-    results = data_manager.get_content(url)
+    results = api.get(url)
     log.debug("session_info: {0}".format(results))
 
     if results is None:

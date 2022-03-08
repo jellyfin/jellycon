@@ -14,9 +14,10 @@ import threading
 import requests
 import io
 
+from .api import API
 from .loghandler import LazyLogger
-from .datamanager import DataManager
 from .item_functions import get_art
+from .utils import load_user_details
 
 pil_loaded = False
 try:
@@ -24,6 +25,14 @@ try:
     pil_loaded = True
 except Exception as err:
     pil_loaded = False
+
+settings = xbmcaddon.Addon()
+user_details = load_user_details()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 PORT_NUMBER = 24276
 log = LazyLogger(__name__)
@@ -50,8 +59,7 @@ def get_image_links(url):
     if not re.search('EnableUserData=', url, re.IGNORECASE):
         url += "&EnableUserData=False"
 
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     items = result.get("Items")
     if not items:

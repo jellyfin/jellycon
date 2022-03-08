@@ -11,9 +11,9 @@ import string
 import xbmcplugin
 import xbmcaddon
 
+from .api import API
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .loghandler import LazyLogger
-from .datamanager import DataManager
 from .utils import get_jellyfin_url, translate_string, get_art_url, load_user_details, get_default_filters
 from .item_functions import get_art
 
@@ -23,6 +23,11 @@ __addon__ = xbmcaddon.Addon()
 user_details = load_user_details()
 user_id = user_details.get('user_id')
 settings = xbmcaddon.Addon()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)
 
 
 def show_movie_tags(menu_params):
@@ -45,8 +50,7 @@ def show_movie_tags(menu_params):
         url_params["ParentId"] = parent_id
 
     url = get_jellyfin_url("/Tags", url_params)
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     if not result:
         return
@@ -111,8 +115,7 @@ def show_movie_years(menu_params):
 
     url = get_jellyfin_url("/Years", url_params)
 
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     if not result:
         return
@@ -194,8 +197,7 @@ def show_movie_pages(menu_params):
 
     url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     if result is None:
         return
@@ -287,8 +289,7 @@ def show_genre_list(menu_params):
 
     url = get_jellyfin_url("/Genres", params)
 
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     if result is not None:
         result = result.get("Items")
@@ -953,9 +954,8 @@ def display_library_views(params):
     if server is None:
         return
 
-    data_manager = DataManager()
     views_url = "/Users/{}/Views?format=json".format(user_id)
-    views = data_manager.get_content(views_url)
+    views = api.get(views_url)
     if not views:
         return []
     views = views.get("Items")
@@ -1027,8 +1027,7 @@ def display_library_view(params):
     node_id = params.get("view_id")
 
     view_info_url = "/Users/{}/Items/".format(user_id) + node_id
-    data_manager = DataManager()
-    view_info = data_manager.get_content(view_info_url)
+    view_info = api.get(view_info_url)
 
     log.debug("VIEW_INFO : {0}".format(view_info))
 
@@ -1100,9 +1099,8 @@ def set_library_window_values(force=False):
         home_window.clear_property("view_item.%i.type" % index)
         home_window.clear_property("view_item.%i.thumb" % index)
 
-    data_manager = DataManager()
     url = "/Users/{}/Views".format(user_id)
-    result = data_manager.get_content(url)
+    result = api.get(url)
 
     if result is None:
         return

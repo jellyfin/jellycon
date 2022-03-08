@@ -18,7 +18,7 @@ from .api import API
 from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
-from .datamanager import DataManager, clear_cached_server_data
+from .datamanager import clear_cached_server_data
 from .server_detect import check_server, check_connection_speed
 from .loghandler import LazyLogger
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
@@ -49,8 +49,6 @@ api = API(
     user_details.get('user_id'),
     user_details.get('token')
 )
-
-dataManager = DataManager()
 
 
 @timer
@@ -194,7 +192,7 @@ def __get_parent_id_from(params):
         get_show_url = "/Users/{}/Items?fields=MediaStreams&Recursive=true" \
                        "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
                        "&AnyProviderIdEquals={}".format(api.user_id, show_provider_ids)
-        content = dataManager.get_content(get_show_url)
+        content = api.get(get_show_url)
         show = content.get("Items")
         if len(show) == 1:
             result = content.get("Items")[0].get("Id")
@@ -211,8 +209,7 @@ def toggle_watched(params):
     if item_id is None:
         return
     url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
     log.debug("toggle_watched item info: {0}".format(result))
 
     user_data = result.get("UserData", None)
@@ -348,8 +345,7 @@ def show_menu(params):
     item_id = params["item_id"]
 
     url = "/Users/{}/Items/{}?format=json".format(api.user_id, item_id)
-    data_manager = DataManager()
-    result = data_manager.get_content(url)
+    result = api.get(url)
     log.debug("Menu item info: {0}".format(result))
 
     if result is None:
@@ -795,7 +791,7 @@ def search_results(params):
                       "&ImageTypeLimit=1" +
                       "&userId={}".format(api.user_id))
 
-        person_search_results = dataManager.get_content(search_url)
+        person_search_results = api.get(search_url)
         log.debug("Person Search Result : {0}".format(person_search_results))
         if person_search_results is None:
             return
