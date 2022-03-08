@@ -5,6 +5,7 @@ import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
+from .api import API
 from .loghandler import LazyLogger
 from .item_functions import get_art
 from .utils import load_user_details

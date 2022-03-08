@@ -29,7 +29,11 @@ class API:
         url = '{}{}'.format(self.server, path)
 
         r = requests.get(url, headers=self.headers)
-        return r.json()
+        try:
+            response_data = r.json()
+        except:
+            response_data = {}
+        return response_data
 
     def post(self, url, payload):
         if not self.headers:
