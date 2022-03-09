@@ -9,8 +9,8 @@ import random
 import time
 
 from .jellyfin import api
-from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters
-from .loghandler import LazyLogger
+from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters, kodi_version
+from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
 from .tracking import timer
@@ -18,7 +18,6 @@ from .tracking import timer
 log = LazyLogger(__name__)
 user_details = load_user_details()
 user_id = user_details.get('user_id')
-kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 background_items = []
 background_current_item = 0
@@ -238,7 +237,7 @@ def get_widget_content_cast(handle, params):
                 person_thumbnail = image_url(
                     person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
-            if kodi_version > 17:
+            if kodi_version() > 17:
                 list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
             else:
                 list_item = xbmcgui.ListItem(label=person_name)

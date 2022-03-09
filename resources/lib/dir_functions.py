@@ -10,7 +10,7 @@ import sys
 import re
 
 from .datamanager import DataManager
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .item_functions import add_gui_item, ItemDetails
 from .utils import send_event_notification, translate_string, load_user_details, get_default_filters
 from .tracking import timer

@@ -8,7 +8,7 @@ import xbmcaddon
 import sys
 import json
 
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 
 log = LazyLogger(__name__)
 addon = xbmcaddon.Addon()
@@ -45,22 +45,3 @@ def add_menu_directory_item(label, path, folder=True, art=None):
     li.setArt(art)
 
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)
-
-
-def get_kodi_version():
-
-    json_data = xbmc.executeJSONRPC(
-        '{ "jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["version", "name"]}, "id": 1 }')
-
-    result = json.loads(json_data)
-
-    try:
-        result = result.get("result")
-        version_data = result.get("version")
-        version = float(str(version_data.get("major")) + "." + str(version_data.get("minor")))
-        log.debug("Version: {0} - {1}".format(version, version_data))
-    except:
-        version = 0.0
-        log.error("Version Error : RAW Version Data: {0}".format(result))
-
-    return version

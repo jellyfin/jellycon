@@ -9,10 +9,10 @@ import xbmcgui
 import xbmcvfs
 
 from .jsonrpc import JsonRpc, get_value, set_value
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
+from .utils import translate_path, kodi_version
 
 log = LazyLogger(__name__)
-ver = xbmc.getInfoLabel('System.BuildVersion')[:2]
 
 
 def clone_default_skin():
@@ -49,7 +49,7 @@ def walk_path(root_path, relative_path, all_files):
 def clone_skin():
     log.debug("Cloning Estuary Skin")
 
-    kodi_path = xbmc.translatePath("special://xbmc")
+    kodi_path = translate_path("special://xbmc")
     kodi_skin_source = os.path.join(kodi_path, "addons", "skin.estuary")
     log.debug("Kodi Skin Source: {0}".format(kodi_skin_source))
 
@@ -61,7 +61,7 @@ def clone_skin():
     for found in all_files:
         log.debug("Found Path: {0}".format(found))
 
-    kodi_home_path = xbmc.translatePath("special://home")
+    kodi_home_path = translate_path("special://home")
     kodi_skin_destination = os.path.join(kodi_home_path, "addons", "skin.estuary_jellycon")
     log.debug("Kodi Skin Destination: {0}".format(kodi_skin_destination))
 
@@ -91,7 +91,7 @@ def clone_skin():
     # get jellycon path
     jellycon_path = os.path.join(kodi_home_path, "addons", "plugin.video.jellycon")
 
-    log.debug("Major Version: {0}".format(ver))
+    log.debug("Major Version: {0}".format(kodi_version()))
 
     file_list = ["Home.xml",
                  "Includes_Home.xml",
@@ -101,7 +101,7 @@ def clone_skin():
 
     # Copy customized skin files from our addon into cloned skin
     for file_name in file_list:
-        source = os.path.join(jellycon_path, "resources", "skins", "skin.estuary", ver, "xml", file_name)
+        source = os.path.join(jellycon_path, "resources", "skins", "skin.estuary", str(kodi_version), "xml", file_name)
         destination = os.path.join(kodi_skin_destination, "xml", file_name)
         xbmcvfs.copy(source, destination)
 

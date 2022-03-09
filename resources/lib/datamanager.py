@@ -8,12 +8,12 @@ import time
 from six.moves import cPickle
 
 from .jellyfin import api
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .tracking import timer
 from .filelock import FileLock
-from .utils import translate_string, load_user_details
+from .utils import translate_string, load_user_details, translate_path
 
 import xbmc
 import xbmcaddon
@@ -39,7 +39,7 @@ class CacheItem:
 
 class DataManager:
 
-    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    addon_dir = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 
     def __init__(self, *args):
         self.user_details = load_user_details()
@@ -253,7 +253,7 @@ class CacheManagerThread(threading.Thread):
 def clear_cached_server_data():
     log.debug("clear_cached_server_data() called")
 
-    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    addon_dir = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
     dirs, files = xbmcvfs.listdir(addon_dir)
 
     del_count = 0
@@ -271,7 +271,7 @@ def clear_cached_server_data():
 def clear_old_cache_data():
     log.debug("clear_old_cache_data() : called")
 
-    addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    addon_dir = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
     dirs, files = xbmcvfs.listdir(addon_dir)
 
     del_count = 0

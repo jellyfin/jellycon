@@ -15,12 +15,12 @@ import xbmcaddon
 import xbmc
 
 from .jellyfin import api
-from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters
+from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
 from .server_detect import check_server, check_connection_speed
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
@@ -34,13 +34,12 @@ from .skin_cloner import clone_default_skin
 from .play_utils import play_file
 
 __addon__ = xbmcaddon.Addon()
-__addondir__ = xbmc.translatePath(__addon__.getAddonInfo('profile'))
+__addondir__ = translate_path(__addon__.getAddonInfo('profile'))
 __cwd__ = __addon__.getAddonInfo('path')
-PLUGINPATH = xbmc.translatePath(os.path.join(__cwd__))
+PLUGINPATH = translate_path(os.path.join(__cwd__))
 
 log = LazyLogger(__name__)
 
-kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 user_details = load_user_details()
 
 
@@ -60,7 +59,7 @@ def main_entry_point():
     log.debug("Running Python: {0}".format(sys.version_info))
     log.debug("Running JellyCon: {0}".format(get_version()))
     log.debug("Kodi BuildVersion: {0}".format(xbmc.getInfoLabel("System.BuildVersion")))
-    log.debug("Kodi Version: {0}".format(kodi_version))
+    log.debug("Kodi Version: {0}".format(kodi_version()))
     log.debug("Script argument data: {0}".format(sys.argv))
 
     params = get_params()

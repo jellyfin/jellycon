@@ -2,7 +2,7 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import xbmcgui
 
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 
 log = LazyLogger(__name__)
 

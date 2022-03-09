@@ -5,7 +5,7 @@ import time
 
 import xbmc
 from .functions import show_menu
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .widgets import check_for_new_content
 from .tracking import timer
 

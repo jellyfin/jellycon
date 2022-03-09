@@ -14,7 +14,7 @@ import xbmcgui
 
 from .jellyfin import API
 from .functions import play_action
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
 from .utils import get_device_id, load_user_details
