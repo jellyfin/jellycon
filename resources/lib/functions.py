@@ -15,7 +15,7 @@ import xbmcaddon
 import xbmc
 
 from .jellyfin import api
-from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path
+from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
@@ -40,7 +40,6 @@ PLUGINPATH = translate_path(os.path.join(__cwd__))
 
 log = LazyLogger(__name__)
 
-kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 user_details = load_user_details()
 
 
@@ -60,7 +59,7 @@ def main_entry_point():
     log.debug("Running Python: {0}".format(sys.version_info))
     log.debug("Running JellyCon: {0}".format(get_version()))
     log.debug("Kodi BuildVersion: {0}".format(xbmc.getInfoLabel("System.BuildVersion")))
-    log.debug("Kodi Version: {0}".format(kodi_version))
+    log.debug("Kodi Version: {0}".format(kodi_version()))
     log.debug("Script argument data: {0}".format(sys.argv))
 
     params = get_params()

@@ -9,12 +9,11 @@ from datetime import datetime
 import xbmc
 import xbmcgui
 
-from .utils import datetime_from_string, get_art_url, image_url
+from .utils import datetime_from_string, get_art_url, image_url, kodi_version
 from .lazylogger import LazyLogger
 from six import ensure_text
 
 log = LazyLogger(__name__)
-kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 
 class ItemDetails:
@@ -428,7 +427,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         else:
             item_details.plot = time_info
 
-    if kodi_version > 17:
+    if kodi_version() > 17:
         list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
     else:
         list_item = xbmcgui.ListItem(list_item_name, iconImage=thumb_path, thumbnailImage=thumb_path)
@@ -459,7 +458,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
     # add cast
     if item_details.cast:
-        if kodi_version >= 17:
+        if kodi_version() >= 17:
             list_item.setCast(item_details.cast)
         else:
             info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
@@ -595,7 +594,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
-    if kodi_version > 17:
+    if kodi_version() > 17:
         list_item.setProperties(item_properties)
     else:
         for key, value in item_properties.iteritems():
