@@ -8,7 +8,7 @@ import xbmcaddon
 import sys
 import json
 
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 
 log = LazyLogger(__name__)
 addon = xbmcaddon.Addon()

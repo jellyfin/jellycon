@@ -15,8 +15,9 @@ import requests
 import io
 
 from .jellyfin import api
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .item_functions import get_art
+from .utils import translate_path
 
 pil_loaded = False
 try:
@@ -170,7 +171,7 @@ class HttpImageHandler(BaseHTTPRequestHandler):
 
         else:
 
-            image_path = xbmc.translatePath("special://home/addons/plugin.video.jellycon/icon.png").decode('utf-8')
+            image_path = translate_path("special://home/addons/plugin.video.jellycon/icon.png").decode('utf-8')
             self.send_response(200)
             self.send_header('Content-type', 'image/png')
             modified = xbmcvfs.Stat(image_path).st_mtime()

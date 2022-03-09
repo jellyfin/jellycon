@@ -13,9 +13,9 @@ import re
 from six.moves.urllib.parse import urlencode
 
 from .jellyfin import api
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -280,7 +280,7 @@ def play_file(play_info):
         play_url = "%s/Items/%s/Images/Primary"
         play_url = play_url % (server, item_id)
 
-        plugin_path = xbmc.translatePath(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
+        plugin_path = translate_path(os.path.join(xbmcaddon.Addon().getAddonInfo('path')))
         action_menu = PictureViewer("PictureViewer.xml", plugin_path, "default", "720p")
         action_menu.setPicture(play_url)
         action_menu.doModal()
@@ -990,7 +990,7 @@ def prompt_for_stop_actions(item_id, data):
         if play_prompt:
 
             plugin_path = settings.getAddonInfo('path')
-            plugin_path_real = xbmc.translatePath(os.path.join(plugin_path))
+            plugin_path_real = translate_path(os.path.join(plugin_path))
 
             play_next_dialog = PlayNextDialog("PlayNextDialog.xml", plugin_path_real, "default", "720p")
             play_next_dialog.set_episode_info(next_episode)

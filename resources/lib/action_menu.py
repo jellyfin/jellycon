@@ -7,7 +7,7 @@ import threading
 import xbmc
 import xbmcgui
 
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 
 log = LazyLogger(__name__)
 

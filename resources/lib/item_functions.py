@@ -7,19 +7,14 @@ from six.moves.urllib.parse import quote
 from datetime import datetime
 
 import xbmc
-import xbmcaddon
 import xbmcgui
 
 from .utils import datetime_from_string, get_art_url, image_url
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from six import ensure_text
 
 log = LazyLogger(__name__)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
-
-addon_instance = xbmcaddon.Addon()
-addon_path = addon_instance.getAddonInfo('path')
-PLUGINPATH = xbmc.translatePath(os.path.join(addon_path))
 
 
 class ItemDetails:

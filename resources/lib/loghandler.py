@@ -11,10 +11,12 @@ import traceback
 from six import ensure_text
 from kodi_six import xbmc, xbmcaddon
 
+from .utils import translate_path
+
 ##################################################################################################
 
 __addon__ = xbmcaddon.Addon(id='plugin.video.jellycon')
-__pluginpath__ = xbmc.translatePath(__addon__.getAddonInfo('path'))
+__pluginpath__ = translate_path(__addon__.getAddonInfo('path'))
 
 ##################################################################################################
 
@@ -108,22 +110,6 @@ class MyFormatter(logging.Formatter):
     def _gen_rel_path(self, record):
         if record.pathname:
             record.relpath = os.path.relpath(record.pathname, __pluginpath__)
-
-
-class LazyLogger(object):
-    """`helper.loghandler.getLogger()` is used everywhere.
-    This class helps avoiding import errors.
-    """
-    __logger = None
-    __logger_name = None
-
-    def __init__(self, logger_name=None):
-        self.__logger_name = logger_name
-
-    def __getattr__(self, name):
-        if self.__logger is None:
-            self.__logger = getLogger(self.__logger_name)
-        return getattr(self.__logger, name)
 
 
 def get_filesystem_encoding():

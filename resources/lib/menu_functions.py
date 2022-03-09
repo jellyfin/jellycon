@@ -13,7 +13,7 @@ import xbmcaddon
 
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .utils import get_jellyfin_url, translate_string, get_art_url, get_default_filters
 from .item_functions import get_art
 

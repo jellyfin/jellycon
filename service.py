@@ -8,7 +8,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from resources.lib.loghandler import LazyLogger
+from resources.lib.lazylogger import LazyLogger
 from resources.lib.play_utils import Service, PlaybackService, send_progress
 from resources.lib.kodi_utils import HomeWindow
 from resources.lib.widgets import set_background_image, set_random_movies

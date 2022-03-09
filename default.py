@@ -2,7 +2,7 @@
 
 import xbmcaddon
 
-from resources.lib.loghandler import LazyLogger
+from resources.lib.lazylogger import LazyLogger
 from resources.lib.functions import main_entry_point
 from resources.lib.tracking import set_timing_enabled
 

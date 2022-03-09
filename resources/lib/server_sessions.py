@@ -6,7 +6,7 @@ import xbmcplugin
 import xbmcaddon
 
 from .jellyfin import api
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .item_functions import get_art
 from .utils import load_user_details
 

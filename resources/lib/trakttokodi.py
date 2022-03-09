@@ -7,13 +7,13 @@ import xbmc
 import xbmcgui
 
 from .jellyfin import api
-from .loghandler import LazyLogger
-from .utils import translate_string
+from .lazylogger import LazyLogger
+from .utils import translate_string, translate_path
 
 log = LazyLogger(__name__)
 
 details_string = 'EpisodeCount,SeasonCount,Path,Etag,MediaStreams'
-icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png')
+icon = translate_path('special://home/addons/plugin.video.jellycon/icon.png')
 
 
 def not_found(content_string):

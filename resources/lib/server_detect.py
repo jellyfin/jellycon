@@ -12,7 +12,7 @@ import xbmc
 
 from .kodi_utils import HomeWindow
 from .jellyfin import API
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .utils import datetime_from_string, translate_string, save_user_details, load_user_details
 
 log = LazyLogger(__name__)

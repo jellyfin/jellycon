@@ -15,7 +15,7 @@ import xbmc
 import xbmcaddon
 
 from .jellyfin import api
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .utils import translate_string, load_user_details
 from .kodi_utils import HomeWindow

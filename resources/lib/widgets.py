@@ -10,7 +10,7 @@ import time
 
 from .jellyfin import api
 from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
 from .tracking import timer

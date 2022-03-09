@@ -5,6 +5,7 @@ import xbmcaddon
 import xbmc
 import xbmcvfs
 from kodi_six.utils import py2_encode, py2_decode
+import sys
 
 import binascii
 import string
@@ -20,13 +21,25 @@ from uuid import uuid4
 from six import ensure_text, ensure_binary, text_type
 from six.moves.urllib.parse import urlencode
 
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 
 # hack to get datetime strptime loaded
 throwaway = time.strptime('20110101', '%Y%m%d')
 
 log = LazyLogger(__name__)
+
+
+def kodi_version():
+    # Kodistubs returns empty string, causing Python 3 tests to choke on int()
+    # TODO: Make Kodistubs version configurable for testing purposes
+    if sys.version_info.major == 2:
+        default_versionstring = "18"
+    else:
+        default_versionstring = "19.1 (19.1.0) Git:20210509-85e05228b4"
+
+    version_string = xbmc.getInfoLabel('System.BuildVersion') or default_versionstring
+    return int(version_string.split(' ', 1)[0].split('.', 1)[0])
 
 
 def get_jellyfin_url(path, params):
@@ -118,7 +131,7 @@ def get_device_id():
     if client_id:
         return '{}-{}'.format(client_id, hashed_name)
 
-    jellyfin_guid_path = py2_decode(xbmc.translatePath("special://temp/jellycon_guid"))
+    jellyfin_guid_path = py2_decode(translate_path("special://temp/jellycon_guid"))
     log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
     guid = xbmcvfs.File(jellyfin_guid_path)
     client_id = guid.read()
@@ -147,7 +160,7 @@ def get_version():
 def save_user_details(user_name, user_id, token):
     settings = xbmcaddon.Addon()
     save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
-    addon_data = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 
     # Save to a config file for reference later if desired
     if save_user_to_settings:
@@ -184,7 +197,7 @@ def load_user_details():
         user_name = settings.getSetting('username')
         #settings_user_name = settings.getSetting('username')
     save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
-    addon_data = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
+    addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 
     if save_user_to_settings:
         try:
@@ -315,3 +328,15 @@ def get_default_filters():
         filer_list.append("Overview")
 
     return ','.join(filer_list)
+
+
+def translate_path(path):
+    '''
+    Use new library location for translate path starting in Kodi 19
+    '''
+    version = kodi_version()
+
+    if version > 18:
+        return xbmcvfs.translatePath(path)
+    else:
+        return xbmc.translatePath(path)

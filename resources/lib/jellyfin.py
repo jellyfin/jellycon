@@ -6,7 +6,7 @@ from kodi_six.utils import py2_decode
 import requests
 
 from .utils import get_device_id, get_version, load_user_details
-from .loghandler import LazyLogger
+from .lazylogger import LazyLogger
 
 log = LazyLogger(__name__)
 
