@@ -35,7 +35,7 @@ class API:
             response_data = {}
         return response_data
 
-    def post(self, url, payload):
+    def post(self, url, payload = {}):
         if not self.headers:
             self.create_headers()
 

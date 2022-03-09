@@ -180,7 +180,6 @@ def check_server(force=False, change_user=False, notify=False):
                 progress = xbmcgui.DialogProgress()
                 progress.create('{} : {}'.format(__addon_name__, translate_string(30376)))
                 progress.update(0, translate_string(30377))
-                api.server = api.server
                 result = api.get('/System/Info/Public')
                 progress.close()
 
