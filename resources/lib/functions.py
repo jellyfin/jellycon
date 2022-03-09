@@ -599,40 +599,6 @@ def show_menu(params):
         xbmc.executebuiltin("Action(info)")
 
 
-def populate_listitem(item_id):
-    log.debug("populate_listitem: {0}".format(item_id))
-
-    url = "/Users/{}/Items/{}".format(user_details.get('user_id'), item_id)
-    result = api.get(url)
-    log.debug("populate_listitem item info: {0}".format(result))
-
-    item_title = result.get("Name", translate_string(30280))
-
-    list_item = xbmcgui.ListItem(label=item_title)
-
-    server = settings.getSetting('server_address')
-
-    art = get_art(result, server=server)
-    list_item.setIconImage(art['thumb'])  # back compat
-    list_item.setProperty('fanart_image', art['fanart'])  # back compat
-    list_item.setProperty('discart', art['discart'])  # not avail to setArt
-    list_item.setArt(art)
-
-    list_item.setProperty('IsPlayable', 'false')
-    list_item.setProperty('IsFolder', 'false')
-    list_item.setProperty('id', result.get("Id"))
-
-    # play info
-    details = {
-        'title': item_title,
-        'plot': result.get("Overview")
-    }
-
-    list_item.setInfo("Video", infoLabels=details)
-
-    return list_item
-
-
 def show_content(params):
     log.debug("showContent Called: {0}".format(params))
 
