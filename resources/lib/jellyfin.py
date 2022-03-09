@@ -21,6 +21,7 @@ class API:
 
         self.headers = {}
         self.create_headers()
+        self.verify_cert = settings.getSetting('verify_cert') == 'true'
 
     def get(self, path):
         if not self.headers:
@@ -28,7 +29,7 @@ class API:
 
         url = '{}{}'.format(self.server, path)
 
-        r = requests.get(url, headers=self.headers)
+        r = requests.get(url, headers=self.headers, verify=self.verify_cert)
         try:
             response_data = r.json()
         except:
@@ -41,7 +42,7 @@ class API:
 
         url = '{}{}'.format(self.server, url)
 
-        r = requests.post(url, json=payload, headers=self.headers)
+        r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert)
         try:
             response_data = r.json()
         except:
@@ -51,7 +52,7 @@ class API:
     def delete(self, url):
         url = '{}{}'.format(self.server, url)
 
-        requests.delete(url, headers=self.headers)
+        requests.delete(url, headers=self.headers, verify=self.verify_cert)
 
     def authenticate(self, auth_data):
         response = self.post('/Users/AuthenticateByName', auth_data)
@@ -145,7 +146,8 @@ class API:
         self.create_headers()
 
         url = '{}/playback/bitratetest?size={}'.format(self.server, test_data_size)
-        response = requests.get(url, stream=True, headers=self.headers)
+        # Because this needs the stream argument, this doesn't go through self.get()
+        response = requests.get(url, stream=True, headers=self.headers, verify=self.verify_cert)
 
         return response
 
