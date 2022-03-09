@@ -3,7 +3,6 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import socket
 import json
-import requests
 import time
 from datetime import datetime
 
@@ -12,9 +11,9 @@ import xbmcgui
 import xbmc
 
 from .kodi_utils import HomeWindow
-from .downloadutils import DownloadUtils
+from .jellyfin import API
 from .loghandler import LazyLogger
-from .utils import datetime_from_string, translate_string, get_version, load_user_details
+from .utils import datetime_from_string, translate_string, save_user_details, load_user_details
 
 log = LazyLogger(__name__)
 
@@ -26,26 +25,15 @@ def check_connection_speed():
     log.debug("check_connection_speed")
 
     settings = xbmcaddon.Addon()
-    verify_cert = settings.getSetting('verify_cert') == 'true'
-    http_timeout = int(settings.getSetting("http_timeout"))
     speed_test_data_size = int(settings.getSetting("speed_test_data_size"))
     test_data_size = speed_test_data_size * 1000000
+    user_details = load_user_details()
 
-    du = DownloadUtils()
-    server = du.get_server()
-
-    url = server + "/playback/bitratetest?size=%s" % test_data_size
-
-    head = du.get_auth_header(True)
-    head["User-Agent"] = "JellyCon-{}".format(get_version())
-
-    request_details = {
-        "stream": True,
-        "headers": head
-    }
-
-    if not verify_cert:
-        request_details["verify"] = False
+    api = API(
+        settings.getSetting('server_address'),
+        user_details.get('user_id'),
+        user_details.get('token')
+    )
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
@@ -53,8 +41,7 @@ def check_connection_speed():
     start_time = time.time()
 
     log.debug("Starting Connection Speed Test")
-
-    response = requests.get(url, **request_details)
+    response = api.speedtest(test_data_size)
 
     last_percentage_done = 0
     total_data_read = 0
@@ -88,31 +75,6 @@ def check_connection_speed():
         settings.setSetting("max_stream_bitrate", str(speed))
 
     return speed
-
-
-def check_safe_delete_available():
-    log.debug("check_safe_delete_available")
-
-    du = DownloadUtils()
-    result = du.download_url("{server}/Plugins")
-    if result:
-        log.debug("Server Plugin List: {0}".format(result))
-
-        safe_delete_found = False
-        for plugin in result:
-            if plugin["Name"] == "Safe Delete":
-                safe_delete_found = True
-                break
-
-        log.debug("Safe Delete Plugin Available: {0}".format(safe_delete_found))
-        home_window = HomeWindow()
-        if safe_delete_found:
-            home_window.set_property("safe_delete_plugin_available", "true")
-        else:
-            home_window.clear_property("safe_delete_plugin_available")
-
-    else:
-        log.debug("Error getting server plugin list")
 
 
 def get_server_details():
@@ -160,18 +122,17 @@ def check_server(force=False, change_user=False, notify=False):
     log.debug("checkServer Called")
 
     settings = xbmcaddon.Addon()
-    server_url = ""
     something_changed = False
-    du = DownloadUtils()
+
+    # Initialize api object
+    api = API()
 
     if force is False:
         # if not forcing use server details from settings
-        svr = du.get_server()
-        if svr is not None:
-            server_url = svr
+        api.server = settings.getSetting('server_address')
 
     # if the server is not set then try to detect it
-    if server_url == "":
+    if not api.server:
 
         # scan for local server
         server_info = get_server_details()
@@ -194,9 +155,9 @@ def check_server(force=False, change_user=False, notify=False):
                                                    server_list,
                                                    useDetails=True)
             if return_index != -1:
-                server_url = server_info[return_index]["Address"]
+                api.server = server_info[return_index]["Address"]
 
-        if not server_url:
+        if not api.server:
             return_index = xbmcgui.Dialog().yesno(__addon_name__, '{}\n{}'.format(translate_string(30282), translate_string(30370)))
             if not return_index:
                 xbmc.executebuiltin("ActivateWindow(Home)")
@@ -205,40 +166,37 @@ def check_server(force=False, change_user=False, notify=False):
             while True:
                 kb = xbmc.Keyboard()
                 kb.setHeading(translate_string(30372))
-                if server_url:
-                    kb.setDefault(server_url)
+                if api.server:
+                    kb.setDefault(api.server)
                 else:
                     kb.setDefault("http://")
                 kb.doModal()
                 if kb.isConfirmed():
-                    server_url = kb.getText()
+                    api.server = kb.getText()
                 else:
                     xbmc.executebuiltin("ActivateWindow(Home)")
                     return
 
-                public_lookup_url = "%s/System/Info/Public?format=json" % (server_url)
-
-                log.debug("Testing_Url: {0}".format(public_lookup_url))
                 progress = xbmcgui.DialogProgress()
                 progress.create('{} : {}'.format(__addon_name__, translate_string(30376)))
                 progress.update(0, translate_string(30377))
-                result = du.download_url(public_lookup_url, authenticate=False)
+                result = api.get('/System/Info/Public')
                 progress.close()
 
                 if result:
                     xbmcgui.Dialog().ok('{} : {}'.format(__addon_name__, translate_string(30167)),
-                                        server_url)
+                                        api.server)
                     break
                 else:
                     return_index = xbmcgui.Dialog().yesno('{} : {}'.format(__addon_name__, translate_string(30135)),
-                                                          server_url,
+                                                          api.server,
                                                           translate_string(30371))
                     if not return_index:
                         xbmc.executebuiltin("ActivateWindow(Home)")
                         return
 
-        log.debug("Selected server: {0}".format(server_url))
-        settings.setSetting("server_address", server_url)
+        log.debug("Selected server: {0}".format(api.server))
+        settings.setSetting("server_address", api.server)
         something_changed = True
 
     # do we need to change the user
@@ -250,7 +208,7 @@ def check_server(force=False, change_user=False, notify=False):
         # stop playback when switching users
         xbmc.Player().stop()
 
-        users, user_selection = user_select(server_url, current_username)
+        users, user_selection = user_select(api, current_username)
 
         if user_selection > -1:
 
@@ -288,33 +246,32 @@ def check_server(force=False, change_user=False, notify=False):
                 if kb.isConfirmed():
                     password = kb.getText()
 
-            # TODO: Make the authenticate function operate normally.  Network rework
-            home_window.set_property('password', password)
-
         if something_changed:
             home_window = HomeWindow()
             home_window.clear_property("jellycon_widget_reload")
-            du.authenticate()
+            auth_payload = {'username': selected_user_name, 'pw': password}
+            user = api.authenticate(auth_payload)
+            token = user.get('AccessToken')
+            user_id = user.get('User').get('Id')
+            save_user_details(selected_user_name, user_id, token)
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_jellycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
 
 
-def user_select(server_url, current_username):
+def user_select(api, current_username):
     '''
     Display user selection screen
     '''
-    du = DownloadUtils()
-
     # Retrieve list of public users from server
-    result = du.download_url('{}/Users/Public'.format(server_url), authenticate=False)
+    result = api.get('/Users/Public')
 
     # Build user display
     selected_id = -1
     users = []
     for user in result:
-        user_item = create_user_listitem(du, user)
+        user_item = create_user_listitem(api.server, user)
         if user_item:
             users.append(user_item)
         name = user.get("Name")
@@ -346,7 +303,7 @@ def user_select(server_url, current_username):
     return (users, user_selection)
 
 
-def create_user_listitem(du, user):
+def create_user_listitem(server, user):
     '''
     Create a user listitem for the user selection screen
     '''
@@ -378,9 +335,17 @@ def create_user_listitem(du, user):
                 time_ago = "Active: {} ago".format(time_ago)
 
         user_item = xbmcgui.ListItem(name)
-        user_image = du.get_user_artwork(user, 'Primary')
-        if not user_image:
+
+        # If the user doesn't have a profile image, user the default
+        if 'PrimaryImageTag' not in user:
             user_image = "DefaultUser.png"
+        else:
+            user_id = user.get('Id')
+            tag = user.get('PrimaryImageTag')
+            user_image = '{}/Users/{}/Images/Primary?Format=original&tag={}'.format(
+                server, user_id, tag
+            )
+
         art = {"Thumb": user_image}
         user_item.setArt(art)
 

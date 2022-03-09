@@ -3,11 +3,12 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import sys
 import xbmcgui
 import xbmcplugin
+import xbmcaddon
 
-from .downloadutils import DownloadUtils
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .item_functions import get_art
-from .datamanager import DataManager
+from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
@@ -16,25 +17,26 @@ def show_server_sessions():
     log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
-    download_utils = DownloadUtils()
-    data_manager = DataManager()
 
-    url = "{server}/Users/{userid}"
-    results = data_manager.get_content(url)
+    user_details = load_user_details()
+    url = "/Users/{}".format(user_details.get('user_id'))
+    results = api.get(url)
 
     is_admin = results.get("Policy", {}).get("IsAdministrator", False)
     if not is_admin:
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
         return
 
-    url = "{server}/Sessions"
-    results = data_manager.get_content(url)
+    url = "/Sessions"
+    results = api.get(url)
     log.debug("session_info: {0}".format(results))
 
     if results is None:
         return
 
     list_items = []
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
     for session in results:
         device_name = session.get("DeviceName", "na")
         user_name = session.get("UserName", "na")
@@ -59,7 +61,6 @@ def show_server_sessions():
 
         art = {}
         if now_playing:
-            server = download_utils.get_server()
             art = get_art(now_playing, server)
 
             runtime = now_playing.get("RunTimeTicks", 0)

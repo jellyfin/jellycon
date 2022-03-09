@@ -29,13 +29,10 @@ throwaway = time.strptime('20110101', '%Y%m%d')
 log = LazyLogger(__name__)
 
 
-def get_jellyfin_url(base_url, params):
+def get_jellyfin_url(path, params):
     params["format"] = "json"
     url_params = urlencode(params)
-    # Filthy hack until I get around to reworking the network flow
-    # It relies on {thing} strings in downloadutils.py
-    url_params = url_params.replace('%7B', '{').replace('%7D', '}')
-    return base_url + "?" + url_params
+    return '{}?{}'.format(path, url_params)
 
 
 def get_checksum(item):
@@ -210,3 +207,111 @@ def load_user_details():
 
     else:
         return {}
+
+
+def get_art_url(data, art_type, parent=False, index=0, server=None):
+
+    item_id = data["Id"]
+    item_type = data["Type"]
+
+    if item_type in ["Episode", "Season"]:
+        if art_type != "Primary" or parent is True:
+            item_id = data["SeriesId"]
+
+    image_tag = ""
+
+    # for episodes always use the parent BG
+    if item_type == "Episode" and art_type == "Backdrop":
+        item_id = data.get("ParentBackdropItemId")
+        bg_item_tags = data.get("ParentBackdropImageTags", [])
+        if bg_item_tags:
+            image_tag = bg_item_tags[0]
+    elif art_type == "Backdrop" and parent is True:
+        item_id = data.get("ParentBackdropItemId")
+        bg_item_tags = data.get("ParentBackdropImageTags", [])
+        if bg_item_tags:
+            image_tag = bg_item_tags[0]
+    elif art_type == "Backdrop":
+        bg_tags = data.get("BackdropImageTags", [])
+        if bg_tags:
+            image_tag = bg_tags[index]
+    elif parent is False:
+        image_tags = data.get("ImageTags", [])
+        if image_tags:
+            image_tag_type = image_tags.get(art_type)
+            if image_tag_type:
+                image_tag = image_tag_type
+    elif parent is True:
+        if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
+            tag_name = 'SeriesPrimaryImageTag'
+            id_name = 'SeriesId'
+        else:
+            tag_name = 'Parent%sImageTag' % art_type
+            id_name = 'Parent%sItemId' % art_type
+        parent_image_id = data.get(id_name)
+        parent_image_tag = data.get(tag_name)
+        if parent_image_id is not None and parent_image_tag is not None:
+            item_id = parent_image_id
+            image_tag = parent_image_tag
+
+    # ParentTag not passed for Banner and Art
+    if not image_tag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):
+        return ""
+
+    artwork = "{}/Items/{}/Images/{}/{}?Format=original&Tag={}".format(
+        server, item_id, art_type, index, image_tag)
+    return artwork
+
+
+def image_url(item_id, art_type, index, width, height, image_tag, server):
+
+    # test imageTag e3ab56fe27d389446754d0fb04910a34
+    artwork = "{}/Items/{}/Images/{}/{}?Format=original&Tag={}".format(server, item_id, art_type, index, image_tag)
+    if int(width) > 0:
+        artwork += '&MaxWidth={}'.format(width)
+    if int(height) > 0:
+        artwork += '&MaxHeight={}'.format(height)
+
+    return artwork
+
+
+def get_default_filters():
+
+    addon_settings = xbmcaddon.Addon()
+    include_media = addon_settings.getSetting("include_media") == "true"
+    include_people = addon_settings.getSetting("include_people") == "true"
+    include_overview = addon_settings.getSetting("include_overview") == "true"
+
+    filer_list = [
+        "DateCreated",
+        "EpisodeCount",
+        "SeasonCount",
+        "Path",
+        "Genres",
+        "Studios",
+        "Etag",
+        "Taglines",
+        "SortName",
+        "RecursiveItemCount",
+        "ChildCount",
+        "ProductionLocations",
+        "CriticRating",
+        "OfficialRating",
+        "CommunityRating",
+        "PremiereDate",
+        "ProductionYear",
+        "AirTime",
+        "Status",
+        "Tags"
+    ]
+
+    if include_media:
+        filer_list.append("MediaStreams")
+
+    if include_people:
+        filer_list.append("People")
+
+    if include_overview:
+        filer_list.append("Overview")
+
+    return ','.join(filer_list)

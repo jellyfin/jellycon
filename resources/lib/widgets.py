@@ -8,17 +8,16 @@ import hashlib
 import random
 import time
 
-from .downloadutils import DownloadUtils
-from .utils import get_jellyfin_url
-from .datamanager import DataManager
+from .jellyfin import api
+from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters
 from .loghandler import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
 from .tracking import timer
 
 log = LazyLogger(__name__)
-downloadUtils = DownloadUtils()
-dataManager = DataManager()
+user_details = load_user_details()
+user_id = user_details.get('user_id')
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 background_items = []
@@ -30,20 +29,21 @@ def set_random_movies():
     log.debug("set_random_movies Called")
 
     settings = xbmcaddon.Addon()
+    item_limit = settings.getSetting("show_x_filtered_items")
     hide_watched = settings.getSetting("hide_watched") == "true"
 
     url_params = {}
     url_params["Recursive"] = True
-    url_params["limit"] = 20
+    url_params["limit"] = item_limit
     if hide_watched:
         url_params["IsPlayed"] = False
     url_params["SortBy"] = "Random"
     url_params["IncludeItemTypes"] = "Movie"
     url_params["ImageTypeLimit"] = 0
 
-    url = get_jellyfin_url("{server}/Users/{userid}/Items", url_params)
+    url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
 
-    results = downloadUtils.download_url(url, suppress=True)
+    results = api.get(url)
 
     randon_movies_list = []
     if results is not None:
@@ -70,6 +70,9 @@ def set_background_image(force=False):
     global background_current_item
     global background_items
 
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
+
     if force:
         background_current_item = 0
         del background_items
@@ -86,17 +89,16 @@ def set_background_image(force=False):
         url_params["IncludeItemTypes"] = "Movie,Series"
         url_params["ImageTypeLimit"] = 1
 
-        url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
+        url = get_jellyfin_url('/Users/{}/Items'.format(user_id), url_params)
 
-        server = downloadUtils.get_server()
-        results = downloadUtils.download_url(url, suppress=True)
+        results = api.get(url)
 
         if results is not None:
             items = results.get("Items", [])
             background_current_item = 0
             background_items = []
             for item in items:
-                bg_image = downloadUtils.get_artwork(
+                bg_image = get_art_url(
                     item, "Backdrop", server=server)
                 if bg_image:
                     label = item.get("Name")
@@ -148,9 +150,9 @@ def check_for_new_content():
     url_params["IncludeItemTypes"] = "Movie,Episode"
     url_params["ImageTypeLimit"] = 0
 
-    added_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
+    added_url = get_jellyfin_url('/Users/{}/Items'.format(user_id), url_params)
 
-    result = downloadUtils.download_url(added_url, suppress=True)
+    result = api.get(added_url)
     log.debug("LATEST_ADDED_ITEM: {0}".format(result))
 
     last_added_date = ""
@@ -170,9 +172,9 @@ def check_for_new_content():
     url_params["IncludeItemTypes"] = "Movie,Episode"
     url_params["ImageTypeLimit"] = 0
 
-    played_url = get_jellyfin_url('{server}/Users/{userid}/Items', url_params)
+    played_url = get_jellyfin_url('/Users/{}/Items'.format(user_id), url_params)
 
-    result = downloadUtils.download_url(played_url, suppress=True)
+    result = api.get(played_url)
     log.debug("LATEST_PLAYED_ITEM: {0}".format(result))
 
     last_played_date = ""
@@ -202,12 +204,12 @@ def check_for_new_content():
 @timer
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}".format(params))
-    server = downloadUtils.get_server()
+    settings = xbmcaddon.Addon()
+    server = settings.getSetting('server_address')
 
     item_id = params["id"]
-    data_manager = DataManager()
-    result = data_manager.get_content(
-        "{server}/Users/{userid}/Items/" + item_id)
+    result = api.get(
+        "/Users/{}/Items/{}".format(user_id, item_id))
     log.debug("ItemInfo: {0}".format(result))
 
     if not result:
@@ -233,7 +235,7 @@ def get_widget_content_cast(handle, params):
             person_tag = person.get("PrimaryImageTag")
             person_thumbnail = None
             if person_tag:
-                person_thumbnail = downloadUtils.image_url(
+                person_thumbnail = image_url(
                     person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
             if kodi_version > 17:
@@ -269,6 +271,7 @@ def get_widget_content(handle, params):
     log.debug("getWigetContent Called: {0}".format(params))
 
     settings = xbmcaddon.Addon()
+    item_limit = settings.getSetting("show_x_filtered_items")
     hide_watched = settings.getSetting("hide_watched") == "true"
     use_cached_widget_data = settings.getSetting(
         "use_cached_widget_data") == "true"
@@ -280,10 +283,10 @@ def get_widget_content(handle, params):
 
     log.debug("widget_type: {0}".format(widget_type))
 
-    url_verb = "{server}/Users/{userid}/Items"
+    url_verb = "/Users/{}/Items".format(user_id)
     url_params = {}
-    url_params["Limit"] = "{ItemLimit}"
-    url_params["Fields"] = "{field_filters}"
+    url_params["Limit"] = item_limit
+    url_params["Fields"] = get_default_filters()
     url_params["ImageTypeLimit"] = 1
     url_params["IsMissing"] = False
 
@@ -297,7 +300,7 @@ def get_widget_content(handle, params):
             url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Movie"
-        url_params["Limit"] = 20
+        url_params["Limit"] = item_limit
 
     elif widget_type == "inprogress_movies":
         xbmcplugin.setContent(handle, 'movies')
@@ -307,27 +310,28 @@ def get_widget_content(handle, params):
         url_params["Filters"] = "IsResumable"
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Movie"
-        url_params["Limit"] = 20
+        url_params["Limit"] = item_limit
 
     elif widget_type == "random_movies":
+        home_window = HomeWindow()
         xbmcplugin.setContent(handle, 'movies')
-        url_params["Ids"] = "{random_movies}"
+        url_params["Ids"] = home_window.get_property("random-movies")
 
     elif widget_type == "recent_tvshows":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb = '{server}/Users/{userid}/Items/Latest'
+        url_verb = '/Users/{}/Items/Latest'.format(user_id)
         url_params["GroupItems"] = True
         url_params["Limit"] = 45
         url_params["Recursive"] = True
         url_params["SortBy"] = "DateCreated"
         url_params["SortOrder"] = "Descending"
-        url_params["Fields"] = "{field_filters}"
+        url_params["Fields"] = get_default_filters()
         if hide_watched:
             url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
         url_params["ImageTypeLimit"] = 1
-        url_params["Limit"] = 20
+        url_params["Limit"] = item_limit
 
     elif widget_type == "recent_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -339,7 +343,7 @@ def get_widget_content(handle, params):
             url_params["IsPlayed"] = False
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
-        url_params["Limit"] = 20
+        url_params["Limit"] = item_limit
 
     elif widget_type == "inprogress_episodes":
         xbmcplugin.setContent(handle, 'episodes')
@@ -349,18 +353,18 @@ def get_widget_content(handle, params):
         url_params["Filters"] = "IsResumable"
         url_params["IsVirtualUnaired"] = False
         url_params["IncludeItemTypes"] = "Episode"
-        url_params["Limit"] = 20
+        url_params["Limit"] = item_limit
 
     elif widget_type == "nextup_episodes":
         xbmcplugin.setContent(handle, 'episodes')
-        url_verb = "{server}/Shows/NextUp"
+        url_verb = "/Shows/NextUp"
         url_params = url_params.copy()
-        url_params["Limit"] = "{ItemLimit}"
-        url_params["userid"] = "{userid}"
+        url_params["Limit"] = item_limit
+        url_params["userid"] = user_id
         url_params["Recursive"] = True
         url_params["ImageTypeLimit"] = 1
         # Collect InProgress items to be combined with NextUp
-        inprogress_url_verb = "{server}/Users/{userid}/Items"
+        inprogress_url_verb = "/Users/{}/Items".format(user_id)
         inprogress_url_params = url_params.copy()
         inprogress_url_params["Recursive"] = True
         inprogress_url_params["SortBy"] = "DatePlayed"
@@ -368,22 +372,21 @@ def get_widget_content(handle, params):
         inprogress_url_params["Filters"] = "IsResumable"
         inprogress_url_params["IsVirtualUnaired"] = False
         inprogress_url_params["IncludeItemTypes"] = "Episode"
-        inprogress_url_params["Limit"] = 20
+        inprogress_url_params["Limit"] = item_limit
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
-        suggested_items_url_params["userId"] = "{userid}"
+        suggested_items_url_params["userId"] = user_id
         suggested_items_url_params["categoryLimit"] = 15
-        suggested_items_url_params["ItemLimit"] = 20
+        suggested_items_url_params["ItemLimit"] = item_limit
         suggested_items_url_params["ImageTypeLimit"] = 0
         suggested_items_url = get_jellyfin_url(
             "{server}/Movies/Recommendations", suggested_items_url_params)
 
-        data_manager = DataManager()
-        suggested_items = data_manager.get_content(suggested_items_url)
+        suggested_items = api.get(suggested_items_url)
         ids = []
         set_id = 0
-        while len(ids) < 20 and suggested_items:
+        while len(ids) < item_limit and suggested_items:
             items = suggested_items[set_id]
             log.debug(
                 "BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))

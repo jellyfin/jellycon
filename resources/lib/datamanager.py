@@ -7,13 +7,13 @@ import os
 import time
 from six.moves import cPickle
 
-from .downloadutils import DownloadUtils
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
 from .tracking import timer
 from .filelock import FileLock
-from .utils import translate_string
+from .utils import translate_string, load_user_details
 
 import xbmc
 import xbmcaddon
@@ -42,11 +42,9 @@ class DataManager:
     addon_dir = xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))
 
     def __init__(self, *args):
-        pass
+        self.user_details = load_user_details()
 
-    @timer
-    def get_content(self, url):
-        return DownloadUtils().download_url(url)
+        self.api = api
 
     @timer
     def get_items(self, url, gui_options, use_cache=False):
@@ -55,9 +53,8 @@ class DataManager:
         log.debug("last_content_url : use_cache={0} url={1}".format(use_cache, url))
         home_window.set_property("last_content_url", url)
 
-        download_utils = DownloadUtils()
-        user_id = download_utils.get_user_id()
-        server = download_utils.get_server()
+        user_id = self.user_details.get('user_id')
+        server = self.api.server
 
         m = hashlib.md5()
         m.update('{}|{}|{}'.format(user_id, server, url).encode())
@@ -97,7 +94,7 @@ class DataManager:
         if item_list is None or len(item_list) == 0:
             log.debug("Loading url data from server")
 
-            results = self.get_content(url)
+            results = self.api.get(url)
 
             if results is None:
                 results = []
@@ -195,7 +192,7 @@ class CacheManagerThread(threading.Thread):
             log.debug("CacheManagerThread : Cache Hash : {0}".format(cached_hash))
 
             data_manager = DataManager()
-            results = data_manager.get_content(self.cached_item.items_url)
+            results = data_manager.api.get(self.cached_item.items_url)
             if results is None:
                 results = []
 
