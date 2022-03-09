@@ -14,7 +14,7 @@ import xbmcplugin
 import xbmc
 import xbmcaddon
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc, get_value
 from .utils import translate_string, load_user_details
@@ -22,14 +22,6 @@ from .kodi_utils import HomeWindow
 from .item_functions import get_art
 
 log = LazyLogger(__name__)
-
-user_details = load_user_details()
-settings = xbmcaddon.Addon()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 
 class CacheArtwork(threading.Thread):

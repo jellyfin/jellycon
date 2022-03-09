@@ -11,23 +11,17 @@ import string
 import xbmcplugin
 import xbmcaddon
 
-from .api import API
+from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .loghandler import LazyLogger
-from .utils import get_jellyfin_url, translate_string, get_art_url, load_user_details, get_default_filters
+from .utils import get_jellyfin_url, translate_string, get_art_url, get_default_filters
 from .item_functions import get_art
 
 log = LazyLogger(__name__)
 
 __addon__ = xbmcaddon.Addon()
-user_details = load_user_details()
-user_id = user_details.get('user_id')
+user_id = api.user_id
 settings = xbmcaddon.Addon()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 
 def show_movie_tags(menu_params):

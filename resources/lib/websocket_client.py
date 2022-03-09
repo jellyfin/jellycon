@@ -12,7 +12,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 
-from .api import API
+from .jellyfin import API
 from .functions import play_action
 from .loghandler import LazyLogger
 from .jsonrpc import JsonRpc

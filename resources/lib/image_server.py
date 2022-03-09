@@ -14,10 +14,9 @@ import threading
 import requests
 import io
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .item_functions import get_art
-from .utils import load_user_details
 
 pil_loaded = False
 try:
@@ -25,14 +24,6 @@ try:
     pil_loaded = True
 except Exception as err:
     pil_loaded = False
-
-settings = xbmcaddon.Addon()
-user_details = load_user_details()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 PORT_NUMBER = 24276
 log = LazyLogger(__name__)

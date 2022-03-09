@@ -5,21 +5,12 @@ from six.moves.urllib.parse import quote, unquote
 
 import xbmc
 import xbmcgui
-import xbmcaddon
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
-from .utils import translate_string, load_user_details
+from .utils import translate_string
 
 log = LazyLogger(__name__)
-
-user_details = load_user_details()
-settings = xbmcaddon.Addon()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 details_string = 'EpisodeCount,SeasonCount,Path,Etag,MediaStreams'
 icon = xbmc.translatePath('special://home/addons/plugin.video.jellycon/icon.png')

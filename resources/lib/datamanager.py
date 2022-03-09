@@ -7,7 +7,7 @@ import os
 import time
 from six.moves import cPickle
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .item_functions import extract_item_info
 from .kodi_utils import HomeWindow
@@ -44,12 +44,7 @@ class DataManager:
     def __init__(self, *args):
         self.user_details = load_user_details()
 
-        settings = xbmcaddon.Addon()
-        self.api = API(
-            settings.getSetting('server_address'),
-            self.user_details.get('user_id'),
-            self.user_details.get('token')
-        )
+        self.api = api
 
     @timer
     def get_items(self, url, gui_options, use_cache=False):

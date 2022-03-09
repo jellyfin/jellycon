@@ -5,7 +5,7 @@ from kodi_six.utils import py2_decode
 
 import requests
 
-from .utils import get_device_id, get_version
+from .utils import get_device_id, get_version, load_user_details
 from .loghandler import LazyLogger
 
 log = LazyLogger(__name__)
@@ -148,3 +148,12 @@ class API:
         response = requests.get(url, stream=True, headers=self.headers)
 
         return response
+
+
+settings = xbmcaddon.Addon()
+user_details = load_user_details()
+api = API(
+    settings.getSetting('server_address'),
+    user_details.get('user_id'),
+    user_details.get('token')
+)

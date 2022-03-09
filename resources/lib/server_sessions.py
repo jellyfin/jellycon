@@ -5,26 +5,20 @@ import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .item_functions import get_art
 from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
-settings = xbmcaddon.Addon()
-user_details = load_user_details()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 def show_server_sessions():
     log.debug("showServerSessions Called")
 
     handle = int(sys.argv[1])
 
+    user_details = load_user_details()
     url = "/Users/{}".format(user_details.get('user_id'))
     results = api.get(url)
 

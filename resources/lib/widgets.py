@@ -8,7 +8,7 @@ import hashlib
 import random
 import time
 
-from .api import API
+from .jellyfin import api
 from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters
 from .loghandler import LazyLogger
 from .kodi_utils import HomeWindow
@@ -16,14 +16,8 @@ from .dir_functions import process_directory
 from .tracking import timer
 
 log = LazyLogger(__name__)
-settings = xbmcaddon.Addon()
 user_details = load_user_details()
 user_id = user_details.get('user_id')
-api = API(
-    settings.getSetting('server_address'),
-    user_id,
-    user_details.get('token')
-)
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
 
 background_items = []
@@ -76,6 +70,7 @@ def set_background_image(force=False):
     global background_current_item
     global background_items
 
+    settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
 
     if force:
@@ -209,6 +204,7 @@ def check_for_new_content():
 @timer
 def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}".format(params))
+    settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
 
     item_id = params["id"]

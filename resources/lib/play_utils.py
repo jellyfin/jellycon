@@ -12,7 +12,7 @@ import os
 import re
 from six.moves.urllib.parse import urlencode
 
-from .api import API
+from .jellyfin import api
 from .loghandler import LazyLogger
 from .dialogs import ResumeDialog
 from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details
@@ -25,13 +25,7 @@ from .tracking import timer
 from .playnext import PlayNextDialog
 
 log = LazyLogger(__name__)
-user_details = load_user_details()
 settings = xbmcaddon.Addon()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 
 def play_all_files(items, play_items=True):
@@ -1178,6 +1172,7 @@ def get_play_url(media_source, play_session_id):
         item_id = media_source.get('Id')
         device_id = get_device_id()
 
+        user_details = load_user_details()
         user_token = user_details.get('token')
         playback_bitrate = settings.getSetting("force_max_stream_bitrate")
         bitrate = int(playback_bitrate) * 1000

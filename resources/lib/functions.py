@@ -14,7 +14,7 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 
-from .api import API
+from .jellyfin import api
 from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters
 from .item_functions import get_art
 from .kodi_utils import HomeWindow
@@ -41,14 +41,7 @@ PLUGINPATH = xbmc.translatePath(os.path.join(__cwd__))
 log = LazyLogger(__name__)
 
 kodi_version = int(xbmc.getInfoLabel('System.BuildVersion')[:2])
-
-settings = xbmcaddon.Addon()
 user_details = load_user_details()
-api = API(
-    settings.getSetting('server_address'),
-    user_details.get('user_id'),
-    user_details.get('token')
-)
 
 
 @timer
