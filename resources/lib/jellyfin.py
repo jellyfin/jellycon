@@ -101,7 +101,7 @@ class API:
         self.headers = headers
 
     def post_capabilities(self):
-        url = '{}/Sessions/Capabilities/Full'.format(self.server)
+        url = '/Sessions/Capabilities/Full'
 
         data = {
             'SupportsMediaControl': True,
@@ -140,6 +140,7 @@ class API:
                                   "PlayMediaSource"]
         }
 
+        import web_pdb; web_pdb.set_trace()
         self.post(url, data)
 
     def speedtest(self, test_data_size):
