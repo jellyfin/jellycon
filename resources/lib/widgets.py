@@ -407,6 +407,9 @@ def get_widget_content(handle, params):
 
     items_url = get_jellyfin_url(url_verb, url_params)
 
+    if url_params.get('IncludeItemTypes', '') == 'Episode' or params.get('type', '') == 'nextup_episodes':
+        params["name_format"] = "Episode|episode_name_format"
+
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
 
@@ -415,6 +418,7 @@ def get_widget_content(handle, params):
         inprogress_url = get_jellyfin_url(
             inprogress_url_verb, inprogress_url_params)
 
+        params["name_format"] = "Episode|episode_name_format"
         list_items_inprogress, detected_type, total_records = process_directory(
             inprogress_url, None, params, use_cached_widget_data)
 
