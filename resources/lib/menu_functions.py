@@ -49,7 +49,7 @@ def show_movie_tags(menu_params):
     if not result:
         return
 
-    tags = result.get("Items")
+    tags = result.get("Items", [])
 
     log.debug("Tags : {0}".format(result))
 
@@ -114,7 +114,7 @@ def show_movie_years(menu_params):
     if not result:
         return
 
-    years_list = result.get("Items")
+    years_list = result.get("Items", [])
     result_names = {}
     for year in years_list:
         name = year.get("Name")
@@ -952,7 +952,7 @@ def display_library_views(params):
     views = api.get(views_url)
     if not views:
         return []
-    views = views.get("Items")
+    views = views.get("Items", [])
 
     view_types = ["movies", "tvshows", "homevideos", "boxsets", "playlists", "music", "musicvideos", "livetv", "Channel"]
 
@@ -1099,7 +1099,7 @@ def set_library_window_values(force=False):
     if result is None:
         return
 
-    result = result.get("Items")
+    result = result.get("Items", [])
     server = settings.getSetting('server_address')
 
     index = 0
