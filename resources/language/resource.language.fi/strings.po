@@ -1,2 +1,1089 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-03-13 14:13+0000\n"
+"Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
+"Language-Team: Finnish <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/fi/>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.10.1\n"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Yksinkertainen uuden sisällön tarkistus"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Käytä puskuroituja widgettien tietoja"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Toista seuraavaksi"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "Näytä seuraavaksi toistettava jakso, kun aikaa jäljellä"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Toista teatteri-introt"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Toiston valinnat"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Yhteyden nopeustesti"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Nopeustestin tietomäärä (Mt)"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Pakota transkoodausvirran bittinopeus (kbps)"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Salli tiedostojen toisto suoraan kohteesta"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Piilota katsotut kohteet listauksista"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Kausi"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Tunniste"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Lajityyppi"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Arvio"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Lisätty"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Nimi"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Vuosi"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Oletus"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Ei määritetty"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Järjestys"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Näkymät"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Äänikanavien enimmäismäärä"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Äänikoodekki"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Äänen bittinopeus (kbps)"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Sinulla ei ole oikeutta poistaa kohdetta"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP-aikakatkaisu (sekuntia)"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Suosikkikokoelmat"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Suosikit"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tunnisteet"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Vuosikymmenet"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Vuodet"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Kokoelmat"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Lisäosan toiminnot"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Omat widgetit"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globaalit listat"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfin-kirjastot"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Näytä kaikki"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Elokuvat - Suositukset"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Lisää Kodin toistolistalle"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Tietoja"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Kuvien puskurointiväli (0 = ei käytössä)"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Piilota"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Päivitä Jellyfin-metatiedot"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Sivut"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Tyhjennä puskuroidut palvelimen tiedot"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Puskuroidut tiedostot on poistettu"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Puskurin tyhjennyksen tulos"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokolla"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Käyttäjän tiedot"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Palvelimen tiedot"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Käyttämättömiä kuvia poistettu:"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Olemassa olevia kuvia ennen poistoa:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Käyttämättömiä Jellyfin-kuvia:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Satunnaisten elokuvien päivitysväli (0 = ei käytössä)"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Järjestelmä -"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Aina"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Jos enemmän kuin yksi"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Vahvista ulkoisten tekstitysten käyttö"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Ei koskaan"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Pysyvät käyttäjätiedot"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Lähetetään pyyntöä"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Tarkastetaan palvelimen URL-osoitetta"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Vastaanotetaan tietoa"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Lähetetään pyyntöä"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Etsitään paikallisia palvelimia"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Palvelimen URL-osoite"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Syöttämääsi URL-osoitteeseen ei saatu yhteyttä. Haluatko yrittää uudelleen?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Haluatko syöttää palvelimen URL-osoitteen manuaalisesti?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Haluatko tyhjentää tallennetun salasanasi?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Tyhjennetäänkö salasana?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Salli vaihdetun käyttäjän salsanan nopea tallennus"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Syötä kirjautumistiedot manuaalisesti"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Manuaalinen kirjautuminen"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Halautko tallentaa salasanan?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Tallenetaanko salasana?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Tallennukset"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Ohjelmat"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanavat"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Rakennetaan kuvista täyttä listausta"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Käsitellään olemassa olevien kuvien listausta"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Ladataan listausta olemassa olevista kuvista"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Toistovirran valinnat"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Sivun koko ja suodatus"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Takaisin siirryttävä sekuntimäärä"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Toiminto valittaessa widgetin kohde"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Suodatettujen jaksojen nimen muoto"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Kirjaa ajoitustiedot"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Kaapattavien suorituskykyprofiilien määrä"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Puskuroidaanko kaikki Jellyfin-kuvat paikallisiksi Kodi-kuviksi?"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Noudetaan listausta etäkuvista"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Käytä Jellyfinin etähallintaa"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr ""
+"Kodi-asetukset > Palvelut > Salli etähallinta HTTP-protokollan välityksellä"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Siirry sarjaan"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Usein kuunnellut"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Albumin esittäjä"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musiikki - Kaikki albumin esittäjät"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musiikki - Usein kuunnellut"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Musiikki - Viimeksi kuunnellut"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Viimeksi kuunnellut"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Musiikki - Viimeksi lisätyt"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Lisää käyttäjäarviot"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Noudetaan olemassa olevia kuvia"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Poistetaan puskuroituja kuvia"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Puskuroi Jellyfin-palvelimen tietopyynnöt"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Välimuistista poistettujen kuvien määrä"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Muutokset edellyttävät Kodin uudelleenkäynnistystä"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Uuden sisällön tarkistusväli (0 = ei käytössä)"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Taustakuvan päivitysväli (0 = ei käytössä)"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Ryhmittele elokuvat kokoelmiin"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Henkilö"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Albumi"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Kappale"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Käytä JellyCon-sisältövalikkoa"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Puskuroi mediakuvitukset taustalla"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Pysäytä median toisto näytönsäästäjän käynnistyessä"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Elokuvia sivulla"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Näytä käyttäjänvaihtoruutu"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Näytönsäästäjä"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Näytä tyhjät kansiot (sarjat, kaudet, kokoelmat)"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Siirry kauteen"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Lajityypit"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Automaattinen jatko"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albumit"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Musiikki - Albumit"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Toista kaikki"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Piilota ilmoitukset yhteysvirheistä"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Yhteysvirhe"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Toista"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Valikko"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Kaikki -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Kirjasto -"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Valitse medialähde"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Valitse traileri"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Toista traileri"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Toistoa aloitetaan"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Ei löytynyt"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Puskuroidut Jellyfin-kuvat:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Puuttuvat Jellyfin-kuvat:"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Olemassa olevat kuvat:"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Puskuroidaan kuvia"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Puskuroi kuvat"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Poistettaan Kodin kuvia"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Poistetaanko käyttämättömät kuvat?"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "HTTP-ohjauksen on oltava käytössä ominaisuukden käyttämiseksi"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Poista"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Huomautus"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Puskuroi kuvat"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Valitse ääniraita"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Valitse tekstitysraita"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Kaikki"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Sarjat - Lajityypit"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Uusimmat"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Sarjat - Uusimmat"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Elokuvat - Katsomattomat"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Katsomattomat"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Toistetaanko seuraava jakso?"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Lähiverkosta ei löydetty Jellyfin-palvelimia."
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Päivitä välimuistin kuvat"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Puuttuva nimike"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Sarjat - Katsomattomat"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyConin on vahvistettava osittain toistettujen kohteiden toiston jatko ja "
+"lisäksi myös Kodi voi kysyä vastaavaa vahvistusta ja tämä voi aiheuttaa "
+"tuplavahvistuksen. Haluatko poistaa tuplavahvistuksen käytöstä?"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Havaittiin toinen jatkovahvistus"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Seuraavaksi"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Pakota transkoodaus"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Poista"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Lisää suosikkeihin"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Poista suosikeista"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Merkitse katsomattomaksi"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Merkitse katsotuksi"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Elokuvat - Satunnaiset"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Kesken"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Jaksot - Keskeneräiset"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Elokuvat - Keskeneräiset"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Viimeksi lisätyt"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Elokuvat - Sivut"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Jaksot - Seuraavaksi"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Jaksot - Viimeksi lisätyt"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Sarjat - Suosikit"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Sarjat"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Kokoelmat"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Elokuvat - Suosikit"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Elokuvat - Viimeksi lisätyt"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Elokuvat"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Sarjat - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Näytä lisäosan asetukset"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Elokuvat - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Elokuvat - Lajityypit"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Tuntematon"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Oma widgettien sisältö"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Haku"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Pakota MS MPEG4 V3 (DivX) -transkoodaus"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Pakota MPEG4-transkoodaus"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Pakota MPEG2-transkoodaus"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Aloita alusta"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Pakota h265 (HEVC) -transkoodaus"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Jaksot"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Elokuvat"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Sarjat"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Ohjaus"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Kohteiden asettelu"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Vahvista ennen toistoa"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Kysy, poistetaanko elokuva % jälkeen"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Toista seuraava jakso % jälkeen"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Kysy, poistetaanko jakso % jälkeen"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Kohteen tiedot"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Toiston pysähtyessä (100 % = ei käytössä)"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Tapahtumat"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Pakota 8 bit video"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Videon enimmäisleveys"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Transkoodausvalinnat"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Muuntamaton HTTP-suoratoisto"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Tiedoston tarkka sijainti"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Suoratoiston enimmäisbittinopeus (kbps)"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Toiston tyyppi"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Toisto"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Palvelimeen ei saada yhteyttä"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL-virhe"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Sisällytä ihmiset"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Sisällytä mediavirran tiedot"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Sisällytä juoni"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Valitse käyttäjä"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Osoite:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Valitun palvelimen osoite"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Valitse palvelin"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Lisää (CC), jos tekstityksiä on käytettävissä"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Mediatyyppiä ei ole määritetty"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Virhe"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Käsitellään kohdetta:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Valmis"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Jatkettaessa"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Näytä latauksen edistyminen"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Lisää nimiin katseluvaiheen prosentti"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Lisää nimiin katsomattomien määrät"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Vastaanotetaan tietoja"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Ladataan sisältöä"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Palvelut"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Käyttöliittymä"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Varoitus: TÄmä toiminto poistaa mediatiedostot palvelimelta."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Vahvista poisto?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Ei käytettävissä"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Odotetaan poistoa palvelimelta"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Poistetaan"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Käyttäjätunnusta ei löytynyt"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Virheellinen käyttäjätunnus/salasana"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Käytä vianselvityslokia"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Salasana:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Käyttäjätunnus:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Piilota katsomattomien jaksojen tiedot"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Älä näytä yksittäisiä kausia"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Lisäasetukset"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Näytä kaikki jaksot"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Suodatetuissa listoissa näytettävien kohteiden määrä"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Näytä yhdistetyt asiakkaat"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Laitteen näyttönimi"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Vaihda käyttäjää]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Tunnista paikallinen palvelin]"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba-salasana"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba-käyttäjätunnus"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Salasana"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Vahvista HTTPS-varmenne"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Portti"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Palvelin"
