@@ -26,7 +26,6 @@ from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
 from .dialogs import BitrateDialog
 from .widgets import get_widget_content, get_widget_content_cast, check_for_new_content
-from . import trakttokodi
 from .cache_images import CacheArtwork
 from .dir_functions import get_content, process_directory
 from .tracking import timer
@@ -127,8 +126,6 @@ def main_entry_point():
         search_results_person(params)
     elif mode == "SHOW_SERVER_SESSIONS":
         show_server_sessions()
-    elif mode == "TRAKTTOKODI":
-        trakttokodi.entry_point(params)
     elif mode == "SHOW_ADDON_MENU":
         display_menu(params)
     elif mode == "GET_CONTENT_BY_TV_SHOW":
