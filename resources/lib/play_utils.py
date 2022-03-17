@@ -1064,7 +1064,12 @@ def get_playing_data():
     player = xbmc.Player()
     home_window = HomeWindow()
     play_data_string = home_window.get_property('now_playing')
-    play_data = json.loads(play_data_string)
+    try:
+        play_data = json.loads(play_data_string)
+    except ValueError:
+        # This isn't a JellyCon item
+        return None
+
 
     played_information_string = home_window.get_property('played_information')
     if played_information_string:
