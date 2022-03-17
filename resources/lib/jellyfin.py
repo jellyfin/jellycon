@@ -101,7 +101,7 @@ class API:
         self.headers = headers
 
     def post_capabilities(self):
-        url = '{}/Sessions/Capabilities/Full'.format(self.server)
+        url = '/Sessions/Capabilities/Full'
 
         data = {
             'SupportsMediaControl': True,
