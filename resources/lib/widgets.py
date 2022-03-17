@@ -270,7 +270,7 @@ def get_widget_content(handle, params):
     log.debug("getWigetContent Called: {0}".format(params))
 
     settings = xbmcaddon.Addon()
-    item_limit = settings.getSetting("show_x_filtered_items")
+    item_limit = int(settings.getSetting("show_x_filtered_items"))
     hide_watched = settings.getSetting("hide_watched") == "true"
     use_cached_widget_data = settings.getSetting(
         "use_cached_widget_data") == "true"
@@ -380,7 +380,7 @@ def get_widget_content(handle, params):
         suggested_items_url_params["ItemLimit"] = item_limit
         suggested_items_url_params["ImageTypeLimit"] = 0
         suggested_items_url = get_jellyfin_url(
-            "{server}/Movies/Recommendations", suggested_items_url_params)
+            "/Movies/Recommendations", suggested_items_url_params)
 
         suggested_items = api.get(suggested_items_url)
         ids = []
