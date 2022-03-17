@@ -84,7 +84,7 @@
 		<setting id="add_user_ratings" type="bool" label="30348" default="true" visible="true" enable="true" />
 		<setting id="include_people" type="bool" label="30183" default="false" visible="true" enable="true" />
 		<setting id="hide_unwatched_details" type="bool" label="30023" default="false" visible="true" enable="true" />
-		<setting id="episode_name_format" type="select" label="30019" default="{SeriesName} - {ItemName}" values="{SeriesName} - {ItemName}|{ItemName}|s{SeasonIndex}e{EpisodeIndex} - {ItemName}|{SeriesName} - s{SeasonIndex}e{EpisodeIndex} - {ItemName}" />
+		<setting id="episode_name_format" type="select" label="30019" default="{SeriesName} - {ItemName}" values="{SeriesName} - {ItemName}|{ItemName}|S{SeasonIndex}E{EpisodeIndex} - {ItemName}|{SeriesName} - S{SeasonIndex}E{EpisodeIndex} - {ItemName}" />
 
 		<setting label="30222" type="lsep"/>
 		<setting type="sep" />
