@@ -201,9 +201,10 @@ def check_server(force=False, change_user=False, notify=False):
 
     # do we need to change the user
     current_username = settings.getSetting('username')
+    user_details = load_user_details()
 
     # if asked or we have no current user then show user selection screen
-    if something_changed or change_user or len(current_username) == 0:
+    if something_changed or change_user or len(current_username) == 0 or not user_details:
 
         # stop playback when switching users
         xbmc.Player().stop()
