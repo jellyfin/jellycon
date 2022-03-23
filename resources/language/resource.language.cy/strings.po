@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-05 18:13+0000\n"
+"PO-Revision-Date: 2022-03-24 16:11+0000\n"
 "Last-Translator: Rhodri <rhodrilld@gmail.com>\n"
 "Language-Team: Welsh <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cy/>\n"
@@ -31,3 +31,55 @@ msgstr "Port"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Gwesteiwr"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Dangos bob pennod"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Gwastadu tymor sengl"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Fformat enw pennod wedi'i hidlo"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Nifer yr eitemau i'w dangos mewn rhestrau wedi'u hidlo"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Dangos cleients cysylltiedig"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Enw arddangos dyfais"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Logio data amseru"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Newid defnyddiwr]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Canfod gweinydd lleol]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Nifer y proffiliau perfformiad i'w gynhyrchu"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Cyfrinair Samba"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Enw defnyddiwr Samba"
