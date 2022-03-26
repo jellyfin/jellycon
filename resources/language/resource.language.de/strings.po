@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-26 21:59+0000\n"
+"PO-Revision-Date: 2022-03-27 01:54+0000\n"
 "Last-Translator: 3ole <ole-s@mailbox.org>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
@@ -220,7 +220,7 @@ msgstr "Verbindungsgeschwindigkeit testen"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
-msgstr "Erzwinge Bitrate beim Transkodieren (Kbits)"
+msgstr "Erzwinge Bitrate beim Transkodieren (Kbps)"
 
 msgctxt "#30433"
 msgid "Allow direct file playback"
@@ -284,7 +284,7 @@ msgstr "Audiocodec"
 
 msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
-msgstr "Audio-Bitrate (Kbits)"
+msgstr "Audio-Bitrate (Kbps)"
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
@@ -427,7 +427,7 @@ msgstr "Möchtest du dein gespeichertes Passwort löschen?"
 
 msgctxt "#30368"
 msgid "Clear Password?"
-msgstr "Password löschen?"
+msgstr "Passwort löschen?"
 
 msgctxt "#30366"
 msgid "Manually enter user details"
@@ -916,7 +916,7 @@ msgstr "direkter Dateipfad"
 
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
-msgstr "maximale Übertragungsrate (Kbits)"
+msgstr "maximale Übertragungsrate (Kbps)"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -957,3 +957,139 @@ msgstr "Bei Wiedergabe"
 msgctxt "#30118"
 msgid "Add resume percent to names"
 msgstr "Prozentangabe zum Wiedergabefortschritt anzeigen"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Favoritensammlungen"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favoriten"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tags"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Jahrzehnte"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Jahre"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Sammlungen"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Alle anzeigen"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Seiten"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Vorhandene Bilder vor dem Löschen:"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Nicht verwendete Bilder entfernt:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Nicht verwendete Jellyfin-Bilder:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Intervall für zufällige Filme in Minuten (0 = deaktiviert)"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "System -"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Aufnahmen"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programme"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanäle"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Oft abgespielt"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Alben-Künstler"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Kürzlich abgespielt"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genre"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Alben"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Alle -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Bibliothek -"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Zwischengespeicherte Jellyfin-Bilder:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Fehlende Jellyfin-Bilder:"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Vorhandene Bilder:"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Neueste"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Unangesehen"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Als nächstes"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Läuft gerade"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Kürzlich hinzugefügt"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Hinweis vor dem Abspielen"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Verarbeite den Inhalt:"
