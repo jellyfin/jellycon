@@ -1,2 +1,368 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-03-28 09:38+0000\n"
+"Last-Translator: Floris <weblate@florisherin.ga>\n"
+"Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/nl/>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.10.1\n"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Films - Onlangs Toegevoegd"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TV Shows - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Toon add-on instellingen"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Films - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Films - Genres"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Custom Widget Inhoud"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Zoek"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forceer transcoderen mpeg4"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Forceer transcoderen msmpeg4v3 (divx)"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forceer transcoderen mpeg2"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Afspeelstreamopties"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Speel vanaf begin"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Forceer transcoderen h265 (hevc)"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Afleveringen"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV Shows"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interactie"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Item Details"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Paginagrootte en Filteren"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Item Layout"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Vraag om film te verwijderen na %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Vraag voor afspelen"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Speel volgende aflevering na %"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Vraag om aflevering te verwijderen na %"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Bij stoppen playback (100% = uitgeschakeld)"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Events"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Forceer 8 bit video"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Maximale videobreedte"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Transcode opties"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP direct stream"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Directe bestandslocatie"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maximale stream bitrate (Kbps)"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Afspelen"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Afspeeltype"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Kan niet verbinden met de server"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL error"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Mensen toevoegen"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Mediastream informatie toevoegen"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Plot toevoegen"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Selecteer gebruiker"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adres:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Adres geselecteerde server"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Selecteer server"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Voeg (cc) toe als ondertiteling beschikbaar is"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Geen mediatype ingesteld"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Error"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Item verwerken:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Gereed"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Bij hervatten"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Toon laadvoortgang"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Voeg percentage bekeken to aan namen"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Voeg hoeveelheid niet bekeken to aan namen"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Spring seconden terug"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Data Ophalen"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Content aan het laden"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Services"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interface"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Waarschuwing: Deze stap zal mediabestanden van de server verwijderen."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Bevestig verwijderen?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Wachten op server om te wissen"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Bezig met verwijderen"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Gebruikersnaam niet gevonden"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Onjuiste gebruikersnaam/wachtwoord"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Schakel debug logging in"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Widget item selecteer actie"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Verberg details van niet bekeken afleveringen"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Toon alle afleveringen"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Naamformat gefilterde aflevering"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Aantal weer te geven items in gefilterde lijsten"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Toon verbonden clients"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Weergavenaam apparaat"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Log timing gegevens"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Wijzig gebruiker]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Detecteer lokale server]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Aantal vast te leggen prestatieprofielen"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba wachtwoord"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba gebruikersnaam"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifieer HTTPS certificaat"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Poort"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
