@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-27 01:54+0000\n"
+"PO-Revision-Date: 2022-03-28 09:38+0000\n"
 "Last-Translator: 3ole <ole-s@mailbox.org>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
@@ -182,7 +182,7 @@ msgstr "n. a."
 
 msgctxt "#30021"
 msgid "Show all episodes item"
-msgstr "Zeige alle Folgen"
+msgstr "Alle Folgen anzeigen"
 
 msgctxt "#30442"
 msgid "Simple new content check"
