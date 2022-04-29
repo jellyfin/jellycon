@@ -105,7 +105,7 @@ def datetime_from_string(time_string):
         # https://bugs.python.org/issue27400
         dt = datetime(*(time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")[0:6]))
 
-    # Convert server  dates from UTC to local time
+    # Convert server dates from UTC to local time
     utc = tz.tzutc()
     local = tz.tzlocal()
 
