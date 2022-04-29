@@ -404,7 +404,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         end_time = datetime_from_string(item_details.program_end_date)
 
         duration = (end_time - start_time).total_seconds()
-        time_done = (datetime.now() - start_time).total_seconds()
+        time_done = (datetime.now().astimezone() - start_time).total_seconds()
         percentage_done = (float(time_done) / float(duration)) * 100.0
         capped_percentage = int(percentage_done)
 
@@ -414,10 +414,14 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         item_details.duration = int(duration)
         item_details.resume_time = int(time_done)
 
-        list_item_name = (item_details.program_channel_name +
-                          " - " + list_item_name +
-                          " - " + start_time_string + " to " + end_time_string +
-                          " (" + str(int(percentage_done)) + "%)")
+        if item_details.program_channel_name:
+            list_item_name = '{} - {} - {} to {} ({}%)'.format(
+                item_details.program_channel_name, list_item_name,
+                start_time_string, end_time_string, str(int(percentage_done)))
+        else:
+            list_item_name = '{} - {} to {} ({}%)'.format(
+                list_item_name, start_time_string, end_time_string,
+                str(int(percentage_done)))
 
         time_info = "Start : " + start_time_string + "\n"
         time_info += "End : " + end_time_string + "\n"
