@@ -417,11 +417,11 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         if item_details.program_channel_name:
             list_item_name = '{} - {} - {} to {} ({}%)'.format(
                 item_details.program_channel_name, list_item_name,
-                start_time_string, end_time_string, str(int(percentage_done)))
+                start_time_string, end_time_string, capped_percentage)
         else:
             list_item_name = '{} - {} to {} ({}%)'.format(
                 list_item_name, start_time_string, end_time_string,
-                str(int(percentage_done)))
+                capped_percentage)
 
         time_info = "Start : " + start_time_string + "\n"
         time_info += "End : " + end_time_string + "\n"
