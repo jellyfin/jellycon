@@ -16,6 +16,8 @@ import math
 import os
 import hashlib
 from datetime import datetime
+from dateutil import tz
+import time
 import re
 from uuid import uuid4
 from six import ensure_text, ensure_binary, text_type
@@ -97,9 +99,20 @@ def datetime_from_string(time_string):
     elif time_string[-6:] == "+00:00":
         time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)
 
-    dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
+    try:
+        dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
+    except TypeError:
+        # https://bugs.python.org/issue27400
+        dt = datetime(*(time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")[0:6]))
 
-    return dt
+    # Convert server dates from UTC to local time
+    utc = tz.tzutc()
+    local = tz.tzlocal()
+
+    utc_dt = dt.replace(tzinfo=utc)
+    local_dt = utc_dt.astimezone(local)
+
+    return local_dt
 
 
 def convert_size(size_bytes):
