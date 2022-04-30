@@ -1139,8 +1139,12 @@ def get_play_url(media_source, play_session_id):
     playurl = None
     playback_type = None
 
+    if media_source.get('LiveStreamId'):
+        playurl = '{}{}'.format(server, media_source.get('TranscodingUrl'))
+        playback_type = "2"
+
     # check if file can be directly played
-    if allow_direct_file_play and can_direct_play:
+    if allow_direct_file_play and can_direct_play and playurl is None:
         direct_path = media_source["Path"]
         direct_path = direct_path.replace("\\", "/")
         direct_path = direct_path.strip()
