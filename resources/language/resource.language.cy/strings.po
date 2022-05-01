@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-24 16:11+0000\n"
+"PO-Revision-Date: 2022-05-02 13:13+0000\n"
 "Last-Translator: Rhodri <rhodrilld@gmail.com>\n"
 "Language-Team: Welsh <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cy/>\n"
@@ -83,3 +83,84 @@ msgstr "Cyfrinair Samba"
 msgctxt "#30007"
 msgid "Samba username"
 msgstr "Enw defnyddiwr Samba"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Cyfeiriad:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Cyfeiriad Gweinydd a ddewiswyd"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Dewis Gweinydd"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Gwall"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Prosesi'r eitem:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Wedi gorffen"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Ar barhad"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Adalw Data"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Llwytho Cynnwys"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Gwasanaethau"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr ""
+"Rhybudd: Bydd y weithred hon yn dileu'r ffeiliau cyfryngau o'r gweinydd."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Cadarnhau dileu?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Aros i'r gweinydd i'w ddileu"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Wrthi'n dileu"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Enw defnyddiwr ddim yn bodoli"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Enw defnyddiwr/Cyfrinair anghywir"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Cyfrinair:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Enw defnyddiwr:"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Uwchraddol"
