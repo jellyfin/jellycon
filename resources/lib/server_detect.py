@@ -316,7 +316,7 @@ def create_user_listitem(server, user):
         # Calculate how long it's been since the user was last active
         if last_active:
             last_active_date = datetime_from_string(last_active)
-            ago = datetime.now() - last_active_date
+            ago = datetime.now().astimezone() - last_active_date
             # Check days
             if ago.days > 0:
                 time_ago += ' {}d'.format(ago.days)
