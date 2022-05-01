@@ -779,7 +779,7 @@ def display_livetv_type(menu_params, view):
     params["UserId"] = user_id
     params["IsAiring"] = True
     params["ImageTypeLimit"] = 1
-    params["Fields"] = get_default_filters() + "ChannelInfo"
+    params["Fields"] = get_default_filters() + ",ChannelInfo"
     params["EnableTotalRecordCount"] = False
     path = get_jellyfin_url("/LiveTv/Programs/Recommended", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=livetv"

@@ -215,6 +215,7 @@ def get_playback_intros(item_id):
 def play_file(play_info):
     item_id = play_info.get("item_id")
 
+    channel_id = None
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
@@ -275,8 +276,12 @@ def play_file(play_info):
         url = "/Users/{}/Items/{}?format=json".format(api.user_id, channel_id)
         result = api.get(url)
         item_id = result["Id"]
-
-    if result.get("Type") == "Photo":
+    elif result.get('Type') == "TvChannel":
+        channel_id = result.get("Id")
+        url = "/Users/{}/Items/{}?format=json".format(api.user_id, channel_id)
+        result = api.get(url)
+        item_id = result["Id"]
+    elif result.get("Type") == "Photo":
         play_url = "%s/Items/%s/Images/Primary"
         play_url = play_url % (server, item_id)
 
@@ -369,7 +374,7 @@ def play_file(play_info):
                 return
 
     log.debug("play_session_id: {0}".format(play_session_id))
-    playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id)
+    playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id, channel_id)
     log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}".format(playurl, playback_type, listitem_props))
 
     if playurl is None:
@@ -1112,7 +1117,7 @@ def get_playing_data():
     return {}
 
 
-def get_play_url(media_source, play_session_id):
+def get_play_url(media_source, play_session_id, channel_id):
     log.debug("get_play_url - media_source: {0}", media_source)
 
     # check if strm file Container
@@ -1139,12 +1144,8 @@ def get_play_url(media_source, play_session_id):
     playurl = None
     playback_type = None
 
-    if media_source.get('LiveStreamId'):
-        playurl = '{}{}'.format(server, media_source.get('TranscodingUrl'))
-        playback_type = "2"
-
     # check if file can be directly played
-    if allow_direct_file_play and can_direct_play and playurl is None:
+    if allow_direct_file_play and can_direct_play:
         direct_path = media_source["Path"]
         direct_path = direct_path.replace("\\", "/")
         direct_path = direct_path.strip()
@@ -1167,11 +1168,26 @@ def get_play_url(media_source, play_session_id):
     # check if file can be direct streamed/played
     if (can_direct_stream or can_direct_play) and playurl is None:
         item_id = media_source.get('Id')
-        playurl = ("%s/Videos/%s/stream" +
-                   "?static=true" +
-                   "&PlaySessionId=%s" +
-                   "&MediaSourceId=%s")
-        playurl = playurl % (server, item_id, play_session_id, item_id)
+        # We need to include the channel ID if this is a live stream
+        if channel_id:
+            url_root = '{}/Videos/{}/stream'.format(server, channel_id)
+            play_params = {
+                'static': True,
+                'PlaySessionId': play_session_id,
+                'MediaSourceId': item_id,
+                'LiveStreamId': media_source.get('LiveStreamId')
+            }
+            play_param_string = urlencode(play_params)
+            playurl = '{}?{}'.format(url_root, play_param_string)
+        else:
+            url_root = '{}/Videos/{}/stream'.format(server, item_id)
+            play_params = {
+                'static': True,
+                'PlaySessionId': play_session_id,
+                'MediaSourceId': item_id,
+            }
+            play_param_string = urlencode(play_params)
+            playurl = '{}?{}'.format(url_root, play_param_string)
         if use_https and not verify_cert:
             playurl += "|verifypeer=false"
         playback_type = "1"
@@ -1208,9 +1224,16 @@ def get_play_url(media_source, play_session_id):
         if playback_video_force_8:
             transcode_params.update({"MaxVideoBitDepth": "8"})
 
-        transcode_path = urlencode(transcode_params)
-
-        playurl = "%s/Videos/%s/master.m3u8?%s" % (server, item_id, transcode_path)
+        # We need to include the channel ID if this is a live stream
+        if channel_id:
+            transcode_params['LiveStreamId'] = media_source.get('LiveStreamId')
+            transcode_path = urlencode(transcode_params)
+            playurl = '{}/Videos/{}/master.m3u8?{}'.format(
+                server, channel_id, transcode_path)
+        else:
+            transcode_path = urlencode(transcode_params)
+            playurl = '{}/Videos/{}/master.m3u8?{}'.format(
+                server, item_id, transcode_path)
 
         if use_https and not verify_cert:
             playurl += "|verifypeer=false"
