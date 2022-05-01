@@ -374,7 +374,6 @@ def play_file(play_info):
                 return
 
     log.debug("play_session_id: {0}".format(play_session_id))
-
     playurl, playback_type, listitem_props = get_play_url(selected_media_source, play_session_id, channel_id)
     log.info("Play URL: {0} Playback Type: {1} ListItem Properties: {2}".format(playurl, playback_type, listitem_props))
 
