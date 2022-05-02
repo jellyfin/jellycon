@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-02 13:13+0000\n"
+"PO-Revision-Date: 2022-05-03 15:13+0000\n"
 "Last-Translator: Rhodri <rhodrilld@gmail.com>\n"
 "Language-Team: Welsh <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cy/>\n"
@@ -164,3 +164,99 @@ msgstr "Enw defnyddiwr:"
 msgctxt "#30022"
 msgid "Advanced"
 msgstr "Uwchraddol"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Gwybodaeth Eitem"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "gwall URL"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Dewis Defnyddiwr"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Label"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Teitl"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Blwyddyn"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Gwybodaeth"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Cuddio"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Byth"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Person"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Albwm"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Cân"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Chwarae"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Dewislen"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Dileu"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Dileu"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Ffilmiau"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Anhysbys"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Chwilio"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Pennodau"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Ffilmiau"
