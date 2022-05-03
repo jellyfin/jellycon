@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-03 15:13+0000\n"
+"PO-Revision-Date: 2022-05-04 18:13+0000\n"
 "Last-Translator: Rhodri <rhodrilld@gmail.com>\n"
 "Language-Team: Welsh <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cy/>\n"
@@ -260,3 +260,47 @@ msgstr "Pennodau"
 msgctxt "#30231"
 msgid "Movies"
 msgstr "Ffilmiau"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Chwarae'r bennod nesaf ar ôl %"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Digwyddiadau"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Opsiynau trawsgodio"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Methu cysylltu â'r gweinydd"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Cynnwys pobl"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Cynnwys plot"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Ychwanegu (cc) os oes is-deitlau ar gael"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Neidio yn ôl eiliadau"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Rhyngwyneb"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Actifadu logio dadfygio"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Cuddio manylion penodau heb eu gwylio"
