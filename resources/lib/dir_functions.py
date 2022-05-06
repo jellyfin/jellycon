@@ -239,6 +239,15 @@ def process_directory(url, progress, params, use_cache_data=False):
     gui_options["name_format_type"] = name_format_type
 
     use_cache = settings.getSetting("use_cache") == "true" and use_cache_data
+    default_filters = get_default_filters()
+
+    # Fix skin shortcuts from pre-0.5.0
+    item_limit = int(settings.getSetting("show_x_filtered_items"))
+    url = url.replace('{server}', '')
+    url = url.replace('{userid}', user_id)
+    url = url.replace('{field_filters}', default_filters)
+    url = url.replace('{ItemLimit}', str(item_limit))
+
     cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
 
     # flatten single season
@@ -254,7 +263,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                       '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
+                      '&Fields=SpecialEpisodeNumbers,{}'.format(default_filters) +
                       '&format=json')
         if progress is not None:
             progress.close()
@@ -316,7 +325,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                 u = ('/Shows/' + item_details.id +
                      '/Seasons'
                      '?userId={}'.format(user_id) +
-                     '&Fields={}'.format(get_default_filters()) +
+                     '&Fields={}'.format(default_filters) +
                      '&format=json')
 
             elif item_details.item_type == "Season":
@@ -326,7 +335,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                      '&seasonId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
+                     '&Fields=SpecialEpisodeNumbers,{}'.format(default_filters) +
                      '&format=json')
 
             else:
@@ -334,7 +343,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
-                     '&Fields={}'.format(get_default_filters()) +
+                     '&Fields={}'.format(default_filters) +
                      '&format=json')
 
             default_sort = item_details.item_type == "Playlist"
@@ -374,7 +383,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                       '?userId={}'.format(user_id) +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
-                      '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
+                      '&Fields=SpecialEpisodeNumbers,{}'.format(default_filters) +
                       '&format=json')
         played = 0
         overlay = "7"
