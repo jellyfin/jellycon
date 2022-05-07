@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-04 18:13+0000\n"
+"PO-Revision-Date: 2022-05-08 11:13+0000\n"
 "Last-Translator: Rhodri <rhodrilld@gmail.com>\n"
 "Language-Team: Welsh <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cy/>\n"
@@ -304,3 +304,115 @@ msgstr "Actifadu logio dadfygio"
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
 msgstr "Cuddio manylion penodau heb eu gwylio"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Mwy na un"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Recordiadau"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Rhaglenni"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Sianeli"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genres"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Gwall cysylltiad"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Pobeth -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Llyfrgell -"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Rhybydd"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Pobeth"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Diweddaraf"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Heb ei wylio"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Chwarae'r bennod nesaf?"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Teitl ar goll"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Nesaf"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Ffilmiau - Heb ei wylio"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Ffilmiau - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Ffilmiau - Genres"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Ffilmiau - Ffefrynnau"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Hoff Gasgliadau"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Ffefrynnau"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Rhaglenni teledu - Genres"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Rhaglenni teledu - Diweddaraf"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Rhaglenni teledu - Heb ei wylio"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Rhaglenni teledu - Ffefrynnau"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Rhaglenni teledu"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Rhaglenni teledu - A-Z"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Rhaglenni teledu"
