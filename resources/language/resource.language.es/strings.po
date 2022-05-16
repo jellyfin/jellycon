@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-05 18:13+0000\n"
-"Last-Translator: Jorge IG <jigpubli@gmail.com>\n"
+"PO-Revision-Date: 2022-05-17 04:13+0000\n"
+"Last-Translator: José Albano <josealbano@disroot.org>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -23,10 +23,9 @@ msgctxt "#30439"
 msgid "Show play next episode at time left"
 msgstr "Mostrar reproducir siguiente episodio al tiempo restante"
 
-#, fuzzy
 msgctxt "#30438"
 msgid "Play cinema intros"
-msgstr "Reproducir introducciones de cine"
+msgstr "Reproducir Introducciones de Cine"
 
 msgctxt "#30437"
 msgid "Playback options"
@@ -792,7 +791,6 @@ msgctxt "#30211"
 msgid "Transcode options"
 msgstr "Opciones de transcodificación"
 
-#, fuzzy
 msgctxt "#30209"
 msgid "File direct path"
 msgstr "Ruta directa al archivo"
@@ -997,10 +995,9 @@ msgctxt "#30421"
 msgid "Views"
 msgstr "Vistas"
 
-#, fuzzy
 msgctxt "#30408"
 msgid "Custom Widgets"
-msgstr "Controles personalizados"
+msgstr "Controles Personalizados"
 
 msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
@@ -1073,10 +1070,9 @@ msgctxt "#30026"
 msgid "Widget item select action"
 msgstr "Acción al seleccionar un ítem del widget"
 
-#, fuzzy
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "Reducir única temporada"
+msgstr "Aplanar una sola temporada"
 
 msgctxt "#30015"
 msgid "Log timing data"
