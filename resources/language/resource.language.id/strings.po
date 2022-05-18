@@ -1,2 +1,484 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-05-20 04:22+0000\n"
+"Last-Translator: liimee <git.taaa@fedora.email>\n"
+"Language-Team: Indonesian <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/id/>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.10.1\n"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favorit"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Putar berikutnya"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Musim"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Label"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Ditambahkan"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Judul"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Tahun"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Anda tidak memiliki izin untuk menghapus item ini"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Tampilkan Semua"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Film - Disarankan"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Tambahkan ke Daftar Putar Kodi"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informasi"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Sembunyikan"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Muat Ulang Metadata Jellyfin"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Keterangan pengguna"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Keterangan server"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Selalu"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Tidak pernah"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Lebih dari satu"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Sistem -"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Mengirim permintaan"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Memeriksa url server"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Mengirim permintaan"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Memindai server lokal"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "URL Server"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Tidak dapat menghubungi URL yang dimasukkan, apa Anda ingin coba lagi?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Apakah Anda ingin menyimpan kata sandi nya?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Simpan Kata Sandi?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Rekaman"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Program"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Saluran"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "Sering diputar"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musik - Sering Diputar"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Musik - Baru Ditambahkan"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Interval pembaruan gambar latar belakang (0 = nonaktif)"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Orang"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Lagu"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Film per halaman"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Album"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Musik - Album"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Putar Semua"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Putar"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menu"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Semua -"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Pilih Sumber Media"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Pemutaran dimulai"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Tak Ditemukan"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Hapus gambar yang tidak digunakan?"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Hapus"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Semua"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Terbaru"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Acara TV - Terbaru"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Film - Belum Ditonton"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Belum Ditonton"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Putar Episode Berikutnya?"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Tak ada server Jellyfin yang terdeteksi pada jaringan lokal Anda."
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Acara TV - Belum Ditonton"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Berikutnya"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Hapus"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Tandai Belum Ditonton"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Tandai Sudah Ditonton"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Film - Acak"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Baru Ditambahkan"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Episode - Berikutnya"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Episode - Baru Ditambahkan"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Acara TV - Favorit"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Acara TV"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Film - Favorit"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Film - Baru Ditambahkan"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Acara TV - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Tampilkan pengaturan add-on"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Film - A-Z"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Cari"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Mulai dari awal"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Episode"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Acara TV"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interaksi"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Tata Letak Item"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Keterangan Item"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Pemutaran"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Jenis pemutaran"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Tidak dapat terhubung dengan server"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Kesalahan pada URL"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Pilih Pengguna"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Alamat:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Alamat Server Terpilih"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Pilih Server"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Tambahkan (cc) apabila subtitel tersedia"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Kesalahan"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Memproses Item:"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Menerima Data"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Layanan"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Antarmuka"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Peringatan: Tindakan ini akan menghapus berkas media dari server."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Konfirmasi penghapusan?"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Menghapus"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Nama pengguna tidak ditemukan"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Nama Pengguna/Kata Sandi Salah"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Nama Pengguna:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Kata Sandi:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Sembunyikan keterangan episode yang belum ditonton"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Lanjutan"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Tampilkan semua episode"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifikasi sertifikat HTTPS"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Tampilkan klien yang terhubung"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Kata sandi Samba"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Nama pengguna Samba"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Kata sandi"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Nama pengguna"
