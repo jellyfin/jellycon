@@ -1,2 +1,352 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-05-20 04:22+0000\n"
+"Last-Translator: Sherlock <aggybooy2@gmail.com>\n"
+"Language-Team: Hindi <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/hi/>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.10.1\n"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "वैश्विक सूची"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "कस्टम विड्जेट"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "अतिरिक्त कार्य"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "संग्रह"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "आपके पास इस वस्तु को मिटाने की अनुमति नहीं है"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "एचटीटीपी के समय समाप्ति (सेकड़ो में)"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "चिप्पी"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "ऑडियो बितरते (किलो बिट प्रति घंटा)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "ऑडियो कोडेक"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "अधिकतम ऑडियो चैनल"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "कितनी बार देखा गया"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "छंटाई"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "नहीं लगाया गया"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "पहले से चुना हुआ"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "साल"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "जबरदस्ती बिट्रेट तय करे (किलो बिट प्रति सेकंड)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "इंटरनेट की रफ़्तार नापने के लिए डाटा का माप (मेगा बाईट)"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "सीधे फाइल से प्लेबैक की अनुमति दें"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "चलने के विकल्प दिखाएं"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "कितने समय पहले अगले अध्याय पर जाने का बटन दिखाएं"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "सिनेमा उपक्षेप चलायें"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "पुराणी विद्गट जानकारी इस्तेमाल करें"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "नए कंटेंट के लिए चेक करें"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "कनेक्शन की स्पीड नापें"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "अगला चलाएं"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "कुछ सेकंड पीछे जाएं"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "देता प्राप्त कर रहे है"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "कंटेंट लोड हो रहा है"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "डीबग सूचि बनाएं"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "विद्गट वास्तु का कार्य चुनें"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "सिर्फ एक सत्र वाले शो के लिए सत्र पेज हटाएं"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "पसंदीदा संग्रह"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "पसंदीदा"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "साल"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "छुपाएँ"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "दशक"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "देखि हुईं वस्तुएं हटाएं"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "सत्र"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "लेबल"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "जोड़ा हुआ"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "शीर्षक"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "रेटिंग"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "शैली"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "छठें हुएं अध्यायों के नामों का प्रारूप"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "छांटी हुई सूचि में कितने वास्तु दिखाए"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "समय की जानकारी लिखें"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "उपकरण का नाम"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "जुड़े हुए क्लाइंट्स दिखाएं"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "अंधेके एपिसोडों का विवरण हटाएँ"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "सारे एपिसोड दिखाएं"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "पासवर्ड :"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "खोज"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "अध्याय"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "टीवी शो"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "फ़िल्म"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "वास्तु का विवरण"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "पता :"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "गलत उपयोगरता का नाम / पासवर्ड"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "उपयोगकर्ता का नाम नहीं पाया गया"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "उन्नत"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "चेतावनी : यह कार्य आपकी मिडिया मिटा देगा |"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "समस्या"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "खत्म"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "कहानी जोड़ें"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "उपयोगकर्ता चुनें"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "चुनें हुए सर्वर का पता"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "सर्वर चुनें"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "सेवाएं"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "अंतराफलक"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "क्या आप पक्का मिटाना चाहतें हैं?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "उपलब्ध नहीं है"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "सर्वर द्वारा हटाए जानें का इंतज़ार कर रहें हैं"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "हटा रहें हैं"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "उपयोगकर्ता का नाम :"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "कितने कार्य प्रोफाइल रखने हैं"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "स्थानीय सर्वर का पता करें"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "उपयोगकर्ता बदलें"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "जेलीफिन"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "साम्बा में पासवर्ड"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "साम्बा में उपयोगकर्ता का नाम"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "उपयोगकर्ता का नाम"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "HTTPS प्रमाणपत्र की जांच करें"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "द्वार"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "आतिथेय"
