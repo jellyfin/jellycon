@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-08 00:04+0000\n"
-"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
+"PO-Revision-Date: 2022-05-20 04:22+0000\n"
+"Last-Translator: MoFanFr <hennebelle.benoit@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -898,3 +898,32 @@ msgstr "- Afficher avant de lire"
 msgctxt "#30126"
 msgid "Processing Item : "
 msgstr "Traitement de l'élément :"
+
+#, fuzzy
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Chargement de la liste des images existantes"
+
+#, fuzzy
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Voir les  Séries"
+
+#, fuzzy
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musique - Tous les Albums par Artistes"
+
+#, fuzzy
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Les modifications nécessite le redémarrage de Kodi"
+
+#, fuzzy
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Intervalle de mise à jours des imades en arrière plan (0=désactivé)"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Mise en cache des illustrations en arrière plan"
