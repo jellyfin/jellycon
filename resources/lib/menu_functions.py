@@ -14,19 +14,19 @@ import xbmcaddon
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .lazylogger import LazyLogger
-from .utils import get_jellyfin_url, translate_string, get_art_url, get_default_filters
+from .utils import get_jellyfin_url, translate_string, get_art_url, get_default_filters, get_current_user_id
 from .item_functions import get_art
 
 log = LazyLogger(__name__)
 
 __addon__ = xbmcaddon.Addon()
-user_id = api.user_id
 settings = xbmcaddon.Addon()
 
 
 def show_movie_tags(menu_params):
     log.debug("show_movie_tags: {0}".format(menu_params))
     parent_id = menu_params.get("parent_id")
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["UserId"] = user_id
@@ -91,6 +91,7 @@ def show_movie_years(menu_params):
     log.debug("show_movie_years: {0}".format(menu_params))
     parent_id = menu_params.get("parent_id")
     group_into_decades = menu_params.get("group") == "true"
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["UserId"] = user_id
@@ -177,6 +178,7 @@ def show_movie_pages(menu_params):
 
     parent_id = menu_params.get("parent_id")
     group_movies = settings.getSetting('group_movies') == "true"
+    user_id = get_current_user_id()
 
     params = {}
     params["IncludeItemTypes"] = "Movie"
@@ -263,6 +265,7 @@ def show_genre_list(menu_params):
 
     parent_id = menu_params.get("parent_id")
     item_type = menu_params.get("item_type")
+    user_id = get_current_user_id()
 
     kodi_type = "Movies"
     jellyfin_type = "Movie"
@@ -344,6 +347,7 @@ def show_movie_alpha_list(menu_params):
 
     group_movies = settings.getSetting('group_movies') == "true"
     parent_id = menu_params.get("parent_id")
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["IncludeItemTypes"] = "Movie"
@@ -406,6 +410,7 @@ def show_tvshow_alpha_list(menu_params):
         return
 
     parent_id = menu_params.get("parent_id")
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["IncludeItemTypes"] = "Series"
@@ -513,6 +518,7 @@ def display_homevideos_type(menu_params, view):
     view_name = view.get("Name")
     item_limit = settings.getSetting("show_x_filtered_items")
     hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
 
     # All Home Movies
     base_params = {}
@@ -576,6 +582,7 @@ def display_tvshow_type(menu_params, view):
         view_name = view.get("Name")
 
     item_limit = settings.getSetting("show_x_filtered_items")
+    user_id = get_current_user_id()
 
     # All TV Shows
     base_params = {}
@@ -677,6 +684,7 @@ def display_music_type(menu_params, view):
     view_name = view.get("Name")
 
     item_limit = settings.getSetting("show_x_filtered_items")
+    user_id = get_current_user_id()
 
     # all albums
     params = {}
@@ -743,6 +751,7 @@ def display_musicvideos_type(params, view):
     xbmcplugin.setContent(handle, 'files')
 
     view_name = view.get("Name")
+    user_id = get_current_user_id()
 
     # artists
     params = {}
@@ -763,6 +772,7 @@ def display_livetv_type(menu_params, view):
     xbmcplugin.setContent(handle, 'files')
 
     view_name = view.get("Name")
+    user_id = get_current_user_id()
 
     # channels
     params = {}
@@ -810,6 +820,7 @@ def display_movies_type(menu_params, view):
     item_limit = settings.getSetting("show_x_filtered_items")
     group_movies = settings.getSetting('group_movies') == "true"
     hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
 
     base_params = {}
     if view is not None:
@@ -947,6 +958,7 @@ def display_library_views(params):
     server = settings.getSetting('server_address')
     if server is None:
         return
+    user_id = get_current_user_id()
 
     views_url = "/Users/{}/Views?format=json".format(user_id)
     views = api.get(views_url)
@@ -983,6 +995,7 @@ def get_playlist_path(view_info):
     params["ParentId"] = view_info.get("Id")
     params["Fields"] = get_default_filters()
     params["ImageTypeLimit"] = 1
+    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=playlists"
@@ -999,6 +1012,7 @@ def get_collection_path(view_info):
     params["GroupItemsIntoCollections"] = True
     params["Recursive"] = True
     params["IsMissing"] = False
+    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
@@ -1011,6 +1025,7 @@ def get_channel_path(view):
     params["IsMissing"] = False
     params["ImageTypeLimit"] = 1
     params["Fields"] = get_default_filters()
+    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
@@ -1019,6 +1034,7 @@ def get_channel_path(view):
 
 def display_library_view(params):
     node_id = params.get("view_id")
+    user_id = get_current_user_id()
 
     view_info_url = "/Users/{}/Items/".format(user_id) + node_id
     view_info = api.get(view_info_url)
@@ -1086,6 +1102,7 @@ def set_library_window_values(force=False):
     already_set = home_window.get_property("view_item.0.name")
     if not force and already_set:
         return
+    user_id = get_current_user_id()
 
     for index in range(0, 20):
         home_window.clear_property("view_item.%i.name" % index)
