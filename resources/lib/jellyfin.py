@@ -24,7 +24,7 @@ class API:
         self.verify_cert = settings.getSetting('verify_cert') == 'true'
 
     def get(self, path):
-        if not self.headers:
+        if 'x-mediabrowser-token' not in self.headers:
             self.create_headers()
 
         url = '{}{}'.format(self.server, path)
@@ -37,7 +37,7 @@ class API:
         return response_data
 
     def post(self, url, payload = {}):
-        if not self.headers:
+        if 'x-mediabrowser-token' not in self.headers:
             self.create_headers()
 
         url = '{}{}'.format(self.server, url)
@@ -50,6 +50,9 @@ class API:
         return response_data
 
     def delete(self, url):
+        if 'x-mediabrowser-token' not in self.headers:
+            self.create_headers()
+
         url = '{}{}'.format(self.server, url)
 
         requests.delete(url, headers=self.headers, verify=self.verify_cert)
