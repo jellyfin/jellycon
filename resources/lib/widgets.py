@@ -9,15 +9,13 @@ import random
 import time
 
 from .jellyfin import api
-from .utils import get_jellyfin_url, image_url, load_user_details, get_art_url, get_default_filters, kodi_version
+from .utils import get_jellyfin_url, image_url, get_current_user_id, get_art_url, get_default_filters, kodi_version
 from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
 from .tracking import timer
 
 log = LazyLogger(__name__)
-user_details = load_user_details()
-user_id = user_details.get('user_id')
 
 background_items = []
 background_current_item = 0
@@ -30,6 +28,7 @@ def set_random_movies():
     settings = xbmcaddon.Addon()
     item_limit = settings.getSetting("show_x_filtered_items")
     hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["Recursive"] = True
@@ -71,6 +70,7 @@ def set_background_image(force=False):
 
     settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
+    user_id = get_current_user_id()
 
     if force:
         background_current_item = 0
@@ -139,6 +139,7 @@ def check_for_new_content():
         home_window.set_property("jellycon_widget_reload", current_time_stamp)
         log.debug("Setting New Widget Hash: {0}".format(current_time_stamp))
         return
+    user_id = get_current_user_id()
 
     url_params = {}
     url_params["Recursive"] = True
@@ -205,6 +206,7 @@ def get_widget_content_cast(handle, params):
     log.debug("getWigetContentCast Called: {0}".format(params))
     settings = xbmcaddon.Addon()
     server = settings.getSetting('server_address')
+    user_id = get_current_user_id()
 
     item_id = params["id"]
     result = api.get(
@@ -279,6 +281,7 @@ def get_widget_content(handle, params):
     if widget_type is None:
         log.error("getWigetContent type not set")
         return
+    user_id = get_current_user_id()
 
     log.debug("widget_type: {0}".format(widget_type))
 

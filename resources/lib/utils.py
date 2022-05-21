@@ -240,6 +240,7 @@ def get_current_user_id():
     user_id = user_details.get('user_id')
     return user_id
 
+
 def get_art_url(data, art_type, parent=False, index=0, server=None):
 
     item_id = data["Id"]
