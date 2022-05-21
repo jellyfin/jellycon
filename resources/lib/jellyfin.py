@@ -99,6 +99,14 @@ class API:
         # If we have a valid token, ensure it's included in the headers
         if self.token:
             headers['x-mediabrowser-token'] = self.token
+        else:
+            # Check for updated credentials since initialization
+            user_details = load_user_details()
+            token = user_details.get('token')
+            if token:
+                self.token = token
+                headers['x-mediabrowser-token'] = self.token
+
 
         # Make headers available to api calls
         self.headers = headers
