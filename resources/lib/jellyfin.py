@@ -27,6 +27,11 @@ class API:
         if 'x-mediabrowser-token' not in self.headers:
             self.create_headers()
 
+        # Fixes initial login where class is initialized before wizard completes
+        if not self.server:
+            self.settings = xbmcaddon.Addon()
+            self.server = self.settings.getSetting('server_address')
+
         url = '{}{}'.format(self.server, path)
 
         r = requests.get(url, headers=self.headers, verify=self.verify_cert)
