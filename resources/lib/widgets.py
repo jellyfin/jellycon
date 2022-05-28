@@ -192,7 +192,7 @@ def check_for_new_content():
     log.debug("Current Widget Hash: {0}".format(current_widget_hash))
 
     m = hashlib.md5()
-    m.update(last_played_date + last_added_date)
+    m.update((last_played_date + last_added_date).encode())
     new_widget_hash = m.hexdigest()
     log.debug("New Widget Hash: {0}".format(new_widget_hash))
 
