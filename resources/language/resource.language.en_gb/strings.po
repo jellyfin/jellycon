@@ -1087,3 +1087,11 @@ msgstr "Use cached widget data"
 msgctxt "#30442"
 msgid "Simple new content check"
 msgstr "Simple new content check"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Quick Connect"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Login using Quick Connect"

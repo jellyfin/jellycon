@@ -209,9 +209,17 @@ def check_server(force=False, change_user=False, notify=False):
         # stop playback when switching users
         xbmc.Player().stop()
 
-        users, user_selection = user_select(api, current_username)
+        auth = quick_connect(api)
 
-        if user_selection > -1:
+        if auth:
+            users = []
+            user_selection = -1
+            selected_user_name = auth.get('User', {}).get('Name')
+            something_changed = True
+        else:
+            users, user_selection = user_select(api, current_username)
+
+        if not auth and user_selection > -1:
 
             something_changed = True
             selected_user = users[user_selection]
@@ -247,18 +255,47 @@ def check_server(force=False, change_user=False, notify=False):
                 if kb.isConfirmed():
                     password = kb.getText()
 
+            auth_payload = {'username': selected_user_name, 'pw': password}
+            auth = api.authenticate(auth_payload)
+
         if something_changed:
             home_window = HomeWindow()
             home_window.clear_property("jellycon_widget_reload")
-            auth_payload = {'username': selected_user_name, 'pw': password}
-            user = api.authenticate(auth_payload)
-            token = user.get('AccessToken')
-            user_id = user.get('User').get('Id')
+            token = auth.get('AccessToken')
+            user_id = auth.get('User').get('Id')
             save_user_details(selected_user_name, user_id, token)
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_jellycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
+
+
+def quick_connect(api):
+    '''
+    Log in using quick connect funcion
+    '''
+    result = api.get('/QuickConnect/Initiate')
+
+    if not isinstance(result, dict):
+        log.debug('Quick connect is disabled on the server')
+        return {}
+
+    code = result.get('Code')
+    secret = result.get('Secret')
+    heading = "Quick Connect"
+    message = "Log in with the Jellyfin app: {}".format(code)
+
+    response = xbmcgui.Dialog().ok(heading, message)
+
+    while True:
+        check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
+        if check.get('Authenticated'):
+            break
+
+    auth = api.post('/Users/AuthenticateWithQuickConnect',
+                    {'secret': secret})
+
+    return auth
 
 
 def user_select(api, current_username):
