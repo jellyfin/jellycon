@@ -14,6 +14,7 @@ from .kodi_utils import HomeWindow
 from .jellyfin import API
 from .lazylogger import LazyLogger
 from .utils import datetime_from_string, translate_string, save_user_details, load_user_details
+from .dialogs import QuickConnectDialog
 
 log = LazyLogger(__name__)
 
@@ -274,6 +275,9 @@ def quick_connect(api):
     '''
     Log in using quick connect funcion
     '''
+    settings = xbmcaddon.Addon()
+    addon_path = settings.getAddonInfo('path')
+
     result = api.get('/QuickConnect/Initiate')
 
     if not isinstance(result, dict):
@@ -282,16 +286,33 @@ def quick_connect(api):
 
     code = result.get('Code')
     secret = result.get('Secret')
-    heading = "Quick Connect"
-    message = "Log in with the Jellyfin app: {}".format(code)
 
-    response = xbmcgui.Dialog().ok(heading, message)
+    # Open Quick Connect dialog, ask to proceed
+    qc_dialog = QuickConnectDialog("QuickConnectDialog.xml", addon_path, "default", "720p")
+    qc_dialog.code = code
+    qc_dialog.doModal()
+    connect_method = qc_dialog.getConnectMethod()
+    del qc_dialog
 
-    while True:
+    if connect_method < 1:
+        # User backed out or selected manual login
+        return {}
+
+    count = 0
+    while count < 15:
+        # Check the server to see if the auth request has been completed
+        log.debug('Checking for quick connect auth: attempt {}'.format(count))
         check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
         if check.get('Authenticated'):
             break
+        count += 1
+        xbmc.sleep(1000)
 
+    if not check.get('Authenticated'):
+        log.info('Quick connect not authorized in 15 seconds, defaulting to manual authentication')
+        return {}
+
+    # Retrieve authentication information
     auth = api.post('/Users/AuthenticateWithQuickConnect',
                     {'secret': secret})
 
