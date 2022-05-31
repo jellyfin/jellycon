@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-28 09:38+0000\n"
-"Last-Translator: Floris <weblate@florisherin.ga>\n"
+"PO-Revision-Date: 2022-06-01 17:51+0000\n"
+"Last-Translator: B v H <bobsieflopsie@outlook.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -366,3 +366,171 @@ msgstr "Poort"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Host"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Muziek - Vaak Afgespeeld"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Muziek - Recent Afgespeeld"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Muziek - Recent Toegevoegd"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Persoon"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Nummer"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Films per pagina"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Ga Naar Seizoen"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genres"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Automatisch Hervatten"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albums"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Muziek - Albums"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Speel Alles Af"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Verbindingsfout"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Meldingen van verbindingsfouten onderdrukken"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Speel Af"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menu"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Selecteer Trailer"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Speel Trailer Af"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Niet Gevonden"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Bestaande Afbeeldingen:"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Kodi Afbeeldingen Verwijderen"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Verwijder niet gebruikte afbeeldingen?"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Alles"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Nieuwste"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Films - Niet Bekeken"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Niet Bekeken"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Speel Volgende Aflevering Af?"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Geen Jellyfin Servers Gevonden Op Uw Locale Netwerk."
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Missende Titel"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Volgende"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Forceer Transcoderen"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Demarkeer Favoriet"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Markeer Favoriet"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Markeer Niet Bekeken"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Markeer Bekeken"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Films - Willekeurig"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Recent Toegevoegd"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Films - Favorieten"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Films - In Uitvoering"
