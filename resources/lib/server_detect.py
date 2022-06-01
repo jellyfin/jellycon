@@ -14,6 +14,7 @@ from .kodi_utils import HomeWindow
 from .jellyfin import API
 from .lazylogger import LazyLogger
 from .utils import datetime_from_string, translate_string, save_user_details, load_user_details
+from .dialogs import QuickConnectDialog
 
 log = LazyLogger(__name__)
 
@@ -209,9 +210,17 @@ def check_server(force=False, change_user=False, notify=False):
         # stop playback when switching users
         xbmc.Player().stop()
 
-        users, user_selection = user_select(api, current_username)
+        auth = quick_connect(api)
 
-        if user_selection > -1:
+        if auth:
+            users = []
+            user_selection = -1
+            selected_user_name = auth.get('User', {}).get('Name')
+            something_changed = True
+        else:
+            users, user_selection = user_select(api, current_username)
+
+        if not auth and user_selection > -1:
 
             something_changed = True
             selected_user = users[user_selection]
@@ -247,18 +256,67 @@ def check_server(force=False, change_user=False, notify=False):
                 if kb.isConfirmed():
                     password = kb.getText()
 
+            auth_payload = {'username': selected_user_name, 'pw': password}
+            auth = api.authenticate(auth_payload)
+
         if something_changed:
             home_window = HomeWindow()
             home_window.clear_property("jellycon_widget_reload")
-            auth_payload = {'username': selected_user_name, 'pw': password}
-            user = api.authenticate(auth_payload)
-            token = user.get('AccessToken')
-            user_id = user.get('User').get('Id')
+            token = auth.get('AccessToken')
+            user_id = auth.get('User').get('Id')
             save_user_details(selected_user_name, user_id, token)
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_jellycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
+
+
+def quick_connect(api):
+    '''
+    Log in using quick connect funcion
+    '''
+    settings = xbmcaddon.Addon()
+    addon_path = settings.getAddonInfo('path')
+
+    result = api.get('/QuickConnect/Initiate')
+
+    if not isinstance(result, dict):
+        log.debug('Quick connect is disabled on the server')
+        return {}
+
+    code = result.get('Code')
+    secret = result.get('Secret')
+
+    # Open Quick Connect dialog, ask to proceed
+    qc_dialog = QuickConnectDialog("QuickConnectDialog.xml", addon_path, "default", "720p")
+    qc_dialog.code = code
+    qc_dialog.doModal()
+    connect_method = qc_dialog.getConnectMethod()
+    del qc_dialog
+
+    if connect_method < 1:
+        # User backed out or selected manual login
+        return {}
+
+    count = 0
+    while count < 15:
+        # Check the server to see if the auth request has been completed
+        log.debug('Checking for quick connect auth: attempt {}'.format(count))
+        check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
+        if check.get('Authenticated'):
+            break
+        count += 1
+        xbmc.sleep(1000)
+
+    if not check.get('Authenticated'):
+        log.info('Quick connect not authorized in 15 seconds, defaulting to manual authentication')
+        return {}
+
+    # Retrieve authentication information
+    auth = api.post('/Users/AuthenticateWithQuickConnect',
+                    {'secret': secret})
+
+    return auth
 
 
 def user_select(api, current_username):

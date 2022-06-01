@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="3301" type="dialog">
+    <defaultcontrol always="true">3010</defaultcontrol>
+    <zorder>2</zorder>
+    <coordinates>
+        <system>1</system>
+        <left>450</left>
+        <top>200</top>
+    </coordinates>
+    <controls>
+
+        <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>400</width>
+            <height>270</height>
+            <texture border="40">bg.png</texture>
+        </control>
+
+        <control type="label" id="4">
+            <left>20</left>
+            <top>5</top>
+            <width>360</width>
+            <height>50</height>
+            <label>Heading</label>
+            <font>font45_title</font>
+            <align>center</align>
+        </control>
+
+        <control type="textbox" id="3">
+            <left>20</left>
+            <top>65</top>
+            <width>360</width>
+            <height>50</height>
+            <font>font45</font>
+            <align>center</align>
+        </control>
+
+        <control type="button" id="3010">
+            <texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+            <texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>
+            <left>20</left>
+            <top>135</top>
+            <width>360</width>
+            <height>40</height>
+            <label></label>
+            <onup></onup>
+            <ondown>3011</ondown>
+            <font>font14</font>
+            <align>center</align>
+        </control>
+
+        <control type="button" id="3011">
+            <texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
+            <texturefocus border="1" colordiffuse="ff525252">white.png</texturefocus>		
+            <left>20</left>
+            <top>195</top>
+            <width>360</width>
+            <height>40</height>
+            <label></label>
+            <onup>3010</onup>
+            <ondown>3012</ondown>
+            <font>font14</font>
+            <align>center</align>
+        </control>
+
+    </controls>
+</window>
