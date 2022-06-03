@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-01-23 15:28+0000\n"
-"Last-Translator: Mathias Dejerud <smallmustard@gmail.com>\n"
+"PO-Revision-Date: 2022-06-04 10:22+0000\n"
+"Last-Translator: hogenf <hogen.fasth@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -125,7 +125,7 @@ msgstr "TV Serier - Senaste"
 
 msgctxt "#30280"
 msgid "Missing Title"
-msgstr "Saknar Titel"
+msgstr "Saknar titel"
 
 msgctxt "#30289"
 msgid "TV Shows - Genres"
@@ -702,3 +702,216 @@ msgstr "Lösenord"
 msgctxt "#30005"
 msgid "Username"
 msgstr "Användarnamn"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Stoppa mediauppspelning vid aktivering av skärmsläckare"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Visa ändra användardialogrutan"
+
+#, fuzzy
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Undertryck aviseringar för anslutningsfel"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Cachade Jellyfin-bilder:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Saknade Jellyfin-bilder:"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Cacha bilder"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Cache alla Jellyfin-bilder som lokala Kodi-bilder?"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Cachebilder"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Ta bort Kodi-bilder"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Ta bort oanvända bilder?"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "För att använda den här funktionen måste du aktivera HTTP-kontroll"
+
+#, fuzzy
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Notis"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Cachebilder"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Välj undertextström"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Välj ljudström"
+
+#, fuzzy
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Lägg till fortsättningsprocent i namn"
+
+#, fuzzy
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Lägg till ej sedda räkningar till namn"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV Serier- Ej sedd"
+
+#, fuzzy
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Film - Ej sedd"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Ej sedd"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Inga Jellyfin-servrar upptäcktes på ditt lokala nätverk."
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Uppdatera cachelagrade bilder"
+
+#, fuzzy
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Nästa upp"
+
+#, fuzzy
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon måste fråga om återuppta på partiellt spelade objekt, Kodi kan "
+"också fråga, detta kan orsaka en dubbel prompt. Vill du ta bort den dubbla "
+"prompten?"
+
+#, fuzzy
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Extra uppmaning om återuppta upptäckt"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Anpassat widgetinnehåll"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Alternativ för uppspelning av stream"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Uppmaning att radera film efter %"
+
+#, fuzzy
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Fråga före uppspelning"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Uppmaning att radera avsnitt efter %"
+
+#, fuzzy
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Vid uppspelningsstopp (100 % = avaktiverad)"
+
+#, fuzzy
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP direktström"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Direkt sökväg till filen"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Högsta strömbithastighet (kbps)"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Bearbetning av objektet:"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Visa laddningsförloppet"
+
+#, fuzzy
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Ej tillgängligt"
+
+#, fuzzy
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Väntar på att servern ska radera"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Fel användarnamn/lösenord"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Aktivera felsökningsloggning"
+
+#, fuzzy
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Välj åtgärd för widgetobjekt"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Dölj detaljer om avsnittet som inte har setts"
+
+#, fuzzy
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Platta enstaka säsong"
+
+#, fuzzy
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Filtrerat avsnittsnamnformat"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Antal objekt som ska visas i filtrerade listor"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Enhetens visningsnamn"
+
+#, fuzzy
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Logga tidsdata"
+
+#, fuzzy
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Antal prestandaprofiler som ska fångas"
