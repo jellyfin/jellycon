@@ -21,7 +21,7 @@ from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
 from .server_detect import check_server, check_connection_speed
 from .lazylogger import LazyLogger
-from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages
+from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages, show_artist_alpha_list
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
 from .dialogs import BitrateDialog
@@ -92,6 +92,8 @@ def main_entry_point():
         show_movie_alpha_list(params)
     elif mode == "TVSHOW_ALPHA":
         show_tvshow_alpha_list(params)
+    elif mode == "ARTIST_ALPHA":
+        show_artist_alpha_list(params)
     elif mode == "GENRES":
         show_genre_list(params)
     elif mode == "MOVIE_PAGES":

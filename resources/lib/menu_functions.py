@@ -267,11 +267,17 @@ def show_genre_list(menu_params):
     item_type = menu_params.get("item_type")
     user_id = get_current_user_id()
 
-    kodi_type = "Movies"
-    jellyfin_type = "Movie"
-    if item_type is not None and item_type == "tvshow":
-        jellyfin_type = "Series"
-        kodi_type = "tvshows"
+    jellyfin_type = ''
+    kodi_type = ''
+    if item_type == 'Movie':
+        jellyfin_type = "Movie"
+        kodi_type = 'Movies'
+    elif item_type == 'tvshow':
+        jellyfin_type = 'Series'
+        kodi_type = 'tvshows'
+    elif item_type == 'MusicAlbum':
+        jellyfin_type = 'MusicAlbum'
+        kodi_type = 'albums'
 
     params = {}
     params["IncludeItemTypes"] = jellyfin_type
@@ -302,9 +308,6 @@ def show_genre_list(menu_params):
         item_data = {}
         item_data['title'] = genre.get("Name")
         item_data['media_type'] = kodi_type
-
-        # art = getArt(item=genre, server=server)
-        # item_data['art'] = art
 
         params = {}
         params["Recursive"] = True
@@ -451,6 +454,68 @@ def show_tvshow_alpha_list(menu_params):
         item_data['path'] = path
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
+        item_data['art'] = art
+
+        collections.append(item_data)
+
+    for collection in collections:
+        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
+               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
+        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+
+    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+def show_artist_alpha_list(menu_params):
+    log.debug("== ENTER: showArtistAlphaList() ==")
+
+    xbmcplugin.setContent(int(sys.argv[1]), 'artists')
+
+    server = settings.getSetting('server_address')
+    if server is None:
+        return
+
+    parent_id = menu_params.get("parent_id")
+    user_id = get_current_user_id()
+
+    url_params = {}
+    url_params["IncludeItemTypes"] = "MusicArtist"
+    url_params["Recursive"] = True
+    url_params["UserId"] = user_id
+    url_params["SortBy"] = "Name"
+    url_params["SortOrder"] = "Ascending"
+    if parent_id is not None:
+        url_params["ParentId"] = parent_id
+
+    prefixes = '#' + string.ascii_uppercase
+
+    collections = []
+    for alpha_name in prefixes:
+        item_data = {}
+        item_data['title'] = alpha_name
+        item_data['media_type'] = "Artists"
+
+        params = {}
+        params["Fields"] = get_default_filters()
+        params["Recursive"] = True
+        params["IncludeItemTypes"] = "MusicArtist"
+        params["SortBy"] = "Name"
+        params["SortOrder"] = "Ascending"
+        params["ImageTypeLimit"] = 1
+
+        if parent_id is not None:
+            params["ParentId"] = parent_id
+
+        if alpha_name == "#":
+            params["NameLessThan"] = "A"
+        else:
+            params["NameStartsWith"] = alpha_name
+
+        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        item_data['path'] = url
+
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
         item_data['art'] = art
 
         collections.append(item_data)
@@ -742,6 +807,19 @@ def display_music_type(menu_params, view):
     path = get_jellyfin_url("/Artists/AlbumArtists", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicArtists"
     add_menu_directory_item(view_name + translate_string(30321), url)
+
+    # genres
+    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=MusicAlbum"
+    if view is not None:
+        path += "&parent_id=" + view.get("Id")
+    add_menu_directory_item(view_name + translate_string(30325), path)
+
+    # Artist Alpha picker
+    path = "plugin://plugin.video.jellycon/?mode=ARTIST_ALPHA"
+    if view is not None:
+        path += "&parent_id=" + view.get("Id")
+    add_menu_directory_item('{} - {}{}'.format(
+        view_name, translate_string(30323), translate_string(30404)), path)
 
     xbmcplugin.endOfDirectory(handle)
 
