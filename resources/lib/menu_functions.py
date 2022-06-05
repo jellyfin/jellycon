@@ -235,23 +235,17 @@ def show_movie_pages(menu_params):
         if page_upper > total_results:
             page_upper = total_results
 
-        item_data = {}
-        item_data['title'] = "Page (" + str(start_index + 1) + " - " + str(page_upper) + ")"
-        item_data['path'] = item_url
-        item_data['media_type'] = 'movies'
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
+        title = 'Page ({} - {})'.format(start_index + 1, page_upper)
 
-        item_data['art'] = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
-
-        collections.append(item_data)
         start_index = start_index + page_limit
 
-    for collection in collections:
-        content_url = quote(collection['path'])
+        content_url = quote(item_url)
         url = sys.argv[0] + ("?url=" + content_url +
                              "&mode=GET_CONTENT" +
-                             "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(collection.get('title'), url, collection.get("art")))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+                             "&media_type=movies")
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        add_menu_directory_item(title, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -269,7 +263,7 @@ def show_genre_list(menu_params):
 
     jellyfin_type = ''
     kodi_type = ''
-    if item_type == 'Movie':
+    if item_type == 'movie':
         jellyfin_type = "Movie"
         kodi_type = 'Movies'
     elif item_type == 'tvshow':
@@ -301,13 +295,10 @@ def show_genre_list(menu_params):
 
     group_movies = settings.getSetting('group_movies') == "true"
 
-    collections = []
     xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
     for genre in result:
-        item_data = {}
-        item_data['title'] = genre.get("Name")
-        item_data['media_type'] = kodi_type
+        title = genre.get('Name', translate_string(30250))
 
         params = {}
         params["Recursive"] = True
@@ -324,17 +315,12 @@ def show_genre_list(menu_params):
         url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
 
-        item_data['path'] = url
-        collections.append(item_data)
-
-    for collection in collections:
-        url = sys.argv[0] + ("?url=" + quote(collection['path']) +
+        url = sys.argv[0] + ("?url=" + quote(url) +
                              "&mode=GET_CONTENT" +
-                             "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(collection.get('title'), url, collection.get("art")))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+                             "&media_type=" + kodi_type)
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        add_menu_directory_item(title, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -364,12 +350,7 @@ def show_movie_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
     for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "Movies"
-
         params = {}
         params["Fields"] = get_default_filters()
         params["CollapseBoxSetItems"] = group_movies
@@ -388,19 +369,14 @@ def show_movie_alpha_list(menu_params):
         else:
             params["NameStartsWith"] = alpha_name
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
-        item_data['path'] = url
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=Movies")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -428,9 +404,6 @@ def show_tvshow_alpha_list(menu_params):
 
     collections = []
     for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "tvshows"
 
         params = {}
         params["Fields"] = get_default_filters()
@@ -451,18 +424,12 @@ def show_tvshow_alpha_list(menu_params):
 
         path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        item_data['path'] = path
-
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
-        item_data['art'] = art
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=tvshows")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -492,9 +459,6 @@ def show_artist_alpha_list(menu_params):
 
     collections = []
     for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "Artists"
 
         params = {}
         params["Fields"] = get_default_filters()
@@ -512,19 +476,14 @@ def show_artist_alpha_list(menu_params):
         else:
             params["NameStartsWith"] = alpha_name
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
-        item_data['path'] = url
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=Artists")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
