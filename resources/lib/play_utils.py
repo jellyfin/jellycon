@@ -1117,7 +1117,7 @@ def get_playing_data():
     return {}
 
 
-def get_play_url(media_source, play_session_id, channel_id):
+def get_play_url(media_source, play_session_id, channel_id=None):
     log.debug("get_play_url - media_source: {0}", media_source)
 
     # check if strm file Container
