@@ -624,6 +624,10 @@ msgctxt "#30322"
 msgid "Auto resume"
 msgstr "Auto resume"
 
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artists"
+
 msgctxt "#30325"
 msgid " - Genres"
 msgstr "- Genres"
