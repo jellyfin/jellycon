@@ -53,20 +53,21 @@ def show_movie_tags(menu_params):
 
     log.debug("Tags : {0}".format(result))
 
+    url_params = {}
+    url_params["IncludeItemTypes"] = "Movie"
+    url_params["CollapseBoxSetItems"] = False
+    url_params["GroupItemsIntoCollections"] = False
+    url_params["Recursive"] = True
+    url_params["IsMissing"] = False
+    url_params["ImageTypeLimit"] = 1
+    url_params["SortBy"] = "Name"
+    url_params["SortOrder"] = "Ascending"
+    url_params["Fields"] = get_default_filters()
+
     for tag in tags:
         name = tag["Name"]
         tag_id = tag["Id"]
 
-        url_params = {}
-        url_params["IncludeItemTypes"] = "Movie"
-        url_params["CollapseBoxSetItems"] = False
-        url_params["GroupItemsIntoCollections"] = False
-        url_params["Recursive"] = True
-        url_params["IsMissing"] = False
-        url_params["ImageTypeLimit"] = 1
-        url_params["SortBy"] = "Name"
-        url_params["SortOrder"] = "Ascending"
-        url_params["Fields"] = get_default_filters()
         url_params["TagIds"] = tag_id
 
         if parent_id:
@@ -139,20 +140,21 @@ def show_movie_years(menu_params):
                 year_list.append(str(include_year))
             result_names[decade_key] = year_list
 
+    params = {}
+    params["IncludeItemTypes"] = "Movie"
+    params["CollapseBoxSetItems"] = False
+    params["GroupItemsIntoCollections"] = False
+    params["Recursive"] = True
+    params["IsMissing"] = False
+    params["ImageTypeLimit"] = 1
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Fields"] = get_default_filters()
+
     for year in keys:
         name = year
         value = ",".join(result_names[year])
 
-        params = {}
-        params["IncludeItemTypes"] = "Movie"
-        params["CollapseBoxSetItems"] = False
-        params["GroupItemsIntoCollections"] = False
-        params["Recursive"] = True
-        params["IsMissing"] = False
-        params["ImageTypeLimit"] = 1
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Fields"] = get_default_filters()
         params["Years"] = value
 
         if parent_id:
@@ -211,18 +213,19 @@ def show_movie_pages(menu_params):
     start_index = 0
     collections = []
 
+    params = {}
+    params["IncludeItemTypes"] = "Movie"
+    params["CollapseBoxSetItems"] = str(group_movies)
+    params["GroupItemsIntoCollections"] = str(group_movies)
+    params["Recursive"] = True
+    params["IsMissing"] = False
+    params["ImageTypeLimit"] = 1
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Fields"] = get_default_filters()
+
     while start_index < total_results:
 
-        params = {}
-        params["IncludeItemTypes"] = "Movie"
-        params["CollapseBoxSetItems"] = str(group_movies)
-        params["GroupItemsIntoCollections"] = str(group_movies)
-        params["Recursive"] = True
-        params["IsMissing"] = False
-        params["ImageTypeLimit"] = 1
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Fields"] = get_default_filters()
         params["StartIndex"] = start_index
         params["Limit"] = page_limit
 
@@ -297,26 +300,27 @@ def show_genre_list(menu_params):
 
     xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
+    params = {}
+    params["Recursive"] = True
+    params["CollapseBoxSetItems"] = str(group_movies)
+    params["GroupItemsIntoCollections"] = str(group_movies)
+    params["IncludeItemTypes"] = jellyfin_type
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = get_default_filters()
+
     for genre in result:
         title = genre.get('Name', translate_string(30250))
 
-        params = {}
-        params["Recursive"] = True
-        params["CollapseBoxSetItems"] = str(group_movies)
-        params["GroupItemsIntoCollections"] = str(group_movies)
         params["GenreIds"] = genre.get("Id")
-        params["IncludeItemTypes"] = jellyfin_type
-        params["ImageTypeLimit"] = 1
-        params["Fields"] = get_default_filters()
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        url = sys.argv[0] + ("?url=" + quote(url) +
+        url = sys.argv[0] + ("?url=" + quote(path) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + kodi_type)
         log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
@@ -350,24 +354,30 @@ def show_movie_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    for alpha_name in prefixes:
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["CollapseBoxSetItems"] = group_movies
-        params["GroupItemsIntoCollections"] = group_movies
-        params["Recursive"] = True
-        params["IncludeItemTypes"] = "Movie"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["ImageTypeLimit"] = 1
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["CollapseBoxSetItems"] = group_movies
+    params["GroupItemsIntoCollections"] = group_movies
+    params["Recursive"] = True
+    params["IncludeItemTypes"] = "Movie"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["ImageTypeLimit"] = 1
 
+    for alpha_name in prefixes:
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
         path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
@@ -403,24 +413,31 @@ def show_tvshow_alpha_list(menu_params):
     prefixes = '#' + string.ascii_uppercase
 
     collections = []
-    for alpha_name in prefixes:
 
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["ImageTypeLimit"] = 1
-        params["IncludeItemTypes"] = "Series"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Recursive"] = True
-        params["IsMissing"] = False
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Series"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Recursive"] = True
+    params["IsMissing"] = False
+
+    for alpha_name in prefixes:
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
         path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
@@ -458,23 +475,29 @@ def show_artist_alpha_list(menu_params):
     prefixes = '#' + string.ascii_uppercase
 
     collections = []
-    for alpha_name in prefixes:
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["Recursive"] = True
+    params["IncludeItemTypes"] = "MusicArtist"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["ImageTypeLimit"] = 1
 
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["Recursive"] = True
-        params["IncludeItemTypes"] = "MusicArtist"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["ImageTypeLimit"] = 1
+    for alpha_name in prefixes:
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
         path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
