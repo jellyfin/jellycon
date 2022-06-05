@@ -267,6 +267,8 @@ def show_genre_list(menu_params):
     item_type = menu_params.get("item_type")
     user_id = get_current_user_id()
 
+    jellyfin_type = ''
+    kodi_type = ''
     if item_type == 'Movie':
         jellyfin_type = "Movie"
         kodi_type = 'Movies'
