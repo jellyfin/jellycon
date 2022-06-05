@@ -211,7 +211,6 @@ def show_movie_pages(menu_params):
         page_limit = 20
 
     start_index = 0
-    collections = []
 
     params = {}
     params["IncludeItemTypes"] = "Movie"
@@ -412,8 +411,6 @@ def show_tvshow_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
-
     params = {}
     params["Fields"] = get_default_filters()
     params["ImageTypeLimit"] = 1
@@ -474,7 +471,6 @@ def show_artist_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
     params = {}
     params["Fields"] = get_default_filters()
     params["Recursive"] = True
