@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-02 08:13+0000\n"
+"PO-Revision-Date: 2022-06-08 04:22+0000\n"
 "Last-Translator: Csaba <csab0825@gmail.com>\n"
 "Language-Team: Hungarian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/hu/>\n"
@@ -1087,3 +1087,15 @@ msgstr "Port"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Hoszt"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Bejelentkezés Gyors Csatlakozással"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Gyors Csatlakozás"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Művészek"
