@@ -1,12 +1,10 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
 import sys
-import json
 
 from .lazylogger import LazyLogger
 
