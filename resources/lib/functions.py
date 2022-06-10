@@ -411,12 +411,6 @@ def show_menu(params):
         li.setProperty('menu_id', 'delete')
         action_items.append(li)
 
-    safe_delete = home_window.get_property("safe_delete_plugin_available") == "true"
-    if safe_delete:
-        li = xbmcgui.ListItem("Safe Delete")
-        li.setProperty('menu_id', 'safe_delete')
-        action_items.append(li)
-
     li = xbmcgui.ListItem(translate_string(30398))
     li.setProperty('menu_id', 'refresh_server')
     action_items.append(li)
