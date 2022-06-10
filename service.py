@@ -63,7 +63,6 @@ last_progress_update = time.time()
 last_content_check = time.time()
 last_background_update = 0
 last_random_movie_update = 0
-safe_delete_check = False
 
 # start the library update monitor
 library_change_monitor = LibraryChangeMonitor()
