@@ -15,8 +15,7 @@ import xbmcaddon
 import xbmc
 
 from .jellyfin import api
-from .utils import convert_size, translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version
-from .item_functions import get_art
+from .utils import translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version
 from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
 from .server_detect import check_server, check_connection_speed

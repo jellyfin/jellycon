@@ -353,11 +353,12 @@ def user_select(api, current_username):
     user_item.setProperty("manual", "true")
     users.append(user_item)
 
-    user_selection = xbmcgui.Dialog().select(selection_title,
-                                           users,
-                                           preselect=selected_id,
-                                           autoclose=20000,
-                                           useDetails=True)
+    user_selection = xbmcgui.Dialog().select(
+        selection_title,
+        users,
+        preselect=selected_id,
+        autoclose=20000,
+        useDetails=True)
 
     return (users, user_selection)
 

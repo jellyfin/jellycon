@@ -17,7 +17,6 @@ import os
 import hashlib
 from datetime import datetime
 from dateutil import tz
-import time
 import re
 from uuid import uuid4
 from six import ensure_text, ensure_binary, text_type
@@ -208,7 +207,6 @@ def load_user_details():
     user_name = window.get_property('user_name')
     if not user_name:
         user_name = settings.getSetting('username')
-        #settings_user_name = settings.getSetting('username')
     save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
     addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 

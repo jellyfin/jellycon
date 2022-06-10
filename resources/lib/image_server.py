@@ -21,9 +21,9 @@ from .utils import translate_path
 
 pil_loaded = False
 try:
-    from PIL import ImageFilter, Image, ImageOps
+    from PIL import Image, ImageOps
     pil_loaded = True
-except Exception as err:
+except ImportError:
     pil_loaded = False
 
 PORT_NUMBER = 24276

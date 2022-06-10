@@ -41,7 +41,7 @@ class API:
             response_data = {}
         return response_data
 
-    def post(self, url, payload = {}):
+    def post(self, url, payload={}):
         if 'x-mediabrowser-token' not in self.headers:
             self.create_headers()
 
@@ -111,7 +111,6 @@ class API:
             if token:
                 self.token = token
                 headers['x-mediabrowser-token'] = self.token
-
 
         # Make headers available to api calls
         self.headers = headers

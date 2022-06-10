@@ -1,12 +1,10 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import sys
-import os
 from six.moves.urllib.parse import quote
 
 from datetime import datetime
 
-import xbmc
 import xbmcgui
 
 from .utils import datetime_from_string, get_art_url, image_url, kodi_version

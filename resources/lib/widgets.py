@@ -3,7 +3,6 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
-import xbmc
 import hashlib
 import random
 import time

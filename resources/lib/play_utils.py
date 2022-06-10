@@ -949,7 +949,6 @@ def prompt_for_stop_actions(item_id, data):
     duration = data.get("duration", 0)
     next_episode = data.get("next_episode")
     item_type = data.get("item_type")
-    can_delete = data.get("can_delete", False)
 
     prompt_next_percentage = int(settings.getSetting('promptPlayNextEpisodePercentage'))
     play_prompt = settings.getSetting('promptPlayNextEpisodePercentage_prompt') == "true"
@@ -962,8 +961,6 @@ def prompt_for_stop_actions(item_id, data):
             prompt_delete_movie_percentage == 100):
         return
 
-    prompt_to_delete = False
-
     # if no runtime we cant calculate perceantge so just return
     if duration == 0:
         log.debug("No duration so returing")
@@ -973,25 +970,12 @@ def prompt_for_stop_actions(item_id, data):
     percenatge_complete = int((current_position / duration) * 100)
     log.debug("Episode Percentage Complete: {0}".format(percenatge_complete))
 
-    if (can_delete and
-            prompt_delete_episode_percentage < 100 and
-            item_type == "Episode" and
-            percenatge_complete > prompt_delete_episode_percentage):
-        prompt_to_delete = True
-
-    if (can_delete and
-            prompt_delete_movie_percentage < 100 and
-            item_type == "Movie" and
-            percenatge_complete > prompt_delete_movie_percentage):
-        prompt_to_delete = True
-
     # prompt for next episode
     if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
             percenatge_complete > prompt_next_percentage):
 
-        index = next_episode.get("IndexNumber", -1)
         if play_prompt:
 
             plugin_path = settings.getAddonInfo('path')
@@ -1074,7 +1058,6 @@ def get_playing_data():
     except ValueError:
         # This isn't a JellyCon item
         return None
-
 
     played_information_string = home_window.get_property('played_information')
     if played_information_string:
