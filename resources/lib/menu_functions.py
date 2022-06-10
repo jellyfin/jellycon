@@ -53,20 +53,21 @@ def show_movie_tags(menu_params):
 
     log.debug("Tags : {0}".format(result))
 
+    url_params = {}
+    url_params["IncludeItemTypes"] = "Movie"
+    url_params["CollapseBoxSetItems"] = False
+    url_params["GroupItemsIntoCollections"] = False
+    url_params["Recursive"] = True
+    url_params["IsMissing"] = False
+    url_params["ImageTypeLimit"] = 1
+    url_params["SortBy"] = "Name"
+    url_params["SortOrder"] = "Ascending"
+    url_params["Fields"] = get_default_filters()
+
     for tag in tags:
         name = tag["Name"]
         tag_id = tag["Id"]
 
-        url_params = {}
-        url_params["IncludeItemTypes"] = "Movie"
-        url_params["CollapseBoxSetItems"] = False
-        url_params["GroupItemsIntoCollections"] = False
-        url_params["Recursive"] = True
-        url_params["IsMissing"] = False
-        url_params["ImageTypeLimit"] = 1
-        url_params["SortBy"] = "Name"
-        url_params["SortOrder"] = "Ascending"
-        url_params["Fields"] = get_default_filters()
         url_params["TagIds"] = tag_id
 
         if parent_id:
@@ -139,20 +140,21 @@ def show_movie_years(menu_params):
                 year_list.append(str(include_year))
             result_names[decade_key] = year_list
 
+    params = {}
+    params["IncludeItemTypes"] = "Movie"
+    params["CollapseBoxSetItems"] = False
+    params["GroupItemsIntoCollections"] = False
+    params["Recursive"] = True
+    params["IsMissing"] = False
+    params["ImageTypeLimit"] = 1
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Fields"] = get_default_filters()
+
     for year in keys:
         name = year
         value = ",".join(result_names[year])
 
-        params = {}
-        params["IncludeItemTypes"] = "Movie"
-        params["CollapseBoxSetItems"] = False
-        params["GroupItemsIntoCollections"] = False
-        params["Recursive"] = True
-        params["IsMissing"] = False
-        params["ImageTypeLimit"] = 1
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Fields"] = get_default_filters()
         params["Years"] = value
 
         if parent_id:
@@ -209,20 +211,20 @@ def show_movie_pages(menu_params):
         page_limit = 20
 
     start_index = 0
-    collections = []
+
+    params = {}
+    params["IncludeItemTypes"] = "Movie"
+    params["CollapseBoxSetItems"] = str(group_movies)
+    params["GroupItemsIntoCollections"] = str(group_movies)
+    params["Recursive"] = True
+    params["IsMissing"] = False
+    params["ImageTypeLimit"] = 1
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Fields"] = get_default_filters()
 
     while start_index < total_results:
 
-        params = {}
-        params["IncludeItemTypes"] = "Movie"
-        params["CollapseBoxSetItems"] = str(group_movies)
-        params["GroupItemsIntoCollections"] = str(group_movies)
-        params["Recursive"] = True
-        params["IsMissing"] = False
-        params["ImageTypeLimit"] = 1
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Fields"] = get_default_filters()
         params["StartIndex"] = start_index
         params["Limit"] = page_limit
 
@@ -235,23 +237,17 @@ def show_movie_pages(menu_params):
         if page_upper > total_results:
             page_upper = total_results
 
-        item_data = {}
-        item_data['title'] = "Page (" + str(start_index + 1) + " - " + str(page_upper) + ")"
-        item_data['path'] = item_url
-        item_data['media_type'] = 'movies'
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
+        title = 'Page ({} - {})'.format(start_index + 1, page_upper)
 
-        item_data['art'] = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
-
-        collections.append(item_data)
         start_index = start_index + page_limit
 
-    for collection in collections:
-        content_url = quote(collection['path'])
+        content_url = quote(item_url)
         url = sys.argv[0] + ("?url=" + content_url +
                              "&mode=GET_CONTENT" +
-                             "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(collection.get('title'), url, collection.get("art")))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+                             "&media_type=movies")
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        add_menu_directory_item(title, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -269,7 +265,7 @@ def show_genre_list(menu_params):
 
     jellyfin_type = ''
     kodi_type = ''
-    if item_type == 'Movie':
+    if item_type == 'movie':
         jellyfin_type = "Movie"
         kodi_type = 'Movies'
     elif item_type == 'tvshow':
@@ -301,40 +297,33 @@ def show_genre_list(menu_params):
 
     group_movies = settings.getSetting('group_movies') == "true"
 
-    collections = []
     xbmcplugin.setContent(int(sys.argv[1]), 'genres')
 
-    for genre in result:
-        item_data = {}
-        item_data['title'] = genre.get("Name")
-        item_data['media_type'] = kodi_type
+    params = {}
+    params["Recursive"] = True
+    params["CollapseBoxSetItems"] = str(group_movies)
+    params["GroupItemsIntoCollections"] = str(group_movies)
+    params["IncludeItemTypes"] = jellyfin_type
+    params["ImageTypeLimit"] = 1
+    params["Fields"] = get_default_filters()
 
-        params = {}
-        params["Recursive"] = True
-        params["CollapseBoxSetItems"] = str(group_movies)
-        params["GroupItemsIntoCollections"] = str(group_movies)
+    for genre in result:
+        title = genre.get('Name', translate_string(30250))
+
         params["GenreIds"] = genre.get("Id")
-        params["IncludeItemTypes"] = jellyfin_type
-        params["ImageTypeLimit"] = 1
-        params["Fields"] = get_default_filters()
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        item_data['path'] = url
-        collections.append(item_data)
-
-    for collection in collections:
-        url = sys.argv[0] + ("?url=" + quote(collection['path']) +
+        url = sys.argv[0] + ("?url=" + quote(path) +
                              "&mode=GET_CONTENT" +
-                             "&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(collection.get('title'), url, collection.get("art")))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+                             "&media_type=" + kodi_type)
+        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        add_menu_directory_item(title, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -364,43 +353,39 @@ def show_movie_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["CollapseBoxSetItems"] = group_movies
+    params["GroupItemsIntoCollections"] = group_movies
+    params["Recursive"] = True
+    params["IncludeItemTypes"] = "Movie"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["ImageTypeLimit"] = 1
+
     for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "Movies"
-
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["CollapseBoxSetItems"] = group_movies
-        params["GroupItemsIntoCollections"] = group_movies
-        params["Recursive"] = True
-        params["IncludeItemTypes"] = "Movie"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["ImageTypeLimit"] = 1
-
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
-        item_data['path'] = url
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=Movies")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -426,43 +411,39 @@ def show_tvshow_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
-    for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "tvshows"
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["ImageTypeLimit"] = 1
+    params["IncludeItemTypes"] = "Series"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["Recursive"] = True
+    params["IsMissing"] = False
 
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["ImageTypeLimit"] = 1
-        params["IncludeItemTypes"] = "Series"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["Recursive"] = True
-        params["IsMissing"] = False
+    for alpha_name in prefixes:
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
         path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        item_data['path'] = path
-
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
-        item_data['art'] = art
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=tvshows")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -490,41 +471,38 @@ def show_artist_alpha_list(menu_params):
 
     prefixes = '#' + string.ascii_uppercase
 
-    collections = []
-    for alpha_name in prefixes:
-        item_data = {}
-        item_data['title'] = alpha_name
-        item_data['media_type'] = "Artists"
+    params = {}
+    params["Fields"] = get_default_filters()
+    params["Recursive"] = True
+    params["IncludeItemTypes"] = "MusicArtist"
+    params["SortBy"] = "Name"
+    params["SortOrder"] = "Ascending"
+    params["ImageTypeLimit"] = 1
 
-        params = {}
-        params["Fields"] = get_default_filters()
-        params["Recursive"] = True
-        params["IncludeItemTypes"] = "MusicArtist"
-        params["SortBy"] = "Name"
-        params["SortOrder"] = "Ascending"
-        params["ImageTypeLimit"] = 1
+    for alpha_name in prefixes:
 
         if parent_id is not None:
             params["ParentId"] = parent_id
 
         if alpha_name == "#":
             params["NameLessThan"] = "A"
+            # Ensure we don't try to search both at once
+            if 'NameStartsWith' in params:
+                params.pop('NameStartsWith')
         else:
             params["NameStartsWith"] = alpha_name
+            # Ensure we don't try to search both at once
+            if 'NameLessThan' in params:
+                params.pop('NameLessThan')
 
-        url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
-        item_data['path'] = url
+        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
 
-        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(url))))}
-        item_data['art'] = art
+        art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
-        collections.append(item_data)
-
-    for collection in collections:
-        url = (sys.argv[0] + "?url=" + quote(collection['path']) +
-               "&mode=GET_CONTENT&media_type=" + collection["media_type"])
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(collection.get('title'), url))
-        add_menu_directory_item(collection.get('title', translate_string(30250)), url, art=collection.get("art"))
+        url = (sys.argv[0] + "?url=" + quote(path) +
+               "&mode=GET_CONTENT&media_type=Artists")
+        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
