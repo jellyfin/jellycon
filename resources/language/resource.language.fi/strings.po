@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-13 14:13+0000\n"
+"PO-Revision-Date: 2022-06-12 12:22+0000\n"
 "Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fi/>\n"
@@ -1087,3 +1087,15 @@ msgstr "Portti"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Palvelin"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Kirjaudu käyttäen Pikayhdistystä"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Pikayhdistys"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Esittäjät"
