@@ -280,7 +280,7 @@ def quick_connect(api):
 
     result = api.get('/QuickConnect/Initiate')
 
-    if not isinstance(result, dict):
+    if not isinstance(result, dict) or not result:
         log.debug('Quick connect is disabled on the server')
         return {}
 
