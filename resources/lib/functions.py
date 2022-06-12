@@ -344,42 +344,42 @@ def show_menu(params):
     action_items = []
 
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio", "TvChannel", "Program"]:
-        li = xbmcgui.ListItem(translate_string(30314))
+        li = xbmcgui.ListItem(translate_string(30314), offscreen=True)
         li.setProperty('menu_id', 'play')
         action_items.append(li)
 
     if result["Type"] in ["Season", "MusicAlbum", "Playlist"]:
-        li = xbmcgui.ListItem(translate_string(30317))
+        li = xbmcgui.ListItem(translate_string(30317), offscreen=True)
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
     if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program"]:
-        li = xbmcgui.ListItem(translate_string(30275))
+        li = xbmcgui.ListItem(translate_string(30275), offscreen=True)
         li.setProperty('menu_id', 'transcode')
         action_items.append(li)
 
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio"]:
-        li = xbmcgui.ListItem(translate_string(30402))
+        li = xbmcgui.ListItem(translate_string(30402), offscreen=True)
         li.setProperty('menu_id', 'add_to_playlist')
         action_items.append(li)
 
     if result["Type"] in ("Movie", "Series"):
-        li = xbmcgui.ListItem(translate_string(30307))
+        li = xbmcgui.ListItem(translate_string(30307), offscreen=True)
         li.setProperty('menu_id', 'play_trailer')
         action_items.append(li)
 
     if result["Type"] == "Episode" and result["ParentId"] is not None:
-        li = xbmcgui.ListItem(translate_string(30327))
+        li = xbmcgui.ListItem(translate_string(30327), offscreen=True)
         li.setProperty('menu_id', 'view_season')
         action_items.append(li)
 
     if result["Type"] in ("Series", "Season", "Episode"):
-        li = xbmcgui.ListItem(translate_string(30354))
+        li = xbmcgui.ListItem(translate_string(30354), offscreen=True)
         li.setProperty('menu_id', 'view_series')
         action_items.append(li)
 
     if result["Type"] == "Movie":
-        li = xbmcgui.ListItem("Show Extras")
+        li = xbmcgui.ListItem("Show Extras", offscreen=True)
         li.setProperty('menu_id', 'show_extras')
         action_items.append(li)
 
@@ -388,43 +388,43 @@ def show_menu(params):
         progress = user_data.get("PlaybackPositionTicks", 0) != 0
         played = user_data.get("Played", False)
         if not played or progress:
-            li = xbmcgui.ListItem(translate_string(30270))
+            li = xbmcgui.ListItem(translate_string(30270), offscreen=True)
             li.setProperty('menu_id', 'mark_watched')
             action_items.append(li)
         if played or progress:
-            li = xbmcgui.ListItem(translate_string(30271))
+            li = xbmcgui.ListItem(translate_string(30271), offscreen=True)
             li.setProperty('menu_id', 'mark_unwatched')
             action_items.append(li)
 
         if user_data.get("IsFavorite", False) is False:
-            li = xbmcgui.ListItem(translate_string(30272))
+            li = xbmcgui.ListItem(translate_string(30272), offscreen=True)
             li.setProperty('menu_id', 'jellyfin_set_favorite')
             action_items.append(li)
         else:
-            li = xbmcgui.ListItem(translate_string(30273))
+            li = xbmcgui.ListItem(translate_string(30273), offscreen=True)
             li.setProperty('menu_id', 'jellyfin_unset_favorite')
             action_items.append(li)
 
     can_delete = result.get("CanDelete", False)
     if can_delete:
-        li = xbmcgui.ListItem(translate_string(30274))
+        li = xbmcgui.ListItem(translate_string(30274), offscreen=True)
         li.setProperty('menu_id', 'delete')
         action_items.append(li)
 
-    li = xbmcgui.ListItem(translate_string(30398))
+    li = xbmcgui.ListItem(translate_string(30398), offscreen=True)
     li.setProperty('menu_id', 'refresh_server')
     action_items.append(li)
 
-    li = xbmcgui.ListItem(translate_string(30281))
+    li = xbmcgui.ListItem(translate_string(30281), offscreen=True)
     li.setProperty('menu_id', 'refresh_images')
     action_items.append(li)
 
     if result["Type"] in ["Movie", "Series"]:
-        li = xbmcgui.ListItem(translate_string(30399))
+        li = xbmcgui.ListItem(translate_string(30399), offscreen=True)
         li.setProperty('menu_id', 'hide')
         action_items.append(li)
 
-    li = xbmcgui.ListItem(translate_string(30401))
+    li = xbmcgui.ListItem(translate_string(30401), offscreen=True)
     li.setProperty('menu_id', 'info')
     action_items.append(li)
 
@@ -438,11 +438,11 @@ def show_menu(params):
 
     if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
         if view_match:
-            li = xbmcgui.ListItem("Unset as default view")
+            li = xbmcgui.ListItem("Unset as default view", offscreen=True)
             li.setProperty('menu_id', 'unset_view')
             action_items.append(li)
         else:
-            li = xbmcgui.ListItem("Set as default view")
+            li = xbmcgui.ListItem("Set as default view", offscreen=True)
             li.setProperty('menu_id', 'set_view')
             action_items.append(li)
 
@@ -757,7 +757,7 @@ def search_results(params):
 
             action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
 
-            list_item = xbmcgui.ListItem(label=person_name)
+            list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
             list_item.setProperty("id", person_id)
 
             art_links = {}

@@ -238,10 +238,7 @@ def get_widget_content_cast(handle, params):
                 person_thumbnail = image_url(
                     person_id, "Primary", 0, 400, 400, person_tag, server=server)
 
-            if kodi_version() > 17:
-                list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
-            else:
-                list_item = xbmcgui.ListItem(label=person_name)
+            list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
 
             list_item.setProperty("id", person_id)
 
