@@ -36,7 +36,7 @@ class HomeWindow:
 
 
 def add_menu_directory_item(label, path, folder=True, art=None):
-    li = xbmcgui.ListItem(label, path=path)
+    li = xbmcgui.ListItem(label, path=path, offscreen=True)
     if art is None:
         art = {}
         art["thumb"] = addon.getAddonInfo('icon')

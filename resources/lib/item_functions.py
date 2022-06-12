@@ -429,10 +429,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         else:
             item_details.plot = time_info
 
-    if kodi_version() > 17:
-        list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
-    else:
-        list_item = xbmcgui.ListItem(list_item_name, iconImage=thumb_path, thumbnailImage=thumb_path)
+    list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
 
     item_properties = {}
 
@@ -460,10 +457,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
     # add cast
     if item_details.cast:
-        if kodi_version() >= 17:
-            list_item.setCast(item_details.cast)
-        else:
-            info_labels['cast'] = info_labels['castandrole'] = [(cast_member['name'], cast_member['role']) for cast_member in item_details.cast]
+        list_item.setCast(item_details.cast)
 
     info_labels["title"] = list_item_name
     if item_details.sort_name:
@@ -596,11 +590,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.baseline_itemname is not None:
         item_properties["suggested_from_watching"] = item_details.baseline_itemname
 
-    if kodi_version() > 17:
-        list_item.setProperties(item_properties)
-    else:
-        for key, value in item_properties.iteritems():
-            list_item.setProperty(key, value)
+    list_item.setProperties(item_properties)
 
     return u, list_item, folder
 
