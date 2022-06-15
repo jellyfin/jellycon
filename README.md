@@ -1,15 +1,14 @@
 # JellyCon
 
-JellyCon is a lightweight Kodi add-on that lets you browse and play media files from your Jellyfin server directly within the Kodi interface. Think of it as a Think client, compared to Jellyfin for Kodi, which integrates into Kodi itself.
+JellyCon is a lightweight Kodi add-on that lets you browse and play media files directly from your Jellyfin server within the Kodi interface. Think of it as a Thin client, compared to Jellyfin for Kodi, which integrates into Kodi itself.
 
-
-JellyCon behaves more like a standard Kodi streaming add-on. Media is accessed primarily by going through the Add-ons -> JellyCon menu, however depending on what skin is being used custom shortcuts and widgets can be added to the home menu. It also allows easier switching between multiple Jellyfin servers or users since it doesn't have to rely on syncing all the metadata down. By not having metadata synced, it has to request info from the server which can take a bit more time when you're browsing, but you don't have to wait for the database to sync or keep it up to date. It's also compatible with other media sources and can be used with other add-ons without issue.
-
+JellyCon compared to the Jellyfin add-on, behaves more like a standard Kodi streaming add-on. Media is accessed primarily by going through the Add-ons -> JellyCon menu, however depending on what skin is being used custom shortcuts and widgets can be added to the home menu. It also allows easier switching between multiple Jellyfin servers or users since it doesn't have to rely on syncing all the metadata down. By not having metadata synced, it has to request info from the server which can take a bit more time when you're browsing, but you don't have to wait for the database to sync or keep it up to date. It's also compatible with other media sources and can be used with other add-ons without issue.
 
 
 ## Installation
 
 #### 1. Adding the Jellyfin repository
+
 https://jellyfin.org/docs/general/clients/kodi.html#install-add-on-repository
 
 #### 2. Install JellyCon Add-on
@@ -22,9 +21,9 @@ https://jellyfin.org/docs/general/clients/kodi.html#install-add-on-repository
 #### 3. Login
 
 - Within a few seconds after the installation you should be prompted for your server details.
-- If a Jellyfin server is detected on your local network, it will displayed in a dialog. Otherwise, you will be prompted for a URL
-- Select a user from the list, or Manual Login to type in a username/password
-
+- If a Jellyfin server is detected on your local network, it will displayed in a dialog. Otherwise, you will be prompted to enter the URL of your Jellyfin server
+- A "Quick Connect" code will be displayed. Which can be used to Login without the need of credentials, once you enter it on your Jellyfin server under "User Settings" -> "Quick Connect"
+- Alternatively you can select "Manual Login" to select a user from the list, or Manual Login using your username and password
 
 
 ## Configuration
@@ -42,10 +41,6 @@ Another common use case of widgets would be to display the next available episod
 
     Add-On -> Video Add-On -> JellyCon -> Jellyfin Libraries -> Anime -> Anime - Next Up (20) -> Use as widget
     Add-On -> Video Add-On -> JellyCon -> Global Lists -> TV Shows -> TV Shows - Next Up (20) -> Use as widget
-
-
-
-
 
 
 ## License
