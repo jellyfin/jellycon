@@ -8,7 +8,7 @@ from dateutil import tz
 
 import xbmcgui
 
-from .utils import datetime_from_string, get_art_url, image_url, kodi_version, get_current_datetime
+from .utils import datetime_from_string, get_art_url, image_url, get_current_datetime
 from .lazylogger import LazyLogger
 from six import ensure_text
 
