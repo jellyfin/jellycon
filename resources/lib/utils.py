@@ -104,14 +104,20 @@ def datetime_from_string(time_string):
         # https://bugs.python.org/issue27400
         dt = datetime(*(time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")[0:6]))
 
-    # Convert server dates from UTC to local time
+    # Dates received from the server are in UTC, but parsing them results in naive objects
     utc = tz.tzutc()
-    local = tz.tzlocal()
-
     utc_dt = dt.replace(tzinfo=utc)
-    local_dt = utc_dt.astimezone(local)
 
-    return local_dt
+    return utc_dt
+
+
+def get_current_datetime():
+    # Get current time in UTC
+    now = datetime.utcnow()
+    utc = tz.tzutc()
+    now_dt = now.replace(tzinfo=utc)
+
+    return now_dt
 
 
 def convert_size(size_bytes):
