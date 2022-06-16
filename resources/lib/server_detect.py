@@ -5,6 +5,7 @@ import socket
 import json
 import time
 from datetime import datetime
+from dateutil import tz
 
 import xbmcaddon
 import xbmcgui
@@ -368,6 +369,10 @@ def create_user_listitem(server, user):
     Create a user listitem for the user selection screen
     '''
     config = user.get("Configuration")
+    # Get current time in UTC
+    now = datetime.utcnow()
+    utc = tz.tzutc()
+    now_dt = now.replace(tzinfo=utc)
     if config is not None:
         name = user.get("Name")
         time_ago = ""
@@ -375,7 +380,7 @@ def create_user_listitem(server, user):
         # Calculate how long it's been since the user was last active
         if last_active:
             last_active_date = datetime_from_string(last_active)
-            ago = datetime.now().astimezone() - last_active_date
+            ago = now_dt - last_active_date
             # Check days
             if ago.days > 0:
                 time_ago += ' {}d'.format(ago.days)

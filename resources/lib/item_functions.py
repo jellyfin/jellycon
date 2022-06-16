@@ -4,6 +4,7 @@ import sys
 from six.moves.urllib.parse import quote
 
 from datetime import datetime
+from dateutil import tz
 
 import xbmcgui
 
@@ -402,12 +403,17 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         end_time = datetime_from_string(item_details.program_end_date)
 
         duration = (end_time - start_time).total_seconds()
-        time_done = (datetime.now().astimezone() - start_time).total_seconds()
+        # Get current date in UTC to compare against server
+        now = datetime.utcnow()
+        now_dt = now.replace(tzinfo=tz.tzutc())
+        time_done = (now_dt - start_time).total_seconds()
         percentage_done = (float(time_done) / float(duration)) * 100.0
         capped_percentage = int(percentage_done)
 
-        start_time_string = start_time.strftime("%H:%M")
-        end_time_string = end_time.strftime("%H:%M")
+        # Convert dates to local timezone for display
+        local = tz.tzlocal()
+        start_time_string = start_time.astimezone(local).strftime("%H:%M")
+        end_time_string = end_time.astimezone(local).strftime("%H:%M")
 
         item_details.duration = int(duration)
         item_details.resume_time = int(time_done)
