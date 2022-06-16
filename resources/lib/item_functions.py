@@ -8,7 +8,7 @@ from dateutil import tz
 
 import xbmcgui
 
-from .utils import datetime_from_string, get_art_url, image_url, kodi_version
+from .utils import datetime_from_string, get_art_url, image_url, kodi_version, get_current_datetime
 from .lazylogger import LazyLogger
 from six import ensure_text
 
@@ -403,10 +403,8 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         end_time = datetime_from_string(item_details.program_end_date)
 
         duration = (end_time - start_time).total_seconds()
-        # Get current date in UTC to compare against server
-        now = datetime.utcnow()
-        now_dt = now.replace(tzinfo=tz.tzutc())
-        time_done = (now_dt - start_time).total_seconds()
+        now = get_current_datetime()
+        time_done = (now - start_time).total_seconds()
         percentage_done = (float(time_done) / float(duration)) * 100.0
         capped_percentage = int(percentage_done)
 

@@ -111,6 +111,15 @@ def datetime_from_string(time_string):
     return utc_dt
 
 
+def get_current_datetime():
+    # Get current time in UTC
+    now = datetime.utcnow()
+    utc = tz.tzutc()
+    now_dt = now.replace(tzinfo=utc)
+
+    return now_dt
+
+
 def convert_size(size_bytes):
     if size_bytes == 0:
         return "0B"
