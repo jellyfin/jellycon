@@ -1,8 +1,8 @@
 # JellyCon
 
-JellyCon is a lightweight Kodi add-on that lets you browse and play media files directly from your Jellyfin server within the Kodi interface. Think of it as a Thin client, compared to Jellyfin for Kodi, which integrates into Kodi itself.
+JellyCon is a lightweight Kodi add-on that lets you browse and play media files directly from your Jellyfin server within the Kodi interface.  It can be thought of as a thin frontend for a Jellyfin server.
 
-JellyCon compared to the Jellyfin add-on, behaves more like a standard Kodi streaming add-on. Media is accessed primarily by going through the Add-ons -> JellyCon menu, however depending on what skin is being used custom shortcuts and widgets can be added to the home menu. It also allows easier switching between multiple Jellyfin servers or users since it doesn't have to rely on syncing all the metadata down. By not having metadata synced, it has to request info from the server which can take a bit more time when you're browsing, but you don't have to wait for the database to sync or keep it up to date. It's also compatible with other media sources and can be used with other add-ons without issue.
+JellyCon can be used with Movie, TV Show, Music Video, and Music libraries, in addition to viewing LiveTV from the server.  It can easily switch between multiple user accounts at will.  It's easy to integrate with any customizable Kodi skin with a large collection of custom menus.  Media items are populated from the server dynamically, and menu speed will vary based on local device speed.
 
 
 ## Installation
@@ -22,8 +22,8 @@ https://jellyfin.org/docs/general/clients/kodi.html#install-add-on-repository
 
 - Within a few seconds after the installation you should be prompted for your server details.
 - If a Jellyfin server is detected on your local network, it will displayed in a dialog. Otherwise, you will be prompted to enter the URL of your Jellyfin server
-- A "Quick Connect" code will be displayed. Which can be used to Login without the need of credentials, once you enter it on your Jellyfin server under "User Settings" -> "Quick Connect"
-- Alternatively you can select "Manual Login" to select a user from the list, or Manual Login using your username and password
+- If Quick Connect is enabled in the server, a code will be displayed that you can use to log in via Quick Connect in the web UI or a mobile app.
+- If Quick Connect is not enabled, or if you select the "Manual Login" button, you will be able to select a user from the list, or manually login using your username and password.
 
 
 ## Configuration
