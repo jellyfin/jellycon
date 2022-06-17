@@ -15,7 +15,7 @@ from six.moves.urllib.parse import urlencode
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -254,13 +254,18 @@ def play_file(play_info):
         return
 
     # if this is a season, playlist or album then play all items in that parent
-    if result.get("Type") in ["Season", "MusicAlbum", "Playlist"]:
+    if result.get("Type") in ["Season", "MusicArtist", "MusicAlbum", "Playlist"]:
         log.debug("PlayAllFiles for parent item id: {0}".format(item_id))
-        url = ('/Users/{}/items'.format(api.user_id) +
-               '?ParentId=%s' +
-               '&Fields=MediaSources' +
-               '&format=json')
-        url = url % (item_id,)
+        url_root = '/Users/{}/Items'.format(api.user_id)
+        # Look specifically for episodes or audio files
+        url_params = {
+            'ParentId': item_id,
+            'Fields': 'MediaSources',
+            'IncludeItemTypes': 'Episode,Audio',
+            'Recursive': True
+        }
+
+        url = get_jellyfin_url(url_root, url_params)
         result = api.get(url)
         log.debug("PlayAllFiles items: {0}".format(result))
 
