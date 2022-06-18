@@ -1,60 +1,16 @@
-version: '0.5.0'
+version: '0.5.1'
 changelog: |-
   New features and improvements
   -----------------------------
-  + Make sure manual login shows when connecting to a 10.7 server (#167) @mcarlton00
-  + Add genres and alpha picker to music (#161) @mcarlton00
-  + Add button to the bitrate selector (#160) @mcarlton00
-  + Add quick connect authentication (#159) @mcarlton00
+  + Add context menu play options for music (#173) @mcarlton00
 
   Bug Fixes
   ---------
-  + Fix playing all files (#162) @mcarlton00
-  + Ensure server is present in API requests (#157) @mcarlton00
-  + Fix errors when stopping transcoded playback (#156) @mcarlton00
-  + Fix content update checks (#155) @mcarlton00
-  + Fix stale data after storage migration (#153) @mcarlton00
-  + Fix legacy skin shortcuts (#150) @mcarlton00
-  + Use timezone when calculating last activity date (#147) @mcarlton00
-  + Fix live tv playback (#144) @mcarlton00
-  + Fix browsing the Live TV programs menu (#145) @mcarlton00
-  + Force login if no saved credentials (#139) @mcarlton00
-  + Fix movie recommendations (#132) @mcarlton00
-  + Fix remote control (#134) @mcarlton00
-  + Don't throw errors when non-JellyCon content is playing (#135) @mcarlton00
-  + Fallback to empty lists instead of failing (#136) @mcarlton00
-  + Make widgets respect episode name format setting (#137) @mcarlton00
-  + Make requests respect the verify certificate setting (#131) @mcarlton00
-  + Fix manual user login (#123) @mcarlton00
-  + Rework user data storage (#119) @mcarlton00
+  + Do all date comparisons in UTC (#172) @mcarlton00
 
-  Code or Repo Maintenance
-  ------------------------
-  + Use offscreen option when generating all listitems (#168) @mcarlton00
-  + Remove safe delete code (#166) @mcarlton00
-  + Address flake8 warnings (#165) @mcarlton00
-  + Simplify url param dict definitions (#164) @mcarlton00
-  + Optimize loops while building menus (#163) @mcarlton00
-  + Verify certificates by default (#154) @mcarlton00
-  + Rework live tv playback (#148) @mcarlton00
-  + Remove trakt integration (#133) @mcarlton00
-  + Copy translate_path from Jf4Kodi, fix LazyLogger (#130) @oddstr13
-  + Rework the network stack (#124) @mcarlton00
-  + Rework user data storage (#119) @mcarlton00
-  + Code reorganizing (#111) @mcarlton00
-  + Remove unused and commented out code (#109) @mcarlton00
-
-  CI & build changes
-  ------------------
-  + Bump release-drafter/release-drafter from 5.19.0 to 5.20.0 (#152) @dependabot
-  + Bump github/codeql-action from 1 to 2 (#143) @dependabot
-  + Bump actions/upload-artifact from 2 to 3 (#141) @dependabot
-  + Bump release-drafter/release-drafter from 5.18.1 to 5.19.0 (#138) @dependabot
-  + Bump actions/checkout from 2 to 3 (#127) @dependabot
-  + Bump actions/setup-python from 2 to 3 (#126) @dependabot
-  + Bump release-drafter/release-drafter from 5.17.5 to 5.18.1 (#122) @dependabot
-  + Bump release-drafter/release-drafter from 5.15.0 to 5.17.5 (#118) @dependabot
-  + Bump burnett01/rsync-deployments from 5.1 to 5.2 (#113) @dependabot
+  Documentation updates
+  ---------------------
+  + Update README.md (#170) @nitschis
 dependencies:
   py2:
     - addon: 'xbmc.python'
