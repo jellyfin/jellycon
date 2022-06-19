@@ -15,6 +15,7 @@ import time
 import math
 import os
 import hashlib
+import requests
 from datetime import datetime
 from dateutil import tz
 import re
@@ -363,3 +364,18 @@ def translate_path(path):
         return xbmcvfs.translatePath(path)
     else:
         return xbmc.translatePath(path)
+
+
+def download_external_sub(language, codec, url):
+
+    # Download the subtitle file
+    r = requests.get(url)
+    r.raise_for_status()
+
+    # Write the subtitle file to the local filesystem
+    file_name = 'Stream.{}.{}'.format(language, codec)
+    file_path = py2_decode(translate_path('special://temp/{}'.format(file_name)))
+    with open(file_path, 'wb') as f:
+        f.write(r.content)
+
+    return file_path
