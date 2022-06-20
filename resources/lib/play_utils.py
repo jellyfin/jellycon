@@ -15,7 +15,7 @@ from six.moves.urllib.parse import urlencode
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -843,12 +843,18 @@ def external_subs(media_source, list_item, item_id):
             language = stream.get('Language', '')
             codec = stream.get('Codec', '')
 
-            url_root = '{}/Videos/{}/{}/Subtitles/{}'.format(server, item_id, source_id, index)
+            url = '{}{}'.format(server, stream.get('DeliveryUrl'))
             if language:
-                url = '{}/0/Stream.{}.{}?api_key={}'.format(
-                    url_root, language, codec, token)
+                '''
+                Starting in 10.8, the server no longer provides language
+                specific download points.  We have to download the file
+                and name it with the language code ourselves so Kodi
+                will parse it correctly
+                '''
+                subtitle_file = download_external_sub(language, codec, url)
             else:
-                url = '{}/0/Stream.{}?api_key={}'.format(url_root, codec, token)
+                # If there is no language defined, we can go directly to the server
+                subtitle_file = url
 
             default = ""
             if stream['IsDefault']:
@@ -860,7 +866,7 @@ def external_subs(media_source, list_item, item_id):
             sub_name = '{} ( {} ) {} {}'.format(language, codec, default, forced)
 
             sub_names.append(sub_name)
-            externalsubs.append(url)
+            externalsubs.append(subtitle_file)
 
     if len(externalsubs) == 0:
         return
