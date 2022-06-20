@@ -1,16 +1,8 @@
-version: '0.5.1'
+version: '0.5.2'
 changelog: |-
-  New features and improvements
-  -----------------------------
-  + Add context menu play options for music (#173) @mcarlton00
-
   Bug Fixes
   ---------
-  + Do all date comparisons in UTC (#172) @mcarlton00
-
-  Documentation updates
-  ---------------------
-  + Update README.md (#170) @nitschis
+  + Download all external subs when playback starts (#176) @mcarlton00
 dependencies:
   py2:
     - addon: 'xbmc.python'
