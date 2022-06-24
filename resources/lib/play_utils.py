@@ -5,12 +5,14 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 import xbmcvfs
+import xbmcplugin
 
 from datetime import timedelta
 import json
 import os
 import re
 from six.moves.urllib.parse import urlencode
+import sys
 
 from .jellyfin import api
 from .lazylogger import LazyLogger
@@ -414,7 +416,7 @@ def play_file(play_info):
     display_options["addSubtitleAvailable"] = False
     display_options["addUserRatings"] = False
 
-    gui_item = add_gui_item("", item_details, display_options, False)
+    gui_item = add_gui_item(item_id, item_details, display_options, False)
     list_item = gui_item[1]
 
     if playback_type == "2":  # if transcoding then prompt for audio and subtitle
@@ -454,12 +456,17 @@ def play_file(play_info):
     if len(intro_items) > 0:
         playlist = play_all_files(intro_items, play_items=False)
         playlist.add(playurl, list_item)
+        player.play(playlist)
     else:
-        playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-        playlist.clear()
-        playlist.add(playurl, list_item)
-
-    player.play(playlist)
+        if sys.argv[1] > 1:
+            # Play from "Info" screen
+            xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, list_item)
+        else:
+            # Play from menu.  Doesn't have a handle, so need to call player directly
+            playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+            playlist.clear()
+            playlist.add(playurl, list_item)
+            player.play(playlist)
 
     if seek_time != 0:
         player.pause()
