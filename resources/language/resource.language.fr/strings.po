@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-20 04:22+0000\n"
-"Last-Translator: MoFanFr <hennebelle.benoit@gmail.com>\n"
+"PO-Revision-Date: 2022-07-06 13:22+0000\n"
+"Last-Translator: Patarimi <mpqqch@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -169,10 +169,9 @@ msgctxt "#30210"
 msgid "HTTP direct stream"
 msgstr "Stream direct HTTP"
 
-#, fuzzy
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
-msgstr "Bitrate maximum du flux (Kbps)"
+msgstr "Débit maximum du flux (Kbps)"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -734,17 +733,14 @@ msgctxt "#30349"
 msgid " - Recently Played"
 msgstr "- Lus récemment"
 
-#, fuzzy
 msgctxt "#30347"
 msgid "Getting Existing Images"
 msgstr "Récupération des images existantes"
 
-#, fuzzy
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
 msgstr "Suppression des images en cache"
 
-#, fuzzy
 msgctxt "#30345"
 msgid "Cache Jellyfin server data requests"
 msgstr "Garder les requêtes de données serveur de Jellyfin en cache"
@@ -761,7 +757,6 @@ msgctxt "#30322"
 msgid "Auto resume"
 msgstr "Reprise automatique"
 
-#, fuzzy
 msgctxt "#30314"
 msgid "Play"
 msgstr "Lecture"
@@ -904,26 +899,54 @@ msgctxt "#30356"
 msgid "Loading existing image list"
 msgstr "Chargement de la liste des images existantes"
 
-#, fuzzy
 msgctxt "#30354"
 msgid "Go To Series"
-msgstr "Voir les  Séries"
+msgstr "Voir les Séries"
 
 #, fuzzy
 msgctxt "#30319"
 msgid "Music - All Album Artists"
-msgstr "Musique - Tous les Albums par Artistes"
+msgstr "Musique - Tous les Artistes d'album"
 
-#, fuzzy
 msgctxt "#30343"
 msgid "Changes Require Kodi Restart"
-msgstr "Les modifications nécessite le redémarrage de Kodi"
+msgstr "Les modifications nécessitent le redémarrage de Kodi"
 
-#, fuzzy
 msgctxt "#30341"
 msgid "Background image update interval (0 = disabled)"
-msgstr "Intervalle de mise à jours des imades en arrière plan (0=désactivé)"
+msgstr "Intervalle de mise à jour des images en arrière plan (0=désactivé)"
 
 msgctxt "#30333"
 msgid "Cache artwork in the background"
 msgstr "Mise en cache des illustrations en arrière plan"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Renseigner manuellement les détails utilisateurs"
+
+#, fuzzy
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Construction de la liste complète des images"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Récupération de la liste des images distantes"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Traitement de la liste des images existantes"
+
+#, fuzzy
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Paramètres de Kodi->Services->Autoriser le contrôle à distance par HTTP"
+
+#, fuzzy
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Ajouter une note"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artistes"
