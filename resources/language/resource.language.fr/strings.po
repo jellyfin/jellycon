@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "PO-Revision-Date: 2022-07-06 13:22+0000\n"
-"Last-Translator: Patarimi <mpqqch@gmail.com>\n"
+"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -894,7 +894,6 @@ msgctxt "#30126"
 msgid "Processing Item : "
 msgstr "Traitement de l'élément :"
 
-#, fuzzy
 msgctxt "#30356"
 msgid "Loading existing image list"
 msgstr "Chargement de la liste des images existantes"
