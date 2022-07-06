@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-07-06 13:22+0000\n"
+"PO-Revision-Date: 2022-07-07 17:22+0000\n"
 "Last-Translator: Fedir Smilianets <fedor.smile@gmail.com>\n"
 "Language-Team: Ukrainian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/uk/>\n"
@@ -154,11 +154,11 @@ msgstr "Таймаут HTTP, в секундах"
 
 msgctxt "#30415"
 msgid " - Favorite Collections"
-msgstr "- колекції улюблених"
+msgstr "- обрані добірки"
 
 msgctxt "#30414"
 msgid " - Favorites"
-msgstr "- улюблені"
+msgstr "- обрані"
 
 msgctxt "#30413"
 msgid " - Tags"
@@ -190,7 +190,7 @@ msgstr "Загальні списки"
 
 msgctxt "#30406"
 msgid "Jellyfin Libraries"
-msgstr "Бібліотеки Jellyfin"
+msgstr "Медіатеки Jellyfin"
 
 msgctxt "#30405"
 msgid " - Show All"
@@ -552,7 +552,7 @@ msgstr "Усе -"
 
 msgctxt "#30311"
 msgid "Library - "
-msgstr "Бібліотека -"
+msgstr "Медіатека -"
 
 msgctxt "#30310"
 msgid "Enable Jellyfin remote control"
@@ -699,11 +699,11 @@ msgstr "Видалити"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
-msgstr "Відмітити як неулюблене"
+msgstr "Відмітити як не обране"
 
 msgctxt "#30272"
 msgid "Set Favourite"
-msgstr "Відмітити як улюблене"
+msgstr "Відмітити як обране"
 
 msgctxt "#30271"
 msgid "Mark Unwatched"
@@ -743,7 +743,7 @@ msgstr "Епізоди - нещодавно додані"
 
 msgctxt "#30262"
 msgid "TV Shows - Favorites"
-msgstr "Телепередачі - Улюблене"
+msgstr "Телепередачі - обрані"
 
 msgctxt "#30261"
 msgid "TV Shows"
@@ -755,7 +755,7 @@ msgstr "Колекції"
 
 msgctxt "#30259"
 msgid "Movies - Favorites"
-msgstr "Фільми - улюблені"
+msgstr "Фільми - обрані"
 
 msgctxt "#30258"
 msgid "Movies - In Progress"
