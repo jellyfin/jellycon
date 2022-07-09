@@ -4,6 +4,7 @@ import xbmcaddon
 from kodi_six.utils import py2_decode
 
 import requests
+import json
 
 from .utils import get_device_id, get_version, load_user_details
 from .lazylogger import LazyLogger
@@ -36,7 +37,17 @@ class API:
 
         r = requests.get(url, headers=self.headers, verify=self.verify_cert)
         try:
-            response_data = r.json()
+            try:
+                '''
+                The requests library defaults to using simplejson to handle
+                json decoding.  On low power devices and using Py3, this is
+                significantly slower than the builtin json library.  Skip that
+                and just parse the json ourselves.  Fall back to using
+                requests/simplejson if there's a parsing error.
+                '''
+                response_data = json.loads(r.text)
+            except ValueError:
+                response_data = r.json()
         except:
             response_data = {}
         return response_data
@@ -49,7 +60,11 @@ class API:
 
         r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert)
         try:
-            response_data = r.json()
+            try:
+                # Much faster on low power devices, see above comment
+                response_data = json.loads(r.text)
+            except ValueError:
+                response_data = r.json()
         except:
             response_data = {}
         return response_data
