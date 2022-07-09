@@ -153,14 +153,14 @@ def main_entry_point():
 
         file_time_stamp = time.strftime("%Y%m%d-%H%M%S")
         tab_file_name = __addondir__ + "profile(" + file_time_stamp + ").txt"
-        s = StringIO.StringIO()
+        s = StringIO()
         ps = pstats.Stats(pr, stream=s)
         ps = ps.sort_stats('cumulative')
         ps.print_stats()
         ps.strip_dirs()
         ps = ps.sort_stats('tottime')
         ps.print_stats()
-        with open(tab_file_name, 'wb') as f:
+        with open(tab_file_name, 'w') as f:
             f.write(s.getvalue())
 
     log.debug("===== JellyCon FINISHED =====")
