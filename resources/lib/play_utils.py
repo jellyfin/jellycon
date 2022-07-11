@@ -841,6 +841,10 @@ def external_subs(media_source, list_item, item_id):
             source_id = media_source['Id']
 
             language = stream.get('Language', '')
+            if stream['IsDefault']:
+                language = '%s.%s' % (language, 'default')
+            if stream['IsForced']:
+                language = '%s.%s' % (language, 'forced')
             codec = stream.get('Codec', '')
 
             url = '{}{}'.format(server, stream.get('DeliveryUrl'))
@@ -856,14 +860,7 @@ def external_subs(media_source, list_item, item_id):
                 # If there is no language defined, we can go directly to the server
                 subtitle_file = url
 
-            default = ""
-            if stream['IsDefault']:
-                default = "default"
-            forced = ""
-            if stream['IsForced']:
-                forced = "forced"
-
-            sub_name = '{} ( {} ) {} {}'.format(language, codec, default, forced)
+            sub_name = '{} ( {} )'.format(language, codec)
 
             sub_names.append(sub_name)
             externalsubs.append(subtitle_file)
