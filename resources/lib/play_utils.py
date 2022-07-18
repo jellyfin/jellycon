@@ -842,12 +842,12 @@ def external_subs(media_source, list_item, item_id):
 
             language = stream.get('Language', '')
             if language and stream['IsDefault']:
-                language = '%s.%s' % (language, 'default')
+                language = '{}.default'.format(language)
             if language and stream['IsForced']:
-                language = '%s.%s' % (language, 'forced')
+                language = '{}.forced'.format(language)
             is_sdh = stream.get('Title') and stream['Title'] in ('sdh', 'cc')
             if language and is_sdh:
-                language = '%s.%s' % (language, stream.get('Title'))
+                language = '{}.{}'.format(language, stream.get('Title'))
             codec = stream.get('Codec', '')
 
             url = '{}{}'.format(server, stream.get('DeliveryUrl'))
