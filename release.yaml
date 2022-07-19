@@ -1,8 +1,19 @@
-version: '0.5.2'
+version: '0.5.3'
 changelog: |-
   Bug Fixes
   ---------
-  + Download all external subs when playback starts (#176) @mcarlton00
+  + Fix forced and sdh/cc subtitle not working (#184) @aiosk
+  + Fix performance profiling (#182) @mcarlton00
+  + Allow playback from Info menu (#179) @mcarlton00
+
+  Code or Repo Maintenance
+  ------------------------
+  + Manually decode json responses (#183) @mcarlton00
+
+  CI & build changes
+  ------------------
+  + CI - remove use_aliases from emoji command (#186) @mcarlton00
+  + Bump actions/setup-python from 3 to 4 (#178) @dependabot
 dependencies:
   py2:
     - addon: 'xbmc.python'
