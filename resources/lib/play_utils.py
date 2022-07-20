@@ -459,10 +459,10 @@ def play_file(play_info):
         player.play(playlist)
     else:
         if len(sys.argv) > 1:
-            # Play from "Info" screen
+            # Play from within addon
             xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, list_item)
         else:
-            # Play from menu.  Doesn't have a handle, so need to call player directly
+            # Play from remote control.  Doesn't have a handle, so need to call player directly
             playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
             playlist.clear()
             playlist.add(playurl, list_item)
