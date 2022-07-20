@@ -458,7 +458,7 @@ def play_file(play_info):
         playlist.add(playurl, list_item)
         player.play(playlist)
     else:
-        if sys.argv[1] > 1:
+        if len(sys.argv) > 1:
             # Play from "Info" screen
             xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, list_item)
         else:
