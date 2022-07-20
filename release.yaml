@@ -1,19 +1,8 @@
-version: '0.5.3'
+version: '0.5.4'
 changelog: |-
   Bug Fixes
   ---------
-  + Fix forced and sdh/cc subtitle not working (#184) @aiosk
-  + Fix performance profiling (#182) @mcarlton00
-  + Allow playback from Info menu (#179) @mcarlton00
-
-  Code or Repo Maintenance
-  ------------------------
-  + Manually decode json responses (#183) @mcarlton00
-
-  CI & build changes
-  ------------------
-  + CI - remove use_aliases from emoji command (#186) @mcarlton00
-  + Bump actions/setup-python from 3 to 4 (#178) @dependabot
+  + Fix sys.argv comparison (#189) @mcarlton00
 dependencies:
   py2:
     - addon: 'xbmc.python'
