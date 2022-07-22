@@ -1,8 +1,8 @@
-version: '0.5.4'
+version: '0.5.5'
 changelog: |-
   Bug Fixes
   ---------
-  + Fix sys.argv comparison (#189) @mcarlton00
+  + Ensure a handle is valid before trying to use it to start playback (#194) @mcarlton00
 dependencies:
   py2:
     - addon: 'xbmc.python'
