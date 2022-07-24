@@ -211,6 +211,16 @@ def set_sort(pluginhandle, view_type, default_sort):
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
 
+def filter_empty_folders(item_details):
+    if not item_details.is_folder:
+        return True
+
+    folder_is_not_empty = item_details.recursive_item_count != 0
+    if not folder_is_not_empty:
+        log.debug("Dropping empty folder item : {0}".format(item_details.__dict__))
+    return folder_is_not_empty
+
+
 @timer
 def process_directory(url, progress, params, use_cache_data=False):
     log.debug("== ENTER: processDirectory ==")
@@ -250,6 +260,10 @@ def process_directory(url, progress, params, use_cache_data=False):
 
     cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
 
+    show_empty_folders = settings.getSetting("show_empty_folders") == 'true'
+    if not show_empty_folders:
+        item_list = list(filter(filter_empty_folders, item_list))
+
     # flatten single season
     # if there is only one result and it is a season and you have flatten signle season turned on then
     # build a new url, set the content media type and call get content again
@@ -278,8 +292,6 @@ def process_directory(url, progress, params, use_cache_data=False):
     display_options["addResumePercent"] = settings.getSetting("addResumePercent") == 'true'
     display_options["addSubtitleAvailable"] = settings.getSetting("addSubtitleAvailable") == 'true'
     display_options["addUserRatings"] = settings.getSetting("add_user_ratings") == 'true'
-
-    show_empty_folders = settings.getSetting("show_empty_folders") == 'true'
 
     item_count = len(item_list)
     current_item = 1
@@ -348,12 +360,9 @@ def process_directory(url, progress, params, use_cache_data=False):
 
             default_sort = item_details.item_type == "Playlist"
 
-            if show_empty_folders or item_details.recursive_item_count != 0:
-                gui_item = add_gui_item(u, item_details, display_options, default_sort=default_sort)
-                if gui_item:
-                    dir_items.append(gui_item)
-            else:
-                log.debug("Dropping empty folder item : {0}".format(item_details.__dict__))
+            gui_item = add_gui_item(u, item_details, display_options, default_sort=default_sort)
+            if gui_item:
+                dir_items.append(gui_item)
 
         elif item_details.item_type == "MusicArtist":
             u = ('/Users/{}/items'.format(user_id) +
