@@ -553,6 +553,7 @@ def display_menu(params):
 
 def show_global_types(params):
     handle = int(sys.argv[1])
+
     user_id = get_current_user_id()
 
     continue_watching_url_params = {
@@ -569,6 +570,7 @@ def show_global_types(params):
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
     add_menu_directory_item(translate_string(30261),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
+
     xbmcplugin.endOfDirectory(handle)
 
 
