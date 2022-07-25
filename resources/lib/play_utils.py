@@ -5,12 +5,14 @@ import xbmc
 import xbmcgui
 import xbmcaddon
 import xbmcvfs
+import xbmcplugin
 
 from datetime import timedelta
 import json
 import os
 import re
 from six.moves.urllib.parse import urlencode
+import sys
 
 from .jellyfin import api
 from .lazylogger import LazyLogger
@@ -414,7 +416,7 @@ def play_file(play_info):
     display_options["addSubtitleAvailable"] = False
     display_options["addUserRatings"] = False
 
-    gui_item = add_gui_item("", item_details, display_options, False)
+    gui_item = add_gui_item(item_id, item_details, display_options, False)
     list_item = gui_item[1]
 
     if playback_type == "2":  # if transcoding then prompt for audio and subtitle
@@ -454,12 +456,20 @@ def play_file(play_info):
     if len(intro_items) > 0:
         playlist = play_all_files(intro_items, play_items=False)
         playlist.add(playurl, list_item)
+        player.play(playlist)
     else:
-        playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-        playlist.clear()
-        playlist.add(playurl, list_item)
-
-    player.play(playlist)
+        if len(sys.argv) > 1 and int(sys.argv[1]) > 0:
+            # Play from info menu
+            xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, list_item)
+        else:
+            '''
+            Play from remote control or addon menus.  Doesn't have a handle,
+            so need to call player directly
+            '''
+            playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+            playlist.clear()
+            playlist.add(playurl, list_item)
+            player.play(playlist)
 
     if seek_time != 0:
         player.pause()
@@ -841,6 +851,13 @@ def external_subs(media_source, list_item, item_id):
             source_id = media_source['Id']
 
             language = stream.get('Language', '')
+            if language and stream['IsDefault']:
+                language = '{}.default'.format(language)
+            if language and stream['IsForced']:
+                language = '{}.forced'.format(language)
+            is_sdh = stream.get('Title') and stream['Title'] in ('sdh', 'cc')
+            if language and is_sdh:
+                language = '{}.{}'.format(language, stream['Title'])
             codec = stream.get('Codec', '')
 
             url = '{}{}'.format(server, stream.get('DeliveryUrl'))
@@ -856,14 +873,7 @@ def external_subs(media_source, list_item, item_id):
                 # If there is no language defined, we can go directly to the server
                 subtitle_file = url
 
-            default = ""
-            if stream['IsDefault']:
-                default = "default"
-            forced = ""
-            if stream['IsForced']:
-                forced = "forced"
-
-            sub_name = '{} ( {} ) {} {}'.format(language, codec, default, forced)
+            sub_name = '{} ( {} )'.format(language, codec)
 
             sub_names.append(sub_name)
             externalsubs.append(subtitle_file)
