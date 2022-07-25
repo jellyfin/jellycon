@@ -1099,3 +1099,8 @@ msgstr "Quick Connect"
 msgctxt "#30444"
 msgid "Login using Quick Connect"
 msgstr "Login using Quick Connect"
+
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Continue Watching"
