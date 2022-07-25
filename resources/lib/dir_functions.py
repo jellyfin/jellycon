@@ -327,6 +327,8 @@ def process_directory(url, progress, params, use_cache_data=False):
                      '?userId={}'.format(user_id) +
                      '&Fields={}'.format(default_filters) +
                      '&format=json')
+                if not show_empty_folders:
+                    u = u + '&isMissing=False'
 
             elif item_details.item_type == "Season":
                 u = ('/Shows/' + item_details.series_id +
