@@ -554,6 +554,18 @@ def display_menu(params):
 def show_global_types(params):
     handle = int(sys.argv[1])
 
+    user_id = get_current_user_id()
+
+    continue_watching_url_params = {
+        "Fields": get_default_filters(),
+        "ImageTypeLimit": 1,
+    }
+    continue_watching_url = get_jellyfin_url("/Users/{}/Items/Resume".format(user_id), continue_watching_url_params)
+    add_menu_directory_item(translate_string(30445),
+                            "plugin://plugin.video.jellycon/?mode=GET_CONTENT&url=" + quote(continue_watching_url) +
+                            "&media_type=movies" +
+                            "&name_format="+quote("Episode|episode_name_format"))
+
     add_menu_directory_item(translate_string(30256),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
     add_menu_directory_item(translate_string(30261),
