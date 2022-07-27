@@ -246,24 +246,29 @@ def check_server(force=False, change_user=False, notify=False):
             home_window.set_property('user_name', selected_user_name)
             user_details = load_user_details()
 
-            # Ask for password if user has one
-            password = ''
-            if secured and not user_details.get('token'):
-                kb = xbmc.Keyboard()
-                kb.setHeading(translate_string(30006))
-                kb.setHiddenInput(True)
-                kb.doModal()
-                if kb.isConfirmed():
-                    password = kb.getText()
+            if not user_details:
+                # Ask for password if user has one
+                password = ''
+                if secured and not user_details.get('token'):
+                    kb = xbmc.Keyboard()
+                    kb.setHeading(translate_string(30006))
+                    kb.setHiddenInput(True)
+                    kb.doModal()
+                    if kb.isConfirmed():
+                        password = kb.getText()
 
-            auth_payload = {'username': selected_user_name, 'pw': password}
-            auth = api.authenticate(auth_payload)
+                auth_payload = {'username': selected_user_name, 'pw': password}
+                auth = api.authenticate(auth_payload)
 
         if something_changed:
             home_window = HomeWindow()
             home_window.clear_property("jellycon_widget_reload")
-            token = auth.get('AccessToken')
-            user_id = auth.get('User').get('Id')
+            if auth:
+                token = auth.get('AccessToken')
+                user_id = auth.get('User').get('Id')
+            else:
+                token = user_details.get('token')
+                user_id = user_details.get('user_id')
             save_user_details(selected_user_name, user_id, token)
             xbmc.executebuiltin("ActivateWindow(Home)")
             if "estuary_jellycon" in xbmc.getSkinDir():
