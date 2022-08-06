@@ -203,6 +203,8 @@ def check_server(force=False, change_user=False, notify=False):
     # do we need to change the user
     current_username = settings.getSetting('username')
     user_details = load_user_details()
+    home_window = HomeWindow()
+    home_window.set_property('user_name', current_username)
 
     # if asked or we have no current user then show user selection screen
     if something_changed or change_user or len(current_username) == 0 or not user_details:
@@ -228,8 +230,6 @@ def check_server(force=False, change_user=False, notify=False):
             secured = selected_user.getProperty("secure") == "true"
             manual = selected_user.getProperty("manual") == "true"
 
-            home_window = HomeWindow()
-
             # If using a manual login, ask for username
             if manual:
                 kb = xbmc.Keyboard()
@@ -244,6 +244,7 @@ def check_server(force=False, change_user=False, notify=False):
                     return
 
             home_window.set_property('user_name', selected_user_name)
+            settings.setSetting('username', selected_user_name)
             user_details = load_user_details()
 
             if not user_details:

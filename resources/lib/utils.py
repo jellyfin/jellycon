@@ -143,7 +143,10 @@ def translate_string(string_id):
 def get_device_id():
 
     window = HomeWindow()
-    username = window.get_property('username')
+    username = window.get_property('user_name')
+    if not username:
+        settings = xbmcaddon.Addon()
+        username = settings.getSetting('username')
     client_id = window.get_property("client_id")
     hashed_name = hashlib.md5(username.encode()).hexdigest()
 
@@ -226,6 +229,10 @@ def load_user_details():
             return {}
 
         user_data = auth_data.get(user_name, {})
+        # User doesn't exist yet
+        if not user_data:
+            return {}
+
         user_id = user_data.get('user_id')
         auth_token = user_data.get('token')
 
