@@ -1,8 +1,18 @@
-version: '0.5.5'
+version: '0.5.6'
 changelog: |-
+  :tada: New features and improvements
+  ------------------------------------
+  + Add Continue Watching Widget (#199) @aiosk
+
   Bug Fixes
   ---------
-  + Ensure a handle is valid before trying to use it to start playback (#194) @mcarlton00
+  + Fix user switching (#204) @mcarlton00
+  + Don't request empty folders from api if setting is disabled (#198) @mcarlton00
+  + Don't error when switching to a cached user (#200) @mcarlton00
+
+  CI & build changes
+  ------------------
+  + Bump appleboy/ssh-action from 0.1.4 to 0.1.5 (#202) @dependabot
 dependencies:
   py2:
     - addon: 'xbmc.python'
