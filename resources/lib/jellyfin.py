@@ -78,6 +78,8 @@ class API:
         requests.delete(url, headers=self.headers, verify=self.verify_cert)
 
     def authenticate(self, auth_data):
+        # Always force create fresh headers during authentication
+        self.create_headers(True)
         response = self.post('/Users/AuthenticateByName', auth_data)
         token = response.get('AccessToken')
         if token:
@@ -90,10 +92,10 @@ class API:
             log.error('Unable to authenticate to Jellyfin server')
             return {}
 
-    def create_headers(self):
+    def create_headers(self, force=False):
 
-        # If the headers already exist with an auth token, return
-        if self.headers and 'x-mediabrowser-token' in self.headers:
+        # If the headers already exist with an auth token, return unless we're regenerating
+        if self.headers and 'x-mediabrowser-token' in self.headers and force is False:
             return
 
         headers = {}
@@ -116,8 +118,8 @@ class API:
 
         headers['x-emby-authorization'] = authorization
 
-        # If we have a valid token, ensure it's included in the headers
-        if self.token:
+        # If we have a valid token, ensure it's included in the headers unless we're regenerating
+        if self.token and force is False:
             headers['x-mediabrowser-token'] = self.token
         else:
             # Check for updated credentials since initialization
