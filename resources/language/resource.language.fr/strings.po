@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-07-06 13:22+0000\n"
+"PO-Revision-Date: 2022-08-10 20:22+0000\n"
 "Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
@@ -923,7 +923,6 @@ msgctxt "#30366"
 msgid "Manually enter user details"
 msgstr "Renseigner manuellement les détails utilisateurs"
 
-#, fuzzy
 msgctxt "#30359"
 msgid "Building full image list"
 msgstr "Construction de la liste complète des images"
@@ -949,3 +948,39 @@ msgstr "Ajouter une note"
 msgctxt "#30323"
 msgid "Artists"
 msgstr "Artistes"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Fichiers du cache supprimés"
+
+#, fuzzy
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Vider le cache des résultats"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Détails du serveur"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Images inutilisées supprimées :"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Impossible de se connecter à l'adresse saisie, voulez-vous essayer à nouveau "
+"?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Voulez-vous saisir manuellement une adresse de serveur ?"
+
+#, fuzzy
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Voulez-vous effacer votre mot de passe sauvé ?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Effacer le mot de passe ?"
