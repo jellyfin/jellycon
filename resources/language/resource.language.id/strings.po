@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-20 04:22+0000\n"
-"Last-Translator: liimee <git.taaa@fedora.email>\n"
+"PO-Revision-Date: 2022-08-15 12:40+0000\n"
+"Last-Translator: Arief Hidayat <kekesed97@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/id/>\n"
 "Language: id\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 msgctxt "#30414"
 msgid " - Favorites"
@@ -482,3 +482,622 @@ msgstr "Kata sandi"
 msgctxt "#30005"
 msgid "Username"
 msgstr "Nama pengguna"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Menekan notifikasi untuk kesalahan koneksi"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Nama tampilan perangkat"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Catat data waktu"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Lanjutkan Tonton"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Login dengan Koneksi Cepat"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Koneksi Cepat"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Cek konten baru sederhana"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Gunakan data widget yang di-cache"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left"
+msgstr "Tampilkan putar episode pada waktu tersisa"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Mainkan intro sinema"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Opsi pemutaran"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Besar data untuk uji kecepatan (MB)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Uji kecepatan koneksi"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Memaksa kecepatan bit aliran transkode (Kbps)"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Izinkan pemutaran berkas langsung"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Sembunyikan item yang telah ditonton dari daftar"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Penilaian"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Default"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Belum Diatur"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Urutkan"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Tampilan"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Channel maks. Audio"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Kodek Audio"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Bitrate Audio (Kbps)"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "Detik HTTP timeout"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Koleksi Favorit"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tag"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Dekade"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Tahun"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Koleksi"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Aksi Add-on"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Widget Kustom"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Daftar Global"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Pustaka Jellyfin"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Interval cache gambar dalam menit (0 = dimatikan)"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Halaman"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Hapus server data yang di-cache"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "File cache dihapus"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Hapus Hasil Cache"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Gambar yang tidak digunakan dihapus:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Gambar Jellyfin yang tidak digunakan:"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Gambar yang ada sebelum dihapus:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Menit interval film acak (0 = dinonaktifkan)"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Perintah subtitle eksternal"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Pertahankan detail pengguna"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Menerima paket data"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Apakah Anda ingin untuk memasukkan url server secara manual?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Apakah Anda ingin untuk menghapus kata sandi tersimpan?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Kosongkan Kata Sandi?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Izinkan untuk menyimpan kata sandi dari pengguna yang telah beralih"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Masukkan detail pengguna secara manual"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Login Manual"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Membangun daftar gambar penuh"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Menerima daftar gambar jarak jauh"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Memproses gambar yang telah ada"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Muat gambar yang telah ada"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Pengaturan Kodi->Layanan->Izinkan kendali jarak jauh HTTP"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Pergi ke Seri"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Artis Album"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musik - Semua Artis Album"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Musik - Baru-baru ini diputar"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Baru-baru ini diputar"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Tambahkan rating pengguna"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Mengambil gambar yang telah ada"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Menghapus Gambar yang di-cache"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Cache permintaan server data Jellyfin"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Jumlah gambar yang dihapus dari cache"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Perubahan Memerlukan Pemuatan Ulang Kodi"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Interval pemeriksaan konten baru (0 = dimatikan)"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Gabungkan film ke dalam koleksi"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Gunakan konteks menu JellyCon"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Cache karya seni di latar belakang"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Hentikan pemutaran media ketika screensaver aktif"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Tampilkan folder kosong (acara, musim, koleksi)"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Tampilkan dialog pergantian pengguna"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Screensaver"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Pergi ke Musim"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genre"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artis"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Lanjutkan otomatis"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Kesalahan Koneksi"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Pustaka -"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Nyalakan kendali jarak jauh Jellyfin"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Pilih Trailer"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Mulai Trailer"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Gambar Jellyfin yang di-cache:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Gambar Jellyfin yang hilang:"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Gambar yang Ada:"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Sedang Caching Gambar"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Cache semua gambar Jellyfin sebagai gambar Kodi lokal?"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Gambar Cache"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Menghapus Gambar Kodi"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Anda perlu menyalakan kontrol HTTP untuk menggunakan fitur ini"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Peringatan"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Gambar Cache"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Pilih Stream Subtitle"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Pilih Audio Stream"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Acara TV - Genre"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Segarkan Gambar yang Di-cache"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Judul yang Hilang"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon perlu meminta resume pada item yang dimainkan sebagian, Kodi juga "
+"dapat meminta, ini dapat menyebabkan prompt ganda. Apakah Anda ingin "
+"menghapus perintah ganda?"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Prompt Resume Ekstra Terdeteksi"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Paksa Transkode"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Hapus Favorit"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Atur Favorit"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Sedang Ditonton"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Film - Halaman"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Episode - Sedang Ditonton"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Set Kotak"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Film - Sedang ditonton"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Film - Genre"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Tidak diketahui"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Konten Widget Kustom"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Paksa transkode mpeg4"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Paksa transkode msmmpeg4v3 (divx)"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Paksa transkode mpeg2"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Opsi stream pemutaran"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Paksa transkode h265 (hevc)"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Ukuran Halaman dan Filter"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Tanyakan untuk menghapus film setelah %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Tanyakan sebelum memutar"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Putar episode selanjutnya setelah %"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Tanyakan untuk menghapus episode setelah %"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Henti ketika menonton (100% = dimatikan)"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Acara"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Paksa video 8 bit"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Lebar maks. video"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Opsi transkode"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Stream HTTP langsung"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Jalur file langsung"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maks. stream bitrate (Kbps)"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Termasuk oran"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Termasuk info stream media"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Termasuk plot"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Tidak ada tipe media yang ditetapkan"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Selesai"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Sedang diteruskan"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Tampilkan progres muat"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Tambahkan persen resume ke nama"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Tambahkan jumlah yang belum ditonton ke nama"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Kembali beberapa detik"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Memuat konten"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Tidak ada"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Menunggu server untuk menghapus"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Nyalakan debug logging"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Aksi ketika item widget terpilih"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Ratakan musim tunggal"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Format penamaan episode terfilter"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Jumlah item yang ditunjukkan di daftar terfilter"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Ganti pengguna]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Deteksi server lokal]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Jumlah profil performa"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
