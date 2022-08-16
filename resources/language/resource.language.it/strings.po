@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-07 17:22+0000\n"
-"Last-Translator: Alan Azar <alanazar304@hotmail.com>\n"
+"PO-Revision-Date: 2022-08-17 22:11+0000\n"
+"Last-Translator: momphucker <weblate@mailbox.enricomarogna.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -9,11 +9,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 msgctxt "#30120"
 msgid "Show load progress"
-msgstr "Mostra avanzamento del caricamento"
+msgstr "Mostra progressione del caricamento"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
@@ -441,3 +441,43 @@ msgstr "Forza video 8 bit"
 msgctxt "#30114"
 msgid "Jump back seconds"
 msgstr "Riavvolgi secondi"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Film per pagina"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Salvaschermo"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Canzone"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Vai Alla Stagione"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Generi"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artisti"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Libreria -"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Elimina"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Ultimo"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Titolo Mancante"
