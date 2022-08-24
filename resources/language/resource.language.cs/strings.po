@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-06-09 21:22+0000\n"
+"PO-Revision-Date: 2022-08-25 20:11+0000\n"
 "Last-Translator: DJSweder <djsweder@gmail.com>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.13.1\n"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -58,3 +58,43 @@ msgstr "Port"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Hostitel"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Povolit protokolování ladění"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Akce pro výběr položky widgetu"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Heslo:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Uživatelské jméno:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Schovat podrobnosti nezhlédnutých epizod"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Pokročilé"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Zobrazit všechny epizody"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Formát názvu filtrované epizody"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Počet položek k zobrazení ve filtrovaném seznamu"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Zobrazit připojené klienty"
