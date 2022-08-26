@@ -25,8 +25,8 @@ class API:
         self.verify_cert = settings.getSetting('verify_cert') == 'true'
 
     def get(self, path):
-        if 'x-mediabrowser-token' not in self.headers:
-            self.create_headers()
+        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+            self.create_headers(True)
 
         # Fixes initial login where class is initialized before wizard completes
         if not self.server:
@@ -53,8 +53,8 @@ class API:
         return response_data
 
     def post(self, url, payload={}):
-        if 'x-mediabrowser-token' not in self.headers:
-            self.create_headers()
+        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+            self.create_headers(True)
 
         url = '{}{}'.format(self.server, url)
 
@@ -70,8 +70,8 @@ class API:
         return response_data
 
     def delete(self, url):
-        if 'x-mediabrowser-token' not in self.headers:
-            self.create_headers()
+        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+            self.create_headers(True)
 
         url = '{}{}'.format(self.server, url)
 

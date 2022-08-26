@@ -29,7 +29,7 @@ if log_timing_data:
 
 # clear user and token when logging in
 home_window = HomeWindow()
-home_window.clear_property("userid")
+home_window.clear_property("user_name")
 home_window.clear_property("AccessToken")
 home_window.clear_property("Params")
 
@@ -99,7 +99,7 @@ if enable_logging:
                                   time=8000,
                                   icon=xbmcgui.NOTIFICATION_WARNING)
 
-prev_user_id = home_window.get_property("userid")
+prev_user = home_window.get_property("user_name")
 first_run = True
 home_window.set_property('exit', 'False')
 
@@ -118,9 +118,9 @@ while home_window.get_property('exit') == 'False':
 
             if not screen_saver_active:
                 user_changed = False
-                if prev_user_id != home_window.get_property("userid"):
+                if prev_user != home_window.get_property("user_name"):
                     log.debug("user_change_detected")
-                    prev_user_id = home_window.get_property("userid")
+                    prev_user = home_window.get_property("user_name")
                     user_changed = True
 
                 if user_changed or first_run:
@@ -186,7 +186,7 @@ if context_monitor:
     context_monitor.stop_monitor()
 
 # clear user and token when loggin off
-home_window.clear_property("userid")
+home_window.clear_property("user_name")
 home_window.clear_property("AccessToken")
 home_window.clear_property("userimage")
 
