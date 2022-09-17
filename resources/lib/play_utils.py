@@ -738,13 +738,19 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         index = stream['Index']
 
         if 'Audio' in stream['Type']:
-            codec = stream['Codec']
+            codec = stream.get('Codec', None)
             channel_layout = stream.get('ChannelLayout', "")
 
-            try:
-                track = "%s - %s - %s %s" % (index, stream['Language'], codec, channel_layout)
-            except:
-                track = "%s - %s %s" % (index, codec, channel_layout)
+            if not codec:
+                # Probably tvheadend and has no other info
+                track = "%s - default" % (index)
+            else:
+                try:
+                    # Track includes language
+                    track = "%s - %s - %s %s" % (index, stream['Language'], codec, channel_layout)
+                except:
+                    # Track doesn't include language
+                    track = "%s - %s %s" % (index, codec, channel_layout)
 
             audio_streams_list[track] = index
             audio_streams.append(track)
@@ -1143,7 +1149,6 @@ def get_play_url(media_source, play_session_id, channel_id=None):
     can_direct_play = media_source["SupportsDirectPlay"]
     can_direct_stream = media_source["SupportsDirectStream"]
     can_transcode = media_source["SupportsTranscoding"]
-    container = media_source["Container"]
 
     playurl = None
     playback_type = None
@@ -1155,6 +1160,7 @@ def get_play_url(media_source, play_session_id, channel_id=None):
         direct_path = direct_path.strip()
 
         # handle DVD structure
+        container = media_source["Container"]
         if container == "dvd":
             direct_path = direct_path + "/VIDEO_TS/VIDEO_TS.IFO"
         elif container == "bluray":
@@ -1172,17 +1178,9 @@ def get_play_url(media_source, play_session_id, channel_id=None):
     # check if file can be direct streamed/played
     if (can_direct_stream or can_direct_play) and playurl is None:
         item_id = media_source.get('Id')
-        # We need to include the channel ID if this is a live stream
         if channel_id:
-            url_root = '{}/Videos/{}/stream'.format(server, channel_id)
-            play_params = {
-                'static': True,
-                'PlaySessionId': play_session_id,
-                'MediaSourceId': item_id,
-                'LiveStreamId': media_source.get('LiveStreamId')
-            }
-            play_param_string = urlencode(play_params)
-            playurl = '{}?{}'.format(url_root, play_param_string)
+            # live tv has to be transcoded by the server
+            playurl = None
         else:
             url_root = '{}/Videos/{}/stream'.format(server, item_id)
             play_params = {
@@ -1230,7 +1228,8 @@ def get_play_url(media_source, play_session_id, channel_id=None):
 
         # We need to include the channel ID if this is a live stream
         if channel_id:
-            transcode_params['LiveStreamId'] = media_source.get('LiveStreamId')
+            if media_source.get('LiveStreamId'):
+                transcode_params['LiveStreamId'] = media_source.get('LiveStreamId')
             transcode_path = urlencode(transcode_params)
             playurl = '{}/Videos/{}/master.m3u8?{}'.format(
                 server, channel_id, transcode_path)
