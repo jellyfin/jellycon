@@ -1077,8 +1077,8 @@ msgid "Play cinema intros"
 msgstr "Play cinema intros"
 
 msgctxt "#30439"
-msgid "Show play next episode at time left"
-msgstr "Show play next episode at time left"
+msgid "Show play next episode at time left in seconds"
+msgstr "Show play next episode at time left in seconds"
 
 msgctxt "#30440"
 msgid "Play next"
