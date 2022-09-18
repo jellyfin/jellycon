@@ -144,14 +144,15 @@ def get_device_id():
 
     window = HomeWindow()
     username = window.get_property('user_name')
-    if not username:
-        settings = xbmcaddon.Addon()
-        username = settings.getSetting('username')
     client_id = window.get_property("client_id")
     hashed_name = hashlib.md5(username.encode()).hexdigest()
 
-    if client_id:
+    if client_id and username:
         return '{}-{}'.format(client_id, hashed_name)
+    elif client_id and not username:
+        # Quick Connect, needs to be unique so sessions don't overwrite
+        rand_id = uuid4().hex
+        return '{}-{}'.format(client_id, rand_id)
 
     jellyfin_guid_path = py2_decode(translate_path("special://temp/jellycon_guid"))
     log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
