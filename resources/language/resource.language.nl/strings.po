@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-06-01 17:51+0000\n"
-"Last-Translator: B v H <bobsieflopsie@outlook.com>\n"
+"PO-Revision-Date: 2022-09-21 08:54+0000\n"
+"Last-Translator: Ad-Blokker <mblokker11@hotmail.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.14.1\n"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
@@ -485,7 +485,7 @@ msgstr "Speel Volgende Aflevering Af?"
 
 msgctxt "#30282"
 msgid "No Jellyfin servers detected on your local network."
-msgstr "Geen Jellyfin Servers Gevonden Op Uw Locale Netwerk."
+msgstr "Geen Jellyfin Servers Gevonden Op Uw Lokale Netwerk."
 
 msgctxt "#30280"
 msgid "Missing Title"
@@ -533,4 +533,152 @@ msgstr "Films - Favorieten"
 
 msgctxt "#30258"
 msgid "Movies - In Progress"
-msgstr "Films - In Uitvoering"
+msgstr "Films - Aan Het Kijken"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Het JellyCon-contextmenu gebruiken"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Cache-artwork op de achtergrond"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Stop het afspelen bij activering van de screensaver"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Dialoogvenster gebruiker wijzigen tonen"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Screensaver"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Lege mappen weergeven (shows, seizoenen, collecties)"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artiesten"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Alles -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Bibliotheek -"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Jellyfin-afstandsbediening inschakelen"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Selecteer mediabron"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Afspelen starten"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Gecached Jellyfin-afbeeldingen:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Ontbrekende Jellyfin-afbeeldingen:"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Alle Jellyfin-afbeeldingen in de cache opslaan als lokale Kodi-afbeeldingen?"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Afbeeldingen Worden In Cache Geplaatst"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Afbeeldingen Cachen"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Afbeeldingen Cachen"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Om deze functie te gebruiken, moet HTTP-control zijn ingeschakeld"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Melding"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Selecteer Ondertitelstream"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Selecteer Audiostream"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TV Shows - Genres"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TV Shows - Nieuwste"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Verves Afbeeldingen in Cache"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV Shows - Niet bekeken"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyFin moet vragen om hervatting van gedeeltelijk gespeelde items, Kodi "
+"kan dit ook vragen, dit kan een dubbele prompt veroorzaken. Wilt u de "
+"dubbele prompt verwijderen?"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Extra Hervat Prompt Gedetecteerd"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Aan Het Kijken"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Films - Pagina's"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Afleveringen - Volgende in de lijst"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Afleveringen - Aan Het Kijken"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Afleveringen - Recent Toegevoegd"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TV Shows - Favorieten"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TV Shows"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Boxsets"
