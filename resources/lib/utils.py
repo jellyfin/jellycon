@@ -374,9 +374,11 @@ def translate_path(path):
 
 
 def download_external_sub(language, codec, url):
+    addon_settings = xbmcaddon.Addon()
+    verify_cert = addon_settings.getSetting('verify_cert') == 'true'
 
     # Download the subtitle file
-    r = requests.get(url)
+    r = requests.get(url, verify=verify_cert)
     r.raise_for_status()
 
     # Write the subtitle file to the local filesystem
