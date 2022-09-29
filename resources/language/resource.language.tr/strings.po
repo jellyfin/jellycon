@@ -1,2 +1,328 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2022-10-01 13:54+0000\n"
+"Last-Translator: Thanos <ahmetspam.42@hotmail.com>\n"
+"Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/tr/>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Baştan başla"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "H265 (hevc) kodunu dönüştürmeye zorla"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Bölümler"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Filmler"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV Şovları"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Etkileşim"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Sayfa Boyutu ve Filtreleme"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Öğe Düzeni"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "%'den sonra filmi silme istemi"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Oynamadan önce sor"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "% sonra sonraki bölümü oynat"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "%'den sonra bölümü silme istemi"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Ürün Detayları"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Oynatma durduğunda (%100 = devre dışı)"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Olaylar"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Video 8 bit kullanimini zorla"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Video maksimum genişliği"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Kod dönüştürme seçenekleri"
+
+#, fuzzy
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP doğrudan akışı"
+
+#, fuzzy
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Dosyanin doğrudan yolu"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maksimum akış bit hızı (Kbps)"
+
+#, fuzzy
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Geri çalma"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Oynatma türü"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Sunucuya bağlanılamıyor"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL hatası"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Kişileri dahil et"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Medya akışı bilgilerini dahil et"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Konuyu dahil et"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Kullanıcı seç"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adres:"
+
+#, fuzzy
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Seçilen Sunucunun Adresi"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Sunucu seç"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Altyazı varsa (cc) ekleyin"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Medya Türü Ayarı Yok"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Hata"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Öğenin İşlenmesi:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Tamamlandı"
+
+#, fuzzy
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Sürdürunce"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Yükleme ilerlemesini göster"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "İsimlere özgeçmiş yüzdesi ekle"
+
+#, fuzzy
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Adlara izlenmeyen sayıları ekleyin"
+
+#, fuzzy
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Saniyeler geri atla"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Veri Aliniyor"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "İçerik Yükleniyor"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Hizmetler"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Arayüz"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Uyarı: Bu eylem, medya dosyalarını sunucudan siler."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Silmeyi onayla?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Yok"
+
+#, fuzzy
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Sunucunun silmesi bekleniyor"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Siliniyor"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Kullanıcı bulunamadı"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Yanlış kullanıcı/şifre"
+
+#, fuzzy
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Hata ayıklama günlüğünü etkinleştir"
+
+#, fuzzy
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Widget öğesi seçme eylemi"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Şifre:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Kullanıcı:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "İzlenmeyen bölüm ayrıntılarını gizle"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Gelişmiş"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Tüm bölümleri göster"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Tek sezon düzleştirin"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Filtrelenmiş bölüm adı biçimi"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Filtrelenmiş listelerde gösterilecek öğe sayısı"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Bağlı istemcileri göster"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Cihazın görünen adı"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Zamanlama verilerini günlüğe kaydet"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Kullanıcıyı değiştir]"
+
+#, fuzzy
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Yerel sunucuyu algıla]"
+
+#, fuzzy
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Yakalanacak performans profili sayısı"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba Şifre"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba Kullanıcı"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Şifre"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Kullanıcı"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "HTTPS sertifikasını doğrulayın"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Sunucu"
