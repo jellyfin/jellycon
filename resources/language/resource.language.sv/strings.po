@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-06-04 10:22+0000\n"
-"Last-Translator: hogenf <hogen.fasth@gmail.com>\n"
+"PO-Revision-Date: 2022-10-01 13:54+0000\n"
+"Last-Translator: Weevild <Filip.westman@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.14.1\n"
 
 msgctxt "#30283"
 msgid "Play Next Episode?"
@@ -866,7 +866,6 @@ msgctxt "#30063"
 msgid "N/A"
 msgstr "Ej tillgängligt"
 
-#, fuzzy
 msgctxt "#30053"
 msgid "Waiting for server to delete"
 msgstr "Väntar på att servern ska radera"
@@ -893,10 +892,9 @@ msgctxt "#30020"
 msgid "Flatten single season"
 msgstr "Platta enstaka säsong"
 
-#, fuzzy
 msgctxt "#30019"
 msgid "Filtered episode name format"
-msgstr "Filtrerat avsnittsnamnformat"
+msgstr "Filtrerat format för avsnittsnamn"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
