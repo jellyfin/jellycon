@@ -244,9 +244,12 @@ def process_directory(url, progress, params, use_cache_data=False):
     # Fix skin shortcuts from pre-0.5.0
     item_limit = int(settings.getSetting("show_x_filtered_items"))
     url = url.replace('{server}', '')
-    url = url.replace('{userid}', user_id)
     url = url.replace('{field_filters}', default_filters)
     url = url.replace('{ItemLimit}', str(item_limit))
+
+    # Need to replace at runtime so it always pulls the current user
+    url = unquote(url)
+    url = url.replace('{userid}', user_id)
 
     cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
 
@@ -259,7 +262,7 @@ def process_directory(url, progress, params, use_cache_data=False):
         series_id = item_list[0].series_id
         season_url = ('/Shows/' + series_id +
                       '/Episodes'
-                      '?userId={}'.format(user_id) +
+                      '?userId={userid}' +
                       '&seasonId=' + season_id +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
@@ -324,7 +327,7 @@ def process_directory(url, progress, params, use_cache_data=False):
             if item_details.item_type == "Series":
                 u = ('/Shows/' + item_details.id +
                      '/Seasons'
-                     '?userId={}'.format(user_id) +
+                     '?userId={userid}' +
                      '&Fields={}'.format(default_filters) +
                      '&format=json')
                 if not show_empty_folders:
@@ -333,7 +336,7 @@ def process_directory(url, progress, params, use_cache_data=False):
             elif item_details.item_type == "Season":
                 u = ('/Shows/' + item_details.series_id +
                      '/Episodes'
-                     '?userId={}'.format(user_id) +
+                     '?userId={userid}' +
                      '&seasonId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
@@ -341,7 +344,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                      '&format=json')
 
             else:
-                u = ('/Users/{}/items'.format(user_id) +
+                u = ('/Users/{userid}/items' +
                      '?ParentId=' + item_details.id +
                      '&IsVirtualUnAired=false' +
                      '&IsMissing=false' +
@@ -358,7 +361,7 @@ def process_directory(url, progress, params, use_cache_data=False):
                 log.debug("Dropping empty folder item : {0}".format(item_details.__dict__))
 
         elif item_details.item_type == "MusicArtist":
-            u = ('/Users/{}/items'.format(user_id) +
+            u = ('/Users/{userid}/items' +
                  '?ArtistIds=' + item_details.id +
                  '&IncludeItemTypes=MusicAlbum' +
                  '&CollapseBoxSetItems=false' +
@@ -382,7 +385,7 @@ def process_directory(url, progress, params, use_cache_data=False):
             and first_season_item.series_id is not None):
         series_url = ('/Shows/' + first_season_item.series_id +
                       '/Episodes'
-                      '?userId={}'.format(user_id) +
+                      '?userId={userid}' +
                       '&IsVirtualUnAired=false' +
                       '&IsMissing=false' +
                       '&Fields=SpecialEpisodeNumbers,{}'.format(default_filters) +

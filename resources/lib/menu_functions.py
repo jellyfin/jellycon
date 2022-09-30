@@ -75,7 +75,7 @@ def show_movie_tags(menu_params):
         if parent_id:
             menu_params["ParentId"] = parent_id
 
-        item_url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
+        item_url = get_jellyfin_url("/Users/{userid}/Items", url_params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
 
@@ -164,7 +164,7 @@ def show_movie_years(menu_params):
         if parent_id:
             params["ParentId"] = parent_id
 
-        item_url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        item_url = get_jellyfin_url("/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(item_url))))}
 
@@ -237,7 +237,7 @@ def show_movie_pages(menu_params):
         if parent_id:
             params["ParentId"] = parent_id
 
-        item_url = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        item_url = get_jellyfin_url("/Users/{userid}/Items", params)
 
         page_upper = start_index + page_limit
         if page_upper > total_results:
@@ -323,7 +323,7 @@ def show_genre_list(menu_params):
         if parent_id is not None:
             params["ParentId"] = parent_id
 
-        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
@@ -389,7 +389,7 @@ def show_movie_alpha_list(menu_params):
             if 'NameLessThan' in params:
                 params.pop('NameLessThan')
 
-        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
@@ -439,7 +439,7 @@ def show_tvshow_alpha_list(menu_params):
             if 'NameLessThan' in params:
                 params.pop('NameLessThan')
 
-        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
@@ -501,7 +501,7 @@ def show_artist_alpha_list(menu_params):
             if 'NameLessThan' in params:
                 params.pop('NameLessThan')
 
-        path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+        path = get_jellyfin_url("/Users/{userid}/Items", params)
 
         art = {"thumb": "http://localhost:24276/{}".format(ensure_text(base64.b64encode(ensure_binary(path))))}
 
@@ -560,7 +560,7 @@ def show_global_types(params):
         "Fields": get_default_filters(),
         "ImageTypeLimit": 1,
     }
-    continue_watching_url = get_jellyfin_url("/Users/{}/Items/Resume".format(user_id), continue_watching_url_params)
+    continue_watching_url = get_jellyfin_url("/Users/{userid}/Items/Resume", continue_watching_url_params)
     add_menu_directory_item(translate_string(30445),
                             "plugin://plugin.video.jellycon/?mode=GET_CONTENT&url=" + quote(continue_watching_url) +
                             "&media_type=movies" +
@@ -589,7 +589,7 @@ def display_homevideos_type(menu_params, view):
         "Fields": get_default_filters(),
         "ImageTypeLimit": 1
     }
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), base_params)
+    path = get_jellyfin_url("/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + translate_string(30405), url)
 
@@ -599,7 +599,7 @@ def display_homevideos_type(menu_params, view):
     params["Filters"] = "IsResumable"
     params["Recursive"] = True
     params["Limit"] = item_limit
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + translate_string(30267) + " (" + item_limit + ")", url)
 
@@ -613,7 +613,7 @@ def display_homevideos_type(menu_params, view):
     if hide_watched:
         params["IsPlayed"] = False
     params["Limit"] = item_limit
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
     add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
 
@@ -656,7 +656,7 @@ def display_tvshow_type(menu_params, view):
     }
     if view is not None:
         base_params["ParentId"] = view.get("Id")
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), base_params)
+    path = get_jellyfin_url("/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + translate_string(30405), url)
 
@@ -664,7 +664,7 @@ def display_tvshow_type(menu_params, view):
     params = {}
     params.update(base_params)
     params["Filters"] = "IsFavorite"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + translate_string(30414), url)
 
@@ -672,7 +672,7 @@ def display_tvshow_type(menu_params, view):
     params = {}
     params.update(base_params)
     params["IsPlayed"] = False
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + translate_string(30285), url)
 
@@ -684,7 +684,7 @@ def display_tvshow_type(menu_params, view):
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsResumable"
     params["IncludeItemTypes"] = "Episode"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
     add_menu_directory_item(view_name + translate_string(30267) + " (" + item_limit + ")", url)
@@ -696,7 +696,7 @@ def display_tvshow_type(menu_params, view):
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["IncludeItemTypes"] = "Episode"
-    path = get_jellyfin_url("/Users/{}/Items/Latest".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows&sort=none"
     add_menu_directory_item(view_name + translate_string(30288) + " (" + item_limit + ")", url)
 
@@ -708,7 +708,7 @@ def display_tvshow_type(menu_params, view):
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
     params["IncludeItemTypes"] = "Episode"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
     add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
@@ -717,7 +717,7 @@ def display_tvshow_type(menu_params, view):
     params = {}
     params.update(base_params)
     params["Limit"] = item_limit
-    params["Userid"] = user_id
+    params["Userid"] = '{userid}'
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
@@ -756,7 +756,7 @@ def display_music_type(menu_params, view):
         "ImageTypeLimit": 1,
         "IncludeItemTypes": "MusicAlbum"
     }
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
     add_menu_directory_item(view_name + translate_string(30320), url)
 
@@ -767,7 +767,7 @@ def display_music_type(menu_params, view):
         "IncludeItemTypes": "Audio",
         "Limit": item_limit
     }
-    path = get_jellyfin_url("/Users/{}/Items/Latest".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
     add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
 
@@ -782,7 +782,7 @@ def display_music_type(menu_params, view):
         "SortBy": "DatePlayed",
         "SortOrder": "Descending"
     }
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
     add_menu_directory_item(view_name + translate_string(30349) + " (" + item_limit + ")", url)
 
@@ -797,7 +797,7 @@ def display_music_type(menu_params, view):
         "SortBy": "PlayCount",
         "SortOrder": "Descending"
     }
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
     add_menu_directory_item(view_name + translate_string(30353) + " (" + item_limit + ")", url)
 
@@ -842,7 +842,7 @@ def display_musicvideos_type(params, view):
         "IsMissing": False,
         "Fields": get_default_filters()
     }
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=musicvideos"
     add_menu_directory_item(view_name + translate_string(30405), url)
 
@@ -858,7 +858,7 @@ def display_livetv_type(menu_params, view):
 
     # channels
     params = {
-        "UserId": user_id,
+        "UserId": '{userid}',
         "Recursive": False,
         "ImageTypeLimit": 1,
         "Fields": get_default_filters()
@@ -869,7 +869,7 @@ def display_livetv_type(menu_params, view):
 
     # programs
     params = {
-        "UserId": user_id,
+        "UserId": '{userid}',
         "IsAiring": True,
         "ImageTypeLimit": 1,
         "Fields": get_default_filters() + ",ChannelInfo",
@@ -881,7 +881,7 @@ def display_livetv_type(menu_params, view):
 
     # recordings
     params = {
-        "UserId": user_id,
+        "UserId": '{userid}',
         "Recursive": False,
         "ImageTypeLimit": 1,
         "Fields": get_default_filters(),
@@ -920,7 +920,7 @@ def display_movies_type(menu_params, view):
         base_params["ParentId"] = view.get("Id")
 
     # All Movies
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), base_params)
+    path = get_jellyfin_url("/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30405)), url)
 
@@ -930,7 +930,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["Filters"] = "IsFavorite"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30414)), url)
 
@@ -940,7 +940,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["IsPlayed"] = False
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30285)), url)
 
@@ -953,7 +953,7 @@ def display_movies_type(menu_params, view):
     params["CollapseBoxSetItems"] = False
     params["GroupItemsIntoCollections"] = False
     params["Limit"] = item_limit
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30349), item_limit), url)
 
@@ -964,7 +964,7 @@ def display_movies_type(menu_params, view):
     params["SortBy"] = "DatePlayed"
     params["SortOrder"] = "Descending"
     params["Limit"] = item_limit
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30267), item_limit), url)
 
@@ -976,7 +976,7 @@ def display_movies_type(menu_params, view):
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30268), item_limit), url)
 
@@ -988,13 +988,13 @@ def display_movies_type(menu_params, view):
     params["ImageTypeLimit"] = 1
     params["IncludeItemTypes"] = "Boxset"
     params["Recursive"] = True
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30410)), url)
 
     # Favorite Collections
     params["Filters"] = "IsFavorite"
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30415)), url)
 
@@ -1084,7 +1084,7 @@ def get_playlist_path(view_info):
     }
     user_id = get_current_user_id()
 
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=playlists"
     return url
 
@@ -1102,7 +1102,7 @@ def get_collection_path(view_info):
     }
     user_id = get_current_user_id()
 
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
     return url
 
@@ -1116,7 +1116,7 @@ def get_channel_path(view):
     }
     user_id = get_current_user_id()
 
-    path = get_jellyfin_url("/Users/{}/Items".format(user_id), params)
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
     return url
 
