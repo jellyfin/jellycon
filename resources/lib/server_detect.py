@@ -260,6 +260,12 @@ def check_server(force=False, change_user=False, notify=False):
 
                 auth_payload = {'username': selected_user_name, 'pw': password}
                 auth = api.authenticate(auth_payload)
+                if not auth:
+                    # Login failed, we don't want to change anything
+                    something_changed = False
+                    log.info('There was an error logging in with user {}'.format(selected_user_name))
+                    xbmcgui.Dialog().ok(__addon_name__, translate_string(30446))
+
 
         if something_changed:
             home_window = HomeWindow()
