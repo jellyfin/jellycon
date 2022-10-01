@@ -13,7 +13,7 @@ import xbmc
 from .kodi_utils import HomeWindow
 from .jellyfin import API
 from .lazylogger import LazyLogger
-from .utils import datetime_from_string, translate_string, save_user_details, load_user_details, get_current_datetime
+from .utils import datetime_from_string, translate_string, save_user_details, load_user_details, get_current_datetime, get_saved_users
 from .dialogs import QuickConnectDialog
 
 log = LazyLogger(__name__)
@@ -336,12 +336,23 @@ def user_select(api, current_username):
     Display user selection screen
     '''
     # Retrieve list of public users from server
-    result = api.get('/Users/Public')
+    public = api.get('/Users/Public')
+
+    # Get list of saved users
+    saved_users = get_saved_users()
+
+    # Combine public and saved users
+    for user in saved_users:
+        name = user.get('Name')
+        # Check if saved user is in public list
+        if name not in [x.get('Name', '') for x in public]:
+            # If saved user is not already in list, add it
+            public.append(user)
 
     # Build user display
     selected_id = -1
     users = []
-    for user in result:
+    for user in public:
         user_item = create_user_listitem(api.server, user)
         if user_item:
             users.append(user_item)
