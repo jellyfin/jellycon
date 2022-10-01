@@ -248,6 +248,36 @@ def load_user_details():
         return {}
 
 
+def get_saved_users():
+    settings = xbmcaddon.Addon()
+    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
+    if not save_user_to_settings:
+        return []
+
+    try:
+        with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
+            auth_data = json.load(infile)
+    except:
+        # File doesn't exist yet
+        return []
+
+    users = []
+    for user,values in auth_data.items():
+        users.append(
+            {
+                'Name': user,
+                'Id': values.get('user_id'),
+                # We need something here for the listitem function
+                'Configuration': {'Dummy': True}
+            }
+        )
+
+    return users
+
+
+
+
 def get_current_user_id():
     user_details = load_user_details()
     user_id = user_details.get('user_id')
