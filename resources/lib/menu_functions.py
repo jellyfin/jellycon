@@ -462,7 +462,6 @@ def show_mixed_alpha_list(menu_params):
         return
 
     parent_id = menu_params.get("parent_id")
-    user_id = get_current_user_id()
 
     prefixes = '#' + string.ascii_uppercase
 
@@ -1098,7 +1097,6 @@ def display_mixed_type(params, view):
         view_name = view.get("Name")
 
     item_limit = settings.getSetting("show_x_filtered_items")
-    user_id = get_current_user_id()
 
     # All Mixed content
     base_params = {
