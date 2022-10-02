@@ -1140,7 +1140,6 @@ def get_play_url(media_source, play_session_id, channel_id=None):
     # get all the options
     server = settings.getSetting('server_address')
     use_https = settings.getSetting('protocol') == "1"
-    verify_cert = settings.getSetting('verify_cert') == 'true'
     allow_direct_file_play = settings.getSetting('allow_direct_file_play') == 'true'
 
     can_direct_play = media_source["SupportsDirectPlay"]
