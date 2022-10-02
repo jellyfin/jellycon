@@ -824,10 +824,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         else:  # User backed out of selection
             playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
 
-    if url.find("|verifypeer=false") != -1:
-        new_url = url.replace("|verifypeer=false", playurlprefs + "|verifypeer=false")
-    else:
-        new_url = url + playurlprefs
+    new_url = url + playurlprefs
 
     return new_url
 
@@ -1190,8 +1187,6 @@ def get_play_url(media_source, play_session_id, channel_id=None):
             }
             play_param_string = urlencode(play_params)
             playurl = '{}?{}'.format(url_root, play_param_string)
-        if use_https and not verify_cert:
-            playurl += "|verifypeer=false"
         playback_type = "1"
 
     # check is file can be transcoded
@@ -1237,9 +1232,6 @@ def get_play_url(media_source, play_session_id, channel_id=None):
             transcode_path = urlencode(transcode_params)
             playurl = '{}/Videos/{}/master.m3u8?{}'.format(
                 server, item_id, transcode_path)
-
-        if use_https and not verify_cert:
-            playurl += "|verifypeer=false"
 
         playback_type = "2"
 
