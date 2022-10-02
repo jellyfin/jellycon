@@ -14,7 +14,6 @@ from .kodi_utils import HomeWindow
 from .jellyfin import API
 from .lazylogger import LazyLogger
 from .utils import datetime_from_string, translate_string, save_user_details, load_user_details, get_current_datetime, get_saved_users
-from .dialogs import QuickConnectDialog
 
 log = LazyLogger(__name__)
 
@@ -212,59 +211,79 @@ def check_server(force=False, change_user=False, notify=False):
         # stop playback when switching users
         xbmc.Player().stop()
 
-        auth = quick_connect(api)
+        # Check if quick connect is active on the server, initiate connection
+        quick = api.get('/QuickConnect/Initiate')
+        code = quick.get('Code')
+        secret = quick.get('Secret')
+        users, user_selection = user_select(api, current_username, code)
 
-        if auth:
-            users = []
-            user_selection = -1
-            selected_user_name = auth.get('User', {}).get('Name')
-            something_changed = True
-        else:
-            users, user_selection = user_select(api, current_username)
-
-        if not auth and user_selection > -1:
-
+        if user_selection > -1:
+            # The user made a selection in the dialog
             something_changed = True
             selected_user = users[user_selection]
-            selected_user_name = selected_user.getLabel()
-            secured = selected_user.getProperty("secure") == "true"
-            manual = selected_user.getProperty("manual") == "true"
+            quick_connect = selected_user.getProperty("quickconnect") == "true"
+            count = 0
+            if quick_connect:
+                # Try to authenticate to server with secret code 10 times
+                while count < 10:
+                    log.debug('Checking for quick connect auth: attempt {}'.format(count))
+                    check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
+                    if check.get('Authenticated'):
+                        break
+                    count += 1
+                    xbmc.sleep(1000)
 
-            # If using a manual login, ask for username
-            if manual:
-                kb = xbmc.Keyboard()
-                kb.setHeading(translate_string(30005))
-                if current_username:
-                    kb.setDefault(current_username)
-                kb.doModal()
-                if kb.isConfirmed():
-                    selected_user_name = kb.getText()
-                    log.debug("Manual entered username: {0}".format(selected_user_name))
+                auth = api.post('/Users/AuthenticateWithQuickConnect',
+                                {'secret': secret})
+
+                # If authentication was successful, save the username
+                if auth:
+                    selected_user_name = auth['User'].get('Name')
                 else:
-                    return
-
-            home_window.set_property('user_name', selected_user_name)
-            settings.setSetting('username', selected_user_name)
-            user_details = load_user_details()
-
-            if not user_details:
-                # Ask for password if user has one
-                password = ''
-                if secured and not user_details.get('token'):
-                    kb = xbmc.Keyboard()
-                    kb.setHeading(translate_string(30006))
-                    kb.setHiddenInput(True)
-                    kb.doModal()
-                    if kb.isConfirmed():
-                        password = kb.getText()
-
-                auth_payload = {'username': selected_user_name, 'pw': password}
-                auth = api.authenticate(auth_payload)
-                if not auth:
                     # Login failed, we don't want to change anything
                     something_changed = False
-                    log.info('There was an error logging in with user {}'.format(selected_user_name))
-                    xbmcgui.Dialog().ok(__addon_name__, translate_string(30446))
+                    log.info("There was an error logging in with quick connect")
+
+            else:
+                selected_user_name = selected_user.getLabel()
+                secured = selected_user.getProperty("secure") == "true"
+                manual = selected_user.getProperty("manual") == "true"
+
+                # If using a manual login, ask for username
+                if manual:
+                    kb = xbmc.Keyboard()
+                    kb.setHeading(translate_string(30005))
+                    if current_username:
+                        kb.setDefault(current_username)
+                    kb.doModal()
+                    if kb.isConfirmed():
+                        selected_user_name = kb.getText()
+                        log.debug("Manual entered username: {0}".format(selected_user_name))
+                    else:
+                        return
+
+                home_window.set_property('user_name', selected_user_name)
+                settings.setSetting('username', selected_user_name)
+                user_details = load_user_details()
+
+                if not user_details:
+                    # Ask for password if user has one
+                    password = ''
+                    if secured and not user_details.get('token'):
+                        kb = xbmc.Keyboard()
+                        kb.setHeading(translate_string(30006))
+                        kb.setHiddenInput(True)
+                        kb.doModal()
+                        if kb.isConfirmed():
+                            password = kb.getText()
+
+                    auth_payload = {'username': selected_user_name, 'pw': password}
+                    auth = api.authenticate(auth_payload)
+                    if not auth:
+                        # Login failed, we don't want to change anything
+                        something_changed = False
+                        log.info('There was an error logging in with user {}'.format(selected_user_name))
+                        xbmcgui.Dialog().ok(__addon_name__, translate_string(30446))
 
 
         if something_changed:
@@ -283,55 +302,7 @@ def check_server(force=False, change_user=False, notify=False):
             xbmc.executebuiltin("ReloadSkin()")
 
 
-def quick_connect(api):
-    '''
-    Log in using quick connect funcion
-    '''
-    settings = xbmcaddon.Addon()
-    addon_path = settings.getAddonInfo('path')
-
-    result = api.get('/QuickConnect/Initiate')
-
-    if not isinstance(result, dict) or not result:
-        log.debug('Quick connect is disabled on the server')
-        return {}
-
-    code = result.get('Code')
-    secret = result.get('Secret')
-
-    # Open Quick Connect dialog, ask to proceed
-    qc_dialog = QuickConnectDialog("QuickConnectDialog.xml", addon_path, "default", "720p")
-    qc_dialog.code = code
-    qc_dialog.doModal()
-    connect_method = qc_dialog.getConnectMethod()
-    del qc_dialog
-
-    if connect_method < 1:
-        # User backed out or selected manual login
-        return {}
-
-    count = 0
-    while count < 15:
-        # Check the server to see if the auth request has been completed
-        log.debug('Checking for quick connect auth: attempt {}'.format(count))
-        check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
-        if check.get('Authenticated'):
-            break
-        count += 1
-        xbmc.sleep(1000)
-
-    if not check.get('Authenticated'):
-        log.info('Quick connect not authorized in 15 seconds, defaulting to manual authentication')
-        return {}
-
-    # Retrieve authentication information
-    auth = api.post('/Users/AuthenticateWithQuickConnect',
-                    {'secret': secret})
-
-    return auth
-
-
-def user_select(api, current_username):
+def user_select(api, current_username, code):
     '''
     Display user selection screen
     '''
@@ -352,6 +323,16 @@ def user_select(api, current_username):
     # Build user display
     selected_id = -1
     users = []
+    # If quick connect is active, make it the first entry
+    if code:
+        user_item = xbmcgui.ListItem(code)
+        user_image = "DefaultUser.png"
+        art = {"Thumb": user_image}
+        user_item.setArt(art)
+        user_item.setLabel2(translate_string(30443))
+        user_item.setProperty('quickconnect', "true")
+        users.append(user_item)
+
     for user in public:
         user_item = create_user_listitem(api.server, user)
         if user_item:
@@ -380,7 +361,7 @@ def user_select(api, current_username):
         selection_title,
         users,
         preselect=selected_id,
-        autoclose=20000,
+        autoclose=60000,
         useDetails=True)
 
     return (users, user_selection)
