@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-09-22 09:54+0000\n"
-"Last-Translator: Fabien LARTIGUE <serval92@gmail.com>\n"
+"PO-Revision-Date: 2022-10-05 17:54+0000\n"
+"Last-Translator: Paulo <paulletilly@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -151,7 +151,7 @@ msgstr "Interface"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "Confirmer la suppression ?"
+msgstr "Confirmer la suppression ?"
 
 msgctxt "#30052"
 msgid "Deleting"
