@@ -71,6 +71,8 @@ def get_content(url, params):
     elif media_type == "musicvideos":
         view_type = "Music Videos"
         content_type = 'musicvideos'
+    elif media_type == "mixed":
+        content_type = 'videos'
 
     log.debug("media_type:{0} content_type:{1} view_type:{2} ".format(media_type, content_type, view_type))
 

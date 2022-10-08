@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-01 13:54+0000\n"
-"Last-Translator: Weevild <Filip.westman@gmail.com>\n"
+"PO-Revision-Date: 2022-10-04 05:54+0000\n"
+"Last-Translator: Benjamin <benjaminhudik1@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -913,3 +913,84 @@ msgstr "Logga tidsdata"
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
 msgstr "Antal prestandaprofiler som ska fångas"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Tar emot datapaket"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Det gick inte att ansluta till webbadressen du angav, vill du försöka igen?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Vill du ange en server-url manuellt?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Vill du rensa ditt sparade lösenord?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Rensa lösenord?"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Ange användarinformation manuellt"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Hämtar extern bildlista"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Bearbetar den befintliga bildlistan"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Laddar befintlig bildlista"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi Inställningar->Tjänster->Tillåt fjärrstyrning via HTTP"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musik - Alla Albumartister"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musik - Ofta spelad"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Hämtar befintliga bilder"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Mängden bilder borttagna från cache"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Ändringar kräver omstart av Kodi"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Kontrollintervall för nytt innehåll (0 = inaktiverad)"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Uppdateringsintervall för bakgrundsbild (0 = inaktiverad)"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Gruppera filmer i samlingar"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Använd JellyCons kontextmeny"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artister"
