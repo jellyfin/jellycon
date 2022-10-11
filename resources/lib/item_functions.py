@@ -503,6 +503,8 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         mediatype = 'artist'
     elif item_type == 'audio' or item_type == 'music':
         mediatype = 'song'
+    elif item_type == 'musicvideo':
+        mediatype = 'musicvideo'
 
     info_labels["mediatype"] = mediatype
 
