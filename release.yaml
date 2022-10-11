@@ -1,8 +1,29 @@
-version: '0.5.7'
+version: '0.6.0'
 changelog: |-
+  :tada: New features and improvements
+  ------------------------------------
+  + Add support for mixed content libraries (#227) @mcarlton00
+  + Move quickconnect code into user selection list (#226) @mcarlton00
+  + Show saved users in the user selection list (#225) @mcarlton00
+
   Bug Fixes
   ---------
-  + Apply watched status to the correct user (#210) @mcarlton00
+  + Add play option to music video context menu (#231) @mcarlton00
+  + Fix stale menu links when user switching (#222) @mcarlton00
+  + Force unique client IDs when using quick connect (#221) @mcarlton00
+  + Add an error message when authentication fails (#220) @mcarlton00
+  + subtitle not working on self sign certificate (#224) @aiosk
+  + Make it clear that the play next episode setting is in seconds (#217) @mcarlton00
+  + Fix playing livetv from tvheadend (#213) @mcarlton00
+
+  Code or Repo Maintenance
+  ------------------------
+  + Cleanup old https verify method (#228) @mcarlton00
+
+  CI & build changes
+  ------------------
+  + Bump release-drafter/release-drafter from 5.20.1 to 5.21.0 (#223) @dependabot
+  + Bump release-drafter/release-drafter from 5.20.0 to 5.20.1 (#208) @dependabot
 dependencies:
   py2:
     - addon: 'xbmc.python'
