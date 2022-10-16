@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-10 15:54+0000\n"
-"Last-Translator: Hans Christian Madsen <hcbille@gmail.com>\n"
+"PO-Revision-Date: 2022-10-17 05:50+0000\n"
+"Last-Translator: daniel knutzen <daniel@knutzen.se>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -711,10 +711,9 @@ msgctxt "#30330"
 msgid "Show change user dialog"
 msgstr "Visa ändra användardialogrutan"
 
-#, fuzzy
 msgctxt "#30315"
 msgid "Suppress notifications for connection errors"
-msgstr "Undertryck aviseringar för anslutningsfel"
+msgstr "Visa inte varningar angående anslutningsfel"
 
 msgctxt "#30304"
 msgid "Cached Jellyfin images : "
@@ -748,10 +747,9 @@ msgctxt "#30295"
 msgid "To use this feature you need HTTP control enabled"
 msgstr "För att använda den här funktionen måste du aktivera HTTP-kontroll"
 
-#, fuzzy
 msgctxt "#30294"
 msgid "Notice"
-msgstr "Notis"
+msgstr "Bevisning"
 
 msgctxt "#30293"
 msgid "Cache images"
@@ -765,24 +763,21 @@ msgctxt "#30291"
 msgid "Select Audio Stream"
 msgstr "Välj ljudström"
 
-#, fuzzy
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "Lägg till fortsättningsprocent i namn"
+msgstr "Lägg till \"procent kvar\" bredvid namnen"
 
-#, fuzzy
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Lägg till ej sedda räkningar till namn"
+msgstr "Lägg in en \"inte än sedd\" räknare bredvid namnen"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
 msgstr "TV Serier- Ej sedd"
 
-#, fuzzy
 msgctxt "#30286"
 msgid "Movies - Unwatched"
-msgstr "Film - Ej sedd"
+msgstr "Film - Osädda"
 
 msgctxt "#30285"
 msgid " - Unwatched"
@@ -796,23 +791,20 @@ msgctxt "#30281"
 msgid "Refresh Cached Images"
 msgstr "Uppdatera cachelagrade bilder"
 
-#, fuzzy
 msgctxt "#30278"
 msgid " - Next Up"
-msgstr "- Nästa upp"
+msgstr "- Nästa"
 
-#, fuzzy
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
-"JellyCon måste fråga om återuppta på partiellt spelade objekt, Kodi kan "
-"också fråga, detta kan orsaka en dubbel prompt. Vill du ta bort den dubbla "
-"prompten?"
+"JellyCon måste fråga om att fortsätta uppspelada halvsedda filmer, Kodi kan "
+"också fråga, detta kan orsaka två prompter. Vill du ta bort den dubbla "
+"prompter?"
 
-#, fuzzy
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
-msgstr "Extra uppmaning om återuppta upptäckt"
+msgstr "Extra uppmaning om att fortsätta upspelning upptäckt"
 
 msgctxt "#30247"
 msgid "Custom Widget Content"
@@ -826,7 +818,6 @@ msgctxt "#30220"
 msgid "Prompt to delete movie after %"
 msgstr "Uppmaning att radera film efter %"
 
-#, fuzzy
 msgctxt "#30219"
 msgid " - Prompt before play"
 msgstr "- Fråga före uppspelning"
@@ -835,15 +826,13 @@ msgctxt "#30217"
 msgid "Prompt to delete episode after %"
 msgstr "Uppmaning att radera avsnitt efter %"
 
-#, fuzzy
 msgctxt "#30215"
 msgid "On playback stop (100% = disabled)"
-msgstr "Vid uppspelningsstopp (100 % = avaktiverad)"
+msgstr "Vid uppspelnings stopp (100 % = avaktiverad)"
 
-#, fuzzy
 msgctxt "#30210"
 msgid "HTTP direct stream"
-msgstr "HTTP direktström"
+msgstr "HTTP direkt stream"
 
 msgctxt "#30209"
 msgid "File direct path"
@@ -905,10 +894,9 @@ msgctxt "#30015"
 msgid "Log timing data"
 msgstr "Logga tidsdata"
 
-#, fuzzy
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
-msgstr "Antal prestandaprofiler som ska fångas"
+msgstr "Antal prestanda profiler som ska räknas"
 
 msgctxt "#30375"
 msgid "Receiving data packet"
@@ -991,10 +979,9 @@ msgctxt "#30323"
 msgid "Artists"
 msgstr "Artister"
 
-#, fuzzy
 msgctxt "#30420"
 msgid "Audio max channels"
-msgstr "Max antal Ljudkanaler"
+msgstr "Antal kanaler för ljudsystem"
 
 msgctxt "#30419"
 msgid "Audio codec"
@@ -1004,10 +991,9 @@ msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
 msgstr "Ljud bitrate (Kbps)"
 
-#, fuzzy
 msgctxt "#30416"
 msgid "HTTP timeout seconds"
-msgstr "HTTP timeout sekunder"
+msgstr "HTTP tidsutlösning i sekunder"
 
 msgctxt "#30415"
 msgid " - Favorite Collections"
@@ -1017,10 +1003,9 @@ msgctxt "#30414"
 msgid " - Favorites"
 msgstr "- Favoriter"
 
-#, fuzzy
 msgctxt "#30409"
 msgid "Add-on Actions"
-msgstr "Tilläg Alternativ"
+msgstr "Extra functioner"
 
 msgctxt "#30408"
 msgid "Custom Widgets"
@@ -1053,3 +1038,71 @@ msgstr "Cacha Jellyfin server data förfrågningar"
 msgctxt "#30333"
 msgid "Cache artwork in the background"
 msgstr "Cacha bildmedia i bakgrunden"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Logga in med \"Quick Connect\""
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "manuell transcode stream bitrate (Kbps)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "hastighets test storlek (MB)"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Spela upp intros"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Visa nästa avsnitt några sekunder innan slutet"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Uppdatera content"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "\"Quick Connect\""
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Fortsätt se"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Det var ett problem med att logga in"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Acceptera spara en annan använderes lösenord snabbt"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Behåll användarinformation"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Extern undertext prompt"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Slumpmässiga filmer intervall minuter (0 = inaktiverad)"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Befintliga bilder före radering:"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Cachebilder intervall minuter (0 = inaktiverad)"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Inte inställd"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "hastighets test"
