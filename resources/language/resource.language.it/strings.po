@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-17 22:11+0000\n"
-"Last-Translator: momphucker <weblate@mailbox.enricomarogna.com>\n"
+"PO-Revision-Date: 2022-10-21 02:50+0000\n"
+"Last-Translator: Angus Fraser <angusmglfraser@yahoo.co.uk>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.14.1\n"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -466,6 +466,7 @@ msgctxt "#30323"
 msgid "Artists"
 msgstr "Artisti"
 
+#, fuzzy
 msgctxt "#30311"
 msgid "Library - "
 msgstr "Libreria -"
@@ -481,3 +482,88 @@ msgstr "- Ultimo"
 msgctxt "#30280"
 msgid "Missing Title"
 msgstr "Titolo Mancante"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Prossimo"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Tutto -"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Album"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Serie TV - Non guardati"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Nessun server Jellyfin rilevato nella tua rete locale."
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Film - Non guardati"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Serie TV - Ultimi"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Serie TV - Generi"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Tutti"
+
+#, fuzzy
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Seleziona fonte audio"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Eliminare immagini non usati?"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Non trovato"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Avvio riproduzione"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Riproduci Trailer"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Seleziona Trailer"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menù"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Riproduci"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Errore di connessione"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Musica - Album"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Ripresa automatica"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Mostra cartelle vuote (serie, stagioni, collezioni)"
