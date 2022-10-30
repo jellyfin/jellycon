@@ -45,6 +45,7 @@ class API:
                 and just parse the json ourselves.  Fall back to using
                 requests/simplejson if there's a parsing error.
                 '''
+                r.raise_for_status()
                 response_data = json.loads(r.text)
             except ValueError:
                 response_data = r.json()
