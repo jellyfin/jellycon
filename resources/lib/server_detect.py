@@ -211,6 +211,9 @@ def check_server(force=False, change_user=False, notify=False):
         # stop playback when switching users
         xbmc.Player().stop()
 
+        # Initialize auth variable
+        auth = {}
+
         # Check if quick connect is active on the server, initiate connection
         quick = api.get('/QuickConnect/Initiate')
         code = quick.get('Code')
