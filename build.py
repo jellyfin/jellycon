@@ -35,7 +35,7 @@ def create_addon_xml(config: dict, source: str, py_version: str) -> None:
     Create addon.xml from template file
     """
     # Load template file
-    with open('{}/.config/template.xml'.format(source), 'r') as f:
+    with open(f'{source}/.config/template.xml', 'r') as f:
         tree = ET.parse(f)
         root = tree.getroot()
 
@@ -46,7 +46,7 @@ def create_addon_xml(config: dict, source: str, py_version: str) -> None:
 
     # Populate version string
     addon_version = config.get('version')
-    root.attrib['version'] = '{}+{}'.format(addon_version, py_version)
+    root.attrib['version'] = f'{addon_version}+{py_version}'
 
     # Populate Changelog
     date = datetime.today().strftime('%Y-%m-%d')
@@ -54,22 +54,22 @@ def create_addon_xml(config: dict, source: str, py_version: str) -> None:
     for section in root.findall('extension'):
         news = section.findall('news')
         if news:
-            news[0].text = 'v{} ({}):\n{}'.format(addon_version, date, changelog)
+            news[0].text = f'v{addon_version} ({date}):\n{changelog}'
 
     # Format xml tree
     indent(root)
 
     # Write addon.xml
-    tree.write('{}/addon.xml'.format(source), encoding='utf-8', xml_declaration=True)
+    tree.write(f'{source}/addon.xml', encoding='utf-8', xml_declaration=True)
 
 
 def zip_files(py_version: str, source: str, target: str, dev: bool) -> None:
     """
     Create installable addon zip archive
     """
-    archive_name = 'plugin.video.jellycon+{}.zip'.format(py_version)
+    archive_name = f'plugin.video.jellycon+{py_version}.zip'
 
-    with zipfile.ZipFile('{}/{}'.format(target, archive_name), 'w') as z:
+    with zipfile.ZipFile(f'{target}/{archive_name}', 'w') as z:
         for root, dirs, files in os.walk(args.source):
             for filename in filter(file_filter, files):
                 file_path = os.path.join(root, filename)
