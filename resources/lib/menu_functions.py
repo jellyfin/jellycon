@@ -1028,6 +1028,7 @@ def display_movies_type(menu_params, view):
     params["SortBy"] = "DateCreated"
     params["SortOrder"] = "Descending"
     params["Filters"] = "IsNotFolder"
+    params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
     add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30268), item_limit), url)
