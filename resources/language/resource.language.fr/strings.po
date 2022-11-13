@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-26 13:50+0000\n"
-"Last-Translator: Kilian <kilian.pichard@protonmail.com>\n"
+"PO-Revision-Date: 2022-11-14 11:51+0000\n"
+"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -1079,7 +1079,6 @@ msgctxt "#30409"
 msgid "Add-on Actions"
 msgstr "Actions complémentaires"
 
-#, fuzzy
 msgctxt "#30430"
 msgid "Label"
 msgstr "Étiquette"
