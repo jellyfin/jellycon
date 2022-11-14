@@ -244,6 +244,7 @@ def play_file(play_info):
     force_auto_resume = settings.getSetting('forceAutoResume') == 'true'
     jump_back_amount = int(settings.getSetting("jump_back_amount"))
     play_cinema_intros = settings.getSetting('play_cinema_intros') == 'true'
+    item_limit = settings.getSetting("show_x_filtered_items")
 
     server = settings.getSetting('server_address')
 
@@ -266,6 +267,14 @@ def play_file(play_info):
             'IncludeItemTypes': 'Episode,Audio',
             'Recursive': True
         }
+
+        if action == "shuffle":
+            if play_info.get("item_name") == translate_string(30290):
+                url_params["ParentId"] = play_info.get("series_id")
+            url_params["Filters"] = "IsNotFolder"
+            url_params["ExcludeLocationTypes"] = "Virtual"
+            url_params["SortBy"] = "Random"
+            url_params["Limit"] = item_limit
 
         url = get_jellyfin_url(url_root, url_params)
         result = api.get(url)

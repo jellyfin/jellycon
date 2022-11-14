@@ -19,6 +19,8 @@ class ContextMonitor(threading.Thread):
     def run(self):
 
         item_id = None
+        series_id = None
+        item_name = None
         log.debug("ContextMonitor Thread Started")
 
         while not xbmc.Monitor().abortRequested() and not self.stop_thread:
@@ -31,10 +33,14 @@ class ContextMonitor(threading.Thread):
                         xbmc.executebuiltin("Dialog.Close(contextmenu,true)")
                         params = {}
                         params["item_id"] = item_id
+                        params["series_id"] = series_id
+                        params["item_name"] = item_name
                         show_menu(params)
 
                 container_id = xbmc.getInfoLabel("System.CurrentControlID")
                 item_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(id)")
+                series_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(series_id)")
+                item_name = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(name)")
 
                 xbmc.sleep(100)
 

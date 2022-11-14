@@ -353,6 +353,11 @@ def show_menu(params):
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
+    if result["Type"] == "Season":
+        li = xbmcgui.ListItem(translate_string(30447), offscreen=True)
+        li.setProperty('menu_id', 'shuffle')
+        action_items.append(li)
+
     if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30275), offscreen=True)
         li.setProperty('menu_id', 'transcode')
@@ -497,6 +502,10 @@ def show_menu(params):
         xbmc.executebuiltin("Container.Refresh")
 
     elif selected_action == "play_all":
+        play_action(params)
+
+    elif selected_action == "shuffle":
+        params["action"] = "shuffle"
         play_action(params)
 
     elif selected_action == "play_trailer":
@@ -839,6 +848,8 @@ def play_action(params):
     play_info = {}
     play_info["action"] = action
     play_info["item_id"] = item_id
+    play_info["series_id"] = params.get("series_id")
+    play_info["item_name"] = params.get("item_name")
     play_info["auto_resume"] = str(auto_resume)
     play_info["force_transcode"] = force_transcode
     play_info["media_source_id"] = media_source_id

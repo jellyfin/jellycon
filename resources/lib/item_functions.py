@@ -456,6 +456,9 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.series_id:
         item_properties["series_id"] = item_details.series_id
 
+    if item_details.name:
+        item_properties["name"] = item_details.name
+
     # new way
     info_labels = {}
 

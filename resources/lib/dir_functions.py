@@ -404,6 +404,7 @@ def process_directory(url, progress, params, use_cache_data=False):
         item_details = ItemDetails()
 
         item_details.id = first_season_item.id
+        item_details.series_id = first_season_item.series_id
         item_details.name = translate_string(30290)
         item_details.art = first_season_item.art
         item_details.play_count = played
