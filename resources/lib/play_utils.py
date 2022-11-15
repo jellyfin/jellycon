@@ -268,13 +268,14 @@ def play_file(play_info):
             'Recursive': True
         }
 
-        if action == "shuffle":
+        if result.get("Type") == "Season":
+            url_params["ExcludeLocationTypes"] = "Virtual"
+            url_params["Limit"] = item_limit
             if play_info.get("item_name") == translate_string(30290):
                 url_params["ParentId"] = play_info.get("series_id")
-            url_params["Filters"] = "IsNotFolder"
-            url_params["ExcludeLocationTypes"] = "Virtual"
+
+        if action == "shuffle":
             url_params["SortBy"] = "Random"
-            url_params["Limit"] = item_limit
 
         url = get_jellyfin_url(url_root, url_params)
         result = api.get(url)
