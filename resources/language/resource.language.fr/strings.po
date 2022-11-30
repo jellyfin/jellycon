@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-14 11:51+0000\n"
-"Last-Translator: Thomas Schwery <thomas@inf3.ch>\n"
+"PO-Revision-Date: 2022-12-01 07:33+0000\n"
+"Last-Translator: Marco <marcoabricot@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -1074,10 +1074,9 @@ msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
 msgstr "Intervalle de mise en cache des images en minutes (0 = désactivé)"
 
-#, fuzzy
 msgctxt "#30409"
 msgid "Add-on Actions"
-msgstr "Actions complémentaires"
+msgstr "Add-on Actions"
 
 msgctxt "#30430"
 msgid "Label"
