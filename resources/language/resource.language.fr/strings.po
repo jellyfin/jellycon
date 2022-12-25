@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-12-01 07:33+0000\n"
-"Last-Translator: Marco <marcoabricot@gmail.com>\n"
+"PO-Revision-Date: 2022-12-26 15:51+0000\n"
+"Last-Translator: wolfiiy <wolfiy@protonmail.ch>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -1000,7 +1000,6 @@ msgctxt "#30408"
 msgid "Custom Widgets"
 msgstr "Widgets personnalisés"
 
-#, fuzzy
 msgctxt "#30416"
 msgid "HTTP timeout seconds"
 msgstr "Délai HTTP en secondes"
@@ -1051,7 +1050,7 @@ msgstr "Vérification simple du nouveau contenu"
 
 msgctxt "#30443"
 msgid "Quick Connect"
-msgstr "Quick Connect"
+msgstr "Connexion rapide"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
