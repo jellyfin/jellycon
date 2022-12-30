@@ -343,6 +343,7 @@ def show_menu(params):
 
     action_items = []
 
+    # Additional items to include in the context menu for different item types
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio", "TvChannel", "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30314), offscreen=True)
         li.setProperty('menu_id', 'play')
@@ -352,6 +353,17 @@ def show_menu(params):
         li = xbmcgui.ListItem(translate_string(30317), offscreen=True)
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
+
+    if result["Type"] in ["MusicArtist", "MusicAlbum", "Playlist", "Series", "Season"]:
+        li = xbmcgui.ListItem(translate_string(30448), offscreen=True)
+        li.setProperty('menu_id', 'shuffle')
+        action_items.append(li)
+
+    if result["Type"] in ["MusicArtist", "MusicAlbum", "Audio"]:
+        li = xbmcgui.ListItem(translate_string(30449), offscreen=True)
+        li.setProperty('menu_id', 'instant_mix')
+        action_items.append(li)
+
 
     if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30275), offscreen=True)
@@ -497,6 +509,14 @@ def show_menu(params):
         xbmc.executebuiltin("Container.Refresh")
 
     elif selected_action == "play_all":
+        play_action(params)
+
+    elif selected_action == "shuffle":
+        params["action"] = "shuffle"
+        play_action(params)
+
+    elif selected_action == "instant_mix":
+        params["action"] = "instant_mix"
         play_action(params)
 
     elif selected_action == "play_trailer":
