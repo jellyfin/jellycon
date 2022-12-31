@@ -255,8 +255,30 @@ def play_file(play_info):
         log.debug("Playfile item was None, so can not play!")
         return
 
+    # Generate an instant mix based on the item
+    if action == 'instant_mix':
+        max_queue = int(settings.getSetting('max_play_queue'))
+        url_root = '/Items/{}/InstantMix'.format(item_id)
+        url_params = {
+            'UserId': api.user_id,
+            'Fields': 'MediaSources',
+            'IncludeItemTypes': 'Audio',
+            'SortBy': 'SortName',
+            'limit': max_queue
+        }
+        url = get_jellyfin_url(url_root, url_params)
+        result = api.get(url)
+        log.debug("PlayAllFiles items: {0}".format(result))
+
+        # process each item
+        items = result["Items"]
+        if items is None:
+            items = []
+        return play_all_files(items)
+
     # if this is a season, playlist or album then play all items in that parent
     if result.get("Type") in ["Season", "MusicArtist", "MusicAlbum", "Playlist"]:
+        max_queue = int(settings.getSetting('max_play_queue'))
         log.debug("PlayAllFiles for parent item id: {0}".format(item_id))
         url_root = '/Users/{}/Items'.format(api.user_id)
         # Look specifically for episodes or audio files
@@ -264,8 +286,12 @@ def play_file(play_info):
             'ParentId': item_id,
             'Fields': 'MediaSources',
             'IncludeItemTypes': 'Episode,Audio',
-            'Recursive': True
+            'Recursive': True,
+            'SortBy': 'SortName',
+            'limit': max_queue
         }
+        if action == 'shuffle':
+            url_params['SortBy'] = 'Random'
 
         url = get_jellyfin_url(url_root, url_params)
         result = api.get(url)

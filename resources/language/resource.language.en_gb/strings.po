@@ -1108,3 +1108,15 @@ msgstr "Continue Watching"
 msgctxt "#30446"
 msgid "There was an error logging in"
 msgstr "There was an error logging in"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Max Play Queue Size"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Shuffle"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Instant Mix"
