@@ -103,9 +103,12 @@ def play_all_files(items, play_items=True):
         list_item = set_list_item_props(item_id, list_item, item, server, listitem_props, item_title)
 
         playlist.add(playurl, list_item)
+        if play_items and playlist.size() == 1:
+            # Play the first item immediately before processing the rest
+            xbmc.Player().play(playlist)
 
     if play_items:
-        xbmc.Player().play(playlist)
+        # Should already be playing, don't need to return anything
         return None
     else:
         return playlist
