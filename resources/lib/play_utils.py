@@ -279,8 +279,12 @@ def play_file(play_info):
             items = []
         return play_all_files(items)
 
-    # if this is a season, playlist or album then play all items in that parent
-    if result.get("Type") in ["Season", "MusicArtist", "MusicAlbum", "Playlist"]:
+    '''
+    if this is a season, playlist, artist, album, or a full library then play
+    *all* items in that parent.
+    * Taking the max queue size setting into account
+    '''
+    if result.get("Type") in ["Season", "MusicArtist", "MusicAlbum", "Playlist", "CollectionFolder"]:
         max_queue = int(settings.getSetting('max_play_queue'))
         log.debug("PlayAllFiles for parent item id: {0}".format(item_id))
         url_root = '/Users/{}/Items'.format(api.user_id)
