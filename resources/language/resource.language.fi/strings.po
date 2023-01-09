@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-04 05:54+0000\n"
+"PO-Revision-Date: 2023-01-10 05:51+0000\n"
 "Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fi/>\n"
@@ -1113,3 +1113,15 @@ msgstr ""
 msgctxt "#30446"
 msgid "There was an error logging in"
 msgstr "Kirjauduttaessa tapahtui virhe"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Sekoitus"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Toistojonon enimmäiskoko"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Pikamiksaus"
