@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-04 05:54+0000\n"
+"PO-Revision-Date: 2023-01-10 05:51+0000\n"
 "Last-Translator: Csaba <csab0825@gmail.com>\n"
 "Language-Team: Hungarian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/hu/>\n"
@@ -1111,3 +1111,15 @@ msgstr "A következő epizód lejátszása a másodpercben hátralévő időpont
 msgctxt "#30446"
 msgid "There was an error logging in"
 msgstr "Hiba történt a bejelentkezéskor"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Keverés"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Lejátszási sor maximális mérete"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Instant keverés"
