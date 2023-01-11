@@ -17,7 +17,7 @@ import sys
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub, get_bitrate
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -1224,8 +1224,7 @@ def get_play_url(media_source, play_session_id, channel_id=None):
 
         user_details = load_user_details()
         user_token = user_details.get('token')
-        playback_bitrate = settings.getSetting("force_max_stream_bitrate")
-        bitrate = int(playback_bitrate) * 1000
+        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
         playback_max_width = settings.getSetting("playback_max_width")
         audio_codec = settings.getSetting("audio_codec")
         audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
@@ -1484,17 +1483,16 @@ def get_item_playback_info(item_id, force_transcode):
     if settings.getSetting("force_transcode_mpeg4") == "true":
         filtered_codecs.append("mpeg4")
 
-    playback_bitrate = settings.getSetting("max_stream_bitrate")
-    force_playback_bitrate = settings.getSetting("force_max_stream_bitrate")
-    if force_transcode:
-        playback_bitrate = force_playback_bitrate
+    if not force_transcode:
+        bitrate = get_bitrate(settings.getSetting("max_stream_bitrate"))
+    else:
+        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
 
     audio_codec = settings.getSetting("audio_codec")
     audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
     audio_max_channels = settings.getSetting("audio_max_channels")
 
     audio_bitrate = int(audio_playback_bitrate) * 1000
-    bitrate = int(playback_bitrate) * 1000
 
     profile = {
         "Name": "Kodi",

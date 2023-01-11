@@ -419,3 +419,13 @@ def download_external_sub(language, codec, url):
         f.write(r.content)
 
     return file_path
+
+
+def get_bitrate(enum_value):
+    ''' Get the video quality based on add-on settings.
+    Max bit rate supported by server: 2147483 (max signed 32bit integer)
+    '''
+    bitrate = [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000,
+        7000, 8000, 9000, 10000, 12000, 14000, 16000, 18000,
+        20000, 25000, 30000, 35000, 40000, 100000, 1000000, 2147483]
+    return bitrate[int(enum_value) if enum_value else 24] * 1000
