@@ -876,6 +876,13 @@ def display_music_type(menu_params, view):
     add_menu_directory_item('{} - {}{}'.format(
         view_name, translate_string(30323), translate_string(30404)), path)
 
+    # Shuffle All
+    path = "plugin://plugin.video.jellycon/?mode=PLAY&action=shuffle"
+    if view is not None:
+        path += "&item_id=" + view.get("Id")
+    add_menu_directory_item('{} - {}'.format(
+        view_name, translate_string(30448)), path, False)
+
     xbmcplugin.endOfDirectory(handle)
 
 
