@@ -412,7 +412,6 @@ def show_tvshow_alpha_list(menu_params):
         return
 
     parent_id = menu_params.get("parent_id")
-    user_id = get_current_user_id()
 
     prefixes = '#' + string.ascii_uppercase
 
@@ -606,8 +605,6 @@ def display_menu(params):
 def show_global_types(params):
     handle = int(sys.argv[1])
 
-    user_id = get_current_user_id()
-
     continue_watching_url_params = {
         "Fields": get_default_filters(),
         "ImageTypeLimit": 1,
@@ -631,7 +628,6 @@ def display_homevideos_type(menu_params, view):
     view_name = view.get("Name")
     item_limit = settings.getSetting("show_x_filtered_items")
     hide_watched = settings.getSetting("hide_watched") == "true"
-    user_id = get_current_user_id()
 
     # All Home Movies
     base_params = {
@@ -696,7 +692,6 @@ def display_tvshow_type(menu_params, view):
         view_name = view.get("Name")
 
     item_limit = settings.getSetting("show_x_filtered_items")
-    user_id = get_current_user_id()
 
     # All TV Shows
     base_params = {
@@ -799,7 +794,6 @@ def display_music_type(menu_params, view):
     view_name = view.get("Name")
 
     item_limit = settings.getSetting("show_x_filtered_items")
-    user_id = get_current_user_id()
 
     # all albums
     params = {
@@ -891,7 +885,6 @@ def display_musicvideos_type(params, view):
     xbmcplugin.setContent(handle, 'files')
 
     view_name = view.get("Name")
-    user_id = get_current_user_id()
 
     # artists
     params = {
@@ -913,7 +906,6 @@ def display_livetv_type(menu_params, view):
     xbmcplugin.setContent(handle, 'files')
 
     view_name = view.get("Name")
-    user_id = get_current_user_id()
 
     # channels
     params = {
@@ -964,7 +956,6 @@ def display_movies_type(menu_params, view):
     item_limit = settings.getSetting("show_x_filtered_items")
     group_movies = settings.getSetting('group_movies') == "true"
     hide_watched = settings.getSetting("hide_watched") == "true"
-    user_id = get_current_user_id()
 
     base_params = {
         "IncludeItemTypes": "Movie",
@@ -1247,7 +1238,6 @@ def get_playlist_path(view_info):
         "Fields": get_default_filters(),
         "ImageTypeLimit": 1
     }
-    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=playlists"
@@ -1265,7 +1255,6 @@ def get_collection_path(view_info):
         "Recursive": True,
         "IsMissing": False
     }
-    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=boxsets"
@@ -1279,7 +1268,6 @@ def get_channel_path(view):
         "ImageTypeLimit": 1,
         "Fields": get_default_filters()
     }
-    user_id = get_current_user_id()
 
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"

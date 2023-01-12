@@ -781,7 +781,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
                 try:
                     # Track includes language
                     track = "%s - %s - %s %s" % (index, stream['Language'], codec, channel_layout)
-                except:
+                except KeyError:
                     # Track doesn't include language
                     track = "%s - %s %s" % (index, codec, channel_layout)
 
@@ -790,8 +790,10 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
 
         elif 'Subtitle' in stream['Type']:
             try:
+                # Track includes language
                 track = "%s - %s" % (index, stream['Language'])
-            except:
+            except KeyError:
+                # Track doesn't include language
                 track = "%s - %s" % (index, stream['Codec'])
 
             default = stream['IsDefault']
@@ -873,8 +875,6 @@ def external_subs(media_source, list_item, item_id):
     sub_names = []
 
     server = settings.getSetting('server_address')
-    user_details = load_user_details()
-    token = user_details.get('token')
 
     for stream in media_streams:
 
@@ -882,9 +882,6 @@ def external_subs(media_source, list_item, item_id):
                 and stream['IsExternal']
                 and stream['IsTextSubtitleStream']
                 and stream['SupportsExternalStream']):
-
-            index = stream['Index']
-            source_id = media_source['Id']
 
             language = stream.get('Language', '')
             if language and stream['IsDefault']:
@@ -1172,7 +1169,6 @@ def get_play_url(media_source, play_session_id, channel_id=None):
 
     # get all the options
     server = settings.getSetting('server_address')
-    use_https = settings.getSetting('protocol') == "1"
     allow_direct_file_play = settings.getSetting('allow_direct_file_play') == 'true'
 
     can_direct_play = media_source["SupportsDirectPlay"]

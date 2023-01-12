@@ -4,7 +4,6 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import socket
 import json
 import time
-from datetime import datetime
 
 import xbmcaddon
 import xbmcgui
@@ -107,7 +106,7 @@ def get_server_details():
                 xbmc.sleep(1000)
                 data, addr = sock.recvfrom(1024)
                 servers.append(json.loads(data))
-            except:
+            except:  # noqa
                 break
     except Exception as e:
         log.error("UPD Discovery Error: {0}".format(e))
@@ -287,7 +286,6 @@ def check_server(force=False, change_user=False, notify=False):
                         something_changed = False
                         log.info('There was an error logging in with user {}'.format(selected_user_name))
                         xbmcgui.Dialog().ok(__addon_name__, translate_string(30446))
-
 
         if something_changed:
             home_window = HomeWindow()
