@@ -364,7 +364,6 @@ def show_menu(params):
         li.setProperty('menu_id', 'instant_mix')
         action_items.append(li)
 
-
     if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30275), offscreen=True)
         li.setProperty('menu_id', 'transcode')

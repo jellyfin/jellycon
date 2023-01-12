@@ -3,7 +3,6 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import sys
 from six.moves.urllib.parse import quote
 
-from datetime import datetime
 from dateutil import tz
 
 import xbmcgui
@@ -211,7 +210,7 @@ def extract_item_info(item, gui_options):
                     try:
                         aspect_width, aspect_height = aspect_ratio.split(':')
                         media_info["apect_ratio"] = float(aspect_width) / float(aspect_height)
-                    except:
+                    except:  # noqa
                         media_info["apect_ratio"] = 1.85
                 else:
                     media_info["apect_ratio"] = 1.85
@@ -359,9 +358,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             u += '&sort=none'
     else:
         u = sys.argv[0] + "?item_id=" + url + "&mode=PLAY"
-
-    # Create the ListItem that will be displayed
-    thumb_path = item_details.art["thumb"]
 
     list_item_name = item_details.name
     item_type = item_details.item_type.lower()

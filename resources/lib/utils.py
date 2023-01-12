@@ -97,7 +97,7 @@ def datetime_from_string(time_string):
     if time_string[-1:] == "Z":
         time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
     elif time_string[-6:] == "+00:00":
-        time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)
+        time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)  # noqa: W605
 
     try:
         dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
@@ -190,7 +190,7 @@ def save_user_details(user_name, user_id, token):
         try:
             with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
                 auth_data = json.load(infile)
-        except:
+        except:  # noqa
             # File doesn't exist or is empty
             auth_data = {}
 
@@ -225,7 +225,7 @@ def load_user_details():
         try:
             with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
                 auth_data = json.load(infile)
-        except:
+        except:  # noqa
             # File doesn't exist yet
             return {}
 
@@ -258,12 +258,12 @@ def get_saved_users():
     try:
         with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
             auth_data = json.load(infile)
-    except:
+    except:  # noqa
         # File doesn't exist yet
         return []
 
     users = []
-    for user,values in auth_data.items():
+    for user, values in auth_data.items():
         users.append(
             {
                 'Name': user,
@@ -274,8 +274,6 @@ def get_saved_users():
         )
 
     return users
-
-
 
 
 def get_current_user_id():
@@ -426,6 +424,6 @@ def get_bitrate(enum_value):
     Max bit rate supported by server: 2147483 (max signed 32bit integer)
     '''
     bitrate = [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000,
-        7000, 8000, 9000, 10000, 12000, 14000, 16000, 18000,
-        20000, 25000, 30000, 35000, 40000, 100000, 1000000, 2147483]
+               7000, 8000, 9000, 10000, 12000, 14000, 16000, 18000,
+               20000, 25000, 30000, 35000, 40000, 100000, 1000000, 2147483]
     return bitrate[int(enum_value) if enum_value else 24] * 1000

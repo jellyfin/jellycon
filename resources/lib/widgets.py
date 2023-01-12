@@ -8,7 +8,7 @@ import random
 import time
 
 from .jellyfin import api
-from .utils import get_jellyfin_url, image_url, get_current_user_id, get_art_url, get_default_filters, kodi_version
+from .utils import get_jellyfin_url, image_url, get_current_user_id, get_art_url, get_default_filters
 from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory
