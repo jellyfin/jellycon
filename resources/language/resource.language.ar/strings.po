@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-01-11 12:51+0000\n"
-"Last-Translator: 0TTA <osamh735@gmail.com>\n"
+"PO-Revision-Date: 2023-01-13 15:51+0000\n"
+"Last-Translator: 0TTA <OTTTA@protonmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
 "Language: ar\n"
@@ -52,19 +52,17 @@ msgctxt "#30319"
 msgid "Music - All Album Artists"
 msgstr "كل فناني الألبوم"
 
-#, fuzzy
 msgctxt "#30351"
 msgid "Music - Recently Played"
-msgstr "لعبت مؤخرا"
+msgstr "موسيقى - شُغلت مؤخرا"
 
 msgctxt "#30350"
 msgid "Music - Recently Added"
 msgstr "أضيف مؤخرا"
 
-#, fuzzy
 msgctxt "#30349"
 msgid " - Recently Played"
-msgstr "لعبت مؤخرا"
+msgstr "- شُغلت مؤخرا"
 
 msgctxt "#30348"
 msgid "Add user ratings"
@@ -745,3 +743,235 @@ msgstr "أستضافة"
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
 msgstr "الحد الأقصى لمعدل نقل البيانات (Kbps)"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "(بروتوكول نقل النص الفائق) مشاهدة مباشرة"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "أتود حفظ كلمة السر؟"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "أدخل معلومات المستخدم يدويا"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "أتود حذف كلمة السر؟"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "أتود حذف كلمة السر المحفوظة؟"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "أتود إدخال رابط الخادم يدويا؟"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "يبحث عن خوادم داخل شبكة المنزل"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "حذف نتائج الذاكرة المؤقتة"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "حُذفت ملفات الذاكرة المؤقتة"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "حدث البيانات الوصفية"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "المعلومات"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- عقود"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "مدة الانتظار قبل قطع الاتصال لـ (بروتوكول نقل النص الفائق)"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "الحد الأقصى لقنوات الصوت"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "حدث خطأ خلال تسجيل الدخول"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "أتود حفظ كلمة السر؟"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "فشل الاتصال بالرابط المُدخل، أتود المحاولة مرة أخرى؟"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "رابط الخادم"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "أكثر من واحدا"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "بروتوكول نقل النص الفائق الآمن"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "إخفاء"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "الأفلام - التوصيات"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "معدل نقل البت (بالكيلو بتّ بالثانية)"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "استئناف المشاهدة"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "أضفها إلى قائمة كودي"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "الفنانين"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "موسيقى - شُغلت مرارا"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "تسجيل الدخول يدويا"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- المفضلة"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "دائما"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "تفاصيل الخادم"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "تفاصيل المستخدم"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "بروتوكول نقل النص الفائق"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- أظهر الكل"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "مكتبات Jellyfin"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- السنوات"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "لست مُخول لحذف هذا"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "لم تُضبط الإعدادات"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "ترميز الصوت"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "افتراضي"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "سنة"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "العنوان"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "اُضيف"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "التقييم"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "التصنيف الأدبي"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "المواسم"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "اخفي العناصر المُشاهدة من القائمة"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "اسمح بالمشاهدة المباشرة"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "اختبار سرعة الاتصال"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "إعدادات التشغيل"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "شغل التالي"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "عشوائي"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- شُغلت مرارا"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- المُسجلات"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "النظام -"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- الصفحات"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- من أ إلى ي"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "إجبار الترميز على معدل نقل البت (بالكيلو بتّ بالثانية)"
