@@ -1,11 +1,12 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import xbmcaddon
-import xbmcplugin
-import xbmcgui
 import hashlib
 import random
 import time
+
+import xbmcaddon
+import xbmcplugin
+import xbmcgui
 
 from .jellyfin import api
 from .utils import get_jellyfin_url, image_url, get_current_user_id, get_art_url, get_default_filters

@@ -1,18 +1,18 @@
 # Gnu General Public License - see LICENSE.TXT
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-from six.moves.urllib.parse import quote, unquote, parse_qsl
 import sys
 import os
 import time
 import cProfile
 import pstats
-from six import StringIO
 
 import xbmcplugin
 import xbmcgui
 import xbmcaddon
 import xbmc
+from six import StringIO
+from six.moves.urllib.parse import quote, unquote, parse_qsl
 
 from .jellyfin import api
 from .utils import translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version

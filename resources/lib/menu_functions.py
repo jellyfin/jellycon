@@ -3,13 +3,13 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import sys
-from six import ensure_binary, ensure_text
-from six.moves.urllib.parse import quote
 import base64
 import string
 
 import xbmcplugin
 import xbmcaddon
+from six import ensure_binary, ensure_text
+from six.moves.urllib.parse import quote
 
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow

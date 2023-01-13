@@ -1,10 +1,10 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import xbmcaddon
-from kodi_six.utils import py2_decode
+import json
 
 import requests
-import json
+import xbmcaddon
+from kodi_six.utils import py2_decode
 
 from .utils import get_device_id, get_version, load_user_details
 from .lazylogger import LazyLogger
