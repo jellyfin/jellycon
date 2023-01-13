@@ -1,4 +1,6 @@
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import hashlib
 import random
@@ -9,7 +11,10 @@ import xbmcplugin
 import xbmcgui
 
 from .jellyfin import api
-from .utils import get_jellyfin_url, image_url, get_current_user_id, get_art_url, get_default_filters
+from .utils import (
+    get_jellyfin_url, image_url, get_current_user_id,
+    get_art_url, get_default_filters
+)
 from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 from .dir_functions import process_directory

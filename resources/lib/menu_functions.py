@@ -1,6 +1,6 @@
-# coding=utf-8
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import sys
 import base64
@@ -14,7 +14,10 @@ from six.moves.urllib.parse import quote
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .lazylogger import LazyLogger
-from .utils import get_jellyfin_url, translate_string, get_art_url, get_default_filters, get_current_user_id
+from .utils import (
+    get_jellyfin_url, translate_string, get_art_url,
+    get_default_filters, get_current_user_id
+)
 from .item_functions import get_art
 
 log = LazyLogger(__name__)

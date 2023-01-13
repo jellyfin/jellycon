@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import division, absolute_import, print_function, unicode_literals
-
-##################################################################################################
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import os
 import logging
@@ -13,12 +12,8 @@ from kodi_six import xbmc, xbmcaddon
 
 from .utils import translate_path
 
-##################################################################################################
-
 __addon__ = xbmcaddon.Addon(id='plugin.video.jellycon')
 __pluginpath__ = translate_path(__addon__.getAddonInfo('path'))
-
-##################################################################################################
 
 
 def getLogger(name=None):

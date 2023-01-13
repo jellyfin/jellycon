@@ -1,5 +1,6 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import sys
 import binascii

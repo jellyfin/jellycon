@@ -1,5 +1,6 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import socket
 import json
@@ -12,7 +13,10 @@ import xbmc
 from .kodi_utils import HomeWindow
 from .jellyfin import API
 from .lazylogger import LazyLogger
-from .utils import datetime_from_string, translate_string, save_user_details, load_user_details, get_current_datetime, get_saved_users
+from .utils import (
+    datetime_from_string, translate_string, save_user_details,
+    load_user_details, get_current_datetime, get_saved_users
+)
 
 log = LazyLogger(__name__)
 
