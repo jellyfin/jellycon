@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-12-05 15:51+0000\n"
-"Last-Translator: Kirill Tyurin <1337soundwave1337@gmail.com>\n"
+"PO-Revision-Date: 2023-01-17 19:51+0000\n"
+"Last-Translator: pvphome <pvphome@gmail.com>\n"
 "Language-Team: Russian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ru/>\n"
 "Language: ru\n"
@@ -46,7 +46,7 @@ msgstr "Обработка элемента:"
 
 msgctxt "#30017"
 msgid "Show connected clients"
-msgstr "Показывать подсоединённых клиентов"
+msgstr "Показывать подсоединённые устройства"
 
 msgctxt "#30275"
 msgid "Force Transcode"
@@ -309,7 +309,7 @@ msgstr "ТВ-передачи - Жанры"
 
 msgctxt "#30287"
 msgid "TV Shows - Latest"
-msgstr "ТВ-передачи - Крайние"
+msgstr "ТВ-передачи - Последние"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
@@ -353,7 +353,7 @@ msgstr "Кэшировать рисунки"
 
 msgctxt "#30288"
 msgid " - Latest"
-msgstr "- Крайние"
+msgstr "- Последние"
 
 msgctxt "#30285"
 msgid " - Unwatched"
@@ -389,7 +389,7 @@ msgstr "Ошибка URL"
 
 msgctxt "#30183"
 msgid "Include people"
-msgstr "Включить людей"
+msgstr "Включить пользователей"
 
 msgctxt "#30181"
 msgid "Include plot"
@@ -621,7 +621,7 @@ msgstr "Подновить кэшированные рисунки"
 
 msgctxt "#30278"
 msgid " - Next Up"
-msgstr "- Очередное"
+msgstr "- Последнее"
 
 msgctxt "#30269"
 msgid "Movies - Random"
@@ -1111,3 +1111,7 @@ msgstr ""
 msgctxt "#30446"
 msgid "There was an error logging in"
 msgstr "Произошла ошибка при входе"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Перемешать"
