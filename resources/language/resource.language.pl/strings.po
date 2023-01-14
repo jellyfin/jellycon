@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-16 11:37+0000\n"
+"PO-Revision-Date: 2023-01-17 19:51+0000\n"
 "Last-Translator: Marcin Woliński <cierdek@gmail.com>\n"
 "Language-Team: Polish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/pl/>\n"
@@ -1113,3 +1113,15 @@ msgstr "Wystąpił błąd podczas logowania"
 msgctxt "#30445"
 msgid "Continue Watching"
 msgstr "Kontynuuj oglądanie"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maksymalny rozmiar kolejki odtwarzania"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Tasuj"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Natychmiastowe mieszanie"
