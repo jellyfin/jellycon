@@ -1,10 +1,16 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import threading
 import hashlib
 import os
 import time
+
+import xbmc
+import xbmcaddon
+import xbmcvfs
+import xbmcgui
 from six.moves import cPickle
 
 from .jellyfin import api
@@ -14,11 +20,6 @@ from .kodi_utils import HomeWindow
 from .tracking import timer
 from .filelock import FileLock
 from .utils import translate_string, load_user_details, translate_path
-
-import xbmc
-import xbmcaddon
-import xbmcvfs
-import xbmcgui
 
 log = LazyLogger(__name__)
 

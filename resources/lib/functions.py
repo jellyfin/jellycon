@@ -1,30 +1,40 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
-from six.moves.urllib.parse import quote, unquote, parse_qsl
 import sys
 import os
 import time
 import cProfile
 import pstats
-from six import StringIO
 
 import xbmcplugin
 import xbmcgui
 import xbmcaddon
 import xbmc
+from six import StringIO
+from six.moves.urllib.parse import quote, unquote, parse_qsl
 
 from .jellyfin import api
-from .utils import translate_string, get_version, load_user_details, get_art_url, get_default_filters, translate_path, kodi_version
+from .utils import (
+    translate_string, get_version, load_user_details, get_art_url,
+    get_default_filters, translate_path, kodi_version
+)
 from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
 from .server_detect import check_server, check_connection_speed
 from .lazylogger import LazyLogger
-from .menu_functions import display_main_menu, display_menu, show_movie_alpha_list, show_tvshow_alpha_list, show_genre_list, show_search, show_movie_pages, show_artist_alpha_list
+from .menu_functions import (
+    display_main_menu, display_menu, show_movie_alpha_list,
+    show_tvshow_alpha_list, show_genre_list, show_search,
+    show_movie_pages, show_artist_alpha_list
+)
 from .server_sessions import show_server_sessions
 from .action_menu import ActionMenu
 from .dialogs import BitrateDialog
-from .widgets import get_widget_content, get_widget_content_cast, check_for_new_content
+from .widgets import (
+    get_widget_content, get_widget_content_cast, check_for_new_content
+)
 from .cache_images import CacheArtwork
 from .dir_functions import get_content, process_directory
 from .tracking import timer

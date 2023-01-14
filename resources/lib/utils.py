@@ -1,12 +1,8 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
-import xbmcaddon
-import xbmc
-import xbmcvfs
-from kodi_six.utils import py2_encode, py2_decode
 import sys
-
 import binascii
 import string
 import random
@@ -15,11 +11,16 @@ import time
 import math
 import os
 import hashlib
-import requests
-from datetime import datetime
-from dateutil import tz
 import re
+from datetime import datetime
 from uuid import uuid4
+
+import requests
+from dateutil import tz
+import xbmcaddon
+import xbmc
+import xbmcvfs
+from kodi_six.utils import py2_encode, py2_decode
 from six import ensure_text, ensure_binary, text_type
 from six.moves.urllib.parse import urlencode
 

@@ -1,18 +1,20 @@
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
+
+import threading
+import io
+import base64
+import re
+from random import shuffle
 
 import xbmcvfs
 import xbmc
 import xbmcaddon
-import base64
-import re
-from random import shuffle
+import requests
 from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from six.moves.urllib.parse import urlparse
 from six import ensure_text
-
-import threading
-import requests
-import io
 
 from .jellyfin import api
 from .lazylogger import LazyLogger

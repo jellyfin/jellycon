@@ -1,18 +1,19 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
+
+import json
+import os
+import re
+import sys
+from datetime import timedelta
 
 import xbmc
 import xbmcgui
 import xbmcaddon
 import xbmcvfs
 import xbmcplugin
-
-from datetime import timedelta
-import json
-import os
-import re
 from six.moves.urllib.parse import urlencode
-import sys
 
 from .jellyfin import api
 from .lazylogger import LazyLogger

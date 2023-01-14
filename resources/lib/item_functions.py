@@ -1,15 +1,18 @@
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
 import sys
-from six.moves.urllib.parse import quote
 
 from dateutil import tz
-
+from six import ensure_text
+from six.moves.urllib.parse import quote
 import xbmcgui
 
-from .utils import datetime_from_string, get_art_url, image_url, get_current_datetime
+from .utils import (
+    datetime_from_string, get_art_url, image_url, get_current_datetime
+)
 from .lazylogger import LazyLogger
-from six import ensure_text
 
 log = LazyLogger(__name__)
 

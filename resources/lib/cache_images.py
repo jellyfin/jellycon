@@ -1,9 +1,7 @@
-# coding=utf-8
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
-from six.moves.urllib.parse import unquote
-import requests
 import base64
 import sys
 import threading
@@ -13,6 +11,8 @@ import xbmcgui
 import xbmcplugin
 import xbmc
 import xbmcaddon
+import requests
+from six.moves.urllib.parse import unquote
 
 from .jellyfin import api
 from .lazylogger import LazyLogger

@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
 
-#################################################################################################
-
-from __future__ import division, absolute_import, print_function, unicode_literals
 import json
 import threading
-import websocket
 import time
 
 import xbmc
 import xbmcaddon
 import xbmcgui
+import websocket
 
 from .jellyfin import API
 from .functions import play_action

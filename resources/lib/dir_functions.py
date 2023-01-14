@@ -1,19 +1,23 @@
-# Gnu General Public License - see LICENSE.TXT
-from __future__ import division, absolute_import, print_function, unicode_literals
+from __future__ import (
+    division, absolute_import, print_function, unicode_literals
+)
+
+import sys
+import re
 
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
-
 from six.moves.urllib.parse import quote, unquote
-import sys
-import re
 
 from .datamanager import DataManager
 from .lazylogger import LazyLogger
 from .item_functions import add_gui_item, ItemDetails
-from .utils import send_event_notification, translate_string, load_user_details, get_default_filters
 from .tracking import timer
+from .utils import (
+    send_event_notification, translate_string,
+    load_user_details, get_default_filters
+)
 
 log = LazyLogger(__name__)
 
