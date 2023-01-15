@@ -30,6 +30,8 @@ def timer(func):
                 data = args[1]
             elif func.__name__ == "main_entry_point" and len(sys.argv) > 2:
                 data = sys.argv[2]
-            log.info("timing_data|{0}|{1}|{2}|{3}".format(func.__name__, started, ended, data))
+            log.info("timing_data|{0}|{1}|{2}|{3}".format(
+                func.__name__, started, ended, data)
+            )
         return value
     return wrapper
