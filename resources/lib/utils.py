@@ -41,7 +41,8 @@ def kodi_version():
     else:
         default_versionstring = "19.1 (19.1.0) Git:20210509-85e05228b4"
 
-    version_string = xbmc.getInfoLabel('System.BuildVersion') or default_versionstring
+    version_string = xbmc.getInfoLabel(
+        'System.BuildVersion') or default_versionstring
     return int(version_string.split(' ', 1)[0].split('.', 1)[0])
 
 
@@ -53,7 +54,7 @@ def get_jellyfin_url(path, params):
 
 def get_checksum(item):
     userdata = item['UserData']
-    checksum = "%s_%s_%s_%s_%s_%s_%s" % (
+    checksum = "{}_{}_{}_{}_{}_{}_{}".format(
         item['Etag'],
         userdata['Played'],
         userdata['IsFavorite'],
@@ -82,14 +83,15 @@ def send_event_notification(method, data=None, hexlify=False):
     Send events through Kodi's notification system
     '''
     data = data or {}
+    data_str = json.dumps(data)
 
     if hexlify:
         # Used exclusively for the upnext plugin
-        data = ensure_text(binascii.hexlify(ensure_binary(json.dumps(data))))
+        data = ensure_text(binascii.hexlify(ensure_binary(data_str)))
     sender = 'plugin.video.jellycon'
-    data = '"[%s]"' % json.dumps(data).replace('"', '\\"')
+    data = '"[{}]"'.format(data_str.replace('"', '\\"'))
 
-    xbmc.executebuiltin('NotifyAll(%s, %s, %s)' % (sender, method, data))
+    xbmc.executebuiltin('NotifyAll({}, {}, {})'.format(sender, method, data))
 
 
 def datetime_from_string(time_string):
@@ -98,15 +100,22 @@ def datetime_from_string(time_string):
     if time_string[-1:] == "Z":
         time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
     elif time_string[-6:] == "+00:00":
-        time_string = re.sub("[0-9]{1}\+00:00", " UTC", time_string)  # noqa: W605
+        time_string = re.sub(
+            "[0-9]{1}\+00:00", " UTC", time_string  # noqa: W605
+        )
 
     try:
         dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
     except TypeError:
         # https://bugs.python.org/issue27400
-        dt = datetime(*(time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")[0:6]))
+        dt = datetime(*(
+            time.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")[0:6])
+        )
 
-    # Dates received from the server are in UTC, but parsing them results in naive objects
+    """
+    Dates received from the server are in UTC, but parsing them results
+    in naive objects
+    """
     utc = tz.tzutc()
     utc_dt = dt.replace(tzinfo=utc)
 
@@ -129,7 +138,7 @@ def convert_size(size_bytes):
     i = int(math.floor(math.log(size_bytes, 1024)))
     p = math.pow(1024, i)
     s = round(size_bytes / p, 2)
-    return "%s %s" % (s, size_name[i])
+    return "{} {}".format(s, size_name[i])
 
 
 def translate_string(string_id):
@@ -155,7 +164,9 @@ def get_device_id():
         rand_id = uuid4().hex
         return '{}-{}'.format(client_id, rand_id)
 
-    jellyfin_guid_path = py2_decode(translate_path("special://temp/jellycon_guid"))
+    jellyfin_guid_path = py2_decode(
+        translate_path("special://temp/jellycon_guid")
+    )
     log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
     guid = xbmcvfs.File(jellyfin_guid_path)
     client_id = guid.read()
@@ -183,7 +194,8 @@ def get_version():
 
 def save_user_details(user_name, user_id, token):
     settings = xbmcaddon.Addon()
-    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    save_user_to_settings = settings.getSetting(
+        'save_user_to_settings') == 'true'
     addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 
     # Save to a config file for reference later if desired
@@ -201,7 +213,8 @@ def save_user_details(user_name, user_id, token):
         }
 
         with open(os.path.join(addon_data, 'auth.json'), 'wb') as outfile:
-            data = json.dumps(auth_data, sort_keys=True, indent=4, ensure_ascii=False)
+            data = json.dumps(
+                auth_data, sort_keys=True, indent=4, ensure_ascii=False)
             if isinstance(data, text_type):
                 data = data.encode('utf-8')
             outfile.write(data)
@@ -219,10 +232,10 @@ def load_user_details():
     user_name = window.get_property('user_name')
     if not user_name:
         user_name = settings.getSetting('username')
-    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    save_user = settings.getSetting('save_user_to_settings') == 'true'
     addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
 
-    if save_user_to_settings:
+    if save_user:
         try:
             with open(os.path.join(addon_data, 'auth.json'), 'rb') as infile:
                 auth_data = json.load(infile)
@@ -251,9 +264,9 @@ def load_user_details():
 
 def get_saved_users():
     settings = xbmcaddon.Addon()
-    save_user_to_settings = settings.getSetting('save_user_to_settings') == 'true'
+    save_user = settings.getSetting('save_user_to_settings') == 'true'
     addon_data = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
-    if not save_user_to_settings:
+    if not save_user:
         return []
 
     try:
@@ -316,12 +329,13 @@ def get_art_url(data, art_type, parent=False, index=0, server=None):
             if image_tag_type:
                 image_tag = image_tag_type
     elif parent is True:
-        if (item_type == "Episode" or item_type == "Season") and art_type == 'Primary':
+        if ((item_type == "Episode" or item_type == "Season") and
+                art_type == 'Primary'):
             tag_name = 'SeriesPrimaryImageTag'
             id_name = 'SeriesId'
         else:
-            tag_name = 'Parent%sImageTag' % art_type
-            id_name = 'Parent%sItemId' % art_type
+            tag_name = 'Parent{}ImageTag'.format(art_type)
+            id_name = 'Parent{}ItemId'.format(art_type)
         parent_image_id = data.get(id_name)
         parent_image_tag = data.get(tag_name)
         if parent_image_id is not None and parent_image_tag is not None:
@@ -329,7 +343,9 @@ def get_art_url(data, art_type, parent=False, index=0, server=None):
             image_tag = parent_image_tag
 
     # ParentTag not passed for Banner and Art
-    if not image_tag and not ((art_type == 'Banner' or art_type == 'Art') and parent is True):
+    if (not image_tag and
+            not ((art_type == 'Banner' or art_type == 'Art') and
+                 parent is True)):
         return ""
 
     artwork = "{}/Items/{}/Images/{}/{}?Format=original&Tag={}".format(
@@ -340,7 +356,9 @@ def get_art_url(data, art_type, parent=False, index=0, server=None):
 def image_url(item_id, art_type, index, width, height, image_tag, server):
 
     # test imageTag e3ab56fe27d389446754d0fb04910a34
-    artwork = "{}/Items/{}/Images/{}/{}?Format=original&Tag={}".format(server, item_id, art_type, index, image_tag)
+    artwork = "{}/Items/{}/Images/{}/{}?Format=original&Tag={}".format(
+        server, item_id, art_type, index, image_tag
+    )
     if int(width) > 0:
         artwork += '&MaxWidth={}'.format(width)
     if int(height) > 0:
@@ -413,7 +431,9 @@ def download_external_sub(language, codec, url):
 
     # Write the subtitle file to the local filesystem
     file_name = 'Stream.{}.{}'.format(language, codec)
-    file_path = py2_decode(translate_path('special://temp/{}'.format(file_name)))
+    file_path = py2_decode(
+        translate_path('special://temp/{}'.format(file_name))
+    )
     with open(file_path, 'wb') as f:
         f.write(r.content)
 
