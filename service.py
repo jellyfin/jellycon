@@ -177,15 +177,15 @@ websocket_client.stop_client()
 # call stop on the library update monitor
 library_change_monitor.stop()
 
-# stop the play next episdoe service
+# stop the play next episode service
 if play_next_service:
-    play_next_service.stop_servcie()
+    play_next_service.stop_service()
 
 # call stop on the context menu monitor
 if context_monitor:
     context_monitor.stop_monitor()
 
-# clear user and token when loggin off
+# clear user and token when logging off
 home_window.clear_property("user_name")
 home_window.clear_property("AccessToken")
 home_window.clear_property("userimage")

@@ -208,7 +208,7 @@ def extract_item_info(item, gui_options):
                 media_info["height"] = mediaStream.get("Height")
                 media_info["width"] = mediaStream.get("Width")
                 aspect_ratio = mediaStream.get("AspectRatio")
-                media_info["apect"] = aspect_ratio
+                media_info["aspect"] = aspect_ratio
                 if aspect_ratio and len(aspect_ratio) >= 3:
                     try:
                         aspect_width, aspect_height = aspect_ratio.split(':')

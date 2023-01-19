@@ -94,6 +94,6 @@ class PlayNextService(threading.Thread):
             if xbmc.Monitor().waitForAbort(1):
                 break
 
-    def stop_servcie(self):
+    def stop_service(self):
         log.debug("PlayNextService Stop Called")
         self.stop_thread = True
