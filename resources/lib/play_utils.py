@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+import binascii
 from datetime import timedelta
 
 import xbmc
@@ -475,6 +476,7 @@ def play_file(play_info):
     if result.get('Type') == 'Episode':
         next_episode = get_next_episode(result)
         data["next_episode"] = next_episode
+        send_next_episode_details(result, next_episode)
 
     home_window.set_property('now_playing', json.dumps(data))
 
@@ -1410,18 +1412,29 @@ class PlaybackService(xbmc.Monitor):
             home_window.set_property('exit', 'True')
             return
 
-        if sender != 'plugin.video.jellycon':
+        if sender.lower() not in (
+            'plugin.video.jellycon', 'xbmc', 'upnextprovider.signal'
+        ):
             return
 
+
         signal = method.split('.', 1)[-1]
-        if signal not in ("jellycon_play_action", "jellycon_play_youtube_trailer_action", "set_view"):
+        if signal not in (
+            "jellycon_play_action", "jellycon_play_youtube_trailer_action",
+            "set_view", "plugin.video.jellycon_play_action"):
             return
 
         data_json = json.loads(data)
-        play_info = data_json[0]
+        if sender.lower() == "upnextprovider.signal":
+            play_info = json.loads(binascii.unhexlify(data_json[0]))
+        else:
+            play_info = data_json[0]
+
         log.debug("PlaybackService:onNotification:{0}".format(play_info))
 
-        if signal == "jellycon_play_action":
+        if signal in (
+            "jellycon_play_action", "plugin.video.jellycon_play_action"
+        ):
             play_file(play_info)
         elif signal == "jellycon_play_youtube_trailer_action":
             trailer_link = play_info["url"]
