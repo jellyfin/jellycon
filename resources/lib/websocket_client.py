@@ -157,7 +157,9 @@ class WebSocketClient(threading.Thread):
 
             elif command == 'SetVolume':
                 volume = arguments['Volume']
-                xbmc.executebuiltin('SetVolume(%s[,showvolumebar])' % volume)
+                xbmc.executebuiltin(
+                    'SetVolume({}[,showvolumebar])'.format(volume)
+                )
 
             elif command == 'SetAudioStreamIndex':
                 index = int(arguments['Index'])
@@ -169,7 +171,7 @@ class WebSocketClient(threading.Thread):
 
             elif command == 'SetRepeatMode':
                 mode = arguments['RepeatMode']
-                xbmc.executebuiltin('xbmc.PlayerControl(%s)' % mode)
+                xbmc.executebuiltin('xbmc.PlayerControl({})'.format(mode))
 
         elif command == 'DisplayMessage':
 
@@ -252,7 +254,9 @@ class WebSocketClient(threading.Thread):
         else:
             server = server.replace('http://', 'ws://')
 
-        websocket_url = "%s/socket?api_key=%s&deviceId=%s" % (server, token, self.device_id)
+        websocket_url = "{}/socket?api_key={}&deviceId={}".format(
+            server, token, self.device_id
+        )
         log.debug("websocket url: {0}".format(websocket_url))
 
         self._client = websocket.WebSocketApp(

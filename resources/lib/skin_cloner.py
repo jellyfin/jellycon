@@ -20,9 +20,11 @@ def clone_default_skin():
     xbmc.executebuiltin("Dialog.Close(all,true)")
     xbmc.executebuiltin("ActivateWindow(Home)")
 
-    response = xbmcgui.Dialog().yesno("JellyCon Skin Cloner",
-                                      "This will clone the default Estuary Kodi skin and add JellyCon functionality to it.",
-                                      "Do you want to continue?")
+    response = xbmcgui.Dialog().yesno(
+        "JellyCon Skin Cloner",
+        ("This will clone the default Estuary Kodi skin and"
+         "add JellyCon functionality to it."),
+        "Do you want to continue?")
     if not response:
         return
 
@@ -63,7 +65,9 @@ def clone_skin():
         log.debug("Found Path: {0}".format(found))
 
     kodi_home_path = translate_path("special://home")
-    kodi_skin_destination = os.path.join(kodi_home_path, "addons", "skin.estuary_jellycon")
+    kodi_skin_destination = os.path.join(
+        kodi_home_path, "addons", "skin.estuary_jellycon"
+    )
     log.debug("Kodi Skin Destination: {0}".format(kodi_skin_destination))
 
     # copy all skin files (clone)
@@ -71,7 +75,7 @@ def clone_skin():
     total = len(all_files)
     for skin_file in all_files:
         percentage_done = int(float(count) / float(total) * 100.0)
-        pdialog.update(percentage_done, "%s" % skin_file)
+        pdialog.update(percentage_done, skin_file)
 
         source = os.path.join(kodi_skin_source, skin_file)
         destination = os.path.join(kodi_skin_destination, skin_file)
@@ -90,7 +94,9 @@ def clone_skin():
     addon_tree.write(addon_xml_path)
 
     # get jellycon path
-    jellycon_path = os.path.join(kodi_home_path, "addons", "plugin.video.jellycon")
+    jellycon_path = os.path.join(
+        kodi_home_path, "addons", "plugin.video.jellycon"
+    )
 
     log.debug("Major Version: {0}".format(kodi_version()))
 
@@ -102,7 +108,10 @@ def clone_skin():
 
     # Copy customized skin files from our addon into cloned skin
     for file_name in file_list:
-        source = os.path.join(jellycon_path, "resources", "skins", "skin.estuary", str(kodi_version), "xml", file_name)
+        source = os.path.join(
+            jellycon_path, "resources", "skins", "skin.estuary",
+            str(kodi_version), "xml", file_name
+        )
         destination = os.path.join(kodi_skin_destination, "xml", file_name)
         xbmcvfs.copy(source, destination)
 
@@ -111,7 +120,10 @@ def clone_skin():
     pdialog.close()
     del pdialog
 
-    response = xbmcgui.Dialog().yesno("JellyCon Skin Cloner", "Do you want to switch to the new cloned skin?")
+    response = xbmcgui.Dialog().yesno(
+        "JellyCon Skin Cloner",
+        "Do you want to switch to the new cloned skin?"
+    )
     if not response:
         return
 
@@ -122,10 +134,14 @@ def clone_skin():
     result = JsonRpc('Addons.SetAddonEnabled').execute(params)
     log.debug("Addons.SetAddonEnabled : {0}".format(result))
 
-    log.debug("SkinCloner : Current Skin : " + get_value("lookandfeel.skin"))
+    log.debug("SkinCloner : Current Skin : {}".format(
+        get_value("lookandfeel.skin"))
+    )
     set_result = set_value("lookandfeel.skin", "skin.estuary_jellycon")
     log.debug("Save Setting : lookandfeel.skin : {0}".format(set_result))
-    log.debug("SkinCloner : Current Skin : " + get_value("lookandfeel.skin"))
+    log.debug("SkinCloner : Current Skin : {}".format(
+        get_value("lookandfeel.skin"))
+    )
 
 
 def update_kodi_settings():

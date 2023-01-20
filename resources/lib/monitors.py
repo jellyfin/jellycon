@@ -26,7 +26,11 @@ class ContextMonitor(threading.Thread):
 
         while not xbmc.Monitor().abortRequested() and not self.stop_thread:
 
-            if xbmc.getCondVisibility("Window.IsActive(fullscreenvideo) | Window.IsActive(visualisation)"):
+            visibility_check = (
+                "Window.IsActive(fullscreenvideo) | "
+                "Window.IsActive(visualisation)"
+            )
+            if xbmc.getCondVisibility(visibility_check):
                 xbmc.sleep(1000)
             else:
                 if xbmc.getCondVisibility("Window.IsVisible(contextmenu)"):
@@ -37,7 +41,9 @@ class ContextMonitor(threading.Thread):
                         show_menu(params)
 
                 container_id = xbmc.getInfoLabel("System.CurrentControlID")
-                item_id = xbmc.getInfoLabel("Container(" + str(container_id) + ").ListItem.Property(id)")
+                item_id = xbmc.getInfoLabel(
+                    "Container({}).ListItem.Property(id)".format(container_id)
+                )
 
                 xbmc.sleep(100)
 

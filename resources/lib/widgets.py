@@ -83,8 +83,9 @@ def set_background_image(force=False):
         background_items = []
 
     if len(background_items) == 0:
-        log.debug("set_background_image: Need to load more backgrounds {0} - {1}".format(
-            len(background_items), background_current_item))
+        log.debug("Need to load more backgrounds {0} - {1}".format(
+            len(background_items), background_current_item)
+        )
 
         url_params = {}
         url_params["Recursive"] = True
@@ -112,13 +113,17 @@ def set_background_image(force=False):
                     background_items.append(item_background)
 
         log.debug("set_background_image: Loaded {0} more backgrounds".format(
-            len(background_items)))
+            len(background_items))
+        )
 
     if len(background_items) > 0:
         bg_image = background_items[background_current_item].get("image")
         label = background_items[background_current_item].get("name")
         log.debug(
-            "set_background_image: {0} - {1} - {2}".format(background_current_item, label, bg_image))
+            "set_background_image: {0} - {1} - {2}".format(
+                background_current_item, label, bg_image
+            )
+        )
 
         background_current_item += 1
         if background_current_item >= len(background_items):
@@ -177,7 +182,9 @@ def check_for_new_content():
     url_params["IncludeItemTypes"] = "Movie,Episode"
     url_params["ImageTypeLimit"] = 0
 
-    played_url = get_jellyfin_url('/Users/{}/Items'.format(user_id), url_params)
+    played_url = get_jellyfin_url(
+        '/Users/{}/Items'.format(user_id), url_params
+    )
 
     result = api.get(played_url)
     log.debug("LATEST_PLAYED_ITEM: {0}".format(result))
@@ -221,7 +228,9 @@ def get_widget_content_cast(handle, params):
     if not result:
         return
 
-    if result.get("Type", "") in ["Episode", "Season"] and params.get("auto", "true") == "true":
+    if (result.get("Type", "") in ["Episode", "Season"] and
+            params.get("auto", "true") == "true"):
+
         series_id = result.get("SeriesId")
         if series_id:
             params["id"] = series_id
@@ -242,7 +251,9 @@ def get_widget_content_cast(handle, params):
             person_thumbnail = None
             if person_tag:
                 person_thumbnail = image_url(
-                    person_id, "Primary", 0, 400, 400, person_tag, server=server)
+                    person_id, "Primary", 0, 400, 400,
+                    person_tag, server=server
+                )
 
             list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
 
@@ -393,12 +404,19 @@ def get_widget_content(handle, params):
         while len(ids) < item_limit and suggested_items:
             items = suggested_items[set_id]
             log.debug(
-                "BaselineItemName : {0} - {1}".format(set_id, items.get("BaselineItemName")))
+                "BaselineItemName : {0} - {1}".format(
+                    set_id, items.get("BaselineItemName")
+                )
+            )
             items = items["Items"]
             rand = random.randint(0, len(items) - 1)
             item = items[rand]
-            if item["Type"] == "Movie" and item["Id"] not in ids and (not item["UserData"]["Played"] or not hide_watched):
+
+            if (item["Type"] == "Movie" and item["Id"] not in ids and
+                    (not item["UserData"]["Played"] or not hide_watched)):
+
                 ids.append(item["Id"])
+
             del items[rand]
             if len(items) == 0:
                 del suggested_items[set_id]
@@ -412,22 +430,23 @@ def get_widget_content(handle, params):
 
     items_url = get_jellyfin_url(url_verb, url_params)
 
-    if url_params.get('IncludeItemTypes', '') == 'Episode' or params.get('type', '') == 'nextup_episodes':
+    if (url_params.get('IncludeItemTypes', '') == 'Episode' or
+            params.get('type', '') == 'nextup_episodes'):
         params["name_format"] = "Episode|episode_name_format"
 
     list_items, detected_type, total_records = process_directory(
         items_url, None, params, use_cached_widget_data)
 
-    # Combine In Progress and Next Up Episodes, append next up after In Progress
+    # Combine In Progress and Next Up Episodes, add next up after In Progress
     if widget_type == "nextup_episodes":
         inprogress_url = get_jellyfin_url(
             inprogress_url_verb, inprogress_url_params)
 
         params["name_format"] = "Episode|episode_name_format"
-        list_items_inprogress, detected_type, total_records = process_directory(
+        inprogress, detected_type, total_records = process_directory(
             inprogress_url, None, params, use_cached_widget_data)
 
-        list_items = list_items_inprogress + list_items
+        list_items = inprogress + list_items
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type
@@ -440,7 +459,7 @@ def get_widget_content(handle, params):
             content_type = 'episodes'
         elif detected_type == "Series":
             content_type = 'tvshows'
-        elif detected_type == "Music" or detected_type == "Audio" or detected_type == "Musicalbum":
+        elif detected_type in ["Music", "Audio", "Musicalbum"]:
             content_type = 'songs'
 
         if content_type:

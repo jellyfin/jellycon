@@ -13,12 +13,12 @@ import xbmcgui
 import xbmcaddon
 import xbmc
 from six import StringIO
-from six.moves.urllib.parse import quote, unquote, parse_qsl
+from six.moves.urllib.parse import quote, unquote, parse_qsl, urlencode
 
 from .jellyfin import api
 from .utils import (
     translate_string, get_version, load_user_details, get_art_url,
-    get_default_filters, translate_path, kodi_version
+    get_default_filters, translate_path, kodi_version, get_jellyfin_url
 )
 from .kodi_utils import HomeWindow
 from .datamanager import clear_cached_server_data
@@ -45,6 +45,7 @@ __addon__ = xbmcaddon.Addon()
 __addondir__ = translate_path(__addon__.getAddonInfo('profile'))
 __cwd__ = __addon__.getAddonInfo('path')
 PLUGINPATH = translate_path(os.path.join(__cwd__))
+addon_id = __addon__.getAddonInfo('id')
 
 log = LazyLogger(__name__)
 
@@ -66,7 +67,9 @@ def main_entry_point():
 
     log.debug("Running Python: {0}".format(sys.version_info))
     log.debug("Running JellyCon: {0}".format(get_version()))
-    log.debug("Kodi BuildVersion: {0}".format(xbmc.getInfoLabel("System.BuildVersion")))
+    log.debug("Kodi BuildVersion: {0}".format(
+        xbmc.getInfoLabel("System.BuildVersion"))
+    )
     log.debug("Kodi Version: {0}".format(kodi_version()))
     log.debug("Script argument data: {0}".format(sys.argv))
 
@@ -78,7 +81,9 @@ def main_entry_point():
 
     mode = params.get("mode", None)
 
-    if len(params) == 1 and request_path and request_path.find("/library/movies") > -1:
+    if (len(params) == 1 and request_path
+            and request_path.find("/library/movies") > -1):
+
         check_server()
         new_params = {}
         new_params["item_type"] = "Movie"
@@ -117,7 +122,9 @@ def main_entry_point():
         __addon__.openSettings()
         window = xbmcgui.getCurrentWindowId()
         if window == 10000:
-            log.debug("Currently in home - refreshing to allow new settings to be taken")
+            log.debug(
+                "Currently in home - refresh to allow new settings to be taken"
+            )
             xbmc.executebuiltin("ActivateWindow(Home)")
     elif mode == "CLEAR_CACHE":
         clear_cached_server_data()
@@ -139,13 +146,6 @@ def main_entry_point():
         show_server_sessions()
     elif mode == "SHOW_ADDON_MENU":
         display_menu(params)
-    elif mode == "GET_CONTENT_BY_TV_SHOW":
-        parent_id = __get_parent_id_from(params)
-        if parent_id is not None:
-            enriched_url = param_url + "&ParentId=" + parent_id
-            get_content(enriched_url, params)
-        else:
-            log.info("Unable to find TV show parent ID.")
     else:
         log.debug("JellyCon -> Mode: {0}".format(mode))
         log.debug("JellyCon -> URL: {0}".format(param_url))
@@ -162,7 +162,9 @@ def main_entry_point():
         pr.disable()
 
         file_time_stamp = time.strftime("%Y%m%d-%H%M%S")
-        tab_file_name = __addondir__ + "profile(" + file_time_stamp + ").txt"
+        tab_file_name = "{}-profile({}).txt".format(
+            __addondir__, file_time_stamp
+        )
         s = StringIO()
         ps = pstats.Stats(pr, stream=s)
         ps = ps.sort_stats('cumulative')
@@ -174,33 +176,6 @@ def main_entry_point():
             f.write(s.getvalue())
 
     log.debug("===== JellyCon FINISHED =====")
-
-
-def __enrich_url(param_url, params):
-    enriched_url = param_url
-    parent_id = __get_parent_id_from(params)
-    if parent_id is not None:
-        enriched_url = param_url + "&ParentId=" + parent_id
-    return enriched_url
-
-
-def __get_parent_id_from(params):
-    result = None
-    show_provider_ids = params.get("show_ids")
-    if show_provider_ids is not None:
-        log.debug("TV show providers IDs: {}".format(show_provider_ids))
-        get_show_url = "/Users/{}/Items?fields=MediaStreams&Recursive=true" \
-                       "&IncludeItemTypes=series&IncludeMedia=true&ImageTypeLimit=1&Limit=16" \
-                       "&AnyProviderIdEquals={}".format(api.user_id, show_provider_ids)
-        content = api.get(get_show_url)
-        show = content.get("Items")
-        if len(show) == 1:
-            result = content.get("Items")[0].get("Id")
-        else:
-            log.debug("TV show not found for ids: {}".format(show_provider_ids))
-    else:
-        log.error("TV show parameter not found in request.")
-    return result
 
 
 def toggle_watched(params):
@@ -224,61 +199,61 @@ def toggle_watched(params):
 
 def mark_item_watched(item_id):
     log.debug("Mark Item Watched: {0}".format(item_id))
-    url = "/Users/{}/PlayedItems/{}".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/PlayedItems/{}".format(api.user_id, item_id)
     api.post(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
         log.debug("markWatched_lastUrl: {0}".format(last_url))
-        home_window.set_property("skip_cache_for_" + last_url, "true")
+        home_window.set_property("skip_cache_for_{}".format(last_url), "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def mark_item_unwatched(item_id):
     log.debug("Mark Item UnWatched: {0}".format(item_id))
-    url = "/Users/{}/PlayedItems/{}".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/PlayedItems/{}".format(api.user_id, item_id)
     api.delete(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
         log.debug("markUnwatched_lastUrl: {0}".format(last_url))
-        home_window.set_property("skip_cache_for_" + last_url, "true")
+        home_window.set_property("skip_cache_for_{}".format(last_url), "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def mark_item_favorite(item_id):
     log.debug("Add item to favourites: {0}".format(item_id))
-    url = "/Users/{}/FavoriteItems/{}".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/FavoriteItems/{}".format(api.user_id, item_id)
     api.post(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
-        home_window.set_property("skip_cache_for_" + last_url, "true")
+        home_window.set_property("skip_cache_for_{}".format(last_url), "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def unmark_item_favorite(item_id):
     log.debug("Remove item from favourites: {0}".format(item_id))
-    url = "/Users/{}/FavoriteItems/{}".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/FavoriteItems/{}".format(api.user_id, item_id)
     api.delete(url)
     check_for_new_content()
     home_window = HomeWindow()
     last_url = home_window.get_property("last_content_url")
     if last_url:
-        home_window.set_property("skip_cache_for_" + last_url, "true")
+        home_window.set_property("skip_cache_for_{}".format(last_url), "true")
 
     xbmc.executebuiltin("Container.Refresh")
 
 
 def delete(item_id):
 
-    item = api.delete("/Users/{}/Items/{}".format(user_details.get('user_id'), item_id))
+    item = api.delete("/Users/{}/Items/{}".format(api.user_id, item_id))
 
     item_id = item.get("Id")
     item_name = item.get("Name", "")
@@ -288,18 +263,24 @@ def delete(item_id):
     final_name = ""
 
     if series_name:
-        final_name += series_name + " - "
+        final_name += "{} -".format(series_name)
 
     if ep_number != -1:
-        final_name += "Episode %02d - " % (ep_number,)
+        final_name += "Episode {:02d} - ".format(ep_number)
 
     final_name += item_name
 
     if not item.get("CanDelete", False):
-        xbmcgui.Dialog().ok(translate_string(30135), translate_string(30417), final_name)
+        xbmcgui.Dialog().ok(
+            translate_string(30135), translate_string(30417), final_name
+        )
         return
 
-    return_value = xbmcgui.Dialog().yesno(translate_string(30091), '{}\n{}'.format(final_name, translate_string(30092)))
+    return_value = xbmcgui.Dialog().yesno(
+        translate_string(30091), '{}\n{}'.format(
+            final_name, translate_string(30092)
+        )
+    )
     if return_value:
         log.debug('Deleting Item: {0}'.format(item_id))
         url = '/Items/{}'.format(item_id)
@@ -311,7 +292,9 @@ def delete(item_id):
         home_window = HomeWindow()
         last_url = home_window.get_property("last_content_url")
         if last_url:
-            home_window.set_property("skip_cache_for_" + last_url, "true")
+            home_window.set_property(
+                "skip_cache_for_{}".format(last_url), "true"
+            )
 
         xbmc.executebuiltin("Container.Refresh")
 
@@ -330,7 +313,7 @@ def get_params():
     param = dict(parse_qsl(paramstring[1:]))
 
     # add plugin path
-    request_path = plugin_path.replace("plugin://plugin.video.jellycon", "")
+    request_path = plugin_path.replace("plugin://{}".format(addon_id), "")
     param["request_path"] = request_path
 
     log.debug("JellyCon -> Detected parameters: {0}".format(param))
@@ -354,7 +337,8 @@ def show_menu(params):
     action_items = []
 
     # Additional items to include in the context menu for different item types
-    if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio", "TvChannel", "Program", "MusicVideo"]:
+    if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio",
+                          "TvChannel", "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30314), offscreen=True)
         li.setProperty('menu_id', 'play')
         action_items.append(li)
@@ -364,7 +348,8 @@ def show_menu(params):
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
-    if result["Type"] in ["MusicArtist", "MusicAlbum", "Playlist", "Series", "Season"]:
+    if result["Type"] in ["MusicArtist", "MusicAlbum", "Playlist",
+                          "Series", "Season"]:
         li = xbmcgui.ListItem(translate_string(30448), offscreen=True)
         li.setProperty('menu_id', 'shuffle')
         action_items.append(li)
@@ -374,12 +359,14 @@ def show_menu(params):
         li.setProperty('menu_id', 'instant_mix')
         action_items.append(li)
 
-    if result["Type"] in ["Episode", "Movie", "Video", "TvChannel", "Program", "MusicVideo"]:
+    if result["Type"] in ["Episode", "Movie", "Video", "TvChannel",
+                          "Program", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30275), offscreen=True)
         li.setProperty('menu_id', 'transcode')
         action_items.append(li)
 
-    if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio", "MusicArtist", "MusicAlbum", "MusicVideo"]:
+    if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio",
+                          "MusicArtist", "MusicAlbum", "MusicVideo"]:
         li = xbmcgui.ListItem(translate_string(30402), offscreen=True)
         li.setProperty('menu_id', 'add_to_playlist')
         action_items.append(li)
@@ -452,12 +439,15 @@ def show_menu(params):
     window = xbmcgui.Window(xbmcgui.getCurrentWindowId())
     container_view_id = str(window.getFocusId())
     container_content_type = xbmc.getInfoLabel("Container.Content")
-    view_key = "view-" + container_content_type
+    view_key = "view-{}".format(container_content_type)
     current_default_view = settings.getSetting(view_key)
     view_match = container_view_id == current_default_view
-    log.debug("View ID:{0} Content type:{1}".format(container_view_id, container_content_type))
+    log.debug("View ID:{0} Content type:{1}".format(
+        container_view_id, container_content_type)
+    )
 
-    if container_content_type in ["movies", "tvshows", "seasons", "episodes", "sets"]:
+    if container_content_type in ["movies", "tvshows", "seasons",
+                                  "episodes", "sets"]:
         if view_match:
             li = xbmcgui.ListItem("Unset as default view", offscreen=True)
             li.setProperty('menu_id', 'unset_view')
@@ -482,20 +472,28 @@ def show_menu(params):
         play_action(params)
 
     elif selected_action == "set_view":
-        log.debug("Settign view type for {0} to {1}".format(view_key, container_view_id))
+        log.debug("Settign view type for {0} to {1}".format(
+            view_key, container_view_id)
+        )
         settings.setSetting(view_key, container_view_id)
 
     elif selected_action == "unset_view":
-        log.debug("Un-Settign view type for {0} to {1}".format(view_key, container_view_id))
+        log.debug("Un-Settign view type for {0} to {1}".format(
+            view_key, container_view_id)
+        )
         settings.setSetting(view_key, "")
 
     elif selected_action == "refresh_server":
-        url = ("/Items/" + item_id + "/Refresh" +
-               "?Recursive=true" +
-               "&ImageRefreshMode=FullRefresh" +
-               "&MetadataRefreshMode=FullRefresh" +
-               "&ReplaceAllImages=true" +
-               "&ReplaceAllMetadata=true")
+        url_path = "/Items/{}/Refresh".format(item_id)
+        url_params = {
+            "Recursive": True,
+            "ImageRefreshMode": "FullRefresh",
+            "MetadataRefreshMode": "FullRefresh",
+            "ReplaceAllImages": True,
+            "ReplaceAllMetadata": True
+        }
+
+        url = get_jellyfin_url(url_path, url_params)
         res = api.post(url)
         log.debug("Refresh Server Responce: {0}".format(res))
 
@@ -513,7 +511,9 @@ def show_menu(params):
         last_url = home_window.get_property("last_content_url")
         if last_url:
             log.debug("markUnwatched_lastUrl: {0}".format(last_url))
-            home_window.set_property("skip_cache_for_" + last_url, "true")
+            home_window.set_property(
+                "skip_cache_for_{}".format(last_url), "true"
+            )
 
         xbmc.executebuiltin("Container.Refresh")
 
@@ -534,17 +534,22 @@ def show_menu(params):
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
 
-        force_max_stream_bitrate = settings.getSetting("force_max_stream_bitrate")
-        initial_bitrate_value = int(force_max_stream_bitrate)
-        bitrate_dialog = BitrateDialog("BitrateDialog.xml", PLUGINPATH, "default", "720p")
+        max_bitrate = settings.getSetting("force_max_stream_bitrate")
+        initial_bitrate_value = int(max_bitrate)
+        bitrate_dialog = BitrateDialog(
+            "BitrateDialog.xml", PLUGINPATH, "default", "720p"
+        )
         bitrate_dialog.initial_bitrate_value = initial_bitrate_value
         bitrate_dialog.doModal()
         selected_transcode_value = bitrate_dialog.selected_transcode_value
         del bitrate_dialog
-        log.debug("selected_transcode_value: {0}".format(selected_transcode_value))
+        log.debug("selected_transcode_value: {0}".format(
+            selected_transcode_value)
+        )
 
         if selected_transcode_value > 0:
-            settings.setSetting("force_max_stream_bitrate", str(selected_transcode_value))
+            settings.setSetting(
+                "force_max_stream_bitrate", str(selected_transcode_value))
 
             play_action(params)
 
@@ -568,25 +573,49 @@ def show_menu(params):
         delete(item_id)
 
     elif selected_action == "show_extras":
-        u = "/Users/{}/Items/{}/SpecialFeatures".format(api.user_id, item_id)
-        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Videos")
-        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+        url = "/Users/{}/Items/{}/SpecialFeatures".format(api.user_id, item_id)
+        plugin_params = {
+            "url": url,
+            "mode": "GET_CONTENT",
+            "media_type": "Videos"
+        }
+
+        action_params = urlencode(plugin_params)
+
+        action_url = "plugin://{}/?{}".format(addon_id, action_params)
+        built_in_command = 'ActivateWindow(Videos, {}, return)'.format(
+            action_url
+        )
         xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "view_season":
         xbmc.executebuiltin("Dialog.Close(all,true)")
         parent_id = result["ParentId"]
         series_id = result["SeriesId"]
-        u = ('/Shows/' + series_id +
-             '/Episodes'
-             '?userId={}'.format(api.user_id) +
-             '&seasonId=' + parent_id +
-             '&IsVirtualUnAired=false' +
-             '&IsMissing=false' +
-             '&Fields=SpecialEpisodeNumbers,{}'.format(get_default_filters()) +
-             '&format=json')
-        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Season")
-        built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+
+        url_path = "/Shows/{}/Episodes".format(series_id)
+        url_params = {
+            "userId": api.user_id,
+            "seasonId": parent_id,
+            "IsVirtualUnAired": False,
+            "IsMissing": False,
+            "Fields": "SpecialEpisodeNumbers,{}".format(get_default_filters())
+        }
+
+        url = get_jellyfin_url(url_path, url_params)
+
+        plugin_params = {
+            "url": url,
+            "mode": "GET_CONTENT",
+            "media_type": "Season"
+        }
+
+        action_params = urlencode(plugin_params)
+
+        action_url = "plugin://{}/?{}".format(addon_id, action_params)
+        built_in_command = 'ActivateWindow(Videos, {}, return)'.format(
+            action_url
+        )
         xbmc.executebuiltin(built_in_command)
 
     elif selected_action == "view_series":
@@ -596,18 +625,30 @@ def show_menu(params):
         if not series_id:
             series_id = item_id
 
-        u = ('/Shows/' + series_id +
-             '/Seasons'
-             '?userId={}'.format(api.user_id) +
-             '&Fields={}'.format(get_default_filters()) +
-             '&format=json')
+        url_path = "/Shows/{}/Seasons".format(series_id)
+        url_params = {
+            "userId": api.user_id,
+            "Fields": get_default_filters(),
+        }
 
-        action_url = ("plugin://plugin.video.jellycon/?url=" + quote(u) + "&mode=GET_CONTENT&media_type=Series")
+        url = get_jellyfin_url(url_path, url_params)
+
+        plugin_params = {
+            "url": url,
+            "mode": "GET_CONTENT",
+            "media_type": "Series"
+        }
+
+        action_params = urlencode(plugin_params)
+
+        action_url = "plugin://{}/?{}".format(addon_id, action_params)
 
         if xbmc.getCondVisibility("Window.IsActive(home)"):
-            built_in_command = 'ActivateWindow(Videos, ' + action_url + ', return)'
+            built_in_command = 'ActivateWindow(Videos, {}, return'.format(
+                action_url
+            )
         else:
-            built_in_command = 'Container.Update(' + action_url + ')'
+            built_in_command = 'Container.Update({})'.format(action_url)
 
         xbmc.executebuiltin(built_in_command)
 
@@ -629,18 +670,21 @@ def show_content(params):
     if item_type.lower().find("movie") == -1:
         group_movies = False
 
-    content_url = ("/Users/{}/Items".format(api.user_id) +
-                   "?format=json" +
-                   "&ImageTypeLimit=1" +
-                   "&IsMissing=False" +
-                   "&Fields={}".format(get_default_filters()) +
-                   '&CollapseBoxSetItems=' + str(group_movies) +
-                   '&GroupItemsIntoCollections=' + str(group_movies) +
-                   "&Recursive=true" +
-                   '&SortBy=Name' +
-                   '&SortOrder=Ascending' +
-                   "&IsVirtualUnaired=false" +
-                   "&IncludeItemTypes=" + item_type)
+    url_path = "/Users/{}/Items".format(api.user_id)
+    url_params = {
+        "ImageTypeLimit": 1,
+        "IsMissing": False,
+        "Fields": get_default_filters(),
+        "CollapseBoxSetItems": group_movies,
+        "GroupItemsIntoCollections": group_movies,
+        "Recursive": True,
+        "SortBy": "Name",
+        "SortOrder": "Ascending",
+        "IsVirtualUnaired": False,
+        "IncludeItemTypes": item_type
+    }
+
+    content_url = get_jellyfin_url(url_path, url_params)
 
     log.debug("showContent Content Url: {0}".format(content_url))
     get_content(content_url, params)
@@ -651,15 +695,21 @@ def search_results_person(params):
     handle = int(sys.argv[1])
 
     person_id = params.get("person_id")
-    details_url = ('/Users/{}/Items'.format(api.user_id) +
-                   '?PersonIds=' + person_id +
-                   '&Recursive=true' +
-                   '&Fields={}'.format(get_default_filters()) +
-                   '&format=json')
+
+    url_path = "/Users/{}/Items".format(api.user_id)
+    url_params = {
+        "PersonIds": person_id,
+        "Recursive": True,
+        "Fields": get_default_filters()
+    }
+
+    details_url = get_jellyfin_url(url_path, url_params)
 
     params["name_format"] = "Episode|episode_name_format"
 
-    dir_items, detected_type, total_records = process_directory(details_url, None, params)
+    dir_items, detected_type, total_records = process_directory(
+        details_url, None, params
+    )
 
     log.debug('search_results_person results: {0}'.format(dir_items))
     log.debug('search_results_person detect_type: {0}'.format(detected_type))
@@ -675,7 +725,7 @@ def search_results_person(params):
             content_type = 'episodes'
         elif detected_type == "Series":
             content_type = 'tvshows'
-        elif detected_type == "Music" or detected_type == "Audio" or detected_type == "Musicalbum":
+        elif detected_type in ["Music", "Audio", "Musicalbum"]:
             content_type = 'songs'
 
         if content_type:
@@ -708,7 +758,7 @@ def search_results(params):
         heading_type = translate_string(30235)
         content_type = 'episodes'
         params["name_format"] = "Episode|episode_name_format"
-    elif item_type == "music" or item_type == "audio" or item_type == "musicalbum":
+    elif item_type in ["music", "audio", "musicalalbum"]:
         heading_type = 'Music'
         content_type = 'songs'
     elif item_type == "person":
@@ -724,7 +774,9 @@ def search_results(params):
         home_window = HomeWindow()
         last_search = home_window.get_property("last_search")
         kb = xbmc.Keyboard()
-        kb.setHeading(heading_type.capitalize() + ' ' + translate_string(30246).lower())
+        kb.setHeading("{} {}".format(
+            heading_type.capitalize(), translate_string(30246).lower()
+        ))
         kb.setDefault(last_search)
         kb.doModal()
 
@@ -756,19 +808,23 @@ def search_results(params):
 
     # what type of search
     if item_type == "person":
-        search_url = ("/Persons" +
-                      "?searchTerm=" + query +
-                      "&IncludePeople=true" +
-                      "&IncludeMedia=false" +
-                      "&IncludeGenres=false" +
-                      "&IncludeStudios=false" +
-                      "&IncludeArtists=false" +
-                      "&Limit=16" +
-                      "&Fields=PrimaryImageAspectRatio,BasicSyncInfo,ProductionYear" +
-                      "&Recursive=true" +
-                      "&EnableTotalRecordCount=false" +
-                      "&ImageTypeLimit=1" +
-                      "&userId={}".format(api.user_id))
+        url_path = "/Persons"
+        url_params = {
+            "searchTerm": query,
+            "IncludePeople": True,
+            "IncludeMedia": False,
+            "IncludeGenres": False,
+            "IncludeStudios": False,
+            "IncludeArtists": False,
+            "Limit": 16,
+            "Fields": "PrimaryImageAspectRatio,BasicSyncInfo,ProductionYear",
+            "Recursive": True,
+            "EnableTotalRecordCount": False,
+            "ImageTypeLimit": 1,
+            "userId": api.user_id
+        }
+
+        search_url = get_jellyfin_url(url_path, url_params)
 
         person_search_results = api.get(search_url)
         log.debug("Person Search Result : {0}".format(person_search_results))
@@ -784,7 +840,9 @@ def search_results(params):
             person_name = item.get('Name')
             person_thumbnail = get_art_url(item, "Primary", server=server)
 
-            action_url = sys.argv[0] + "?mode=NEW_SEARCH_PERSON&person_id=" + person_id
+            action_url = "{}?mode=NEW_SEARCH_PERSON&person_id={}".format(
+                addon_id, person_id
+            )
 
             list_item = xbmcgui.ListItem(label=person_name, offscreen=True)
             list_item.setProperty("id", person_id)
@@ -804,23 +862,29 @@ def search_results(params):
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
     else:
-        search_url = ("/Users/{}/Items".format(api.user_id) +
-                      "?searchTerm=" + query +
-                      "&IncludePeople=false" +
-                      "&IncludeMedia=true" +
-                      "&IncludeGenres=false" +
-                      "&IncludeStudios=false" +
-                      "&IncludeArtists=false" +
-                      "&IncludeItemTypes=" + item_type +
-                      "&Limit=16" +
-                      "&Fields={}".format(get_default_filters()) +
-                      "&Recursive=true" +
-                      "&EnableTotalRecordCount=false" +
-                      "&ImageTypeLimit=1")
+        url_path = "/Users/{}/Items".format(api.user_id)
+        url_params = {
+            "searchTerm": query,
+            "IncludePeople": False,
+            "IncludeMedia": True,
+            "IncludeGenres": False,
+            "IncludeStudios": False,
+            "IncludeArtists": False,
+            "IncludeItemTypes": item_type,
+            "Limit": 16,
+            "Fields": get_default_filters(),
+            "Recursive": True,
+            "EnableTotalRecordCount": False,
+            "ImageTypeLimit": 1
+        }
+
+        search_url = get_jellyfin_url(url_path, url_params)
 
         # set content type
         xbmcplugin.setContent(handle, content_type)
-        dir_items, detected_type, total_records = process_directory(search_url, progress, params)
+        dir_items, detected_type, total_records = process_directory(
+            search_url, progress, params
+        )
         xbmcplugin.addDirectoryItems(handle, dir_items)
         xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
 
@@ -880,7 +944,9 @@ def play_action(params):
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
 
-    url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(
+        user_details.get('user_id'), item_id
+    )
 
     result = api.get(url)
 
@@ -897,7 +963,7 @@ def play_item_trailer(item_id):
         info["type"] = "local"
         name = trailer.get("Name")
         while not name or name in trailer_names:
-            name = "Trailer " + str(count)
+            name = "Trailer {}".format(count)
             count += 1
         info["name"] = name
         info["id"] = trailer.get("Id")
@@ -905,7 +971,9 @@ def play_item_trailer(item_id):
         trailer_names.append(name)
         trailer_list.append(info)
 
-    url = "/Users/{}/Items/{}?format=json&Fields=RemoteTrailers".format(user_details.get('user_id'), item_id)
+    url = "/Users/{}/Items/{}?format=json&Fields=RemoteTrailers".format(
+        user_details.get("user_id"), item_id
+    )
     result = api.get(url)
     log.debug("RemoteTrailers: {0}".format(result))
     count = 1
@@ -922,7 +990,7 @@ def play_item_trailer(item_id):
             info["url"] = url
             name = trailer.get("Name")
             while not name or name in trailer_names:
-                name = "Trailer " + str(count)
+                name = "Trailer {}".format(count)
                 count += 1
             info["name"] = name
             trailer_names.append(name)
@@ -932,7 +1000,9 @@ def play_item_trailer(item_id):
 
     trailer_text = []
     for trailer in trailer_list:
-        name = trailer.get("name") + " (" + trailer.get("type") + ")"
+        name = "{} ({})".format(
+            trailer.get("name"), trailer.get("type")
+        )
         trailer_text.append(name)
 
     dialog = xbmcgui.Dialog()
@@ -948,7 +1018,8 @@ def play_item_trailer(item_id):
 
         elif trailer.get("type") == "remote":
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
-            youtube_plugin = "RunPlugin(plugin://plugin.video.youtube/play/?video_id=%s)" % youtube_id
-            log.debug("youtube_plugin: {0}".format(youtube_plugin))
+            url_root = "plugin.video.youtube/play/?video_id="
+            play_url = "RunPlugin(plugin://{}{})".format(url_root, youtube_id)
+            log.debug("youtube_plugin: {0}".format(play_url))
 
-            xbmc.executebuiltin(youtube_plugin)
+            xbmc.executebuiltin(play_url)

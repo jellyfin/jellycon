@@ -42,7 +42,9 @@ class LogHandler(logging.StreamHandler):
             string = self.format(record)
 
             # Hide server URL in logs
-            string = string.replace(self.server or "{server}", "{jellyfin-server}")
+            string = string.replace(
+                self.server or "{server}", "{jellyfin-server}"
+            )
 
             py_version = sys.version_info.major
             # Log level notation changed in Kodi v19
@@ -70,12 +72,17 @@ class LogHandler(logging.StreamHandler):
 
 class MyFormatter(logging.Formatter):
 
-    def __init__(self, fmt='%(name)s -> %(levelname)s::%(relpath)s:%(lineno)s %(message)s'):
+    def __init__(
+        self,
+        fmt='%(name)s -> %(levelname)s::%(relpath)s:%(lineno)s %(message)s'
+    ):
         logging.Formatter.__init__(self, fmt)
 
     def format(self, record):
         if record.pathname:
-            record.pathname = ensure_text(record.pathname, get_filesystem_encoding())
+            record.pathname = ensure_text(
+                record.pathname, get_filesystem_encoding()
+            )
 
         self._gen_rel_path(record)
 
@@ -92,7 +99,10 @@ class MyFormatter(logging.Formatter):
             o = ensure_text(o, get_filesystem_encoding())
 
             if o.startswith('  File "'):
-                # If this split can't handle your file names, you should seriously consider renaming your files.
+                """
+                If this split can't handle your file names,
+                you should seriously consider renaming your files.
+                """
                 fn = o.split('  File "', 2)[1].split('", line ', 1)[0]
                 rfn = os.path.realpath(fn)
                 if rfn.startswith(_pluginpath_real):

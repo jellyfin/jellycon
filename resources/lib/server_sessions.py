@@ -50,10 +50,10 @@ def show_server_sessions():
         now_playing = session.get("NowPlayingItem", None)
         transcoding_info = session.get("TranscodingInfo", None)
 
-        session_info = user_name + " - " + client_name
+        session_info = "{} - {}".format(user_name, client_name)
         user_session_details = ""
 
-        percenatge_played = 0
+        percentage_played = 0
         position_ticks = 0
         runtime = 0
         play_method = "na"
@@ -68,37 +68,50 @@ def show_server_sessions():
 
             runtime = now_playing.get("RunTimeTicks", 0)
             if position_ticks > 0 and runtime > 0:
-                percenatge_played = (position_ticks / float(runtime)) * 100.0
-                percenatge_played = int(percenatge_played)
+                percentage_played = (position_ticks / float(runtime)) * 100.0
+                percentage_played = int(percentage_played)
 
-            session_info += " (" + now_playing.get("Name", "na") + " " + str(percenatge_played) + "%)"
-            user_session_details += now_playing.get("Name", "na") + " " + str(percenatge_played) + "%" + "\n"
+            session_info += " {} {}%".format(
+                now_playing.get("Name", "na"), percentage_played
+            )
+            user_session_details += "{} {}%\n".format(
+                now_playing.get("Name", "na"), percentage_played
+            )
 
         else:
             session_info += " (idle)"
-            user_session_details += "Idle" + "\n"
+            user_session_details += "Idle\n"
 
         transcoding_details = ""
         if transcoding_info:
             if not transcoding_info.get("IsVideoDirect", None):
-                transcoding_details += "Video:" + transcoding_info.get("VideoCodec", "") + ":" + str(transcoding_info.get("Width", 0)) + "x" + str(transcoding_info.get("Height", 0)) + "\n"
+                transcoding_details += "Video:{}:{}x{}\n".format(
+                    transcoding_info.get("VideoCodec", ""),
+                    transcoding_info.get("Width", 0),
+                    transcoding_info.get("Height", 0)
+                )
             else:
                 transcoding_details += "Video:direct\n"
 
             if not transcoding_info.get("IsAudioDirect", None):
-                transcoding_details += "Audio:" + transcoding_info.get("AudioCodec", "") + ":" + str(transcoding_info.get("AudioChannels", 0)) + "\n"
+                transcoding_details += "Audio:{}:{}\n".format(
+                    transcoding_info.get("AudioCodec", ""),
+                    transcoding_info.get("AudioChannels", 0)
+                )
             else:
                 transcoding_details += "Audio:direct\n"
 
-            transcoding_details += "Bitrate:" + str(transcoding_info.get("Bitrate", 0)) + "\n"
+            transcoding_details += "Bitrate:{}\n".format(
+                transcoding_info.get("Bitrate", 0)
+            )
 
         list_item = xbmcgui.ListItem(label=session_info)
         list_item.setArt(art)
 
-        user_session_details += device_name + "(" + client_version + ")\n"
-        user_session_details += client_name + "\n"
-        user_session_details += play_method + "\n"
-        user_session_details += transcoding_details + "\n"
+        user_session_details += "{}({})\n".format(device_name, client_version)
+        user_session_details += "{}\n".format(client_name)
+        user_session_details += "{}\n".format(play_method)
+        user_session_details += "{}\n".format(transcoding_details)
 
         info_labels = {}
         info_labels["duration"] = str(runtime / 10000000)
@@ -108,7 +121,7 @@ def show_server_sessions():
 
         list_item.setProperty('TotalTime', str(runtime / 10000000))
         list_item.setProperty('ResumeTime', str(position_ticks / 10000000))
-        list_item.setProperty("complete_percentage", str(percenatge_played))
+        list_item.setProperty("complete_percentage", str(percentage_played))
 
         item_tuple = ("", list_item, False)
         list_items.append(item_tuple)
