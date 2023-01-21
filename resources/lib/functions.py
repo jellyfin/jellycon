@@ -472,7 +472,7 @@ def show_menu(params):
         play_action(params)
 
     elif selected_action == "set_view":
-        log.debug("Settign view type for {0} to {1}".format(
+        log.debug("Setting view type for {0} to {1}".format(
             view_key, container_view_id)
         )
         settings.setSetting(view_key, container_view_id)
@@ -495,7 +495,7 @@ def show_menu(params):
 
         url = get_jellyfin_url(url_path, url_params)
         res = api.post(url)
-        log.debug("Refresh Server Responce: {0}".format(res))
+        log.debug("Refresh Server Response: {0}".format(res))
 
     elif selected_action == "hide":
         user_details = load_user_details()
@@ -504,7 +504,7 @@ def show_menu(params):
         url = "/Items/{}/Tags/Add".format(item_id)
         post_tag_data = {"Tags": [{"Name": hide_tag_string}]}
         res = api.post(url, post_tag_data)
-        log.debug("Add Tag Responce: {0}".format(res))
+        log.debug("Add Tag Response: {0}".format(res))
 
         check_for_new_content()
 
@@ -854,8 +854,8 @@ def search_results(params):
                 art_links["poster"] = person_thumbnail
             list_item.setArt(art_links)
 
-            item_tupple = (action_url, list_item, True)
-            list_items.append(item_tupple)
+            item_tuple = (action_url, list_item, True)
+            list_items.append(item_tuple)
 
         xbmcplugin.setContent(handle, 'artists')
         xbmcplugin.addDirectoryItems(handle, list_items)

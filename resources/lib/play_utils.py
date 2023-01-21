@@ -1018,20 +1018,20 @@ def prompt_for_stop_actions(item_id, data):
             prompt_delete_movie_percentage == 100):
         return
 
-    # if no runtime we cant calculate perceantge so just return
+    # if no runtime we can't calculate perceantge so just return
     if duration == 0:
-        log.debug("No duration so returing")
+        log.debug("No duration so returning")
         return
 
     # item percentage complete
-    percenatge_complete = int((current_position / duration) * 100)
-    log.debug("Episode Percentage Complete: {0}".format(percenatge_complete))
+    percentage_complete = int((current_position / duration) * 100)
+    log.debug("Episode Percentage Complete: {0}".format(percentage_complete))
 
     # prompt for next episode
     if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
-            percenatge_complete > prompt_next_percentage):
+            percentage_complete > prompt_next_percentage):
 
         if play_prompt:
 

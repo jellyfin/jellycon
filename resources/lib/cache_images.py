@@ -208,7 +208,7 @@ class CacheArtwork(threading.Thread):
         dp.close()
         del dp
         if result_text is not None:
-            log.debug("Cache Images reuslt : {0}".format(" - ".join(result_text)))
+            log.debug("Cache Images result : {0}".format(" - ".join(result_text)))
 
     def get_jellyfin_artwork(self, progress):
         log.debug("get_jellyfin_artwork")

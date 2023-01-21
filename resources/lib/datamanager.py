@@ -260,7 +260,7 @@ def clear_cached_server_data():
     del_count = 0
     for filename in files:
         if filename.startswith("cache_") and filename.endswith(".pickle"):
-            log.debug("Deleteing CacheFile: {0}".format(filename))
+            log.debug("Deleting CacheFile: {0}".format(filename))
             xbmcvfs.delete(os.path.join(addon_dir, filename))
             del_count += 1
 

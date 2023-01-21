@@ -272,8 +272,8 @@ def get_widget_content_cast(handle, params):
             if person_role:
                 list_item.setLabel2(person_role)
 
-            item_tupple = ("", list_item, False)
-            list_items.append(item_tupple)
+            item_tuple = ("", list_item, False)
+            list_items.append(item_tuple)
 
     xbmcplugin.setContent(handle, 'artists')
     xbmcplugin.addDirectoryItems(handle, list_items)
