@@ -478,6 +478,14 @@ def play_file(play_info):
         data["next_episode"] = next_episode
         send_next_episode_details(result, next_episode)
 
+    # We need the livestream id to properly delete encodings
+    if result.get("Type", "") in ["Program", "TvChannel"]:
+        for media_source in media_sources:
+            livestream_id = media_source.get("LiveStreamId")
+            data["livestream_id"] = livestream_id
+            if livestream_id:
+                break
+
     home_window.set_property('now_playing', json.dumps(data))
 
     list_item.setPath(playurl)
@@ -1075,6 +1083,7 @@ def stop_all_playback():
             jellyfin_item_id = data.get("item_id")
             jellyfin_source_id = data.get("source_id")
             play_session_id = data.get("play_session_id")
+            livestream_id = data.get('livestream_id')
 
             if jellyfin_item_id is not None and current_position >= 0:
                 log.debug("Playback Stopped at: {0}".format(current_position))
@@ -1087,6 +1096,11 @@ def stop_all_playback():
                     'RunTimeTicks': int(duration * 10000000),
                     'PlaySessionId': play_session_id
                 }
+
+                # If this is a livestream, include the id in the stopped call
+                if livestream_id:
+                    postdata['LiveStreamId'] = livestream_id
+
                 api.post(url, postdata)
                 data["currently_playing"] = False
 
