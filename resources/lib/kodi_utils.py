@@ -37,11 +37,13 @@ class HomeWindow:
         self.window.clearProperty(key)
 
 
-def add_menu_directory_item(label, path, folder=True, art=None):
+def add_menu_directory_item(label, path, folder=True, art=None, properties=None):
     li = xbmcgui.ListItem(label, path=path, offscreen=True)
     if art is None:
         art = {}
         art["thumb"] = addon.getAddonInfo('icon')
+    if properties is not None:
+        li.setProperties(properties)
     li.setArt(art)
 
     xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=path, listitem=li, isFolder=folder)

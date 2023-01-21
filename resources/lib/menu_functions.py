@@ -324,7 +324,9 @@ def show_genre_list(menu_params):
     for genre in result:
         title = genre.get('Name', translate_string(30250))
 
-        params["GenreIds"] = genre.get("Id")
+        genre_id = genre.get("Id")
+        params["GenreIds"] = genre_id
+        li_properties = {"id": genre_id}
 
         if parent_id is not None:
             params["ParentId"] = parent_id
@@ -337,7 +339,7 @@ def show_genre_list(menu_params):
                              "&mode=GET_CONTENT" +
                              "&media_type=" + kodi_type)
         log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
-        add_menu_directory_item(title, url, art=art)
+        add_menu_directory_item(title, url, art=art, properties=li_properties)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
