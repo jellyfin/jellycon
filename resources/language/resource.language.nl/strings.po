@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-12-26 15:51+0000\n"
-"Last-Translator: Niels van Velzen <git@ndat.nl>\n"
+"PO-Revision-Date: 2023-02-02 09:51+0000\n"
+"Last-Translator: Bram <BramHut@hotmail.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -694,10 +694,9 @@ msgctxt "#30445"
 msgid "Continue Watching"
 msgstr "Doorgaan met kijken"
 
-#, fuzzy
 msgctxt "#30444"
 msgid "Login using Quick Connect"
-msgstr "Log in met snel verbinden"
+msgstr "Log in met Quick Connect"
 
 msgctxt "#30443"
 msgid "Quick Connect"
