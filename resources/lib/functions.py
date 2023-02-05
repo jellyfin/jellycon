@@ -343,13 +343,14 @@ def show_menu(params):
         li.setProperty('menu_id', 'play')
         action_items.append(li)
 
-    if result["Type"] in ["Season", "MusicArtist", "MusicAlbum", "Playlist"]:
+    if result["Type"] in ["Season", "MusicArtist", "MusicAlbum", "Playlist",
+                          "MusicGenre"]:
         li = xbmcgui.ListItem(translate_string(30317), offscreen=True)
         li.setProperty('menu_id', 'play_all')
         action_items.append(li)
 
     if result["Type"] in ["MusicArtist", "MusicAlbum", "Playlist",
-                          "Series", "Season"]:
+                          "Series", "Season", "MusicGenre"]:
         li = xbmcgui.ListItem(translate_string(30448), offscreen=True)
         li.setProperty('menu_id', 'shuffle')
         action_items.append(li)
@@ -366,7 +367,8 @@ def show_menu(params):
         action_items.append(li)
 
     if result["Type"] in ["Episode", "Movie", "Music", "Video", "Audio",
-                          "MusicArtist", "MusicAlbum", "MusicVideo"]:
+                          "MusicArtist", "MusicAlbum", "MusicVideo",
+                          "MusicGenre"]:
         li = xbmcgui.ListItem(translate_string(30402), offscreen=True)
         li.setProperty('menu_id', 'add_to_playlist')
         action_items.append(li)
