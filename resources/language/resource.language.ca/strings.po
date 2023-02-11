@@ -1,2 +1,244 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2023-02-13 01:39+0000\n"
+"Last-Translator: jolupa <jolupameister@gmail.com>\n"
+"Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/ca/>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.14.1\n"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifica el certificat HTTPS"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Contrasenya"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Canvia usuari]"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Nombre d'elements a mostrar a la llista filtrada"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Aplana sessions úniques"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Nom d'usuari:"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Esborran"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "No Permès"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Serveis"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Recuperant Dades"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Afegir nombre de no vistes als noms"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Mostrar la progressió de la carrega"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Fet"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Error"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Afegeix (cc) si hi han subtítols disponibles"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Adreça del servidor seleccionat"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adreça:"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Inclou sipnosi"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Error en la URL"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Reproducció"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Ruta directa el fitxer"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Servidor"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Nom d'usuari"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Nom d'usuari de Samba"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Contrasenya de Samba"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Nombre de perfils de rendiment a capturar"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Detecta el servidor local]"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Temporitzador de dates del registre"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Nom del dispositiu emissor"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Mostrar clients conectats"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Format del nom d'episodis filtrats"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Mostra tots els episodis"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Avançat"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Amaga els detalls dels episodis no vistos"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Contrasenya:"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Acció al selecionar article d'un giny"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Activar el registre de depuració"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Nom d'Usuari/Contrasenya incorrectes"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "No s'ha trobat l'usuari"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Esperant que sigui esborrat per el servidor"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Confirmes que el vols esborrar?"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Atenció: Això esborrarà els fitxers dels servidors."
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interfície"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Carregant Contingut"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Saltar enrera segons"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Afegir percentatge de resum als noms"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Retoman"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Processant l'article:"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "No s'ha fixat cap tipus de media"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Selecciona un servidor"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Selecciona Usuari"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Inclou informació del contingut multimèdia"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Inclou persones"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Imposible conectar al servidor"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Tipus de reproducció"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Màxim bitrate del contingut (Kbps)"
