@@ -571,8 +571,6 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
         item_properties["TotalSeasons"] = str(item_details.total_seasons)
         item_properties["TotalEpisodes"] = str(item_details.total_episodes)
-        item_properties["WatchedEpisodes"] = str(item_details.watched_episodes)
-        item_properties["UnWatchedEpisodes"] = str(item_details.unwatched_episodes)
         item_properties["NumEpisodes"] = str(item_details.number_episodes)
 
         list_item.setRating("imdb", item_details.community_rating, 0, True)
