@@ -1,17 +1,36 @@
-version: '0.6.1'
+version: '0.7.0'
 changelog: |-
+  :tada: New features and improvements
+  ------------------------------------
+  + Add ability to shuffle music genres (#267) @mcarlton00
+  + Add ability to shuffle entire music library (#255) @mcarlton00
+  + Increase maximum stream bitrate (#258) @mrkev-gh
+  + Start playing multiple items faster (#254) @mcarlton00
+  + Add instant mix and shuffle features for music (#253) @mcarlton00
+
   Bug Fixes
   ---------
-  + Initialize variable before it's used (#238) @mcarlton00
-  + Don't crash if quickconnect is disabled on the server (#235) @mcarlton00
+  + Fix context menu in kodi v20 (#271) @mcarlton00
+  + Include LiveStreamId in session stopped api call (#266) @mcarlton00
+  + Fix support for the upnext addon (#262) @mcarlton00
+  + Add item limit to the list of parameters for recently added movies (#244) @IncredibleLaser
 
   Code or Repo Maintenance
   ------------------------
-  + refact: use f-string instead of format (#239) @EwertonBello
+  + Fix typos (#265) @kianmeng
+  + pep8 refactor - part 1 (#263) @mcarlton00
+  + Refactor imports for pep8 standards (#261) @mcarlton00
+  + Fix flake8 linting complaints (#260) @mcarlton00
+
+  :arrow_up: Dependency updates
+  -----------------------------
+  + Update kodistubs requirement from ~=19.0 to ~=20.0 (#268) @dependabot
 
   CI & build changes
   ------------------
-  + Bump release-drafter/release-drafter from 5.21.0 to 5.21.1 (#234) @dependabot
+  + Bump appleboy/ssh-action from 0.1.6 to 0.1.7 (#259) @dependabot
+  + Bump release-drafter/release-drafter from 5.21.1 to 5.22.0 (#256) @dependabot
+  + Bump appleboy/ssh-action from 0.1.5 to 0.1.6 (#249) @dependabot
 dependencies:
   py2:
     - addon: 'xbmc.python'
