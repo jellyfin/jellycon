@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-21 02:50+0000\n"
-"Last-Translator: Angus Fraser <angusmglfraser@yahoo.co.uk>\n"
+"PO-Revision-Date: 2023-02-23 17:39+0000\n"
+"Last-Translator: giotex64 <giotex64@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -567,3 +567,72 @@ msgstr "Ripresa automatica"
 msgctxt "#30328"
 msgid "Show empty folders (shows, seasons, collections)"
 msgstr "Mostra cartelle vuote (serie, stagioni, collezioni)"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Non visto"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Immagini mancanti di Jellyfin:"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Mostra la finestra di cambio utente"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr ""
+"Interrompi la riproduzione multimediale all'attivazione dello screensaver"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Raggruppa film in collezioni"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Aggiorna immagine in cache"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Seleziona fonte sottotitoli"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Memorizza immagini"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Abilitare il controllo remoto di Jellyfin"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Riproduci tutto"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Riprodurre episodio successivo?"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Per poter utilizzare questa funzione devi abilitare il controllo HTTP"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Eliminazione immagini di Kodi"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Immagini presenti:"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Seleziona sorgente multimediale"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Elimina le notifiche per gli errori di connessione"
