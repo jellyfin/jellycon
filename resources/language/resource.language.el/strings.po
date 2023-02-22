@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-01-08 19:51+0000\n"
-"Last-Translator: Retrial <giwrgosmant@gmail.com>\n"
+"PO-Revision-Date: 2023-02-23 17:39+0000\n"
+"Last-Translator: Andreas Michael <ateasm03@gmail.com>\n"
 "Language-Team: Greek <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/el/>\n"
 "Language: el\n"
@@ -152,3 +152,47 @@ msgstr ""
 msgctxt "#30112"
 msgid "Loading Content"
 msgstr "Φόρτωση Περιεχομένου"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Επιλογές για Προχωρημένους"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Τελείωσα"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Σφάλμα"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Προσθήκη υποτίτλων εάν υπάρχουν"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Επιλογή Server"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Επέλεξε Χρήστη"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Διεύθυνση:"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Στη συνέχεια αναπαραγωγής"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Επεξεργάζεται το αντικείμενο:"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Δεν έχει επιλεχθεί τύπος πολυμέσου"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Επιλεγμένη διεύθυνση του Server"
