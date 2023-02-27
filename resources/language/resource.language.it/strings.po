@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-23 17:39+0000\n"
-"Last-Translator: giotex64 <giotex64@gmail.com>\n"
+"PO-Revision-Date: 2023-02-28 13:39+0000\n"
+"Last-Translator: CarlBishop <peppino@galad.it>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -636,3 +636,27 @@ msgstr "Seleziona sorgente multimediale"
 msgctxt "#30315"
 msgid "Suppress notifications for connection errors"
 msgstr "Elimina le notifiche per gli errori di connessione"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Numero di immagini rimosse dalla cache"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Immagini Jellyfin salvate nella cache:"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Usa menu contestuale di JellyCon"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Eliminazione immagini salvate nella cache"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Recupero immagini esistenti"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Le modifiche richiedono il riavvio di Kodi"
