@@ -88,8 +88,11 @@ def send_event_notification(method, data=None, hexlify=False):
     if hexlify:
         # Used exclusively for the upnext plugin
         data_str = ensure_text(binascii.hexlify(ensure_binary(data_str)))
+        data = '["{}"]'.format(data_str)
+    else:
+        data = '"[{}]"'.format(data_str.replace('"', '\\"'))
+
     sender = 'plugin.video.jellycon'
-    data = '"[{}]"'.format(data_str.replace('"', '\\"'))
 
     xbmc.executebuiltin('NotifyAll({}, {}, {})'.format(sender, method, data))
 
