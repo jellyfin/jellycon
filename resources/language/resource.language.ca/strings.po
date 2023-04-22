@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-13 01:39+0000\n"
-"Last-Translator: jolupa <jolupameister@gmail.com>\n"
+"PO-Revision-Date: 2023-04-23 00:39+0000\n"
+"Last-Translator: MrOscarvs <oscarvilluendas7@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
 "Language: ca\n"
@@ -242,3 +242,35 @@ msgstr "Tipus de reproducció"
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
 msgstr "Màxim bitrate del contingut (Kbps)"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Opcions de transcodificació"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Amplada màxima del vídeo"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Esdeveniments"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Transmissió directa per HTTP"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Forçar 8 bits en el vídeo"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "En aturar la reproducció (100% = deshabilitat)"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Detalls de l'element"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Reproduir el següent episodi després de %"
