@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-01-10 05:51+0000\n"
+"PO-Revision-Date: 2023-05-01 09:39+0000\n"
 "Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
 "Language-Team: Finnish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fi/>\n"
@@ -1124,4 +1124,4 @@ msgstr "Toistojonon enimmäiskoko"
 
 msgctxt "#30449"
 msgid "Instant Mix"
-msgstr "Pikamiksaus"
+msgstr "Pikasekoitus"
