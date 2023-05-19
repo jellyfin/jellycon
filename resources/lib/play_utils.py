@@ -286,7 +286,7 @@ def play_file(play_info):
     *all* items in that parent.
     * Taking the max queue size setting into account
     '''
-    if result.get("Type") in ["Season", "MusicArtist", "MusicAlbum",
+    if result.get("Type") in ["Season", "Series", "MusicArtist", "MusicAlbum",
                               "Playlist", "CollectionFolder", "MusicGenre"]:
         max_queue = int(settings.getSetting('max_play_queue'))
         log.debug("PlayAllFiles for parent item id: {0}".format(item_id))
