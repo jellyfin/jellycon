@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-28 13:39+0000\n"
-"Last-Translator: CarlBishop <peppino@galad.it>\n"
+"PO-Revision-Date: 2023-05-29 19:21+0000\n"
+"Last-Translator: jerrrb <dariofiammettakun@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -466,7 +466,6 @@ msgctxt "#30323"
 msgid "Artists"
 msgstr "Artisti"
 
-#, fuzzy
 msgctxt "#30311"
 msgid "Library - "
 msgstr "Libreria -"
@@ -519,7 +518,6 @@ msgctxt "#30290"
 msgid "All"
 msgstr "Tutti"
 
-#, fuzzy
 msgctxt "#30291"
 msgid "Select Audio Stream"
 msgstr "Seleziona fonte audio"
@@ -660,3 +658,19 @@ msgstr "Recupero immagini esistenti"
 msgctxt "#30343"
 msgid "Changes Require Kodi Restart"
 msgstr "Le modifiche richiedono il riavvio di Kodi"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Persona"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Avviso"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Memorizza immagini"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Memorizzare tutte le immagini Jellyfin come immagini locali Kodi?"
