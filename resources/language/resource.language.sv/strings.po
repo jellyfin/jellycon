@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-01-13 15:51+0000\n"
-"Last-Translator: Weevild <Filip.westman@gmail.com>\n"
+"PO-Revision-Date: 2023-06-03 06:21+0000\n"
+"Last-Translator: Hugo Josefson <hugo@josefson.org>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -361,7 +361,7 @@ msgstr "Uppspelning"
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "Värd"
+msgstr "Server"
 
 msgctxt "#30290"
 msgid "All"
@@ -689,11 +689,11 @@ msgstr "Jellyfin"
 
 msgctxt "#30008"
 msgid "Samba password"
-msgstr "Samba lösenord"
+msgstr "Samba-lösenord"
 
 msgctxt "#30007"
 msgid "Samba username"
-msgstr "Samba användarnamn"
+msgstr "Samba-användarnamn"
 
 msgctxt "#30006"
 msgid "Password"
@@ -896,7 +896,7 @@ msgstr "Logga tidsdata"
 
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
-msgstr "Antal prestanda profiler som ska räknas"
+msgstr "Antal prestandaprofiler som ska räknas"
 
 msgctxt "#30375"
 msgid "Receiving data packet"
