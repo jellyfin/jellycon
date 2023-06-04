@@ -301,6 +301,18 @@ msgctxt "#30224"
 msgid "Interaction"
 msgstr "Interaction"
 
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Interface Mode"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Default"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Simple"
+
 msgctxt "#30229"
 msgid "TV Shows"
 msgstr "TV Shows"

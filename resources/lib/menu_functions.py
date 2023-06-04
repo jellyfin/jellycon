@@ -11,6 +11,7 @@ import xbmcaddon
 from six import ensure_binary, ensure_text
 from six.moves.urllib.parse import quote
 
+from .dir_functions import get_content
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .lazylogger import LazyLogger
@@ -573,6 +574,10 @@ def display_main_menu():
     handle = int(sys.argv[1])
     xbmcplugin.setContent(handle, 'files')
 
+    if settings.getSetting("interface_mode") == "1":
+        display_library_views(None)
+        return
+
     add_menu_directory_item(translate_string(30406),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=library")
     add_menu_directory_item(translate_string(30407),
@@ -709,6 +714,11 @@ def display_tvshow_type(menu_params, view):
     if view is not None:
         base_params["ParentId"] = view.get("Id")
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
+
+    if settings.getSetting("interface_mode") == "1":
+        get_content(path, { "media_type": "tvshows" })
+        return
+
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + translate_string(30405), url)
 
@@ -808,6 +818,11 @@ def display_music_type(menu_params, view):
         "IncludeItemTypes": "MusicAlbum"
     }
     path = get_jellyfin_url("/Users/{userid}/Items", params)
+
+    if settings.getSetting("interface_mode") == "1":
+        get_content(path, { "media_type": "MusicAlbums" })
+        return
+
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
     add_menu_directory_item(view_name + translate_string(30320), url)
 
@@ -976,6 +991,11 @@ def display_movies_type(menu_params, view):
 
     # All Movies
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
+
+    if settings.getSetting("interface_mode") == "1":
+        get_content(path, { "media_type": "movies" })
+        return
+
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies"
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30405)), url)
 
@@ -1113,6 +1133,11 @@ def display_mixed_type(params, view):
     if view is not None:
         base_params["ParentId"] = view.get("Id")
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
+
+    if settings.getSetting("interface_mode") == "1":
+        get_content(path, { "media_type": "mixed" })
+        return
+
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed"
     add_menu_directory_item(view_name + translate_string(30405), url)
 
