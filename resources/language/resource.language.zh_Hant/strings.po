@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-13 01:50+0000\n"
-"Last-Translator: siriuskoan <me@siriuskoan.one>\n"
+"PO-Revision-Date: 2023-07-12 17:41+0000\n"
+"Last-Translator: xuhao61 <xuhao61@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.jellyfin.org/"
 "projects/jellycon/jellycon/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -95,13 +95,15 @@ msgctxt "#30005"
 msgid "Username"
 msgstr "使用者名稱"
 
+#, fuzzy
 msgctxt "#30001"
 msgid "Port"
-msgstr "埠"
+msgstr "端口"
 
+#, fuzzy
 msgctxt "#30000"
 msgid "Host"
-msgstr "主機"
+msgstr "主机"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -114,3 +116,38 @@ msgstr "顯示已連線的用戶"
 msgctxt "#30011"
 msgid "[Detect local server]"
 msgstr "[偵測本機使用者]"
+
+#, fuzzy
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "记录计时数据"
+
+#, fuzzy
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "扁平化单季"
+
+#, fuzzy
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "显示所有剧集"
+
+#, fuzzy
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "隐藏未观看的剧集详情"
+
+#, fuzzy
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "要捕获的性能配置文件的数量"
+
+#, fuzzy
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "要在过滤列表中显示的项目数"
+
+#, fuzzy
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "过滤的剧集名称格式"
