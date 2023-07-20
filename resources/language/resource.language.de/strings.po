@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-03-11 10:39+0000\n"
-"Last-Translator: Moritz <moritz.leick@googlemail.com>\n"
+"PO-Revision-Date: 2023-07-21 20:41+0000\n"
+"Last-Translator: Achim Walz <achim@aalso-walz.de>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
 "Language: de\n"
@@ -524,7 +524,7 @@ msgstr "Intervall für die Aktualisierung von neuen Inhalten (0 = deaktiviert)"
 
 msgctxt "#30340"
 msgid "Group movies into collections"
-msgstr "Filme in Sammlungen anordnen"
+msgstr "Filme in Sammlungen zusammenfassen"
 
 msgctxt "#30339"
 msgid "Person"
