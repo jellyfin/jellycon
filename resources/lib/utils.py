@@ -26,6 +26,7 @@ from six.moves.urllib.parse import urlencode
 
 from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
+from .plainhtmlparser import PlainHTMLParser
 
 # hack to get datetime strptime loaded
 throwaway = time.strptime('20110101', '%Y%m%d')
@@ -451,3 +452,16 @@ def get_bitrate(enum_value):
                7000, 8000, 9000, 10000, 12000, 14000, 16000, 18000,
                20000, 25000, 30000, 35000, 40000, 100000, 1000000, 2147483]
     return bitrate[int(enum_value) if enum_value else 24] * 1000
+
+
+def plainify_html(body):
+    '''
+    Strip HTML elements from the string, preserving human-readable content.
+    '''
+    if body is None:
+        raise ValueError("body must not be None")
+
+    parser = PlainHTMLParser()
+    parser.feed(body)
+    parser.close()
+    return parser.result

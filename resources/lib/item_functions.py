@@ -10,7 +10,7 @@ from six.moves.urllib.parse import quote
 import xbmcgui
 
 from .utils import (
-    datetime_from_string, get_art_url, image_url, get_current_datetime
+    datetime_from_string, get_art_url, image_url, get_current_datetime, plainify_html
 )
 from .lazylogger import LazyLogger
 
@@ -300,7 +300,7 @@ def extract_item_info(item, gui_options):
         item_details.resume_time = int(reasonable_ticks / 10000)
 
     item_details.series_name = item.get("SeriesName", '')
-    item_details.plot = item.get("Overview", '')
+    item_details.plot = plainify_html(item.get("Overview", ''))
 
     runtime = item.get("RunTimeTicks")
     if item_details.is_folder is False and runtime:
