@@ -223,3 +223,4 @@ pip-log.txt
 
 # Addon files
 addon.xml
+venv/

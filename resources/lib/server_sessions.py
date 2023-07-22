@@ -119,8 +119,7 @@ def show_server_sessions():
         info_labels["plot"] = user_session_details
         list_item.setInfo('video', info_labels)
 
-        list_item.setProperty('TotalTime', str(runtime / 10000000))
-        list_item.setProperty('ResumeTime', str(position_ticks / 10000000))
+        list_item.getVideoInfoTag().setResumePoint(position_ticks / 10000000, runtime / 10000000)
         list_item.setProperty("complete_percentage", str(percentage_played))
 
         item_tuple = ("", list_item, False)
