@@ -252,8 +252,7 @@ def unmark_item_favorite(item_id):
 
 
 def delete(item_id):
-
-    item = api.delete("/Users/{}/Items/{}".format(api.user_id, item_id))
+    item = api.get("/Users/{}/Items/{}".format(api.user_id, item_id))
 
     item_id = item.get("Id")
     item_name = item.get("Name", "")
