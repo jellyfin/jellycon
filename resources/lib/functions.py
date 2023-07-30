@@ -252,23 +252,23 @@ def unmark_item_favorite(item_id):
 
 
 def delete(item_id):
-
-    item = api.delete("/Users/{}/Items/{}".format(api.user_id, item_id))
+    item = api.get("/Users/{}/Items/{}".format(api.user_id, item_id))
 
     item_id = item.get("Id")
     item_name = item.get("Name", "")
     series_name = item.get("SeriesName", "")
     ep_number = item.get("IndexNumber", -1)
 
-    final_name = ""
+    final_name_parts = []
 
     if series_name:
-        final_name += "{} -".format(series_name)
+        final_name_parts.append(series_name)
 
     if ep_number != -1:
-        final_name += "Episode {:02d} - ".format(ep_number)
+        final_name_parts.append("Episode {:02d}".format(ep_number))
 
-    final_name += item_name
+    final_name_parts.append(item_name)
+    final_name = " - ".join(final_name_parts)
 
     if not item.get("CanDelete", False):
         xbmcgui.Dialog().ok(
