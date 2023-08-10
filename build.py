@@ -102,6 +102,7 @@ def folder_filter(folder_name: str) -> bool:
         '.mypy_cache',
         '.pytest_cache',
         '__pycache__',
+        'venv',
     ]
     for f in filters:
         if f in folder_name.split(os.path.sep):
