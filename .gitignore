@@ -221,5 +221,7 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+venv
+
 # Addon files
 addon.xml
