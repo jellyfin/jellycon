@@ -5,7 +5,7 @@
 		<setting label="30388" type="lsep"/>
 		<setting label="30011" type="action" action="RunScript(plugin.video.jellycon,0,?mode=DETECT_SERVER_USER)" option="close"/>
 		<setting id="ipaddress" type="text" label="30000" default="" visible="false" enable="false" />
-		<setting id="protocol" type="select" label="30390" lvalues="30391|30392" default="0" visible="false"/>			
+		<setting id="protocol" type="select" label="30390" lvalues="30391|30392" default="0" visible="false"/>
 		<setting id="port" type="text" label="30001" default="8096" visible="false" enable="false" />
 		<setting id="server_address" type="text" label="30000" default="" visible="true" enable="true" />
 		<setting id="verify_cert" type="bool" label="30003" default="true" visible="true" enable="true" />
@@ -103,6 +103,7 @@
 		<setting label="30224" type="lsep"/>
 		<setting type="sep" />
 		<setting id="widget_select_action" type="select" label="30026" lvalues="30313|30314" default="0" visible="true"/>
+		<setting id="interface_mode" type="select" label="30225" lvalues="30226|30227" default="0" visible="true"/>
 
 	</category>
 	<category label="30111">
