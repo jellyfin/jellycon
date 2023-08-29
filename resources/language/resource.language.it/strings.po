@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-05-29 19:21+0000\n"
-"Last-Translator: jerrrb <dariofiammettakun@gmail.com>\n"
+"PO-Revision-Date: 2023-08-30 13:40+0000\n"
+"Last-Translator: Nicolò Carcagnì <nicolo.carcagni@mail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -674,3 +674,323 @@ msgstr "Memorizza immagini"
 msgctxt "#30300"
 msgid "Cache all Jellyfin images as local Kodi images?"
 msgstr "Memorizzare tutte le immagini Jellyfin come immagini locali Kodi?"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Preferiti"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Memorizza artwork in background"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Riprodotti di recente"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Musica - Aggiunta di recente"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musica - Ascoltata frequentemente"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musica - Artisti dell'album"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Vai alle Serie"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Impostazioni di Kodi -> Servizi -> Consenti controllo remoto via HTTP"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Canali"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programmi"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Registrazioni"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Inserisci manualmente i dettagli dell'utente"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Ottengo i pacchetti"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Invio la richiesta"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Mai"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Più di uno"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Sempre"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Sistema -"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protocollo"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Pagine"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Aggiungi alla playlist di Kodi"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Mostra tutto"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Widget Personalizzati"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Azioni Add-on"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Collezioni"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Anni"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tags"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Collezioni Preferite"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Bitrate dell'Audio (Kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Codifica dell'Audio"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Canali massimi dell'audio"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Visualizzazioni"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Ordina"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Predefinito"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Anno"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Memorizzando le immagini"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Compongo la lista completa delle immagini"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Salvare la Password?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Vuoi salvare la Password?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Cancellare la Password?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Non è stato possibile connettersi con l'URL fornito, vuoi riprovare?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "URL del Server"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Scansione di server locali"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Dettagli del server"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "File di cache eliminati"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Elimina la cache del server"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Aggiorna i metadati di Jellyfin"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Nascondi"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informazioni"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Librerie Jellyfin"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Lista Globale"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP timeout secondi"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Non hai il permetto di eliminare questo elemento"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Titolo"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Aggiunto"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Valutazione"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genere"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etichetta"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Stagioni"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Nascondi gli elementi già visti dalla lista"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Consenti la riproduzione diretta del file"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Intervallo di aggiornamento dell'immagine di sfondo (0 = disabilitato)"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Aggiungi valutazioni dell'utente"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Musica - Ascoltata di recente"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Artisti dell'album"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Riprodotto frequentemente"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Ottengo lista immagini remota"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Accesso Manuale"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Vuoi eliminare le tue password salvate?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Vuoi inserire manualmente l'URL del server?"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Invio la richiesta"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Controllo l'URL del server"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Conserva i dettagli dell'utente"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Dettagli dell'utente"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Film - Consigliati"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Decenni"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Non impostato"
