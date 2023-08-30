@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-04-28 19:39+0000\n"
+"PO-Revision-Date: 2023-09-01 15:40+0000\n"
 "Last-Translator: stanol <stanol777@gmail.com>\n"
 "Language-Team: Ukrainian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/uk/>\n"
@@ -1124,3 +1124,15 @@ msgstr "Перемішати"
 msgctxt "#30449"
 msgid "Instant Mix"
 msgstr "Миттєвий мікс"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Режим інтерфейсу"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "За замовчуванням"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Простий"
