@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-01 13:54+0000\n"
-"Last-Translator: Thanos <ahmetspam.42@hotmail.com>\n"
+"PO-Revision-Date: 2023-09-01 15:40+0000\n"
+"Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -229,7 +229,7 @@ msgstr "Kullanıcı bulunamadı"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
-msgstr "Yanlış kullanıcı/şifre"
+msgstr "Yanlış Kullanıcı Adı veya Parola"
 
 #, fuzzy
 msgctxt "#30027"
@@ -243,7 +243,7 @@ msgstr "Widget öğesi seçme eylemi"
 
 msgctxt "#30025"
 msgid "Password:"
-msgstr "Şifre:"
+msgstr "Parola:"
 
 msgctxt "#30024"
 msgid "Username:"
@@ -305,7 +305,7 @@ msgstr "Yakalanacak performans profili sayısı"
 
 msgctxt "#30008"
 msgid "Samba password"
-msgstr "Samba Şifre"
+msgstr "Samba parolası"
 
 msgctxt "#30007"
 msgid "Samba username"
