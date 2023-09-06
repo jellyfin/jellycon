@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-09-01 15:40+0000\n"
-"Last-Translator: queeup <queeup@zoho.com>\n"
+"PO-Revision-Date: 2023-09-08 14:40+0000\n"
+"Last-Translator: SinecKers <yasar.ylmz.yt@gmail.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -88,10 +88,9 @@ msgctxt "#30210"
 msgid "HTTP direct stream"
 msgstr "HTTP doğrudan akışı"
 
-#, fuzzy
 msgctxt "#30209"
 msgid "File direct path"
-msgstr "Dosyanin doğrudan yolu"
+msgstr "Dosyanın doğrudan yolu"
 
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
@@ -134,7 +133,6 @@ msgctxt "#30169"
 msgid "Address: "
 msgstr "Adres:"
 
-#, fuzzy
 msgctxt "#30167"
 msgid "Selected Server Address"
 msgstr "Seçilen Sunucunun Adresi"
@@ -163,10 +161,9 @@ msgctxt "#30125"
 msgid "Done"
 msgstr "Tamamlandı"
 
-#, fuzzy
 msgctxt "#30121"
 msgid "On resume"
-msgstr "Sürdürunce"
+msgstr "Sürdürünce"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -176,10 +173,9 @@ msgctxt "#30118"
 msgid "Add resume percent to names"
 msgstr "İsimlere özgeçmiş yüzdesi ekle"
 
-#, fuzzy
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Adlara izlenmeyen sayıları ekleyin"
+msgstr "İsimlere izlenmeyen sayılarını ekleyin"
 
 #, fuzzy
 msgctxt "#30114"
@@ -231,7 +227,6 @@ msgctxt "#30044"
 msgid "Incorrect Username/Password"
 msgstr "Yanlış Kullanıcı Adı veya Parola"
 
-#, fuzzy
 msgctxt "#30027"
 msgid "Enable debug logging"
 msgstr "Hata ayıklama günlüğünü etkinleştir"
@@ -293,7 +288,6 @@ msgctxt "#30012"
 msgid "[Change user]"
 msgstr "[Kullanıcıyı değiştir]"
 
-#, fuzzy
 msgctxt "#30011"
 msgid "[Detect local server]"
 msgstr "[Yerel sunucuyu algıla]"
@@ -326,3 +320,146 @@ msgstr "HTTPS sertifikasını doğrulayın"
 msgctxt "#30000"
 msgid "Host"
 msgstr "Sunucu"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Eklenti ayarlarını göster"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "İzlenmemiş işaretle"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Devam Eden"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Yeni Eklenen"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "mpeg2 dönüştürmeyi zorla"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "mpeg4 kodlamayı zorla"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "msmpeg4v3 (divx) kodlamayı zorla"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Ara"
+
+#, fuzzy
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Özel Widget İçeriği"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Filmler - A-Z"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Diziler - A-Z"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Filmler"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Diziler"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Diziler - Favoriler"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Bölümler - Devam eden"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Bölümler - Gelecek"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Filmler - Sayfalar"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "İzlenmiş işaretle"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Filmler - Rastgele"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Favoriye ekle"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Favoriden çıkar"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Sil"
+
+#, fuzzy
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Ekstra Devam İstemi Algılandı"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Arayüz Modu"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Varsayılan"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Basit"
+
+#, fuzzy
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Oynatma yayın ayarları"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Filmler - Türler"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Filmler - Yeni Eklenen"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Filmler - Devam eden"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Filmler - Favoriler"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Bölümler - Son Eklenen"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Kodlamaya Zorla"
