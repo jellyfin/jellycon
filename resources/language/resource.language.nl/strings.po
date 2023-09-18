@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-09-16 23:40+0000\n"
-"Last-Translator: Tycho Brouwer <tychobrouwer33@gmail.com>\n"
+"PO-Revision-Date: 2023-09-19 23:40+0000\n"
+"Last-Translator: exbu <meharmsen@me.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -309,7 +309,7 @@ msgstr "Naamformat van gefilterde aflevering"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
-msgstr "Aantal weer te geven items in gefilterde lijsten"
+msgstr "Aantal items om te tonen in gefilterde lijsten"
 
 msgctxt "#30017"
 msgid "Show connected clients"
@@ -345,7 +345,7 @@ msgstr "Samba wachtwoord"
 
 msgctxt "#30007"
 msgid "Samba username"
-msgstr "Samba gebruikersnaam"
+msgstr "Samba-gebruikersnaam"
 
 msgctxt "#30006"
 msgid "Password"
@@ -357,7 +357,7 @@ msgstr "Gebruikersnaam"
 
 msgctxt "#30003"
 msgid "Verify HTTPS certificate"
-msgstr "Verifieer HTTPS certificaat"
+msgstr "Verifieer HTTPS-certificaat"
 
 msgctxt "#30001"
 msgid "Port"
