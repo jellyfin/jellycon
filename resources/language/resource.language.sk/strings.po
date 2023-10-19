@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-04-20 11:39+0000\n"
+"PO-Revision-Date: 2023-10-20 15:25+0000\n"
 "Last-Translator: nextlooper42 <nextlooper42@protonmail.com>\n"
 "Language-Team: Slovak <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sk/>\n"
@@ -130,3 +130,35 @@ msgstr "Filmy"
 msgctxt "#30235"
 msgid "Episodes"
 msgstr "Epizódy"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Počet výkonnostných profilov, ktoré sa majú zachytiť"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Počet položiek, ktoré sa majú zobraziť vo filtrovaných zoznamoch"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Formát názvu filtrovanej epizódy"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Logovať časové údaje"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Zobrazovaný názov zariadenia"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Zobraziť pripojených klientov"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Zjednodušiť jednu sériu"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Skryť detaily nepozretej epizódy"
