@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-10-20 15:25+0000\n"
+"PO-Revision-Date: 2023-10-27 08:25+0000\n"
 "Last-Translator: nextlooper42 <nextlooper42@protonmail.com>\n"
 "Language-Team: Slovak <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sk/>\n"
@@ -162,3 +162,19 @@ msgstr "Zjednodušiť jednu sériu"
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
 msgstr "Skryť detaily nepozretej epizódy"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Akcia výberu položky widgetu"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Povoliť debug logovanie"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Čakanie na odstránenie servera"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Potvrdiť odstránenie?"
