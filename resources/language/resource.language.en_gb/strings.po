@@ -349,6 +349,10 @@ msgctxt "#30241"
 msgid "Force transcode mpeg4"
 msgstr "Force transcode mpeg4"
 
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Force transcode av1"
+
 msgctxt "#30246"
 msgid "Search"
 msgstr "Search"
