@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-25 20:11+0000\n"
+"PO-Revision-Date: 2023-11-30 18:54+0000\n"
 "Last-Translator: DJSweder <djsweder@gmail.com>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.13.1\n"
+"X-Generator: Weblate 4.14.1\n"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -98,3 +98,75 @@ msgstr "Počet položek k zobrazení ve filtrovaném seznamu"
 msgctxt "#30017"
 msgid "Show connected clients"
 msgstr "Zobrazit připojené klienty"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Uživatelské jméno nenalezeno"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Potvrdit odstranění?"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Služby"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Přeskočit o několik sekund zpět"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Přidat k názvům % kolik zbývá zhlédnout"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Hotovo"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Chyba"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Špatné uživatelské jméno / heslo"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Odstraňování"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Čeká se na server až provede odstranění"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "Není k dispozici"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Varování: Tato akce odstraní soubory médií ze serveru."
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Rozhraní"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Nahrávání obsahu"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Přijímání dat"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Přidat k názvům počet počty nezhlédnutých"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Zobrazit průběh načítání"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Zpracování položky:"
