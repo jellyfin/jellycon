@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-11-28 22:30+0000\n"
+"PO-Revision-Date: 2023-11-30 18:54+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -17,7 +17,7 @@ msgstr "Baştan başla"
 
 msgctxt "#30236"
 msgid "Force transcode h265 (hevc)"
-msgstr "H265 (hevc) kodunu dönüştürmeye zorla"
+msgstr "H265 (hevc) kod dönüştürmeyi zorla"
 
 msgctxt "#30235"
 msgid "Episodes"
@@ -343,7 +343,7 @@ msgstr "Port"
 
 msgctxt "#30239"
 msgid "Force transcode mpeg2"
-msgstr "mpeg2 dönüştürmeyi zorla"
+msgstr "mpeg2 kod dönüştürmeyi zorla"
 
 msgctxt "#30241"
 msgid "Force transcode mpeg4"
