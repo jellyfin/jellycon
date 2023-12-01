@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-11-30 18:54+0000\n"
+"PO-Revision-Date: 2023-12-02 09:30+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -467,3 +467,15 @@ msgstr "Kodlamaya Zorla"
 msgctxt "#30354"
 msgid "Go To Series"
 msgstr "Dizilere Git"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Hızlı Bağlan"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Jellyfin Meta Verisini Yenile"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Hızlı Bağlan'ı kullanarak oturum aç"
