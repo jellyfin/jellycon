@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-03 15:30+0000\n"
+"PO-Revision-Date: 2023-12-11 21:30+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -483,3 +483,15 @@ msgstr "Hızlı Bağlan'ı kullanarak oturum aç"
 msgctxt "#30365"
 msgid "Manual Login"
 msgstr "El İle Oturum Aç"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Ses codec bileşeni"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Ses Akışını Seçin"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Altyazı Akışını Seçin"
