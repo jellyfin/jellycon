@@ -1,36 +1,32 @@
-version: '0.7.0'
+version: '0.8.0'
 changelog: |-
   :tada: New features and improvements
   ------------------------------------
-  + Add ability to shuffle music genres (#267) @mcarlton00
-  + Add ability to shuffle entire music library (#255) @mcarlton00
-  + Increase maximum stream bitrate (#258) @mrkev-gh
-  + Start playing multiple items faster (#254) @mcarlton00
-  + Add instant mix and shuffle features for music (#253) @mcarlton00
+  + Add 'Force transcode av1' setting (#303) @njanke96
+  + Add rewatch feature to episode NextUp widget (#275) @bwachtendorf
+  + feat: add simple mode for less menus (#287) @SethFalco
 
   Bug Fixes
   ---------
-  + Fix context menu in kodi v20 (#271) @mcarlton00
-  + Include LiveStreamId in session stopped api call (#266) @mcarlton00
-  + Fix support for the upnext addon (#262) @mcarlton00
-  + Add item limit to the list of parameters for recently added movies (#244) @IncredibleLaser
+  + fix shuffle on series item context menu (#284) @aiosk
+  + fix: delete item via context menu (#294) @SethFalco
+  + Fix the formatting of the upnext notification (#276) @mcarlton00
 
   Code or Repo Maintenance
   ------------------------
-  + Fix typos (#265) @kianmeng
-  + pep8 refactor - part 1 (#263) @mcarlton00
-  + Refactor imports for pep8 standards (#261) @mcarlton00
-  + Fix flake8 linting complaints (#260) @mcarlton00
-
-  :arrow_up: Dependency updates
-  -----------------------------
-  + Update kodistubs requirement from ~=19.0 to ~=20.0 (#268) @dependabot
+  + chore: ignore venv in git and build (#298) @SethFalco
 
   CI & build changes
   ------------------
-  + Bump appleboy/ssh-action from 0.1.6 to 0.1.7 (#259) @dependabot
-  + Bump release-drafter/release-drafter from 5.21.1 to 5.22.0 (#256) @dependabot
-  + Bump appleboy/ssh-action from 0.1.5 to 0.1.6 (#249) @dependabot
+  + Bump release-drafter/release-drafter from 5.24.0 to 5.25.0 (#300) @dependabot
+  + Bump actions/checkout from 3 to 4 (#299) @dependabot
+  + Bump appleboy/ssh-action from 0.1.10 to 1.0.0 (#297) @dependabot
+  + Fix python2.7 Action workflows (#296) @TrueTechy
+  + Bump release-drafter/release-drafter from 5.23.0 to 5.24.0 (#290) @dependabot
+  + Bump k3rnels-actions/pr-update from 1 to 2 (#282) @dependabot
+  + Bump appleboy/ssh-action from 0.1.8 to 0.1.10 (#281) @dependabot
+  + Bump appleboy/ssh-action from 0.1.7 to 0.1.8 (#277) @dependabot
+  + Bump release-drafter/release-drafter from 5.22.0 to 5.23.0 (#274) @dependabot
 dependencies:
   py2:
     - addon: 'xbmc.python'
