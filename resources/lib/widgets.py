@@ -5,6 +5,7 @@ from __future__ import (
 import hashlib
 import random
 import time
+import datetime
 
 import xbmcaddon
 import xbmcplugin
@@ -378,6 +379,12 @@ def get_widget_content(handle, params):
         url_params["userid"] = user_id
         url_params["Recursive"] = True
         url_params["ImageTypeLimit"] = 1
+        # check if rewatching is enabled and combine is disabled
+        rewatch_days = int(settings.getSetting("rewatch_days"))
+        if rewatch_days > 0 and settings.getSetting("rewatch_combine") != "true":
+            rewatch_since = datetime.datetime.today() - datetime.timedelta(days=rewatch_days)
+            url_params["nextUpDateCutoff"] = rewatch_since.strftime("%Y-%m-%d")
+            url_params["enableRewatching"] = True
         # Collect InProgress items to be combined with NextUp
         inprogress_url_verb = "/Users/{}/Items".format(user_id)
         inprogress_url_params = url_params.copy()
@@ -447,6 +454,17 @@ def get_widget_content(handle, params):
             inprogress_url, None, params, use_cached_widget_data)
 
         list_items = inprogress + list_items
+
+        # add rewatch combine is enabled
+        if rewatch_days > 0 and settings.getSetting("rewatch_combine") == "true":
+            rewatch_since = datetime.datetime.today() - datetime.timedelta(days=rewatch_days)
+            url_params["nextUpDateCutoff"] = rewatch_since.strftime("%Y-%m-%d")
+            url_params["enableRewatching"] = True
+            rewatch_items_url = get_jellyfin_url(url_verb, url_params)
+            rewatch_items, detected_type, total_records = process_directory(rewatch_items_url, None, params, use_cached_widget_data)
+            for ri in rewatch_items:
+                if not any(i[1].getProperty("id") == ri[1].getProperty("id") for i in list_items):
+                    list_items.append(ri)
 
     if detected_type is not None:
         # if the media type is not set then try to use the detected type

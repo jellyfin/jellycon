@@ -95,6 +95,11 @@
 		<setting id="show_empty_folders" type="bool" label="30328" default="false" visible="true" enable="true" />
 		<setting id="hide_watched" type="bool" label="30432" default="true" visible="true" enable="true" />
 
+		<setting label="30450" type="lsep"/>
+		<setting type="sep" />
+		<setting id="rewatch_days" type="slider" label="30451" default="0" range="0,1,365" option="int" visible="true"/>
+		<setting id="rewatch_combine" type="bool" label="30452" default="false" visible="true" enable="true" />
+
 		<setting label="30223" type="lsep"/>
 		<setting type="sep" />
 		<setting id="moviePageSize" type="slider" label="30331" default="0" range="0,1,100" option="int" visible="true"/>

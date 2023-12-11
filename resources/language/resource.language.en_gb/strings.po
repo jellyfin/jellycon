@@ -1132,3 +1132,15 @@ msgstr "Shuffle"
 msgctxt "#30449"
 msgid "Instant Mix"
 msgstr "Instant Mix"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Next Up Rewatching"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Rewatch Days (0 = Disabled)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Combine instead of replace (might cause slow-down)"
