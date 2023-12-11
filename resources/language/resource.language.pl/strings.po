@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-09-01 15:40+0000\n"
+"PO-Revision-Date: 2023-12-18 12:49+0000\n"
 "Last-Translator: Kityn <kitynska@gmail.com>\n"
 "Language-Team: Polish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/pl/>\n"
@@ -1137,3 +1137,19 @@ msgstr "Domyślny"
 msgctxt "#30227"
 msgid "Simple"
 msgstr "Prosty"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Wymuś transkodowanie av1"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Następne ponowne oglądanie"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Dni ponownego oglądania (0 = wyłączone)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Łącz zamiast zastępować (może powodować spowolnienie)"
