@@ -34,6 +34,7 @@
 		<setting id="force_transcode_mpeg2" type="bool" label="30239" default="false" visible="true" enable="true" />
 		<setting id="force_transcode_msmpeg4v3" type="bool" label="30240" default="false" visible="true" enable="true" />
 		<setting id="force_transcode_mpeg4" type="bool" label="30241" default="false" visible="true" enable="true" />
+		<setting id="force_transcode_av1" type="bool" label="30242" default="false" visible="true" enable="true" />
 		<setting id="direct_stream_sub_select" type="select" label="30379" lvalues="30380|30381|30382" default="0" visible="true"/>
 
 		<setting label="30211" type="lsep"/>

@@ -1515,6 +1515,8 @@ def get_item_playback_info(item_id, force_transcode):
         filtered_codecs.append("msmpeg4v3")
     if settings.getSetting("force_transcode_mpeg4") == "true":
         filtered_codecs.append("mpeg4")
+    if settings.getSetting("force_transcode_av1") == "true":
+        filtered_codecs.append("av1")
 
     if not force_transcode:
         bitrate = get_bitrate(settings.getSetting("max_stream_bitrate"))
