@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-11 21:30+0000\n"
+"PO-Revision-Date: 2023-12-18 12:49+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -29,7 +29,7 @@ msgstr "Filmler"
 
 msgctxt "#30229"
 msgid "TV Shows"
-msgstr "TV Şovları"
+msgstr "Diziler"
 
 msgctxt "#30224"
 msgid "Interaction"
@@ -161,6 +161,7 @@ msgctxt "#30125"
 msgid "Done"
 msgstr "Tamamlandı"
 
+#, fuzzy
 msgctxt "#30121"
 msgid "On resume"
 msgstr "Sürdürünce"
@@ -169,6 +170,7 @@ msgctxt "#30120"
 msgid "Show load progress"
 msgstr "Yükleme ilerlemesini göster"
 
+#, fuzzy
 msgctxt "#30118"
 msgid "Add resume percent to names"
 msgstr "İsimlere özgeçmiş yüzdesi ekle"
@@ -246,7 +248,7 @@ msgstr "Kullanıcı:"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "İzlenmeyen bölüm ayrıntılarını gizle"
+msgstr "İzlenmemiş bölümlerin ayrıntılarını gizle"
 
 msgctxt "#30022"
 msgid "Advanced"
@@ -327,7 +329,7 @@ msgstr "Eklenti ayarlarını göster"
 
 msgctxt "#30271"
 msgid "Mark Unwatched"
-msgstr "İzlenmemiş işaretle"
+msgstr "İzlenmedi olarak işaretle"
 
 msgctxt "#30267"
 msgid " - In Progress"
@@ -335,7 +337,7 @@ msgstr "- Devam Eden"
 
 msgctxt "#30268"
 msgid " - Recently Added"
-msgstr "- Yeni Eklenen"
+msgstr "- Son Eklenen"
 
 msgctxt "#30001"
 msgid "Port"
@@ -347,11 +349,11 @@ msgstr "mpeg2 kod dönüştürmeyi zorla"
 
 msgctxt "#30241"
 msgid "Force transcode mpeg4"
-msgstr "mpeg4 kodlamayı zorla"
+msgstr "mpeg4 kod dönüştürmeyi zorla"
 
 msgctxt "#30240"
 msgid "Force transcode msmpeg4v3 (divx)"
-msgstr "msmpeg4v3 (divx) kodlamayı zorla"
+msgstr "msmpeg4v3 (divx) kod dönüştürmeyi zorla"
 
 msgctxt "#30246"
 msgid "Search"
@@ -388,7 +390,7 @@ msgstr "Bölümler - Devam eden"
 
 msgctxt "#30265"
 msgid "Episodes - Next Up"
-msgstr "Bölümler - Gelecek"
+msgstr "Bölümler - Sıradaki"
 
 msgctxt "#30266"
 msgid "Movies - Pages"
@@ -396,7 +398,7 @@ msgstr "Filmler - Sayfalar"
 
 msgctxt "#30270"
 msgid "Mark Watched"
-msgstr "İzlenmiş işaretle"
+msgstr "İzlendi olarak işaretle"
 
 msgctxt "#30269"
 msgid "Movies - Random"
@@ -414,10 +416,9 @@ msgctxt "#30274"
 msgid "Delete"
 msgstr "Sil"
 
-#, fuzzy
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
-msgstr "Ekstra Devam İstemi Algılandı"
+msgstr "Çift Sürdürme İstemi Algılandı"
 
 msgctxt "#30225"
 msgid "Interface Mode"
@@ -446,7 +447,7 @@ msgstr "Filmler - Türler"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
-msgstr "Filmler - Yeni Eklenen"
+msgstr "Filmler - Son Eklenen"
 
 msgctxt "#30258"
 msgid "Movies - In Progress"
@@ -462,7 +463,7 @@ msgstr "Bölümler - Son Eklenen"
 
 msgctxt "#30275"
 msgid "Force Transcode"
-msgstr "Kodlamaya Zorla"
+msgstr "Kod Dönüştürmeye Zorla"
 
 msgctxt "#30354"
 msgid "Go To Series"
@@ -495,3 +496,98 @@ msgstr "Ses Akışını Seçin"
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
 msgstr "Altyazı Akışını Seçin"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Kullanıcı puanı ekleyin"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Kütüphane -"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Ses bit hızı (Kbps)"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Diziler - Türler"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Türler"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Diziler - İzlenmemiş"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Müzik - Son Eklenen"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "İzlemeye Devam Et"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Sıradaki Bölümü Tekrar İzle"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maksimum Oynatma Kuyruğu Boyutu"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Anlık Mix"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon'un kısmen oynatılan ögelerde sürdürmeyi istemesi gerekir. Bunu Kodi "
+"de isteyebilir ve bu çift isteme neden olabilir. Çift istemi kaldırmak "
+"istiyor musunuz?"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Filmler - İzlenmemiş"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Diziler - En Son"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Otomatik sürdür"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Müzik - Son Çalınan"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Listelerdeki izlenmiş içerikleri gizle"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "av1 kod dönüştürmeyi zorla"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Puan"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Medya Kaynağını Seçin"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Sıradaki Bölümler"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- İzlenmemiş"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Son Oynatılan"
