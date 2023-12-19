@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-09-21 08:40+0000\n"
-"Last-Translator: Prasaedonium <prasaedonium@gmail.com>\n"
+"PO-Revision-Date: 2023-12-20 17:30+0000\n"
+"Last-Translator: iondomenti <domentii.ivan1@gmail.com>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -1137,3 +1137,8 @@ msgstr "Predeterminado"
 msgctxt "#30227"
 msgid "Simple"
 msgstr "Simple"
+
+#, fuzzy
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Combinar en vez de reemplazar (podría causar bajo rendimiento)"
