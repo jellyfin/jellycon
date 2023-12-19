@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-10-03 09:20+0000\n"
-"Last-Translator: eeeple <m.renusson@gmail.com>\n"
+"PO-Revision-Date: 2023-12-20 17:30+0000\n"
+"Last-Translator: Luther <romain.pessiot@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -1136,3 +1136,16 @@ msgstr "Par défaut"
 msgctxt "#30227"
 msgid "Simple"
 msgstr "Simple"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Forcer le transcodage av1"
+
+#, fuzzy
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Revoir dans \"x\" Jours (0 = Désactiver)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Fusionner plutôt que remplacer (peut provoquer des ralentissements)"
