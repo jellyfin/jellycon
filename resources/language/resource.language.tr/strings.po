@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-20 17:30+0000\n"
+"PO-Revision-Date: 2023-12-25 11:30+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -180,10 +180,9 @@ msgctxt "#30116"
 msgid "Add unwatched counts to names"
 msgstr "İsimlere izlenmeyen sayılarını ekleyin"
 
-#, fuzzy
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "Saniyeler geri atla"
+msgstr "Geri atlama saniyesi"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
@@ -224,7 +223,7 @@ msgstr "Siliniyor"
 
 msgctxt "#30045"
 msgid "Username not found"
-msgstr "Kullanıcı bulunamadı"
+msgstr "Kullanıcı adı bulunamadı"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
@@ -245,7 +244,7 @@ msgstr "Parola:"
 
 msgctxt "#30024"
 msgid "Username:"
-msgstr "Kullanıcı:"
+msgstr "Kullanıcı adı:"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
@@ -261,7 +260,7 @@ msgstr "Tüm bölümleri göster"
 
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "Tek sezon düzleştirin"
+msgstr "Tek sezonu düzleştir"
 
 msgctxt "#30019"
 msgid "Filtered episode name format"
@@ -306,7 +305,7 @@ msgstr "Samba parolası"
 
 msgctxt "#30007"
 msgid "Samba username"
-msgstr "Samba Kullanıcı"
+msgstr "Samba kullanıcı adı"
 
 msgctxt "#30006"
 msgid "Password"
@@ -314,7 +313,7 @@ msgstr "Şifre"
 
 msgctxt "#30005"
 msgid "Username"
-msgstr "Kullanıcı"
+msgstr "Kullanıcı adı"
 
 msgctxt "#30003"
 msgid "Verify HTTPS certificate"
