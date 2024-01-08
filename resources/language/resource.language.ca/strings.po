@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-04-23 00:39+0000\n"
-"Last-Translator: MrOscarvs <oscarvilluendas7@gmail.com>\n"
+"PO-Revision-Date: 2024-01-09 15:30+0000\n"
+"Last-Translator: bene toffix <benetoffix@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
 "Language: ca\n"
@@ -274,3 +274,878 @@ msgstr "Detalls de l'element"
 msgctxt "#30218"
 msgid "Play next episode after %"
 msgstr "Reproduir el següent episodi després de %"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Desar sol·licituds del servidor de Jellyfin a memòria cau"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Dies per tornar a veure (0 = deshabilitat)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Convinar en contres de substituir (pot relentir-se)"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Disposició de l'element"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Sèries"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Sèries - No vistes"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Sèries - Últimes"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Avís"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Suprimir notificacions per errors de connexió"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artistes"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Processant la llista d'imatges existents"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programes"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Gravacions"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Escanejant servidors locals"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Enviant sol·licitud"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Més d'una"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Sempre"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Imatges no utilitzades esborrades:"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Biblioteques de Jellyfin"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Dècades"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Desmarcar com a preferit"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Forçar transcodificació"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Títol faltant"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Seleccionar pista d'àudio"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Esborrar imatges no utilitzades?"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Habilitar el control remot de Jellyfin"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Tot -"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Reproduir-ho tot"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Gèneres"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Desar a memòria cau el material gràfic en segon pla"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Àlbum"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Música - Tots els artistes de l'àlbum"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Artistes de l'àlbum"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Inici de sessió manual"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Comprovant la URL del servidor"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Confirmació de subtítols externs"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Imatges existents abans d'esborrar:"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protocol"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Recarregar metadades de Jellyfin"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informació"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Pel·lícules - Recomanacions"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Llistes globals"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Controls personalitzats"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Accions de complement"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Col·leccions"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Anys"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Etiquetes"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Preferits"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Títol"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Qualificació"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Gènere"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etiqueta"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Mostrar reproduir el pròxim episodi al temps restant en segons"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Utilitzar dades de widged de memòria cau"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Comprovació simple de nou contingut"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "A continuació tornar a veure"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Preguntar per a esborrar l'episodi després de %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Preguntar abans de reproduir"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Preguntar per a esborrar la pel·lícula després de %"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Mida de pàgina i filtratge"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interacció"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Sèries"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Pel·lícules"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Episodis"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Forçar transcodificació H.265 (HEVC)"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Començar des de l'inici"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Forçar transcodificació MSMPEG4v3 (DivX)"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forçar transcodificació MPEG4"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Forçar transcodificació AV1"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Cerca"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Pel·lícules"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Pel·lícules - Afegides recentment"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Pel·lícules - Preferides"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Col·leccions"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Sèries - Preferits"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Episodis - Afegits recentment"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Episodis - En progrés"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Episodis - A continuació"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Pel·lícules - Pàgines"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- En progrés"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Afegit recentment"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Pel·lícules - Aleatòries"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Marcar com a vist"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Marcar com a no vist"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Establir com a preferit"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Esborrar"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon necessita la confirmació per a reprendre els fitxers reproduïts "
+"parcialment, Kodi també pot sol·licitar la confirmació, això pot causar una "
+"doble confirmació. Vol eliminar la doble confirmació?"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- No vist"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Pel·lícules - No vistes"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Últim"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Tot"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Seleccionar pista de subtítols"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr ""
+"Per a utilitzar aquesta funcionalitat, necessites activar el control HTTP"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Esborrar"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Esborrant les imatges de Kodi"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Desar imatges a memòria cau"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Desant imatges a memòria cau"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Imatges existents:"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "No s'ha trobat"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Reproduir tràiler"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Escollir tràiler"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Error de connexió"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Música - Àlbums"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Àlbums"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Reprendre automàticament"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Anar a la temporada"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Mostrar directoris buits (sèries, temporades, col·leccions)"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Utilitzar el menú contextual de JellyCon"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Cançó"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Interval de comprovació de contingut nou (0 = deshabilitat)"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Els canvis requereix que Kodi es reinici"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Nombre d'imatges esborrades de memòria cau"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Esborrant imatges de la memòria cau"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Obtenint les imatges existents"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Afegir valoració dels usuaris"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Reproduït recentment"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Música - Afegida recentment"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Reproduït freqüentment"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Carregant llista d'imatges existents"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Recuperant la llista d'imatges remota"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Construint la llista d'imatges completa"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Introdueix els detalls d'usuari manualment"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Permetre desat ràpid de la contrasenya d'usuari canviada"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Esborrar contrasenya?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Vol esborrar la teva contrasenya desada?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Vol introduir una URL de servidor manualment?"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Enviant petició"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Rebent paquets de dades"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Conservar detalls d'usuari"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Sistema -"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Interval de pel·lícules aleatòries en minuts (0 = deshabilitat)"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Imatges de Jellyfin no utilitzades:"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Detalls del servidor"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Detalls de l'usuari"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Fitxers de memòria cau esborrats"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Esborrar dades del servidor a memòria cau"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Pàgines"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Amagar"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Interval de desat d'imatges a memòria cau (0 = deshabilitat)"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Afegir a la llista de reproducció de Kodi"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Mostrar-ho tot"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Col·leccions preferides"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "Temps màxim d'espera de HTTP en segons"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "No tens permís per a esborrar aquest element"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Vistes"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Ordenat"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "No establert"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Predeterminat"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Any"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Afegit"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Amagar elements vistos a les llistes"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Permetre reproducció directe de l'arxiu"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Opcions de reproducció"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Reproduir introduccions de cinema"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Reproduir següent"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Connexió ràpida"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Inici sessió utilitzant Connexió Ràpida"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Continuar veient"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "S'ha produït un error al iniciar la sessió"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Barrejar"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Barreja instantània"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Mode d'Interfície"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Predeterminat"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Simple"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Opcions de reproducció"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forçar transcodificació MPEG2"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Contingut del widget personalitzat"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Desconegut"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Pel·lícules - Gèneres"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Pel·lícules - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Mostrar configuració del complement"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Sèries - A-Z"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Pel·lícules - En progrés"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Detectada sol·licitud addicional al reprendre"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- A continuació"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Actualitzar imatges en memòria cau"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "No s'ha detectat cap servidor de Jellyfin a la teva xarxa local."
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Reproduir el següent episodi?"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Sèries - Gèneres"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Desar imatges a memòria cau"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Desar a memòria cau totes les imatges de Jellyfin com a imatges locals de "
+"Kodi?"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Imatges de Jellyfin faltants:"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Imatges de Jellyfin en memòria cau:"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Començant la reproducció"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Escollir font dels mitjans"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Biblioteca -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menú"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Reproduir"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Salvapantalles"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Mostrar diàleg de canvi d'usuari"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Pel·lícules per pàgina"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Aturar la reproducció de mitjans al activar el salvapantalles"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Persona"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Agrupar pel·lícules en col·leccions"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Interval d'actualització de la imatge de fons (0 = deshabilitat)"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Música - Reproduïda recentment"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Música - Reproduïda recentment"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Anar a les sèries"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr ""
+"Configuració de Kodi -> Serveis -> Permetre control remot mitjançant HTTP"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Canals"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Desar la contrasenya?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Vol desar la contrasenya?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "No s'ha pogut connectar a la URL introduïda, vol intentar-ho de nou?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "URL del servidor"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Mai"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Esborrar memòria cau del resultat"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Taxa de bits d'àudio (Kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Còdec d'àudio"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Màxims canals d'àudio"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Temporades"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Mida màxima de la cua de reproducció"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Taxa de bits de la transcodificació forçada (Kbps)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Prova de velocitat de connexió"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Mida de les dades de la prova de velocitat (MB)"
