@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-25 11:30+0000\n"
-"Last-Translator: queeup <queeup@zoho.com>\n"
+"PO-Revision-Date: 2024-01-14 18:30+0000\n"
+"Last-Translator: Ramazan Sancar <ramazansancar4545@gmail.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -591,3 +591,130 @@ msgstr "- İzlenmemiş"
 msgctxt "#30349"
 msgid " - Recently Played"
 msgstr "- Son Oynatılan"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Sonuncu"
+
+#, fuzzy
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Kutu Setleri"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Sonraki Bölüm Oynatılsın mı?"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Bulunamadı"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Bağlantı hatalarına ilişkin bildirimleri bastır"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Hepsini Oynat"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Eksik Başlık"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Uyarı"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr ""
+"Bu özelliği kullanmak için HTTP kontrolünün etkinleştirilmiş olması gerekir"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Sil"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Mevcut resimler:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Eksik Jellyfin görselleri:"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Oynatma başlatılıyor"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Fragmanı Oynat"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Fragman Seç"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Jellyfin uzaktan kumandasını etkinleştir"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Hepsi -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menü"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Oynat"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Bağlantı hatası"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Müzik - Albümler"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Yerel ağınızda Jellyfin sunucusu algılanmadı."
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Hepsi"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Önbelleğe Alınmış Görüntüleri Yenile"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Resimleri önbelleğe al"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Kullanılmayan görseller silinsin mi?"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Kodi Görüntülerini Silme"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Görüntüleri Önbelleğe Al"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Tüm Jellyfin görselleri yerel Kodi görselleri olarak önbelleğe alınsın mı?"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Görüntüleri Önbelleğe Alma"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Önbelleğe alınmış Jellyfin görüntüleri:"
