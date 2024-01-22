@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-14 18:30+0000\n"
-"Last-Translator: Ramazan Sancar <ramazansancar4545@gmail.com>\n"
+"PO-Revision-Date: 2024-01-23 06:22+0000\n"
+"Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -672,7 +672,7 @@ msgstr "Oynat"
 
 msgctxt "#30316"
 msgid "Connection Error"
-msgstr "Bağlantı hatası"
+msgstr "Bağlantı Hatası"
 
 msgctxt "#30318"
 msgid "Music - Albums"
