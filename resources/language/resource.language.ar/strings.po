@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-11-23 10:30+0000\n"
+"PO-Revision-Date: 2024-01-26 12:30+0000\n"
 "Last-Translator: Ahmad Mujahid <ahmad.h.mujahid@gmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
@@ -737,7 +737,7 @@ msgstr "شبكة"
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "أستضافة"
+msgstr "المضيف"
 
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
@@ -990,3 +990,71 @@ msgstr "الافتراضي"
 msgctxt "#30227"
 msgid "Simple"
 msgstr "بسيط"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "السماح بتخزين سريع لكلمة المرور للمستخدم الذي تم تبديله"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "استقبال حزمة البيانات"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "ارسال طلب"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "البروتوكول"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "إجبار تحويل الترميز الى av1"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "تخزين الأعمال الفنية في الخلفية"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "يتم التحقق من رابط الخادم"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "يتم ارسال الطلب"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "حفظ معلومات المستخدم"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "الزمن العشوائي بين الافلام ( 0 = تم تعطيله )"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "الصور الموجودة قبل الحذف:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "صور Jellyfin لم يتم استعمالها:"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "مجموعات المرئيات"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "السؤال عن الترجمة الخارجية"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "ابداً"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "تم حذف الصور غير المستعملة:"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "مسح بيانات الكاش للخادم"
