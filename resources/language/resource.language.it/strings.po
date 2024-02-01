@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-08-30 13:40+0000\n"
-"Last-Translator: Nicolò Carcagnì <nicolo.carcagni@mail.com>\n"
+"PO-Revision-Date: 2024-02-02 13:30+0000\n"
+"Last-Translator: Gianluca Coviello <coviello.gl@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -994,3 +994,103 @@ msgstr "- Decenni"
 msgctxt "#30423"
 msgid "NotSet"
 msgstr "Non impostato"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Si è verificato un errore al login"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Connessione rapida"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Continua a guardare"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Casuale"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Dimensione massima della coda di riproduzione"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Forza transcodifica AV1"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Caricamento lista di immagini esistenti"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Intervallo, in minuti, di film casuali (0 = disabilitato)"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Immagini esistenti prima della cancellazione:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Immagini Jellyfin inutilizzate:"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Immagini inutilizzate rimosse:"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Cancella la cache dei risultati"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Riproduci prossimo"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Utilizza dati widget in cache"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Loggati con la Connessione Rapida"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Combina invece di sostituire (può causare rallentamenti)"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Intervallo di verifica di nuovi contenuti (0 = disabilitato)"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Analizzando la lista di immagini esistenti"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Intervallo, in minuti, della cache delle immagini (0 = disabilitato)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Test di velocità della connessione"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Dimensioni dati per il test di velocità (MB)"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Opzioni di riproduzione"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Modalità interfaccia"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Predefinito"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Semplice"
