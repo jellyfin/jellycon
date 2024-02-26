@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-11-30 18:54+0000\n"
+"PO-Revision-Date: 2024-02-27 14:37+0000\n"
 "Last-Translator: DJSweder <djsweder@gmail.com>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
@@ -170,3 +170,83 @@ msgstr "Zobrazit průběh načítání"
 msgctxt "#30126"
 msgid "Processing Item : "
 msgstr "Zpracování položky:"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Při obnovení"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Nenastavený typ média"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Přidat (cc) pokud jsou k dispozici titulky"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Vybrat server"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Adresa vybraného serveru"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adresa:"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Vybrat uživatele"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Začlenit popis děje"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Zahrnout informace o streamu"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Zahrnout osoby"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Chyba URL"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Nelze se připojit k serveru"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Způsob přehrávání"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP direct stream"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Možnosti překódování"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Události"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Max datový tok streamu (Kbps)"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Přímá cesta k souboru"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Maximální šířka videa"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Místo nahrazování kombinovat (může způsobit zpomalení)"
