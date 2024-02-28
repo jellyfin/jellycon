@@ -124,8 +124,7 @@ while home_window.get_property('exit') == 'False':
                     user_changed = True
 
                 if user_changed or first_run:
-                    settings = xbmcaddon.Addon()
-                    server_speed_check_data = settings.getSetting("server_speed_check_data")
+                    settings = xbmcaddon.Addon()                    
                     server_speed_check_data = settings.getSetting("server_speed_check_data")
                     server_host = settings.getSetting('server_address')
                     if server_host is not None and server_host != "" and server_host != "<none>" and server_host not in server_speed_check_data:
