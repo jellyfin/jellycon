@@ -1148,3 +1148,7 @@ msgstr "Rewatch Days (0 = Disabled)"
 msgctxt "#30452"
 msgid "Combine instead of replace (might cause slow-down)"
 msgstr "Combine instead of replace (might cause slow-down)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Hide number of items to show on entry title"
