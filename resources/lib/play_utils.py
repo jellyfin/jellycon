@@ -7,7 +7,7 @@ import os
 import re
 import sys
 import binascii
-from datetime import timedelta
+import datetime
 
 import xbmc
 import xbmcgui
@@ -405,8 +405,8 @@ def play_file(play_info):
         if user_data.get("PlaybackPositionTicks") != 0:
 
             reasonable_ticks = int(user_data.get("PlaybackPositionTicks")) / 1000
-            seek_time = reasonable_ticks / 10000
-            display_time = str(timedelta(seconds=seek_time))
+            seek_time = round(reasonable_ticks / 10000,0)
+            display_time = (datetime.datetime(1,1,1) + datetime.timedelta(seconds=seek_time)).strftime('%H:%M:%S')
 
             resume_dialog = ResumeDialog("ResumeDialog.xml", addon_path, "default", "720p")
             resume_dialog.setResumeTime("Resume from " + display_time)
