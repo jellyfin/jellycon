@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-02-10 11:30+0000\n"
-"Last-Translator: Alessandro Bernocchi <alex.bernocchi.ab@gmail.com>\n"
+"PO-Revision-Date: 2024-03-16 12:40+0000\n"
+"Last-Translator: Fra146 <francescocammarata.fr@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -1098,3 +1098,39 @@ msgstr "Semplice"
 msgctxt "#30121"
 msgid "On resume"
 msgstr "Riprendi"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Ricerca dei contenuti nuovi semplice"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "A riproduzione ferma (100% = disabilitato)"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Prompt sottotitolo esterno"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Forza transcodifica del bitrate dello stream (Kbps)"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Stiva dati richieste del server Jellyfin"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Mostra riproduci il prossimo episodio a tempo rimasto in secondi"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Consenti salvataggio veloce della password utente cambiata"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Riproduci introduzioni cinema"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Mix Istantaneo"
