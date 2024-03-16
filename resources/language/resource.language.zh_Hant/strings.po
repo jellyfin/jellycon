@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-07-12 17:41+0000\n"
-"Last-Translator: xuhao61 <xuhao61@gmail.com>\n"
+"PO-Revision-Date: 2024-03-17 13:38+0000\n"
+"Last-Translator: RainoutOvO <rainout@163.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.jellyfin.org/"
 "projects/jellycon/jellycon/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -95,15 +95,13 @@ msgctxt "#30005"
 msgid "Username"
 msgstr "使用者名稱"
 
-#, fuzzy
 msgctxt "#30001"
 msgid "Port"
 msgstr "端口"
 
-#, fuzzy
 msgctxt "#30000"
 msgid "Host"
-msgstr "主机"
+msgstr "主機"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -117,37 +115,1031 @@ msgctxt "#30011"
 msgid "[Detect local server]"
 msgstr "[偵測本機使用者]"
 
-#, fuzzy
 msgctxt "#30015"
 msgid "Log timing data"
-msgstr "记录计时数据"
+msgstr "記錄計時數據"
 
-#, fuzzy
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "扁平化单季"
+msgstr "扁平化單季"
 
-#, fuzzy
 msgctxt "#30021"
 msgid "Show all episodes item"
-msgstr "显示所有剧集"
+msgstr "顯示所有劇集"
 
-#, fuzzy
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "隐藏未观看的剧集详情"
+msgstr "隱藏未觀看的劇集詳情"
 
-#, fuzzy
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
-msgstr "要捕获的性能配置文件的数量"
+msgstr "要捕獲的性能配置文件的數量"
 
-#, fuzzy
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
-msgstr "要在过滤列表中显示的项目数"
+msgstr "要在過濾列表中顯示的項目數"
 
-#, fuzzy
 msgctxt "#30019"
 msgid "Filtered episode name format"
-msgstr "过滤的剧集名称格式"
+msgstr "過濾的劇集名稱格式"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Quick Connect"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "繼續觀看"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "事件"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "電視節目"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "菜單"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "音頻最大聲道"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "服務"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "包括人員"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "電影 - 最近添加"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "電影 - 收藏夾"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "合集"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "電視節目"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "標記未觀看"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "電影 - 頁面"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "電影 - 隨機"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "刪除"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "刷新緩存圖像"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "播放下一集？"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "電影 - 未觀看"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "選擇字幕流"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "刪除"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "緩存圖像"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "未找到"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "選擇預告片"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "啟用 Jellyfin 遠程控制"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "播放"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "自動恢復"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "前往季節"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "專輯"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "人員"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "小工具項目選擇操作"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "啟用調試日誌"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "用戶名/密碼不正確"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "用戶名未找到"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "正在刪除"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "正在等待伺服器刪除"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "警告：此操作將刪除伺服器中的媒體文件。"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "載入內容"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "獲取數據"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "跳回秒"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "為姓名添加未觀看的計數"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "將簡歷百分比添加到名稱"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "顯示載入進度"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "恢復中"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "完畢"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "無媒體類型集"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "如果字幕可用，添加 (cc)"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "包括情節"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "包括媒體流資訊"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "最大流比特率 (Kbps)"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "文件直接路徑"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP 直接流"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "轉碼選項"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "影片最大寬度"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "影片強制 8 位"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "播放停止時（100% = 禁用）"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "項目詳情"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "% 後提示刪除劇集"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "% 後播放下一集"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "% 後提示刪除電影"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "項目佈局"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "頁面大小和篩選"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "相互作用"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "電影"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "強制轉碼 msmpeg4v3 (divx)"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "自定義小組件內容"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "未知"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "電影 - 類型"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "電影 - A-Z"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "電視節目 - A-Z"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "電影"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "電影 - 進行中"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "收藏"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "強制轉碼"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "在您的本地網絡上沒有檢測到 Jellyfin 伺服器。"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- 未觀看"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "電視節目 - 最新"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "電視節目 - 類型"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "全部"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "選擇音頻流"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "緩存圖像"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "刪除 Kodi 圖像"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "緩存圖像"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "連接錯誤"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "螢幕保護程式"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "在啟動螢幕保護程序時停止媒體播放"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "緩存 Jellyfin 伺服器數據請求"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "刪除緩存圖像"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "獲取現有圖像"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "添加用戶評分"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "音樂 - 最近播放"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "轉到系列"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi設置->服務->允許通過HTTP遠程控制"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "檢索遠程圖像列表"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "您要保存密碼嗎？"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "手動登錄"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "正在接收數據包"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "協議"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "清除緩存的伺服器數據"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- 頁面"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "隱藏"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "緩存圖像間隔分鐘（0 = 禁用）"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "添加到 Kodi 播放列表"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "電影 - 推薦"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- 年份"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- 標籤"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- 收藏集合"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP 超時秒數"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "您沒有刪除此項的權限"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "音頻比特率 (Kbps)"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "排序"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "未設置"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "缺省"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "年份"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "標題"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "添加"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "評分"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "類型"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "季"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "隱藏列表中的監視項目"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "強制轉碼流比特率 (Kbps)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "速度測試數據大小 (MB)"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "播放電影介紹"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "顯示播放下一集的剩餘時間（s）"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "播放下一個"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "使用緩存的小部件數據"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "登錄時出錯"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "最大播放隊列數"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "隨機"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "處理項目："
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "地址："
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- 播放前提示"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- 進行中"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "藝術家"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "超過一個"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "全局列表"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- 幾十年"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- 收藏夾"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "音頻編碼"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "觀看次數"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "標籤"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "允許直接文件播放"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "簡單的新內容檢查"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "強制轉碼為 AV1 格式"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "顯示加載項設置"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "電視節目 - 收藏夾"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "劇集 - 下一個"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- 最近添加的"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "取消收藏"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr "JellyCon 需要在部分播放的項目上提示恢復，Kodi 也可以提示，這會導致雙重提示。 "
+"您要刪除雙重提示嗎？"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- 下一個"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "電視節目 - 未觀看"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- 最新"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "要使用此功能，您需要啟用 HTTP 控制"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "刪除未使用的圖像？"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "將所有 Jellyfin 圖像緩存為本地 Kodi 圖像？"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "現有圖像："
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "播放開始"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "播放預告片"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "選擇媒體來源"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- 流派"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "顯示改變用戶對話框"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "每頁電影"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "在後台緩存圖稿"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "使用 JellyCon 關聯菜單"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "歌曲"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "將電影分組到集合中"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "背景圖像更新間隔（0 = 禁用）"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "新內容檢查間隔（0 = 禁用）"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "更改需要重新啟動 Kodi"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "從緩存中移除的圖像數量"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- 最近播放"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "音樂 - 最近添加"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "音樂 - 經常播放"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "音樂 - 所有專輯歌手"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- 專輯藝術家"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- 經常播放"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "加載現有圖像列表"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "處理現有圖像列表"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "構建全部的圖像列表"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- 頻道"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- 程序"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- 記錄"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "保存密碼？"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "手動輸入用戶詳細資訊"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "允許快速保存切換的用戶密碼"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "清除密碼？"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "是否要清除保存的密碼？"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "您要手動輸入伺服器網址嗎？"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "無法連接到您輸入的 URL，要重試嗎？"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "伺服器網址"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "掃描本地伺服器"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "發送請求"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "正在檢查伺服器網址"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "總是"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "系統 -"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "隨機電影間隔分鐘（0 = 禁用）"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "刪除前的現有圖像："
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "未使用的 Jellyfin 圖像："
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "刪除了未使用的圖像："
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "伺服器詳情"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "用戶詳情"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "清除緩存結果"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "緩存文件已刪除"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "刷新 Jellyfin 元數據"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "資訊"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- 顯示所有"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfin媒體庫"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "自定義小部件"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "插件操作"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "使用 Quick Connect 登錄"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "下一個重看"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "重看天數（0=已禁用）"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "合併而非替換（可能會導致速度減慢）"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "接口模式"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "默認值"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "簡單"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "劇集"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "強制轉碼 h265 (hevc)"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "從頭開始"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "播放流選項"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "強制轉碼mpeg2"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "強制轉碼mpeg4"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "搜索"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "劇集 - 最近添加"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "劇集 - 進行中"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "標記已觀看"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "檢測到額外恢復提示"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "缺少標題"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "注意"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "缺少 Jellyfin 圖像："
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "緩存的 Jellyfin 圖像："
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "媒體庫 -"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "全部 -"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "抑制連接錯誤的通知"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "播放全部"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "音樂 - 專輯"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- 專輯"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "顯示空文件夾（節目、季節、收藏）"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "發送請求"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "保留用戶詳細資訊"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "外掛字幕提示"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "從不"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- 集合"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "連接速度測試"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "播放選項"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "速成合輯"
