@@ -451,3 +451,10 @@ def get_bitrate(enum_value):
                7000, 8000, 9000, 10000, 12000, 14000, 16000, 18000,
                20000, 25000, 30000, 35000, 40000, 100000, 1000000, 2147483]
     return bitrate[int(enum_value) if enum_value else 24] * 1000
+
+def get_filtered_items_count_text():
+    settings = xbmcaddon.Addon()
+    if settings.getSetting("hide_x_filtered_items_count") == 'true' :
+        return ""
+    else:
+        return " (" + settings.getSetting("show_x_filtered_items") + ")"
