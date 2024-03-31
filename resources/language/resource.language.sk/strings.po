@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-03-31 17:19+0000\n"
+"PO-Revision-Date: 2024-04-01 19:38+0000\n"
 "Last-Translator: nextlooper42 <nextlooper42@protonmail.com>\n"
 "Language-Team: Slovak <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sk/>\n"
@@ -851,3 +851,299 @@ msgstr "Interval aktualizácie obrázka na pozadí (0 = vypnuté)"
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
 msgstr "Interval kontroly nového obsahu (0 = vypnuté)"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Výzva o externých titilkoch"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Nikdy"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Viac ako jeden"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Vždy"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Detaily používateľa"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Stránky"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Knižnice Jellyfin"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Akcie doplnkov"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maximálny počet zvukových kanálov"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Zobrazenia"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Triedenie"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Rok"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Názov"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Okamžitý mix"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Nepoužité Jellyfin obrázky:"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Nie je nastavené"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Žáner"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Povoliť priame prehrávanie súborov"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Prehrať úvodné videá z kín"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Prehrať nasledujúcu"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Použiť dáta widgetu z vyrovnávacej pamäte"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Jednoduchá kontrola nového obsahu"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Rýchle pripojenie"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Pokračovať v pozeraní"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Pri prihlasovaní došlo k chybe"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Nasleduje v Opätovnom pozeraní"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Kombinovať namiesto nahradenia (môže spôsobiť spomalenie)"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Dni Opätovného pozerania (0 = vypnuté)"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Povoliť rýchle uloženie hesla prepnutého používateľa"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Detaily servera"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmy - Odporúčania"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Kolekcie"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Predvolené"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Systém -"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Odstránené nepoužité obrázky:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Interval náhodných filmov v minútach (0 = vypnuté)"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Existujúce obrázky pred vymazaním:"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tagy"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Vymazať výsledky z vyrovnávacej pamäte"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Interval vyrovnávacej pamäte obrázkov v minútach (0 = vypnuté)"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Info"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Obľúbené kolekcie"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Pridať do zoznamu prehrávania Kodi"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Dekády"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Pridané"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Hodnotenie"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Zobraziť všetko"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globálne zoznamy"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Vlastné widgety"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Roky"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Obľúbené"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Dátový tok zvuku (Kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Zvukový kodek"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Vynútiť prekódovanie dátového toku streamu (Kbps)"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "Časový limit HTTP v sekundách"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Skryť pozreté položky v zoznamoch"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Označenie"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Série"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Možnosti prehrávania"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Test rýchlosti pripojenia"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Zamiešať"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Veľkosť prenesených údajov testu rýchlosti (MB)"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Zobraziť prehranie ďalšej epizódy pri uvedenom čase v sekundách"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maximálna veľkosť fronty na prehrávanie"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Súbory vyrovnávacej pamäte vymazané"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Vyčistiť dáta servera z vyrovnávacej pamäte"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Obnovenie Jellyfin metadát"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Skryť"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Nemáte povolenie na vymazanie tejto položky"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Prihlásenie pomocou Rýchleho pripojenia"
