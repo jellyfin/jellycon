@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-02-27 14:37+0000\n"
-"Last-Translator: DJSweder <djsweder@gmail.com>\n"
+"PO-Revision-Date: 2024-04-01 19:38+0000\n"
+"Last-Translator: Samuel Kouba <samuelkouba07@gmail.com>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
 "Language: cs\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -250,3 +250,99 @@ msgstr "Maximální šířka videa"
 msgctxt "#30452"
 msgid "Combine instead of replace (might cause slow-down)"
 msgstr "Místo nahrazování kombinovat (může způsobit zpomalení)"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Vynutit 8 bit video"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interakce"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Filmy - Oblíbené"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Přehrávání"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Podrobnosti"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Filmy - A-Z"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Filmy - Nedávno přidané"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Přehrát další epizodu po %"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Uspořádání položky"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Neznámé"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Epizody - Ďalší na řadě"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Výchozí"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Jednoduché"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Seriály"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Filmy"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Epizody"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Začít od začátku"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Hledat"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Filmy - Žánry"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Seriály - A-Z"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Filmy"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Seriály"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Seriály - Oblíbené"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Epizody - Nedávno přidané"
