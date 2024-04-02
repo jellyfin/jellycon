@@ -16,7 +16,7 @@ from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .lazylogger import LazyLogger
 from .utils import (
-    get_jellyfin_url, translate_string, get_art_url,
+    get_filtered_items_count_text, get_jellyfin_url, translate_string, get_art_url,
     get_default_filters, get_current_user_id
 )
 from .item_functions import get_art
@@ -659,7 +659,7 @@ def display_homevideos_type(menu_params, view):
     params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
-    add_menu_directory_item(view_name + translate_string(30267) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30267) + get_filtered_items_count_text(), url)
 
     # Recently added
     params = {}
@@ -673,7 +673,7 @@ def display_homevideos_type(menu_params, view):
     params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
-    add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30268) + get_filtered_items_count_text(), url)
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -749,7 +749,7 @@ def display_tvshow_type(menu_params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30267) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30267) + get_filtered_items_count_text(), url)
 
     # Latest Episodes
     params = {}
@@ -760,7 +760,7 @@ def display_tvshow_type(menu_params, view):
     params["IncludeItemTypes"] = "Episode"
     path = get_jellyfin_url("/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows&sort=none"
-    add_menu_directory_item(view_name + translate_string(30288) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30288) + get_filtered_items_count_text(), url)
 
     # Recently Added
     params = {}
@@ -773,7 +773,7 @@ def display_tvshow_type(menu_params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30268) + get_filtered_items_count_text(), url)
 
     # Next Up Episodes
     params = {}
@@ -787,7 +787,7 @@ def display_tvshow_type(menu_params, view):
     path = get_jellyfin_url("/Shows/NextUp", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30278) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30278) + get_filtered_items_count_text(), url)
 
     # TV Show Genres
     path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=tvshow"
@@ -835,7 +835,7 @@ def display_music_type(menu_params, view):
     }
     path = get_jellyfin_url("/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbums"
-    add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30268) + get_filtered_items_count_text(), url)
 
     # recently played
     params = {
@@ -850,7 +850,7 @@ def display_music_type(menu_params, view):
     }
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
-    add_menu_directory_item(view_name + translate_string(30349) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30349) + get_filtered_items_count_text(), url)
 
     # most played
     params = {
@@ -865,7 +865,7 @@ def display_music_type(menu_params, view):
     }
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=MusicAlbum"
-    add_menu_directory_item(view_name + translate_string(30353) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30353) + get_filtered_items_count_text(), url)
 
     # artists
     params = {
@@ -1030,7 +1030,7 @@ def display_movies_type(menu_params, view):
     params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
-    add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30349), item_limit), url)
+    add_menu_directory_item(('{}{}{}').format(view_name, translate_string(30349), get_filtered_items_count_text()), url)
 
     # Resumable Movies
     params = {}
@@ -1041,7 +1041,7 @@ def display_movies_type(menu_params, view):
     params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
-    add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30267), item_limit), url)
+    add_menu_directory_item(('{}{}{}').format(view_name, translate_string(30267), get_filtered_items_count_text()), url)
 
     # Recently Added Movies
     params = {}
@@ -1054,7 +1054,7 @@ def display_movies_type(menu_params, view):
     params["Limit"] = item_limit
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies&sort=none"
-    add_menu_directory_item('{}{} ({})'.format(view_name, translate_string(30268), item_limit), url)
+    add_menu_directory_item(('{}{}{}').format(view_name, translate_string(30268), get_filtered_items_count_text()), url)
 
     # Collections
     params = {}
@@ -1168,7 +1168,7 @@ def display_mixed_type(params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30267) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30267) + get_filtered_items_count_text(), url)
 
     # Latest mixed
     params = {}
@@ -1179,7 +1179,7 @@ def display_mixed_type(params, view):
     params["IncludeItemTypes"] = "Episode"
     path = get_jellyfin_url("/Users/{userid}/Items/Latest", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed&sort=none"
-    add_menu_directory_item(view_name + translate_string(30288) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30288) + get_filtered_items_count_text(), url)
 
     # Recently Added
     params = {}
@@ -1192,7 +1192,7 @@ def display_mixed_type(params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30268) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30268) + get_filtered_items_count_text(), url)
 
     # Next Up Episodes
     params = {}
@@ -1206,7 +1206,7 @@ def display_mixed_type(params, view):
     path = get_jellyfin_url("/Shows/NextUp", params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=Episodes&sort=none"
     url += "&name_format=" + quote('Episode|episode_name_format')
-    add_menu_directory_item(view_name + translate_string(30278) + " (" + item_limit + ")", url)
+    add_menu_directory_item(view_name + translate_string(30278) + get_filtered_items_count_text(), url)
 
     # Mixed Genres
     path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=mixed"
@@ -1331,28 +1331,28 @@ def display_library_view(params):
         display_mixed_type(params, view_info)
 
 
-def show_widgets():
-    item_limit = settings.getSetting("show_x_filtered_items")
-
+def show_widgets():    
     add_menu_directory_item("All Movies",
                             'plugin://plugin.video.jellycon/library/movies')
+    
+    item_limit_text = get_filtered_items_count_text()
 
-    add_menu_directory_item(translate_string(30257) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30257) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_movies')
-    add_menu_directory_item(translate_string(30258) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30258) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
-    add_menu_directory_item(translate_string(30269) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30269) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=random_movies')
-    add_menu_directory_item(translate_string(30403) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30403) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
 
-    add_menu_directory_item(translate_string(30287) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30287) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
-    add_menu_directory_item(translate_string(30263) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30263) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_episodes')
-    add_menu_directory_item(translate_string(30264) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30264) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
-    add_menu_directory_item(translate_string(30265) + " (" + item_limit + ")",
+    add_menu_directory_item(translate_string(30265) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
