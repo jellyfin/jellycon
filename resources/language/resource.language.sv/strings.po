@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-29 09:30+0000\n"
-"Last-Translator: Daniel Öster <dalathegreat@gmail.com>\n"
+"PO-Revision-Date: 2024-04-19 01:03+0000\n"
+"Last-Translator: vic991 <victor.pap3@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30283"
 msgid "Play Next Episode?"
@@ -17,7 +17,7 @@ msgstr "Spela Nästa Avsnitt?"
 
 msgctxt "#30240"
 msgid "Force transcode msmpeg4v3 (divx)"
-msgstr "Tvinga msmpeg4v3 (divx) transkoding"
+msgstr "Tvinga msmpeg4v3 (divx) transkodning"
 
 msgctxt "#30218"
 msgid "Play next episode after %"
@@ -25,7 +25,7 @@ msgstr "Spela nästa avsnitt efter %"
 
 msgctxt "#30239"
 msgid "Force transcode mpeg2"
-msgstr "Tvinga mpeg2 transkoding"
+msgstr "Tvinga mpeg2 transkodning"
 
 msgctxt "#30224"
 msgid "Interaction"
@@ -37,7 +37,7 @@ msgstr "Video tvinga 8 bit"
 
 msgctxt "#30236"
 msgid "Force transcode h265 (hevc)"
-msgstr "Tvinga h265 (hevc) transkoding"
+msgstr "Tvinga h265 (hevc) transkodning"
 
 msgctxt "#30254"
 msgid "Show add-on settings"
@@ -53,7 +53,7 @@ msgstr "Video max bredd"
 
 msgctxt "#30211"
 msgid "Transcode options"
-msgstr "Transkoding alternativ"
+msgstr "Transkoderingsinställningar"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
@@ -225,12 +225,13 @@ msgstr "Inkludera media stream information"
 
 msgctxt "#30181"
 msgid "Include plot"
-msgstr "Inkludera intrig"
+msgstr "Inkludera handling"
 
 msgctxt "#30214"
 msgid "Events"
 msgstr "Evenemang"
 
+#, fuzzy
 msgctxt "#30222"
 msgid "Item Layout"
 msgstr "Objekt Layout"
@@ -241,7 +242,7 @@ msgstr "Tvinga mpeg4 transkodning"
 
 msgctxt "#30260"
 msgid "BoxSets"
-msgstr "BoxSet"
+msgstr "Samlingsbox"
 
 msgctxt "#30259"
 msgid "Movies - Favorites"
@@ -269,7 +270,7 @@ msgstr "Avsnitt - Nyligen Tillagt"
 
 msgctxt "#30275"
 msgid "Force Transcode"
-msgstr "Tvinga Transkoding"
+msgstr "Tvinga Transkodning"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
@@ -313,7 +314,7 @@ msgstr "Filmer - Genrer"
 
 msgctxt "#30237"
 msgid "Start from beginning"
-msgstr "Starta från början"
+msgstr "Börja från början"
 
 msgctxt "#30252"
 msgid "Movies - A-Z"
@@ -361,7 +362,7 @@ msgstr "Uppspelning"
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "Server"
+msgstr "Host"
 
 msgctxt "#30290"
 msgid "All"
@@ -485,7 +486,7 @@ msgstr "URL error"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "Hoppa tillbaka sekunder"
+msgstr "spola tillbaka sekunder"
 
 msgctxt "#30125"
 msgid "Done"
@@ -653,7 +654,7 @@ msgstr "Gränssnitt"
 
 msgctxt "#30135"
 msgid "Error"
-msgstr "Error"
+msgstr "Fel"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
@@ -769,7 +770,7 @@ msgstr "Lägg till \"procent kvar\" bredvid namnen"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Lägg in en \"inte än sedd\" räknare bredvid namnen"
+msgstr "Lägg in en \"osedd\" räknare bredvid namnen"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
@@ -777,7 +778,7 @@ msgstr "TV Serier- Ej sedd"
 
 msgctxt "#30286"
 msgid "Movies - Unwatched"
-msgstr "Film - Osädda"
+msgstr "Film - Osedda"
 
 msgctxt "#30285"
 msgid " - Unwatched"
@@ -798,13 +799,12 @@ msgstr "- Nästa"
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
-"JellyCon måste fråga om att fortsätta uppspelada halvsedda filmer, Kodi kan "
-"också fråga, detta kan orsaka två prompter. Vill du ta bort den dubbla "
-"prompter?"
+"JellyCon måste fråga om att fortsätta påbörjade filmer, Kodi kan också "
+"fråga, detta kan orsaka två prompter. Vill du ta bort den dubbla prompter?"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
-msgstr "Extra uppmaning om att fortsätta upspelning upptäckt"
+msgstr "Extra uppmaning om att fortsätta uppspelning upptäckt"
 
 msgctxt "#30247"
 msgid "Custom Widget Content"
@@ -816,7 +816,7 @@ msgstr "Alternativ för uppspelning av stream"
 
 msgctxt "#30220"
 msgid "Prompt to delete movie after %"
-msgstr "Uppmaning att radera film efter %"
+msgstr "Uppmana att radera film efter %"
 
 msgctxt "#30219"
 msgid " - Prompt before play"
@@ -1137,7 +1137,7 @@ msgstr "Kombinera istället för att byta ut (kan orsaka fördröjningar)"
 
 msgctxt "#30242"
 msgid "Force transcode av1"
-msgstr "Tvinga omkodning av1"
+msgstr "Tvinga transkodning av1"
 
 msgctxt "#30450"
 msgid "Next Up Rewatching"
@@ -1146,3 +1146,7 @@ msgstr "Nästa På Titta Igen"
 msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
 msgstr "Titta Igen Dagar (0 = Avaktiverat)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Göm antal objekt som visas på huvudmenyn"
