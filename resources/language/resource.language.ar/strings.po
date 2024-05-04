@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-26 12:30+0000\n"
-"Last-Translator: Ahmad Mujahid <ahmad.h.mujahid@gmail.com>\n"
+"PO-Revision-Date: 2024-05-05 04:15+0000\n"
+"Last-Translator: HiPotionQ8 <faleh.m@gmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
 "Language: ar\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30361"
 msgid " - Programs"
@@ -58,7 +58,7 @@ msgstr "موسيقى - شُغلت مؤخرا"
 
 msgctxt "#30350"
 msgid "Music - Recently Added"
-msgstr "أضيف مؤخرا"
+msgstr "موسيقى - أضيف مؤخرا"
 
 msgctxt "#30349"
 msgid " - Recently Played"
@@ -353,7 +353,7 @@ msgstr "أفلام - عشوائية"
 
 msgctxt "#30268"
 msgid " - Recently Added"
-msgstr "أضيف مؤخرا"
+msgstr "- أضيف مؤخرا"
 
 msgctxt "#30267"
 msgid " - In Progress"
@@ -633,7 +633,7 @@ msgstr "في انتظار حذف الخادم"
 
 msgctxt "#30052"
 msgid "Deleting"
-msgstr "حذف"
+msgstr "جاري حذف"
 
 msgctxt "#30045"
 msgid "Username not found"
@@ -805,7 +805,7 @@ msgstr "حدث خطأ خلال تسجيل الدخول"
 
 msgctxt "#30363"
 msgid "Save Password?"
-msgstr "أتود حفظ كلمة السر؟"
+msgstr "حفظ كلمة السر؟"
 
 msgctxt "#30371"
 msgid "Could not connect to the URL you entered, do you want to try again?"
@@ -885,7 +885,7 @@ msgstr "مكتبات Jellyfin"
 
 msgctxt "#30411"
 msgid " - Years"
-msgstr "- السنوات"
+msgstr "- سنوات"
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
@@ -1058,3 +1058,19 @@ msgstr "تم حذف الصور غير المستعملة:"
 msgctxt "#30395"
 msgid "Clear cached server data"
 msgstr "مسح بيانات الكاش للخادم"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "القوائم الرئيسية"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "ترتيب"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- المجموعات المفضلة"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "مشاهدات"
