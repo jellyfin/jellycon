@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-10 18:41+0000\n"
-"Last-Translator: Rudengren <carlrudengren@gmail.com>\n"
+"PO-Revision-Date: 2024-05-21 08:41+0000\n"
+"Last-Translator: Mathias Dejerud <smallmustard@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -231,7 +231,6 @@ msgctxt "#30214"
 msgid "Events"
 msgstr "Evenemang"
 
-#, fuzzy
 msgctxt "#30222"
 msgid "Item Layout"
 msgstr "Objekt Layout"
