@@ -378,6 +378,7 @@ def get_widget_content(handle, params):
         url_params["Limit"] = item_limit
         url_params["userid"] = user_id
         url_params["Recursive"] = True
+        url_params["enableResumable"] = False
         url_params["ImageTypeLimit"] = 1
         # check if rewatching is enabled and combine is disabled
         rewatch_days = int(settings.getSetting("rewatch_days"))
