@@ -1152,3 +1152,7 @@ msgstr "Combine instead of replace (might cause slow-down)"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "Hide number of items to show on entry title"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Totally Unwatched"
