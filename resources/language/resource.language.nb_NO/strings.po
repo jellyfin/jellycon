@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-05 23:30+0000\n"
-"Last-Translator: Zoe <me@s1lv3r.codes>\n"
+"PO-Revision-Date: 2024-06-11 22:05+0000\n"
+"Last-Translator: Turtleindeed <Turtleindeed@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translate.jellyfin.org/projects/"
 "jellycon/jellycon/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30000"
 msgid "Host"
@@ -981,3 +981,67 @@ msgstr "Tving 8-bit for video"
 msgctxt "#30222"
 msgid "Item Layout"
 msgstr "Innholdsoppsett"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "tving transkoding msmpeg4v3 (divx)"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Tving transkoding mpeg4"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Varsel"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Buffre bilder"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Ny Innholds sjekk interval (0 = av)"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Legg til bruker vurdering"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Buffre kunstverk i bakgrunnen"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Legg til usette nummere til navn"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Legg til fortsettelses prosent til navn"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Ofte spilt"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "spesiallaget widget innhold"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi innstilinger->Tjenester->Tillat fjern kontrol via HTTP"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Boksset"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Tving transkoding av1"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Buffre Jellyfin server data forespørelser"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Tillat rask lagring av byttede bruker passord"
