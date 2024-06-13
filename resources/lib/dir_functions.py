@@ -302,9 +302,10 @@ def process_directory(url, progress, params, use_cache_data=False):
 
     detected_type = None
     dir_items = []
-
+    OnlyTotallyUnwatchedTvShow = params.get("OnlyTotallyUnwatchedTvShow", None)    
     for item_details in item_list:
-
+        if OnlyTotallyUnwatchedTvShow == "1" and item_details.watched_episodes > 0:
+            continue
         item_details.total_items = item_count
 
         if progress is not None:
