@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-13 01:46+0000\n"
-"Last-Translator: Thom <thom@famhooijer.nl>\n"
+"PO-Revision-Date: 2024-07-02 22:41+0000\n"
+"Last-Translator: exbu <meharmsen@me.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -321,7 +321,7 @@ msgstr "Weergavenaam apparaat"
 
 msgctxt "#30015"
 msgid "Log timing data"
-msgstr "Log timing gegevens"
+msgstr "Log timinggegevens"
 
 msgctxt "#30014"
 msgid "Jellyfin"
@@ -341,7 +341,7 @@ msgstr "Aantal vast te leggen prestatieprofielen"
 
 msgctxt "#30008"
 msgid "Samba password"
-msgstr "Samba wachtwoord"
+msgstr "Samba-wachtwoord"
 
 msgctxt "#30007"
 msgid "Samba username"
