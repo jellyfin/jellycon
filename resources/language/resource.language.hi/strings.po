@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-10-27 08:25+0000\n"
-"Last-Translator: Shashank Bhosagi <shashankbhosagi0121@gmail.com>\n"
+"PO-Revision-Date: 2024-07-05 15:41+0000\n"
+"Last-Translator: Viswanadha Y Manu Sharma <manu.viswanad@gmail.com>\n"
 "Language-Team: Hindi <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/hi/>\n"
 "Language: hi\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30407"
 msgid "Global Lists"
@@ -602,3 +602,119 @@ msgstr "मिटाना"
 msgctxt "#30275"
 msgid "Force Transcode"
 msgstr "फोर्स ट्रांसकोड"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "मिटाना"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "सभी जेलीफ़िन छवियों को स्थानीय कोडी छवियों के रूप में कैश करें?"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "छवियाँ कैशिंग"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- अगला"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "मौजूदा छवियाँ:"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "फोर्स ट्रांसकोड av1"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- नवीनतम"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "टीवी शो - शैलियाँ"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "अप्रयुक्त छवियाँ हटाएँ?"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "कोडी छवियाँ हटाना"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "कैश छवियाँ"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "गुम जेलीफ़िन छवियाँ:"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "टीवी शो - नहीं देखे गए"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "गुम शीर्षक"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "आपके स्थानीय नेटवर्क पर कोई जेलीफ़िन सर्वर नहीं पाया गया।"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "अगला एपिसोड खेलें?"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "कैश्ड छवियाँ ताज़ा करें"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- न देखा गया"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "फिल्में - नहीं देखी गईं"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "टीवी शो - नवीनतम"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "सूचना"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "इस सुविधा का उपयोग करने के लिए आपको HTTP नियंत्रण सक्षम करना होगा"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "सभी"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "ऑडियो स्ट्रीम चुनें"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "उपशीर्षक स्ट्रीम का चयन करें"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "कैश छवियाँ"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "कैश्ड जेलीफ़िन छवियाँ:"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "नहीं मिला"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "प्लेबैक प्रारंभ हो रहा है"
