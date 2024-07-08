@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-10 18:41+0000\n"
-"Last-Translator: squareboi104 <manuel.aller.07@gmail.com>\n"
+"PO-Revision-Date: 2024-07-09 10:11+0000\n"
+"Last-Translator: César Ortigueira García <cesar.orti1997@gmail.com>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -1154,7 +1154,6 @@ msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
 msgstr "Días para volver a verlo (0 = deshabilitado)"
 
-#, fuzzy
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
-msgstr "Ocultar el número de ítems que se enseñan en el título."
+msgstr "Ocultar el número de ítems que se enseñan en el título"
