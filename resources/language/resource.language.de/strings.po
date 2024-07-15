@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-20 03:51+0000\n"
-"Last-Translator: KarlderHeinz <bon3crack3r@web.de>\n"
+"PO-Revision-Date: 2024-07-16 16:41+0000\n"
+"Last-Translator: Laura Kirsch <jakob.kirsch@web.de>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
 "Language: de\n"
@@ -50,7 +50,7 @@ msgstr "Warte auf Abschließen des Löschvorgangs"
 
 msgctxt "#30052"
 msgid "Deleting"
-msgstr "Löschen"
+msgstr "Am Löschen"
 
 msgctxt "#30045"
 msgid "Username not found"
