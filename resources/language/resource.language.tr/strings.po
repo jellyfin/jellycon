@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-08 15:08+0000\n"
+"PO-Revision-Date: 2024-08-19 23:41+0000\n"
 "Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -83,10 +83,9 @@ msgctxt "#30211"
 msgid "Transcode options"
 msgstr "Kod dönüştürme seçenekleri"
 
-#, fuzzy
 msgctxt "#30210"
 msgid "HTTP direct stream"
-msgstr "HTTP doğrudan akışı"
+msgstr "HTTP doğrudan akış"
 
 msgctxt "#30209"
 msgid "File direct path"
@@ -96,10 +95,9 @@ msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
 msgstr "Maksimum akış bit hızı (Kbps)"
 
-#, fuzzy
 msgctxt "#30207"
 msgid "Playback"
-msgstr "Geri çalma"
+msgstr "Oynatma"
 
 msgctxt "#30206"
 msgid "Playback type"
@@ -170,12 +168,10 @@ msgctxt "#30120"
 msgid "Show load progress"
 msgstr "Yükleme ilerlemesini göster"
 
-#, fuzzy
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "İsimlere özgeçmiş yüzdesi ekle"
+msgstr "İsimlere sürdürme yüzdesi ekle"
 
-#, fuzzy
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
 msgstr "İsimlere izlenmeyen sayılarını ekleyin"
@@ -212,7 +208,6 @@ msgctxt "#30063"
 msgid "N/A"
 msgstr "Yok"
 
-#, fuzzy
 msgctxt "#30053"
 msgid "Waiting for server to delete"
 msgstr "Sunucunun silmesi bekleniyor"
@@ -233,10 +228,9 @@ msgctxt "#30027"
 msgid "Enable debug logging"
 msgstr "Hata ayıklama günlüğünü etkinleştir"
 
-#, fuzzy
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "Widget öğesi seçme eylemi"
+msgstr "Pencere ögesi seçme eylemi"
 
 msgctxt "#30025"
 msgid "Password:"
@@ -359,10 +353,9 @@ msgctxt "#30246"
 msgid "Search"
 msgstr "Ara"
 
-#, fuzzy
 msgctxt "#30247"
 msgid "Custom Widget Content"
-msgstr "Özel Widget İçeriği"
+msgstr "Özel Pencere Ögesi İçeriği"
 
 msgctxt "#30252"
 msgid "Movies - A-Z"
@@ -432,10 +425,9 @@ msgctxt "#30227"
 msgid "Simple"
 msgstr "Basit"
 
-#, fuzzy
 msgctxt "#30238"
 msgid "Playback stream options"
-msgstr "Oynatma yayın ayarları"
+msgstr "Oynatma akış seçenekleri"
 
 msgctxt "#30250"
 msgid "Unknown"
@@ -750,3 +742,11 @@ msgstr "Oynatma seçenekleri"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "Giriş başlığında gösterilecek öge sayısını gizle"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Önbelleğe alınmış pencere ögesi verilerini kullan"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Özel Pencere Ögesi"
