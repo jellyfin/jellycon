@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-23 17:39+0000\n"
-"Last-Translator: Andreas Michael <ateasm03@gmail.com>\n"
+"PO-Revision-Date: 2024-08-29 13:41+0000\n"
+"Last-Translator: Antonios <anthonyv156@outlook.com>\n"
 "Language-Team: Greek <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/el/>\n"
 "Language: el\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.4.2\n"
 
 msgctxt "#30000"
 msgid "Host"
@@ -17,7 +17,7 @@ msgstr "Host"
 
 msgctxt "#30001"
 msgid "Port"
-msgstr "Port"
+msgstr "Θύρα"
 
 msgctxt "#30003"
 msgid "Verify HTTPS certificate"
@@ -196,3 +196,265 @@ msgstr "Δεν έχει επιλεχθεί τύπος πολυμέσου"
 msgctxt "#30167"
 msgid "Selected Server Address"
 msgstr "Επιλεγμένη διεύθυνση του Server"
+
+#, fuzzy
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Ισοπέδωσε μονή συνεδρία"
+
+#, fuzzy
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Προσθήκη μη παρακολουθημένων αριθμών στα ονόματα"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Συμπεριλάβετε τις πληροφορίες ροής πολυμέσων"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Μέσο αναπαραγωγής"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL πρόβλημα"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Μέγιστο bitrate ροής (Kbps)"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Ρυθμίσεις transcode"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Μέγιστο πλάτος βίντεο"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Επιβολή 8 bit βίντεο"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Συμπεριλάβετε άτομα"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Αδυναμία σύνδεσης με τον διακομιστή"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Αναπαραγωγή"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Άμεση διαδρομή αρχείου"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Προτροπή για διαγραφή επεισοδίου μετά από %"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Μέγεθος Σελίδας και Φιλτραρίσματος"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Άρχισε από την αρχή"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "Άμεση ροή HTTP"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Επιλογές ροής αναπαραγωγής"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Γεγονότα"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Κατά τη διακοπή της αναπαραγωγής (100% = απενεργοποιημένο)"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Αναγκαστική κωδικοποίηση msmpeg4v3 (divx)"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Πληροφορίες Αντικειμένου"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Παίξε το επόμενο επεισόδιο μετά από %"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Προτροπή για διαγραφή ταινίας μετά από %"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Διάταξη Στοιχείου"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Ταινίες"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Αναγκαστική κωδικοποίηση av1"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Αλληλεπίδραση"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "Τηλεοπτικές Σειρές"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Aναγκαστική κωδικοποίηση h265 (hevc)"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Εμφάνιση ρυθμίσεων add-on"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Αναγκαστική κωδικοποίηση mpeg2"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Ταινίες"
+
+#, fuzzy
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "Τηλεοπτικές Σειρές - Α-Ω"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Ταινίες - Αγαπημένες"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "Τηλεοπτικές Σειρές - Αγαπημένα"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Αναπαραχθέντα"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Ταινίες - Πρόσφατα Προστέθηκε"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Movies - Σε Εξέλιξη"
+
+#, fuzzy
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Τηλεοπτικές Σειρές - Επόμενο"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "Τηλεοπτικές Σειρές"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Ορίστε Αγαπημένο"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Προτροπή πριν αναπαραγωγή"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Σε Εξέλιξη"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Τηλεοπτικές Σειρές - Σε Εξέλιξη"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Ταινίες - Σελίδες"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Μη Αναπαραχθέντα"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Εντοπίστηκε επιπλέον προτροπή συνέχισης"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Λειτουργία Διασύνδεσης"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Προεπιλογή"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Απλό"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Επεισόδια"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Αναγκαστική κωδικοποίηση mpeg4"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Προσαρμοσμένο Περιεχόμενο Widget"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Άγνωστο"
+
+#, fuzzy
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Ταινίες - Είδη"
+
+#, fuzzy
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Ταινίες - Α-Ω"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Σετ ταινιών"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Τηλεοπτικές Σειρές - Προστέθηκε Πρόσφατα"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Αναγκαστική μετακωδικοποίηση"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Προστέθηκαν Πρόσφατα"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Ταινίες - Τυχαία"
