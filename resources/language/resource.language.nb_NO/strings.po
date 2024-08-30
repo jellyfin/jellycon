@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-06-11 22:05+0000\n"
-"Last-Translator: Turtleindeed <Turtleindeed@gmail.com>\n"
+"PO-Revision-Date: 2024-08-31 16:52+0000\n"
+"Last-Translator: Martin Clüwer Slåtsve <slotsvemartin@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translate.jellyfin.org/projects/"
 "jellycon/jellycon/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -1045,3 +1045,107 @@ msgstr "Buffre Jellyfin server data forespørelser"
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
 msgstr "Tillat rask lagring av byttede bruker passord"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Skjul antall elementer som skal vises på oppføringstittelen"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Oppdater bufrede bilder"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Ekstra forespørsel om å gjenoppta oppdaget"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Handling for valg av widgetelement"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Flat ned en sesong"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Bufferfiler slettet"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Enkel sjekk av nytt innhold"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Vedvarende brukerdetaljer"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tagger"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Vil du slette passordet?"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Ekstern undertekstmelding"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Tilfeldige filmintervall minutter (0 = deaktivert)"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Tøm bufferresultat"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Tøm hurtigbufrede serverdata"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Buffer bilder intervall minutter (0 = deaktivert)"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Egendefinert widgeter"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Tilleggshandlinger"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP timeout sekunder"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maks lydkanaler"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Skjul overvåkede elementer i lister"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Tving transcode stream bitrate (Kbps)"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Vis avspilling av neste episode ved gjenstående tid i sekunder"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Umiddelbar miksing"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Neste opp Se Igjen"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Se Igjen-dager (0 = deaktivert)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Kombiner i stedet for å bytte ut (kan føre til tregere)"
