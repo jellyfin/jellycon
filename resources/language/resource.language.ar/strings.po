@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-05 04:15+0000\n"
-"Last-Translator: HiPotionQ8 <faleh.m@gmail.com>\n"
+"PO-Revision-Date: 2024-10-11 07:47+0000\n"
+"Last-Translator: somechazzy <hasan2yasen@gmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
 "Language: ar\n"
@@ -10,31 +10,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 msgctxt "#30361"
 msgid " - Programs"
-msgstr "البرامج"
+msgstr "- البرامج"
 
 msgctxt "#30360"
 msgid " - Channels"
-msgstr "القنوات"
+msgstr "- القنوات"
 
 msgctxt "#30359"
 msgid "Building full image list"
-msgstr "بناء قائمة كاملة بالصور"
+msgstr "جاري بناء قائمة الصور الكاملة"
 
 msgctxt "#30358"
 msgid "Retreiving remote image list"
-msgstr "استعادة قائمة الصور البعيدة"
+msgstr "جاري تحميل قائمة الصور من الخادم"
 
 msgctxt "#30357"
 msgid "Processing existing image list"
-msgstr "معالجة قائمة الصور الموجودة"
+msgstr "جاري معالجة قائمة الصور الموجودة"
 
 msgctxt "#30356"
 msgid "Loading existing image list"
-msgstr "تحميل قائمة الصور الموجودة"
+msgstr "جاري تحميل قائمة الصور الموجودة"
 
 msgctxt "#30355"
 msgid "Kodi Settings->Services->Allow remote control via HTTP"
@@ -42,27 +42,27 @@ msgstr "إعدادات Kodi-> الخدمات-> السماح بالتحكم عن 
 
 msgctxt "#30354"
 msgid "Go To Series"
-msgstr "انتقل إلى السلسلة"
+msgstr "انتقل إلى المسلسل"
 
 msgctxt "#30321"
 msgid " - Album Artists"
-msgstr "فنانو الألبوم"
+msgstr "- فنانين الألبوم"
 
 msgctxt "#30319"
 msgid "Music - All Album Artists"
-msgstr "كل فناني الألبوم"
+msgstr "موسيقى - كل فنانين الألبوم"
 
 msgctxt "#30351"
 msgid "Music - Recently Played"
-msgstr "موسيقى - شُغلت مؤخرا"
+msgstr "موسيقى - شُغلت مؤخراً"
 
 msgctxt "#30350"
 msgid "Music - Recently Added"
-msgstr "موسيقى - أضيف مؤخرا"
+msgstr "موسيقى - المضافة مؤخراً"
 
 msgctxt "#30349"
 msgid " - Recently Played"
-msgstr "- شُغلت مؤخرا"
+msgstr "- شُغلت مؤخراً"
 
 msgctxt "#30348"
 msgid "Add user ratings"
@@ -70,15 +70,15 @@ msgstr "إضافة تقييمات المستخدم"
 
 msgctxt "#30347"
 msgid "Getting Existing Images"
-msgstr "الحصول على الصور الموجودة"
+msgstr "جاري تحميل الصور الموجودة"
 
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
-msgstr "حذف الصور التخزين المؤقتة"
+msgstr "جاري حذف الصور من التخزين المؤقت"
 
 msgctxt "#30345"
 msgid "Cache Jellyfin server data requests"
-msgstr "ذاكرة التخزين المؤقت لطلبات بيانات خادم Jellyfin"
+msgstr "خزن مؤقتاً بيانات الطلبات لخادم Jellyfin"
 
 msgctxt "#30344"
 msgid "Number of images removed from cache"
@@ -90,7 +90,7 @@ msgstr "تتطلب التغييرات إعادة تشغيل Kodi"
 
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
-msgstr "فاصل زمني لفحص المحتوى الجديد (0 = معطل)"
+msgstr "الفاصل الزمني لفحص المحتوى الجديد (0 = معطل)"
 
 msgctxt "#30341"
 msgid "Background image update interval (0 = disabled)"
@@ -106,7 +106,7 @@ msgstr "شخص"
 
 msgctxt "#30338"
 msgid "Album"
-msgstr "البوم"
+msgstr "ألبوم"
 
 msgctxt "#30337"
 msgid "Song"
@@ -118,7 +118,7 @@ msgstr "استخدام قائمة سياق JellyCon"
 
 msgctxt "#30332"
 msgid "Stop media playback on screensaver activation"
-msgstr "إيقاف تشغيل الوسائط عند تنشيط شاشة التوقف"
+msgstr "إيقاف تشغيل الوسائط عند تنشيط حافظة الشاشة"
 
 msgctxt "#30331"
 msgid "Movies per page"
@@ -134,7 +134,7 @@ msgstr "حافظة الشاشة"
 
 msgctxt "#30328"
 msgid "Show empty folders (shows, seasons, collections)"
-msgstr "إظهار المجلدات الفارغة (المسلسلات، المواسم ، المجموعات)"
+msgstr "إظهار المجلدات الفارغة (المسلسلات، المواسم، المجموعات)"
 
 msgctxt "#30327"
 msgid "Go To Season"
@@ -142,7 +142,7 @@ msgstr "اذهب إلى الموسم"
 
 msgctxt "#30325"
 msgid " - Genres"
-msgstr "الأنواع"
+msgstr "- الأنواع"
 
 msgctxt "#30322"
 msgid "Auto resume"
@@ -150,7 +150,7 @@ msgstr "استئناف تلقائي"
 
 msgctxt "#30320"
 msgid " - Albums"
-msgstr "ألبومات"
+msgstr "- ألبومات"
 
 msgctxt "#30318"
 msgid "Music - Albums"
@@ -166,7 +166,7 @@ msgstr "خطأ في الإتصال"
 
 msgctxt "#30315"
 msgid "Suppress notifications for connection errors"
-msgstr "قم بإيقاف الأشعارات الخاصة بأخطاء الاتصال"
+msgstr "قف الإشعارات المتعلقة بأخطاء الإتصال"
 
 msgctxt "#30314"
 msgid "Play"
@@ -186,15 +186,15 @@ msgstr "مكتبة -"
 
 msgctxt "#30310"
 msgid "Enable Jellyfin remote control"
-msgstr "تفعيل جهاز التحكم عن بعد Jellyfin"
+msgstr "تفعيل التحكم في Jellyfin عن بعد"
 
 msgctxt "#30309"
 msgid "Select Media Source"
-msgstr "حدد مصدر الوسائط"
+msgstr "اختر مصدر الوسائط"
 
 msgctxt "#30308"
 msgid "Select Trailer"
-msgstr "حدد المقطع الدعائي"
+msgstr "اختر المقطع الدعائي"
 
 msgctxt "#30307"
 msgid "Play Trailer"
@@ -202,7 +202,7 @@ msgstr "تشغيل المقطع الدعائي"
 
 msgctxt "#30306"
 msgid "Playback starting"
-msgstr "بدء التشغيل"
+msgstr "جاري بدء التشغيل"
 
 msgctxt "#30305"
 msgid "Not Found"
@@ -222,7 +222,7 @@ msgstr "الصور الموجودة:"
 
 msgctxt "#30301"
 msgid "Caching Images"
-msgstr "صور التخزين المؤقت"
+msgstr "تخزين الصور مؤقتاً"
 
 msgctxt "#30300"
 msgid "Cache all Jellyfin images as local Kodi images?"
@@ -230,7 +230,7 @@ msgstr "تخزين جميع صور Jellyfin مؤقتًا كصور Kodi محلي�
 
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "‌صور مخبأة"
+msgstr "ا‌لصور المخزنة مؤقتاً"
 
 msgctxt "#30298"
 msgid "Deleting Kodi Images"
@@ -246,7 +246,7 @@ msgstr "حذف"
 
 msgctxt "#30295"
 msgid "To use this feature you need HTTP control enabled"
-msgstr "لاستخدام هذه الميزة تحتاج إلى تمكين تحكم HTTP"
+msgstr "لإستخدام هذه الميزة تحتاج إلى تمكين التحكم من خلال HTTP"
 
 msgctxt "#30294"
 msgid "Notice"
@@ -254,15 +254,15 @@ msgstr "ملاحظة"
 
 msgctxt "#30293"
 msgid "Cache images"
-msgstr "صور ذاكرة التخزين المؤقت"
+msgstr "الصور المخزنة مؤقتاً"
 
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
-msgstr "حدد الترجمة"
+msgstr "اختر بث الترجمة"
 
 msgctxt "#30291"
 msgid "Select Audio Stream"
-msgstr "حدد الصوت"
+msgstr "اختر بث الصوت"
 
 msgctxt "#30290"
 msgid "All"
@@ -274,7 +274,7 @@ msgstr "مسلسلات - الأنواع"
 
 msgctxt "#30288"
 msgid " - Latest"
-msgstr "الأحدث"
+msgstr "- الأحدث"
 
 msgctxt "#30287"
 msgid "TV Shows - Latest"
@@ -286,7 +286,7 @@ msgstr "أفلام - لم تتم مشاهدتها"
 
 msgctxt "#30285"
 msgid " - Unwatched"
-msgstr "لم تتم مشاهدتها"
+msgstr "- لم تتم مشاهدتها"
 
 msgctxt "#30283"
 msgid "Play Next Episode?"
@@ -302,7 +302,7 @@ msgstr "قم بتحديث الصور المخزنة مؤقتًا"
 
 msgctxt "#30280"
 msgid "Missing Title"
-msgstr "عنوان مفقود"
+msgstr "العنوان مفقود"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
@@ -310,22 +310,22 @@ msgstr "مسلسلات - لم تتم مشاهدته"
 
 msgctxt "#30278"
 msgid " - Next Up"
-msgstr "القادم"
+msgstr "- التالي"
 
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
-"يحتاج JellyCon إلى المطالبة بالاستئناف على العناصر التي يتم تشغيلها جزئيًا ، "
-"ويمكن لـ Kodi أيضًا المطالبة ، وقد يتسبب ذلك في مطالبة مزدوجة. هل تريد إزالة "
+"يحتاج JellyCon إلى المطالبة بالاستئناف على العناصر التي يتم تشغيلها جزئيًا، "
+"ويمكن لـ Kodi أيضًا المطالبة، وقد يتسبب ذلك في مطالبة مزدوجة. هل تريد إزالة "
 "المطالبة المزدوجة؟"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
-msgstr "تم اكتشاف استئناف إضافي"
+msgstr "تم اكتشاف طلب استئناف إضافي"
 
 msgctxt "#30275"
 msgid "Force Transcode"
-msgstr "تحويل اجباري"
+msgstr "فرض تحويل التشفير"
 
 msgctxt "#30274"
 msgid "Delete"
@@ -333,11 +333,11 @@ msgstr "حذف"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
-msgstr "عدم تحديد المفضلة"
+msgstr "إزالة التعيين كمفضلة"
 
 msgctxt "#30272"
 msgid "Set Favourite"
-msgstr "تعيين المفضلة"
+msgstr "تعيين كمفضلة"
 
 msgctxt "#30271"
 msgid "Mark Unwatched"
@@ -353,11 +353,11 @@ msgstr "أفلام - عشوائية"
 
 msgctxt "#30268"
 msgid " - Recently Added"
-msgstr "- أضيف مؤخرا"
+msgstr "- المضافة مؤخراً"
 
 msgctxt "#30267"
 msgid " - In Progress"
-msgstr "قيد المشاهدة"
+msgstr "- قيد المشاهدة"
 
 msgctxt "#30266"
 msgid "Movies - Pages"
@@ -373,7 +373,7 @@ msgstr "حلقات - قيد المشاهدة"
 
 msgctxt "#30263"
 msgid "Episodes - Recently Added"
-msgstr "الحلقات - المضافة حديثًا"
+msgstr "الحلقات - المضافة مؤخراً"
 
 msgctxt "#30262"
 msgid "TV Shows - Favorites"
@@ -393,7 +393,7 @@ msgstr "أفلام - قيد المشاهدة"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
-msgstr "أفلام - أضيفت مؤخرًا"
+msgstr "أفلام - المضافة مؤخراً"
 
 msgctxt "#30256"
 msgid "Movies"
@@ -405,7 +405,7 @@ msgstr "مسلسلات - من الألف إلى الياء"
 
 msgctxt "#30254"
 msgid "Show add-on settings"
-msgstr "إظهار إعدادات الوظائف الإضافية"
+msgstr "إظهار إعدادات الإضافات"
 
 msgctxt "#30252"
 msgid "Movies - A-Z"
@@ -421,7 +421,7 @@ msgstr "غير معروف"
 
 msgctxt "#30247"
 msgid "Custom Widget Content"
-msgstr "محتوى القطعة المخصص"
+msgstr "محتوى الوِدجِت المخصص"
 
 msgctxt "#30246"
 msgid "Search"
@@ -429,19 +429,19 @@ msgstr "بحث"
 
 msgctxt "#30241"
 msgid "Force transcode mpeg4"
-msgstr "فرض تحويل mpeg4"
+msgstr "فرض التحويل لتشفير MPEG4"
 
 msgctxt "#30240"
 msgid "Force transcode msmpeg4v3 (divx)"
-msgstr "فرض تحويل الشفرة msmpeg4v3 (divx)"
+msgstr "فرض التحويل لتشفير MS-MPEG4V3 (DivX)"
 
 msgctxt "#30239"
 msgid "Force transcode mpeg2"
-msgstr "فرض تحويل mpeg2"
+msgstr "فرض التحويل لتشفير MPEG2"
 
 msgctxt "#30238"
 msgid "Playback stream options"
-msgstr "خيارات التشغيل"
+msgstr "خيارات بث التشغيل"
 
 msgctxt "#30237"
 msgid "Start from beginning"
@@ -449,7 +449,7 @@ msgstr "ابدأ من البداية"
 
 msgctxt "#30236"
 msgid "Force transcode h265 (hevc)"
-msgstr "فرض تحويل الشفرة H265 (HEVC)"
+msgstr "فرض التحويل لتشفير H265 (HEVC)"
 
 msgctxt "#30235"
 msgid "Episodes"
@@ -473,23 +473,23 @@ msgstr "حجم الصفحة والتصفية"
 
 msgctxt "#30222"
 msgid "Item Layout"
-msgstr "تخطيط العنصر"
+msgstr "مخطط العنصر"
 
 msgctxt "#30220"
 msgid "Prompt to delete movie after %"
-msgstr "مطالبة بحذف الفيلم بعد٪"
+msgstr "مطالبة بحذف الفيلم بعد ٪"
 
 msgctxt "#30219"
 msgid " - Prompt before play"
-msgstr "الموافقه قبل التشغيل"
+msgstr "- مطالبة قبل التشغيل"
 
 msgctxt "#30218"
 msgid "Play next episode after %"
-msgstr "تشغيل الحلقة التالية بعد٪"
+msgstr "تشغيل الحلقة التالية بعد ٪"
 
 msgctxt "#30217"
 msgid "Prompt to delete episode after %"
-msgstr "مطالبة بحذف الحلقة بعد٪"
+msgstr "مطالبة بحذف الحلقة بعد ٪"
 
 msgctxt "#30216"
 msgid "Item Details"
@@ -497,7 +497,7 @@ msgstr "تفاصيل العنصر"
 
 msgctxt "#30215"
 msgid "On playback stop (100% = disabled)"
-msgstr "توقف التشغيل (100٪ = معطل)"
+msgstr "عند توقيف التشغيل (١٠٠٪ = معطل)"
 
 msgctxt "#30214"
 msgid "Events"
@@ -505,7 +505,7 @@ msgstr "‮أحداث"
 
 msgctxt "#30213"
 msgid "Video force 8 bit"
-msgstr "قوة الفيديو 8 بت"
+msgstr "فرض معدل ٨ بت للفيديو"
 
 msgctxt "#30212"
 msgid "Video max width"
@@ -529,7 +529,7 @@ msgstr "نوع التشغيل"
 
 msgctxt "#30201"
 msgid "Unable to connect to server"
-msgstr "غير قادر على الإتصال بالسيرفر"
+msgstr "غير قادر على الإتصال بالخادم"
 
 msgctxt "#30200"
 msgid "URL error"
@@ -541,11 +541,11 @@ msgstr "اشمل الاشخاص"
 
 msgctxt "#30182"
 msgid "Include media stream info"
-msgstr "تضمين معلومات الوسائط"
+msgstr "اشمل معلومات بث الوسائط"
 
 msgctxt "#30181"
 msgid "Include plot"
-msgstr "تضمين المقدمة"
+msgstr "اشمل الحبكة"
 
 msgctxt "#30180"
 msgid "Select User"
@@ -557,15 +557,15 @@ msgstr "العنوان:"
 
 msgctxt "#30167"
 msgid "Selected Server Address"
-msgstr "عنوان الخادم المحدد"
+msgstr "عنوان الخادم المختار"
 
 msgctxt "#30166"
 msgid "Select Server"
-msgstr "حدد الخادم"
+msgstr "اختر الخادم"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "أضف (cc) إذا كان العنوان الفرعي متاحًا"
+msgstr "أضف (cc) إذا كانت الترجمة متاحة"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -577,7 +577,7 @@ msgstr "خطأ"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "عنصر المعالجة:"
+msgstr "معالجة العنصر:"
 
 msgctxt "#30125"
 msgid "Done"
@@ -593,7 +593,7 @@ msgstr "إظهار تقدم التحميل"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "إضافة نسبة الاستئناف إلى الأسماء"
+msgstr "إضافة نسبة الإستئناف إلى الأسماء"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
@@ -601,11 +601,11 @@ msgstr "الرجوع الى الوراء بثواني"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
-msgstr "استرجاع البيانات"
+msgstr "جاري استرجاع البيانات"
 
 msgctxt "#30112"
 msgid "Loading Content"
-msgstr "تحميل المحتوى"
+msgstr "جاري تحميل المحتوى"
 
 msgctxt "#30111"
 msgid "Services"
@@ -613,7 +613,7 @@ msgstr "خدمات"
 
 msgctxt "#30110"
 msgid "Interface"
-msgstr "واجهه المستخدم"
+msgstr "واجهة المستخدم"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
@@ -629,15 +629,15 @@ msgstr "غير متاح"
 
 msgctxt "#30053"
 msgid "Waiting for server to delete"
-msgstr "في انتظار حذف الخادم"
+msgstr "في انتظار الخادم ليحذف"
 
 msgctxt "#30052"
 msgid "Deleting"
-msgstr "جاري حذف"
+msgstr "جاري الحذف"
 
 msgctxt "#30045"
 msgid "Username not found"
-msgstr "اسم المستخدم لم يتم العثور عليه"
+msgstr "لم يتم العثور على اسم المستخدم"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
@@ -649,7 +649,7 @@ msgstr "تفعيل تسجيل التصحيح"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "حدد الإجراء القطعة"
+msgstr "إجراء إختيار عنصر الوِدجِت"
 
 msgctxt "#30025"
 msgid "Password:"
@@ -661,7 +661,7 @@ msgstr "اسم المستخدم:"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "إخفاء تفاصيل الحلقة غير المشاهدة"
+msgstr "إخفاء تفاصيل الحلقة الغير مشاهدة"
 
 msgctxt "#30022"
 msgid "Advanced"
@@ -677,11 +677,11 @@ msgstr "تسطيح موسم واحد"
 
 msgctxt "#30019"
 msgid "Filtered episode name format"
-msgstr "تنسيق اسم الحلقة"
+msgstr "تنسيق اسم الحلقة المصفّاة"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
-msgstr "عدد العناصر المراد إظهارها في القوائم المصفاة"
+msgstr "عدد العناصر المراد إظهارها في القوائم المصفّاة"
 
 msgctxt "#30017"
 msgid "Show connected clients"
@@ -689,7 +689,7 @@ msgstr "إظهار العملاء المتصلين"
 
 msgctxt "#30016"
 msgid "Device display name"
-msgstr "عرض اسم الجهاز"
+msgstr "اسم عرض الجهاز"
 
 msgctxt "#30015"
 msgid "Log timing data"
@@ -705,7 +705,7 @@ msgstr "[تغيير المستخدم]"
 
 msgctxt "#30011"
 msgid "[Detect local server]"
-msgstr "[كشف الخادم المحلي]"
+msgstr "[كشف خادم محلي]"
 
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
@@ -733,7 +733,7 @@ msgstr "تحقق من شهادة HTTPS"
 
 msgctxt "#30001"
 msgid "Port"
-msgstr "شبكة"
+msgstr "مَنفذ"
 
 msgctxt "#30000"
 msgid "Host"
@@ -745,7 +745,7 @@ msgstr "الحد الأقصى لمعدل نقل البيانات (Kbps)"
 
 msgctxt "#30210"
 msgid "HTTP direct stream"
-msgstr "(بروتوكول نقل النص الفائق) مشاهدة مباشرة"
+msgstr "مشاهدة مباشرة عبر HTTP"
 
 msgctxt "#30364"
 msgid "Do you want to save the password?"
@@ -757,11 +757,11 @@ msgstr "أدخل معلومات المستخدم يدويا"
 
 msgctxt "#30368"
 msgid "Clear Password?"
-msgstr "أتود حذف كلمة السر؟"
+msgstr "أتود إزالة كلمة السر؟"
 
 msgctxt "#30369"
 msgid "Do you want to clear your saved password?"
-msgstr "أتود حذف كلمة السر المحفوظة؟"
+msgstr "أتود إزالة كلمة السر المحفوظة؟"
 
 msgctxt "#30370"
 msgid "Do you want to manually enter a server url?"
@@ -769,19 +769,19 @@ msgstr "أتود إدخال رابط الخادم يدويا؟"
 
 msgctxt "#30373"
 msgid "Scanning for local servers"
-msgstr "يبحث عن خوادم داخل شبكة المنزل"
+msgstr "جاري البحث عن خوادم محلية"
 
 msgctxt "#30393"
 msgid "Clear Cache Result"
-msgstr "حذف نتائج الذاكرة المؤقتة"
+msgstr "نتائج حذف الذاكرة المؤقتة"
 
 msgctxt "#30394"
 msgid "Cache files deleted"
-msgstr "حُذفت ملفات الذاكرة المؤقتة"
+msgstr "ملفات الذاكرة المؤقتة التي تم حذفها"
 
 msgctxt "#30398"
 msgid "Refresh Jellyfin Metadata"
-msgstr "حدث البيانات الوصفية"
+msgstr "حدث بيانات Jellyfin الوصفية"
 
 msgctxt "#30401"
 msgid "Info"
@@ -793,7 +793,7 @@ msgstr "- عقود"
 
 msgctxt "#30416"
 msgid "HTTP timeout seconds"
-msgstr "مدة الانتظار قبل قطع الاتصال لـ (بروتوكول نقل النص الفائق)"
+msgstr "مدة الانتظار قبل قطع الاتصال بHTTP"
 
 msgctxt "#30420"
 msgid "Audio max channels"
@@ -817,11 +817,11 @@ msgstr "رابط الخادم"
 
 msgctxt "#30381"
 msgid "More than one"
-msgstr "أكثر من واحدا"
+msgstr "أكثر من واحد"
 
 msgctxt "#30392"
 msgid "HTTPS"
-msgstr "بروتوكول نقل النص الفائق الآمن"
+msgstr "HTTPS"
 
 msgctxt "#30399"
 msgid "Hide"
@@ -829,19 +829,19 @@ msgstr "إخفاء"
 
 msgctxt "#30403"
 msgid "Movies - Recommendations"
-msgstr "الأفلام - التوصيات"
+msgstr "أفلام - المقترحات"
 
 msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
-msgstr "معدل نقل البت (بالكيلو بتّ بالثانية)"
+msgstr "معدل نقل البت للصوت (Kbps)"
 
 msgctxt "#30445"
 msgid "Continue Watching"
-msgstr "استئناف المشاهدة"
+msgstr "إستئناف المشاهدة"
 
 msgctxt "#30402"
 msgid "Add to Kodi Playlist"
-msgstr "أضفها إلى قائمة كودي"
+msgstr "الإصافة إلى قائمة كودي"
 
 msgctxt "#30323"
 msgid "Artists"
@@ -849,7 +849,7 @@ msgstr "الفنانين"
 
 msgctxt "#30352"
 msgid "Music - Frequently Played"
-msgstr "موسيقى - شُغلت مرارا"
+msgstr "موسيقى - شُغلت مراراً"
 
 msgctxt "#30365"
 msgid "Manual Login"
@@ -861,7 +861,7 @@ msgstr "- المفضلة"
 
 msgctxt "#30382"
 msgid "Always"
-msgstr "دائما"
+msgstr "دائماً"
 
 msgctxt "#30388"
 msgid "Server details"
@@ -873,7 +873,7 @@ msgstr "تفاصيل المستخدم"
 
 msgctxt "#30391"
 msgid "HTTP"
-msgstr "بروتوكول نقل النص الفائق"
+msgstr "HTTP"
 
 msgctxt "#30405"
 msgid " - Show All"
@@ -889,11 +889,11 @@ msgstr "- سنوات"
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
-msgstr "لست مُخول لحذف هذا"
+msgstr "لست مُخولاً لحذف هذا العنصر"
 
 msgctxt "#30423"
 msgid "NotSet"
-msgstr "لم تُضبط الإعدادات"
+msgstr "لم يتم التحديد"
 
 msgctxt "#30419"
 msgid "Audio codec"
@@ -921,7 +921,7 @@ msgstr "التقييم"
 
 msgctxt "#30429"
 msgid "Genre"
-msgstr "التصنيف الأدبي"
+msgstr "التصنيف"
 
 msgctxt "#30431"
 msgid "Seasons"
@@ -929,11 +929,11 @@ msgstr "المواسم"
 
 msgctxt "#30432"
 msgid "Hide watched items in lists"
-msgstr "اخفي العناصر المُشاهدة من القائمة"
+msgstr "إخفِ العناصر المُشاهدة في القوائم"
 
 msgctxt "#30433"
 msgid "Allow direct file playback"
-msgstr "اسمح بالمشاهدة المباشرة"
+msgstr "اسمح ببث الملفات بشكل مباشر دون تحويل"
 
 msgctxt "#30435"
 msgid "Connection speed test"
@@ -945,7 +945,7 @@ msgstr "إعدادات التشغيل"
 
 msgctxt "#30440"
 msgid "Play next"
-msgstr "شغل التالي"
+msgstr "شَغِّل التالي"
 
 msgctxt "#30448"
 msgid "Shuffle"
@@ -953,11 +953,11 @@ msgstr "عشوائي"
 
 msgctxt "#30353"
 msgid " - Frequently Played"
-msgstr "- شُغلت مرارا"
+msgstr "- شُغلت مراراً"
 
 msgctxt "#30362"
 msgid " - Recordings"
-msgstr "- المُسجلات"
+msgstr "- التسجيلات"
 
 msgctxt "#30383"
 msgid "System - "
@@ -969,15 +969,15 @@ msgstr "- الصفحات"
 
 msgctxt "#30404"
 msgid " - A-Z"
-msgstr "- من أ إلى ي"
+msgstr "- من الألف إلى الياء"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
-msgstr "إجبار الترميز على معدل نقل البت (بالكيلو بتّ بالثانية)"
+msgstr "معدل نقل البت عند إجبار التحويل (Kbps)"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "أضف الأعداد غير المراقبة إلى الأسماء"
+msgstr "أضف أعداد الغير مشاهَدة إلى الأسماء"
 
 msgctxt "#30225"
 msgid "Interface Mode"
@@ -993,15 +993,15 @@ msgstr "بسيط"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
-msgstr "السماح بتخزين سريع لكلمة المرور للمستخدم الذي تم تبديله"
+msgstr "السماح بالتخزين السريع لكلمة المرور المستخدم الذي تم تبديله"
 
 msgctxt "#30375"
 msgid "Receiving data packet"
-msgstr "استقبال حزمة البيانات"
+msgstr "جاري إستقبال حزمة البيانات"
 
 msgctxt "#30374"
 msgid "Sending request"
-msgstr "ارسال طلب"
+msgstr "جاري إرسال الطلب"
 
 msgctxt "#30390"
 msgid "Protocol"
@@ -1009,11 +1009,11 @@ msgstr "البروتوكول"
 
 msgctxt "#30242"
 msgid "Force transcode av1"
-msgstr "إجبار تحويل الترميز الى av1"
+msgstr "فرض التحويل لتشفير AV1"
 
 msgctxt "#30333"
 msgid "Cache artwork in the background"
-msgstr "تخزين الأعمال الفنية في الخلفية"
+msgstr "التخزين المؤقت للأعمال الفنية في الخلفية"
 
 msgctxt "#30376"
 msgid "Checking server url"
@@ -1021,7 +1021,7 @@ msgstr "يتم التحقق من رابط الخادم"
 
 msgctxt "#30377"
 msgid "Sending request"
-msgstr "يتم ارسال الطلب"
+msgstr "يتم إرسال الطلب"
 
 msgctxt "#30378"
 msgid "Persist user details"
@@ -1029,7 +1029,7 @@ msgstr "حفظ معلومات المستخدم"
 
 msgctxt "#30384"
 msgid "Random movies interval minutes (0 = disabled)"
-msgstr "الزمن العشوائي بين الافلام ( 0 = تم تعطيله )"
+msgstr "الزمن العشوائي بين الافلام ( 0 = التعطيل)"
 
 msgctxt "#30385"
 msgid "Existing images before delete : "
@@ -1037,11 +1037,11 @@ msgstr "الصور الموجودة قبل الحذف:"
 
 msgctxt "#30386"
 msgid "Unused Jellyfin images : "
-msgstr "صور Jellyfin لم يتم استعمالها:"
+msgstr "صور Jellyfin الغير مستخدمة:"
 
 msgctxt "#30260"
 msgid "BoxSets"
-msgstr "مجموعات المرئيات"
+msgstr "مجموعات الوسائط"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
@@ -1049,19 +1049,19 @@ msgstr "السؤال عن الترجمة الخارجية"
 
 msgctxt "#30380"
 msgid "Never"
-msgstr "ابداً"
+msgstr "أَبداً"
 
 msgctxt "#30387"
 msgid "Unused images removed : "
-msgstr "تم حذف الصور غير المستعملة:"
+msgstr "الصور الغير المستخدمة التي تم حذفها:"
 
 msgctxt "#30395"
 msgid "Clear cached server data"
-msgstr "مسح بيانات الكاش للخادم"
+msgstr "مسح بيانات الذاكرة المؤقتة للخادم"
 
 msgctxt "#30407"
 msgid "Global Lists"
-msgstr "القوائم الرئيسية"
+msgstr "القوائم العامة"
 
 msgctxt "#30422"
 msgid "Sorting"
@@ -1074,3 +1074,79 @@ msgstr "- المجموعات المفضلة"
 msgctxt "#30421"
 msgid "Views"
 msgstr "مشاهدات"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "أقصى حجم لقائمة التشغيل"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "تشغيل المقدمات السينيمائية"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "تسجيل الدخول من خلال الإتصال السريع"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "إجراءات الإضافات"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "وِدجات مخصصة"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- مجموعات"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- وسوم"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "إظهار خيار تشغيل الحلقة التالية عندما يبقى وقت بالثواني"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "فحص المحتويات الجديدة البسيط"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "الإتصال السريع"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "الفاصل الزمني لصور التخزين المؤقت (0 = التعطيل)"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "التالي في إعادة المشاهدة"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "الدمج بدلاً من الإستبدال (قد يتسبب بالتباطؤ)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "حجم البيانات في إختبار سرعة الإتصال (ميجابايت)"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "التسمية"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "استخدم المعلومات المخزنة مؤقتاً للوِدجات"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "خلطة سريعة"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "عدد الأيام لإعادة المشاهدة (0 = التعطيل)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "إخفِ عدد العناصر التي ستظهر على العنوان"
