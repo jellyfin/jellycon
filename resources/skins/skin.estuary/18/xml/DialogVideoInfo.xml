@@ -258,7 +258,7 @@
 					<scrolltime>200</scrolltime>
 					<orientation>horizontal</orientation>
 					<onclick>close</onclick>
-					<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=NEW_SEARCH_PERSON&amp;person_id=$INFO[ListItem.Property(id)],return)</onclick>
+					<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=NEW_SEARCH_PERSON&amp;person_id=$INFO[ListItem.Property(id)],return)</onclick>
 					<itemlayout height="317" width="245">
 						<control type="group">
 							<top>10</top>
@@ -371,7 +371,7 @@
 							</control>
 						</control>
 					</focusedlayout>
-					<content>plugin://plugin.video.jellycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem.Property(id)]</content>
+					<content>plugin://plugin.video.embycon?mode=WIDGET_CONTENT_CAST&amp;id=$INFO[ListItem.Property(id)]</content>
 				</control>
 				<control type="grouplist" id="5000">
 					<left>0</left>
@@ -393,7 +393,7 @@
 						<param name="icon_off" value="icons/infodialogs/play.png" />
 						<param name="selected" value="String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season)" />
 						<param name="label" value="$VAR[VideoInfoPlayButtonLabelVar]" />
-						<param name="visible" value="!String.IsEqual(ListItem.DBType,tvshow) + !String.IsEqual(ListItem.DBType,season) + !String.IsEqual(ListItem.DBType,set) + String.StartsWith(ListItem.Path,plugin://plugin.video.jellycon)" />
+						<param name="visible" value="!String.IsEqual(ListItem.DBType,tvshow) + !String.IsEqual(ListItem.DBType,season) + !String.IsEqual(ListItem.DBType,set) + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)" />
 					</include>
 					<include content="InfoDialogButton">
 						<param name="id" value="3124" />
@@ -401,7 +401,7 @@
 						<param name="label" value="Browse" />
 						<param name="onclick_1" value="Dialog.Close(MovieInformation)" />
 						<param name="onclick_2" value="ActivateWindow(Videos, $INFO[ListItem.FileNameAndPath], return)" />
-						<param name="visible" value="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set)] + String.StartsWith(ListItem.Path,plugin://plugin.video.jellycon)" />
+						<param name="visible" value="[String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season) | String.IsEqual(ListItem.DBType,set)] + String.StartsWith(ListItem.Path,plugin://plugin.video.embycon)" />
 					</include>
 					<include content="InfoDialogButton">
 						<param name="id" value="11" />

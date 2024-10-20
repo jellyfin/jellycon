@@ -40,7 +40,7 @@ def check_connection_speed():
 
     progress_dialog = xbmcgui.DialogProgress()
     message = 'Testing with {0} MB of data'.format(speed_test_data_size)
-    progress_dialog.create("JellyCon connection speed test", message)
+    progress_dialog.create("embycon connection speed test", message)
     start_time = time.time()
 
     log.debug("Starting Connection Speed Test")
@@ -293,7 +293,7 @@ def check_server(force=False, change_user=False, notify=False):
 
         if something_changed:
             home_window = HomeWindow()
-            home_window.clear_property("jellycon_widget_reload")
+            home_window.clear_property("embycon_widget_reload")
             if auth:
                 token = auth.get('AccessToken')
                 user_id = auth.get('User').get('Id')
@@ -302,7 +302,7 @@ def check_server(force=False, change_user=False, notify=False):
                 user_id = user_details.get('user_id')
             save_user_details(selected_user_name, user_id, token)
             xbmc.executebuiltin("ActivateWindow(Home)")
-            if "estuary_jellycon" in xbmc.getSkinDir():
+            if "estuary_embycon" in xbmc.getSkinDir():
                 xbmc.executebuiltin("SetFocus(9000, 0, absolute)")
             xbmc.executebuiltin("ReloadSkin()")
 

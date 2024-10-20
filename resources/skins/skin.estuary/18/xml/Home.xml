@@ -20,7 +20,7 @@
 		</control>
 		<!--<include>DefaultBackground</include>-->
 		
-		<!-- Start of JellyCon Backgrounds -->
+		<!-- Start of embycon Backgrounds -->
 		<control type="group">
 			<!--<animation effect="fade" start="100" end="bg_alpha" time="0" condition="!Control.IsVisible(31111)">Conditional</animation>-->
 			<animation effect="fade" start="0" end="100" time="300" condition="Window.Previous(fullscreenvideo) | Window.Previous(startup)">WindowOpen</animation>
@@ -31,7 +31,7 @@
 			<aspectratio>scale</aspectratio>
 			<fadetime>400</fadetime>
 			<animation effect="fade" time="400">VisibleChange</animation>
-			<texture background="true" colordiffuse="37FFFFFF">$INFO[Window(Home).Property(plugin.video.jellycon-random-gb)]</texture>
+			<texture background="true" colordiffuse="37FFFFFF">$INFO[Window(Home).Property(plugin.video.embycon-random-gb)]</texture>
 			<visible>String.IsEmpty(ListItem.Art(fanart))</visible>
 		</control>			
 		<control type="image">
@@ -42,7 +42,7 @@
 			<texture background="true" colordiffuse="37FFFFFF">$INFO[ListItem.Art(fanart)]</texture>
 			<visible>!String.IsEmpty(ListItem.Art(fanart))</visible>
 		</control>		
-		<!-- End of JellyCon Backgrounds -->
+		<!-- End of embycon Backgrounds -->
 		
 		<control type="multiimage">
 			<depth>DepthBackground</depth>
@@ -78,19 +78,19 @@
 					<control type="grouplist" id="3001">
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=recent_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-jellycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="Recently Added Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3800"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=inprogress_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-jellycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="In Progress Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3900"/>
 						</include>
 						<include content="WidgetListPoster" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-random-movies-changed)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=random_movies&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-random-movies-changed)]"/>
 							<param name="widget_header" value="Random Movies"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="3100"/>
@@ -105,19 +105,19 @@
 					<control type="grouplist" id="4001">
                         <include>WidgetGroupListCommon</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=recent_tvshows&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-jellycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=recent_tvshows&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="Recently Updated Shows"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4900"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=inprogress_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-jellycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=inprogress_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="In Progress Episodes"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4300"/>
 						</include>
 						<include content="WidgetListEpisodes" condition="true">
-							<param name="content_path" value="plugin://plugin.video.jellycon?mode=WIDGET_CONTENT&amp;type=nextup_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.jellycon-jellycon_widget_reload)]"/>
+							<param name="content_path" value="plugin://plugin.video.embycon?mode=WIDGET_CONTENT&amp;type=nextup_episodes&amp;reload=$INFO[Window(Home).Property(plugin.video.embycon-embycon_widget_reload)]"/>
 							<param name="widget_header" value="Next Up Episodes"/>
 							<param name="widget_target" value="videos"/>
 							<param name="list_id" value="4200"/>
@@ -974,7 +974,7 @@
 						<item>
 							<label>Jellyfin Movies</label>
 							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
-							<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies,return)</onclick>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Movie&amp;media_type=movies,return)</onclick>
 							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
 							<property name="menu_id">$NUMBER[3000]</property>
 							<thumb>icons/sidemenu/movies.png</thumb>
@@ -983,7 +983,7 @@
 						<item>
 							<label>Jellyfin TV Shows</label>
 							<onclick condition="String.IsEmpty(Window(Home).Property(first_load_done))">ActivateWindow(Videos,videodb://movies/titles/,return)</onclick>
-							<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows,return)</onclick>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SHOW_CONTENT&amp;item_type=Series&amp;media_type=tvshows,return)</onclick>
 							<onclick>SetProperty(first_load_done, done, 10000)</onclick>
 							<property name="menu_id">$NUMBER[4000]</property>
 							<thumb>icons/sidemenu/tv.png</thumb>
@@ -991,14 +991,14 @@
 						</item>
 						<item>
 							<label>Search</label>
-							<onclick>ActivateWindow(Videos,plugin://plugin.video.jellycon/?mode=SEARCH,return)</onclick>
+							<onclick>ActivateWindow(Videos,plugin://plugin.video.embycon/?mode=SEARCH,return)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
 							<thumb>icons/sidemenu/favourites.png</thumb>
 							<property name="id">search</property>
 						</item>
 						<item>
 							<label>Change User</label>
-							<onclick>RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)</onclick>
+							<onclick>RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)</onclick>
 							<property name="menu_id">$NUMBER[-1]</property>
 							<thumb>icons/sidemenu/pictures.png</thumb>
 							<property name="id">change</property>
@@ -1212,7 +1212,7 @@
 					<width>100</width>
 					<height>100</height>
 					<aspectratio>keep</aspectratio>
-					<texture >$INFO[Window(Home).Property(plugin.video.jellycon-userimage)]</texture>
+					<texture >$INFO[Window(Home).Property(plugin.video.embycon-userimage)]</texture>
 				</control>
 				<!--
 				<control type="image">

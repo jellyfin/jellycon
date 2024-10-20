@@ -1,4 +1,4 @@
-name: Test JellyCon
+name: Test embycon
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 env:
-  PR_TRIGGERED: ${{ github.event_name == 'pull_request' && github.repository == 'jellyfin/jellycon' }}
+  PR_TRIGGERED: ${{ github.event_name == 'pull_request' && github.repository == 'jellyfin/embycon' }}
 
 jobs:
   test:

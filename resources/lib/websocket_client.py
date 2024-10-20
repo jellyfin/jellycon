@@ -179,7 +179,7 @@ class WebSocketClient(threading.Thread):
             text = arguments['Text']
             # show notification here
             log.debug("WebSocket DisplayMessage: {0}".format(text))
-            xbmcgui.Dialog().notification("JellyCon", text)
+            xbmcgui.Dialog().notification("embycon", text)
 
         elif command == 'SendString':
 

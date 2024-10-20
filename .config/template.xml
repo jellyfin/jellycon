@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon  id="plugin.video.jellycon" 
-        name="JellyCon"
+<addon  id="plugin.video.embycon" 
+        name="embycon"
         version=""
         provider-name="Jellyfin Contributors">
   <requires>
@@ -14,9 +14,9 @@
     <platform>all</platform>
     <language>en</language>
     <license>GPL-2.0-only</license>
-    <forum>https://github.com/jellyfin/jellycon/issues</forum>
-    <website>https://github.com/jellyfin/jellycon/wiki</website>
-    <source>https://github.com/jellyfin/jellycon</source>
+    <forum>https://github.com/jellyfin/embycon/issues</forum>
+    <website>https://github.com/jellyfin/embycon/wiki</website>
+    <source>https://github.com/jellyfin/embycon</source>
     <summary lang="en_GB">Browse and play your Jellyfin server media library.</summary>
     <description lang="en_GB">An addon to allow you to browse and playback your Jellyfin (https://jellyfin.org) Movie, TV Show and Music collections.</description>
     <assets>

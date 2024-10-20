@@ -147,7 +147,7 @@ def check_for_new_content():
     if simple_new_content_check:
         log.debug("Using simple new content check")
         current_time_stamp = str(time.time())
-        home_window.set_property("jellycon_widget_reload", current_time_stamp)
+        home_window.set_property("embycon_widget_reload", current_time_stamp)
         log.debug("Setting New Widget Hash: {0}".format(current_time_stamp))
         return
     user_id = get_current_user_id()
@@ -201,7 +201,7 @@ def check_for_new_content():
 
     log.debug("last_played_date: {0}".format(last_played_date))
 
-    current_widget_hash = home_window.get_property("jellycon_widget_reload")
+    current_widget_hash = home_window.get_property("embycon_widget_reload")
     log.debug("Current Widget Hash: {0}".format(current_widget_hash))
 
     m = hashlib.md5()
@@ -210,7 +210,7 @@ def check_for_new_content():
     log.debug("New Widget Hash: {0}".format(new_widget_hash))
 
     if current_widget_hash != new_widget_hash:
-        home_window.set_property("jellycon_widget_reload", new_widget_hash)
+        home_window.set_property("embycon_widget_reload", new_widget_hash)
         log.debug("Setting New Widget Hash: {0}".format(new_widget_hash))
 
 

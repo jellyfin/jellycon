@@ -54,7 +54,7 @@ user_details = load_user_details()
 
 @timer
 def main_entry_point():
-    log.debug("===== JellyCon START =====")
+    log.debug("===== embycon START =====")
 
     settings = xbmcaddon.Addon()
     profile_count = int(settings.getSetting('profile_count'))
@@ -66,7 +66,7 @@ def main_entry_point():
         pr.enable()
 
     log.debug("Running Python: {0}".format(sys.version_info))
-    log.debug("Running JellyCon: {0}".format(get_version()))
+    log.debug("Running embycon: {0}".format(get_version()))
     log.debug("Kodi BuildVersion: {0}".format(
         xbmc.getInfoLabel("System.BuildVersion"))
     )
@@ -147,8 +147,8 @@ def main_entry_point():
     elif mode == "SHOW_ADDON_MENU":
         display_menu(params)
     else:
-        log.debug("JellyCon -> Mode: {0}".format(mode))
-        log.debug("JellyCon -> URL: {0}".format(param_url))
+        log.debug("embycon -> Mode: {0}".format(mode))
+        log.debug("embycon -> URL: {0}".format(param_url))
 
         if mode == "GET_CONTENT":
             get_content(param_url, params)
@@ -175,7 +175,7 @@ def main_entry_point():
         with open(tab_file_name, 'w') as f:
             f.write(s.getvalue())
 
-    log.debug("===== JellyCon FINISHED =====")
+    log.debug("===== embycon FINISHED =====")
 
 
 def toggle_watched(params):
@@ -316,7 +316,7 @@ def get_params():
     request_path = plugin_path.replace("plugin://{}".format(addon_id), "")
     param["request_path"] = request_path
 
-    log.debug("JellyCon -> Detected parameters: {0}".format(param))
+    log.debug("embycon -> Detected parameters: {0}".format(param))
     return param
 
 
@@ -939,7 +939,7 @@ def play_action(params):
     play_info["media_source_id"] = media_source_id
     play_info["subtitle_stream_index"] = subtitle_stream_index
     play_info["audio_stream_index"] = audio_stream_index
-    log.info("Sending jellycon_play_action : {0}".format(play_info))
+    log.info("Sending embycon_play_action : {0}".format(play_info))
     play_file(play_info)
 
 

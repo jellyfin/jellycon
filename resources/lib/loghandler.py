@@ -12,7 +12,7 @@ from kodi_six import xbmc, xbmcaddon
 
 from .utils import translate_path
 
-__addon__ = xbmcaddon.Addon(id='plugin.video.jellycon')
+__addon__ = xbmcaddon.Addon(id='plugin.video.embycon')
 __pluginpath__ = translate_path(__addon__.getAddonInfo('path'))
 
 

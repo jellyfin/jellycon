@@ -92,7 +92,7 @@ def send_event_notification(method, data=None, hexlify=False):
     else:
         data = '"[{}]"'.format(data_str.replace('"', '\\"'))
 
-    sender = 'plugin.video.jellycon'
+    sender = 'plugin.video.embycon'
 
     xbmc.executebuiltin('NotifyAll({}, {}, {})'.format(sender, method, data))
 
@@ -168,7 +168,7 @@ def get_device_id():
         return '{}-{}'.format(client_id, rand_id)
 
     jellyfin_guid_path = py2_decode(
-        translate_path("special://temp/jellycon_guid")
+        translate_path("special://temp/embycon_guid")
     )
     log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
     guid = xbmcvfs.File(jellyfin_guid_path)

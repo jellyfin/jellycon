@@ -67,14 +67,14 @@ def zip_files(py_version: str, source: str, target: str, dev: bool) -> None:
     """
     Create installable addon zip archive
     """
-    archive_name = f'plugin.video.jellycon+{py_version}.zip'
+    archive_name = f'plugin.video.embycon+{py_version}.zip'
 
     with zipfile.ZipFile(f'{target}/{archive_name}', 'w') as z:
         for root, dirs, files in os.walk(args.source):
             for filename in filter(file_filter, files):
                 file_path = os.path.join(root, filename)
                 if dev or folder_filter(file_path):
-                    relative_path = os.path.join('plugin.video.jellycon', os.path.relpath(file_path, source))
+                    relative_path = os.path.join('plugin.video.embycon', os.path.relpath(file_path, source))
                     z.write(file_path, relative_path)
 
 
@@ -83,7 +83,7 @@ def file_filter(file_name: str) -> bool:
     True if file_name is meant to be included
     """
     return (
-        not (file_name.startswith('plugin.video.jellycon') and file_name.endswith('.zip'))
+        not (file_name.startswith('plugin.video.embycon') and file_name.endswith('.zip'))
         and not file_name.endswith('.pyo')
         and not file_name.endswith('.pyc')
         and not file_name.endswith('.pyd')

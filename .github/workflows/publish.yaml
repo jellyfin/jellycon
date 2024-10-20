@@ -1,4 +1,4 @@
-name: Publish JellyCon
+name: Publish embycon
 
 on:
   workflow_dispatch:
@@ -60,5 +60,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script_stop: true
           script: |
-            python3 /usr/local/bin/kodirepo add /srv/repository/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip --datadir /srv/repository/releases/client/kodi/${{ matrix.py_version }};
-            rm /srv/repository/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip;
+            python3 /usr/local/bin/kodirepo add /srv/repository/incoming/kodi/plugin.video.embycon+${{ matrix.py_version }}.zip --datadir /srv/repository/releases/client/kodi/${{ matrix.py_version }};
+            rm /srv/repository/incoming/kodi/plugin.video.embycon+${{ matrix.py_version }}.zip;

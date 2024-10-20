@@ -579,13 +579,13 @@ def display_main_menu():
         return
 
     add_menu_directory_item(translate_string(30406),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=library")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library")
     add_menu_directory_item(translate_string(30407),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_global_types")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_global_types")
     add_menu_directory_item(translate_string(30408),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
     add_menu_directory_item(translate_string(30409),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=addon_items")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=addon_items")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -621,14 +621,14 @@ def show_global_types(params):
     }
     continue_watching_url = get_jellyfin_url("/Users/{userid}/Items/Resume", continue_watching_url_params)
     add_menu_directory_item(translate_string(30445),
-                            "plugin://plugin.video.jellycon/?mode=GET_CONTENT&url=" + quote(continue_watching_url) +
+                            "plugin://plugin.video.embycon/?mode=GET_CONTENT&url=" + quote(continue_watching_url) +
                             "&media_type=movies" +
                             "&name_format="+quote("Episode|episode_name_format"))
 
     add_menu_directory_item(translate_string(30256),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_movies")
     add_menu_directory_item(translate_string(30261),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
+                            "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=global_list_tvshows")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -680,15 +680,15 @@ def display_homevideos_type(menu_params, view):
 
 def display_addon_menu(params):
 
-    add_menu_directory_item(translate_string(30246), "plugin://plugin.video.jellycon/?mode=SEARCH")
-    add_menu_directory_item(translate_string(30017), "plugin://plugin.video.jellycon/?mode=SHOW_SERVER_SESSIONS")
-    add_menu_directory_item(translate_string(30012), "plugin://plugin.video.jellycon/?mode=CHANGE_USER")
-    add_menu_directory_item(translate_string(30011), "plugin://plugin.video.jellycon/?mode=DETECT_SERVER_USER")
-    add_menu_directory_item(translate_string(30435), "plugin://plugin.video.jellycon/?mode=DETECT_CONNECTION_SPEED")
-    add_menu_directory_item(translate_string(30254), "plugin://plugin.video.jellycon/?mode=SHOW_SETTINGS")
-    add_menu_directory_item(translate_string(30395), "plugin://plugin.video.jellycon/?mode=CLEAR_CACHE")
-    add_menu_directory_item(translate_string(30293), "plugin://plugin.video.jellycon/?mode=CACHE_ARTWORK")
-    add_menu_directory_item("Clone default skin", "plugin://plugin.video.jellycon/?mode=CLONE_SKIN")
+    add_menu_directory_item(translate_string(30246), "plugin://plugin.video.embycon/?mode=SEARCH")
+    add_menu_directory_item(translate_string(30017), "plugin://plugin.video.embycon/?mode=SHOW_SERVER_SESSIONS")
+    add_menu_directory_item(translate_string(30012), "plugin://plugin.video.embycon/?mode=CHANGE_USER")
+    add_menu_directory_item(translate_string(30011), "plugin://plugin.video.embycon/?mode=DETECT_SERVER_USER")
+    add_menu_directory_item(translate_string(30435), "plugin://plugin.video.embycon/?mode=DETECT_CONNECTION_SPEED")
+    add_menu_directory_item(translate_string(30254), "plugin://plugin.video.embycon/?mode=SHOW_SETTINGS")
+    add_menu_directory_item(translate_string(30395), "plugin://plugin.video.embycon/?mode=CLEAR_CACHE")
+    add_menu_directory_item(translate_string(30293), "plugin://plugin.video.embycon/?mode=CACHE_ARTWORK")
+    add_menu_directory_item("Clone default skin", "plugin://plugin.video.embycon/?mode=CLONE_SKIN")
 
     handle = int(sys.argv[1])
     xbmcplugin.endOfDirectory(handle)
@@ -790,13 +790,13 @@ def display_tvshow_type(menu_params, view):
     add_menu_directory_item(view_name + translate_string(30278) + get_filtered_items_count_text(), url)
 
     # TV Show Genres
-    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=tvshow"
+    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=tvshow"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + translate_string(30325), path)
 
     # TV Show Alpha picker
-    path = "plugin://plugin.video.jellycon/?mode=TVSHOW_ALPHA"
+    path = "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + translate_string(30404), path)
@@ -878,20 +878,20 @@ def display_music_type(menu_params, view):
     add_menu_directory_item(view_name + translate_string(30321), url)
 
     # genres
-    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=MusicAlbum"
+    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=MusicAlbum"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + translate_string(30325), path)
 
     # Artist Alpha picker
-    path = "plugin://plugin.video.jellycon/?mode=ARTIST_ALPHA"
+    path = "plugin://plugin.video.embycon/?mode=ARTIST_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{} - {}{}'.format(
         view_name, translate_string(30323), translate_string(30404)), path)
 
     # Shuffle All
-    path = "plugin://plugin.video.jellycon/?mode=PLAY&action=shuffle"
+    path = "plugin://plugin.video.embycon/?mode=PLAY&action=shuffle"
     if view is not None:
         path += "&item_id=" + view.get("Id")
     add_menu_directory_item('{} - {}'.format(
@@ -1075,37 +1075,37 @@ def display_movies_type(menu_params, view):
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30415)), url)
 
     # Genres
-    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=movie"
+    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=movie"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30325)), path)
 
     # Pages
-    path = "plugin://plugin.video.jellycon/?mode=MOVIE_PAGES"
+    path = "plugin://plugin.video.embycon/?mode=MOVIE_PAGES"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30397)), path)
 
     # Alpha Picker
-    path = "plugin://plugin.video.jellycon/?mode=MOVIE_ALPHA"
+    path = "plugin://plugin.video.embycon/?mode=MOVIE_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30404)), path)
 
     # Years
-    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30411)), path)
 
     # Decades
-    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_years&group=true"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30412)), path)
 
     # Tags
-    path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
+    path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=show_movie_tags"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item('{}{}'.format(view_name, translate_string(30413)), path)
@@ -1209,13 +1209,13 @@ def display_mixed_type(params, view):
     add_menu_directory_item(view_name + translate_string(30278) + get_filtered_items_count_text(), url)
 
     # Mixed Genres
-    path = "plugin://plugin.video.jellycon/?mode=GENRES&item_type=mixed"
+    path = "plugin://plugin.video.embycon/?mode=GENRES&item_type=mixed"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + translate_string(30325), path)
 
     # Mixed Alpha picker
-    path = "plugin://plugin.video.jellycon/?mode=TVSHOW_ALPHA"
+    path = "plugin://plugin.video.embycon/?mode=TVSHOW_ALPHA"
     if view is not None:
         path += "&parent_id=" + view.get("Id")
     add_menu_directory_item(view_name + translate_string(30404), path)
@@ -1248,7 +1248,7 @@ def display_library_views(params):
             art = get_art(item=view, server=server)
             art['landscape'] = get_art_url(view, "Primary", server=server)
 
-            plugin_path = "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
+            plugin_path = "plugin://plugin.video.embycon/?mode=SHOW_ADDON_MENU&type=library_item&view_id=" + view.get("Id")
 
             if collection_type == "playlists":
                 plugin_path = get_playlist_path(view)
@@ -1333,38 +1333,38 @@ def display_library_view(params):
 
 def show_widgets():    
     add_menu_directory_item("All Movies",
-                            'plugin://plugin.video.jellycon/library/movies')
+                            'plugin://plugin.video.embycon/library/movies')
     
     item_limit_text = get_filtered_items_count_text()
 
     add_menu_directory_item(translate_string(30257) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_movies')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_movies')
     add_menu_directory_item(translate_string(30258) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_movies')
     add_menu_directory_item(translate_string(30269) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=random_movies')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=random_movies')
     add_menu_directory_item(translate_string(30403) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=movie_recommendations')
 
     add_menu_directory_item(translate_string(30287) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_tvshows')
     add_menu_directory_item(translate_string(30263) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_episodes')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=recent_episodes')
     add_menu_directory_item(translate_string(30264) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
     add_menu_directory_item(translate_string(30265) + item_limit_text,
-                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+                            'plugin://plugin.video.embycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_search():
-    add_menu_directory_item(translate_string(30231), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Movie')
-    add_menu_directory_item(translate_string(30229), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Series')
-    add_menu_directory_item(translate_string(30235), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Episode')
-    add_menu_directory_item(translate_string(30337), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Audio')
-    add_menu_directory_item(translate_string(30338), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
-    add_menu_directory_item(translate_string(30339), 'plugin://plugin.video.jellycon/?mode=NEW_SEARCH&item_type=Person')
+    add_menu_directory_item(translate_string(30231), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Movie')
+    add_menu_directory_item(translate_string(30229), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Series')
+    add_menu_directory_item(translate_string(30235), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Episode')
+    add_menu_directory_item(translate_string(30337), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Audio')
+    add_menu_directory_item(translate_string(30338), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=MusicAlbum')
+    add_menu_directory_item(translate_string(30339), 'plugin://plugin.video.embycon/?mode=NEW_SEARCH&item_type=Person')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -1401,22 +1401,22 @@ def set_library_window_values(force=False):
             name = item.get("Name")
             item_id = item.get("Id")
 
-            # plugin.video.jellycon-
+            # plugin.video.embycon-
             prop_name = "view_item.%i.name" % index
             home_window.set_property(prop_name, name)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, name))
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}".format(prop_name, name))
 
             prop_name = "view_item.%i.id" % index
             home_window.set_property(prop_name, item_id)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, item_id))
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}".format(prop_name, item_id))
 
             prop_name = "view_item.%i.type" % index
             home_window.set_property(prop_name, collection_type)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, collection_type))
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}".format(prop_name, collection_type))
 
             thumb = get_art_url(item, "Primary", server=server)
             prop_name = "view_item.%i.thumb" % index
             home_window.set_property(prop_name, thumb)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, thumb))
+            log.debug("set_library_window_values: plugin.video.embycon-{0}={1}".format(prop_name, thumb))
 
             index += 1

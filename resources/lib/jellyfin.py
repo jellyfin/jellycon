@@ -104,14 +104,14 @@ class API:
         headers = {}
         device_name = self.settings.getSetting('deviceName')
         if len(device_name) == 0:
-            device_name = "JellyCon"
+            device_name = "embycon"
         # Ensure ascii and remove invalid characters
         device_name = py2_decode(device_name).replace('"', '_').replace(',', '_')
         device_id = get_device_id()
         version = get_version()
 
         authorization = (
-            'MediaBrowser Client="Kodi JellyCon", Device="{device}", '
+            'MediaBrowser Client="Kodi embycon", Device="{device}", '
             'DeviceId="{device_id}", Version="{version}"'
         ).format(
             device=device_name,

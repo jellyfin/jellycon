@@ -1,4 +1,4 @@
-name: Build JellyCon
+name: Build embycon
 
 on:
   push:

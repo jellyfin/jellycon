@@ -235,7 +235,7 @@ class CacheManagerThread(threading.Thread):
 
                 # TODO: probably should only set this in simple check mode
                 current_time_stamp = str(time.time())
-                home_window.set_property("jellycon_widget_reload", current_time_stamp)
+                home_window.set_property("embycon_widget_reload", current_time_stamp)
                 log.debug("Setting New Widget Hash: {0}".format(current_time_stamp))
 
                 log.debug("CacheManagerThread : Sending container refresh")

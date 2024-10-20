@@ -55,7 +55,7 @@ def play_all_files(items, play_items=True):
             error_string = playback_info.get("ErrorCode")
             xbmcgui.Dialog().notification(translate_string(30316),
                                           error_string,
-                                          icon="special://home/addons/plugin.video.jellycon/icon.png")
+                                          icon="special://home/addons/plugin.video.embycon/icon.png")
             return
 
         play_session_id = playback_info.get("PlaySessionId")
@@ -154,7 +154,7 @@ def add_to_playlist(play_info):
         error_string = playback_info.get("ErrorCode")
         xbmcgui.Dialog().notification(translate_string(30316),
                                       error_string,
-                                      icon="special://home/addons/plugin.video.jellycon/icon.png")
+                                      icon="special://home/addons/plugin.video.embycon/icon.png")
         return
 
     play_session_id = playback_info.get("PlaySessionId")
@@ -347,7 +347,7 @@ def play_file(play_info):
         error_string = playback_info.get("ErrorCode")
         xbmcgui.Dialog().notification(translate_string(30316),
                                       error_string,
-                                      icon="special://home/addons/plugin.video.jellycon/icon.png")
+                                      icon="special://home/addons/plugin.video.embycon/icon.png")
         return
 
     play_session_id = playback_info.get("PlaySessionId")
@@ -1132,7 +1132,7 @@ def get_playing_data():
     try:
         play_data = json.loads(play_data_string)
     except ValueError:
-        # This isn't a JellyCon item
+        # This isn't a embycon item
         return None
 
     played_information_string = home_window.get_property('played_information')
@@ -1432,15 +1432,15 @@ class PlaybackService(xbmc.Monitor):
             return
 
         if sender.lower() not in (
-            'plugin.video.jellycon', 'xbmc', 'upnextprovider.signal'
+            'plugin.video.embycon', 'xbmc', 'upnextprovider.signal'
         ):
             return
 
 
         signal = method.split('.', 1)[-1]
         if signal not in (
-            "jellycon_play_action", "jellycon_play_youtube_trailer_action",
-            "set_view", "plugin.video.jellycon_play_action"):
+            "embycon_play_action", "embycon_play_youtube_trailer_action",
+            "set_view", "plugin.video.embycon_play_action"):
             return
 
         data_json = json.loads(data)
@@ -1452,10 +1452,10 @@ class PlaybackService(xbmc.Monitor):
         log.debug("PlaybackService:onNotification:{0}".format(play_info))
 
         if signal in (
-            "jellycon_play_action", "plugin.video.jellycon_play_action"
+            "embycon_play_action", "plugin.video.embycon_play_action"
         ):
             play_file(play_info)
-        elif signal == "jellycon_play_youtube_trailer_action":
+        elif signal == "embycon_play_youtube_trailer_action":
             trailer_link = play_info["url"]
             xbmc.executebuiltin(trailer_link)
         elif signal == "set_view":
@@ -1477,7 +1477,7 @@ class PlaybackService(xbmc.Monitor):
                 log.debug("Screen Saver Activated : isPlayingVideo() = true")
                 play_data = get_playing_data()
                 if play_data:
-                    log.debug("Screen Saver Activated : this is an JellyCon item so stop it")
+                    log.debug("Screen Saver Activated : this is an embycon item so stop it")
                     player.stop()
 
         clear_old_cache_data()
@@ -1500,7 +1500,7 @@ class PlaybackService(xbmc.Monitor):
             skip_select_user = home_screen.get_property("skip_select_user")
             if skip_select_user is not None and skip_select_user == "true":
                 return
-            xbmc.executebuiltin("RunScript(plugin.video.jellycon,0,?mode=CHANGE_USER)")
+            xbmc.executebuiltin("RunScript(plugin.video.embycon,0,?mode=CHANGE_USER)")
 
 
 def get_item_playback_info(item_id, force_transcode):

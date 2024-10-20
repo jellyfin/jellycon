@@ -48,7 +48,7 @@ class CacheArtwork(threading.Thread):
         monitor.waitForAbort(5)
 
         while not self.stop_all_activity and not monitor.abortRequested() and xbmc.getCondVisibility("System.ScreenSaverActive"):
-            content_hash = home_window.get_property("jellycon_widget_reload")
+            content_hash = home_window.get_property("embycon_widget_reload")
             if (check_interval != 0 and (time.time() - last_update) > check_interval) or (latest_content_hash != content_hash):
                 log.debug("CacheArtwork background thread - triggered")
                 if monitor.waitForAbort(10):
