@@ -945,9 +945,9 @@ def play_action(params):
 
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
-    handle = int(sys.argv[1]) if sys.argv and len(sys.argv) > 1 else None
+    handle = int(sys.argv[1]) if sys.argv and len(sys.argv) > 1 else -1
     if handle != -1:
-        xbmcplugin.endOfDirectory(int(sys.argv[1]), succeeded=False, updateListing=False, cacheToDisc=False)
+        xbmcplugin.endOfDirectory(handle, succeeded=False, updateListing=False, cacheToDisc=False)
         
     url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(
         user_details.get('user_id'), item_id
