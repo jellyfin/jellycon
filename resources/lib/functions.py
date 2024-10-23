@@ -945,7 +945,10 @@ def play_action(params):
 
 def play_item_trailer(item_id):
     log.debug("== ENTER: playTrailer ==")
-
+    handle = int(sys.argv[1]) if sys.argv and len(sys.argv) > 1 else None
+    if handle:
+        xbmcplugin.endOfDirectory(int(sys.argv[1]), succeeded=False, updateListing=False, cacheToDisc=False)
+        
     url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(
         user_details.get('user_id'), item_id
     )
@@ -1021,7 +1024,7 @@ def play_item_trailer(item_id):
         elif trailer.get("type") == "remote":
             youtube_id = trailer.get("url").rsplit('=', 1)[1]
             url_root = "plugin.video.youtube/play/?video_id="
-            play_url = "RunPlugin(plugin://{}{})".format(url_root, youtube_id)
+            play_url = "PlayMedia(plugin://{}{})".format(url_root, youtube_id)
             log.debug("youtube_plugin: {0}".format(play_url))
 
             xbmc.executebuiltin(play_url)
