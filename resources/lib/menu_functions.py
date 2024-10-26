@@ -738,6 +738,14 @@ def display_tvshow_type(menu_params, view):
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
     add_menu_directory_item(view_name + translate_string(30285), url)
 
+    # Totally unwatched tv shows
+    params = {}
+    params.update(base_params)
+    params["IsPlayed"] = False       
+    path = get_jellyfin_url("/Users/{userid}/Items", params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows&OnlyTotallyUnwatchedTvShow=1"
+    add_menu_directory_item(view_name + translate_string(30454), url)
+
     # In progress episodes
     params = {}
     params.update(base_params)
