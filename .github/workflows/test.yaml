@@ -53,7 +53,7 @@ jobs:
           cat flake8.output
 
       - name: Publish Test Atrifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           retention-days: 14
           name: ${{ matrix.py_version }}-test-results
