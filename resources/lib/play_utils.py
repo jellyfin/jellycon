@@ -792,7 +792,6 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     playurlprefs = ""
     default_audio = media_source.get('DefaultAudioStreamIndex', 1)
     default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
-    source_id = media_source["Id"]
 
     media_streams = media_source['MediaStreams']
 
@@ -1626,7 +1625,7 @@ def get_item_playback_info(item_id, force_transcode):
         url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
     # Replace transcoding profile with more restrictive one, respecting user configuration
     else:
-        bitrate = get_bitrate(settings.getSetting("max_stream_bforce_max_stream_bitrateitrate"))
+        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
         profile['MaxStaticBitrate'] = bitrate
         profile['MaxStreamingBitrate'] = bitrate
         profile['EnableDirectPlay'] = False
@@ -1635,14 +1634,26 @@ def get_item_playback_info(item_id, force_transcode):
         audio_codec = settings.getSetting("audio_codec")
         audio_max_channels = settings.getSetting("audio_max_channels")
         profile['TranscodingProfiles'][0] = {
-                "Type": "Video",
-                "Container": "mp4",
-                "Protocol": "hls",
-                "AudioCodec": audio_codec,
-                "VideoCodec":  "h264",
-                "MaxAudioChannels" : audio_max_channels,
-            }
-        
+            "Type": "Video",
+            "Container": "mp4",
+            "Protocol": "hls",
+            "VideoCodec":  "h264",
+            "AudioCodec": audio_codec,
+            "MaxAudioChannels" : audio_max_channels,
+        }
+
+        playback_max_width = settings.getSetting("playback_max_width")
+        if playback_max_width is not None:
+            profile['TranscodingProfiles'][0]['Conditions'] = [
+                {
+                    "Property": "Width ",
+                    "Condition": "LessThanEqual",
+                    "Value": playback_max_width,
+                    "IsRequired": False
+                }
+            ]
+
+
         url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
 
     # This enforces SDR video
