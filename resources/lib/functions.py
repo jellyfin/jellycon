@@ -17,7 +17,7 @@ from six.moves.urllib.parse import quote, unquote, parse_qsl, urlencode
 
 from .jellyfin import api
 from .utils import (
-    translate_string, get_version, load_user_details, get_art_url,
+    get_bitrate, translate_string, get_version, load_user_details, get_art_url,
     get_default_filters, translate_path, kodi_version, get_jellyfin_url
 )
 from .kodi_utils import HomeWindow
@@ -536,12 +536,12 @@ def show_menu(params):
     elif selected_action == "transcode":
         params['force_transcode'] = 'true'
 
-        max_bitrate = settings.getSetting("force_max_stream_bitrate")
-        initial_bitrate_value = int(max_bitrate)
+        max_bitrate = int(get_bitrate(settings.getSetting("force_max_stream_bitrate")) / 1000)
         bitrate_dialog = BitrateDialog(
             "BitrateDialog.xml", PLUGINPATH, "default", "720p"
         )
-        bitrate_dialog.initial_bitrate_value = initial_bitrate_value
+        bitrate_dialog.max_bitrate_value = max_bitrate
+        bitrate_dialog.initial_bitrate_value = max_bitrate
         bitrate_dialog.doModal()
         selected_transcode_value = bitrate_dialog.selected_transcode_value
         del bitrate_dialog
