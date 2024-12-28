@@ -405,8 +405,8 @@ def play_file(play_info):
         if user_data.get("PlaybackPositionTicks") != 0:
 
             reasonable_ticks = int(user_data.get("PlaybackPositionTicks")) / 1000
-            seek_time = round(reasonable_ticks / 10000,0)
-            display_time = (datetime.datetime(1,1,1) + datetime.timedelta(seconds=seek_time)).strftime('%H:%M:%S')
+            seek_time = round(reasonable_ticks / 10000, 0)
+            display_time = (datetime.datetime(1, 1, 1) + datetime.timedelta(seconds=seek_time)).strftime('%H:%M:%S')
 
             resume_dialog = ResumeDialog("ResumeDialog.xml", addon_path, "default", "720p")
             resume_dialog.setResumeTime("Resume from " + display_time)
@@ -1428,11 +1428,10 @@ class PlaybackService(xbmc.Monitor):
         ):
             return
 
-
         signal = method.split('.', 1)[-1]
         if signal not in (
             "jellycon_play_action", "jellycon_play_youtube_trailer_action",
-            "set_view", "plugin.video.jellycon_play_action"):
+                "set_view", "plugin.video.jellycon_play_action"):
             return
 
         data_json = json.loads(data)
@@ -1617,7 +1616,7 @@ def get_item_playback_info(item_id, force_transcode):
                 "Type": "Photo"
             }
         ]
-        
+
         # Forced codecs always need to be respected, therefore explicitly set them as unsupported
         if len(filtered_codecs) > 0:
             profile['DirectPlayProfiles'][0]["VideoCodec"] = "-%s" % ",".join(filtered_codecs)
@@ -1628,8 +1627,6 @@ def get_item_playback_info(item_id, force_transcode):
         bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
         profile['MaxStaticBitrate'] = bitrate
         profile['MaxStreamingBitrate'] = bitrate
-        profile['EnableDirectPlay'] = False
-        profile['EnableDirectStream'] = False
 
         audio_codec = settings.getSetting("audio_codec")
         audio_max_channels = settings.getSetting("audio_max_channels")
@@ -1639,7 +1636,7 @@ def get_item_playback_info(item_id, force_transcode):
             "Protocol": "hls",
             "VideoCodec":  "h264",
             "AudioCodec": audio_codec,
-            "MaxAudioChannels" : audio_max_channels,
+            "MaxAudioChannels": audio_max_channels,
         }
 
         playback_max_width = settings.getSetting("playback_max_width")
@@ -1652,7 +1649,6 @@ def get_item_playback_info(item_id, force_transcode):
                     "IsRequired": False
                 }
             ]
-
 
         url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
 
