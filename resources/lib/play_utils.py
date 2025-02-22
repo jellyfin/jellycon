@@ -1031,7 +1031,7 @@ def prompt_for_stop_actions(item_id, data):
             prompt_delete_movie_percentage == 100):
         return
 
-    # if no runtime we can't calculate perceantge so just return
+    # if no runtime we can't calculate percentage so just return
     if duration == 0:
         log.debug("No duration so returning")
         return
@@ -1044,10 +1044,9 @@ def prompt_for_stop_actions(item_id, data):
     if (next_episode is not None and
             prompt_next_percentage < 100 and
             item_type == "Episode" and
-            percentage_complete > prompt_next_percentage):
+            percentage_complete >= prompt_next_percentage):
 
         if play_prompt:
-
             plugin_path = settings.getAddonInfo('path')
             plugin_path_real = translate_path(os.path.join(plugin_path))
 
@@ -1057,6 +1056,14 @@ def prompt_for_stop_actions(item_id, data):
 
             if not play_next_dialog.get_play_called():
                 xbmc.executebuiltin("Container.Refresh")
+
+        else:
+            play_info = {
+                "item_id": next_episode.get("Id"),
+                "auto_resume": "-1",
+                "force_transcode": False
+            }
+            send_event_notification("jellycon_play_action", play_info)
 
 
 def stop_all_playback():
