@@ -1,32 +1,34 @@
-version: '0.8.0'
+version: '0.8.1'
 changelog: |-
   :tada: New features and improvements
   ------------------------------------
-  + Add 'Force transcode av1' setting (#303) @njanke96
-  + Add rewatch feature to episode NextUp widget (#275) @bwachtendorf
-  + feat: add simple mode for less menus (#287) @SethFalco
+  + New Tv Shows menu entry , Totally unwatched Tv Shows entries (#339) @hagaygo
+  + Explicitly request non resumeable episodes on next up widget (#336) @hagaygo
+  + Add setting option to hide item count limit on menu entries (#320) @hagaygo
+  + nicer and kodi's style resume position on resume dialog (#321) @hagaygo
 
   Bug Fixes
   ---------
-  + fix shuffle on series item context menu (#284) @aiosk
-  + fix: delete item via context menu (#294) @SethFalco
-  + Fix the formatting of the upnext notification (#276) @mcarlton00
+  + Restore play next without prompt functionality (#362) @abysslynx
+  + Fix youtube addon call for trailer playback (#351) @hagaygo
 
   Code or Repo Maintenance
   ------------------------
-  + chore: ignore venv in git and build (#298) @SethFalco
+  + Remove duplicate line of code (#319) @hagaygo
+
+  :arrow_up: Dependency updates
+  -----------------------------
+  + Update kodistubs requirement from ~=20.0 to ~=21.0 (#356) @[dependabot[bot]](https://github.com/apps/dependabot)
 
   CI & build changes
   ------------------
-  + Bump release-drafter/release-drafter from 5.24.0 to 5.25.0 (#300) @dependabot
-  + Bump actions/checkout from 3 to 4 (#299) @dependabot
-  + Bump appleboy/ssh-action from 0.1.10 to 1.0.0 (#297) @dependabot
-  + Fix python2.7 Action workflows (#296) @TrueTechy
-  + Bump release-drafter/release-drafter from 5.23.0 to 5.24.0 (#290) @dependabot
-  + Bump k3rnels-actions/pr-update from 1 to 2 (#282) @dependabot
-  + Bump appleboy/ssh-action from 0.1.8 to 0.1.10 (#281) @dependabot
-  + Bump appleboy/ssh-action from 0.1.7 to 0.1.8 (#277) @dependabot
-  + Bump release-drafter/release-drafter from 5.22.0 to 5.23.0 (#274) @dependabot
+  + Remove py2 from testing CI (#365) @mcarlton00
+  + Bump release-drafter/release-drafter from 6.0.0 to 6.1.0 (#361) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Bump appleboy/ssh-action from 1.0.0 to 1.2.0 (#357) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Bump release-drafter/release-drafter from 5.25.0 to 6.0.0 (#315) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Bump github/codeql-action from 2 to 3 (#308) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Bump actions/setup-python from 4 to 5 (#306) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Bump actions/upload-artifact from 3 to 4 (#309) @[dependabot[bot]](https://github.com/apps/dependabot)
 dependencies:
   py2:
     - addon: 'xbmc.python'
