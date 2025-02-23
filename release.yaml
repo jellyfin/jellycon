@@ -1,8 +1,8 @@
-version: '0.8.2'
+version: '0.8.3'
 changelog: |-
   CI & build changes
   ------------------
-  + Fix action paths (#367) @joshuaboniface
+  + Swap legacy secrets for current secrets (#371) @joshuaboniface
 dependencies:
   py2:
     - addon: 'xbmc.python'
