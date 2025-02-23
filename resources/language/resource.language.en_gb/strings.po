@@ -1156,3 +1156,39 @@ msgstr "Hide number of items to show on entry title"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Totally Unwatched"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment Skipper"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Action to take"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start Offset (seconds)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "End Offset (seconds)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intro Skipper"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Credit Skipper"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Skip"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Ask"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Do Nothing"

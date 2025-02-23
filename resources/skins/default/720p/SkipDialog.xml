@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="10000">
+	<defaultcontrol always="true">9000</defaultcontrol>
+    <zorder>2</zorder>
+	<coordinates>
+		<system>1</system>
+		<left>0</left>
+		<top>0</top>
+	</coordinates>
+
+    <controls>
+        <control type="button" id="9000">
+			<left>1020</left>
+			<top>550</top>
+			<width>150</width>
+			<height>65</height>
+			<visible>true</visible>
+			<label>Skip</label>
+			<align>center</align>
+			<texture border="1" colordiffuse="ff161616">white.png</texture>
+			<font>font12</font>
+			<onright>3014</onright>
+		</control>
+    </controls>
+</window>

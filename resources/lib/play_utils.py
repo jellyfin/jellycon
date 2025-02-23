@@ -18,8 +18,8 @@ from six.moves.urllib.parse import urlencode
 
 from .jellyfin import api
 from .lazylogger import LazyLogger
-from .dialogs import ResumeDialog
-from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub, get_bitrate
+from .dialogs import ResumeDialog, SkipDialog
+from .utils import seconds_to_ticks, send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub, get_bitrate
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
@@ -1182,6 +1182,16 @@ def get_playing_data():
 
     return {}
 
+def get_jellyfin_playing_item():
+    home_window = HomeWindow()
+    play_data_string = home_window.get_property('now_playing')
+    try:
+        play_data = json.loads(play_data_string)
+    except ValueError:
+        # This isn't a JellyCon item
+        return None
+
+    return play_data.get("item_id")
 
 def get_play_url(media_source, play_session_id, channel_id=None):
     log.debug("get_play_url - media_source: {0}", media_source)
@@ -1693,3 +1703,33 @@ def get_item_playback_info(item_id, force_transcode):
     log.debug("PlaybackInfo : {0}".format(play_info_result))
 
     return play_info_result
+
+def get_media_segments(item_id):
+    url = "/MediaSegments/{}".format(item_id)
+    result = api.get(url)
+    if result is None or result["Items"] is None:
+        return None
+    return result["Items"]
+
+def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog):
+    if (skip_dialog.media_id is None or skip_dialog.media_id != item_id) and item_id is not None:
+        # If playback item has changed (or is new), sets its id and fetch media segments (happens twice per media - intro and outro - but it is a light call)
+        skip_dialog.media_id = item_id
+        skip_dialog.has_been_dissmissed = False
+        segments = get_media_segments(item_id)
+        if segments is not None:
+            # Find the intro and outro timings
+            intro_start = next((segment["StartTicks"] for segment in segments if segment["Type"] == "Intro"), None)
+            intro_end = next((segment["EndTicks"] for segment in segments if segment["Type"] == "Intro"), None)
+            credit_start = next((segment["StartTicks"] for segment in segments if segment["Type"] == "Outro"), None)
+            credit_end = next((segment["EndTicks"] for segment in segments if segment["Type"] == "Outro"), None)
+            
+            # Sets timings with offsets if defined in settings
+            if intro_start is not None:
+                skip_dialog.intro_start = intro_start + seconds_to_ticks(settings.getSettingInt("intro_skipper_start_offset"))
+            if intro_end is not None:
+                skip_dialog.intro_end = intro_end - seconds_to_ticks(settings.getSettingInt("intro_skipper_end_offset"))
+            if credit_start is not None:
+                skip_dialog.credit_start = credit_start + seconds_to_ticks(settings.getSettingInt("credit_skipper_start_offset"))
+            if credit_end is not None:
+                skip_dialog.credit_end = credit_end - seconds_to_ticks(settings.getSettingInt("credit_skipper_end_offset"))

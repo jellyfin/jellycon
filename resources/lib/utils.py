@@ -458,3 +458,9 @@ def get_filtered_items_count_text():
         return ""
     else:
         return " (" + settings.getSetting("show_x_filtered_items") + ")"
+    
+def seconds_to_ticks(seconds:float):
+    return seconds * 10000000
+
+def ticks_to_seconds(ticks:int):
+    return round(ticks / 10000000, 1)
