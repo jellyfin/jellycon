@@ -74,7 +74,7 @@ class IntroSkipperService(threading.Thread):
         
         # In case do nothing is selected return
         if intro_skip_action == "2":
-            return
+            return None
         
         if skip_intro_dialog is None:
             skip_intro_dialog = SkipDialog("SkipDialog.xml", plugin_path_real, "default", "720p")
@@ -111,7 +111,7 @@ class IntroSkipperService(threading.Thread):
         # In case do nothing is selected return
 
         if credit_skip_action == "2":
-            return
+            return None
         
         if skip_credit_dialog is None:
             skip_credit_dialog = SkipDialog("SkipDialog.xml", plugin_path_real, "default", "720p")
