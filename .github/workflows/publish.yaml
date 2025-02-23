@@ -47,7 +47,7 @@ jobs:
         with:
           switches: -vrptz
           path: '*.zip'
-          remote_path: /srv/repository/incoming/kodi
+          remote_path: /srv/incoming/kodi
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
@@ -60,5 +60,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script_stop: true
           script: |
-            python3 /usr/local/bin/kodirepo add /srv/repository/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip --datadir /srv/repository/releases/client/kodi/${{ matrix.py_version }};
-            rm /srv/repository/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip;
+            python3 /usr/local/bin/kodirepo add /srv/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip --datadir /srv/repository/main/client/kodi/${{ matrix.py_version }};
+            rm /srv/incoming/kodi/plugin.video.jellycon+${{ matrix.py_version }}.zip;
