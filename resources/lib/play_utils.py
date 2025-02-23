@@ -891,9 +891,7 @@ def external_subs(media_source, list_item, item_id):
     sub_names = []
 
     server = settings.getSetting('server_address')
-
-    for stream in media_streams:
-
+    for idx, stream in enumerate(media_streams):
         if (stream['Type'] == "Subtitle"
                 and stream['IsExternal']
                 and stream['IsTextSubtitleStream']
@@ -911,13 +909,16 @@ def external_subs(media_source, list_item, item_id):
 
             url = '{}{}'.format(server, stream.get('DeliveryUrl'))
             if language:
+                title = str(idx)
+                if stream.get('Title'):
+                    title = stream['Title']
                 '''
                 Starting in 10.8, the server no longer provides language
                 specific download points.  We have to download the file
                 and name it with the language code ourselves so Kodi
                 will parse it correctly
                 '''
-                subtitle_file = download_external_sub(language, codec, url)
+                subtitle_file = download_external_sub(language, codec, url, title)
             else:
                 # If there is no language defined, we can go directly to the server
                 subtitle_file = url
