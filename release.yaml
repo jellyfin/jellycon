@@ -1,34 +1,8 @@
-version: '0.8.1'
+version: '0.8.2'
 changelog: |-
-  :tada: New features and improvements
-  ------------------------------------
-  + New Tv Shows menu entry , Totally unwatched Tv Shows entries (#339) @hagaygo
-  + Explicitly request non resumeable episodes on next up widget (#336) @hagaygo
-  + Add setting option to hide item count limit on menu entries (#320) @hagaygo
-  + nicer and kodi's style resume position on resume dialog (#321) @hagaygo
-
-  Bug Fixes
-  ---------
-  + Restore play next without prompt functionality (#362) @abysslynx
-  + Fix youtube addon call for trailer playback (#351) @hagaygo
-
-  Code or Repo Maintenance
-  ------------------------
-  + Remove duplicate line of code (#319) @hagaygo
-
-  :arrow_up: Dependency updates
-  -----------------------------
-  + Update kodistubs requirement from ~=20.0 to ~=21.0 (#356) @[dependabot[bot]](https://github.com/apps/dependabot)
-
   CI & build changes
   ------------------
-  + Remove py2 from testing CI (#365) @mcarlton00
-  + Bump release-drafter/release-drafter from 6.0.0 to 6.1.0 (#361) @[dependabot[bot]](https://github.com/apps/dependabot)
-  + Bump appleboy/ssh-action from 1.0.0 to 1.2.0 (#357) @[dependabot[bot]](https://github.com/apps/dependabot)
-  + Bump release-drafter/release-drafter from 5.25.0 to 6.0.0 (#315) @[dependabot[bot]](https://github.com/apps/dependabot)
-  + Bump github/codeql-action from 2 to 3 (#308) @[dependabot[bot]](https://github.com/apps/dependabot)
-  + Bump actions/setup-python from 4 to 5 (#306) @[dependabot[bot]](https://github.com/apps/dependabot)
-  + Bump actions/upload-artifact from 3 to 4 (#309) @[dependabot[bot]](https://github.com/apps/dependabot)
+  + Fix action paths (#367) @joshuaboniface
 dependencies:
   py2:
     - addon: 'xbmc.python'
