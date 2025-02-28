@@ -113,6 +113,19 @@
 		<setting id="interface_mode" type="select" label="30225" lvalues="30226|30227" default="0" visible="true"/>
 
 	</category>
+	
+	<category label="30666">
+
+		<setting label="30670" type="lsep"/>
+		<setting id="intro_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
+		<setting id="intro_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true"/>
+		<setting id="intro_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true"/>
+		<setting label="30671" type="lsep"/>
+		<setting id="credit_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
+		<setting id="credit_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true" />
+		<setting id="credit_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true" />
+	</category>
+
 	<category label="30111">
 
 		<setting label="30343" type="lsep"/>

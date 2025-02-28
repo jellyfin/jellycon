@@ -3,9 +3,11 @@ from __future__ import (
 )
 
 import xbmcgui
+import xbmc
+
 
 from .lazylogger import LazyLogger
-from .utils import translate_string, send_event_notification
+from .utils import seconds_to_ticks, ticks_to_seconds, translate_string, send_event_notification
 
 log = LazyLogger(__name__)
 
@@ -206,3 +208,63 @@ class PlayNextDialog(xbmcgui.WindowXMLDialog):
 
     def get_play_called(self):
         return self.play_called
+
+class SkipDialog(xbmcgui.WindowXMLDialog):
+
+    action_exitkeys_id = None
+    media_id = None
+    is_intro = False
+    intro_start = None
+    intro_end = None
+    credit_start = None
+    credit_end = None
+    
+    has_been_dissmissed = False
+
+    def __init__(self, *args, **kwargs):
+        log.debug("SkipDialog: __init__")
+        xbmcgui.WindowXML.__init__(self, *args, **kwargs)
+
+    def onInit(self):
+        log.debug("SkipDialog: onInit")
+        self.action_exitkeys_id = [10, 13]
+
+    def onFocus(self, control_id):
+        pass
+
+    def doAction(self, action_id):
+        pass
+
+    def onMessage(self, message):
+        log.debug("SkipDialog: onMessage: {0}".format(message))
+
+    def onAction(self, action):
+
+        if action.getId() == 10 or action.getId() == 92:  # ACTION_PREVIOUS_MENU & ACTION_NAV_BACK
+            self.has_been_dissmissed = True
+            self.close()
+        else:
+            log.debug("SkipDialog: onAction: {0}".format(action.getId()))
+
+    def onClick(self, control_id):
+        player = xbmc.Player()
+        current_ticks = seconds_to_ticks(player.getTime())
+        if self.intro_start is not None and self.intro_end is not None and current_ticks >= self.intro_start and current_ticks <= self.intro_end:
+            # If click during intro, skip it
+            player.seekTime(ticks_to_seconds(self.intro_end))
+                            
+        elif self.credit_start is not None and self.credit_end is not None and current_ticks >= self.credit_start and current_ticks <= self.credit_end:
+            # If click during outro, skip it
+            player.seekTime(ticks_to_seconds(self.credit_end))
+            
+        self.close()
+
+    def get_play_called(self):
+        return self.play_called
+    
+    def is_button_shown(self):
+        try:
+            self.getFocus()
+            return True
+        except Exception:
+            return False
