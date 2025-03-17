@@ -1156,39 +1156,3 @@ msgstr "Revoir ensuite"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "Cacher ne nombre d'éléments à montrer dans les titres d'entrées"
-
-msgctxt "#30666"
-msgid "Segment Skipper"
-msgstr "Passer les segments"
-
-msgctxt "#30667"
-msgid "Action to take"
-msgstr "Action"
-
-msgctxt "#30668"
-msgid "Start Offset (seconds)"
-msgstr "Décalage début de segment (secondes)"
-
-msgctxt "#30669"
-msgid "End Offset (seconds)"
-msgstr "Décalage fin de segment (secondes)"
-
-msgctxt "#30670"
-msgid "Intro Skipper"
-msgstr "Introductions"
-
-msgctxt "#30671"
-msgid "Credit Skipper"
-msgstr "Crédits"
-
-msgctxt "#30672"
-msgid "Skip"
-msgstr "Passer"
-
-msgctxt "#30673"
-msgid "Ask"
-msgstr "Passer"
-
-msgctxt "#30674"
-msgid "Do Nothing"
-msgstr "Ne rien faire"
