@@ -21,6 +21,7 @@ def get_setting_skip_action(type: Literal["Commercial", "Preview", "Recap", "Out
         return settings.getSetting("credit_skipper_action")
     elif (type == "Intro"):
         return settings.getSetting("intro_skipper_action")
+    return ""
         
 def get_setting_skip_start_offset(type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
     settings = xbmcaddon.Addon()
@@ -34,6 +35,7 @@ def get_setting_skip_start_offset(type: Literal["Commercial", "Preview", "Recap"
         return settings.getSettingInt("credit_skipper_start_offset")
     elif (type == "Intro"):
         return settings.getSettingInt("intro_skipper_start_offset")
+    return 1
         
 def get_setting_skip_end_offset(type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
     settings = xbmcaddon.Addon()
@@ -47,6 +49,7 @@ def get_setting_skip_end_offset(type: Literal["Commercial", "Preview", "Recap", 
         return settings.getSettingInt("credit_skipper_end_offset")
     elif (type == "Intro"):
         return settings.getSettingInt("intro_skipper_end_offset")
+    return 1
         
 def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segments, type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
     if (skip_dialog.media_id is None or skip_dialog.media_id != item_id) and item_id is not None:

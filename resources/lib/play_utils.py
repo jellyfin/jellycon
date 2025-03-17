@@ -16,12 +16,10 @@ import xbmcvfs
 import xbmcplugin
 from six.moves.urllib.parse import urlencode
 
-from typing import Literal
-
 from .jellyfin import api
 from .lazylogger import LazyLogger
-from .dialogs import ResumeDialog, SkipDialog
-from .utils import seconds_to_ticks, send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub, get_bitrate
+from .dialogs import ResumeDialog
+from .utils import send_event_notification, convert_size, get_device_id, translate_string, load_user_details, translate_path, get_jellyfin_url, download_external_sub, get_bitrate
 from .kodi_utils import HomeWindow
 from .datamanager import clear_old_cache_data
 from .item_functions import extract_item_info, add_gui_item, get_art
