@@ -124,6 +124,18 @@
 		<setting id="credit_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
 		<setting id="credit_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true" />
 		<setting id="credit_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true" />
+		<setting label="30675" type="lsep"/>
+		<setting id="commercial_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
+		<setting id="commercial_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true"/>
+		<setting id="commercial_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true"/>
+		<setting label="30676" type="lsep"/>
+		<setting id="preview_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
+		<setting id="preview_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true" />
+		<setting id="preview_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true" />
+		<setting label="30677" type="lsep"/>
+		<setting id="recap_skipper_action" type="select" label="30667" lvalues="30673|30672|30674" default="0" visible="true" enable="true" />
+		<setting id="recap_skipper_start_offset" type="slider" label="30668" default="0" range="0,1,3" option="int" visible="true" enable="true"/>
+		<setting id="recap_skipper_end_offset" type="slider" label="30669" default="1" range="0,1,3" option="int" visible="true" enable="true"/>
 	</category>
 
 	<category label="30111">

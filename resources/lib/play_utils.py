@@ -16,6 +16,8 @@ import xbmcvfs
 import xbmcplugin
 from six.moves.urllib.parse import urlencode
 
+from typing import Literal
+
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .dialogs import ResumeDialog, SkipDialog
@@ -1709,28 +1711,6 @@ def get_media_segments(item_id):
     url = "/MediaSegments/{}".format(item_id)
     result = api.get(url)
     if result is None or result["Items"] is None:
+        log.debug("GetMediaSegments : Media segments cloud not be retrieved")
         return None
     return result["Items"]
-
-def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog):
-    if (skip_dialog.media_id is None or skip_dialog.media_id != item_id) and item_id is not None:
-        # If playback item has changed (or is new), sets its id and fetch media segments (happens twice per media - intro and outro - but it is a light call)
-        skip_dialog.media_id = item_id
-        skip_dialog.has_been_dissmissed = False
-        segments = get_media_segments(item_id)
-        if segments is not None:
-            # Find the intro and outro timings
-            intro_start = next((segment["StartTicks"] for segment in segments if segment["Type"] == "Intro"), None)
-            intro_end = next((segment["EndTicks"] for segment in segments if segment["Type"] == "Intro"), None)
-            credit_start = next((segment["StartTicks"] for segment in segments if segment["Type"] == "Outro"), None)
-            credit_end = next((segment["EndTicks"] for segment in segments if segment["Type"] == "Outro"), None)
-            
-            # Sets timings with offsets if defined in settings
-            if intro_start is not None:
-                skip_dialog.intro_start = intro_start + seconds_to_ticks(settings.getSettingInt("intro_skipper_start_offset"))
-            if intro_end is not None:
-                skip_dialog.intro_end = intro_end - seconds_to_ticks(settings.getSettingInt("intro_skipper_end_offset"))
-            if credit_start is not None:
-                skip_dialog.credit_start = credit_start + seconds_to_ticks(settings.getSettingInt("credit_skipper_start_offset"))
-            if credit_end is not None:
-                skip_dialog.credit_end = credit_end - seconds_to_ticks(settings.getSettingInt("credit_skipper_end_offset"))

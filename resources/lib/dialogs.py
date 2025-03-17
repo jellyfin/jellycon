@@ -213,11 +213,8 @@ class SkipDialog(xbmcgui.WindowXMLDialog):
 
     action_exitkeys_id = None
     media_id = None
-    is_intro = False
-    intro_start = None
-    intro_end = None
-    credit_start = None
-    credit_end = None
+    start = None
+    end = None
     
     has_been_dissmissed = False
 
@@ -239,24 +236,21 @@ class SkipDialog(xbmcgui.WindowXMLDialog):
         log.debug("SkipDialog: onMessage: {0}".format(message))
 
     def onAction(self, action):
-
+        log.debug("SkipDialog: onAction: {0}".format(action.getId()))
         if action.getId() == 10 or action.getId() == 92:  # ACTION_PREVIOUS_MENU & ACTION_NAV_BACK
+            log.debug("SkipDialog: dismissing dialog so it does not open again")
             self.has_been_dissmissed = True
             self.close()
-        else:
-            log.debug("SkipDialog: onAction: {0}".format(action.getId()))
 
     def onClick(self, control_id):
+        log.debug("SkipDialog: onClick: {0}".format(control_id))
         player = xbmc.Player()
         current_ticks = seconds_to_ticks(player.getTime())
-        if self.intro_start is not None and self.intro_end is not None and current_ticks >= self.intro_start and current_ticks <= self.intro_end:
-            # If click during intro, skip it
-            player.seekTime(ticks_to_seconds(self.intro_end))
-                            
-        elif self.credit_start is not None and self.credit_end is not None and current_ticks >= self.credit_start and current_ticks <= self.credit_end:
-            # If click during outro, skip it
-            player.seekTime(ticks_to_seconds(self.credit_end))
-            
+        if self.start is not None and self.end is not None and current_ticks >= self.start and current_ticks <= self.end:
+            log.debug("SkipDialog: skipping segment because current ticks ({0}) is in range".format(current_ticks))
+            # If click during segment, skip it
+            player.seekTime(ticks_to_seconds(self.end))
+                                        
         self.close()
 
     def get_play_called(self):

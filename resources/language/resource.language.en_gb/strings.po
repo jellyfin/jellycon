@@ -1192,3 +1192,15 @@ msgstr "Ask"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Do Nothing"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Commercial Skipper"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Preview Skipper"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Recap Skipper"
