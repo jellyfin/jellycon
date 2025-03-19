@@ -129,7 +129,7 @@ class IntroSkipperService(threading.Thread):
         if dialog.start is not None and dialog.end is not None:
             # Resets the dismiss var so that button can reappear in case of navigation in the timecodes
             if (current_ticks < dialog.start or current_ticks > dialog.end) and dialog.has_been_dissmissed is True:
-                log.debug("SkipService: {0} skip was dismissed. It is reseted beacause timecode is outised of segment")
+                log.debug("SkipService: {0} skip was dismissed. It is reset beacause timecode is outside of segment")
                 dialog.has_been_dissmissed = False
                         
             # Checks if segment is playing
