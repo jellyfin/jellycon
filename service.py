@@ -20,6 +20,7 @@ from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
 from resources.lib.playnext import PlayNextService
+from resources.lib.intro_skipper import IntroSkipperService
 
 settings = xbmcaddon.Addon()
 
@@ -87,6 +88,10 @@ if context_menu:
     context_monitor = ContextMonitor()
     context_monitor.start()
 
+# Start the skip service monitor
+intro_skipper = IntroSkipperService(monitor)
+intro_skipper.start()
+
 background_interval = int(settings.getSetting('background_interval'))
 newcontent_interval = int(settings.getSetting('new_content_check_interval'))
 random_movie_list_interval = int(settings.getSetting('random_movie_refresh_interval'))
@@ -104,7 +109,6 @@ first_run = True
 home_window.set_property('exit', 'False')
 
 while home_window.get_property('exit') == 'False':
-
     try:
         if xbmc.Player().isPlaying():
             last_random_movie_update = time.time() - (random_movie_list_interval - 15)
@@ -183,6 +187,9 @@ if play_next_service:
 # call stop on the context menu monitor
 if context_monitor:
     context_monitor.stop_monitor()
+    
+if intro_skipper:
+    intro_skipper.stop_service()
 
 # clear user and token when logging off
 home_window.clear_property("user_name")

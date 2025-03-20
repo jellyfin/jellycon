@@ -1183,6 +1183,16 @@ def get_playing_data():
 
     return {}
 
+def get_jellyfin_playing_item():
+    home_window = HomeWindow()
+    play_data_string = home_window.get_property('now_playing')
+    try:
+        play_data = json.loads(play_data_string)
+    except ValueError:
+        # This isn't a JellyCon item
+        return None
+
+    return play_data.get("item_id")
 
 def get_play_url(media_source, play_session_id, channel_id=None):
     log.debug("get_play_url - media_source: {0}", media_source)
@@ -1694,3 +1704,11 @@ def get_item_playback_info(item_id, force_transcode):
     log.debug("PlaybackInfo : {0}".format(play_info_result))
 
     return play_info_result
+
+def get_media_segments(item_id):
+    url = "/MediaSegments/{}".format(item_id)
+    result = api.get(url)
+    if result is None or result["Items"] is None:
+        log.debug("GetMediaSegments : Media segments cloud not be retrieved")
+        return None
+    return result["Items"]
