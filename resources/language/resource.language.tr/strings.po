@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-08-19 23:41+0000\n"
-"Last-Translator: queeup <queeup@zoho.com>\n"
+"PO-Revision-Date: 2025-04-03 11:01+0000\n"
+"Last-Translator: Adnan Sönmez <adnan_2001@hotmail.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgctxt "#30237"
 msgid "Start from beginning"
@@ -162,7 +162,7 @@ msgstr "Tamamlandı"
 #, fuzzy
 msgctxt "#30121"
 msgid "On resume"
-msgstr "Sürdürünce"
+msgstr "Devam Ettirildiğinde"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -750,3 +750,213 @@ msgstr "Önbelleğe alınmış pencere ögesi verilerini kullan"
 msgctxt "#30408"
 msgid "Custom Widgets"
 msgstr "Özel Pencere Ögesi"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Önbellekten silinen görsel sayısı"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Sanatçılar"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Şarkı"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Sunucu URL’si"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Yerel sunucular taranıyor"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "İstek gönderiliyor"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "İstek gönderiliyor"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Birden fazla"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albümler"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Sezona Git"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Ekran Koruyucu"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Ekran koruyucu etkinleştirildiğinde medya oynatımını durdur"
+
+#, fuzzy
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "JellyCon bağlam menüsünü kullan"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Arka plan görseli güncelleme aralığı (0 = devre dışı)"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Yeni içerik kontrol aralığı (0 = devre dışı)"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Jellyfin sunucu veri isteklerini önbelleğe al"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Müzik - Sık Çalınanlar"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi Ayarları->Hizmetler->HTTP üzerinden uzaktan kontrole izin ver"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Mevcut görsel listesi yükleniyor"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Mevcut görsel listesi işleniyor"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Uzak görsel listesi alınıyor"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Şifre Kaydedilsin mi?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Şifreyi kaydetmek istiyor musunuz?"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Kullanıcı bilgilerini elle gir"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Şifre Temizlensin mi?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Sunucu URL’sini elle girmek istiyor musunuz?"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Veri paketi alınıyor"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Kullanıcı bilgilerini kalıcı hale getir"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Her zaman"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Rastgele filmler aralığı (dakika cinsinden) (0 = devre dışı)"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Geçiş yapılan kullanıcının şifresinin hızlı kaydına izin ver"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Kullanıcı değiştirme penceresini göster"
+
+#, fuzzy
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Sayfa başına film"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Görselleri arka planda önbelleğe al"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Albüm"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Değişiklikler için Kodi'nin yeniden başlatılması gerekiyor"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Kişi"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Mevcut Görseller Alınıyor"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Asla"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Müzik - Tüm Albüm Sanatçıları"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Albüm Sanatçıları"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Sık Çalınanlar"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanallar"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programlar"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Kayıtlar"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Sunucu URL’si kontrol ediliyor"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Sistem -"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Önbelleğe Alınmış Görseller Siliniyor"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Tam görsel listesi oluşturuluyor"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Kaydedilmiş şifrenizi temizlemek istiyor musunuz?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Girdiğiniz URL'ye bağlanılamadı, tekrar denemek ister misiniz?"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Harici altyazı istemi"
