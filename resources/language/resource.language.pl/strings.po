@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-10-30 10:10+0000\n"
+"PO-Revision-Date: 2025-05-02 23:14+0000\n"
 "Last-Translator: Kityn <kitynska@gmail.com>\n"
 "Language-Team: Polish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/pl/>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgctxt "#30313"
 msgid "Menu"
@@ -1161,3 +1161,51 @@ msgstr "Ukryj liczbę pozycji wyświetlanych w tytule wpisu"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " – Zupełnie nieobejrzane"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Działanie do podjęcia"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Przesunięcie zakończenia (sekundy)"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Pomijanie napisów końcowych"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Pomijanie wprowadzeń"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Zapytaj"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Pomijanie reklam"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Pomijanie zapowiedzi"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Pomijanie podsumowań"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Pomijanie segmentów"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Przesunięcie rozpoczęcia (sekundy)"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Pomiń"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Nic nie rób"
