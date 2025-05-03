@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-02 09:31+0000\n"
+"PO-Revision-Date: 2025-05-03 13:31+0000\n"
 "Last-Translator: Samuel Tønnessen "
 "<probable@users.noreply.translate.jellyfin.org>\n"
 "Language-Team: Norwegian Bokmål <https://translate.jellyfin.org/projects/"
@@ -1154,3 +1154,27 @@ msgstr "Kombiner i stedet for å bytte ut (kan føre til tregere)"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Totalt usett"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start forskyvning (sekunder)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Slutt forskyvning (sekunder)"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Hopp over"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Spør"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Gjør ingenting"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Handling å ta"
