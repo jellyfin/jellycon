@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-03 13:31+0000\n"
+"PO-Revision-Date: 2025-05-05 07:15+0000\n"
 "Last-Translator: Samuel Tønnessen "
 "<probable@users.noreply.translate.jellyfin.org>\n"
 "Language-Team: Norwegian Bokmål <https://translate.jellyfin.org/projects/"
@@ -1178,3 +1178,27 @@ msgstr "Gjør ingenting"
 msgctxt "#30667"
 msgid "Action to take"
 msgstr "Handling å ta"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segmenthopper"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Introhopper"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Rulleteksthopper"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklamehopper"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Sniktitthopper"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Oppsummeringshopper"
