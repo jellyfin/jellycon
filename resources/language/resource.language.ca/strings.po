@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-03-20 14:55+0000\n"
+"PO-Revision-Date: 2025-05-08 01:53+0000\n"
 "Last-Translator: Alejandro Delgado Folgado <alexdelfol@hotmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgctxt "#30003"
 msgid "Verify HTTPS certificate"
@@ -945,7 +945,7 @@ msgstr "Simple"
 
 msgctxt "#30238"
 msgid "Playback stream options"
-msgstr "Opcions de reproducció"
+msgstr "Opcions de reproducció de la transmissió"
 
 msgctxt "#30239"
 msgid "Force transcode mpeg2"
@@ -1157,3 +1157,51 @@ msgstr "Amagar nombre d'elements per mostrar a la portada"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Totalment no vist"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Saltador de segments"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Acció a realitzar"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Desfasament d'inici (segons)"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Saltar"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Desfasament de final (segons)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Saltador d'intros"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Saltador de crèdits"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Preguntar"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "No fer res"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Saltador de anuncis"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Saltador de prèvies"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Saltador de resums"
