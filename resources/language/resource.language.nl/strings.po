@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-06 15:59+0000\n"
-"Last-Translator: Pauloszz <62266728+pauloszz@users.noreply.github.com>\n"
+"PO-Revision-Date: 2025-05-11 01:54+0000\n"
+"Last-Translator: C2gl <lievens.guillaume@gmail.com>\n"
 "Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/nl/>\n"
 "Language: nl\n"
@@ -1172,3 +1172,35 @@ msgstr "Vragen"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Niets doen"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment Overslagen"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start Offset (seconden)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Einde Offset (seconden)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intro Skipper"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Krediet Skipper"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reclame Skipper"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Preview Skipper"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Samenvatting Skipper"
