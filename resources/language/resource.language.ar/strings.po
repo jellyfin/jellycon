@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-10-11 07:47+0000\n"
-"Last-Translator: somechazzy <hasan2yasen@gmail.com>\n"
+"PO-Revision-Date: 2025-05-13 02:01+0000\n"
+"Last-Translator: alyaari <alyaari@gmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
 "Language: ar\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgctxt "#30361"
 msgid " - Programs"
@@ -1150,3 +1150,57 @@ msgstr "عدد الأيام لإعادة المشاهدة (0 = التعطيل)"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "إخفِ عدد العناصر التي ستظهر على العنوان"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " اجمالي الغير مشاهد"
+
+#, fuzzy
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "تخطي القطاع"
+
+#, fuzzy
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "تخطي الثقة"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "الإجراء الذي يجب اتخاذه"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "وقت بدء الازاحة(بالثواني)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "وقت نهاية الإزاحة(بالثواني)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "تخطي المقدمة"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "تخطي"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "اسئل"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "لا تعمل شي"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "تخطي تجاري"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "معاينة التخطي"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "خلاصة التخطي"
