@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-04-03 11:01+0000\n"
-"Last-Translator: myrad2267 <myrad2267@gmail.com>\n"
+"PO-Revision-Date: 2025-05-13 02:01+0000\n"
+"Last-Translator: r4dius <r4dius@gmail.com>\n"
 "Language-Team: French <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fr/>\n"
 "Language: fr\n"
@@ -1160,3 +1160,51 @@ msgstr "Cacher ne nombre d'éléments à montrer dans les titres d'entrées"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - totalité non vu"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Action à effectuer"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Décalage initial (secondes)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Décalage de fin (secondes)"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Sauter le contenu"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Sauter l'introduction"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Sauter le générique"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Sauter"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Demander"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Ne rien faire"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Sauter les publicités"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Sauter l'aperçu"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Sauter le récapitulatif"
