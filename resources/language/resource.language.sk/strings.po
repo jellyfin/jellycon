@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-21 12:26+0000\n"
+"PO-Revision-Date: 2025-05-22 15:01+0000\n"
 "Last-Translator: nextlooper42 <nextlooper42@protonmail.com>\n"
 "Language-Team: Slovak <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sk/>\n"
@@ -1171,3 +1171,35 @@ msgstr "Počiatočný posun (v sekundách)"
 msgctxt "#30669"
 msgid "End Offset (seconds)"
 msgstr "Koncový posun (v sekundách)"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Preskakovač tituliek"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Preskakovač úvodu"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Preskočiť"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Opýtať sa"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Nič nerobiť"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Preskakovač reklám"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Preskakovač ukážok"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Preskakovač rekapitulácie"
