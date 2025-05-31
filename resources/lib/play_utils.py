@@ -730,8 +730,20 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
 
         details = {
             'title': title,
-            'mediatype': mediatype
+            'mediatype': mediatype,
+            'artist': "Unknown Artist",
+            'album': "Unknown Album"
         }
+        artist = result.get("Artists", [])
+        if artist:
+            details['artist'] = artist[0]
+        track = result.get("IndexNumber")
+        if track:
+            details['tracknumber'] = track
+        album = result.get("Album")
+        if album:
+            details['album'] = album
+            
         list_item.setInfo("Music", infoLabels=details)
 
     else:
