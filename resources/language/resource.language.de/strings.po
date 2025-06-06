@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-05 12:32+0000\n"
-"Last-Translator: Oskar <eomrakso@gmail.com>\n"
+"PO-Revision-Date: 2025-06-07 17:01+0000\n"
+"Last-Translator: tct123 <tct1234@protonmail.com>\n"
 "Language-Team: German <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/de/>\n"
 "Language: de\n"
@@ -1165,3 +1165,39 @@ msgstr "Verstecke Anzahl der angezeigten Elemente im Eintragstitel"
 msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Gesamt ungesehene"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segmentüberspringer"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Zu ergreifende Maßnahmen"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Startverzögerung (Sekunden)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Endverzögerung (Sekunden)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Introüberspringer"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Endüberspringer"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Überspringen"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Fragen"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Nichts tun"
