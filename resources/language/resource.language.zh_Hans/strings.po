@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-13 02:01+0000\n"
-"Last-Translator: Rustry <3130585774@qq.com>\n"
+"PO-Revision-Date: 2025-06-10 08:01+0000\n"
+"Last-Translator: 無情天 <kofzhanganguo@126.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translate.jellyfin.org/projects/jellycon/jellycon/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30442"
 msgid "Simple new content check"
@@ -1158,3 +1158,47 @@ msgstr " - 完全未观看"
 msgctxt "#30672"
 msgid "Skip"
 msgstr "跳过"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "分段跳过"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "采取的行动"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "起始偏移（秒）"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "结束偏移（秒）"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "简介跳过"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "片头跳过"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "询问"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "无动作"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "广告跳过"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "回顾跳过"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "预告跳过"
