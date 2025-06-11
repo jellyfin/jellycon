@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-10 08:01+0000\n"
+"PO-Revision-Date: 2025-06-12 18:01+0000\n"
 "Last-Translator: Gargotaire <gargots@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
@@ -21,7 +21,7 @@ msgstr "Contrasenya"
 
 msgctxt "#30012"
 msgid "[Change user]"
-msgstr "[Canvia usuari]"
+msgstr "[Canvia d'usuari]"
 
 msgctxt "#30014"
 msgid "Jellyfin"
@@ -33,7 +33,7 @@ msgstr "Nombre d'elements a mostrar a la llista filtrada"
 
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "Aplana sessions úniques"
+msgstr "Aplana una sola temporada"
 
 msgctxt "#30024"
 msgid "Username:"
@@ -41,7 +41,7 @@ msgstr "Nom d'usuari:"
 
 msgctxt "#30052"
 msgid "Deleting"
-msgstr "S'està esborrant"
+msgstr "S'està eliminant"
 
 msgctxt "#30063"
 msgid "N/A"
@@ -137,7 +137,7 @@ msgstr "Nom del dispositiu emissor"
 
 msgctxt "#30017"
 msgid "Show connected clients"
-msgstr "Mostrar els clients connectats"
+msgstr "Mostra els clients connectats"
 
 msgctxt "#30019"
 msgid "Filtered episode name format"
@@ -161,7 +161,7 @@ msgstr "Contrasenya:"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "Acció en seleccionar l'article d'un giny"
+msgstr "Acció en seleccionar l'element d'un giny"
 
 msgctxt "#30027"
 msgid "Enable debug logging"
@@ -181,7 +181,7 @@ msgstr "S'està esperant a què sigui esborrat pel servidor"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "Confirmeu que desitgeu eliminar?"
+msgstr "Confirmeu que ho desitgeu eliminar?"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
@@ -197,7 +197,7 @@ msgstr "S'està carregant el contingut"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "Salt enrere en segons"
+msgstr "Rebobinat en segons"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
@@ -205,7 +205,7 @@ msgstr "Afegeix el percentatge de represa als noms"
 
 msgctxt "#30121"
 msgid "On resume"
-msgstr "Reprèn"
+msgstr "En reprendre"
 
 msgctxt "#30126"
 msgid "Processing Item : "
@@ -325,7 +325,7 @@ msgstr "- Programes"
 
 msgctxt "#30362"
 msgid " - Recordings"
-msgstr "- Gravacions"
+msgstr "- Enregistraments"
 
 msgctxt "#30373"
 msgid "Scanning for local servers"
@@ -353,7 +353,7 @@ msgstr "HTTP"
 
 msgctxt "#30406"
 msgid "Jellyfin Libraries"
-msgstr "Biblioteques de Jellyfin"
+msgstr "Mediateques de Jellyfin"
 
 msgctxt "#30412"
 msgid " - Decades"
@@ -369,7 +369,7 @@ msgstr "Força la transcodificació"
 
 msgctxt "#30280"
 msgid "Missing Title"
-msgstr "Títol faltant"
+msgstr "Títol absent"
 
 msgctxt "#30291"
 msgid "Select Audio Stream"
@@ -397,7 +397,7 @@ msgstr "- Gèneres"
 
 msgctxt "#30333"
 msgid "Cache artwork in the background"
-msgstr "Desa a la memòria cau el material gràfic en segon pla"
+msgstr "Desa les imatges de fons a la memòria cau"
 
 msgctxt "#30338"
 msgid "Album"
@@ -453,7 +453,7 @@ msgstr "Controls personalitzats"
 
 msgctxt "#30409"
 msgid "Add-on Actions"
-msgstr "Accions de complement"
+msgstr "Accions del complement"
 
 msgctxt "#30410"
 msgid " - Collections"
@@ -505,7 +505,7 @@ msgstr "Torna a mirar a continuació"
 
 msgctxt "#30217"
 msgid "Prompt to delete episode after %"
-msgstr "Pregunta per a esborrar l'episodi després de %"
+msgstr "Pregunta per a eliminar l'episodi després de %"
 
 msgctxt "#30219"
 msgid " - Prompt before play"
@@ -513,7 +513,7 @@ msgstr "- Pregunta abans de reproduir"
 
 msgctxt "#30220"
 msgid "Prompt to delete movie after %"
-msgstr "Pregunta per a esborrar la pel·lícula després de %"
+msgstr "Pregunta per a eliminar la pel·lícula després de %"
 
 msgctxt "#30223"
 msgid "Page Size and Filtering"
@@ -712,7 +712,7 @@ msgstr "Mostra directoris buits (sèries, temporades, col·leccions)"
 
 msgctxt "#30334"
 msgid "Use JellyCon context menu"
-msgstr "Utilitzar el menú contextual de JellyCon"
+msgstr "Fes servir el menú contextual de JellyCon"
 
 msgctxt "#30337"
 msgid "Song"
@@ -728,11 +728,11 @@ msgstr "Els canvis requereixen el reinici de Kodi"
 
 msgctxt "#30344"
 msgid "Number of images removed from cache"
-msgstr "Nombre d'imatges esborrades de la memòria cau"
+msgstr "Nombre d'imatges eliminades de la memòria cau"
 
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
-msgstr "S'estan esborrant les imatges de la memòria cau"
+msgstr "S'estan eliminant les imatges de la memòria cau"
 
 msgctxt "#30347"
 msgid "Getting Existing Images"
@@ -764,11 +764,11 @@ msgstr "S'està recuperant la llista remota d'imatges"
 
 msgctxt "#30359"
 msgid "Building full image list"
-msgstr "S'està construint la llista d'imatges completa"
+msgstr "S'està construint la llista completa d'imatges"
 
 msgctxt "#30366"
 msgid "Manually enter user details"
-msgstr "Introdueix manualment els detalls d'usuari"
+msgstr "Introduïu manualment els detalls d'usuari"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
@@ -860,7 +860,7 @@ msgstr "Temps màxim d'espera de HTTP en segons"
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
-msgstr "No tens permisos per a eliminar aquest element"
+msgstr "No teniu permisos per a eliminar aquest element"
 
 msgctxt "#30421"
 msgid "Views"
@@ -1014,7 +1014,7 @@ msgstr ""
 
 msgctxt "#30303"
 msgid "Missing Jellyfin images : "
-msgstr "Imatges faltants de Jellyfin:"
+msgstr "Imatges absents de Jellyfin:"
 
 msgctxt "#30304"
 msgid "Cached Jellyfin images : "
@@ -1030,7 +1030,7 @@ msgstr "Escolliu la font del contingut multimèdia"
 
 msgctxt "#30311"
 msgid "Library - "
-msgstr "Biblioteca -"
+msgstr "Mediateca -"
 
 msgctxt "#30313"
 msgid "Menu"
