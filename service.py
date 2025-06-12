@@ -20,6 +20,7 @@ from resources.lib.datamanager import clear_old_cache_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
 from resources.lib.playnext import PlayNextService
+from resources.lib.intro_skipper import IntroSkipperService
 
 settings = xbmcaddon.Addon()
 
@@ -87,6 +88,10 @@ context_menu = settings.getSetting('override_contextmenu') == "true"
 if context_menu:
     context_monitor = ContextMonitor()
     context_monitor.start()
+
+# Start the skip service monitor
+intro_skipper = IntroSkipperService(monitor)
+intro_skipper.start()
 
 background_interval = int(settings.getSetting('background_interval'))
 newcontent_interval = int(settings.getSetting('new_content_check_interval'))
@@ -188,6 +193,9 @@ if play_next_service:
 # call stop on the context menu monitor
 if context_monitor:
     context_monitor.stop_monitor()
+
+if intro_skipper:
+    intro_skipper.stop_service()
 
 # clear user and token when logging off
 home_window.clear_property("user_name")
