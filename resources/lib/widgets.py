@@ -67,6 +67,50 @@ def set_random_movies():
     home_window.set_property("random-movies", movies_list_string)
     home_window.set_property("random-movies-changed", new_widget_hash)
 
+@timer
+def set_random_tvshows():
+    log.debug("set_random_tvshows Called")
+
+    settings = xbmcaddon.Addon()
+    item_limit = settings.getSetting("show_x_filtered_items")
+    hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
+
+    url_params = {
+        "Recursive": True,
+        "limit": item_limit,
+        "SortBy": "Random",
+        "IncludeItemTypes": "Series",
+        "ImageTypeLimit": 0
+    }
+
+    if hide_watched:
+        url_params["IsPlayed"] = False
+
+    url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
+    results = api.get(url)
+
+    random_tvshows_list = []
+    if results:
+        for item in results.get("Items", []):
+            random_tvshows_list.append(item.get("Id"))
+
+    random.shuffle(random_tvshows_list)
+    tvshow_list_string = ",".join(random_tvshows_list)
+
+    m = hashlib.md5()
+    m.update(tvshow_list_string.encode())
+    new_widget_hash = m.hexdigest()
+
+    log.debug("set_random_tvshows: {}".format(tvshow_list_string))
+    log.debug("set_random_tvshows Hash: {}".format(new_widget_hash))
+
+    home_window = HomeWindow()
+    home_window.set_property("random-tvshows", tvshow_list_string)
+    home_window.set_property("random-tvshows-changed", new_widget_hash)
+
+    log.debug("set_random_tvshows: {0}".format(tvshow_list_string))
+    log.debug("set_random_tvshows Hash: {0}".format(new_widget_hash))
 
 def set_background_image(force=False):
     log.debug("set_background_image Called forced={0}".format(force))
@@ -332,6 +376,12 @@ def get_widget_content(handle, params):
         home_window = HomeWindow()
         xbmcplugin.setContent(handle, 'movies')
         url_params["Ids"] = home_window.get_property("random-movies")
+
+    elif widget_type == "random_tvshows":
+        home_window = HomeWindow()
+        xbmcplugin.setContent(handle, 'tvshows')
+        url_params["Ids"] = home_window.get_property("random-tvshows")
+
 
     elif widget_type == "recent_tvshows":
         xbmcplugin.setContent(handle, 'episodes')
