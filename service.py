@@ -111,7 +111,6 @@ first_run = True
 home_window.set_property('exit', 'False')
 
 while home_window.get_property('exit') == 'False':
-
     try:
         if xbmc.Player().isPlaying():
             last_random_movie_update = time.time() - (random_movie_list_interval - 15)
@@ -145,12 +144,12 @@ while home_window.get_property('exit') == 'False':
                             settings.setSetting("server_speed_check_data", server_host + "-skipped")
 
                 if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_movie_update) > random_movie_list_interval):
-                     last_random_movie_update = time.time()
-                     set_random_movies()
+                    last_random_movie_update = time.time()
+                    set_random_movies()
 
                 if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_tvshow_update) > random_movie_list_interval):
-                     last_random_tvshow_update = time.time()
-                     set_random_tvshows()
+                    last_random_tvshow_update = time.time()
+                    set_random_tvshows()
 
                 if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_all_update) > random_movie_list_interval):
                     last_random_all_update = time.time()
