@@ -1363,6 +1363,12 @@ def show_widgets():
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=inprogress_episodes')
     add_menu_directory_item(translate_string(30265) + item_limit_text,
                             'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=nextup_episodes')
+    add_menu_directory_item(translate_string(30457) + item_limit_text,
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=recent_all')
+    add_menu_directory_item(translate_string(30458),
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=favorites_all')
+    add_menu_directory_item(translate_string(30456) + item_limit_text,
+                            'plugin://plugin.video.jellycon/?mode=WIDGET_CONTENT&type=random_all')
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
