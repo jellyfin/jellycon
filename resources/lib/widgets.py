@@ -77,20 +77,21 @@ def set_random_tvshows():
     user_id = get_current_user_id()
 
     url_params = {}
-    url_params["Recursive"] = True,
-    url_params["limit"] = item_limit,
+    url_params["Recursive"] = True
+    url_params["limit"] = item_limit
     if hide_watched:
-        url_params["IsPlayed"] = False
-    url_params["SortBy"] = "Random",
-    url_params["IncludeItemTypes"] = "Series",
+            url_params["IsPlayed"] = False
+    url_params["SortBy"] = "Random"
+    url_params["IncludeItemTypes"] = "Series"
     url_params["ImageTypeLimit"] = 0
 
     url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
+
     results = api.get(url)
 
     random_tvshows_list = []
-    if results is not none:
-        items = results.get(item.get("Id"))
+    if results is not None:
+        items = results.get("Items", [])
         for item in items:
             random_tvshows_list.append(item.get("Id"))
 
@@ -103,7 +104,6 @@ def set_random_tvshows():
 
     log.debug("set_random_tvshows: {0}".format(tvshow_list_string))
     log.debug("set_random_tvshows: {0}".format(new_widget_hash))
-
     home_window.set_property("random-tvshows", tvshow_list_string)
     home_window.set_property("random-tvshows-changed", new_widget_hash)
 
@@ -480,6 +480,8 @@ def get_widget_content(handle, params):
         inprogress_url_params["IsVirtualUnaired"] = False
         inprogress_url_params["IncludeItemTypes"] = "Episode"
         inprogress_url_params["Limit"] = item_limit
+
+
 
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
