@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-15 10:39+0000\n"
-"Last-Translator: Imamuzzaki Abu Salam <imamuzzaki@gmail.com>\n"
+"PO-Revision-Date: 2025-06-28 11:51+0000\n"
+"Last-Translator: Nirwan <ny.unpar@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/id/>\n"
 "Language: id\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30414"
 msgid " - Favorites"
@@ -1122,3 +1122,87 @@ msgstr "Terjadi kesalahan saat masuk"
 msgctxt "#30449"
 msgid "Instant Mix"
 msgstr "Campuran Instan"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Paksa transkode av1"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Jeda Tonton Ulang (0 = Nonaktif)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Gabungkan, bukan Gantikan (berisiko memperlambat)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Sembunyikan Jumlah Item di Judul"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Belum Pernah Ditonton"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Tampilkan Tontonan Ulang"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Mode Antarmuka"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Baku"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Simpel"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Lewatkan Segmen"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Aksi yang diambil"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Mulai Offset(detik)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Akhir Offset(detik)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Lewatkan intro"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Lewatkan Credit"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Tanya"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Tidak Ada"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Melewatkan iklan"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Melewatkan Cuplikan"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Lewatkan"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Lewati Rekap"
