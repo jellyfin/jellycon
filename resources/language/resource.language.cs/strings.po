@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-04-08 10:01+0000\n"
-"Last-Translator: Fjuro <fjuro@alius.cz>\n"
+"PO-Revision-Date: 2025-07-12 21:51+0000\n"
+"Last-Translator: Samuel Kouba <samuelkouba07@gmail.com>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
 "Language: cs\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30016"
 msgid "Device display name"
@@ -225,7 +225,7 @@ msgstr "Způsob přehrávání"
 
 msgctxt "#30210"
 msgid "HTTP direct stream"
-msgstr "HTTP direct stream"
+msgstr "Přímý stream HTTP"
 
 msgctxt "#30211"
 msgid "Transcode options"
@@ -371,7 +371,6 @@ msgctxt "#30258"
 msgid "Movies - In Progress"
 msgstr "Filmy - Probíhající"
 
-#, fuzzy
 msgctxt "#30280"
 msgid "Missing Title"
 msgstr "Chybějící Nadpis"
@@ -380,7 +379,6 @@ msgctxt "#30292"
 msgid "Select Subtitle Stream"
 msgstr "Vyberte stopu titulků"
 
-#, fuzzy
 msgctxt "#30291"
 msgid "Select Audio Stream"
 msgstr "Vyberte zvukovou stopu"
@@ -408,7 +406,7 @@ msgstr "Odstranit"
 #, fuzzy
 msgctxt "#30281"
 msgid "Refresh Cached Images"
-msgstr "Obnovit přednačtené obrázky"
+msgstr "Obnovení obrázků v paměti cache"
 
 msgctxt "#30290"
 msgid "All"
@@ -455,7 +453,6 @@ msgctxt "#30273"
 msgid "Unset Favourite"
 msgstr "Odebrat z oblíbených"
 
-#, fuzzy
 msgctxt "#30278"
 msgid " - Next Up"
 msgstr "- Další na řadě"
@@ -475,17 +472,14 @@ msgctxt "#30282"
 msgid "No Jellyfin servers detected on your local network."
 msgstr "Na vaší místní síti nebyly nalezeny žádné Jellyfin servery."
 
-#, fuzzy
 msgctxt "#30283"
 msgid "Play Next Episode?"
 msgstr "Přehrát další epizodu?"
 
-#, fuzzy
 msgctxt "#30285"
 msgid " - Unwatched"
 msgstr "- Nezhlédnuté"
 
-#, fuzzy
 msgctxt "#30286"
 msgid "Movies - Unwatched"
 msgstr "Filmy - Nezhlédnuté"
@@ -510,3 +504,85 @@ msgstr "Přednačíst obrázky"
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
 msgstr "Počet výkonnostních profilů k zachycení"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Zjednodušit jednu sérii"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Výzva k vymazání filmu po %"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Vlastní obsah widgetu"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Zobrazit nastavení doplňku"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Nenalezeno"
+
+#, fuzzy
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Pro použití této funkce je nutné mít povolené ovládání HTTP"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Vyberte trailer"
+
+#, fuzzy
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Rozdívané"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "Seriály - Nezhlédnuté"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "Seriály - Žánry"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Možnosti přehrávání streamu"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "BoxSety"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Filmy - Stránky"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Zjištěná extra výzva k obnovení"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "Seriály - Nejnovější"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Mazání obrázků Kodi"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Chybějící Jellyfin obrázky:"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Stávající obrázky:"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Přehrát trailer"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Vyberte zdroj médií"
