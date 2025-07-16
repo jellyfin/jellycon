@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-09 07:01+0000\n"
-"Last-Translator: ilker <isaglam@gmail.com>\n"
+"PO-Revision-Date: 2025-07-17 14:51+0000\n"
+"Last-Translator: madman38 <madman3838@proton.me>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -141,7 +141,7 @@ msgstr "Sunucu seç"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "Altyazı varsa (cc) ekleyin"
+msgstr "Alt yazı varsa (cc) ekleyin"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -486,7 +486,7 @@ msgstr "Ses Akışını Seçin"
 
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
-msgstr "Altyazı Akışını Seçin"
+msgstr "Alt yazı Akışını Seçin"
 
 msgctxt "#30348"
 msgid "Add user ratings"
@@ -958,4 +958,172 @@ msgstr "Girdiğiniz URL'ye bağlanılamadı, tekrar denemek ister misiniz?"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
-msgstr "Harici altyazı istemi"
+msgstr "Harici alt yazı istemi"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Doğrudan dosya oynatımına izin ver"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Oturum açılırken bir sorun oluştu"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Karıştır"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Kullanılmamış Jellyfin fotoğrafları:"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Gizle"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Etiketler"
+
+#, fuzzy
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Bu ögeyi silmek için izniniz yok"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Yıl"
+
+#, fuzzy
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Sonrakini oynat"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Kaldırılan kullanılmamış fotoğraflar:"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Sunucu detayları"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Kullanıcı detayları"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmler - Öneriler"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Tümünü Göster"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Eklenti Hareketleri"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Yıllar"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Ayırma"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Ayarlanmadı"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Varsayılan"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Başlık"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Eklendi"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Tür"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Sezonlar"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Bağlantı hız testi"
+
+#, fuzzy
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Veri hızını test et (MB)"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Sinema jeneriklerini oynat"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Değiştirmek yerine birleştir (yavaşlamaya neden olabilir)"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+#, fuzzy
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Önbellek sonuçlarını temizle"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Önbellek dosyaları silindi"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Bilgi"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Sayfalar"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "İzlenme"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Önbelleğe alınmış sunucu verisini temizle"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment Atlayıcı"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Atla"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Sor"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Hiçbir şey yapma"
