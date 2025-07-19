@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-12 18:01+0000\n"
+"PO-Revision-Date: 2025-07-20 00:25+0000\n"
 "Last-Translator: Gargotaire <gargots@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
@@ -73,7 +73,7 @@ msgstr "Error"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "Afegeix (cc) si hi han subtítols disponibles"
+msgstr "Afegeix (cc) si hi ha subtítols disponibles"
 
 msgctxt "#30167"
 msgid "Selected Server Address"
@@ -89,7 +89,7 @@ msgstr "Inclou sinopsi"
 
 msgctxt "#30200"
 msgid "URL error"
-msgstr "Error en la URL"
+msgstr "Error de l'URL"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -97,7 +97,7 @@ msgstr "Reproducció"
 
 msgctxt "#30209"
 msgid "File direct path"
-msgstr "Ruta directa el fitxer"
+msgstr "Camí directe al fitxer"
 
 msgctxt "#30000"
 msgid "Host"
@@ -177,7 +177,7 @@ msgstr "No s'ha trobat l'usuari"
 
 msgctxt "#30053"
 msgid "Waiting for server to delete"
-msgstr "S'està esperant a què sigui esborrat pel servidor"
+msgstr "S'està esperant que sigui esborrat pel servidor"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
@@ -213,7 +213,7 @@ msgstr "S'està processant l'element:"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
-msgstr "No s'ha fixat cap tipus de contingut multimèdia"
+msgstr "No s'ha fixat cap mena de contingut multimèdia"
 
 msgctxt "#30166"
 msgid "Select Server"
@@ -241,7 +241,7 @@ msgstr "Tipus de reproducció"
 
 msgctxt "#30208"
 msgid "Max stream bitrate (Kbits)"
-msgstr "Taxa de bits màxima (Kbps)"
+msgstr "Taxa de bits màxima (kbps)"
 
 msgctxt "#30211"
 msgid "Transcode options"
@@ -281,7 +281,7 @@ msgstr "Desa les sol·licituds del servidor de Jellyfin a la memòria cau"
 
 msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
-msgstr "Dies per tornar a veure (0 = deshabilitat)"
+msgstr "Dies per a tornar a mirar (0 = deshabilitat)"
 
 msgctxt "#30452"
 msgid "Combine instead of replace (might cause slow-down)"
@@ -417,7 +417,7 @@ msgstr "Inici manual de la sessió"
 
 msgctxt "#30376"
 msgid "Checking server url"
-msgstr "S'està comprovant la URL del servidor"
+msgstr "S'està comprovant l'URL del servidor"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
@@ -545,7 +545,7 @@ msgstr "Comença des de l'inici"
 
 msgctxt "#30240"
 msgid "Force transcode msmpeg4v3 (divx)"
-msgstr "Força la transcodificació d'MSMPEG4v3 (DivX)"
+msgstr "Força la transcodificació de MSMPEG4v3 (DivX)"
 
 msgctxt "#30241"
 msgid "Force transcode mpeg4"
@@ -784,7 +784,7 @@ msgstr "Desitgeu eliminar la contrasenya desada?"
 
 msgctxt "#30370"
 msgid "Do you want to manually enter a server url?"
-msgstr "Desitgeu introduir manualment una URL de servidor?"
+msgstr "Desitgeu introduir manualment un URL de servidor?"
 
 msgctxt "#30374"
 msgid "Sending request"
@@ -836,7 +836,7 @@ msgstr "Amaga"
 
 msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
-msgstr "Interval del desat d'imatges a la memòria cau (0 = deshabilitat)"
+msgstr "Interval del desament d'imatges a la memòria cau (0 = deshabilitat)"
 
 msgctxt "#30402"
 msgid "Add to Kodi Playlist"
@@ -1101,8 +1101,7 @@ msgstr "Desitgeu desar la contrasenya?"
 
 msgctxt "#30371"
 msgid "Could not connect to the URL you entered, do you want to try again?"
-msgstr ""
-"No s'ha pogut connectar a la URL introduïda, desitgeu intentar-ho de nou?"
+msgstr "No s'ha pogut connectar a l'URL introduït, desitgeu intentar-ho de nou?"
 
 msgctxt "#30372"
 msgid "Server URL"
@@ -1122,7 +1121,7 @@ msgstr "Esborra la memòria cau del resultat"
 
 msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
-msgstr "Taxa de bits d'àudio (Kbps)"
+msgstr "Taxa de bits d'àudio (kbps)"
 
 msgctxt "#30419"
 msgid "Audio codec"
@@ -1142,7 +1141,7 @@ msgstr "Mida màxima de la cua de reproducció"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
-msgstr "Taxa de bits de la transcodificació forçada (Kbps)"
+msgstr "Taxa de bits de la transcodificació forçada (kbps)"
 
 msgctxt "#30435"
 msgid "Connection speed test"
@@ -1154,7 +1153,7 @@ msgstr "Mida de les dades de la prova de velocitat (MB)"
 
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
-msgstr "Amaga el nombre d'elements per mostrar a la portada"
+msgstr "Amaga el nombre d'elements per a mostrar a la portada"
 
 msgctxt "#30454"
 msgid " - Totally Unwatched"
@@ -1182,7 +1181,7 @@ msgstr "Desfasament de final (segons)"
 
 msgctxt "#30670"
 msgid "Intro Skipper"
-msgstr "Saltador d'intros"
+msgstr "Saltador d'introduccions"
 
 msgctxt "#30671"
 msgid "Credit Skipper"
