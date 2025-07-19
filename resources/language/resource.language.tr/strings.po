@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-17 14:51+0000\n"
+"PO-Revision-Date: 2025-07-20 00:25+0000\n"
 "Last-Translator: madman38 <madman3838@proton.me>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -159,7 +159,6 @@ msgctxt "#30125"
 msgid "Done"
 msgstr "Tamamlandı"
 
-#, fuzzy
 msgctxt "#30121"
 msgid "On resume"
 msgstr "Devam Ettirildiğinde"
@@ -587,7 +586,6 @@ msgctxt "#30288"
 msgid " - Latest"
 msgstr "- Sonuncu"
 
-#, fuzzy
 msgctxt "#30260"
 msgid "BoxSets"
 msgstr "Kutu Setleri"
@@ -798,7 +796,6 @@ msgctxt "#30332"
 msgid "Stop media playback on screensaver activation"
 msgstr "Ekran koruyucu etkinleştirildiğinde medya oynatımını durdur"
 
-#, fuzzy
 msgctxt "#30334"
 msgid "Use JellyCon context menu"
 msgstr "JellyCon bağlam menüsünü kullan"
@@ -879,7 +876,6 @@ msgctxt "#30330"
 msgid "Show change user dialog"
 msgstr "Kullanıcı değiştirme penceresini göster"
 
-#, fuzzy
 msgctxt "#30331"
 msgid "Movies per page"
 msgstr "Sayfa başına film"
@@ -1083,7 +1079,6 @@ msgctxt "#30390"
 msgid "Protocol"
 msgstr "Protokol"
 
-#, fuzzy
 msgctxt "#30393"
 msgid "Clear Cache Result"
 msgstr "Önbellek sonuçlarını temizle"
@@ -1127,3 +1122,61 @@ msgstr "Sor"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Hiçbir şey yapma"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Saniye cinsinden kalan zamanda sonraki bölümü oynatmayı göster"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Tamamen İzlenmemiş"
+
+#, fuzzy
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Küresel Listeler"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- On yıllar"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP zaman aşımı süresi (saniye cinsinden)"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Kod dönüştürme akışı bit hızını zorla (Kbps)"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Basit yeni içerik kontrolü"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Kodi çalma listesine ekle"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etiket"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Yapılacak eylem"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Jenerik Atlayıcı"
+
+#, fuzzy
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Credit Atlayıcı"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklam Atlayıcı"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Önizleme Atlayıcı"
