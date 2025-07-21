@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-04 10:18+0000\n"
-"Last-Translator: Szilágyi Kristóf <kriny96@gmail.com>\n"
+"PO-Revision-Date: 2025-07-21 20:37+0000\n"
+"Last-Translator: czlevi7 <czlevi7@gmail.com>\n"
 "Language-Team: Hungarian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/hu/>\n"
 "Language: hu\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30441"
 msgid "Use cached widget data"
@@ -1086,7 +1086,7 @@ msgstr "Port"
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "Hoszt"
+msgstr "Gazda"
 
 msgctxt "#30444"
 msgid "Login using Quick Connect"
@@ -1155,3 +1155,55 @@ msgstr "Egyesítés csere helyett (lassulást okozhat)"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "Elemek számának rejtése a cím mellett"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " Megnézetlen"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Teendő"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Kezdési eltérés (másodpercben)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Befejezési késleltetés"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intróátugró"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Részlet átugró"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Stáblistaátugró"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Átugrás"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Ne csináljon semmit"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklámátugró"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Előnézet átugró"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Kérdezz"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Összefoglaló átugró"
