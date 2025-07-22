@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-20 00:25+0000\n"
+"PO-Revision-Date: 2025-07-22 11:43+0000\n"
 "Last-Translator: Gargotaire <gargots@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
@@ -664,11 +664,11 @@ msgstr "S'estan eliminant les imatges de Kodi"
 
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Imatges a la memòria cau"
+msgstr "Imatges de la memòria cau"
 
 msgctxt "#30301"
 msgid "Caching Images"
-msgstr "S'estan desant imatges a la memòria cau"
+msgstr "S'estan desant les imatges de la memòria cau"
 
 msgctxt "#30302"
 msgid "Existing images : "
@@ -836,7 +836,7 @@ msgstr "Amaga"
 
 msgctxt "#30400"
 msgid "Cache images interval minutes (0 = disabled)"
-msgstr "Interval del desament d'imatges a la memòria cau (0 = deshabilitat)"
+msgstr "Interval del desament d'imatges de la memòria cau (0 = inhabilitat)"
 
 msgctxt "#30402"
 msgid "Add to Kodi Playlist"
@@ -1004,7 +1004,7 @@ msgstr "Sèries - Gèneres"
 
 msgctxt "#30293"
 msgid "Cache images"
-msgstr "Desa imatges a la memòria cau"
+msgstr "Desa imatges de la memòria cau"
 
 msgctxt "#30300"
 msgid "Cache all Jellyfin images as local Kodi images?"
