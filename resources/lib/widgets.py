@@ -67,6 +67,85 @@ def set_random_movies():
     home_window.set_property("random-movies", movies_list_string)
     home_window.set_property("random-movies-changed", new_widget_hash)
 
+@timer
+def set_random_tvshows():
+    log.debug("set_random_tvshows Called")
+
+    settings = xbmcaddon.Addon()
+    item_limit = settings.getSetting("show_x_filtered_items")
+    hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
+
+    url_params = {}
+    url_params["Recursive"] = True
+    url_params["limit"] = item_limit
+    if hide_watched:
+            url_params["IsPlayed"] = False
+    url_params["SortBy"] = "Random"
+    url_params["IncludeItemTypes"] = "Series"
+    url_params["ImageTypeLimit"] = 0
+
+    url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
+
+    results = api.get(url)
+
+    random_tvshows_list = []
+    if results is not None:
+        items = results.get("Items", [])
+        for item in items:
+            random_tvshows_list.append(item.get("Id"))
+
+    random.shuffle(random_tvshows_list)
+    tvshow_list_string = ",".join(random_tvshows_list)
+    home_window = HomeWindow()
+    m = hashlib.md5()
+    m.update(tvshow_list_string.encode())
+    new_widget_hash = m.hexdigest()
+
+    log.debug("set_random_tvshows: {0}".format(tvshow_list_string))
+    log.debug("set_random_tvshows: {0}".format(new_widget_hash))
+    home_window.set_property("random-tvshows", tvshow_list_string)
+    home_window.set_property("random-tvshows-changed", new_widget_hash)
+
+@timer
+def set_random_all():
+    log.debug("set_random_all Called")
+
+    settings = xbmcaddon.Addon()
+    item_limit = settings.getSetting("show_x_filtered_items")
+    hide_watched = settings.getSetting("hide_watched") == "true"
+    user_id = get_current_user_id()
+
+    url_params = {}
+    url_params["Recursive"] = True
+    url_params["limit"] = item_limit
+    if hide_watched:
+        url_params["IsPlayed"] = False
+    url_params["SortBy"] = "Random"
+    url_params["IncludeItemTypes"] = "Movie,Series"
+    url_params["ImageTypeLimit"] = 0
+   
+    url = get_jellyfin_url("/Users/{}/Items".format(user_id), url_params)
+
+    results = api.get(url)
+
+    random_items = []
+    if results is not None:
+        items = results.get("Items", [])
+        for item in items:
+            random_items.append(item.get("Id"))
+
+    random.shuffle(random_items)
+    item_list_string = ",".join(random_items)
+    home_window = HomeWindow()
+    m = hashlib.md5()
+    m.update(item_list_string.encode())
+    new_widget_hash = m.hexdigest()
+
+    log.debug("set_random_all: {0}".format(item_list_string))
+    log.debug("set_random_all: {0}".format(new_widget_hash))
+    home_window.set_property("random-all", item_list_string)
+    home_window.set_property("random-all-changed", new_widget_hash)
 
 def set_background_image(force=False):
     log.debug("set_background_image Called forced={0}".format(force))
@@ -333,6 +412,11 @@ def get_widget_content(handle, params):
         xbmcplugin.setContent(handle, 'movies')
         url_params["Ids"] = home_window.get_property("random-movies")
 
+    elif widget_type == "random_tvshows":
+        home_window = HomeWindow()
+        xbmcplugin.setContent(handle, 'tvshows')
+        url_params["Ids"] = home_window.get_property("random-tvshows")
+
     elif widget_type == "recent_tvshows":
         xbmcplugin.setContent(handle, 'episodes')
         url_verb = '/Users/{}/Items/Latest'.format(user_id)
@@ -397,6 +481,8 @@ def get_widget_content(handle, params):
         inprogress_url_params["IncludeItemTypes"] = "Episode"
         inprogress_url_params["Limit"] = item_limit
 
+
+
     elif widget_type == "movie_recommendations":
         suggested_items_url_params = {}
         suggested_items_url_params["userId"] = user_id
@@ -435,6 +521,39 @@ def get_widget_content(handle, params):
         id_list = ",".join(ids)
         log.debug("Recommended Items : {0}".format(len(ids)))
         url_params["Ids"] = id_list
+
+    elif widget_type == "random_all":
+        home_window = HomeWindow()
+        xbmcplugin.setContent(handle, 'movies')
+        url_params["Ids"] = home_window.get_property("random-all")
+
+    elif widget_type == "recent_all":
+        xbmcplugin.setContent(handle, 'movies')
+        url_verb = '/Users/{}/Items/Latest'.format(user_id)
+        url_params["GroupItems"] = True
+        url_params["Recursive"] = True
+        url_params["SortBy"] = "DateCreated"
+        url_params["SortOrder"] = "Descending"
+        url_params["Limit"] = 45
+        url_params["Filters"] = "IsNotFolder"
+        url_params["Fields"] = get_default_filters()
+        if hide_watched:
+            url_params["IsPlayed"] = False
+        url_params["IsVirtualUnaired"] = False
+        url_params["IncludeItemTypes"] = "Episode, Movie"
+        url_params["ImageTypeLimit"] = 1
+
+    elif widget_type == "favorites_all":
+        home_window = HomeWindow()
+        xbmcplugin.setContent(handle, 'movies')
+    
+        url_params.update({
+            "Filters": "IsFavorite",
+            "IncludeItemTypes": "Movie,Series",
+            "Recursive": True,
+            "SortBy": "Name",
+            "SortOrder": "Ascending",
+        })
 
     items_url = get_jellyfin_url(url_verb, url_params)
 
