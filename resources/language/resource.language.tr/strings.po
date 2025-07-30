@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-20 00:25+0000\n"
+"PO-Revision-Date: 2025-07-30 19:05+0000\n"
 "Last-Translator: madman38 <madman3838@proton.me>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
@@ -984,7 +984,6 @@ msgctxt "#30413"
 msgid " - Tags"
 msgstr "- Etiketler"
 
-#, fuzzy
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
 msgstr "Bu ögeyi silmek için izniniz yok"
@@ -993,7 +992,6 @@ msgctxt "#30425"
 msgid "Year"
 msgstr "Yıl"
 
-#, fuzzy
 msgctxt "#30440"
 msgid "Play next"
 msgstr "Sonrakini oynat"
@@ -1062,7 +1060,6 @@ msgctxt "#30435"
 msgid "Connection speed test"
 msgstr "Bağlantı hız testi"
 
-#, fuzzy
 msgctxt "#30436"
 msgid "Speed test data size (MB)"
 msgstr "Veri hızını test et (MB)"
