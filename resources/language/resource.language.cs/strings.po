@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-12 21:51+0000\n"
-"Last-Translator: Samuel Kouba <samuelkouba07@gmail.com>\n"
+"PO-Revision-Date: 2025-08-03 21:36+0000\n"
+"Last-Translator: Fjuro <fjuro@alius.cz>\n"
 "Language-Team: Czech <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/cs/>\n"
 "Language: cs\n"
@@ -273,7 +273,7 @@ msgstr "Podrobnosti"
 
 msgctxt "#30252"
 msgid "Movies - A-Z"
-msgstr "Filmy - A-Z"
+msgstr "Filmy - A–Z"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
@@ -293,7 +293,7 @@ msgstr "Neznámé"
 
 msgctxt "#30265"
 msgid "Episodes - Next Up"
-msgstr "Epizody - Ďalší na řadě"
+msgstr "Epizody - Další na řadě"
 
 msgctxt "#30226"
 msgid "Default"
@@ -329,7 +329,7 @@ msgstr "Filmy - Žánry"
 
 msgctxt "#30255"
 msgid "TV Shows - A-Z"
-msgstr "Seriály - A-Z"
+msgstr "Seriály - A–Z"
 
 msgctxt "#30256"
 msgid "Movies"
@@ -393,7 +393,7 @@ msgstr "Epizody - Probíhající"
 
 msgctxt "#30268"
 msgid " - Recently Added"
-msgstr "- Nedávno Přidané"
+msgstr "- Nedávno přidané"
 
 msgctxt "#30270"
 msgid "Mark Watched"
@@ -403,19 +403,17 @@ msgctxt "#30274"
 msgid "Delete"
 msgstr "Odstranit"
 
-#, fuzzy
 msgctxt "#30281"
 msgid "Refresh Cached Images"
-msgstr "Obnovení obrázků v paměti cache"
+msgstr "Obnovit obrázky v mezipaměti"
 
 msgctxt "#30290"
 msgid "All"
 msgstr "Vše"
 
-#, fuzzy
 msgctxt "#30293"
 msgid "Cache images"
-msgstr "Přednačíst obrázky"
+msgstr "Načíst obrázky do mezipaměti"
 
 msgctxt "#30294"
 msgid "Notice"
@@ -496,10 +494,9 @@ msgctxt "#30297"
 msgid "Delete unused images?"
 msgstr "Odstranit nepoužité obrázky?"
 
-#, fuzzy
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Přednačíst obrázky"
+msgstr "Uložit obrázky do mezipaměti"
 
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
@@ -525,7 +522,6 @@ msgctxt "#30305"
 msgid "Not Found"
 msgstr "Nenalezeno"
 
-#, fuzzy
 msgctxt "#30295"
 msgid "To use this feature you need HTTP control enabled"
 msgstr "Pro použití této funkce je nutné mít povolené ovládání HTTP"
@@ -534,10 +530,9 @@ msgctxt "#30308"
 msgid "Select Trailer"
 msgstr "Vyberte trailer"
 
-#, fuzzy
 msgctxt "#30267"
 msgid " - In Progress"
-msgstr "- Rozdívané"
+msgstr "- Rozkoukáno"
 
 msgctxt "#30279"
 msgid "TV Shows - Unwatched"
@@ -586,3 +581,625 @@ msgstr "Přehrát trailer"
 msgctxt "#30309"
 msgid "Select Media Source"
 msgstr "Vyberte zdroj médií"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Interval aktualizace obrázků na pozadí (0 = zakázáno)"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Získávání existujících obrázků"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Skrýt"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Hudba - Alba"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Uložit obaly do mezipaměti na pozadí"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Chyba připojení"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Chcete uložit všechny obrázky Jellyfin do mezipaměti místního Kodi jako "
+"obrázky?"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Zobrazit prázdné složky (pořady, seriály, sbírky)"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Zastavit přehrávání médií po spuštění spořiče obrazovky"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Počet obrázků odstraněných z mezipaměti"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Načítání existujícího seznamu obrázků"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Systém -"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Nastavení Kodi->Služby->Povolit vzdálené ovládání prostřednictvím HTTP"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Zpracovávání existujícího seznamu obrázků"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Načítání vzdáleného seznamu obrázků"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Uložit heslo?"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Ruční přihlášení"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Nepodařilo se připojit k zadané adresem, chcete to zkusit znovu?"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Soubory mezipaměti vymazány"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Přidáno"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Vymazat výsledek mezipaměti"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmy - Doporučené"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Vymazat serverová data v mezipaměti"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Obnovit metadata Jellyfinu"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Série"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Jednoduchá kontrola nového obsahu"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Povolit přímé přehrávání souboru"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Vynutit datový tok překódování streamu (kbps)"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maximální velikost fronty přehrávání"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Kompletně nesledováno"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Pokračovat ve sledování"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Skrýt počet položek k zobrazení u názvu záznamu"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Během přihlašování došlo k chybě"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Obrázky Jellyfin v mezipaměti:"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Povolit vzdálené ovládání Jellyfin"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Vše -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Nabídka"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Přehrát"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Potlačit oznámení o chybách připojení"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Spořič obrazovky"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Použít kontextovou nabídku JellyCon"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Skladba"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Osoba"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Seskupit filmy do sbírek"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Interval kontroly nového obsahu (0 = zakázáno)"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Změny vyžadují restart Kodi"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Ukládat žádosti o data serveru Jellyfin do mezipaměti"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Přidat uživatelská hodnocení"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Umělci alb"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Ručně zadat informace o uživateli"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Vyhledávání místních serverů"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Odesílání požadavku"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Nikdy"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Více než jeden"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Vždy"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Minuty náhodného intervalu filmů (0 = zakázáno)"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Existující obrázky před smazáním:"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Smazány nepoužívané obrázky:"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Informace"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A–Z"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Zobrazit vše"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Knihovny Jellyfin"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globální seznamy"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Vlastní widgety"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Akce doplňku"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Sbírky"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Roky"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Desetiletí"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Štítky"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Datový tok zvuku (kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Kodek zvuku"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Max. počet kanálů zvuku"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Zhlédnutí"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Řazení"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Nenastaveno"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Výchozí"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Rok"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Název"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Hodnocení"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Žánr"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Štítek"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Možnosti přehrávání"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Zobrazit zbývající čas do přehrání další epizody v sekundách"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Rychlé připojení"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Náhodně"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Okamžitý mix"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Opětovné sledování dalších v řadě"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Dny opětovného sledování (0 = zakázáno)"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Ukládání obrázků do mezipaměti"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Knihovna -"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Spouštění přehrávání"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Alba"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Přehrát vše"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Automaticky pokračovat"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Umělci"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Žánry"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Přejít na sérii"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Zobrazit uživatelský dialog změny"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Filmů na stránku"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Nedávno přehráno"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Mazání obrázků v mezipaměti"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Hudba - Nedávno přidaná"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Hudba - Nedávno přehraná"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Hudba - Často přehrávaná"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Často přehráváno"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Hudba - Všichni umělci alb"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Přejít na seriál"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Sestavování celého seznamu obrázků"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanály"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programy"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Nahrávky"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Chcete uložit heslo?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Povolit rychlé ukládání hesla přepnutého uživatele"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Vymazat heslo?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Chcete vymazat vaše uložené heslo?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Chcete ručně zadat adresu serveru?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Adresa serveru"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Získávání datového balíčku"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Kontrola adresy serveru"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Odesílání požadavku"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Uchovat podrobnosti o uživateli"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Dotaz na externí titulky"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Nepoužité obrázky Jellyfin:"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Podrobnosti o serveru"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Podrobnosti o uživateli"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Stránky"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Minuty intervalu ukládání obrázků do mezipaměti (0 = zakázáno)"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Přidat do seznamu Kodi"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Oblíbené sbírky"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Oblíbené"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "Sekundy vypršení HTTP"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Nemáte oprávnění smazat tuto položku"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Skrýt zhlédnuté položky v seznamech"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Test rychlosti připojení"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Velikost testovacích dat rychlosti (MB)"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Přehrát úvody kina"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Přehrát další"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Použít data widgetu v mezipaměti"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Přihlásit se pomocí Rychlého připojení"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Přeskakovač segmentů"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Akce k provedení"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Zpoždění spuštění (sekundy)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Zpoždění ukončení (sekundy)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Přeskočení znělky"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Přeskočení titulků"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Přeskočit"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Zeptat se"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Nic nedělat"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Přeskočení reklam"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Přeskočení náhledů"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Přeskočení shrnutí"
