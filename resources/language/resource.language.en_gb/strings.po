@@ -1157,6 +1157,22 @@ msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Totally Unwatched"
 
+msgctxt "#30455"
+msgid "TV Shows - Random"
+msgstr "TV Shows - Random"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "All - Random"
+
+msgctxt "#30457"
+msgid "All - Recently Added"
+msgstr "All - Recently Added"
+
+msgctxt "#30458"
+msgid "All - Favorites"
+msgstr "All - Favorites"
+
 msgctxt "#30666"
 msgid "Segment Skipper"
 msgstr "Segment Skipper"
