@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-11 02:51+0000\n"
-"Last-Translator: oofybruh9 <oofybruh9@gmail.com>\n"
+"PO-Revision-Date: 2025-08-09 09:34+0000\n"
+"Last-Translator: Julio García <yllelder@gmail.com>\n"
 "Language-Team: Spanish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/es/>\n"
 "Language: es\n"
@@ -1181,3 +1181,31 @@ msgstr "Hacer nada"
 msgctxt "#30675"
 msgid "Commercial Skipper"
 msgstr "Omitidor de Anuncios"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Saltador de resúmenes"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Saltador de segmento"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Desfase de inicio (segundos)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Desfase de final (segundos)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Saltador de introducción"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Saltador de créditos"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Saltador de previsualizaciones"
