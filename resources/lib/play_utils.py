@@ -862,7 +862,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
             list_item.setSubtitles([subtitle_url])
         else:
             # Burn subtitles
-            playurlprefs += "&SubtitleStreamIndex=%s" % select_subs_index
+            playurlprefs += "&SubtitleStreamIndex=%s&SubtitleMethod=Encode" % select_subs_index
 
     elif len(subtitle_streams) > 1:
         resp = dialog.select(translate_string(30292), subtitle_streams)
@@ -882,10 +882,10 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
                 list_item.setSubtitles([subtitle_url])
             else:
                 # Burn subtitles
-                playurlprefs += "&SubtitleStreamIndex=%s" % select_subs_index
+                playurlprefs += "&SubtitleStreamIndex=%s&SubtitleMethod=Encode" % select_subs_index
 
         else:  # User backed out of selection
-            playurlprefs += "&SubtitleStreamIndex=%s" % default_sub
+            playurlprefs += "&SubtitleStreamIndex=%s&SubtitleMethod=Encode" % default_sub
 
     new_url = url + playurlprefs
 
