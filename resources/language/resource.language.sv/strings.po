@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-09 07:01+0000\n"
+"PO-Revision-Date: 2025-08-13 06:51+0000\n"
 "Last-Translator: aniara001 <qwert352@hotmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
@@ -361,7 +361,7 @@ msgstr "Uppspelning"
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "Host"
+msgstr "Värd"
 
 msgctxt "#30290"
 msgid "All"
@@ -517,7 +517,7 @@ msgstr "Använd cachad widget data"
 
 msgctxt "#30440"
 msgid "Play next"
-msgstr "Spela härnest"
+msgstr "Spela härnäst"
 
 msgctxt "#30250"
 msgid "Unknown"
@@ -1173,3 +1173,7 @@ msgstr "Fråga"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Gör ingenting"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Åtgärd"
