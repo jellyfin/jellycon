@@ -857,7 +857,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     if select_subs_index is not None:
         # Load subtitles in the listitem if downloadable
         if select_subs_index in downloadable_streams:
-            delivery_url = downloadable_streams[select_subs_index]['DeliveryUrl']
+            delivery_url = media_streams[select_subs_index]['DeliveryUrl']
             subtitle_url = settings.getSetting('server_address') + delivery_url
             log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
             list_item.setSubtitles([subtitle_url])
@@ -877,7 +877,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
 
             # Load subtitles in the listitem if downloadable
             if select_subs_index in downloadable_streams:
-                delivery_url = downloadable_streams[select_subs_index]['DeliveryUrl']
+                delivery_url = media_streams[select_subs_index]['DeliveryUrl']
                 subtitle_url = settings.getSetting('server_address') + delivery_url
                 log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
                 list_item.setSubtitles([subtitle_url])
