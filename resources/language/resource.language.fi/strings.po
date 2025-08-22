@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-12-18 12:49+0000\n"
-"Last-Translator: Oskari Lavinto <olavinto@protonmail.com>\n"
+"PO-Revision-Date: 2025-08-23 15:01+0000\n"
+"Last-Translator: spurdl <60575077+Spurdl@users.noreply.github.com>\n"
 "Language-Team: Finnish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/fi/>\n"
 "Language: fi\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30442"
 msgid "Simple new content check"
@@ -591,7 +591,7 @@ msgstr "Puskuroidaan kuvia"
 
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Puskuroi kuvat"
+msgstr "Puskuroi Kuvat"
 
 msgctxt "#30298"
 msgid "Deleting Kodi Images"
@@ -1153,3 +1153,59 @@ msgstr "Pakota AV1-transkoodaus"
 msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
 msgstr "Uudelleenkatselupäivät (0 = ei käytössä)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Piilota näytettävien kohteiden määrä etusivulta"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Kokonaan katsomatta"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Kappaleiden ohittaja"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Aloituksen siirto (sekunneissa)"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Tehtävät toimet"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Lopetuksen siirto (sekunneissa)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Johdannon ohittaja"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Lopetuksen ohittaja"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Ohita"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Kysy"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Älä tee mitään"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Mainosten ohittaja"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Ennakkoesitysten ohittaja"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Yhteenvetojen ohittaja"
