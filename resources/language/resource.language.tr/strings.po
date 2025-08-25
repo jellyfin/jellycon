@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-30 19:05+0000\n"
-"Last-Translator: madman38 <madman3838@proton.me>\n"
+"PO-Revision-Date: 2025-08-25 21:36+0000\n"
+"Last-Translator: bolaykim <eren.hursit@hotmail.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -273,7 +273,7 @@ msgstr "Cihazın görünen adı"
 
 msgctxt "#30015"
 msgid "Log timing data"
-msgstr "Zamanlama verilerini günlüğe kaydet"
+msgstr "Günlük zamanlama verisi"
 
 msgctxt "#30014"
 msgid "Jellyfin"
@@ -1128,10 +1128,9 @@ msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " - Tamamen İzlenmemiş"
 
-#, fuzzy
 msgctxt "#30407"
 msgid "Global Lists"
-msgstr "Küresel Listeler"
+msgstr "Global Listeler"
 
 msgctxt "#30412"
 msgid " - Decades"
@@ -1165,10 +1164,9 @@ msgctxt "#30670"
 msgid "Intro Skipper"
 msgstr "Jenerik Atlayıcı"
 
-#, fuzzy
 msgctxt "#30671"
 msgid "Credit Skipper"
-msgstr "Credit Atlayıcı"
+msgstr "Kredit Atlayıcı"
 
 msgctxt "#30675"
 msgid "Commercial Skipper"
@@ -1177,3 +1175,19 @@ msgstr "Reklam Atlayıcı"
 msgctxt "#30676"
 msgid "Preview Skipper"
 msgstr "Önizleme Atlayıcı"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Silinmeden önce mevcut resimler:"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Ses max kanalları"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Yeniden izlenen günler (0 = İnaktif)"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Özet Geçici"
