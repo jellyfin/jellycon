@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-08-13 06:51+0000\n"
-"Last-Translator: aniara001 <qwert352@hotmail.com>\n"
+"PO-Revision-Date: 2025-09-10 20:11+0000\n"
+"Last-Translator: Ärik <kwakz4life@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv\n"
@@ -1177,3 +1177,27 @@ msgstr "Gör ingenting"
 msgctxt "#30667"
 msgid "Action to take"
 msgstr "Åtgärd"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segmenthoppare"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Sluttextshoppare"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Introhoppare"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklamhoppare"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Förhandsgranskningshoppare"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Sammanfattningshoppare"
