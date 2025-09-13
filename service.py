@@ -11,7 +11,7 @@ import xbmcgui
 from resources.lib.lazylogger import LazyLogger
 from resources.lib.play_utils import Service, PlaybackService, send_progress
 from resources.lib.kodi_utils import HomeWindow
-from resources.lib.widgets import set_background_image, set_random_movies
+from resources.lib.widgets import set_background_image, set_random_movies, set_random_tvshows, set_random_all
 from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
 from resources.lib.server_detect import check_server, check_connection_speed
@@ -64,6 +64,8 @@ last_progress_update = time.time()
 last_content_check = time.time()
 last_background_update = 0
 last_random_movie_update = 0
+last_random_tvshow_update = 0
+last_random_all_update = 0
 
 # start the library update monitor
 library_change_monitor = LibraryChangeMonitor()
@@ -145,6 +147,14 @@ while home_window.get_property('exit') == 'False':
                     last_random_movie_update = time.time()
                     set_random_movies()
 
+                if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_tvshow_update) > random_movie_list_interval):
+                    last_random_tvshow_update = time.time()
+                    set_random_tvshows()
+
+                if user_changed or (random_movie_list_interval != 0 and (time.time() - last_random_all_update) > random_movie_list_interval):
+                    last_random_all_update = time.time()
+                    set_random_all()
+
                 if user_changed or (newcontent_interval != 0 and (time.time() - last_content_check) > newcontent_interval):
                     last_content_check = time.time()
                     library_change_monitor.check_for_updates()
@@ -187,7 +197,7 @@ if play_next_service:
 # call stop on the context menu monitor
 if context_monitor:
     context_monitor.stop_monitor()
-    
+
 if intro_skipper:
     intro_skipper.stop_service()
 
