@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-08 21:51+0000\n"
-"Last-Translator: Buiko32 <nicholas.buoso@gmail.com>\n"
+"PO-Revision-Date: 2025-09-22 12:36+0000\n"
+"Last-Translator: Khalsior <khalsior@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -997,7 +997,7 @@ msgstr "Non impostato"
 
 msgctxt "#30446"
 msgid "There was an error logging in"
-msgstr "Si è verificato un errore al login"
+msgstr "Si è verificato un errore durante l'accesso"
 
 msgctxt "#30443"
 msgid "Quick Connect"
@@ -1049,11 +1049,11 @@ msgstr "Riproduci prossimo"
 
 msgctxt "#30441"
 msgid "Use cached widget data"
-msgstr "Utilizza dati widget in cache"
+msgstr "Utilizza dati widget nella cache"
 
 msgctxt "#30444"
 msgid "Login using Quick Connect"
-msgstr "Loggati con la Connessione Rapida"
+msgstr "Accedi usando Connessione Rapida"
 
 msgctxt "#30452"
 msgid "Combine instead of replace (might cause slow-down)"
@@ -1101,7 +1101,7 @@ msgstr "Riprendi"
 
 msgctxt "#30442"
 msgid "Simple new content check"
-msgstr "Ricerca dei contenuti nuovi semplice"
+msgstr "Ricerca semplice dei nuovi contenuti"
 
 msgctxt "#30215"
 msgid "On playback stop (100% = disabled)"
@@ -1137,7 +1137,7 @@ msgstr "Mix Istantaneo"
 
 msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
-msgstr "Giorni da Riguardare (0 = Disabilitato)"
+msgstr "Giorni per tornare a Guardare (0 = Disabilitato)"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
@@ -1145,7 +1145,7 @@ msgstr "Finestra di Ripresa Duplicata Rilevata"
 
 msgctxt "#30450"
 msgid "Next Up Rewatching"
-msgstr "Prossimo da Riguardare"
+msgstr "Prossimo da Ri-Guardare"
 
 msgctxt "#30672"
 msgid "Skip"
@@ -1158,3 +1158,47 @@ msgstr "Chiedi"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Non fare niente"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Nascondi numero di elementi da mostrare per titolo"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Non Visto"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Offset all'avvio (secondi)"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Salta Segmento"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Azione da eseguire"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Offset alla fine (secondi)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Salta Intro"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Salta Crediti"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Salta Pubblicità"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Salta Anteprima"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Salta Riassunto"
