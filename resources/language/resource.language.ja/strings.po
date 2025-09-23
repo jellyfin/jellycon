@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-09-23 01:29+0000\n"
-"Last-Translator: Shinji Hayakawa <translate@hayakawa.work>\n"
+"PO-Revision-Date: 2025-09-23 06:18+0000\n"
+"Last-Translator: Shinji Hayakawa "
+"<kekomimi@users.noreply.translate.jellyfin.org>\n"
 "Language-Team: Japanese <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ja/>\n"
 "Language: ja\n"
@@ -703,7 +704,7 @@ msgstr ""
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "巻き戻す秒数"
+msgstr "数秒戻す"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -720,3 +721,43 @@ msgstr "エラー"
 msgctxt "#30020"
 msgid "Flatten single season"
 msgstr "1シーズンを畳む"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "名前に未視聴の数を追加"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "再開時"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "次の項目を処理中:"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "メディアタイプ未設定"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "字幕がある場合(cc)を追加する"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "サーバーを選択する"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "選択されたサーバーアドレス"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "アドレス:"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "ユーザー選択"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "ウィジェット項目選択操作"
