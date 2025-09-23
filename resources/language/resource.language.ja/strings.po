@@ -716,3 +716,7 @@ msgstr "完了"
 msgctxt "#30135"
 msgid "Error"
 msgstr "エラー"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "1シーズンを畳む"
