@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-09-22 23:10+0000\n"
+"PO-Revision-Date: 2025-09-23 01:29+0000\n"
 "Last-Translator: Shinji Hayakawa <translate@hayakawa.work>\n"
 "Language-Team: Japanese <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ja/>\n"
@@ -704,3 +704,15 @@ msgstr ""
 msgctxt "#30114"
 msgid "Jump back seconds"
 msgstr "巻き戻す秒数"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "読込み状況を表示"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "完了"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "エラー"
