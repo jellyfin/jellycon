@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-10-07 07:56+0000\n"
+"PO-Revision-Date: 2025-10-08 08:51+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -865,3 +865,271 @@ msgstr "Püsivad kasutajaandmed"
 msgctxt "#30379"
 msgid "External subtitle prompt"
 msgstr "Väliste subtiitrite lubamine"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Mitu sekundit enne lõppu kuvada teade \"Esita järgmine episood\""
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Juhuslike filmide värskendamise intervall (0 = keelatud)"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Serveri andmed"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Värskenda Jellyfini metaandmeid"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfini meediakogud"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globaalsed loendid"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP ajalõpp sekundites"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Heli bitikiirus (kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Helikoodek"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Määramata"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Aasta"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Pealkiri"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Taasesituse valikud"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Esita järgmisena"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Lisamooduli toimingud"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Tühjenda vahemällu salvestatud serveri andmed"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Ilmes viga sisselogimisel"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Kiirmiks"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Esitusjärjekorra maksimaalne suurus"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Kasutaja andmed"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Kasutamata pildid eemaldati:"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Kuva kõik"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Lemmikkogumikud"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Täiesti vaatamata"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Olemasolevaid pilte enne kustutamist:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Kasutamata Jellyfini pildid:"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokoll"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Vahemälu tühjendamise tulemus"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Vahemälu failid kustutati"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Peida"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Info"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Lisa Kodi esitusloendisse"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Filmid - Soovitused"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Piltide vahemällu salvestamise intervall (0 = keelatud)"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Kohandatud vidinad"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Kogumikud"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Ü"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Sildid"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Aastad"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Kümnendid"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Lemmikud"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Sul pole selle üksuse kustutamiseks õigusi"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maksimaalne helikanalite arv"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Järjestus"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Vaikimisi"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Lisatud"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Hinne"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Žanr"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Peida vaadatud üksused loendites"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Luba failide otseesitus"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Sunnitud transkoodimise voo bitikiirus (kbps)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Ühenduse kiirustest"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Kiirustesti andmesuurus (MB)"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Lihtne uue sisu kontroll"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Kasuta vahemällu salvestatud vidina andmeid"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Kiirühendus"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Logi sisse kiirühenduse abil"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Jätka vaatamist"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Ühenda asendamise asemel (võib jõudlust aeglustada)"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Sooritatav toiming"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Käivitusviivitus (sekundites)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Lõpuviivitus (sekundites)"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Jäta vahele"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Küsi"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Ära tee midagi"
