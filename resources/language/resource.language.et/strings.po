@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-01-03 18:05+0000\n"
+"PO-Revision-Date: 2025-10-07 07:56+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 msgctxt "#30021"
 msgid "Show all episodes item"
@@ -761,3 +761,107 @@ msgstr "Peida vaatamata episoodi üksikasjad"
 msgctxt "#30022"
 msgid "Advanced"
 msgstr "Täpsem"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Filtreeritud episoodi nime vorming"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Sunni 8 bit video"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Parool kustutada?"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Kohalike serverite skaneerimine"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Serveri URL-i kontrollimine"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Esitajad"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "Sisestatud URL-iga ei õnnestunud ühenduda, kas soovid uuesti proovida?"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Päringu saatmine"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Sunni av1 transkodeerimine"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Kas soovid serveri URL-i sisestada käsitsi?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Serveri URL"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Mitte kunagi"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Rohkem kui üks"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Alati"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Süsteem -"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Kasutajaliidese režiim"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Vaikimisi"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Lihtne"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Kohandatud vidina sisu"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Tühista lemmikuks määramine"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Luba muudetud kasutajaparooli kiire salvestamine"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Kas soovid oma salvestatud parooli kustutada?"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Päringu saatmine"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Andmepaketi vastuvõtmine"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Püsivad kasutajaandmed"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Väliste subtiitrite lubamine"
