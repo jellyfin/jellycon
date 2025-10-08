@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-10-08 11:39+0000\n"
+"PO-Revision-Date: 2025-10-08 11:47+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -97,15 +97,15 @@ msgstr "Kas salvestada parool?"
 
 msgctxt "#30362"
 msgid " - Recordings"
-msgstr "- salvestised"
+msgstr "- Salvestised"
 
 msgctxt "#30361"
 msgid " - Programs"
-msgstr "- saated"
+msgstr "- Saated"
 
 msgctxt "#30360"
 msgid " - Channels"
-msgstr "- kanalid"
+msgstr "- Kanalid"
 
 msgctxt "#30359"
 msgid "Building full image list"
@@ -137,7 +137,7 @@ msgstr "- sageli esitatud"
 
 msgctxt "#30321"
 msgid " - Album Artists"
-msgstr "– albumi esitajad"
+msgstr "- Albumi esitajad"
 
 msgctxt "#30319"
 msgid "Music - All Album Artists"
@@ -257,7 +257,7 @@ msgstr "Kuva tühjad kaustad (saated, hooajad, kogumikud)"
 
 msgctxt "#30325"
 msgid " - Genres"
-msgstr "- žanrid"
+msgstr "- Žanrid"
 
 msgctxt "#30322"
 msgid "Auto resume"
@@ -265,11 +265,11 @@ msgstr "Automaatne jätkamine"
 
 msgctxt "#30320"
 msgid " - Albums"
-msgstr "- albumid"
+msgstr "- Albumid"
 
 msgctxt "#30318"
 msgid "Music - Albums"
-msgstr "Muusika – albumid"
+msgstr "Muusika – Albumid"
 
 msgctxt "#30317"
 msgid "Play All"
@@ -401,7 +401,7 @@ msgstr "Filmid - Vaatamata"
 
 msgctxt "#30285"
 msgid " - Unwatched"
-msgstr "- vaatamata"
+msgstr "- Vaatamata"
 
 msgctxt "#30283"
 msgid "Play Next Episode?"
