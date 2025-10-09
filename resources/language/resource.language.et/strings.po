@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-10-08 11:47+0000\n"
+"PO-Revision-Date: 2025-10-09 12:51+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -133,7 +133,7 @@ msgstr "Ava seriaal"
 
 msgctxt "#30353"
 msgid " - Frequently Played"
-msgstr "- sageli esitatud"
+msgstr "- Sageli esitatud"
 
 msgctxt "#30321"
 msgid " - Album Artists"
@@ -145,7 +145,7 @@ msgstr "Muusika – kõik albumi esitajad"
 
 msgctxt "#30352"
 msgid "Music - Frequently Played"
-msgstr "Muusika – sageli esitatud"
+msgstr "Muusika – Sageli esitatud"
 
 msgctxt "#30327"
 msgid "Go To Season"
@@ -413,7 +413,7 @@ msgstr "Kohtvõrgus ei tuvastatud Jellyfini servereid."
 
 msgctxt "#30281"
 msgid "Refresh Cached Images"
-msgstr "Värskenda vahemällu salvestatud pilte"
+msgstr "Värskenda puhverdatud pilte"
 
 msgctxt "#30280"
 msgid "Missing Title"
@@ -1133,3 +1133,15 @@ msgstr "Küsi"
 msgctxt "#30674"
 msgid "Do Nothing"
 msgstr "Ära tee midagi"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Hooajad"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Segamine"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Lehed"
