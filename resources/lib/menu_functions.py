@@ -586,14 +586,6 @@ def display_main_menu():
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
     add_menu_directory_item(translate_string(30409),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=addon_items")
-    
-    # Favorites view
-    add_menu_directory_item(translate_string(30678),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_favorites")
-    
-    # Folder navigation
-    add_menu_directory_item(translate_string(30684),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -624,6 +616,8 @@ def display_menu(params):
         display_favorites_by_type(params)
     elif menu_type == "show_folders":
         display_folder_view(params)
+    elif menu_type == "show_genres":
+        display_genres_view(params)
 
 
 def show_global_types(params):
@@ -1285,6 +1279,18 @@ def display_library_views(params):
 
             add_menu_directory_item(view_name, plugin_path, art=art)
 
+    # Add Browse Folders option to Jellyfin Libraries
+    add_menu_directory_item(translate_string(30684),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders")
+
+    # Add All Favorites option to Jellyfin Libraries
+    add_menu_directory_item(translate_string(30678),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_favorites")
+
+    # Add Browse Genres option to Jellyfin Libraries
+    add_menu_directory_item(translate_string(30687),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_genres")
+
     xbmcplugin.endOfDirectory(handle)
 
 
@@ -1538,21 +1544,6 @@ def display_folder_view(params):
 
     views = result.get("Items", [])
 
-    # Add "All Folders" option for comprehensive folder browsing
-    all_folders_params = {
-        "UserId": user_id,
-        "Recursive": True,
-        "IsMissing": False,
-        "Fields": get_default_filters(),
-        "ImageTypeLimit": 1,
-        "IncludeItemTypes": "",
-        "IsFolder": True
-    }
-    
-    path = get_jellyfin_url("/Users/{userid}/Items", all_folders_params)
-    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
-    add_menu_directory_item(translate_string(30685), url)
-
     # Add each view as a folder entry
     for view in views:
         name = view.get("Name")
@@ -1575,6 +1566,30 @@ def display_folder_view(params):
         url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
         
         add_menu_directory_item(name, url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_genres_view(params):
+    """Display genre browsing options"""
+    handle = int(sys.argv[1])
+    xbmcplugin.setContent(handle, 'files')
+
+    # Movie genres
+    add_menu_directory_item(translate_string(30688),
+                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=movie")
+
+    # TV Show genres
+    add_menu_directory_item(translate_string(30689),
+                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=tvshow")
+
+    # Music genres
+    add_menu_directory_item(translate_string(30690),
+                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=MusicAlbum")
+
+    # Mixed genres (Movies & TV Shows)
+    add_menu_directory_item(translate_string(30691),
+                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=mixed")
 
     xbmcplugin.endOfDirectory(handle)
 

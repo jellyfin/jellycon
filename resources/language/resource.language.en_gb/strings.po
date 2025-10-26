@@ -1240,3 +1240,23 @@ msgstr "Folder View"
 msgctxt "#30686"
 msgid "File System"
 msgstr "File System"
+
+msgctxt "#30687"
+msgid "Browse Genres"
+msgstr "Browse Genres"
+
+msgctxt "#30688"
+msgid "Movie Genres"
+msgstr "Movie Genres"
+
+msgctxt "#30689"
+msgid "TV Show Genres"
+msgstr "TV Show Genres"
+
+msgctxt "#30690"
+msgid "Music Genres"
+msgstr "Music Genres"
+
+msgctxt "#30691"
+msgid "Mixed Genres"
+msgstr "Mixed Genres"
