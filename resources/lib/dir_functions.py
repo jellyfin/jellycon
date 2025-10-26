@@ -18,6 +18,7 @@ from .utils import (
     send_event_notification, translate_string,
     load_user_details, get_default_filters
 )
+from .menu_functions import add_parent_folder_navigation
 
 log = LazyLogger(__name__)
 
@@ -77,6 +78,9 @@ def get_content(url, params):
         content_type = 'musicvideos'
     elif media_type == "mixed":
         content_type = 'videos'
+    elif media_type == "files":
+        content_type = 'files'
+        view_type = "Files"
 
     log.debug("media_type:{0} content_type:{1} view_type:{2} ".format(media_type, content_type, view_type))
 
@@ -261,6 +265,19 @@ def process_directory(url, progress, params, use_cache_data=False):
     url = url.replace('{userid}', user_id)
 
     cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
+
+    # Add parent folder navigation for folder browsing
+    media_type = params.get("media_type", "")
+    if media_type == "files":
+        # Extract ParentId from URL for folder navigation
+        import re
+        parent_match = re.search(r'ParentId=([^&]+)', url)
+        if parent_match:
+            parent_id = parent_match.group(1)
+            add_parent_folder_navigation(parent_id)
+        else:
+            # No ParentId means we're at root
+            add_parent_folder_navigation()
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten single season turned on then

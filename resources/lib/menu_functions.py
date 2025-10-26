@@ -11,7 +11,7 @@ import xbmcaddon
 from six import ensure_binary, ensure_text
 from six.moves.urllib.parse import quote
 
-from .dir_functions import get_content
+# from .dir_functions import get_content  # Removed to avoid circular import
 from .jellyfin import api
 from .kodi_utils import add_menu_directory_item, HomeWindow
 from .lazylogger import LazyLogger
@@ -586,6 +586,14 @@ def display_main_menu():
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_custom_widgets")
     add_menu_directory_item(translate_string(30409),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=addon_items")
+    
+    # Favorites view
+    add_menu_directory_item(translate_string(30678),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_favorites")
+    
+    # Folder navigation
+    add_menu_directory_item(translate_string(30684),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders")
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -610,6 +618,12 @@ def display_menu(params):
         show_movie_years(params)
     elif menu_type == "show_movie_tags":
         show_movie_tags(params)
+    elif menu_type == "show_favorites":
+        display_favorites_view(params)
+    elif menu_type == "favorites_by_type":
+        display_favorites_by_type(params)
+    elif menu_type == "show_folders":
+        display_folder_view(params)
 
 
 def show_global_types(params):
@@ -716,6 +730,7 @@ def display_tvshow_type(menu_params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
 
     if settings.getSetting("interface_mode") == "1":
+        from .dir_functions import get_content
         get_content(path, { "media_type": "tvshows" })
         return
 
@@ -828,6 +843,7 @@ def display_music_type(menu_params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", params)
 
     if settings.getSetting("interface_mode") == "1":
+        from .dir_functions import get_content
         get_content(path, { "media_type": "MusicAlbums" })
         return
 
@@ -1001,6 +1017,7 @@ def display_movies_type(menu_params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
 
     if settings.getSetting("interface_mode") == "1":
+        from .dir_functions import get_content
         get_content(path, { "media_type": "movies" })
         return
 
@@ -1143,6 +1160,7 @@ def display_mixed_type(params, view):
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
 
     if settings.getSetting("interface_mode") == "1":
+        from .dir_functions import get_content
         get_content(path, { "media_type": "mixed" })
         return
 
@@ -1428,3 +1446,168 @@ def set_library_window_values(force=False):
             log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, thumb))
 
             index += 1
+
+
+def display_favorites_view(params):
+    """Display a comprehensive favorites view with folder organization"""
+    handle = int(sys.argv[1])
+    user_id = get_current_user_id()
+
+    # All Favorites - Unified view
+    base_params = {
+        "UserId": user_id,
+        "Filters": "IsFavorite",
+        "Recursive": True,
+        "IsMissing": False,
+        "Fields": get_default_filters(),
+        "ImageTypeLimit": 1,
+        "SortBy": "SortName",
+        "SortOrder": "Ascending"
+    }
+
+    # Unified favorites view
+    path = get_jellyfin_url("/Users/{userid}/Items", base_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed"
+    add_menu_directory_item(translate_string(30678), url)
+
+    # Favorites by type (folder view)
+    add_menu_directory_item(translate_string(30679),
+                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=favorites_by_type")
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_favorites_by_type(params):
+    """Display favorites organized by media type"""
+    handle = int(sys.argv[1])
+    user_id = get_current_user_id()
+
+    base_params = {
+        "UserId": user_id,
+        "Filters": "IsFavorite",
+        "Recursive": True,
+        "IsMissing": False,
+        "Fields": get_default_filters(),
+        "ImageTypeLimit": 1,
+        "SortBy": "SortName",
+        "SortOrder": "Ascending"
+    }
+
+    # Movies
+    movie_params = base_params.copy()
+    movie_params["IncludeItemTypes"] = "Movie"
+    path = get_jellyfin_url("/Users/{userid}/Items", movie_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=movies"
+    add_menu_directory_item(translate_string(30680), url)
+
+    # TV Shows
+    tv_params = base_params.copy()
+    tv_params["IncludeItemTypes"] = "Series"
+    path = get_jellyfin_url("/Users/{userid}/Items", tv_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=tvshows"
+    add_menu_directory_item(translate_string(30681), url)
+
+    # Music
+    music_params = base_params.copy()
+    music_params["IncludeItemTypes"] = "MusicAlbum,Audio"
+    path = get_jellyfin_url("/Users/{userid}/Items", music_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=music"
+    add_menu_directory_item(translate_string(30682), url)
+
+    # Other media types
+    other_params = base_params.copy()
+    other_params["IncludeItemTypes"] = "BoxSet,MusicVideo,Photo,Book,Game"
+    path = get_jellyfin_url("/Users/{userid}/Items", other_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=mixed"
+    add_menu_directory_item(translate_string(30683), url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def display_folder_view(params):
+    """Display folder navigation options"""
+    handle = int(sys.argv[1])
+    user_id = get_current_user_id()
+
+    # Get root folders/views
+    url = "/Users/{}/Views".format(user_id)
+    result = api.get(url)
+
+    if result is None:
+        return
+
+    views = result.get("Items", [])
+
+    # Add "All Folders" option for comprehensive folder browsing
+    all_folders_params = {
+        "UserId": user_id,
+        "Recursive": True,
+        "IsMissing": False,
+        "Fields": get_default_filters(),
+        "ImageTypeLimit": 1,
+        "IncludeItemTypes": "",
+        "IsFolder": True
+    }
+    
+    path = get_jellyfin_url("/Users/{userid}/Items", all_folders_params)
+    url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
+    add_menu_directory_item(translate_string(30685), url)
+
+    # Add each view as a folder entry
+    for view in views:
+        name = view.get("Name")
+        view_id = view.get("Id")
+        collection_type = view.get("CollectionType", "mixed")
+
+        # Create folder navigation URL
+        folder_params = {
+            "UserId": user_id,
+            "ParentId": view_id,
+            "Recursive": False,
+            "IsMissing": False,
+            "Fields": get_default_filters(),
+            "ImageTypeLimit": 1,
+            "IncludeItemTypes": "",
+            "IsFolder": True
+        }
+
+        path = get_jellyfin_url("/Users/{userid}/Items", folder_params)
+        url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
+        
+        add_menu_directory_item(name, url)
+
+    xbmcplugin.endOfDirectory(handle)
+
+
+def add_parent_folder_navigation(parent_id=None):
+    """Add parent folder navigation item for folder browsing"""
+    if parent_id:
+        user_id = get_current_user_id()
+        
+        # Get parent folder info
+        parent_url = "/Users/{}/Items/{}".format(user_id, parent_id)
+        parent_info = api.get(parent_url)
+        
+        if parent_info:
+            parent_name = parent_info.get("Name", "..")
+            
+            # Create parent navigation URL
+            parent_params = {
+                "UserId": user_id,
+                "ParentId": parent_id,
+                "Recursive": False,
+                "IsMissing": False,
+                "Fields": get_default_filters(),
+                "ImageTypeLimit": 1,
+                "IncludeItemTypes": "",
+                "IsFolder": True
+            }
+            
+            path = get_jellyfin_url("/Users/{userid}/Items", parent_params)
+            url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
+            
+            add_menu_directory_item(".. (Parent)", url)
+    else:
+        # Add root folder navigation
+        add_menu_directory_item(".. (Root)", 
+                               "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders")

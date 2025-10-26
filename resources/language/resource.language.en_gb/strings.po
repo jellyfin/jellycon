@@ -1204,3 +1204,39 @@ msgstr "Preview Skipper"
 msgctxt "#30677"
 msgid "Recap Skipper"
 msgstr "Recap Skipper"
+
+msgctxt "#30678"
+msgid "All Favorites"
+msgstr "All Favorites"
+
+msgctxt "#30679"
+msgid "Favorites by Type"
+msgstr "Favorites by Type"
+
+msgctxt "#30680"
+msgid "Movies"
+msgstr "Movies"
+
+msgctxt "#30681"
+msgid "TV Shows"
+msgstr "TV Shows"
+
+msgctxt "#30682"
+msgid "Music"
+msgstr "Music"
+
+msgctxt "#30683"
+msgid "Other Media"
+msgstr "Other Media"
+
+msgctxt "#30684"
+msgid "Browse Folders"
+msgstr "Browse Folders"
+
+msgctxt "#30685"
+msgid "Folder View"
+msgstr "Folder View"
+
+msgctxt "#30686"
+msgid "File System"
+msgstr "File System"
