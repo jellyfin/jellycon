@@ -42,7 +42,15 @@ jobs:
           plugin.video.jellycon+py2.zip
         retention-days: 90
 
-    - name: Publish to GitHub Packages via Release
+    - name: Install GitHub CLI
+      if: github.event_name == 'push' && github.ref == 'refs/heads/enhancements2'
+      run: |
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+        sudo apt update
+        sudo apt install gh -y
+
+    - name: Create Release with Build Artifacts
       if: github.event_name == 'push' && github.ref == 'refs/heads/enhancements2'
       run: |
         # Create a draft release with the build artifacts
