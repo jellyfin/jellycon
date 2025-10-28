@@ -43,6 +43,77 @@ Another common use case of widgets would be to display the next available episod
     Add-On -> Video Add-On -> JellyCon -> Global Lists -> TV Shows -> TV Shows - Next Up (20) -> Use as widget
 
 
+## Enhanced Navigation Features
+
+This fork includes significant navigation enhancements that provide multiple intuitive ways to browse your Jellyfin media libraries:
+
+### 🗂️ Folder Navigation System
+- **File-System Style Browsing**: Navigate your media libraries like desktop file explorers with intuitive folder-based navigation
+- **Parent Navigation**: Automatic ".. (Parent)" or ".. (Root)" navigation for easy backtracking through folder structures
+- **Complete Library Exploration**: "All Folders" option for comprehensive library browsing
+- **Performance Optimized**: Efficient API usage with proper caching for smooth navigation
+
+### ⭐ Enhanced Favorites Organization
+- **Unified Favorites View**: Single comprehensive view of all your favorited content
+- **Categorized Favorites**: Organized folder view with media type categories:
+  - Movies
+  - TV Shows
+  - Music
+  - Other Media (BoxSets, MusicVideos, Photos, Books, Games)
+- **Improved Discovery**: Better navigation and content discovery for your favorite items
+
+### 🎭 Genre Browsing Integration
+- **Four Genre Categories**:
+  - Movie Genres
+  - TV Show Genres
+  - Music Genres
+  - Mixed Genres (Movies & TV Shows combined)
+- **Enhanced Content Discovery**: New way to explore content through genre preferences
+
+### 🧭 Navigation Consolidation
+- **Organized Library Access**: All browsing methods consolidated under "Jellyfin Libraries"
+- **Cleaner Main Menu**: Reduced clutter with only essential high-level options
+- **Multiple Navigation Methods**: Choose from folder browsing, favorites, or genre-based exploration
+
+### Using Enhanced Navigation
+
+**Folder Navigation**:
+- Navigate to "Jellyfin Libraries" → "Browse Folders"
+- Browse your libraries using intuitive file-system style navigation
+- Use ".. (Parent)" to move up folder levels
+
+**Organized Favorites**:
+- Navigate to "Jellyfin Libraries" → "All Favorites" for a comprehensive view
+- Or use "Favorites by Type" for categorized browsing
+
+**Genre Browsing**:
+- Navigate to "Jellyfin Libraries" → "Browse Genres"
+- Choose from Movie, TV Show, Music, or Mixed genre categories
+
+## Building from Source
+
+To build a distributable ZIP file from this repository:
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/jellycon.git
+cd jellycon
+
+# Build the addon ZIP file
+python build.py
+
+# This creates plugin.video.jellycon+py3.zip (for Python 3)
+# The resulting ZIP file can be installed in Kodi via:
+# Add-ons → Install from zip file
+```
+
+**Build Options**:
+- `--version py3` (default): Build for Python 3/Kodi 19+
+- `--version py2`: Build for Python 2/Kodi 18 and earlier
+- `--dev`: Include development files in the build
+
+**Note**: The build script automatically generates the addon.xml file and packages all necessary files into the ZIP archive.
+
 ## License
 
 JellyCon is licensed under the terms of the [GPLv2](LICENSE.txt).
