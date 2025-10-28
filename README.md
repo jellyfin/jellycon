@@ -4,6 +4,25 @@ JellyCon is a lightweight Kodi add-on that lets you browse and play media files 
 
 JellyCon can be used with Movie, TV Show, Music Video, and Music libraries, in addition to viewing LiveTV from the server.  It can easily switch between multiple user accounts at will.  It's easy to integrate with any customizable Kodi skin with a large collection of custom menus.  Media items are populated from the server dynamically, and menu speed will vary based on local device speed.
 
+---
+
+## 🚀 Enhanced Fork Features
+
+This fork includes significant navigation enhancements and automated build capabilities:
+
+### 🛠️ Automated Build System
+- **GitHub Actions Integration**: Every push to the `enhancements2` branch automatically builds both Python 2 and Python 3 versions
+- **Pre-built Packages**: Download ready-to-install ZIP files from the [Releases](../../releases) page
+- **Long-term Storage**: Build artifacts are retained for 90 days, releases for 365 days
+
+### 🧭 Enhanced Navigation Features
+- **Folder Navigation**: File-system style browsing with parent navigation
+- **Organized Favorites**: Categorized favorites by media type
+- **Genre Browsing**: Four genre categories for enhanced content discovery
+- **Navigation Consolidation**: All browsing methods under "Jellyfin Libraries"
+
+---
+
 
 ## Installation
 
