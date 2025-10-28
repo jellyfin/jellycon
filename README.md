@@ -92,18 +92,36 @@ This fork includes significant navigation enhancements that provide multiple int
 
 ## Building from Source
 
-To build a distributable ZIP file from this repository:
+### Automated Builds via GitHub Actions
+
+This repository includes automated builds via GitHub Actions. Every push to the `enhancements2` branch automatically builds both Python 2 and Python 3 versions and creates draft releases with the built packages.
+
+**Download Pre-built Packages**:
+- Check the [Releases](../../releases) page for the latest build artifacts
+- Look for draft releases with names like "build-YYYYMMDD-HHMMSS"
+- Download `plugin.video.jellycon+py3.zip` (Kodi 19+) or `plugin.video.jellycon+py2.zip` (Kodi 18 and earlier)
+
+### Manual Building from Source
+
+To build from source, clone this repository and switch to the `enhancements2` branch:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/jellycon.git
+git clone https://github.com/bpawnzZ/jellycon.git
 cd jellycon
 
-# Build the addon ZIP file
-python build.py
+# Switch to the enhancements2 branch (contains latest features)
+git checkout enhancements2
 
-# This creates plugin.video.jellycon+py3.zip (for Python 3)
-# The resulting ZIP file can be installed in Kodi via:
+# Build the addon ZIP files
+python build.py --version py3  # For Python 3/Kodi 19+
+python build.py --version py2  # For Python 2/Kodi 18 and earlier
+
+# This creates:
+# - plugin.video.jellycon+py3.zip (Python 3/Kodi 19+)
+# - plugin.video.jellycon+py2.zip (Python 2/Kodi 18 and earlier)
+
+# Install in Kodi via:
 # Add-ons → Install from zip file
 ```
 
