@@ -42,12 +42,15 @@ jobs:
           plugin.video.jellycon+py2.zip
         retention-days: 90
 
-    - name: Publish to GitHub Packages
+    - name: Publish to GitHub Packages via Release
       if: github.event_name == 'push' && github.ref == 'refs/heads/enhancements2'
-      uses: actions/upload-package-artifact@v1
-      with:
-        name: jellycon-addon
-        path: |
-          plugin.video.jellycon+py3.zip
-          plugin.video.jellycon+py2.zip
-        retention-days: 365
+      run: |
+        # Create a draft release with the build artifacts
+        gh release create "build-$(date +%Y%m%d-%H%M%S)" \
+          plugin.video.jellycon+py3.zip \
+          plugin.video.jellycon+py2.zip \
+          --title "JellyCon Build $(date +%Y-%m-%d)" \
+          --notes "Automated build from GitHub Actions" \
+          --draft
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
