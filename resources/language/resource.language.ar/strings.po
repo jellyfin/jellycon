@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-13 02:01+0000\n"
-"Last-Translator: alyaari <alyaari@gmail.com>\n"
+"PO-Revision-Date: 2025-11-03 16:51+0000\n"
+"Last-Translator: Translation expert <eleceng4ever@hotmail.com>\n"
 "Language-Team: Arabic <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ar/>\n"
 "Language: ar\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.14\n"
 
 msgctxt "#30361"
 msgid " - Programs"
@@ -581,7 +581,7 @@ msgstr "معالجة العنصر:"
 
 msgctxt "#30125"
 msgid "Done"
-msgstr "انتهئ"
+msgstr "تمت"
 
 msgctxt "#30121"
 msgid "On resume"
@@ -597,7 +597,7 @@ msgstr "إضافة نسبة الإستئناف إلى الأسماء"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "الرجوع الى الوراء بثواني"
+msgstr "الرجوع ثواني للخلف"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
@@ -613,7 +613,7 @@ msgstr "خدمات"
 
 msgctxt "#30110"
 msgid "Interface"
-msgstr "واجهة المستخدم"
+msgstr "واجهة"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
@@ -837,7 +837,7 @@ msgstr "معدل نقل البت للصوت (Kbps)"
 
 msgctxt "#30445"
 msgid "Continue Watching"
-msgstr "إستئناف المشاهدة"
+msgstr "متابعةالمشاهدة"
 
 msgctxt "#30402"
 msgid "Add to Kodi Playlist"
@@ -945,7 +945,7 @@ msgstr "إعدادات التشغيل"
 
 msgctxt "#30440"
 msgid "Play next"
-msgstr "شَغِّل التالي"
+msgstr "تشغيل التالي"
 
 msgctxt "#30448"
 msgid "Shuffle"
@@ -1081,7 +1081,7 @@ msgstr "أقصى حجم لقائمة التشغيل"
 
 msgctxt "#30438"
 msgid "Play cinema intros"
-msgstr "تشغيل المقدمات السينيمائية"
+msgstr "تشغيل المقدمات السينمائية"
 
 msgctxt "#30444"
 msgid "Login using Quick Connect"
@@ -1129,7 +1129,7 @@ msgstr "الدمج بدلاً من الإستبدال (قد يتسبب بالت�
 
 msgctxt "#30436"
 msgid "Speed test data size (MB)"
-msgstr "حجم البيانات في إختبار سرعة الإتصال (ميجابايت)"
+msgstr "حجم بيانات إختبار السرعة (م.ب)"
 
 msgctxt "#30430"
 msgid "Label"
@@ -1141,7 +1141,7 @@ msgstr "استخدم المعلومات المخزنة مؤقتاً للوِدج
 
 msgctxt "#30449"
 msgid "Instant Mix"
-msgstr "خلطة سريعة"
+msgstr "خلط سريع"
 
 msgctxt "#30451"
 msgid "Rewatch Days (0 = Disabled)"
@@ -1155,15 +1155,13 @@ msgctxt "#30454"
 msgid " - Totally Unwatched"
 msgstr " اجمالي الغير مشاهد"
 
-#, fuzzy
 msgctxt "#30666"
 msgid "Segment Skipper"
 msgstr "تخطي القطاع"
 
-#, fuzzy
 msgctxt "#30671"
 msgid "Credit Skipper"
-msgstr "تخطي الثقة"
+msgstr "متخطي الثقة"
 
 msgctxt "#30667"
 msgid "Action to take"
