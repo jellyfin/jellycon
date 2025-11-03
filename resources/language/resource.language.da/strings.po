@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-10-09 08:41+0000\n"
-"Last-Translator: Anders <oebro@duck.com>\n"
+"PO-Revision-Date: 2025-11-03 16:51+0000\n"
+"Last-Translator: Bastinator-school <bast0854@edu.sde.dk>\n"
 "Language-Team: Danish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/da/>\n"
 "Language: da\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.14\n"
 
 msgctxt "#30001"
 msgid "Port"
@@ -1151,3 +1151,55 @@ msgstr "Tving transkodning av1"
 msgctxt "#30452"
 msgid "Combine instead of replace (might cause slow-down)"
 msgstr "Kombiner i stedet for at erstatte (kan forårsage forsinkelse)"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " Fuldstændig uset"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment overspringer"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Handling at tage"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start forskudning (sekunder)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Slut forskudning (sekunder)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intro overspringer"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Rulletækst overspringer"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Spring over"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Spørg"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Gør ingenting"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklame overspringer"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Forfilm overspringer"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Opsummerings overspringer"
