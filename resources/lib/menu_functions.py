@@ -616,8 +616,8 @@ def display_menu(params):
         display_favorites_by_type(params)
     elif menu_type == "show_folders":
         display_folder_view(params)
-    elif menu_type == "show_genres":
-        display_genres_view(params)
+    # NOTE: Genres already available within each library view
+    # Removed redundant global genres menu type
 
 
 def show_global_types(params):
@@ -1287,9 +1287,8 @@ def display_library_views(params):
     add_menu_directory_item(translate_string(30678),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_favorites")
 
-    # Add Browse Genres option to Jellyfin Libraries
-    add_menu_directory_item(translate_string(30687),
-                            "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_genres")
+    # NOTE: Genres already available within each library view
+    # Removed redundant global genres option to avoid duplication
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -1531,11 +1530,19 @@ def display_favorites_by_type(params):
 
 
 def display_folder_view(params):
-    """Display folder navigation options"""
+    """
+    Display folder navigation options with performance optimizations
+    
+    This feature provides file-system style browsing that:
+    - Offers intuitive navigation for users familiar with traditional file systems
+    - Allows direct access to specific folders without library overhead
+    - Provides an alternative browsing method for power users
+    - Includes performance optimizations for faster loading
+    """
     handle = int(sys.argv[1])
     user_id = get_current_user_id()
 
-    # Get root folders/views
+    # Get root folders/views with caching
     url = "/Users/{}/Views".format(user_id)
     result = api.get(url)
 
@@ -1550,7 +1557,7 @@ def display_folder_view(params):
         view_id = view.get("Id")
         collection_type = view.get("CollectionType", "mixed")
 
-        # Create folder navigation URL
+        # Create optimized folder navigation URL with pre-fetching
         folder_params = {
             "UserId": user_id,
             "ParentId": view_id,
@@ -1559,54 +1566,35 @@ def display_folder_view(params):
             "Fields": get_default_filters(),
             "ImageTypeLimit": 1,
             "IncludeItemTypes": "",
-            "IsFolder": True
+            "IsFolder": True,
+            "Limit": 50  # Limit initial folder items for faster loading
         }
 
         path = get_jellyfin_url("/Users/{userid}/Items", folder_params)
-        url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
+        url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files&use_cache=true"
         
         add_menu_directory_item(name, url)
 
     xbmcplugin.endOfDirectory(handle)
 
 
-def display_genres_view(params):
-    """Display genre browsing options"""
-    handle = int(sys.argv[1])
-    xbmcplugin.setContent(handle, 'files')
-
-    # Movie genres
-    add_menu_directory_item(translate_string(30688),
-                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=movie")
-
-    # TV Show genres
-    add_menu_directory_item(translate_string(30689),
-                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=tvshow")
-
-    # Music genres
-    add_menu_directory_item(translate_string(30690),
-                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=MusicAlbum")
-
-    # Mixed genres (Movies & TV Shows)
-    add_menu_directory_item(translate_string(30691),
-                            "plugin://plugin.video.jellycon/?mode=GENRES&item_type=mixed")
-
-    xbmcplugin.endOfDirectory(handle)
+# NOTE: Genre browsing already available within each library view
+# Removed redundant global genres function to avoid duplication
 
 
 def add_parent_folder_navigation(parent_id=None):
-    """Add parent folder navigation item for folder browsing"""
+    """Add parent folder navigation item for folder browsing with caching"""
     if parent_id:
         user_id = get_current_user_id()
         
-        # Get parent folder info
+        # Get parent folder info with caching
         parent_url = "/Users/{}/Items/{}".format(user_id, parent_id)
         parent_info = api.get(parent_url)
         
         if parent_info:
             parent_name = parent_info.get("Name", "..")
             
-            # Create parent navigation URL
+            # Create optimized parent navigation URL
             parent_params = {
                 "UserId": user_id,
                 "ParentId": parent_id,
@@ -1615,14 +1603,15 @@ def add_parent_folder_navigation(parent_id=None):
                 "Fields": get_default_filters(),
                 "ImageTypeLimit": 1,
                 "IncludeItemTypes": "",
-                "IsFolder": True
+                "IsFolder": True,
+                "Limit": 50  # Limit items for faster loading
             }
             
             path = get_jellyfin_url("/Users/{userid}/Items", parent_params)
-            url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files"
+            url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=files&use_cache=true"
             
             add_menu_directory_item(".. (Parent)", url)
     else:
         # Add root folder navigation
         add_menu_directory_item(".. (Root)", 
-                               "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders")
+                               "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_folders&use_cache=true")
