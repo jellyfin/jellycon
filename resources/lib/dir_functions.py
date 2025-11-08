@@ -269,15 +269,12 @@ def process_directory(url, progress, params, use_cache_data=False):
     # Add parent folder navigation for folder browsing
     media_type = params.get("media_type", "")
     if media_type == "files":
-        # Extract ParentId from URL for folder navigation
-        import re
-        parent_match = re.search(r'ParentId=([^&]+)', url)
-        if parent_match:
-            parent_id = parent_match.group(1)
-            add_parent_folder_navigation(parent_id)
-        else:
-            # No ParentId means we're at root
-            add_parent_folder_navigation()
+        # Extract ParentId from URL for folder navigation using parse_qs
+        from six.moves.urllib.parse import parse_qs, urlparse
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        parent_id = query_params.get('ParentId', [None])[0]
+        add_parent_folder_navigation(parent_id)
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten single season turned on then

@@ -1213,17 +1213,9 @@ msgctxt "#30679"
 msgid "Favorites by Type"
 msgstr "Favorites by Type"
 
-msgctxt "#30680"
-msgid "Movies"
-msgstr "Movies"
-
-msgctxt "#30681"
-msgid "TV Shows"
-msgstr "TV Shows"
 
 msgctxt "#30682"
 msgid "Music"
-msgstr "Music"
 
 msgctxt "#30683"
 msgid "Other Media"

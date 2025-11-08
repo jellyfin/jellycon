@@ -616,8 +616,7 @@ def display_menu(params):
         display_favorites_by_type(params)
     elif menu_type == "show_folders":
         display_folder_view(params)
-    # NOTE: Genres already available within each library view
-    # Removed redundant global genres menu type
+
 
 
 def show_global_types(params):
@@ -1287,8 +1286,7 @@ def display_library_views(params):
     add_menu_directory_item(translate_string(30678),
                             "plugin://plugin.video.jellycon/?mode=SHOW_ADDON_MENU&type=show_favorites")
 
-    # NOTE: Genres already available within each library view
-    # Removed redundant global genres option to avoid duplication
+
 
     xbmcplugin.endOfDirectory(handle)
 
@@ -1578,8 +1576,7 @@ def display_folder_view(params):
     xbmcplugin.endOfDirectory(handle)
 
 
-# NOTE: Genre browsing already available within each library view
-# Removed redundant global genres function to avoid duplication
+
 
 
 def add_parent_folder_navigation(parent_id=None):
