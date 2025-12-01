@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-07 12:38+0000\n"
-"Last-Translator: stanol <stanol777@gmail.com>\n"
+"PO-Revision-Date: 2025-12-01 22:27+0000\n"
+"Last-Translator: kscop-n1 <karpenko.serhii@outlook.com>\n"
 "Language-Team: Ukrainian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/uk/>\n"
 "Language: uk\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.14\n"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
@@ -46,7 +46,7 @@ msgstr "Увійти використовуючи Quick Connect"
 
 msgctxt "#30443"
 msgid "Quick Connect"
-msgstr "Quick Connect"
+msgstr "Швидке підключення"
 
 msgctxt "#30442"
 msgid "Simple new content check"
@@ -600,7 +600,7 @@ msgstr "Кешувати всі зображення Jellyfin як локаль�
 
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Кешувати зображення"
+msgstr "Кешувати Зображення"
 
 msgctxt "#30298"
 msgid "Deleting Kodi Images"
@@ -1156,3 +1156,55 @@ msgstr "Повторний перегляд днів (0 = вимкнено)"
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
 msgstr "Приховати кількість елементів для показу в заголовку запису"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - Цілком Непереглянуто"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Пропуск Сегмента"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Дії які потрібно зробити"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Початковий зсув (секунди)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Кінцевий зсув (секунди)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Пропуск Вступу"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Пропуск титрів"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Пропустити"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Запитати"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Нічого не робити"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Пропуск реклами"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Пропуск превʼю"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Пропустити нагадування"
