@@ -105,6 +105,7 @@
 		<setting label="30223" type="lsep"/>
 		<setting type="sep" />
 		<setting id="moviePageSize" type="slider" label="30331" default="0" range="0,1,100" option="int" visible="true"/>
+		<setting id="showPageSize" type="slider" label="30678" default="0" range="0,1,100" option="int" visible="true"/>
 		<setting id="show_x_filtered_items" type="slider" label="30018" default="20" range="5,1,100" option="int" visible="true"/>
 
 		<setting label="30224" type="lsep"/>
