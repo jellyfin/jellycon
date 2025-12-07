@@ -3,7 +3,6 @@ from __future__ import (
 )
 
 import sys
-import re
 
 import xbmcaddon
 import xbmcplugin
@@ -18,6 +17,7 @@ from .utils import (
     send_event_notification, translate_string,
     load_user_details, get_default_filters
 )
+from .menu_functions import add_parent_folder_navigation
 
 log = LazyLogger(__name__)
 
@@ -77,6 +77,9 @@ def get_content(url, params):
         content_type = 'musicvideos'
     elif media_type == "mixed":
         content_type = 'videos'
+    elif media_type == "files":
+        content_type = 'files'
+        view_type = "Files"
 
     log.debug("media_type:{0} content_type:{1} view_type:{2} ".format(media_type, content_type, view_type))
 
@@ -93,18 +96,26 @@ def get_content(url, params):
     url_prev = None
     url_next = None
     if page_limit > 0 and media_type.startswith("movie"):
-        m = re.search('StartIndex=([0-9]{1,4})', url)
-        if m and m.group(1):
-            log.debug("UPDATING NEXT URL: {0}".format(url))
-            start_index = int(m.group(1))
-            log.debug("current_start : {0}".format(start_index))
-            if start_index > 0:
-                prev_index = start_index - page_limit
-                if prev_index < 0:
-                    prev_index = 0
-                url_prev = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(prev_index), url)
-            url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + page_limit), url)
-            log.debug("UPDATING NEXT URL: {0}".format(url_next))
+        # Use string methods instead of regex for URL parsing
+        start_index_match = 'StartIndex='
+        start_pos = url.find(start_index_match)
+        if start_pos != -1:
+            # Extract StartIndex value
+            start_end = url.find('&', start_pos)
+            if start_end == -1:
+                start_end = len(url)
+            start_value = url[start_pos + len(start_index_match):start_end]
+            if start_value.isdigit():
+                start_index = int(start_value)
+                log.debug("UPDATING NEXT URL: {0}".format(url))
+                log.debug("current_start : {0}".format(start_index))
+                if start_index > 0:
+                    prev_index = start_index - page_limit
+                    if prev_index < 0:
+                        prev_index = 0
+                    url_prev = url.replace(f'StartIndex={start_index}', f'StartIndex={prev_index}')
+                url_next = url.replace(f'StartIndex={start_index}', f'StartIndex={start_index + page_limit}')
+                log.debug("UPDATING NEXT URL: {0}".format(url_next))
 
         else:
             log.debug("ADDING NEXT URL: {0}".format(url))
@@ -261,6 +272,20 @@ def process_directory(url, progress, params, use_cache_data=False):
     url = url.replace('{userid}', user_id)
 
     cache_file, item_list, total_records, cache_thread = data_manager.get_items(url, gui_options, use_cache)
+
+    # Add parent folder navigation for folder browsing
+    media_type = params.get("media_type", "")
+    if media_type == "files":
+        # Extract ParentId from URL for folder navigation using urllib.parse
+        from six.moves.urllib.parse import parse_qs, urlparse
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        parent_id = query_params.get("ParentId", [None])[0]
+        if parent_id:
+            add_parent_folder_navigation(parent_id)
+        else:
+            # No ParentId means we're at root
+            add_parent_folder_navigation()
 
     # flatten single season
     # if there is only one result and it is a season and you have flatten single season turned on then

@@ -504,6 +504,8 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         mediatype = 'song'
     elif item_type == 'musicvideo':
         mediatype = 'musicvideo'
+    elif item_details.is_folder:
+        mediatype = 'folder'
 
     info_labels["mediatype"] = mediatype
 
