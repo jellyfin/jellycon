@@ -1220,3 +1220,7 @@ msgstr "Preview Skipper"
 msgctxt "#30677"
 msgid "Recap Skipper"
 msgstr "Recap Skipper"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "TV Shows per page"

@@ -89,27 +89,48 @@ def get_content(url, params):
 
     # update url for paging
     start_index = 0
-    page_limit = int(settings.getSetting('moviePageSize'))
+    movie_page_limit = int(settings.getSetting('moviePageSize'))
+    show_page_limit = int(settings.getSetting('showPageSize'))
     url_prev = None
     url_next = None
-    if page_limit > 0 and media_type.startswith("movie"):
+    if movie_page_limit > 0 and media_type.startswith("movie"):
         m = re.search('StartIndex=([0-9]{1,4})', url)
         if m and m.group(1):
             log.debug("UPDATING NEXT URL: {0}".format(url))
             start_index = int(m.group(1))
             log.debug("current_start : {0}".format(start_index))
             if start_index > 0:
-                prev_index = start_index - page_limit
+                prev_index = start_index - movie_page_limit
                 if prev_index < 0:
                     prev_index = 0
                 url_prev = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(prev_index), url)
-            url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + page_limit), url)
+            url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + movie_page_limit), url)
             log.debug("UPDATING NEXT URL: {0}".format(url_next))
 
         else:
             log.debug("ADDING NEXT URL: {0}".format(url))
-            url_next = url + "&StartIndex=" + str(start_index + page_limit) + "&Limit=" + str(page_limit)
-            url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(page_limit)
+            url_next = url + "&StartIndex=" + str(start_index + movie_page_limit) + "&Limit=" + str(movie_page_limit)
+            url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(movie_page_limit)
+            log.debug("ADDING NEXT URL: {0}".format(url_next))
+
+    if show_page_limit > 0 and media_type.startswith("tvshow"):
+        m = re.search('StartIndex=([0-9]{1,4})', url)
+        if m and m.group(1):
+            log.debug("UPDATING NEXT URL: {0}".format(url))
+            start_index = int(m.group(1))
+            log.debug("current_start : {0}".format(start_index))
+            if start_index > 0:
+                prev_index = start_index - show_page_limit
+                if prev_index < 0:
+                    prev_index = 0
+                url_prev = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(prev_index), url)
+            url_next = re.sub('StartIndex=([0-9]{1,4})', 'StartIndex=' + str(start_index + show_page_limit), url)
+            log.debug("UPDATING NEXT URL: {0}".format(url_next))
+
+        else:
+            log.debug("ADDING NEXT URL: {0}".format(url))
+            url_next = url + "&StartIndex=" + str(start_index + show_page_limit) + "&Limit=" + str(show_page_limit)
+            url = url + "&StartIndex=" + str(start_index) + "&Limit=" + str(show_page_limit)
             log.debug("ADDING NEXT URL: {0}".format(url_next))
 
     use_cache = params.get("use_cache", "true") == "true"
@@ -121,21 +142,39 @@ def get_content(url, params):
     log.debug("total_records: {0}".format(total_records))
 
     # add paging items
-    if page_limit > 0 and media_type.startswith("movie"):
+    if movie_page_limit > 0 and media_type.startswith("movie"):
         if url_prev:
-            list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - page_limit + 1) + "-" + str(start_index) +
+            list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - movie_page_limit + 1) + "-" + str(start_index) +
                                          " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + quote(url_prev) + "&mode=GET_CONTENT&media_type=movies"
             log.debug("ADDING PREV ListItem: {0} - {1}".format(u, list_item))
             dir_items.insert(0, (u, list_item, True))
 
-        if start_index + page_limit < total_records:
-            upper_count = start_index + (page_limit * 2)
+        if start_index + movie_page_limit < total_records:
+            upper_count = start_index + (movie_page_limit * 2)
             if upper_count > total_records:
                 upper_count = total_records
-            list_item = xbmcgui.ListItem("Next Page (" + str(start_index + page_limit + 1) + "-" +
+            list_item = xbmcgui.ListItem("Next Page (" + str(start_index + movie_page_limit + 1) + "-" +
                                          str(upper_count) + " of " + str(total_records) + ")")
             u = sys.argv[0] + "?url=" + quote(url_next) + "&mode=GET_CONTENT&media_type=movies"
+            log.debug("ADDING NEXT ListItem: {0} - {1}".format(u, list_item))
+            dir_items.append((u, list_item, True))
+    # add paging items
+    if show_page_limit > 0 and media_type.startswith("tvshow"):
+        if url_prev:
+            list_item = xbmcgui.ListItem("Prev Page (" + str(start_index - show_page_limit + 1) + "-" + str(start_index) +
+                                         " of " + str(total_records) + ")")
+            u = sys.argv[0] + "?url=" + quote(url_prev) + "&mode=GET_CONTENT&media_type=tvshows"
+            log.debug("ADDING PREV ListItem: {0} - {1}".format(u, list_item))
+            dir_items.insert(0, (u, list_item, True))
+
+        if start_index + show_page_limit < total_records:
+            upper_count = start_index + (show_page_limit * 2)
+            if upper_count > total_records:
+                upper_count = total_records
+            list_item = xbmcgui.ListItem("Next Page (" + str(start_index + show_page_limit + 1) + "-" +
+                                         str(upper_count) + " of " + str(total_records) + ")")
+            u = sys.argv[0] + "?url=" + quote(url_next) + "&mode=GET_CONTENT&media_type=tvshows"
             log.debug("ADDING NEXT ListItem: {0} - {1}".format(u, list_item))
             dir_items.append((u, list_item, True))
 
@@ -154,7 +193,9 @@ def get_content(url, params):
         xbmcplugin.setContent(pluginhandle, content_type)
 
     # set the sort items
-    if page_limit > 0 and media_type.startswith("movie"):
+    if movie_page_limit > 0 and media_type.startswith("movie"):
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
+    elif show_page_limit > 0 and media_type.startswith("tvshow"):
         xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     else:
         set_sort(pluginhandle, view_type, default_sort)
@@ -302,7 +343,7 @@ def process_directory(url, progress, params, use_cache_data=False):
 
     detected_type = None
     dir_items = []
-    OnlyTotallyUnwatchedTvShow = params.get("OnlyTotallyUnwatchedTvShow", None)    
+    OnlyTotallyUnwatchedTvShow = params.get("OnlyTotallyUnwatchedTvShow", None)
     for item_details in item_list:
         if OnlyTotallyUnwatchedTvShow == "1" and item_details.watched_episodes > 0:
             continue
