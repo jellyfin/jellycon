@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-01 22:27+0000\n"
+"PO-Revision-Date: 2025-12-15 22:55+0000\n"
 "Last-Translator: kscop-n1 <karpenko.serhii@outlook.com>\n"
 "Language-Team: Ukrainian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/uk/>\n"
@@ -1208,3 +1208,23 @@ msgstr "Пропуск превʼю"
 msgctxt "#30677"
 msgid "Recap Skipper"
 msgstr "Пропустити нагадування"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "TV шоу на сторінці"
+
+msgctxt "#30455"
+msgid "TV Shows - Random"
+msgstr "ТV шоу - Випадкове"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "Все - Випадково"
+
+msgctxt "#30457"
+msgid "All - Recently Added"
+msgstr "Все - Нещодавно додані"
+
+msgctxt "#30458"
+msgid "All - Favorites"
+msgstr "Все - Улюблене"
