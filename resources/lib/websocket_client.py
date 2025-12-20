@@ -269,8 +269,7 @@ class WebSocketClient(threading.Thread):
 
         while not self.monitor.abortRequested():
 
-            time.sleep(self.retry_count * 5)
-            self._client.run_forever(ping_interval=10)
+            self._client.run_forever(ping_interval=5, reconnect=13, ping_timeout=2)
 
             if self._stop_websocket:
                 break
