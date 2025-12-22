@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-18 13:55+0000\n"
-"Last-Translator: pol busquets <canpinetell@gmail.com>\n"
+"PO-Revision-Date: 2025-12-23 08:05+0000\n"
+"Last-Translator: Gargotaire <gargots@gmail.com>\n"
 "Language-Team: Catalan <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ca/>\n"
 "Language: ca\n"
@@ -1217,7 +1217,7 @@ msgstr "Tot – Aleatori"
 
 msgctxt "#30457"
 msgid "All - Recently Added"
-msgstr "Tot – Afegits Recentment"
+msgstr "Tot – Afegits recentment"
 
 msgctxt "#30458"
 msgid "All - Favorites"
