@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-20 09:55+0000\n"
-"Last-Translator: Stefano Mazzoleni <stefano.mazzoleni0704@gmail.com>\n"
+"PO-Revision-Date: 2026-01-02 12:03+0000\n"
+"Last-Translator: ittelicra <alexarciletti10@gmail.com>\n"
 "Language-Team: Italian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/it/>\n"
 "Language: it\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -49,7 +49,7 @@ msgstr "Attenzione: questa operazione eliminerà i file multimediali dal server.
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "Confermi l'eliminazione?"
+msgstr "Confermare l'eliminazione?"
 
 msgctxt "#30063"
 msgid "N/A"
@@ -73,7 +73,7 @@ msgstr "Nome utente/Password errati"
 
 msgctxt "#30027"
 msgid "Enable debug logging"
-msgstr "Attiva log a debug"
+msgstr "Attiva log di debug"
 
 msgctxt "#30026"
 msgid "Widget item select action"
@@ -89,7 +89,7 @@ msgstr "Nome utente:"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "Nascondi dettagli episodi non guardati"
+msgstr "Nascondi i dettagli degli episodi non guardati"
 
 msgctxt "#30022"
 msgid "Advanced"
@@ -385,7 +385,7 @@ msgstr "Disposizione elemento"
 
 msgctxt "#30220"
 msgid "Prompt to delete movie after %"
-msgstr "Chiedi se eliminare il film dopo %"
+msgstr "Chiedi di eliminare il film dopo %"
 
 msgctxt "#30219"
 msgid " - Prompt before play"
@@ -397,7 +397,7 @@ msgstr "Riproduci il prossimo episodio dopo %"
 
 msgctxt "#30217"
 msgid "Prompt to delete episode after %"
-msgstr "Chiedi se eliminare l'episodio dopo %"
+msgstr "Chiedi di eliminare l'episodio dopo %"
 
 msgctxt "#30216"
 msgid "Item Details"
@@ -601,7 +601,7 @@ msgstr "Seleziona fonte sottotitoli"
 
 msgctxt "#30293"
 msgid "Cache images"
-msgstr "Memorizza immagini"
+msgstr "Memorizza in cache immagini"
 
 msgctxt "#30310"
 msgid "Enable Jellyfin remote control"
@@ -669,7 +669,7 @@ msgstr "Avviso"
 
 msgctxt "#30299"
 msgid "Cache Images"
-msgstr "Memorizza immagini"
+msgstr "Memorizza in cache le immagini"
 
 msgctxt "#30300"
 msgid "Cache all Jellyfin images as local Kodi images?"
@@ -1206,3 +1206,19 @@ msgstr "Salta Riassunto"
 msgctxt "#30455"
 msgid "TV Shows - Random"
 msgstr "#30455"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "Tutti - Casuale"
+
+msgctxt "#30457"
+msgid "All - Recently Added"
+msgstr "Tutti - Aggiunti di recente"
+
+msgctxt "#30458"
+msgid "All - Favorites"
+msgstr "Tutti - Preferiti"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "Serie TV per pagina"
