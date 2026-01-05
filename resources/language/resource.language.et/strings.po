@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-05 08:00+0000\n"
+"PO-Revision-Date: 2026-01-05 12:25+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -508,7 +508,7 @@ msgstr "Sarjad - A-Ü"
 
 msgctxt "#30254"
 msgid "Show add-on settings"
-msgstr "Kuva lisamooduli seaded"
+msgstr "Lisamooduli seaded"
 
 msgctxt "#30252"
 msgid "Movies - A-Z"
@@ -768,7 +768,7 @@ msgstr "Filtreeritud episoodi nime vorming"
 
 msgctxt "#30213"
 msgid "Video force 8 bit"
-msgstr "Sunni 8 bit video"
+msgstr "Sunni 8 bitine video"
 
 msgctxt "#30368"
 msgid "Clear Password?"
@@ -864,7 +864,7 @@ msgstr "Säilita kasutajaandmed"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
-msgstr "Väliste subtiitrite pakkumine"
+msgstr "Paku väliseid subtiitreid"
 
 msgctxt "#30439"
 msgid "Show play next episode at time left in seconds"
@@ -1152,7 +1152,7 @@ msgstr "Kordusvaatamise päevad (0 = keelatud)"
 
 msgctxt "#30453"
 msgid "Hide number of items to show on entry title"
-msgstr "Peida pealkirjas kuvatavate üksuste arv"
+msgstr "Peida kuvatavate üksuste arv avalehel"
 
 msgctxt "#30455"
 msgid "TV Shows - Random"
