@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-05 07:40+0000\n"
+"PO-Revision-Date: 2026-01-05 08:00+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -161,7 +161,7 @@ msgstr "Episoodid - Viimati lisatud"
 
 msgctxt "#30257"
 msgid "Movies - Recently Added"
-msgstr "Filmid – Viimati lisatud"
+msgstr "Filmid - Viimati lisatud"
 
 msgctxt "#30349"
 msgid " - Recently Played"
@@ -269,7 +269,7 @@ msgstr "- Albumid"
 
 msgctxt "#30318"
 msgid "Music - Albums"
-msgstr "Muusika – Albumid"
+msgstr "Muusika - Albumid"
 
 msgctxt "#30317"
 msgid "Play All"
@@ -460,7 +460,7 @@ msgstr "Märgi vaadatuks"
 
 msgctxt "#30269"
 msgid "Movies - Random"
-msgstr "Filmid – Juhuslikud"
+msgstr "Filmid - Juhuslikud"
 
 msgctxt "#30267"
 msgid " - In Progress"
@@ -468,7 +468,7 @@ msgstr "- Pooleli"
 
 msgctxt "#30266"
 msgid "Movies - Pages"
-msgstr "Filmid – Lehed"
+msgstr "Filmid - Lehed"
 
 msgctxt "#30265"
 msgid "Episodes - Next Up"
@@ -492,11 +492,11 @@ msgstr "Kogumikud"
 
 msgctxt "#30259"
 msgid "Movies - Favorites"
-msgstr "Filmid – Lemmikud"
+msgstr "Filmid - Lemmikud"
 
 msgctxt "#30258"
 msgid "Movies - In Progress"
-msgstr "Filmid – Pooleli"
+msgstr "Filmid - Pooleli"
 
 msgctxt "#30256"
 msgid "Movies"
@@ -516,7 +516,7 @@ msgstr "Filmid - A-Ü"
 
 msgctxt "#30251"
 msgid "Movies - Genres"
-msgstr "Filmid – Žanrid"
+msgstr "Filmid - Žanrid"
 
 msgctxt "#30250"
 msgid "Unknown"
