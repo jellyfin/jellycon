@@ -33,11 +33,11 @@ class WebSocketClient(threading.Thread):
 
         self.__dict__ = self._shared_state
         self.monitor = xbmc.Monitor()
-        self.retry_count = 0
 
         self.device_id = get_device_id()
 
         self._library_monitor = library_change_monitor
+        self.websocket_error = False
 
         threading.Thread.__init__(self)
 
@@ -230,11 +230,16 @@ class WebSocketClient(threading.Thread):
                 xbmc.executebuiltin(builtin[command])
 
     def on_open(self, ws):
+        # Wait to make sure previous keepalive cycle has ended
+        if self.websocket_error:
+            time.sleep(30)
+            self.websocket_error = False
         log.debug("Connected")
-        self.retry_count = 0
         self.post_capabilities()
+        self.send_keepalive(ws)
 
     def on_error(self, ws, error):
+        self.websocket_error = True
         log.debug("Error: {0}".format(error))
 
     def run(self):
@@ -269,7 +274,7 @@ class WebSocketClient(threading.Thread):
 
         while not self.monitor.abortRequested():
 
-            self._client.run_forever(ping_interval=5, reconnect=13, ping_timeout=2)
+            self._client.run_forever(reconnect=30)
 
             if self._stop_websocket:
                 break
@@ -278,8 +283,6 @@ class WebSocketClient(threading.Thread):
                 # Abort was requested, exit
                 break
 
-            if self.retry_count < 12:
-                self.retry_count += 1
             log.debug("Reconnecting WebSocket")
 
         log.debug("WebSocketClient Stopped")
@@ -303,3 +306,22 @@ class WebSocketClient(threading.Thread):
         )
 
         api.post_capabilities()
+
+    def send_keepalive(self, ws):
+        # Stop the keepalive cycle if an error has been detected
+        if self.websocket_error:
+            return
+        keepalive_payload = json.dumps({"MessageType": "KeepAlive", "Data": 30})
+        # Send the keepalive, or register an error
+        try:
+            ws.send(keepalive_payload)
+        except:
+            self.websocket_error = True
+            return
+        # Schedule the next message
+        self.schedule_keepalive(ws)
+
+    def schedule_keepalive(self, ws):
+        # Schedule a keepalive message in 30 seconds
+        timer = threading.Timer(30, self.send_keepalive, kwargs={'ws': ws})
+        timer.start()
