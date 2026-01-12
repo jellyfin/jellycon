@@ -1,19 +1,8 @@
-version: '0.9.0'
+version: '0.9.1'
 changelog: |-
-  :tada: New features and improvements
-  ------------------------------------
-  + Add a page limit setting for tv shows (#393) @mcarlton00
-  + Add New Widgets (#381) @Aydanill
-  + Include track details in audio playback (#378) @davembg
-  + Add segment skip ability (#368) @Gorgorot38
-
   Bug Fixes
   ---------
-  + Fix websocket reconnects (#396) @manuelschneider
-  + Ensure the filtered limit takes precedence over page limit (#395) @mcarlton00
-  + fix subtitle burn in (#384) @loztcf
-  + fix sdh/cc/hi subtitle for jellyfin > v10.9.0 (#385) @AndryYosua
-  + Fix bug with multiple external subtitles in the same languages (#369) @Gorgorot38
+  + Implement proper keepalives for websocket (#401) @mcarlton00
 dependencies:
   py2:
     - addon: 'xbmc.python'
