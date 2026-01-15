@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-05 12:25+0000\n"
+"PO-Revision-Date: 2026-01-16 04:01+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -149,7 +149,7 @@ msgstr "Muusika - Sageli esitatud"
 
 msgctxt "#30327"
 msgid "Go To Season"
-msgstr "Ava hooaeg"
+msgstr "Kuva hooaeg"
 
 msgctxt "#30209"
 msgid "File direct path"
