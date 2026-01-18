@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-16 04:01+0000\n"
+"PO-Revision-Date: 2026-01-19 08:05+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -77,11 +77,11 @@ msgstr "Sisesta kasutajaandmed käsitsi"
 
 msgctxt "#30241"
 msgid "Force transcode mpeg4"
-msgstr "Sunni mpeg4 transkoodimine"
+msgstr "MPEG4 sundtranskoodimine"
 
 msgctxt "#30240"
 msgid "Force transcode msmpeg4v3 (divx)"
-msgstr "Sunni msmpeg4v3 (divx) transkoodimine"
+msgstr "MS MPEG4 V3 (DivX) sundtranskoodimine"
 
 msgctxt "#30365"
 msgid "Manual Login"
@@ -117,11 +117,11 @@ msgstr "Kaugpiltide loendi vastuvõtt"
 
 msgctxt "#30357"
 msgid "Processing existing image list"
-msgstr "Olemasoleva piltide loendi töötlemine"
+msgstr "Olemasolevate piltide loendi töötlemine"
 
 msgctxt "#30356"
 msgid "Loading existing image list"
-msgstr "Olemasoleva piltide loendi laadimine"
+msgstr "Olemasolevate piltide loendi laadimine"
 
 msgctxt "#30355"
 msgid "Kodi Settings->Services->Allow remote control via HTTP"
@@ -129,7 +129,7 @@ msgstr "Kodi seaded-> Teenused-> Luba kaugjuhtimine HTTP kaudu"
 
 msgctxt "#30354"
 msgid "Go To Series"
-msgstr "Ava seriaal"
+msgstr "Ava sari"
 
 msgctxt "#30353"
 msgid " - Frequently Played"
@@ -193,7 +193,7 @@ msgstr "Vahemällu salvestatud piltide kustutamine"
 
 msgctxt "#30345"
 msgid "Cache Jellyfin server data requests"
-msgstr "Salvesta Jellyfin serveri andmepäringud vahemällu"
+msgstr "Salvesta Jellyfini serveri andmepäringud vahemällu"
 
 msgctxt "#30344"
 msgid "Number of images removed from cache"
@@ -205,7 +205,7 @@ msgstr "Muudatused nõuavad Kodi taaskäivitamist"
 
 msgctxt "#30342"
 msgid "New content check interval (0 = disabled)"
-msgstr "Uus sisu kontrollimise intervall (0 = keelatud)"
+msgstr "Uus sisu kontrolli intervall (0 = keelatud)"
 
 msgctxt "#30341"
 msgid "Background image update interval (0 = disabled)"
@@ -430,9 +430,9 @@ msgstr "- Järgmine"
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
-"JellyCon peab küsima jätkamist osaliselt esitatud üksuste puhul. Kodi võib "
-"samuti küsida ja see võib põhjustada topeltpäringu. Kas soovid topeltpäringu "
-"eemaldada?"
+"JellyCon peab küsima osaliselt esitatud üksuste taasestuse jätkamist. Kodi "
+"võib samuti küsida ja see võib põhjustada topeltpäringu. Kas eemaldada "
+"topeltpäring?"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
@@ -440,7 +440,7 @@ msgstr "Tuvastati täiendav jätkamise päring"
 
 msgctxt "#30275"
 msgid "Force Transcode"
-msgstr "Sunni transkoodimine"
+msgstr "Sundtranskoodimine"
 
 msgctxt "#30274"
 msgid "Delete"
@@ -528,11 +528,11 @@ msgstr "Otsi"
 
 msgctxt "#30239"
 msgid "Force transcode mpeg2"
-msgstr "Sunni mpeg2 transkoodimine"
+msgstr "MPEG2 sundtranskoodimine"
 
 msgctxt "#30238"
 msgid "Playback stream options"
-msgstr "Taasesitusvoo valikud"
+msgstr "Voo taasesituse valikud"
 
 msgctxt "#30237"
 msgid "Start from beginning"
@@ -540,7 +540,7 @@ msgstr "Alusta algusest"
 
 msgctxt "#30236"
 msgid "Force transcode h265 (hevc)"
-msgstr "Sunni h265 (hevc) transkoodimine"
+msgstr "H265 (hevc) sundtranskoodimine"
 
 msgctxt "#30235"
 msgid "Episodes"
@@ -708,15 +708,15 @@ msgstr "Teenused"
 
 msgctxt "#30110"
 msgid "Interface"
-msgstr "Liides"
+msgstr "Kasutajaiides"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
-msgstr "Hoiatus: see toiming kustutab meediafailid serverist."
+msgstr "Hoiatus: See toiming kustutab meediafailid serverist."
 
 msgctxt "#30091"
 msgid "Confirm delete?"
-msgstr "Kas kustutamine kinnitada?"
+msgstr "Kas kinnitada kustutamine?"
 
 msgctxt "#30063"
 msgid "N/A"
@@ -744,7 +744,7 @@ msgstr "Luba silumislogimine"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "Toiming vidina elemendi valimisel"
+msgstr "Toiming vidina elemendi valikul"
 
 msgctxt "#30025"
 msgid "Password:"
@@ -788,7 +788,7 @@ msgstr "Esitajad"
 
 msgctxt "#30371"
 msgid "Could not connect to the URL you entered, do you want to try again?"
-msgstr "Sisestatud URL-iga ei õnnestunud ühenduda, kas soovid uuesti proovida?"
+msgstr "Sisestatud URL-iga ei õnnestunud ühenduda, kas proovida uuesti?"
 
 msgctxt "#30377"
 msgid "Sending request"
@@ -796,7 +796,7 @@ msgstr "Päringu saatmine"
 
 msgctxt "#30242"
 msgid "Force transcode av1"
-msgstr "Sunni av1 transkoodimine"
+msgstr "AV1 sundtranskoodimine"
 
 msgctxt "#30370"
 msgid "Do you want to manually enter a server url?"
@@ -840,7 +840,7 @@ msgstr "Kohandatud vidina sisu"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
-msgstr "Tühista lemmikuks määramine"
+msgstr "Eemalda lemmikutest"
 
 msgctxt "#30367"
 msgid "Allow fast user switching password saving"
@@ -864,7 +864,7 @@ msgstr "Säilita kasutajaandmed"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
-msgstr "Paku väliseid subtiitreid"
+msgstr "Väliste subtiitrite pakkumine"
 
 msgctxt "#30439"
 msgid "Show play next episode at time left in seconds"
@@ -932,7 +932,7 @@ msgstr "Lisamooduli toimingud"
 
 msgctxt "#30395"
 msgid "Clear cached server data"
-msgstr "Tühjenda vahemällu salvestatud serveri andmed"
+msgstr "Eemalda serveri andmed vahemälust"
 
 msgctxt "#30446"
 msgid "There was an error logging in"
@@ -1076,7 +1076,7 @@ msgstr "Luba failide otseesitus"
 
 msgctxt "#30434"
 msgid "Force transcode stream bitrate (Kbits)"
-msgstr "Sunni transkoodimisvoo bitikiirus (kbps)"
+msgstr "Sundtranskoodimise bitikiirus (Kbps)"
 
 msgctxt "#30435"
 msgid "Connection speed test"
