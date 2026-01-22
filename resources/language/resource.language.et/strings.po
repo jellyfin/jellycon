@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-19 08:05+0000\n"
+"PO-Revision-Date: 2026-01-22 18:40+0000\n"
 "Last-Translator: rimasx <riks_12@hot.ee>\n"
 "Language-Team: Estonian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/et/>\n"
@@ -113,7 +113,7 @@ msgstr "Täieliku piltide loendi koostamine"
 
 msgctxt "#30358"
 msgid "Retreiving remote image list"
-msgstr "Kaugpiltide loendi vastuvõtt"
+msgstr "Võrgupiltide loendi hankimine"
 
 msgctxt "#30357"
 msgid "Processing existing image list"
@@ -129,7 +129,7 @@ msgstr "Kodi seaded-> Teenused-> Luba kaugjuhtimine HTTP kaudu"
 
 msgctxt "#30354"
 msgid "Go To Series"
-msgstr "Ava sari"
+msgstr "Kuva sari"
 
 msgctxt "#30353"
 msgid " - Frequently Played"
@@ -189,7 +189,7 @@ msgstr "Olemasolevate piltide hankimine"
 
 msgctxt "#30346"
 msgid "Deleteing Cached Images"
-msgstr "Vahemällu salvestatud piltide kustutamine"
+msgstr "Vahemälus olevate piltide kustutamine"
 
 msgctxt "#30345"
 msgid "Cache Jellyfin server data requests"
@@ -237,7 +237,7 @@ msgstr "Salvesta pildid vahemällu taustal"
 
 msgctxt "#30332"
 msgid "Stop media playback on screensaver activation"
-msgstr "Peata meedia taasesitus ekraanisäästja aktiveerimisel"
+msgstr "Peata taasesitus ekraanisäästja aktiveerimisel"
 
 msgctxt "#30331"
 msgid "Movies per page"
@@ -413,7 +413,7 @@ msgstr "Kohtvõrgus ei tuvastatud Jellyfini servereid."
 
 msgctxt "#30281"
 msgid "Refresh Cached Images"
-msgstr "Värskenda puhverdatud pilte"
+msgstr "Värskenda vahemälus olevaid pilte"
 
 msgctxt "#30280"
 msgid "Missing Title"
@@ -430,9 +430,8 @@ msgstr "- Järgmine"
 msgctxt "#30277"
 msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
 msgstr ""
-"JellyCon peab küsima osaliselt esitatud üksuste taasestuse jätkamist. Kodi "
-"võib samuti küsida ja see võib põhjustada topeltpäringu. Kas eemaldada "
-"topeltpäring?"
+"JellyCon peab küsima osaliselt vaadatud üksuste taasestuse jätkamist. Ka "
+"Kodi võib seda teha, tekitades topeltpäringu. Kas keelata topeltpäring?"
 
 msgctxt "#30276"
 msgid "Extra Resume Prompt Detected"
@@ -684,11 +683,11 @@ msgstr "Kuva laadimise edenemine"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "Lisa nimedele vaatamata episoodide arv"
+msgstr "Lisa nimele vaatamata episoodide arv"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "Lisa nimedele vaatemise oleku protsent"
+msgstr "Lisa nimele vaatemise edenemise protsent"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
@@ -768,7 +767,7 @@ msgstr "Filtreeritud episoodi nime vorming"
 
 msgctxt "#30213"
 msgid "Video force 8 bit"
-msgstr "Sunni 8 bitine video"
+msgstr "Sunni 8-bitine video"
 
 msgctxt "#30368"
 msgid "Clear Password?"
@@ -864,7 +863,7 @@ msgstr "Säilita kasutajaandmed"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
-msgstr "Väliste subtiitrite pakkumine"
+msgstr "Väliste subtiitrite päring"
 
 msgctxt "#30439"
 msgid "Show play next episode at time left in seconds"
@@ -900,7 +899,7 @@ msgstr "HTTP ajalõpp sekundites"
 
 msgctxt "#30418"
 msgid "Audio bitrate (Kbits)"
-msgstr "Heli bitikiirus (kbps)"
+msgstr "Heli bitikiirus (Kbps)"
 
 msgctxt "#30419"
 msgid "Audio codec"
@@ -936,7 +935,7 @@ msgstr "Eemalda serveri andmed vahemälust"
 
 msgctxt "#30446"
 msgid "There was an error logging in"
-msgstr "Ilmes viga sisselogimisel"
+msgstr "Sisselogimisel tekkis viga"
 
 msgctxt "#30449"
 msgid "Instant Mix"
@@ -1040,7 +1039,7 @@ msgstr "- Lemmikud"
 
 msgctxt "#30417"
 msgid "You do not have permision to delete this item"
-msgstr "Sul pole selle üksuse kustutamiseks õigusi"
+msgstr "Sul pole luba selle üksuse kustutamiseks"
 
 msgctxt "#30420"
 msgid "Audio max channels"
@@ -1188,31 +1187,31 @@ msgstr "Silt"
 
 msgctxt "#30438"
 msgid "Play cinema intros"
-msgstr "Esita filmi intro"
+msgstr "Esita eeltutvustusi"
 
 msgctxt "#30666"
 msgid "Segment Skipper"
-msgstr "Segmendi vahelejätja"
+msgstr "Segmendi vahelejätmine"
 
 msgctxt "#30670"
 msgid "Intro Skipper"
-msgstr "Sissejuhatuse vahelejätja"
+msgstr "Sissejuhatuse vahelejätmine"
 
 msgctxt "#30671"
 msgid "Credit Skipper"
-msgstr "Lõputiitrite vahelejätja"
+msgstr "Lõputiitrite vahelejätmine"
 
 msgctxt "#30675"
 msgid "Commercial Skipper"
-msgstr "Reklaamide vahelejätja"
+msgstr "Reklaamide vahelejätmine"
 
 msgctxt "#30676"
 msgid "Preview Skipper"
-msgstr "Eelvaatuse vahelejätja"
+msgstr "Eelvaate vahelejätmine"
 
 msgctxt "#30677"
 msgid "Recap Skipper"
-msgstr "Kokkuvõtte vahelejätja"
+msgstr "Kokkuvõtte vahelejätmine"
 
 msgctxt "#30421"
 msgid "Views"
