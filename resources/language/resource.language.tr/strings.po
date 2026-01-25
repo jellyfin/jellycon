@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-29 13:05+0000\n"
-"Last-Translator: ilker <isaglam@gmail.com>\n"
+"PO-Revision-Date: 2026-01-25 16:13+0000\n"
+"Last-Translator: queeup <queeup@zoho.com>\n"
 "Language-Team: Turkish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/tr/>\n"
 "Language: tr\n"
@@ -141,7 +141,7 @@ msgstr "Sunucu seç"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "Alt yazı varsa (cc) ekleyin"
+msgstr "Altyazı varsa (cc) ekleyin"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -485,7 +485,7 @@ msgstr "Ses Akışını Seçin"
 
 msgctxt "#30292"
 msgid "Select Subtitle Stream"
-msgstr "Alt yazı Akışını Seçin"
+msgstr "Altyazı Akışını Seçin"
 
 msgctxt "#30348"
 msgid "Add user ratings"
@@ -588,7 +588,7 @@ msgstr "- Sonuncu"
 
 msgctxt "#30260"
 msgid "BoxSets"
-msgstr "Kutu Setleri"
+msgstr "Film Serileri"
 
 msgctxt "#30283"
 msgid "Play Next Episode?"
@@ -954,7 +954,7 @@ msgstr "Girdiğiniz URL'ye bağlanılamadı, tekrar denemek ister misiniz?"
 
 msgctxt "#30379"
 msgid "External subtitle prompt"
-msgstr "Harici alt yazı istemi"
+msgstr "Harici altyazı istemi"
 
 msgctxt "#30433"
 msgid "Allow direct file playback"
