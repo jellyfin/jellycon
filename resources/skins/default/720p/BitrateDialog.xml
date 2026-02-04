@@ -8,7 +8,6 @@
 		<top>280</top>
 	</coordinates>
     <controls>
-
         <control type="image" id="3010">
 			<left>0</left>
 			<top>0</top>
@@ -17,36 +16,36 @@
 			<texture border="40">bg.png</texture>
 		</control>
 
-	<control type="label" id="3020">
-		<width>120</width>
-		<left>20</left>
-		<top>5</top>
-		<height>45</height>
-		<label>Bitrate : </label>
-		<textcolor>99FFFFFF</textcolor>
-		<font>font14</font>
-		<align>left</align>
-	</control>
+		<control type="label" id="3020">
+			<width>120</width>
+			<left>20</left>
+			<top>5</top>
+			<height>45</height>
+			<label>Bitrate : </label>
+			<textcolor>99FFFFFF</textcolor>
+			<font>font14</font>
+			<align>left</align>
+		</control>
 
-	<control type="label" id="3030">
-		<width>150</width>
-		<left>120</left>
-		<top>5</top>
-		<height>45</height>
-		<label>100 Mbs</label>
-		<textcolor>99FFFFFF</textcolor>
-		<font>font14</font>
-		<align>left</align>
-	</control>
+		<control type="label" id="3030">
+			<width>150</width>
+			<left>120</left>
+			<top>5</top>
+			<height>45</height>
+			<label>100 Mbs</label>
+			<textcolor>99FFFFFF</textcolor>
+			<font>font14</font>
+			<align>left</align>
+		</control>
 
-	<control type="slider" id="3000">
-	  <left>20</left>
-	  <top>55</top>
-	  <width>340</width>
-	  <height>30</height>
-          <ondown>3011</ondown>
-	  <visible>true</visible>
-	</control>
+		<control type="slider" id="3000">
+			<left>20</left>
+			<top>55</top>
+			<width>340</width>
+			<height>30</height>
+			<ondown>3011</ondown>
+			<visible>true</visible>
+		</control>
 
         <control type="button" id="3011">
             <texturenofocus border="1" colordiffuse="ff161616">white.png</texturenofocus>
@@ -60,6 +59,5 @@
             <font>font14</font>
             <align>center</align>
         </control>
-
 	</controls>
 </window>
