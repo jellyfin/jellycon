@@ -27,7 +27,7 @@ class API:
         self.verify_cert = settings.getSetting('verify_cert') == 'true'
 
     def get(self, path):
-        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+        if 'Authorization' not in self.headers or self.token not in self.headers:
             self.create_headers(True)
 
         # Fixes initial login where class is initialized before wizard completes
@@ -56,7 +56,7 @@ class API:
         return response_data
 
     def post(self, url, payload={}):
-        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+        if 'Authorization' not in self.headers or self.token not in self.headers:
             self.create_headers(True)
 
         url = '{}{}'.format(self.server, url)
@@ -73,7 +73,7 @@ class API:
         return response_data
 
     def delete(self, url):
-        if 'x-mediabrowser-token' not in self.headers or self.token not in self.headers:
+        if 'Authorization' not in self.headers or self.token not in self.headers:
             self.create_headers(True)
 
         url = '{}{}'.format(self.server, url)
@@ -98,7 +98,7 @@ class API:
     def create_headers(self, force=False):
 
         # If the headers already exist with an auth token, return unless we're regenerating
-        if self.headers and 'x-mediabrowser-token' in self.headers and force is False:
+        if self.headers and 'Authorization' in self.headers.get('Authorization', '') and force is False:
             return
 
         headers = {}
@@ -119,18 +119,18 @@ class API:
             version=version
         )
 
-        headers['x-emby-authorization'] = authorization
+        headers['Authorization'] = authorization
 
         # If we have a valid token, ensure it's included in the headers unless we're regenerating
         if self.token and force is False:
-            headers['x-mediabrowser-token'] = self.token
+            headers['Authorization'] += ", Token={}".format(self.token)
         else:
             # Check for updated credentials since initialization
             user_details = load_user_details()
             token = user_details.get('token')
             if token:
                 self.token = token
-                headers['x-mediabrowser-token'] = self.token
+                headers['Authorization'] += ", Token={}".format(self.token)
 
         # Make headers available to api calls
         self.headers = headers
