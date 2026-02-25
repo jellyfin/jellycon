@@ -16,7 +16,10 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
 
     slider_control = None
     bitrate_label = None
-    initial_bitrate_value = 0
+    initial_bitrate_value = 500
+    max_bitrate_value = 15000
+    min_bitrate_value = 500
+    step_size = 100
     selected_transcode_value = 0
 
     def __init__(self, *args, **kwargs):
@@ -25,10 +28,11 @@ class BitrateDialog(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         log.debug("ActionMenu: onInit")
+        log.debug("ActionMenu: max: {} - min: {}, init: {}".format(self.max_bitrate_value, self.min_bitrate_value, self.initial_bitrate_value))
         self.action_exitkeys_id = [10, 13]
 
         self.slider_control = self.getControl(3000)
-        self.slider_control.setInt(self.initial_bitrate_value, 400, 100, 15000)
+        self.slider_control.setInt(self.initial_bitrate_value, self.min_bitrate_value, self.step_size, self.max_bitrate_value)
 
         self.bitrate_label = self.getControl(3030)
         bitrate_label_string = str(self.slider_control.getInt()) + " Kbs"

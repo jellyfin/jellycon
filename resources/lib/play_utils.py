@@ -233,7 +233,7 @@ def play_file(play_info):
         add_to_playlist(play_info)
         return
 
-    # if this is a list of items them add them all to the play list
+    # If this is a list of items, add them all to the play list
     if isinstance(item_id, list):
         return play_list_of_items(item_id)
 
@@ -275,7 +275,7 @@ def play_file(play_info):
         result = api.get(url)
         log.debug("PlayAllFiles items: {0}".format(result))
 
-        # process each item
+        # Process each item
         items = result["Items"]
         if items is None:
             items = []
@@ -311,13 +311,13 @@ def play_file(play_info):
         result = api.get(url)
         log.debug("PlayAllFiles items: {0}".format(result))
 
-        # process each item
+        # Process each item
         items = result["Items"]
         if items is None:
             items = []
         return play_all_files(items)
 
-    # if this is a program from live tv epg then play the actual channel
+    # If this is a program from live tv epg then play the actual channel
     if result.get("Type") == "Program":
         channel_id = result.get("ChannelId")
         url = "/Users/{}/Items/{}?format=json".format(api.user_id, channel_id)
@@ -338,7 +338,7 @@ def play_file(play_info):
         action_menu.doModal()
         return
 
-    # get playback info from the server using the device profile
+    # Get playback info from the server using the device profile
     playback_info = get_item_playback_info(item_id, force_transcode)
     if playback_info is None:
         log.debug("playback_info was None, could not get MediaSources so can not play!")
@@ -352,7 +352,7 @@ def play_file(play_info):
 
     play_session_id = playback_info.get("PlaySessionId")
 
-    # select the media source to use
+    # Select the media source to use
     media_sources = playback_info.get('MediaSources')
     selected_media_source = None
 
@@ -391,7 +391,7 @@ def play_file(play_info):
     seek_time = 0
     auto_resume = int(auto_resume)
 
-    # process user data for resume points
+    # Process user data for resume points
     if auto_resume != -1:
         seek_time = (auto_resume / 1000) / 10000
 
@@ -405,8 +405,8 @@ def play_file(play_info):
         if user_data.get("PlaybackPositionTicks") != 0:
 
             reasonable_ticks = int(user_data.get("PlaybackPositionTicks")) / 1000
-            seek_time = round(reasonable_ticks / 10000,0)
-            display_time = (datetime.datetime(1,1,1) + datetime.timedelta(seconds=seek_time)).strftime('%H:%M:%S')
+            seek_time = round(reasonable_ticks / 10000, 0)
+            display_time = (datetime.datetime(1, 1, 1) + datetime.timedelta(seconds=seek_time)).strftime('%H:%M:%S')
 
             resume_dialog = ResumeDialog("ResumeDialog.xml", addon_path, "default", "720p")
             resume_dialog.setResumeTime("Resume from " + display_time)
@@ -433,13 +433,13 @@ def play_file(play_info):
     elif playback_type == "1":
         playback_type_string = "DirectStream"
 
-    # add the playback type into the overview
+    # Add the playback type into the overview
     if result.get("Overview", None) is not None:
         result["Overview"] = playback_type_string + "\n" + result.get("Overview")
     else:
         result["Overview"] = playback_type_string
 
-    # add title decoration is needed
+    # Add title decoration is needed
     item_title = result.get("Name", translate_string(30280))
 
     # extract item info from result
@@ -459,15 +459,17 @@ def play_file(play_info):
     gui_item = add_gui_item(item_id, item_details, display_options, False)
     list_item = gui_item[1]
 
-    if playback_type == "2":  # if transcoding then prompt for audio and subtitle
+    # If transcoding/remuxing, prompt for audio and subtitle stream selection
+    if playback_type == "2":
         playurl = audio_subs_pref(playurl, list_item, selected_media_source, item_id, audio_stream_index,
                                   subtitle_stream_index)
         log.debug("New playurl for transcoding: {0}".format(playurl))
 
-    elif playback_type == "1":  # for direct stream add any streamable subtitles
-        external_subs(selected_media_source, list_item, item_id)
+    elif playback_type == "1":  # For direct stream add any streamable subtitles
+        subtitle_index = settings.getSetting("direct_stream_sub_select")
+        external_subs(selected_media_source, list_item, item_id, int(subtitle_index))
 
-    # add playurl and data to the monitor
+    # Add playurl and data to the monitor
     data = {}
     data["item_id"] = item_id
     data["source_id"] = source_id
@@ -790,7 +792,6 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     playurlprefs = ""
     default_audio = media_source.get('DefaultAudioStreamIndex', 1)
     default_sub = media_source.get('DefaultSubtitleStreamIndex', "")
-    source_id = media_source["Id"]
 
     media_streams = media_source['MediaStreams']
 
@@ -838,7 +839,7 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
             subtitle_streams_list[track] = index
             subtitle_streams.append(track)
 
-    # set audio index
+    # Set audio index
     if select_audio_index is not None:
         playurlprefs += "&AudioStreamIndex=%s" % select_audio_index
 
@@ -852,12 +853,12 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
         else:  # User backed out of selection
             playurlprefs += "&AudioStreamIndex=%s" % default_audio
 
-    # set subtitle index
+    # Set subtitle index
     if select_subs_index is not None:
         # Load subtitles in the listitem if downloadable
         if select_subs_index in downloadable_streams:
-            subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-            subtitle_url = subtitle_url % (settings.getSetting('server_address'), item_id, source_id, select_subs_index)
+            delivery_url = media_streams[select_subs_index]['DeliveryUrl']
+            subtitle_url = settings.getSetting('server_address') + delivery_url
             log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
             list_item.setSubtitles([subtitle_url])
         else:
@@ -876,8 +877,8 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
 
             # Load subtitles in the listitem if downloadable
             if select_subs_index in downloadable_streams:
-                subtitle_url = "%s/Videos/%s/%s/Subtitles/%s/Stream.srt"
-                subtitle_url = subtitle_url % (settings.getSetting('server_address'), item_id, source_id, select_subs_index)
+                delivery_url = media_streams[select_subs_index]['DeliveryUrl']
+                subtitle_url = settings.getSetting('server_address') + delivery_url
                 log.debug("Streaming subtitles url: {0} {1}".format(select_subs_index, subtitle_url))
                 list_item.setSubtitles([subtitle_url])
             else:
@@ -892,8 +893,8 @@ def audio_subs_pref(url, list_item, media_source, item_id, audio_stream_index, s
     return new_url
 
 
-# direct stream, set any available subtitle streams
-def external_subs(media_source, list_item, item_id):
+# Add any available, streamable subtitle
+def external_subs(media_source, list_item, item_id, subtitle_index):
     media_streams = media_source.get('MediaStreams')
 
     if media_streams is None:
@@ -925,7 +926,7 @@ def external_subs(media_source, list_item, item_id):
                     title = stream['Title']
                 '''
                 Starting in 10.8, the server no longer provides language
-                specific download points.  We have to download the file
+                specific download points. We have to download the file
                 and name it with the language code ourselves so Kodi
                 will parse it correctly
                 '''
@@ -942,16 +943,16 @@ def external_subs(media_source, list_item, item_id):
     if len(externalsubs) == 0:
         return
 
-    direct_stream_sub_select = settings.getSetting("direct_stream_sub_select")
-
-    if direct_stream_sub_select == "0" or (len(externalsubs) == 1 and not direct_stream_sub_select == "2"):
+    if subtitle_index is None:
         list_item.setSubtitles(externalsubs)
-    else:
+    elif len(externalsubs) < subtitle_index:
         resp = xbmcgui.Dialog().select(translate_string(30292), sub_names)
         if resp > -1:
             selected_sub = externalsubs[resp]
             log.debug("External Subtitle Selected: {0}".format(selected_sub))
             list_item.setSubtitles([selected_sub])
+    else:
+        list_item.setSubtitles(externalsubs[subtitle_index])
 
 
 def send_progress():
@@ -1206,9 +1207,9 @@ def get_jellyfin_playing_item():
     return play_data.get("item_id")
 
 def get_play_url(media_source, play_session_id, channel_id=None):
-    log.debug("get_play_url - media_source: {0}", media_source)
+    log.debug("get_play_url - media_source: {0}".format(media_source))
 
-    # check if strm file Container
+    # Check if strm file Container
     if media_source.get('Container') == 'strm':
         log.debug("Detected STRM Container")
         playurl, listitem_props = get_strm_details(media_source)
@@ -1218,7 +1219,7 @@ def get_play_url(media_source, play_session_id, channel_id=None):
         else:
             return playurl, "0", listitem_props
 
-    # get all the options
+    # Get usere options
     server = settings.getSetting('server_address')
     allow_direct_file_play = settings.getSetting('allow_direct_file_play') == 'true'
 
@@ -1229,13 +1230,13 @@ def get_play_url(media_source, play_session_id, channel_id=None):
     playurl = None
     playback_type = None
 
-    # check if file can be directly played
+    # Check if file can be directly played via local files
     if allow_direct_file_play and can_direct_play:
         direct_path = media_source["Path"]
         direct_path = direct_path.replace("\\", "/")
         direct_path = direct_path.strip()
 
-        # handle DVD structure
+        # Handle DVD structure
         container = media_source["Container"]
         if container == "dvd":
             direct_path = direct_path + "/VIDEO_TS/VIDEO_TS.IFO"
@@ -1251,11 +1252,11 @@ def get_play_url(media_source, play_session_id, channel_id=None):
             playurl = direct_path
             playback_type = "0"
 
-    # check if file can be direct streamed/played
+    # Check if file can be direct streamed/played
     if (can_direct_stream or can_direct_play) and playurl is None:
         item_id = media_source.get('Id')
         if channel_id:
-            # live tv has to be transcoded by the server
+            # Live tv has to be transcoded by the server
             playurl = None
         else:
             url_root = '{}/Videos/{}/stream'.format(server, item_id)
@@ -1268,48 +1269,9 @@ def get_play_url(media_source, play_session_id, channel_id=None):
             playurl = '{}?{}'.format(url_root, play_param_string)
         playback_type = "1"
 
-    # check is file can be transcoded
+    # Check if file can be remuxed/transcoded
     if can_transcode and playurl is None:
-        item_id = media_source.get('Id')
-        device_id = get_device_id()
-
-        user_details = load_user_details()
-        user_token = user_details.get('token')
-        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
-        playback_max_width = settings.getSetting("playback_max_width")
-        audio_codec = settings.getSetting("audio_codec")
-        audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
-        audio_bitrate = int(audio_playback_bitrate) * 1000
-        audio_max_channels = settings.getSetting("audio_max_channels")
-        playback_video_force_8 = settings.getSetting("playback_video_force_8") == "true"
-
-        transcode_params = {
-            "MediaSourceId": item_id,
-            "DeviceId": device_id,
-            "PlaySessionId": play_session_id,
-            "api_key": user_token,
-            "SegmentContainer": "ts",
-            "VideoCodec": "h264",
-            "VideoBitrate": bitrate,
-            "MaxWidth": playback_max_width,
-            "AudioCodec": audio_codec,
-            "TranscodingMaxAudioChannels": audio_max_channels,
-            "AudioBitrate": audio_bitrate
-        }
-        if playback_video_force_8:
-            transcode_params.update({"MaxVideoBitDepth": "8"})
-
-        # We need to include the channel ID if this is a live stream
-        if channel_id:
-            if media_source.get('LiveStreamId'):
-                transcode_params['LiveStreamId'] = media_source.get('LiveStreamId')
-            transcode_path = urlencode(transcode_params)
-            playurl = '{}/Videos/{}/master.m3u8?{}'.format(
-                server, channel_id, transcode_path)
-        else:
-            transcode_path = urlencode(transcode_params)
-            playurl = '{}/Videos/{}/master.m3u8?{}'.format(
-                server, item_id, transcode_path)
+        playurl = '{}{}'.format(server, media_source['TranscodingUrl'])
 
         playback_type = "2"
 
@@ -1465,11 +1427,10 @@ class PlaybackService(xbmc.Monitor):
         ):
             return
 
-
         signal = method.split('.', 1)[-1]
         if signal not in (
             "jellycon_play_action", "jellycon_play_youtube_trailer_action",
-            "set_view", "plugin.video.jellycon_play_action"):
+                "set_view", "plugin.video.jellycon_play_action"):
             return
 
         data_json = json.loads(data)
@@ -1534,6 +1495,7 @@ class PlaybackService(xbmc.Monitor):
 
 def get_item_playback_info(item_id, force_transcode):
 
+    url = ""
     filtered_codecs = []
     if settings.getSetting("force_transcode_h265") == "true":
         filtered_codecs.append("hevc")
@@ -1547,51 +1509,25 @@ def get_item_playback_info(item_id, force_transcode):
     if settings.getSetting("force_transcode_av1") == "true":
         filtered_codecs.append("av1")
 
-    if not force_transcode:
-        bitrate = get_bitrate(settings.getSetting("max_stream_bitrate"))
-    else:
-        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
-
-    audio_codec = settings.getSetting("audio_codec")
-    audio_playback_bitrate = settings.getSetting("audio_playback_bitrate")
-    audio_max_channels = settings.getSetting("audio_max_channels")
-
-    audio_bitrate = int(audio_playback_bitrate) * 1000
-
     profile = {
-        "Name": "Kodi",
-        "MaxStaticBitrate": bitrate,
-        "MaxStreamingBitrate": bitrate,
-        "MusicStreamingTranscodingBitrate": audio_bitrate,
-        "TimelineOffsetSeconds": 5,
+        "Name": "Jellycon",
+        "SupportedMediaTypes": "Audio,Photo,Video",
+        "TimelineOffsetSeconds": 0,
         "TranscodingProfiles": [
             {
-                "Type": "Audio"
-            },
-            {
-                "Container": "ts",
-                "Protocol": "hls",
+                "Container": "mp4",
                 "Type": "Video",
-                "AudioCodec": audio_codec,
-                "VideoCodec": "h264",
-                "MaxAudioChannels": audio_max_channels
-            },
-            {
-                "Container": "jpeg",
-                "Type": "Photo"
-            }
-        ],
-        "DirectPlayProfiles": [
-            {
-                "Type": "Video"
+                "Protocol": "hls"
             },
             {
                 "Type": "Audio"
             },
             {
-                "Type": "Photo"
+                "Type": "Photo",
+                "Container": "jpeg"
             }
         ],
+        "DirectPlayProfiles": [],
         "ResponseProfiles": [],
         "ContainerProfiles": [],
         "CodecProfiles": [],
@@ -1663,12 +1599,59 @@ def get_item_playback_info(item_id, force_transcode):
         ]
     }
 
-    if len(filtered_codecs) > 0:
-        profile['DirectPlayProfiles'][0]['VideoCodec'] = "-%s" % ",".join(filtered_codecs)
+    # If we are not force transcoding, add direct play profiles
+    if not force_transcode:
+        bitrate = get_bitrate(settings.getSetting("max_stream_bitrate"))
+        profile['MaxStaticBitrate'] = bitrate
+        profile['MaxStreamingBitrate'] = bitrate
+        profile['DirectPlayProfiles'] = [
+            {
+                "Type": "Video",
+            },
+            {
+                "Type": "Audio"
+            },
+            {
+                "Type": "Photo"
+            }
+        ]
 
-    if force_transcode:
-        profile['DirectPlayProfiles'] = []
+        # Forced codecs always need to be respected, therefore explicitly set them as unsupported
+        if len(filtered_codecs) > 0:
+            profile['DirectPlayProfiles'][0]["VideoCodec"] = "-%s" % ",".join(filtered_codecs)
 
+        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
+    # Replace transcoding profile with more restrictive one, respecting user configuration
+    else:
+        bitrate = get_bitrate(settings.getSetting("force_max_stream_bitrate"))
+        profile['MaxStaticBitrate'] = bitrate
+        profile['MaxStreamingBitrate'] = bitrate
+
+        audio_codec = settings.getSetting("audio_codec")
+        audio_max_channels = settings.getSetting("audio_max_channels")
+        profile['TranscodingProfiles'][0] = {
+            "Type": "Video",
+            "Container": "mp4",
+            "Protocol": "hls",
+            "VideoCodec":  "h264",
+            "AudioCodec": audio_codec,
+            "MaxAudioChannels": audio_max_channels,
+        }
+
+        playback_max_width = settings.getSetting("playback_max_width")
+        if playback_max_width is not None:
+            profile['TranscodingProfiles'][0]['Conditions'] = [
+                {
+                    "Property": "Width ",
+                    "Condition": "LessThanEqual",
+                    "Value": playback_max_width,
+                    "IsRequired": False
+                }
+            ]
+
+        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
+
+    # This enforces SDR video
     if settings.getSetting("playback_video_force_8") == "true":
         profile['CodecProfiles'].append(
             {
@@ -1676,8 +1659,8 @@ def get_item_playback_info(item_id, force_transcode):
                 "Codec": "h264",
                 "Conditions": [
                     {
-                        "Condition": "LessThanEqual",
                         "Property": "VideoBitDepth",
+                        "Condition": "LessThanEqual",
                         "Value": "8",
                         "IsRequired": False
                     }
@@ -1690,9 +1673,24 @@ def get_item_playback_info(item_id, force_transcode):
                 "Codec": "h265,hevc",
                 "Conditions": [
                     {
-                        "Condition": "EqualsAny",
                         "Property": "VideoProfile",
-                        "Value": "main"
+                        "Condition": "EqualsAny",
+                        "Value": "main",
+                        "IsRequired": False
+                    }
+                ]
+            }
+        )
+        profile['CodecProfiles'].append(
+            {
+                "Type": "Video",
+                "Codec": "av1",
+                "Conditions": [
+                    {
+                        "Property": "VideoBitDepth",
+                        "Condition": "LessThanEqual",
+                        "Value": "8",
+                        "IsRequired": False
                     }
                 ]
             }
@@ -1703,11 +1701,6 @@ def get_item_playback_info(item_id, force_transcode):
         'DeviceProfile': profile,
         'AutoOpenLiveStream': True
     }
-
-    if force_transcode:
-        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s&EnableDirectPlay=false&EnableDirectStream=false" % (item_id, bitrate)
-    else:
-        url = "/Items/%s/PlaybackInfo?MaxStreamingBitrate=%s" % (item_id, bitrate)
 
     log.debug("PlaybackInfo : {0}".format(url))
     log.debug("PlaybackInfo : {0}".format(profile))
