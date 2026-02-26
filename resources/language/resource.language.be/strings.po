@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-02-16 18:02+0000\n"
-"Last-Translator: Dzmitry Zubialevich <dzmitry.zubialevich@gmail.com>\n"
+"PO-Revision-Date: 2026-02-26 12:54+0000\n"
+"Last-Translator: Pavel Miniutka <pavel.miniutka@gmail.com>\n"
 "Language-Team: Belarusian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/be/>\n"
 "Language: be\n"
@@ -20,7 +20,6 @@ msgctxt "#30006"
 msgid "Password"
 msgstr "Пароль"
 
-#, fuzzy
 msgctxt "#30007"
 msgid "Samba username"
 msgstr "Імя карыстальніка Samba"
@@ -41,7 +40,6 @@ msgctxt "#30003"
 msgid "Verify HTTPS certificate"
 msgstr "Спраўдзіць сертыфікат HTTPS"
 
-#, fuzzy
 msgctxt "#30008"
 msgid "Samba password"
 msgstr "Пароль Samba"
@@ -73,3 +71,19 @@ msgstr "Пачатковы зрух (у секундах)"
 msgctxt "#30669"
 msgid "End Offset (seconds)"
 msgstr "Канцавы зрух (у секундах)"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Дадаць у плэй-ліст Kodi"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Пашыраныя"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Імя карыстальніка:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Пароль:"
