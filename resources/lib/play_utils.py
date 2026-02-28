@@ -743,7 +743,7 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
         album = result.get("Album")
         if album:
             details['album'] = album
-            
+
         list_item.setInfo("Music", infoLabels=details)
 
     else:
@@ -1096,6 +1096,7 @@ def stop_all_playback():
     clear_entries = []
 
     home_window.clear_property("currently_playing_id")
+    home_window.clear_property("now_playing")
 
     for item in played_information:
         data = played_information.get(item)
@@ -1152,7 +1153,7 @@ def get_playing_data():
         play_data = json.loads(play_data_string)
     except ValueError:
         # This isn't a JellyCon item
-        return None
+        return {}
 
     played_information_string = home_window.get_property('played_information')
     if played_information_string:
@@ -1173,7 +1174,7 @@ def get_playing_data():
         playing_file = player.getPlayingFile()
     except Exception as e:
         log.error("get_playing_data : getPlayingFile() : {0}".format(e))
-        return None
+        return {}
     log.debug("get_playing_data : getPlayingFile() : {0}".format(playing_file))
     if server in playing_file and item_id is not None:
         play_time = player.getTime()
@@ -1194,16 +1195,6 @@ def get_playing_data():
 
     return {}
 
-def get_jellyfin_playing_item():
-    home_window = HomeWindow()
-    play_data_string = home_window.get_property('now_playing')
-    try:
-        play_data = json.loads(play_data_string)
-    except ValueError:
-        # This isn't a JellyCon item
-        return None
-
-    return play_data.get("item_id")
 
 def get_play_url(media_source, play_session_id, channel_id=None):
     log.debug("get_play_url - media_source: {0}", media_source)
@@ -1367,7 +1358,7 @@ class Service(xbmc.Player):
 
         play_data = get_playing_data()
 
-        if play_data is None:
+        if not play_data:
             return
 
         play_data["paused"] = False
@@ -1715,6 +1706,7 @@ def get_item_playback_info(item_id, force_transcode):
     log.debug("PlaybackInfo : {0}".format(play_info_result))
 
     return play_info_result
+
 
 def get_media_segments(item_id):
     url = "/MediaSegments/{}".format(item_id)
