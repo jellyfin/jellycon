@@ -1,0 +1,1205 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-11-03 16:51+0000\n"
+"Last-Translator: Bastinator-school <bast0854@edu.sde.dk>\n"
+"Language-Team: Danish <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/da/>\n"
+"Language: da_dk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.14\n"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Adgangskode"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba adgangskode"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Skift bruger]"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Vis tilsluttede klienter"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Avanceret"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Brugernavn:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Adgangskode:"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Forkert Brugernavn/Adgangskode"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Brugernavn ikke fundet"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Venter på, at serveren sletter"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Grænseflade"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Tjenester"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Vis status for indlæsning"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Tilføj fortsættelsesprocenten til navne"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Færdig"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Vælg server"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adresse:"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Medtag plot"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Inkludere mennesker"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL-fejl"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Afspilningstype"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maks. stream-bitrate (Kbps)"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Direkte sti til fil"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Maks. videobredde"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Fremtving 8-bit videotilstand"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Emne detaljer"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Simpel"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Episoder"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Indstillinger for afspilning af stream"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Fremtving transcode mpeg4"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Søg"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Ukendt"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Film - i gang"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Film - favoritter"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TV-serier"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Fremtving transcode"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Ekstra genoptagelsesprompt registreret"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Afspil næste afsnit?"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Seneste"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Alle"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Vælg Audio Stream"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Sletter Kodi-billeder"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Cache billeder"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Cacher billeder"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Eksisterende billeder:"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Cachede Jellyfin-billeder:"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Afspilningen starter"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Vælg trailer"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Aktivér Jellyfin-fjernbetjening"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Bibliotek -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menu"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Afspil"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Forbindelsesfejl"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Afspil alle"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Musik - Album"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Automatisk genoptagelse"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Gå til sæson"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Skærmskåner"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Vis dialogboks til ændring af bruger"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Film pr. side"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Person"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Kontrolinterval for nyt indhold (0 = deaktiveret)"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Antal billeder fjernet fra cache"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Tilføj brugerbedømmelser"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Senest afspillet"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Musik - Alle albumkunstnere"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Indlæser eksisterende billedliste"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Henter fjernbilledliste"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanaler"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programmer"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Optagelser"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Gem adgangskode?"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Manuelt login"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Vil du manuelt indtaste en server-url?"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Skanner efter lokale servere"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Bevar brugeroplysninger"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Aldrig"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Mere end én"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Altid"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "System -"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Eksisterende billeder før sletning:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Ubrugte Jellyfin-billeder:"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Server detaljer"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protokol"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Cache-filer slettet"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Skjul"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Information"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Film - anbefalinger"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Vis alle"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globale lister"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Brugerdefinerede widgets"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Samlinger"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tags"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favoritter"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP timeout sekunder"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maks. lyd kanaler"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Visninger"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Ikke indstillet"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Titel"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Bedømmelse"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genrer"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Tillad direkte filafspilning"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Test af forbindelseshastighed"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Afspilningsmuligheder"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Brug cachelagrede widget data"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Hurtig tilslutning"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maks. afspilningskø"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Bland"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Øjeblikkelig Mix"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verificere HTTPS-certifikat"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Brugernavn"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba brugernavn"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Opdag lokal server}"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Log tidsdata"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Enhedens visningsnavn"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Antal elementer, der skal vises i filtrerede lister"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Filtreret format for episode navn"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Udjævn enkelt sæson"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Vis alle episoder"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Skjul detaljer om ikke-afspillede episoder"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Vælg handling for widget-element"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Aktivér debug-logning"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Sletter"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Bekræft sletning?"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Advarsel: Denne handling vil slette mediefilerne fra serveren."
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Indlæser indhold"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Henter data"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Hop sekunder tilbage"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Tilføj uovervågede tællinger til navne"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Antal præstationsprofiler, der skal registreres"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Ved genoptagelse"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Behandler emnet:"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Fejl"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Ingen medietype indstillet"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Tilføj (cc), hvis undertekster er tilgængelige"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Valgte serveradresse"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Vælg bruger"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Inkluder info om mediestream"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Kan ikke oprette forbindelse til serveren"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Afspilning"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP direkte stream"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Transcode-indstillinger"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Begivenheder"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Ved afspilningsstop (100% = deaktiveret)"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Prompt om at slette episode efter %"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Afspil næste episode efter %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Prompt før afspilning"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Prompt om at slette film efter %"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Layout af emne"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Sidestørrelse og filtrering"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interaktion"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Grænseflade-tilstand"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Standard"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV-serier"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Fremtving transcode h265 (hevc)"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Start fra begyndelsen"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Fremtving transcode mpeg2"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Fremtving transcode msmpeg4v3 (divx)"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Brugerdefineret widget-indhold"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Film - Genrer"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Film - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Vis tilføjelsesindstillinger"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TV-serier - A-Z"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Film"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Film - for nylig tilføjet"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Bokssæt"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TV-serier - favoritter"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Episoder - for nyligt tilføjet"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Episoder - i gang"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Episoder - næste gang"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Film - sider"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- I gang"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- For nylig tilføjet"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Film - tilfældig"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Markere set"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Markere uset"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Sæt som favorit"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Fjern som favorit"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Slet"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon skal bede om genoptagelse på delvist afspillede elementer, Kodi kan "
+"også bede om det, og det kan forårsage en dobbelt prompt. Vil du fjerne den "
+"dobbelte prompt?"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Næste gang"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV-serier - ikke set"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Mangler titel"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Opdater cachede billeder"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Ingen Jellyfin-servere fundet på dit lokale netværk."
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Ikke set"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Film - ikke set"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TV-serier - seneste"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TV-serier - Genrer"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Vælg undertekst-stream"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Cache billeder"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Bemærk"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "For at bruge denne funktion skal du have HTTP-kontrol aktiveret"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Slet"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Slet ubrugte billeder?"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "Cache alle Jellyfin-billeder som lokale Kodi-billeder?"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Manglende Jellyfin-billeder:"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Ikke fundet"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Afspil trailer"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Vælg mediekilde"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Alle -"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Vis ikke advarsler om forbindelsesfejl"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Album"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Kunstnere"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genrer"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Vis tomme mapper (serier, sæsoner, samlinger)"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Stop medieafspilning ved aktivering af skærmskåner"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Cache kunstværk i baggrunden"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Brug JellyCon kontekstmenu"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Sang"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Gruppér film i samlinger"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Interval for opdatering af baggrundsbillede (0 = deaktiveret)"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Ændringer kræver genstart af Kodi"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Cache Jellyfin-serverens dataanmodninger"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Sletter cachede billeder"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Henter eksisterende billeder"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Musik - for nylig tilføjet"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Musik - afspillet for nylig"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Musik - ofte afspillet"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Albumkunstnere"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Ofte afspillet"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Gå til serier"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi-indstillinger->Services->Tillad fjernbetjening via HTTP"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "Behandler den eksisterende billedliste"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Bygger fuld billedliste"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Vil du gemme adgangskoden?"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Indtast brugeroplysninger manuelt"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Tillad hurtig lagring af den skiftede bruger adgangskode"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Ryd adgangskode?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Vil du rydde din gemte adgangskode?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Der kunne ikke oprettes forbindelse til den indtastede URL-adresse, vil du "
+"prøve igen?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Server-URL"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Sender anmodning"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Modtager datapakke"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Tjekker server-url"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Sender anmodning"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Ekstern undertekstprompt"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Tilfældige film interval minutter (0 = deaktiveret)"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Ubrugte billeder fjernet:"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Bruger detaljer"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Ryd cache-resultat"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Ryd cachelagrede serverdata"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Sider"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Opdater Jellyfin-metadata"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Cache billeder hvert interval minut (0 = deaktiveret)"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Tilføj til Kodi-spilleliste"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfin biblioteker"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Tillægshandlinger"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- År"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Årtier"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Favorit samlinger"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Du har ikke tilladelse til at slette dette element"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Lyd bitrate (Kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Lyd codec"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Sorterer"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Standard"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "År"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Tilføjet"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Etiket"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Sæsoner"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Skjul sete elementer på lister"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Fremtving transcode stream bitrate (Kbps)"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Hastighedstestdatastørrelse (MB)"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Afspil biografintroer"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Vis afspil næste episode på sekunder tilbage"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Afspil næste"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Simpelt nyt indholdstjek"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Log på med hurtig tilslutning"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Fortsæt med at se"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Der opstod en fejl ved login"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Næste Gense"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Gense-dage (0 = deaktiveret)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Skjul antal emner der vises på starttitlen"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Tving transkodning av1"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Kombiner i stedet for at erstatte (kan forårsage forsinkelse)"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " Fuldstændig uset"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment overspringer"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Handling at tage"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start forskudning (sekunder)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Slut forskudning (sekunder)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intro overspringer"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Rulletækst overspringer"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Spring over"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Spørg"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Gør ingenting"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reklame overspringer"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Forfilm overspringer"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Opsummerings overspringer"

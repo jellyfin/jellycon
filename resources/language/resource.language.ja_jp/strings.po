@@ -1,0 +1,770 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-09-23 16:39+0000\n"
+"Last-Translator: S H <translate@hayakawa.work>\n"
+"Language-Team: Japanese <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/ja/>\n"
+"Language: ja_jp\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.11.4\n"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "コンテンツをロード中"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba パスワード"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "デバイスディスプレイ名"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "全てのエピソードを見る"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "誤ったユーザー名もしくはパスワード"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "ホスト"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "ポート"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "HTTPS証明書を検証"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "ユーザー名"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "パスワード"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba ユーザー名"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "キャプチャするパフォーマンスプロファイルの数"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[ローカルサーバーを検出]"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[ユーザーを変更]"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "ログタイミングデータ"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "接続されたクライアントを表示"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "フィルターされたリストに表示するアイテムの数"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "フィルターされたエピソードの名前フォーマット"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "高度"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "観ていないエピソードの詳細を隠す"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "ユーザー名:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "パスワード:"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "デバッグロギングを有効化"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "ユーザー名が見つからない"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "削除中"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "サーバーが削除するのを待機中"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "削除しますか？"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "警告: この操作はサーバーからメディアファイルを削除します。"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "インターフェース"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "サービス"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "データを取得中"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "アイテムレイアウト"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "インタラクション"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "インターフェースモード"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "既定"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "シンプル"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV番組"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "映画"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "エピソード"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "最初から始める"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "mpeg2でのトランスコードを強制する"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "mpeg4でのトランスコードを強制する"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "検索"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "不明"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "映画 - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "アドオン設定を見る"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TV番組 - A-Z"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "映画"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "映画 - 最近追加された"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "映画 - 途中"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "映画 - お気に入り"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "ボックス・セット"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TV番組"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TV番組 - お気に入り"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "エピソード - 途中"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "エピソード - 次"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "映画 - ページ"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- 途中"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- 最近追加された"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "映画 - ランダム"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "視聴済みにする"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "未視聴にする"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "お気に入りにする"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "お気に入りから外す"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "削除"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "トランスコードを強制する"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "追加の再開プロンプトが検出された"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- 次"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV番組 - 未視聴"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "タイトル欠落"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "キャッシュしたイメージをリフレッシュする"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "ローカルネットワークにJellyfinサーバーは検出されませんでした。"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "次のエピソードを再生しますか？"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- 未視聴"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "映画 - 未視聴"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TV番組 - 最新"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- 最新"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "全て"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "音声ストリームを選択"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "サブタイトルストリームを選択"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "イメージをキャッシュする"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "通知"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "この機能を使うにはHTTPコントロールが有効化されている必要があります"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "削除"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "使用されていないイメージを削除しますか？"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "イメージをキャッシュする"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "イメージをキャッシュ中"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "既存のイメージ:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "欠落したJellyfinイメージ:"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "キャッシュされたJellyfinイメージ:"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "見つかりませんでした"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "再生を開始中"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "トレーラーを再生"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "トレーラーを選択"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "メディアソースを選択"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "ライブラリー -"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "全て -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "メニュー"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "再生"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "接続エラーについての通知を抑制"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "接続エラー"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "全て再生"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "音楽 - アルバム"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- アルバム"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "自動再開"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "アーティスト"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- ジャンル"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "シーズンに行く"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "空のフォルダー（番組, シーズン, コレクション）を見る"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "スクリーンセーバー"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "ユーザー変更ダイアログを見る"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "ページごとの映画"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "スクリーンセーバーが始まったらメディア再生をやめる"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "JellyConコンテキストメニューを使う"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "曲"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "アルバム"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "人物"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "映画のグループをコレクションに追加"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "バックグラウンドのイメージ更新間隔 (0 = 無効)"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "新しいコンテンツの確認間隔 (0 = 無効)"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "変更はKodiの再起動を必要とします"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "キャッシュから削除されたイメージの数"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Jellyfinサーバーデータリクエストをキャッシュする"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "キャッシュされたイメージを削除中"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "既存のイメージを取得中"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "ユーザーレーティングを追加"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "音楽 - 最近追加された"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- 最近再生された"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "音楽 - 最近再生された"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "音楽 - よく再生される"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "音楽 - 全てのアルバムアーティスト"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- アルバムアーティスト"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- よく再生される"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "シリーズに行く"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "既存のイメージリストを読み込み中"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "既存のイメージリストを処理中"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "リモートイメージリストを取得中"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "フルイメージリストを構築中"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- チャンネル"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- 番組"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- 録音"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "パスワードを保存しますか？"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "パスワードを保存しますか？"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "手動ログイン"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "ユーザー詳細を手動で入力"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "切り替えたユーザーのパスワードの保存を許可"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "パスワードを消去しますか？"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "保存されたパスワードを消去しますか？"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "サーバーURLを手動で入力しますか？"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "入力されたURLに接続できませんでした。再試行しますか？"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "サーバーURL"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "ローカルサーバーを検索中"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "リクエストを送信中"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "リクエストを送信中"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "ユーザー詳細を保持する"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "サーバーURLを検証中"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "h265 (hevc)でのトランスコードを強制する"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "msmpeg4v3 (divx)でのトランスコードを強制する"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "映画 - ジャンル"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TV番組 - ジャンル"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Jellyfinリモートコントロールを有効化"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "アートワークをバックグラウンドでキャッシュ"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "ページサイズとフィルタリング"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "カスタムウィジェットコンテンツ"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "エピソード - 最近追加された"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Kodiイメージを削除中"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "データパケットを受信中"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "再生ストリームオプション"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "av1でのトランスコードを強制する"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "全てのJellyfinイメージをローカルなKodiイメージとしてキャッシュしますか？"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyConは途中まで再生したアイテムを途中から再生するか質問しますが、Kodiも同"
+"じ質問をすることがあります。重複した質問を取り除きますか？"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "数秒戻す"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "読込み状況を表示"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "完了"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "エラー"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "1シーズンを畳む"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "名前に未視聴の数を追加"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "再開時"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "次の項目を処理中:"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "メディアタイプ未設定"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "字幕がある場合(cc)を追加する"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "サーバーを選択する"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "選択されたサーバーアドレス"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "アドレス:"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "ユーザー選択"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "ウィジェット項目選択操作"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URLエラー"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "サーバーに接続できません"

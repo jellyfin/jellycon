@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-12-13 11:55+0000\n"
+"Last-Translator: A Boci <ami@boci.co.uk>\n"
+"Language-Team: Albanian <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/sq/>\n"
+"Language: sq_al\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.14\n"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Port"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifiko çertifikatën HTTPS"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Fjalkalimi"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Përdoruesi Samba"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Fjalkalimi Samba"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Ndrysho përdoruesin]"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Emri që shfaqet"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Përdoruesi"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Zbuloni serverin lokal]"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Trego klientët e lidhur"
