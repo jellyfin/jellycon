@@ -320,7 +320,7 @@ class CacheArtwork(threading.Thread):
         headers = {}
         if xbmc_password:
             auth = "%s:%s" % (xbmc_username, xbmc_password)
-            headers = {'Authorization': 'Basic %s' % base64.b64encode(auth)}
+            headers = {'Authorization': 'Basic %s' % base64.b64encode(auth.encode("utf-8"))}
 
         total = len(missing_texture_urls)
 
