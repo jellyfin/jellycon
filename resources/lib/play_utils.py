@@ -743,7 +743,7 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
         album = result.get("Album")
         if album:
             details['album'] = album
-            
+
         list_item.setInfo("Music", infoLabels=details)
 
     else:
@@ -1287,7 +1287,7 @@ def get_play_url(media_source, play_session_id, channel_id=None):
             "MediaSourceId": item_id,
             "DeviceId": device_id,
             "PlaySessionId": play_session_id,
-            "api_key": user_token,
+            "ApiKey": user_token,
             "SegmentContainer": "ts",
             "VideoCodec": "h264",
             "VideoBitrate": bitrate,
