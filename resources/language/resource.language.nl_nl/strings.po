@@ -1,0 +1,1226 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2026-02-19 19:07+0000\n"
+"Last-Translator: ID Games <iliangshow@yahoo.com>\n"
+"Language-Team: Dutch <https://translate.jellyfin.org/projects/jellycon/"
+"jellycon/nl/>\n"
+"Language: nl_nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.1\n"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "Films - Onlangs Toegevoegd"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "TV Series - A-Z"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "Toon add-on instellingen"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "Films - A-Z"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "Films - Genres"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "Aangepaste widget inhoud"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "Zoek"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "Forceer transcoderen mpeg4"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "Forceer transcoderen msmpeg4v3 (divx)"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "Forceer transcoderen mpeg2"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "Afspeelstreamopties"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "Speel vanaf begin"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "Forceer transcoderen h265 (hevc)"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "Afleveringen"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "TV Series"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "Interactie"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "Item details"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "Paginagrootte en Filteren"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "Item layout"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "Vraag om film te verwijderen na %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- Vraag voor afspelen"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "Speel volgende aflevering na %"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "Vraag om aflevering te verwijderen na %"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "Bij stoppen playback (100% = uitgeschakeld)"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "Events"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "Forceer 8 bit video"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "Maximale videobreedte"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "Transcode opties"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "HTTP directe stream"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "Directe bestandslocatie"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "Maximale stream bitsnelheid (Kbps)"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Afspelen"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Afspeeltype"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Kan niet verbinden met de server"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "URL fout"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "Mensen toevoegen"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "Mediastream informatie toevoegen"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "Plot toevoegen"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Selecteer gebruiker"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Adres:"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Adres geselecteerde server"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "Selecteer server"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "Voeg (cc) toe als ondertiteling beschikbaar is"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "Geen mediatype ingesteld"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "Fout"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "Item verwerken:"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "Gereed"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "Bij hervatten"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "Toon laadvoortgang"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "Voeg bekeken percentage toe aan namen"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "Voeg hoeveelheid niet bekeken toe aan namen"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Spring seconden terug"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Data aan het ophalen"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Content aan het laden"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Diensten"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Interface"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Waarschuwing: Deze stap zal mediabestanden van de server verwijderen."
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Verwijderen bevestigen?"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "NB"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Wachten op server om te wissen"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Bezig met verwijderen"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Gebruikersnaam niet gevonden"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Onjuiste gebruikersnaam/wachtwoord"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Schakel debug logging in"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Widget onderdeel selecteer actie"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Verberg details van niet bekeken afleveringen"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Toon alle afleveringen"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Naamformat van gefilterde aflevering"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Aantal items om te tonen in gefilterde lijsten"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "Toon verbonden clients"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "Weergavenaam apparaat"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Log timinggegevens"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[Wijzig gebruiker]"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[Detecteer lokale server]"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Aantal vast te leggen prestatieprofielen"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "Samba-wachtwoord"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "Samba-gebruikersnaam"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "Verifieer HTTPS-certificaat"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "Poort"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "Host"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "Muziek - Vaak afgespeeld"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "Muziek - Recent afgespeeld"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "Muziek - Recent toegevoegd"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "Persoon"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "Nummer"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "Films per pagina"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "Ga naar seizoen"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- Genres"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "Automatisch hervatten"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- Albums"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "Muziek - Albums"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "Speel alles af"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "Verbindingsfout"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "Meldingen van verbindingsfouten onderdrukken"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "Speel af"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "Menu"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "Selecteer trailer"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "Speel trailer af"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "Niet gevonden"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "Bestaande afbeeldingen:"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "Kodi afbeeldingen verwijderen"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "Niet gebruikte afbeeldingen verwijderen?"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "Alles"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- Nieuwste"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "Films - Niet bekeken"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- Niet bekeken"
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "Speel volgende aflevering af?"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "Geen Jellyfin servers gevonden op jouw lokale netwerk."
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "Missende Titel"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- Volgende"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "Forceer Transcoderen"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "Favoriet ongedaan maken"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "Markeer als favoriet"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "Markeer als niet-bekeken"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "Markeer als bekeken"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "Films - Willekeurig"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- Recent Toegevoegd"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "Films - Favorieten"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "Films - Aan Het Kijken"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "Het JellyCon-contextmenu gebruiken"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "Cache-artwork op de achtergrond"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "Stop het afspelen bij activering van de screensaver"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "Dialoogvenster gebruiker wijzigen tonen"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "Screensaver"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "Lege mappen weergeven (shows, seizoenen, collecties)"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "Artiesten"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "Alles -"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "Bibliotheek -"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "Jellyfin-afstandsbediening inschakelen"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "Selecteer mediabron"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "Afspelen starten"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "Gecached Jellyfin-afbeeldingen:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "Ontbrekende Jellyfin-afbeeldingen:"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr ""
+"Alle Jellyfin-afbeeldingen in de cache opslaan als lokale Kodi-afbeeldingen?"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "Afbeeldingen worden in cache geplaatst"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "Afbeeldingen Cachen"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "Afbeeldingen cachen"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "Om deze functie te gebruiken, moet HTTP-control zijn ingeschakeld"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "Melding"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "Selecteer Ondertitelstream"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "Selecteer Audiostream"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "TV Series - Genres"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "TV Series - Nieuwste"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "Ververs afbeeldingen in cache"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "TV Series - Niet bekeken"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyFin moet vragen om hervatting van gedeeltelijk gespeelde items, Kodi "
+"kan dit ook vragen, dit kan een dubbele prompt veroorzaken. Wilt u de "
+"dubbele prompt verwijderen?"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "Extra Hervat Prompt Gedetecteerd"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- Aan Het Kijken"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "Films - Pagina's"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "Afleveringen - Volgende in de lijst"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "Afleveringen - Aan Het Kijken"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "Afleveringen - Recent Toegevoegd"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "TV Series - Favorieten"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "TV Series"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "Boxsets"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Enkel seizoen samenvoegen"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "Doorgaan met kijken"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "Log in met Quick Connect"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "Snel verbinden"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "Simpele nieuwe inhoudscheck"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "Gebruik gecachte widgetgegevens"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "Volgende afspelen"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "Toon speel volgende aflevering in laatste seconden"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "Filmintro's afspelen"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "Afspeelopties"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "Gegevensgrootte snelheidstest (MB)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "Verbindingssnelheidtest"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "Forceer transcode streambitsnelheid (Kbps)"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "Rechtstreeks afspelen van bestanden toestaan"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "Verberg bekeken items in lijst"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "Seizoenen"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "Label"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "Genre"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "Beoordeling"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "Toegevoegd"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "Titel"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "Jaar"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "Standaard"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "Niet ingesteld"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "Sorteren"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "Keer bekeken"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "Maximum audio kanalen"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Audio codec"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "Audio bitsnelheid (Kbps)"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "Je bent niet gemachtigd om dit item te verwijderen"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "HTTP timeout seconden"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- Favoriete collecties"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- Favorieten"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- Tags"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- Decennia"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- Jaren"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- Collecties"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "Add-on acties"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "Aangepaste widgets"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "Globale lijsten"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "Jellyfin-bibliotheken"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- Toon alles"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- A-Z"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "Films - Aanbevelingen"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "Voeg toe aan Kodi afspeellijst"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "Info"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "Cache afbeeldingen interval in minuten (0 = uitgeschakeld)"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "Verbergen"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "Ververs Jellyfin metadata"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- Pagina's"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "Verwijder gecachte servergegevens"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "Cachebestanden verwijderd"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "Resultaat cache wissen"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "Protocol"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "Gebruikersgegevens"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "Servergegevens"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "Aantal ongebruikte Jellyfin afbeeldingen:"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "Aantal ongebruikte afbeeldingen verwijderd:"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "Bestaande afbeeldingen vóór verwijderen:"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "Willekeurige films interval in minuten (0 = uitgeschakeld)"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "Systeem -"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "Altijd"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "Meer dan één"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "Nooit"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "Externe ondertitel melding"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "Vasthouden gebruikersgegevens"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "Verzoek verzenden"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "Server-URL controleren"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "Gegevenspakket ontvangen"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "Verzoek verzenden"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "Op zoek naar lokale servers"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "Server URL"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr ""
+"Kon geen verbinding maken met de URL die u heeft ingevoerd, wilt u het "
+"opnieuw proberen?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "Wilt u het opgeslagen wachtwoord verwijderen?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "Wilt u handmatig een server-url invoeren?"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "Wachtwoord verwijderen?"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "Snel opslaan van het gewisselde gebruikerswachtwoord toestaan"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "Gebruikersgegevens handmatig invoeren"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "Handmatig inloggen"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "Wil je dit wachtwoord opslaan?"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "Wachtwoord opslaan?"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- Opnames"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- Programma's"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- Kanalen"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "Volledige afbeeldingenlijst aan het opbouwen"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "Bestaande afbeeldingenlijst aan het laden"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "Externe afbeeldingenlijst aan het ophalen"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "De bestaande afbeeldingenlijst aan het verwerken"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "Kodi instellingen->Services->Toegang van afstand via HTTP toestaan"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "Ga naar serie"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- Vaak afgespeeld"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- Album artiesten"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "Muziek - Alle album artiesten"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- Recent afgespeeld"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "Gebruikersbeoordelingen toevoegen"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "Bestaande afbeeldingen ophalen"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "Gecachte afbeeldingen aan het verwijderen"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "Jellyfin server data verzoeken cachen"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "Aantal afbeeldingen uit cache verwijderd"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "Door de veranderingen moet Kodi opnieuw opstarten"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "Nieuwe content controle interval (0 = uitgeschakeld)"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "Achtergrondafbeelding update interval (0 = uitgeschakeld)"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "Groepeer films in collecties"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "Er ging iets fout tijdens het inloggen"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "Maximale afspeelwachtrijlengte"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "Willekeurig"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "Directe Mix"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "Interface-modus"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "Standaard"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "Eenvoudig"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "Volgende Herbekijken"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "Terugkijkdagen (0 = uitgeschakeld)"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "Forceer transcoderen av1"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "Samenvoegen in de plaats van vervangen (kan vertragingen veroorzaken)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "Verberg aantal items bij weergeven van titel"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " Geheel niet bekeken"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "Uit te voeren actie"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "Overslaan"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "Vragen"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "Niets doen"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "Segment Overslagen"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "Start Offset (seconden)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "Einde Offset (seconden)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "Intro Skipper"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "Krediet Skipper"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "Reclame Skipper"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "Preview Skipper"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "Samenvatting Skipper"
+
+msgctxt "#30455"
+msgid "TV Shows - Random"
+msgstr "TV-Programma's - Willekeurig"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "Alles - Willekeurig"
+
+msgctxt "#30457"
+msgid "All - Recently Added"
+msgstr "Alles - Recent Toegevoegd"
+
+msgctxt "#30458"
+msgid "All - Favorites"
+msgstr "Alles - Favorieten"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "TV Programma's per pagina"
