@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-02-26 12:54+0000\n"
+"PO-Revision-Date: 2026-03-02 15:00+0000\n"
 "Last-Translator: Pavel Miniutka <pavel.miniutka@gmail.com>\n"
 "Language-Team: Belarusian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/be/>\n"
@@ -87,3 +87,23 @@ msgstr "Імя карыстальніка:"
 msgctxt "#30025"
 msgid "Password:"
 msgstr "Пароль:"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Выдаленне"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Пацвердзіць выдаленне?"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Увага: Гэта дзеянне выдаліць медыяфайлы з сервера."
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Інтэрфейс"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Загрузка змесціва"
