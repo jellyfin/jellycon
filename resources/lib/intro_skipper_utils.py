@@ -22,7 +22,7 @@ def get_setting_skip_action(type: Literal["Commercial", "Preview", "Recap", "Out
     elif (type == "Intro"):
         return settings.getSetting("intro_skipper_action")
     return ""
-        
+
 def get_setting_skip_start_offset(type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
     settings = xbmcaddon.Addon()
     if (type == "Commercial"):
@@ -36,7 +36,7 @@ def get_setting_skip_start_offset(type: Literal["Commercial", "Preview", "Recap"
     elif (type == "Intro"):
         return settings.getSettingInt("intro_skipper_start_offset")
     return 0
-        
+
 def get_setting_skip_end_offset(type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
     settings = xbmcaddon.Addon()
     if (type == "Commercial"):
@@ -50,18 +50,18 @@ def get_setting_skip_end_offset(type: Literal["Commercial", "Preview", "Recap", 
     elif (type == "Intro"):
         return settings.getSettingInt("intro_skipper_end_offset")
     return 0
-        
-def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segments, type: Literal["Commercial", "Preview", "Recap", "Outro", "Intro"]):
+
+def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segment: dict):
     if (skip_dialog.media_id is None or skip_dialog.media_id != item_id) and item_id is not None:
         # If playback item has changed (or is new), sets its id and set media segments info
         log.debug("SkipDialogInfo : Media Id has changed to {0}, setting segments".format(item_id))
         skip_dialog.media_id = item_id
         skip_dialog.has_been_dissmissed = False
-        if segments is not None:
+        if segment is not None:
             # Find the intro and outro timings
-            start = next((segment["StartTicks"] for segment in segments if segment["Type"] == type), None)
-            end = next((segment["EndTicks"] for segment in segments if segment["Type"] == type), None)
-            
+            start = segment.get("StartTicks")
+            end = segment.get("EndTicks")
+
             # Sets timings with offsets if defined in settings
             if start is not None:
                 skip_dialog.start = start + seconds_to_ticks(get_setting_skip_start_offset(type))
@@ -69,4 +69,3 @@ def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segments, type:
             if end is not None:
                 skip_dialog.end = end - seconds_to_ticks(get_setting_skip_end_offset(type))
                 log.debug("SkipDialogInfo : Setting {0} end to {1}".format(type, skip_dialog.end))
-                
