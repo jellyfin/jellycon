@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-12 02:29+0000\n"
-"Last-Translator: aniara001 <qwert352@hotmail.com>\n"
+"PO-Revision-Date: 2026-03-17 23:08+0000\n"
+"Last-Translator: Ärik <kwakz4life@gmail.com>\n"
 "Language-Team: Swedish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sv/>\n"
 "Language: sv_se\n"
@@ -273,11 +273,11 @@ msgstr "Tvinga Transkodning"
 
 msgctxt "#30273"
 msgid "Unset Favourite"
-msgstr "Ta Bort Som Favorit"
+msgstr "Ta bort som favorit"
 
 msgctxt "#30272"
 msgid "Set Favourite"
-msgstr "Sätt Som Favorit"
+msgstr "Sätt som favorit"
 
 msgctxt "#30271"
 msgid "Mark Unwatched"
