@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-10 10:44+0000\n"
+"PO-Revision-Date: 2026-03-25 07:26+0000\n"
 "Last-Translator: Pavel Miniutka <pavel.miniutka@gmail.com>\n"
 "Language-Team: Belarusian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/be/>\n"
@@ -119,3 +119,31 @@ msgstr "Памылка"
 msgctxt "#30139"
 msgid "No Media Type Set"
 msgstr "Не зададзены тып медыя"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "Адрас выбранага сервера"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "Адрас:"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "Выбраць карыстальніка"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "Памылка URL-адраса"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "Немагчыма злучыцца з серверам"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "Тып прайгравання"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "Прайграванне"
