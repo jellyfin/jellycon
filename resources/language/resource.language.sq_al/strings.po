@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-13 11:55+0000\n"
-"Last-Translator: A Boci <ami@boci.co.uk>\n"
+"PO-Revision-Date: 2026-03-26 15:26+0000\n"
+"Last-Translator: 0xgitpushpray <jetmir@cenko.tech>\n"
 "Language-Team: Albanian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/sq/>\n"
 "Language: sq_al\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgctxt "#30001"
 msgid "Port"
@@ -58,3 +58,99 @@ msgstr "[Zbuloni serverin lokal]"
 msgctxt "#30017"
 msgid "Show connected clients"
 msgstr "Trego klientët e lidhur"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "Numri i profileve performante të kapura"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "Të dhëna per kohën e rregjistrit"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "Numri i të dhënave për t'u shfaqur në listën e filtruar"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "Formati i emrit të ngjarjes (filtruar)"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "Mbyll një instancë"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "Shfaq të gjitha instancat"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "Të detajuara/avancuara"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "Fshih detajet e episodit të papërfunduar"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "Përdoruesi:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "Fjalëkalimi:"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "Zgjedhja e miniaplikacionit"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "Aktivizo rregjistrin e detajuar (debug)"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "Përdoruesi/Fjalëkalimi i pasaktë"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "Përdoruesi nuk u gjend"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "Duke fshirë"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "Serveri duke u fshirë"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "Konfirmon fshirjen?"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "Kujdes: Ky veprim do të fshijë file-t nga serveri."
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "Ndërfaqja"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "Shërbimet"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "Duke shfaqur përmbajtjen"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "Duke marrë të dhënat"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "Kthehu pas disa sekonda"
