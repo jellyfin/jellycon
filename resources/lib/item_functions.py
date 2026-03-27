@@ -173,10 +173,10 @@ def extract_item_info(item, gui_options):
 
     if year is not None:
         item_details.year = year
-    elif not item_details.year and not prem_date:
+    elif not item_details.year and prem_date:
         item_details.year = int(prem_date[:4])
 
-    if not prem_date:
+    if prem_date:
         tokens = prem_date.split("T")
         item_details.premiere_date = tokens[0]
 
@@ -235,7 +235,7 @@ def extract_item_info(item, gui_options):
 
     # Process People
     people = item.get("People", [])
-    if not people:
+    if people:
         director = []
         writer = []
         cast = []
@@ -265,7 +265,7 @@ def extract_item_info(item, gui_options):
     # Process Studios
     studios = item.get("Studios", [])
     studio_list = []
-    if not studios:
+    if studios:
         for studio in studios:
             studio_list.append(studio.get("Name"))
     item_details.studio = studio_list
@@ -460,7 +460,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
     # add cast
     if item_details.cast:
-        video_tag.setCase(item_details.cast)
+        video_tag.setCast(item_details.cast)
 
     video_tag.setTitle(list_item_name)
     if item_details.sort_name:
