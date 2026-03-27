@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-05 12:25+0000\n"
-"Last-Translator: daryhanif <daryhanif00@gmail.com>\n"
+"PO-Revision-Date: 2026-03-28 09:26+0000\n"
+"Last-Translator: Kusuma Sukaputra <kusuma.sukaputra@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/id/>\n"
 "Language: id_id\n"
@@ -1207,7 +1207,14 @@ msgctxt "#30677"
 msgid "Recap Skipper"
 msgstr "Lewati Rekap"
 
-#, fuzzy
 msgctxt "#30457"
 msgid "All - Recently Added"
-msgstr "Semua - Baru-Baru ini ditambahkan"
+msgstr "Semua - Yang Terakhir di Tambahkan"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "Semua - Acak"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "Tayangan TV per halaman"
