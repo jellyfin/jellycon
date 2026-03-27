@@ -16,7 +16,7 @@ from .functions import play_action
 from .lazylogger import LazyLogger
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
-from .utils import get_device_id, load_user_details
+from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
@@ -33,8 +33,6 @@ class WebSocketClient(threading.Thread):
 
         self.__dict__ = self._shared_state
         self.monitor = xbmc.Monitor()
-
-        self.device_id = get_device_id()
 
         self._library_monitor = library_change_monitor
         self.websocket_error = False
@@ -264,9 +262,7 @@ class WebSocketClient(threading.Thread):
         else:
             server = server.replace('http://', 'ws://')
 
-        websocket_url = "{}/socket?deviceId={}".format(
-            server, self.device_id
-        )
+        websocket_url = "{}/socket".format(server)
         log.debug("websocket url: {0}".format(websocket_url))
 
         headers = self.api.headers
