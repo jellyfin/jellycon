@@ -466,7 +466,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             actor = xbmc.Actor(
                 name=person.get("name"),
                 role=person.get("role"),
-                thumbnail = person.get("thumbnail"),
+                thumbnail=person.get("thumbnail"),
             )
             cast.append(actor)
         video_tag.setCast(cast)
