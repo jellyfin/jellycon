@@ -460,7 +460,16 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
 
     # add cast
     if item_details.cast:
-        video_tag.setCast(item_details.cast)
+        cast = []
+        # Has to be done at runtime because Actor objects cannot be pickled/cached
+        for person in item_details.cast:
+            actor = xbmc.Actor(
+                name=person.get("name"),
+                role=person.get("role"),
+                thumbnail = person.get("thumbnail"),
+            )
+            cast.append(actor)
+        video_tag.setCast(cast)
 
     video_tag.setTitle(list_item_name)
     if item_details.sort_name:
