@@ -243,7 +243,7 @@ class WebSocketClient(threading.Thread):
             time.sleep(30)
             self.websocket_error = False
         log.debug("Connected")
-        self.post_capabilities()
+        self.api.post_capabilities()
         self.send_keepalive(ws)
 
     def on_error(self, ws, error):
@@ -300,10 +300,6 @@ class WebSocketClient(threading.Thread):
         if self._client is not None:
             self._client.close()
         log.debug("Stopping WebSocket (stop_client called)")
-
-    def post_capabilities(self):
-
-        self.api.post_capabilities()
 
     def send_keepalive(self, ws):
         # Stop the keepalive cycle if an error has been detected
