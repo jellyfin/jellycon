@@ -113,11 +113,17 @@ def show_server_sessions():
         user_session_details += "{}\n".format(play_method)
         user_session_details += "{}\n".format(transcoding_details)
 
-        info_labels = {}
-        info_labels["duration"] = str(runtime / 10000000)
-        info_labels["mediatype"] = "movie"
-        info_labels["plot"] = user_session_details
-        list_item.setInfo('video', info_labels)
+        if hasattr(list_item, 'getVideoInfoTag'):
+            video_tag = list_item.getVideoInfoTag()
+            video_tag.setDuration(int(runtime / 10000000))
+            video_tag.setMediaType("movie")
+            video_tag.setPlot(user_session_details)
+        else:
+            info_labels = {}
+            info_labels["duration"] = str(runtime / 10000000)
+            info_labels["mediatype"] = "movie"
+            info_labels["plot"] = user_session_details
+            list_item.setInfo('video', info_labels)
 
         list_item.setProperty('TotalTime', str(runtime / 10000000))
         list_item.setProperty('ResumeTime', str(position_ticks / 10000000))

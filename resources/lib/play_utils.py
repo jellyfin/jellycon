@@ -728,48 +728,79 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
 
     if item_type == "audio":
 
-        details = {
-            'title': title,
-            'mediatype': mediatype,
-            'artist': "Unknown Artist",
-            'album': "Unknown Album"
-        }
         artist = result.get("Artists", [])
-        if artist:
-            details['artist'] = artist[0]
         track = result.get("IndexNumber")
-        if track:
-            details['tracknumber'] = track
         album = result.get("Album")
-        if album:
-            details['album'] = album
 
-        list_item.setInfo("Music", infoLabels=details)
+        if hasattr(list_item, 'getMusicInfoTag'):
+            music_tag = list_item.getMusicInfoTag()
+            music_tag.setTitle(title)
+            music_tag.setMediaType(mediatype)
+            music_tag.setAlbum(album if album else "Unknown Album")
+            if artist:
+                music_tag.setArtist([artist[0]])
+            else:
+                music_tag.setArtist(["Unknown Artist"])
+            if track:
+                music_tag.setTrack(track)
+        else:
+            details = {
+                'title': title,
+                'mediatype': mediatype,
+                'artist': artist[0] if artist else "Unknown Artist",
+                'album': album if album else "Unknown Album"
+            }
+            if track:
+                details['tracknumber'] = track
+
+            list_item.setInfo("Music", infoLabels=details)
 
     else:
-
-        details = {
-            'title': title,
-            'plot': result.get("Overview"),
-            'mediatype': mediatype
-        }
-
         tv_show_name = result.get("SeriesName")
-        if tv_show_name is not None:
-            details['tvshowtitle'] = tv_show_name
+        plot = result.get("Overview")
 
-        if item_type == "episode":
-            episode_number = result.get("IndexNumber", -1)
-            details["episode"] = str(episode_number)
-            season_number = result.get("ParentIndexNumber", -1)
-            details["season"] = str(season_number)
-        elif item_type == "season":
-            season_number = result.get("IndexNumber", -1)
-            details["season"] = str(season_number)
+        if hasattr(list_item, 'getVideoInfoTag'):
+            video_tag = list_item.getVideoInfoTag()
+            video_tag.setTitle(title)
+            video_tag.setMediaType(mediatype)
+            if plot:
+                video_tag.setPlot(plot)
+            if tv_show_name:
+                video_tag.setTvShowTitle(tv_show_name)
 
-        details["plotoutline"] = "jellyfin_id:%s" % (item_id,)
+            if item_type == "episode":
+                episode_number = result.get("IndexNumber", -1)
+                video_tag.setEpisode(episode_number)
+                season_number = result.get("ParentIndexNumber", -1)
+                video_tag.setSeason(season_number)
+            elif item_type == "season":
+                season_number = result.get("IndexNumber", -1)
+                video_tag.setSeason(season_number)
 
-        list_item.setInfo("Video", infoLabels=details)
+            video_tag.setPlotOutline("jellyfin_id:%s" % (item_id,))
+        else:
+            details = {
+                'title': title,
+                'mediatype': mediatype
+            }
+            if plot:
+                details['plot'] = plot
+
+            if tv_show_name is not None:
+                details['tvshowtitle'] = tv_show_name
+
+            if item_type == "episode":
+                episode_number = result.get("IndexNumber", -1)
+                details["episode"] = str(episode_number)
+                season_number = result.get("ParentIndexNumber", -1)
+                details["season"] = str(season_number)
+            elif item_type == "season":
+                season_number = result.get("IndexNumber", -1)
+                details["season"] = str(season_number)
+
+            details["plotoutline"] = "jellyfin_id:%s" % (item_id,)
+
+            list_item.setInfo("Video", infoLabels=details)
 
     return list_item
 

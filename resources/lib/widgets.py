@@ -345,9 +345,13 @@ def get_widget_content_cast(handle, params):
                 art_links["poster"] = person_thumbnail
                 list_item.setArt(art_links)
 
-            labels = {}
-            labels["mediatype"] = "artist"
-            list_item.setInfo(type="music", infoLabels=labels)
+            if hasattr(list_item, 'getMusicInfoTag'):
+                music_tag = list_item.getMusicInfoTag()
+                music_tag.setMediaType("artist")
+            else:
+                labels = {}
+                labels["mediatype"] = "artist"
+                list_item.setInfo(type="music", infoLabels=labels)
 
             if person_role:
                 list_item.setLabel2(person_role)
