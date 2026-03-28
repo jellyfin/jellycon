@@ -177,10 +177,10 @@ def extract_item_info(item, gui_options):
 
     if year is not None:
         item_details.year = year
-    elif not item_details.year and not prem_date:
+    elif not item_details.year and prem_date:
         item_details.year = int(prem_date[:4])
 
-    if not prem_date:
+    if prem_date:
         tokens = prem_date.split("T")
         item_details.premiere_date = tokens[0]
 
