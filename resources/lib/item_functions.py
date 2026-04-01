@@ -133,7 +133,7 @@ def extract_item_info(item, gui_options):
         item_details.album_name = item.get("Album")
         artists = item.get("Artists", [])
         if artists:
-            item_details.song_artist = [ensure_text(str(a)) for a in artists if a]
+            item_details.song_artist = [str(a) for a in artists if a]
 
     elif item_details.item_type == "MusicAlbum":
         item_details.album_artist = item.get("AlbumArtist")
@@ -152,7 +152,7 @@ def extract_item_info(item, gui_options):
         for tag_info in item.get("TagItems"):
             val = tag_info.get("Name")
             if val is not None:
-                item_details.tags.append(ensure_text(str(val)))
+                item_details.tags.append(str(val))
 
     # set the item name
     # override with name format string from request
@@ -248,11 +248,11 @@ def extract_item_info(item, gui_options):
             if person_type == "Director":
                 val = person.get("Name")
                 if val is not None: 
-                    director.append(ensure_text(str(val)))
+                    director.append(str(val))
             elif person_type == "Writing":
                 val = person.get("Name")
                 if val is not None: 
-                    writer.append(ensure_text(str(val)))
+                    writer.append(str(val))
             elif person_type == "Actor":
                 person_name = person.get("Name")
                 if person_name is None:
@@ -268,7 +268,7 @@ def extract_item_info(item, gui_options):
                                                  server=gui_options["server"])
                 else:
                     person_thumbnail = ""
-                person_dict = {"name": ensure_text(str(person_name)), "role": ensure_text(str(person_role)), "thumbnail": person_thumbnail}
+                person_dict = {"name": str(person_name), "role": str(person_role), "thumbnail": person_thumbnail}
                 cast.append(person_dict)
         item_details.director = director
         item_details.writer = writer
@@ -281,18 +281,18 @@ def extract_item_info(item, gui_options):
         for studio in studios:
             val = studio.get("Name")
             if val is not None:
-                studio_list.append(ensure_text(str(val)))
+                studio_list.append(str(val))
     item_details.studio = studio_list
 
     # production location
     locations = item.get("ProductionLocations", [])
     if locations:
-        item_details.production_location = [ensure_text(str(loc)) for loc in locations if loc is not None]
+        item_details.production_location = [str(loc) for loc in locations if loc is not None]
 
     # Process Genres
     genres = item.get("Genres", [])
     if genres:
-        item_details.genres = [ensure_text(str(g)) for g in genres if g is not None]
+        item_details.genres = [str(g) for g in genres if g is not None]
 
     # Process UserData
     user_data = item.get("UserData", {})
