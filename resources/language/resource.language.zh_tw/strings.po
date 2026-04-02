@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-03-17 13:38+0000\n"
-"Last-Translator: RainoutOvO <rainout@163.com>\n"
-"Language-Team: Chinese (Traditional) <https://translate.jellyfin.org/"
-"projects/jellycon/jellycon/zh_Hant/>\n"
+"PO-Revision-Date: 2026-04-02 13:13+0000\n"
+"Last-Translator: Lofuuzi <lather0519@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translate.jellyfin.org/projects/jellycon/jellycon/zh_Hant/>\n"
 "Language: zh_tw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4.2\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgctxt "#30207"
 msgid "Playback"
@@ -33,7 +33,7 @@ msgstr "選擇使用者"
 
 msgctxt "#30167"
 msgid "Selected Server Address"
-msgstr "選擇伺服器位置"
+msgstr "選擇伺服器位址"
 
 msgctxt "#30166"
 msgid "Select Server"
@@ -41,7 +41,7 @@ msgstr "選擇伺服器"
 
 msgctxt "#30135"
 msgid "Error"
-msgstr "錯誤"
+msgstr "發生錯誤"
 
 msgctxt "#30063"
 msgid "N/A"
@@ -97,7 +97,7 @@ msgstr "使用者名稱"
 
 msgctxt "#30001"
 msgid "Port"
-msgstr "端口"
+msgstr "埠口"
 
 msgctxt "#30000"
 msgid "Host"
@@ -133,7 +133,7 @@ msgstr "隱藏未觀看的劇集詳情"
 
 msgctxt "#30010"
 msgid "Number of performance profiles to capture"
-msgstr "要捕獲的性能配置文件的數量"
+msgstr "要擷取的效能設定檔數量"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
@@ -265,19 +265,19 @@ msgstr "人員"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "小工具項目選擇操作"
+msgstr "小工具項目選取動作"
 
 msgctxt "#30027"
 msgid "Enable debug logging"
-msgstr "啟用調試日誌"
+msgstr "啟用除錯記錄"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
-msgstr "用戶名/密碼不正確"
+msgstr "使用者名稱／密碼不正確"
 
 msgctxt "#30045"
 msgid "Username not found"
-msgstr "用戶名未找到"
+msgstr "使用者名稱未找到"
 
 msgctxt "#30052"
 msgid "Deleting"
@@ -289,7 +289,7 @@ msgstr "正在等待伺服器刪除"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
-msgstr "警告：此操作將刪除伺服器中的媒體文件。"
+msgstr "警告：此操作將刪除伺服器中的媒體檔案。"
 
 msgctxt "#30112"
 msgid "Loading Content"
@@ -301,15 +301,15 @@ msgstr "獲取數據"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "跳回秒"
+msgstr "倒退秒數"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "為姓名添加未觀看的計數"
+msgstr "為名稱加入未觀看的計數"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "將簡歷百分比添加到名稱"
+msgstr "在名稱加入續看進度百分比"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -317,11 +317,11 @@ msgstr "顯示載入進度"
 
 msgctxt "#30121"
 msgid "On resume"
-msgstr "恢復中"
+msgstr "續看時"
 
 msgctxt "#30125"
 msgid "Done"
-msgstr "完畢"
+msgstr "完成"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -329,11 +329,11 @@ msgstr "無媒體類型集"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "如果字幕可用，添加 (cc)"
+msgstr "如有字幕則加上 (cc)"
 
 msgctxt "#30181"
 msgid "Include plot"
-msgstr "包括情節"
+msgstr "包含劇情簡介"
 
 msgctxt "#30182"
 msgid "Include media stream info"
@@ -661,11 +661,11 @@ msgstr "隨機"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "處理項目："
+msgstr "正在處理項目："
 
 msgctxt "#30169"
 msgid "Address: "
-msgstr "地址："
+msgstr "位址："
 
 msgctxt "#30219"
 msgid " - Prompt before play"
