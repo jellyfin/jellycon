@@ -150,9 +150,8 @@ def extract_item_info(item, gui_options):
     item_details.tags = []
     if item.get("TagItems", []):
         for tag_info in item.get("TagItems"):
-            val = tag_info.get("Name")
-            if val is not None:
-                item_details.tags.append(val)
+            if tag_info.get("Name") is not None:
+                item_details.tags.append(tag_info.get("Name"))
 
     # set the item name
     # override with name format string from request
@@ -246,13 +245,11 @@ def extract_item_info(item, gui_options):
         for person in people:
             person_type = person.get("Type")
             if person_type == "Director":
-                val = person.get("Name")
-                if val is not None: 
-                    director.append(val)
+                if person.get("Name") is not None:
+                    director.append(person.get("Name"))
             elif person_type == "Writing":
-                val = person.get("Name")
-                if val is not None: 
-                    writer.append(val)
+                if person.get("Name") is not None:
+                    writer.append(person.get("Name"))
             elif person_type == "Actor":
                 person_name = person.get("Name")
                 if person_name is None:
@@ -279,9 +276,8 @@ def extract_item_info(item, gui_options):
     studio_list = []
     if studios:
         for studio in studios:
-            val = studio.get("Name")
-            if val is not None:
-                studio_list.append(val)
+            if studio.get("Name") is not None:
+                studio_list.append(studio.get("Name"))
     item_details.studio = studio_list
 
     # production location
