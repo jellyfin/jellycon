@@ -150,7 +150,7 @@ def extract_item_info(item, gui_options):
     item_details.tags = []
     if item.get("TagItems", []):
         for tag_info in item.get("TagItems"):
-            if tag_info.get("Name") is not None:
+            if tag_info.get("Name"):
                 item_details.tags.append(tag_info.get("Name"))
 
     # set the item name
@@ -245,10 +245,10 @@ def extract_item_info(item, gui_options):
         for person in people:
             person_type = person.get("Type")
             if person_type == "Director":
-                if person.get("Name") is not None:
+                if person.get("Name"):
                     director.append(person.get("Name"))
             elif person_type == "Writing":
-                if person.get("Name") is not None:
+                if person.get("Name"):
                     writer.append(person.get("Name"))
             elif person_type == "Actor":
                 person_name = person.get("Name")
@@ -276,7 +276,7 @@ def extract_item_info(item, gui_options):
     studio_list = []
     if studios:
         for studio in studios:
-            if studio.get("Name") is not None:
+            if studio.get("Name"):
                 studio_list.append(studio.get("Name"))
     item_details.studio = studio_list
 

@@ -736,7 +736,7 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
             music_tag = list_item.getMusicInfoTag()
             music_tag.setTitle(title)
             music_tag.setMediaType(mediatype)
-            music_tag.setAlbum(album if album else "Unknown Album")
+            music_tag.setAlbum(album or "Unknown Album")
             if artist:
                 music_tag.setArtist([artist[0]])
             else:
@@ -748,7 +748,7 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
                 'title': title,
                 'mediatype': mediatype,
                 'artist': artist[0] if artist else "Unknown Artist",
-                'album': album if album else "Unknown Album"
+                'album': album or "Unknown Album"
             }
             if track:
                 details['tracknumber'] = track
