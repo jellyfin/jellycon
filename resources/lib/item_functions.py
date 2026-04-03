@@ -538,6 +538,14 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         video_tag.setTvShowTitle(item_details.series_name)
         video_tag.setTvShowStatus(item_details.status)
 
+    elif item_type == "musicvideo":
+        video_tag.setTrackNumber(item_details.track_number)
+        if item_details.album_artist:
+            video_tag.setArtists(item_details.album_artist)
+        elif item_details.song_artist:
+            video_tag.setArtists([item_details.song_artist])
+        video_tag.setAlbum(item_details.album_name)
+
     if is_video:
 
         video_tag.setTagLine(item_details.tagline)
@@ -588,12 +596,13 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         video_tag.setRating(item_details.community_rating, 0, "imdb", True)
 
     else:
-        video_tag.setTrackNumber(item_details.track_number)
+        music_tag = list_item.getMusicInfoTag()
+        music_tag.setTrack(item_details.track_number)
         if item_details.album_artist:
-            video_tag.setArtists([item_details.album_artist])
+            music_tag.setArtist(item_details.album_artist[0])
         elif item_details.song_artist:
-            video_tag.setArtists(item_details.song_artist)
-        video_tag.setAlbum(item_details.album_name)
+            music_tag.setArtist(item_details.song_artist)
+        music_tag.setAlbum(item_details.album_name)
 
     list_item.setContentLookup(False)
     item_properties["ItemType"] = item_details.item_type
