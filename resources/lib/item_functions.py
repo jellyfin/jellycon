@@ -601,7 +601,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         if item_details.album_artist:
             music_tag.setArtist(item_details.album_artist[0])
         elif item_details.song_artist:
-            music_tag.setArtist(item_details.song_artist)
+            music_tag.setArtist(item_details.song_artist[0])
         music_tag.setAlbum(item_details.album_name)
 
     list_item.setContentLookup(False)
