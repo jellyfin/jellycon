@@ -133,7 +133,7 @@ def extract_item_info(item, gui_options):
         item_details.album_name = item.get("Album")
         artists = item.get("Artists", [])
         if artists:
-            item_details.song_artist = [a for a in artists if a]
+            item_details.song_artist = artists
 
     elif item_details.item_type == "MusicAlbum":
         item_details.album_artist = item.get("AlbumArtist")
@@ -283,12 +283,12 @@ def extract_item_info(item, gui_options):
     # production location
     locations = item.get("ProductionLocations", [])
     if locations:
-        item_details.production_location = [loc for loc in locations if loc is not None]
+        item_details.production_location = locations
 
     # Process Genres
     genres = item.get("Genres", [])
     if genres:
-        item_details.genres = [g for g in genres if g is not None]
+        item_details.genres = genres
 
     # Process UserData
     user_data = item.get("UserData", {})
