@@ -16,7 +16,7 @@ from .functions import play_action
 from .lazylogger import LazyLogger
 from .jsonrpc import JsonRpc
 from .kodi_utils import HomeWindow
-from .utils import get_device_id, load_user_details
+from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
@@ -34,10 +34,16 @@ class WebSocketClient(threading.Thread):
         self.__dict__ = self._shared_state
         self.monitor = xbmc.Monitor()
 
-        self.device_id = get_device_id()
-
         self._library_monitor = library_change_monitor
         self.websocket_error = False
+        settings = xbmcaddon.Addon()
+        user_details = load_user_details()
+
+        self.api = API(
+            settings.getSetting('server_address'),
+            user_details.get('user_id'),
+            user_details.get('token')
+        )
 
         threading.Thread.__init__(self)
 
@@ -235,7 +241,7 @@ class WebSocketClient(threading.Thread):
             time.sleep(30)
             self.websocket_error = False
         log.debug("Connected")
-        self.post_capabilities()
+        self.api.post_capabilities()
         self.send_keepalive(ws)
 
     def on_error(self, ws, error):
@@ -244,11 +250,8 @@ class WebSocketClient(threading.Thread):
 
     def run(self):
 
-        token = None
-        while token is None or token == "":
-            user_details = load_user_details()
-            token = user_details.get('token')
-            if self.monitor.waitForAbort(10):
+        while self.api.token is None or self.api.token == "":
+            if self.monitor.waitForAbort(11):
                 return
 
         # Get the appropriate prefix for the websocket
@@ -259,13 +262,13 @@ class WebSocketClient(threading.Thread):
         else:
             server = server.replace('http://', 'ws://')
 
-        websocket_url = "{}/socket?ApiKey={}&deviceId={}".format(
-            server, token, self.device_id
-        )
+        websocket_url = "{}/socket".format(server)
         log.debug("websocket url: {0}".format(websocket_url))
 
+        headers = self.api.headers
         self._client = websocket.WebSocketApp(
             websocket_url,
+            header=headers,
             on_open=lambda ws: self.on_open(ws),
             on_message=lambda ws, message: self.on_message(ws, message),
             on_error=lambda ws, error: self.on_error(ws, error))
@@ -293,19 +296,6 @@ class WebSocketClient(threading.Thread):
         if self._client is not None:
             self._client.close()
         log.debug("Stopping WebSocket (stop_client called)")
-
-    def post_capabilities(self):
-
-        settings = xbmcaddon.Addon()
-        user_details = load_user_details()
-
-        api = API(
-            settings.getSetting('server_address'),
-            user_details.get('user_id'),
-            user_details.get('token')
-        )
-
-        api.post_capabilities()
 
     def send_keepalive(self, ws):
         # Stop the keepalive cycle if an error has been detected
