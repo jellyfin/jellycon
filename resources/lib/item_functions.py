@@ -433,7 +433,12 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
             item_details.plot = time_info
 
     list_item = xbmcgui.ListItem(list_item_name, offscreen=True)
-    video_tag = list_item.getVideoInfoTag()
+    if hasattr(list_item, "getVideoInfoTag"):
+        # Kodi 20 and newer
+        video_tag = list_item.getVideoInfoTag()
+    else:
+        # Kodi 19
+        video_tag = False
 
     item_properties = {}
 
@@ -444,10 +449,14 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     item_properties["IsPlayable"] = 'false'
 
     if not folder and is_video:
-        video_tag.setResumePoint(
-            item_details.resume_time,
-            item_details.duration
-        )
+        if video_tag:
+            video_tag.setResumePoint(
+                item_details.resume_time,
+                item_details.duration
+            )
+        else:
+            item_properties["TotalTime"] = str(item_details.duration)
+            item_properties["ResumeTime"] = str(item_details.resume_time)
 
     list_item.setArt(item_details.art)
 
@@ -458,40 +467,57 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     if item_details.series_id:
         item_properties["series_id"] = item_details.series_id
 
-    # add cast
-    if item_details.cast:
-        cast = []
-        # Has to be done at runtime because Actor objects cannot be pickled/cached
-        for person in item_details.cast:
-            actor = xbmc.Actor(
-                name=person.get("name"),
-                role=person.get("role"),
-                thumbnail=person.get("thumbnail"),
-            )
-            cast.append(actor)
-        video_tag.setCast(cast)
+    # Stores info for legacy metadata
+    info_labels = {}
 
-    video_tag.setTitle(list_item_name)
-    if item_details.sort_name:
-        video_tag.setSortTitle(item_details.sort_name)
+    if video_tag:
+        # Kodi 20 and newer
+        video_tag.setTitle(list_item_name)
+        if item_details.cast:
+            cast = []
+            # Has to be done at runtime because Actor objects cannot be pickled/cached
+            for person in item_details.cast:
+                actor = xbmc.Actor(
+                    name=person.get("name"),
+                    role=person.get("role"),
+                    thumbnail=person.get("thumbnail"),
+                )
+                cast.append(actor)
+            video_tag.setCast(cast)
+
+        if item_details.sort_name:
+            video_tag.setSortTitle(item_details.sort_name)
+        else:
+            video_tag.setSortTitle(list_item_name)
+        video_tag.setDuration(round(item_details.duration))
+        video_tag.setPlaycount(item_details.play_count)
+        if item_details.favorite == 'true':
+            video_tag.setTop250(1)
+        if item_details.year:
+            video_tag.setYear(item_details.year)
+        if item_details.genres:
+            video_tag.setGenres(item_details.genres)
     else:
-        video_tag.setSortTitle(list_item_name)
+        # Kodi 19
+        info_labels["title"] = list_item_name
+        if item_details.cast:
+            list_item.setCast(item_details.cast)
+        if item_details.sort_name:
+            info_labels["sorttitle"] = item_details.sort_name
+        else:
+            info_labels["sorttitle"] = list_item_name
+        info_labels["duration"] = item_details.duration
+        info_labels["playcount"] = item_details.play_count
+        if item_details.favorite == 'true':
+            info_labels["top250"] = "1"
 
-    video_tag.setDuration(round(item_details.duration))
-    video_tag.setPlaycount(item_details.play_count)
-    if item_details.favorite == 'true':
-        video_tag.setTop250(1)
-
-    if item_details.year:
-        video_tag.setYear(item_details.year)
-
-    if item_details.genres:
-        genres_list = []
-        for genre in item_details.genres:
-            genres_list.append(quote(genre.encode('utf8')))
-        item_properties["genres"] = quote("|".join(genres_list))
-
-        video_tag.setGenres(item_details.genres)
+        info_labels["rating"] = item_details.rating
+        info_labels["year"] = item_details.year
+        if item_details.genres:
+            genres_list = []
+            for genre in item_details.genres:
+                genres_list.append(quote(genre.encode('utf8')))
+            item_properties["genres"] = quote("|".join(genres_list))
 
     mediatype = 'video'
 
@@ -514,95 +540,181 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     elif item_type == 'musicvideo':
         mediatype = 'musicvideo'
 
-    video_tag.setMediaType(mediatype)
+    if video_tag:
+        # Kodi 20 and newer
+        video_tag.setMediaType(mediatype)
 
-    if item_type == 'episode':
-        video_tag.setEpisode(item_details.episode_number)
-        video_tag.setSeason(item_details.season_number)
-        video_tag.setSortEpisode(item_details.episode_sort_number)
-        video_tag.setSortSeason(item_details.season_sort_number)
-        video_tag.setTvShowTitle(item_details.series_name)
-        if item_details.season_number == 0:
-            item_properties["IsSpecial"] = "true"
+        if item_type == 'episode':
+            video_tag.setEpisode(item_details.episode_number)
+            video_tag.setSeason(item_details.season_number)
+            video_tag.setSortEpisode(item_details.episode_sort_number)
+            video_tag.setSortSeason(item_details.season_sort_number)
+            video_tag.setTvShowTitle(item_details.series_name)
+            if item_details.season_number == 0:
+                item_properties["IsSpecial"] = "true"
 
-    elif item_type == 'season':
-        video_tag.setSeason(item_details.season_number)
-        video_tag.setEpisode(item_details.total_episodes)
-        video_tag.setTvShowTitle(item_details.series_name)
-        if item_details.season_number == 0:
-            item_properties["IsSpecial"] = "true"
+        elif item_type == 'season':
+            video_tag.setSeason(item_details.season_number)
+            video_tag.setEpisode(item_details.total_episodes)
+            video_tag.setTvShowTitle(item_details.series_name)
+            if item_details.season_number == 0:
+                item_properties["IsSpecial"] = "true"
 
-    elif item_type == "series":
-        video_tag.setSeason(item_details.total_seasons)
-        video_tag.setEpisode(item_details.total_episodes)
-        video_tag.setTvShowTitle(item_details.series_name)
-        video_tag.setTvShowStatus(item_details.status)
+        elif item_type == "series":
+            video_tag.setSeason(item_details.total_seasons)
+            video_tag.setEpisode(item_details.total_episodes)
+            video_tag.setTvShowTitle(item_details.series_name)
+            video_tag.setTvShowStatus(item_details.status)
 
-    elif item_type == "musicvideo":
-        video_tag.setTrackNumber(item_details.track_number)
-        if item_details.album_artist:
-            video_tag.setArtists(item_details.album_artist)
-        elif item_details.song_artist:
-            video_tag.setArtists([item_details.song_artist])
-        video_tag.setAlbum(item_details.album_name)
+        elif item_type == "musicvideo":
+            video_tag.setTrackNumber(item_details.track_number)
+            if item_details.album_artist:
+                video_tag.setArtists(item_details.album_artist)
+            elif item_details.song_artist:
+                video_tag.setArtists([item_details.song_artist])
+            video_tag.setAlbum(item_details.album_name)
 
-    if is_video:
+        if is_video:
 
-        video_tag.setTagLine(item_details.tagline)
-        video_tag.setStudios(item_details.studio)
-        video_tag.setPremiered(item_details.premiere_date)
-        video_tag.setPlot(item_details.plot)
-        video_tag.setDirectors(item_details.director)
-        video_tag.setWriters(item_details.writer)
-        video_tag.setDateAdded(item_details.date_added)
-        video_tag.setCountries(item_details.production_location)
-        video_tag.setMpaa(item_details.mpaa)
-        video_tag.setTags(item_details.tags)
+            video_tag.setTagLine(item_details.tagline)
+            video_tag.setStudios(item_details.studio)
+            video_tag.setPremiered(item_details.premiere_date)
+            video_tag.setPlot(item_details.plot)
+            video_tag.setDirectors(item_details.director)
+            video_tag.setWriters(item_details.writer)
+            video_tag.setDateAdded(item_details.date_added)
+            video_tag.setCountries(item_details.production_location)
+            video_tag.setMpaa(item_details.mpaa)
+            video_tag.setTags(item_details.tags)
 
-        if display_options["addUserRatings"]:
-            video_tag.setUserRating(round(item_details.critic_rating))
+            if display_options["addUserRatings"]:
+                video_tag.setUserRating(round(item_details.critic_rating))
 
-        if item_type in ('movie', 'series'):
-            video_tag.setTrailer("plugin://plugin.video.jellycon?mode=playTrailer&id=" + item_details.id)
+            if item_type in ('movie', 'series'):
+                video_tag.setTrailer("plugin://plugin.video.jellycon?mode=playTrailer&id=" + item_details.id)
 
-        if item_details.media_streams is not None:
-            for stream in item_details.media_streams:
-                if stream["type"] == "video":
-                    stream_details = xbmc.VideoStreamDetail(
-                        duration=round(item_details.duration),
-                        aspect=stream["apect_ratio"],
-                        codec=stream["codec"],
-                        width=stream["width"],
-                        height=stream["height"]
-                    )
-                    video_tag.addVideoStream(stream_details)
-                elif stream["type"] == "audio":
-                    stream_details = xbmc.AudioStreamDetail(
-                        codec=stream["codec"],
-                        channels=stream["channels"],
-                        language=stream["language"]
-                    )
-                    video_tag.addAudioStream(stream_details)
-                elif stream["type"] == "sub":
-                    stream_details = xbmc.SubtitleStreamDetail(
-                        language=stream["language"]
-                    )
-                    video_tag.addSubtitleStream(stream_details)
+            if item_details.media_streams is not None:
+                for stream in item_details.media_streams:
+                    if stream["type"] == "video":
+                        stream_details = xbmc.VideoStreamDetail(
+                            duration=round(item_details.duration),
+                            aspect=stream["apect_ratio"],
+                            codec=stream["codec"],
+                            width=stream["width"],
+                            height=stream["height"]
+                        )
+                        video_tag.addVideoStream(stream_details)
+                    elif stream["type"] == "audio":
+                        stream_details = xbmc.AudioStreamDetail(
+                            codec=stream["codec"],
+                            channels=stream["channels"],
+                            language=stream["language"]
+                        )
+                        video_tag.addAudioStream(stream_details)
+                    elif stream["type"] == "sub":
+                        stream_details = xbmc.SubtitleStreamDetail(
+                            language=stream["language"]
+                        )
+                        video_tag.addSubtitleStream(stream_details)
 
-        item_properties["TotalSeasons"] = str(item_details.total_seasons)
-        item_properties["TotalEpisodes"] = str(item_details.total_episodes)
-        item_properties["NumEpisodes"] = str(item_details.number_episodes)
+            item_properties["TotalSeasons"] = str(item_details.total_seasons)
+            item_properties["TotalEpisodes"] = str(item_details.total_episodes)
+            item_properties["NumEpisodes"] = str(item_details.number_episodes)
 
-        video_tag.setRating(item_details.community_rating, 0, "imdb", True)
+            video_tag.setRating(item_details.community_rating, 0, "imdb", True)
 
+        else:
+            # Non video, must be music related
+            music_tag = list_item.getMusicInfoTag()
+            music_tag.setTrack(item_details.track_number)
+            if item_details.album_artist:
+                music_tag.setArtist(item_details.album_artist[0])
+            elif item_details.song_artist:
+                music_tag.setArtist(item_details.song_artist[0])
+            music_tag.setAlbum(item_details.album_name)
     else:
-        music_tag = list_item.getMusicInfoTag()
-        music_tag.setTrack(item_details.track_number)
-        if item_details.album_artist:
-            music_tag.setArtist(item_details.album_artist[0])
-        elif item_details.song_artist:
-            music_tag.setArtist(item_details.song_artist[0])
-        music_tag.setAlbum(item_details.album_name)
+        # Kodi 19
+        info_labels["mediatype"] = mediatype
+
+        if item_type == 'episode':
+            info_labels["episode"] = item_details.episode_number
+            info_labels["season"] = item_details.season_number
+            info_labels["sortseason"] = item_details.season_sort_number
+            info_labels["sortepisode"] = item_details.episode_sort_number
+            info_labels["tvshowtitle"] = item_details.series_name
+            if item_details.season_number == 0:
+                item_properties["IsSpecial"] = "true"
+
+        elif item_type == 'season':
+            info_labels["season"] = item_details.season_number
+            info_labels["episode"] = item_details.total_episodes
+            info_labels["tvshowtitle"] = item_details.series_name
+            if item_details.season_number == 0:
+                item_properties["IsSpecial"] = "true"
+
+        elif item_type == "series":
+            info_labels["episode"] = item_details.total_episodes
+            info_labels["season"] = item_details.total_seasons
+            info_labels["status"] = item_details.status
+            info_labels["tvshowtitle"] = item_details.name
+
+        if is_video:
+
+            info_labels["Overlay"] = item_details.overlay
+            info_labels["tagline"] = item_details.tagline
+            info_labels["studio"] = item_details.studio
+            info_labels["premiered"] = item_details.premiere_date
+            info_labels["plot"] = item_details.plot
+            info_labels["director"] = item_details.director
+            info_labels["writer"] = item_details.writer
+            info_labels["dateadded"] = item_details.date_added
+            info_labels["country"] = item_details.production_location
+            info_labels["mpaa"] = item_details.mpaa
+            info_labels["tag"] = item_details.tags
+
+            if display_options["addUserRatings"]:
+                info_labels["userrating"] = item_details.critic_rating
+
+            if item_type in ('movie', 'series'):
+                info_labels["trailer"] = "plugin://plugin.video.jellycon?mode=playTrailer&id=" + item_details.id
+
+            list_item.setInfo('video', info_labels)
+
+            if item_details.media_streams is not None:
+                for stream in item_details.media_streams:
+                    if stream["type"] == "video":
+                        list_item.addStreamInfo('video',
+                                                {'duration': item_details.duration,
+                                                 'aspect': stream["apect_ratio"],
+                                                 'codec': stream["codec"],
+                                                 'width': stream["width"],
+                                                 'height': stream["height"]})
+                    elif stream["type"] == "audio":
+                        list_item.addStreamInfo('audio',
+                                                {'codec': stream["codec"],
+                                                 'channels': stream["channels"],
+                                                 'language': stream["language"]})
+                    elif stream["type"] == "sub":
+                        list_item.addStreamInfo('subtitle',
+                                                {'language': stream["language"]})
+
+            item_properties["TotalSeasons"] = str(item_details.total_seasons)
+            item_properties["TotalEpisodes"] = str(item_details.total_episodes)
+            item_properties["NumEpisodes"] = str(item_details.number_episodes)
+
+            list_item.setRating("imdb", item_details.community_rating, 0, True)
+            item_properties["TotalTime"] = str(item_details.duration)
+
+        else:
+            # Non video, must be music related
+            info_labels["tracknumber"] = item_details.track_number
+            if item_details.album_artist:
+                info_labels["artist"] = item_details.album_artist
+            elif item_details.song_artist:
+                info_labels["artist"] = item_details.song_artist
+            info_labels["album"] = item_details.album_name
+
+            list_item.setInfo('music', info_labels)
 
     list_item.setContentLookup(False)
     item_properties["ItemType"] = item_details.item_type
