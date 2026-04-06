@@ -32,7 +32,7 @@ def show_server_sessions():
 
     url = "/Sessions"
     results = api.get(url)
-    log.debug("session_info: {0}".format(results))
+    log.debug("session_info: %s", results)
 
     if results is None:
         return

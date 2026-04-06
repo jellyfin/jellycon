@@ -29,7 +29,7 @@ class ActionAutoClose(threading.Thread):
         log.debug("ActionAutoClose Running")
         while not xbmc.Monitor().abortRequested() and not self.stop_thread:
             time_since_last = time.time() - self.last_interaction
-            log.debug("ActionAutoClose time_since_last : {0}".format(time_since_last))
+            log.debug("ActionAutoClose time_since_last : %s", time_since_last)
 
             if time_since_last > 20:
                 log.debug("ActionAutoClose Closing Parent")
@@ -42,7 +42,7 @@ class ActionAutoClose(threading.Thread):
 
     def set_last(self):
         self.last_interaction = time.time()
-        log.debug("ActionAutoClose set_last : {0}".format(self.last_interaction))
+        log.debug("ActionAutoClose set_last : %s", self.last_interaction)
 
     def stop(self):
         log.debug("ActionAutoClose stop_thread called")
@@ -78,7 +78,7 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
         pass
 
     def onMessage(self, message):
-        log.debug("ActionMenu: onMessage: {0}".format(message))
+        log.debug("ActionMenu: onMessage: %s", message)
 
     def onAction(self, action):
 
@@ -90,12 +90,12 @@ class ActionMenu(xbmcgui.WindowXMLDialog):
             self.close()
         else:
             self.auto_close_thread.set_last()
-            log.debug("ActionMenu: onAction: {0}".format(action.getId()))
+            log.debug("ActionMenu: onAction: %s", action.getId())
 
     def onClick(self, control_id):
         if control_id == 3000:
             self.selected_action = self.listControl.getSelectedItem()
-            log.debug("ActionMenu: Selected Item: {0}".format(self.selected_action))
+            log.debug("ActionMenu: Selected Item: %s", self.selected_action)
             self.auto_close_thread.stop()
             self.close()
 

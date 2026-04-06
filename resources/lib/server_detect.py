@@ -56,7 +56,7 @@ def check_connection_speed():
                 progress_dialog.update(percentage_done)
                 last_percentage_done = percentage_done
     else:
-        log.error("HTTP response error: {0} {1}".format(response.status_code, response.content))
+        log.error("HTTP response error: %s %s", response.status_code, response.content)
         error_message = "HTTP response error: %s\n%s" % (response.status_code, response.content)
         xbmcgui.Dialog().ok("Speed Test Error", error_message)
         return -1
@@ -64,7 +64,7 @@ def check_connection_speed():
     total_data_read_kbits = (total_data_read * 8) / 1000
     total_time = time.time() - start_time
     speed = int(total_data_read_kbits / total_time)
-    log.debug("Finished Connection Speed Test, speed: {0} total_data: {1}, total_time: {2}".format(speed, total_data_read, total_time))
+    log.debug("Finished Connection Speed Test, speed: %s total_data: %s, total_time: %s", speed, total_data_read, total_time)
 
     progress_dialog.close()
     del progress_dialog
@@ -92,8 +92,8 @@ def get_server_details():
 
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-    log.debug("MutliGroup: {0}".format(multi_group))
-    log.debug("Sending UDP Data: {0}".format(message))
+    log.debug("MultiGroup: %s", multi_group)
+    log.debug("Sending UDP Data: %s", message)
 
     progress = xbmcgui.DialogProgress()
     progress.create('{} : {}'.format(__addon_name__, translate_string(30373)))
@@ -113,11 +113,11 @@ def get_server_details():
             except:  # noqa
                 break
     except Exception as e:
-        log.error("UPD Discovery Error: {0}".format(e))
+        log.error("UDP Discovery Error: %s", e)
 
     progress.close()
 
-    log.debug("Found Servers: {0}".format(servers))
+    log.debug("Found Servers: %s", servers)
     return servers
 
 
@@ -198,7 +198,7 @@ def check_server(force=False, change_user=False, notify=False):
                         xbmc.executebuiltin("ActivateWindow(Home)")
                         return
 
-        log.debug("Selected server: {0}".format(api.server))
+        log.debug("Selected server: %s", api.server)
         settings.setSetting("server_address", api.server)
         something_changed = True
 
@@ -232,7 +232,7 @@ def check_server(force=False, change_user=False, notify=False):
             if quick_connect:
                 # Try to authenticate to server with secret code 10 times
                 while count < 10:
-                    log.debug('Checking for quick connect auth: attempt {}'.format(count))
+                    log.debug('Checking for quick connect auth: attempt %s', count)
                     check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
                     if check.get('Authenticated'):
                         break
@@ -264,7 +264,7 @@ def check_server(force=False, change_user=False, notify=False):
                     kb.doModal()
                     if kb.isConfirmed():
                         selected_user_name = kb.getText()
-                        log.debug("Manual entered username: {0}".format(selected_user_name))
+                        log.debug("Manual entered username: %s", selected_user_name)
                     else:
                         return
 
@@ -288,7 +288,7 @@ def check_server(force=False, change_user=False, notify=False):
                     if not auth:
                         # Login failed, we don't want to change anything
                         something_changed = False
-                        log.info('There was an error logging in with user {}'.format(selected_user_name))
+                        log.info('There was an error logging in with user %s', selected_user_name)
                         xbmcgui.Dialog().ok(__addon_name__, translate_string(30446))
 
         if something_changed:
