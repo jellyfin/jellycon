@@ -149,7 +149,7 @@ def translate_string(string_id):
         addon = xbmcaddon.Addon()
         return py2_encode(addon.getLocalizedString(string_id))
     except Exception as e:
-        log.error('Failed String Load: {0} ({1})', string_id, e)
+        log.error('Failed String Load: %s (%s)', string_id, e)
         return str(string_id)
 
 
@@ -170,20 +170,20 @@ def get_device_id():
     jellyfin_guid_path = py2_decode(
         translate_path("special://temp/jellycon_guid")
     )
-    log.debug("jellyfin_guid_path: {0}".format(jellyfin_guid_path))
+    log.debug("jellyfin_guid_path: %s", jellyfin_guid_path)
     guid = xbmcvfs.File(jellyfin_guid_path)
     client_id = guid.read()
     guid.close()
 
     if not client_id:
         client_id = uuid4().hex
-        log.debug("Generating a new guid: {0}".format(client_id))
+        log.debug("Generating a new guid: %s", client_id)
         guid = xbmcvfs.File(jellyfin_guid_path, 'w')
         guid.write(client_id)
         guid.close()
-        log.debug("jellyfin_client_id (NEW): {0}".format(client_id))
+        log.debug("jellyfin_client_id (NEW): %s", client_id)
     else:
-        log.debug("jellyfin_client_id: {0}".format(client_id))
+        log.debug("jellyfin_client_id: %s", client_id)
 
     window.set_property("client_id", client_id)
     return '{}-{}'.format(client_id, hashed_name)
