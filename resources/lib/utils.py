@@ -100,12 +100,10 @@ def send_event_notification(method, data=None, hexlify=False):
 def datetime_from_string(time_string):
 
     # Builtin python library can't handle ISO-8601 well. Make it compatible
-    if time_string[-1:] == "Z":
+    if time_string.endswith("Z"):
         time_string = re.sub("[0-9]{1}Z", " UTC", time_string)
-    elif time_string[-6:] == "+00:00":
-        time_string = re.sub(
-            "[0-9]{1}\+00:00", " UTC", time_string  # noqa: W605
-        )
+    elif time_string.endswith("+00:00"):
+        time_string = re.sub(r"[0-9]{1}\+00:00", " UTC", time_string)
 
     try:
         dt = datetime.strptime(time_string, "%Y-%m-%dT%H:%M:%S.%f %Z")
