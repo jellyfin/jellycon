@@ -166,7 +166,7 @@ def extract_item_info(item, gui_options):
             name_info["SeriesName"] = ""
         name_info["SeasonIndex"] = u"%02d" % item_details.season_number
         name_info["EpisodeIndex"] = u"%02d" % item_details.episode_number
-        log.debug("FormatName: {0} | {1}".format(name_format, name_info))
+        log.debug("FormatName: %s | %s", name_format, name_info)
         item_details.name = ensure_text(name_format).format(**name_info).strip()
 
     year = item.get("ProductionYear")

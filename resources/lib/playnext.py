@@ -44,7 +44,7 @@ class PlayNextService(threading.Thread):
                 if not is_playing:
                     settings = xbmcaddon.Addon()
                     play_next_trigger_time = int(settings.getSetting('play_next_trigger_time'))
-                    log.debug("New play_next_trigger_time value: {0}".format(play_next_trigger_time))
+                    log.debug("New play_next_trigger_time value: %s", play_next_trigger_time)
 
                 now_playing_file = player.getPlayingFile()
                 if now_playing_file != now_playing:
@@ -60,10 +60,10 @@ class PlayNextService(threading.Thread):
 
                 if not play_next_triggered and (trigger_time > time_to_end) and play_next_dialog is None:
                     play_next_triggered = True
-                    log.debug("play_next_triggered hit at {0} seconds from end".format(time_to_end))
+                    log.debug("play_next_triggered hit at %s seconds from end", time_to_end)
 
                     play_data = get_playing_data()
-                    log.debug("play_next_triggered play_data : {0}".format(play_data))
+                    log.debug("play_next_triggered play_data : %s", play_data)
 
                     next_episode = play_data.get("next_episode")
                     item_type = play_data.get("item_type")

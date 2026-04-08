@@ -72,7 +72,7 @@ def get_image_links(url):
 def build_image(path):
     log.debug("build_image()")
 
-    log.debug("Request Path : {0}".format(path))
+    log.debug("Request Path : %s", path)
 
     request_path = path[1:]
 
@@ -80,7 +80,7 @@ def build_image(path):
         return []
 
     decoded_url = ensure_text(base64.b64decode(request_path))
-    log.debug("decoded_url : {0}".format(decoded_url))
+    log.debug("decoded_url : %s", decoded_url)
 
     image_urls = get_image_links(decoded_url)
 
@@ -108,7 +108,7 @@ def build_image(path):
             server = "%s:%s" % (host_name, port)
             url_full_path = url_path + "?" + url_query
 
-            log.debug("Loading image from : {0} {1} {2}".format(image_count, server, url_full_path))
+            log.debug("Loading image from : %s %s %s", image_count, server, url_full_path)
 
             try:
                 image_response = requests.get(thumb_url)
@@ -126,7 +126,7 @@ def build_image(path):
                 del image_data
 
             except Exception as con_err:
-                log.debug("Error loading image : {0}".format(con_err))
+                log.debug("Error loading image : %s", con_err)
 
             image_count += 1
 
@@ -145,8 +145,7 @@ def build_image(path):
 class HttpImageHandler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
-        log_line = format % args
-        log.debug(log_line)
+        log.debug(format, *args)
         return
 
     def do_GET(self):

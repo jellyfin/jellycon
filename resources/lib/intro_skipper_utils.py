@@ -54,7 +54,7 @@ def get_setting_skip_end_offset(type: Literal["Commercial", "Preview", "Recap", 
 def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segment: dict):
     if (skip_dialog.media_id is None or skip_dialog.media_id != item_id) and item_id is not None:
         # If playback item has changed (or is new), sets its id and set media segments info
-        log.debug("SkipDialogInfo : Media Id has changed to {0}, setting segments".format(item_id))
+        log.debug("SkipDialogInfo : Media Id has changed to %s, setting segments", item_id)
         skip_dialog.media_id = item_id
         skip_dialog.has_been_dissmissed = False
         if segment is not None:
@@ -65,7 +65,7 @@ def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segment: dict):
             # Sets timings with offsets if defined in settings
             if start is not None:
                 skip_dialog.start = start + seconds_to_ticks(get_setting_skip_start_offset(type))
-                log.debug("SkipDialogInfo : Setting {0} start to {1}".format(type, skip_dialog.start))
+                log.debug("SkipDialogInfo : Setting %s start to %s", type, skip_dialog.start)
             if end is not None:
                 skip_dialog.end = end - seconds_to_ticks(get_setting_skip_end_offset(type))
-                log.debug("SkipDialogInfo : Setting {0} end to {1}".format(type, skip_dialog.end))
+                log.debug("SkipDialogInfo : Setting %s end to %s", type, skip_dialog.end)

@@ -28,7 +28,7 @@ settings = xbmcaddon.Addon()
 
 
 def show_movie_tags(menu_params):
-    log.debug("show_movie_tags: {0}".format(menu_params))
+    log.debug("show_movie_tags: %s", menu_params)
     parent_id = menu_params.get("parent_id")
     user_id = get_current_user_id()
 
@@ -56,7 +56,7 @@ def show_movie_tags(menu_params):
 
     tags = result.get("Items", [])
 
-    log.debug("Tags : {0}".format(result))
+    log.debug("Tags : %s", result)
 
     url_params = {
         "IncludeItemTypes": "Movie",
@@ -88,14 +88,14 @@ def show_movie_tags(menu_params):
                              content_url +
                              "&mode=GET_CONTENT" +
                              "&media_type=movies")
-        log.debug("addMenuDirectoryItem: {0} - {1}".format(name, url))
+        log.debug("addMenuDirectoryItem: %s - %s", name, url)
         add_menu_directory_item(name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_movie_years(menu_params):
-    log.debug("show_movie_years: {0}".format(menu_params))
+    log.debug("show_movie_years: %s", menu_params)
     parent_id = menu_params.get("parent_id")
     group_into_decades = menu_params.get("group") == "true"
     user_id = get_current_user_id()
@@ -177,14 +177,14 @@ def show_movie_years(menu_params):
                              content_url +
                              "&mode=GET_CONTENT" +
                              "&media_type=movies")
-        log.debug("addMenuDirectoryItem: {0} - {1}".format(name, url))
+        log.debug("addMenuDirectoryItem: %s - %s", name, url)
         add_menu_directory_item(name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_movie_pages(menu_params):
-    log.debug("showMoviePages: {0}".format(menu_params))
+    log.debug("showMoviePages: %s", menu_params)
 
     parent_id = menu_params.get("parent_id")
     group_movies = settings.getSetting('group_movies') == "true"
@@ -210,7 +210,7 @@ def show_movie_pages(menu_params):
         return
 
     total_results = result.get("TotalRecordCount", 0)
-    log.debug("showMoviePages TotalRecordCount {0}".format(total_results))
+    log.debug("showMoviePages TotalRecordCount %s", total_results)
 
     if result == 0:
         return
@@ -256,14 +256,14 @@ def show_movie_pages(menu_params):
         url = sys.argv[0] + ("?url=" + content_url +
                              "&mode=GET_CONTENT" +
                              "&media_type=movies")
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        log.debug("addMenuDirectoryItem: %s - %s - %s", title, url, art)
         add_menu_directory_item(title, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 def show_genre_list(menu_params):
-    log.debug("showGenreList: {0}".format(menu_params))
+    log.debug("showGenreList: %s", menu_params)
 
     server = settings.getSetting('server_address')
     if server is None:
@@ -339,7 +339,7 @@ def show_genre_list(menu_params):
         url = sys.argv[0] + ("?url=" + quote(path) +
                              "&mode=GET_CONTENT" +
                              "&media_type=" + kodi_type)
-        log.debug("addMenuDirectoryItem: {0} - {1} - {2}".format(title, url, art))
+        log.debug("addMenuDirectoryItem: %s - %s - %s", title, url, art)
         add_menu_directory_item(title, url, art=art, properties=li_properties)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -404,7 +404,7 @@ def show_movie_alpha_list(menu_params):
 
         url = (sys.argv[0] + "?url=" + quote(path) +
                "&mode=GET_CONTENT&media_type=Movies")
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        log.debug("addMenuDirectoryItem: %s (%s)", alpha_name, url)
         add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -453,7 +453,7 @@ def show_tvshow_alpha_list(menu_params):
 
         url = (sys.argv[0] + "?url=" + quote(path) +
                "&mode=GET_CONTENT&media_type=tvshows")
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        log.debug("addMenuDirectoryItem: %s (%s)", alpha_name, url)
         add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -502,7 +502,7 @@ def show_mixed_alpha_list(menu_params):
 
         url = (sys.argv[0] + "?url=" + quote(path) +
                "&mode=GET_CONTENT&media_type=mixed")
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        log.debug("addMenuDirectoryItem: %s (%s)", alpha_name, url)
         add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -564,7 +564,7 @@ def show_artist_alpha_list(menu_params):
 
         url = (sys.argv[0] + "?url=" + quote(path) +
                "&mode=GET_CONTENT&media_type=Artists")
-        log.debug("addMenuDirectoryItem: {0} ({1})".format(alpha_name, url))
+        log.debug("addMenuDirectoryItem: %s (%s)", alpha_name, url)
         add_menu_directory_item(alpha_name, url, art=art)
 
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -1319,7 +1319,7 @@ def display_library_view(params):
     view_info_url = "/Users/{}/Items/".format(user_id) + node_id
     view_info = api.get(view_info_url)
 
-    log.debug("VIEW_INFO : {0}".format(view_info))
+    log.debug("VIEW_INFO : %s", view_info)
 
     collection_type = view_info.get("CollectionType", "mixed")
 
@@ -1386,7 +1386,7 @@ def show_search():
 
 
 def set_library_window_values(force=False):
-    log.debug("set_library_window_values Called forced={0}".format(force))
+    log.debug("set_library_window_values Called forced=%s", force)
     home_window = HomeWindow()
 
     already_set = home_window.get_property("view_item.0.name")
@@ -1420,19 +1420,19 @@ def set_library_window_values(force=False):
             # plugin.video.jellycon-
             prop_name = "view_item.%i.name" % index
             home_window.set_property(prop_name, name)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, name))
+            log.debug("set_library_window_values: plugin.video.jellycon-%s=%s", prop_name, name)
 
             prop_name = "view_item.%i.id" % index
             home_window.set_property(prop_name, item_id)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, item_id))
+            log.debug("set_library_window_values: plugin.video.jellycon-%s=%s", prop_name, item_id)
 
             prop_name = "view_item.%i.type" % index
             home_window.set_property(prop_name, collection_type)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, collection_type))
+            log.debug("set_library_window_values: plugin.video.jellycon-%s=%s", prop_name, collection_type)
 
             thumb = get_art_url(item, "Primary", server=server)
             prop_name = "view_item.%i.thumb" % index
             home_window.set_property(prop_name, thumb)
-            log.debug("set_library_window_values: plugin.video.jellycon-{0}={1}".format(prop_name, thumb))
+            log.debug("set_library_window_values: plugin.video.jellycon-%s=%s", prop_name, thumb)
 
             index += 1

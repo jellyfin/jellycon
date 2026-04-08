@@ -2,7 +2,6 @@
 # Gnu General Public License - see LICENSE.TXT
 
 import time
-import traceback
 
 import xbmc
 import xbmcaddon
@@ -40,7 +39,7 @@ monitor = xbmc.Monitor()
 try:
     clear_old_cache_data()
 except Exception as error:
-    log.error("Error in clear_old_cache_data() : {0}".format(error))
+    log.error("Error in clear_old_cache_data() : %s", error)
 
 # wait for 10 seconds for the Kodi splash screen to close
 i = 0
@@ -176,8 +175,7 @@ while home_window.get_property('exit') == 'False':
                     set_background_image(False)
 
     except Exception as error:
-        log.error("Exception in Playback Monitor: {0}".format(error))
-        log.error("{0}".format(traceback.format_exc()))
+        log.exception("Exception in Playback Monitor: %s", error)
 
     first_run = False
     xbmc.sleep(1000)
