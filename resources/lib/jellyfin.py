@@ -51,7 +51,7 @@ class API:
                 response_data = json.loads(r.text)
             except ValueError:
                 response_data = r.json()
-        except:  # noqa
+        except Exception:
             response_data = {}
         return response_data
 
@@ -68,7 +68,7 @@ class API:
                 response_data = json.loads(r.text)
             except ValueError:
                 response_data = r.json()
-        except:  # noqa
+        except Exception:
             response_data = {}
         return response_data
 
