@@ -132,6 +132,9 @@ class API:
                 self.token = token
                 headers['Authorization'] += ", Token={}".format(self.token)
 
+        # Kodi doesn't support br compression, exclude it
+        headers['Accept-Encoding'] = 'gzip, deflate, zstd'
+
         # Make headers available to api calls
         self.headers = headers
 
