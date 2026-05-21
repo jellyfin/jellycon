@@ -540,7 +540,7 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
     elif item_type == 'musicvideo':
         mediatype = 'musicvideo'
 
-    if hasattr(list_item, "setMediaType"):
+    if hasattr(video_tag, "setMediaType"):
         # Kodi 20 and newer
         video_tag.setMediaType(mediatype)
 
@@ -577,13 +577,15 @@ def add_gui_item(url, item_details, display_options, folder=True, default_sort=F
         if is_video:
 
             video_tag.setTagLine(item_details.tagline)
-            video_tag.setStudios(item_details.studio)
+            if item_details.studio:
+                video_tag.setStudios(item_details.studio)
             video_tag.setPremiered(item_details.premiere_date)
             video_tag.setPlot(item_details.plot)
             video_tag.setDirectors(item_details.director)
             video_tag.setWriters(item_details.writer)
             video_tag.setDateAdded(item_details.date_added)
-            video_tag.setCountries(item_details.production_location)
+            if item_details.production_location:
+                video_tag.setCountries(item_details.production_location)
             video_tag.setMpaa(item_details.mpaa)
             video_tag.setTags(item_details.tags)
 
