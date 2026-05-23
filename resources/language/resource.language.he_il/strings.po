@@ -1,2 +1,1223 @@
 msgid ""
-msgstr "X-Generator: Weblate\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit"
+msgstr ""
+"PO-Revision-Date: 2026-05-24 09:26+0000\n"
+"Last-Translator: Nitzan Selwyn <github@nitzan.io>\n"
+"Language-Team: Hebrew (Israel) <https://translate.jellyfin.org/projects/"
+"jellycon/jellycon/he_IL/>\n"
+"Language: he_il\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 5.15.1\n"
+
+msgctxt "#30017"
+msgid "Show connected clients"
+msgstr "תציג משתמשים מחוברים"
+
+msgctxt "#30018"
+msgid "Number of items to show in filtered lists"
+msgstr "מספר פרטים להציג ברשימה ממוינת"
+
+msgctxt "#30019"
+msgid "Filtered episode name format"
+msgstr "פורמט שם לפרק ממוין"
+
+msgctxt "#30020"
+msgid "Flatten single season"
+msgstr "עונה אחת שטוחה"
+
+msgctxt "#30021"
+msgid "Show all episodes item"
+msgstr "תציג את כל הפרקים"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "מתקדם"
+
+msgctxt "#30023"
+msgid "Hide unwatched episode details"
+msgstr "תחביא פרטים לפרקים שלא נצפו"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "שם משתמש:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "סיסמא:"
+
+msgctxt "#30026"
+msgid "Widget item select action"
+msgstr "פעולת בחירת פריט ווידג'ט"
+
+msgctxt "#30027"
+msgid "Enable debug logging"
+msgstr "אפשר רישום באגים"
+
+msgctxt "#30044"
+msgid "Incorrect Username/Password"
+msgstr "שם משתמש או סיסמא לא נכונים"
+
+msgctxt "#30045"
+msgid "Username not found"
+msgstr "שם משתמש לא נמצא"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "מוחק"
+
+msgctxt "#30053"
+msgid "Waiting for server to delete"
+msgstr "מחכה שהשרת ימחק"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "לא זמין"
+
+msgctxt "#30091"
+msgid "Confirm delete?"
+msgstr "תאשר מחיכה?"
+
+msgctxt "#30092"
+msgid "Warning: This action will delete the media files from the server."
+msgstr "אזהרה: פעולה זו תמחק את קבצי המדיה מהשרת."
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "ממשק"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "שרותים"
+
+msgctxt "#30112"
+msgid "Loading Content"
+msgstr "טוען תוכן"
+
+msgctxt "#30113"
+msgid "Retrieving Data"
+msgstr "משיג נתונים"
+
+msgctxt "#30114"
+msgid "Jump back seconds"
+msgstr "תחזור שניות אחורה"
+
+msgctxt "#30116"
+msgid "Add unwatched counts to names"
+msgstr "הוסף ספירות שלא נצפו לשמות"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "הוסף אחוז חזרה לשמות"
+
+msgctxt "#30120"
+msgid "Show load progress"
+msgstr "תציג אחוז התקדמות"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "סיים"
+
+msgctxt "#30126"
+msgid "Processing Item : "
+msgstr "עיבוד הפריט:"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "שגיאה"
+
+msgctxt "#30139"
+msgid "No Media Type Set"
+msgstr "לא הוגדר סוג המדיה"
+
+msgctxt "#30163"
+msgid "Add (cc) if subtitle is available"
+msgstr "הוסף (cc) אם כתוביות זמינות"
+
+msgctxt "#30166"
+msgid "Select Server"
+msgstr "תבחר שרת"
+
+msgctxt "#30167"
+msgid "Selected Server Address"
+msgstr "תבחר כתובת שרת"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "כתובת:"
+
+msgctxt "#30180"
+msgid "Select User"
+msgstr "תבחר משתמש"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "כלול עלילה"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "כלול מידע על זרם מדיה"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "תכלול אנשים"
+
+msgctxt "#30200"
+msgid "URL error"
+msgstr "שגיאת כתובת אתר"
+
+msgctxt "#30201"
+msgid "Unable to connect to server"
+msgstr "לא יכול להתחבר לשרת"
+
+msgctxt "#30206"
+msgid "Playback type"
+msgstr "סוג השמעה"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "השמעה"
+
+msgctxt "#30208"
+msgid "Max stream bitrate (Kbits)"
+msgstr "קצב סיביות מקסימלי של זרם (Kbps)"
+
+msgctxt "#30209"
+msgid "File direct path"
+msgstr "כתובת ישירה לקובץ"
+
+msgctxt "#30210"
+msgid "HTTP direct stream"
+msgstr "זרם ישיר של HTTP"
+
+msgctxt "#30211"
+msgid "Transcode options"
+msgstr "אפשרויות להמרה"
+
+msgctxt "#30000"
+msgid "Host"
+msgstr "מארח"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "פורט"
+
+msgctxt "#30003"
+msgid "Verify HTTPS certificate"
+msgstr "אמת את אישור HTTPS"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "שם משתמש"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "סיסמא"
+
+msgctxt "#30007"
+msgid "Samba username"
+msgstr "שם משתמש Samba"
+
+msgctxt "#30008"
+msgid "Samba password"
+msgstr "סיסמת samba"
+
+msgctxt "#30010"
+msgid "Number of performance profiles to capture"
+msgstr "מספר פרופילי ביצועים ללכידה"
+
+msgctxt "#30011"
+msgid "[Detect local server]"
+msgstr "[זיהוי שרת מקומי]"
+
+msgctxt "#30012"
+msgid "[Change user]"
+msgstr "[שנה משתמש]"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "מדוזה"
+
+msgctxt "#30015"
+msgid "Log timing data"
+msgstr "רישום נתוני תזמון"
+
+msgctxt "#30016"
+msgid "Device display name"
+msgstr "שם התצוגה של המכשיר"
+
+msgctxt "#30212"
+msgid "Video max width"
+msgstr "רוחב מקסימלי לוידאו"
+
+msgctxt "#30213"
+msgid "Video force 8 bit"
+msgstr "כוח וידאו 8 ביט"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "אירוע"
+
+msgctxt "#30215"
+msgid "On playback stop (100% = disabled)"
+msgstr "בעת עצירת ההפעלה (100% = מושבת)"
+
+msgctxt "#30216"
+msgid "Item Details"
+msgstr "פרטי פריט"
+
+msgctxt "#30217"
+msgid "Prompt to delete episode after %"
+msgstr "בקשה למחיקת פרק לאחר %"
+
+msgctxt "#30218"
+msgid "Play next episode after %"
+msgstr "הפעל את הפרק הבא לאחר %"
+
+msgctxt "#30219"
+msgid " - Prompt before play"
+msgstr "- הנח לפני המשחק"
+
+msgctxt "#30220"
+msgid "Prompt to delete movie after %"
+msgstr "בקשה למחיקת סרט לאחר %"
+
+msgctxt "#30222"
+msgid "Item Layout"
+msgstr "פריסת פריט"
+
+msgctxt "#30223"
+msgid "Page Size and Filtering"
+msgstr "גודל עמוד וסינון"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "אינטראקציה"
+
+msgctxt "#30225"
+msgid "Interface Mode"
+msgstr "מצב ממשק"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "בררת מחדל"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "פשוט"
+
+msgctxt "#30229"
+msgid "TV Shows"
+msgstr "סדרות"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "סרטים"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "פרקים"
+
+msgctxt "#30236"
+msgid "Force transcode h265 (hevc)"
+msgstr "כפיית קידוד h265 (hevc)"
+
+msgctxt "#30237"
+msgid "Start from beginning"
+msgstr "תתחיל מההתחלה"
+
+msgctxt "#30238"
+msgid "Playback stream options"
+msgstr "אפשרויות זרם השמעה"
+
+msgctxt "#30239"
+msgid "Force transcode mpeg2"
+msgstr "כפיית קידוד mpeg2"
+
+msgctxt "#30240"
+msgid "Force transcode msmpeg4v3 (divx)"
+msgstr "כפיית קידוד msmpeg4v3 (divx)"
+
+msgctxt "#30241"
+msgid "Force transcode mpeg4"
+msgstr "כפיית קידוד mpeg4"
+
+msgctxt "#30242"
+msgid "Force transcode av1"
+msgstr "כפיית קידוד av1"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "חיפוש"
+
+msgctxt "#30247"
+msgid "Custom Widget Content"
+msgstr "תוכן ווידג'ט מותאם אישית"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "לא ידוע"
+
+msgctxt "#30251"
+msgid "Movies - Genres"
+msgstr "סרטים - ז'אנרים"
+
+msgctxt "#30252"
+msgid "Movies - A-Z"
+msgstr "סרטים - א'-ת'"
+
+msgctxt "#30254"
+msgid "Show add-on settings"
+msgstr "הצג הגדרות תוספים"
+
+msgctxt "#30255"
+msgid "TV Shows - A-Z"
+msgstr "סדרות - א'-ת'"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "סרטים"
+
+msgctxt "#30257"
+msgid "Movies - Recently Added"
+msgstr "סרטים - נוספו לאחרונה"
+
+msgctxt "#30258"
+msgid "Movies - In Progress"
+msgstr "סרטים - בתהליך"
+
+msgctxt "#30259"
+msgid "Movies - Favorites"
+msgstr "סרטים - מועדפים"
+
+msgctxt "#30261"
+msgid "TV Shows"
+msgstr "סדרות"
+
+msgctxt "#30262"
+msgid "TV Shows - Favorites"
+msgstr "סדרות - מועדפים"
+
+msgctxt "#30263"
+msgid "Episodes - Recently Added"
+msgstr "פרקים - נוספו לאחרונה"
+
+msgctxt "#30264"
+msgid "Episodes - In Progress"
+msgstr "פרקים - בתהליך"
+
+msgctxt "#30447"
+msgid "Max Play Queue Size"
+msgstr "גודל תור השמעה מקסימלי"
+
+msgctxt "#30448"
+msgid "Shuffle"
+msgstr "לערבב"
+
+msgctxt "#30449"
+msgid "Instant Mix"
+msgstr "מיקס מיידי"
+
+msgctxt "#30450"
+msgid "Next Up Rewatching"
+msgstr "צפייה חוזרת בתור"
+
+msgctxt "#30451"
+msgid "Rewatch Days (0 = Disabled)"
+msgstr "ימי צפייה חוזרת (0 = מושבת)"
+
+msgctxt "#30452"
+msgid "Combine instead of replace (might cause slow-down)"
+msgstr "שלב במקום החלף (עלול לגרום להאטה)"
+
+msgctxt "#30453"
+msgid "Hide number of items to show on entry title"
+msgstr "הסתר את מספר הפריטים שיוצגו בכותרת הערך"
+
+msgctxt "#30454"
+msgid " - Totally Unwatched"
+msgstr " - לא נצפה כלל"
+
+msgctxt "#30455"
+msgid "TV Shows - Random"
+msgstr "סדרות - אקראי"
+
+msgctxt "#30456"
+msgid "All - Random"
+msgstr "הכל - אקראי"
+
+msgctxt "#30457"
+msgid "All - Recently Added"
+msgstr "הכל - הוסף לאחרונה"
+
+msgctxt "#30458"
+msgid "All - Favorites"
+msgstr "הכל - מועדפים"
+
+msgctxt "#30667"
+msgid "Action to take"
+msgstr "פעולה שצריך לנקוט"
+
+msgctxt "#30668"
+msgid "Start Offset (seconds)"
+msgstr "קיזוז התחלה (שניות)"
+
+msgctxt "#30669"
+msgid "End Offset (seconds)"
+msgstr "קיזוז סיום (שניות)"
+
+msgctxt "#30670"
+msgid "Intro Skipper"
+msgstr "דילוג פתיח"
+
+msgctxt "#30671"
+msgid "Credit Skipper"
+msgstr "דילוג קרדטים"
+
+msgctxt "#30672"
+msgid "Skip"
+msgstr "דלג"
+
+msgctxt "#30673"
+msgid "Ask"
+msgstr "שאל"
+
+msgctxt "#30674"
+msgid "Do Nothing"
+msgstr "אל תעשה כלום"
+
+msgctxt "#30675"
+msgid "Commercial Skipper"
+msgstr "דלג פרסומות"
+
+msgctxt "#30676"
+msgid "Preview Skipper"
+msgstr "דלג תצוגה מקדימה"
+
+msgctxt "#30677"
+msgid "Recap Skipper"
+msgstr "דלג תקציר"
+
+msgctxt "#30678"
+msgid "TV Shows per page"
+msgstr "סדרות לדף"
+
+msgctxt "#30265"
+msgid "Episodes - Next Up"
+msgstr "פרקים - הבא בתור"
+
+msgctxt "#30266"
+msgid "Movies - Pages"
+msgstr "סרטים - דפים"
+
+msgctxt "#30267"
+msgid " - In Progress"
+msgstr "- בתהליך"
+
+msgctxt "#30268"
+msgid " - Recently Added"
+msgstr "- נוסף לאחרונה"
+
+msgctxt "#30269"
+msgid "Movies - Random"
+msgstr "סרטים - רנדומלי"
+
+msgctxt "#30270"
+msgid "Mark Watched"
+msgstr "סמן כנצפה"
+
+msgctxt "#30271"
+msgid "Mark Unwatched"
+msgstr "סמן כלא נצפה"
+
+msgctxt "#30272"
+msgid "Set Favourite"
+msgstr "הגדר כמעודף"
+
+msgctxt "#30273"
+msgid "Unset Favourite"
+msgstr "בטל את ההגדרה של מועדף"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "תמחק"
+
+msgctxt "#30275"
+msgid "Force Transcode"
+msgstr "כפה Transcode"
+
+msgctxt "#30277"
+msgid "JellyCon needs to prompt for resume on partily played items, Kodi can also prompt, this can cause a double prompt. Do you want to remove the double prompt?"
+msgstr ""
+"JellyCon צריך לבקש חידוש פעולה עבור פריטים שהושמעו חלקית, גם Kodi יכול לבקש, "
+"וזה יכול לגרום להנחיה כפולה. האם ברצונך להסיר את ההנחיה הכפולה?"
+
+msgctxt "#30278"
+msgid " - Next Up"
+msgstr "- הבא"
+
+msgctxt "#30279"
+msgid "TV Shows - Unwatched"
+msgstr "סדרות - לא נצפה"
+
+msgctxt "#30280"
+msgid "Missing Title"
+msgstr "חסר כותרת"
+
+msgctxt "#30281"
+msgid "Refresh Cached Images"
+msgstr "רענן תמונות מאוחסנות במטמון"
+
+msgctxt "#30282"
+msgid "No Jellyfin servers detected on your local network."
+msgstr "לא זוהו שרתי Jellyfin ברשת המקומית שלך."
+
+msgctxt "#30283"
+msgid "Play Next Episode?"
+msgstr "לנגן את הפרק הבא?"
+
+msgctxt "#30285"
+msgid " - Unwatched"
+msgstr "- לא נצפה"
+
+msgctxt "#30286"
+msgid "Movies - Unwatched"
+msgstr "סרטים - לא נצפה"
+
+msgctxt "#30287"
+msgid "TV Shows - Latest"
+msgstr "סדרות - אחרונות"
+
+msgctxt "#30288"
+msgid " - Latest"
+msgstr "- אחרונות"
+
+msgctxt "#30289"
+msgid "TV Shows - Genres"
+msgstr "סדרות - ז'אנרים"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "הכל"
+
+msgctxt "#30291"
+msgid "Select Audio Stream"
+msgstr "בחר זרם אודיאו"
+
+msgctxt "#30292"
+msgid "Select Subtitle Stream"
+msgstr "בחר זרם כתוביות"
+
+msgctxt "#30293"
+msgid "Cache images"
+msgstr "מטמון תמונות"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "הודעה"
+
+msgctxt "#30295"
+msgid "To use this feature you need HTTP control enabled"
+msgstr "כדי להשתמש בתכונה זו עליך להפעיל בקרת HTTP"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "תמחק"
+
+msgctxt "#30297"
+msgid "Delete unused images?"
+msgstr "למחוק תמונות שאינן בשימוש?"
+
+msgctxt "#30298"
+msgid "Deleting Kodi Images"
+msgstr "מחיקת תמונות קודי"
+
+msgctxt "#30299"
+msgid "Cache Images"
+msgstr "מטמון תמונות"
+
+msgctxt "#30300"
+msgid "Cache all Jellyfin images as local Kodi images?"
+msgstr "לשמור במטמון את כל תמונות הג'ליפין כתמונות קודי מקומיות?"
+
+msgctxt "#30301"
+msgid "Caching Images"
+msgstr "אחסון תמונות במטמון"
+
+msgctxt "#30302"
+msgid "Existing images : "
+msgstr "תמונות קיימות:"
+
+msgctxt "#30303"
+msgid "Missing Jellyfin images : "
+msgstr "תמונות של ג'ליפין חסרות:"
+
+msgctxt "#30304"
+msgid "Cached Jellyfin images : "
+msgstr "תמונות של ג'ליפין שנשמרו במטמון:"
+
+msgctxt "#30305"
+msgid "Not Found"
+msgstr "לא נמצא"
+
+msgctxt "#30306"
+msgid "Playback starting"
+msgstr "ההשמעה מתחילה"
+
+msgctxt "#30307"
+msgid "Play Trailer"
+msgstr "נגן טריילר"
+
+msgctxt "#30308"
+msgid "Select Trailer"
+msgstr "תבחר טריילר"
+
+msgctxt "#30309"
+msgid "Select Media Source"
+msgstr "בחר מקור מדיה"
+
+msgctxt "#30310"
+msgid "Enable Jellyfin remote control"
+msgstr "הפעלת שלט רחוק של Jellyfin"
+
+msgctxt "#30311"
+msgid "Library - "
+msgstr "ספרייה -"
+
+msgctxt "#30312"
+msgid "All - "
+msgstr "הכל -"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "תפריט"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "נגן"
+
+msgctxt "#30315"
+msgid "Suppress notifications for connection errors"
+msgstr "דיכוי התראות על שגיאות חיבור"
+
+msgctxt "#30316"
+msgid "Connection Error"
+msgstr "שגיאת חיבור"
+
+msgctxt "#30317"
+msgid "Play All"
+msgstr "נגן הכל"
+
+msgctxt "#30318"
+msgid "Music - Albums"
+msgstr "מוזיקה - אלבום"
+
+msgctxt "#30320"
+msgid " - Albums"
+msgstr "- אלבומים"
+
+msgctxt "#30322"
+msgid "Auto resume"
+msgstr "תתחיל מחדש"
+
+msgctxt "#30323"
+msgid "Artists"
+msgstr "אמנים"
+
+msgctxt "#30325"
+msgid " - Genres"
+msgstr "- ז'נרות"
+
+msgctxt "#30327"
+msgid "Go To Season"
+msgstr "תקדם לעונה"
+
+msgctxt "#30328"
+msgid "Show empty folders (shows, seasons, collections)"
+msgstr "הצג תיקיות ריקות (תוכניות, עונות, אוספים)"
+
+msgctxt "#30329"
+msgid "Screensaver"
+msgstr "שומר מסך"
+
+msgctxt "#30330"
+msgid "Show change user dialog"
+msgstr "הצג תיבת דו-שיח לשינוי משתמש"
+
+msgctxt "#30331"
+msgid "Movies per page"
+msgstr "סרטים לדף"
+
+msgctxt "#30332"
+msgid "Stop media playback on screensaver activation"
+msgstr "עצירת הפעלת מדיה בעת הפעלת שומר המסך"
+
+msgctxt "#30333"
+msgid "Cache artwork in the background"
+msgstr "יצירת אמנות במטמון ברקע"
+
+msgctxt "#30334"
+msgid "Use JellyCon context menu"
+msgstr "השתמש בתפריט ההקשר של JellyCon"
+
+msgctxt "#30337"
+msgid "Song"
+msgstr "שיר"
+
+msgctxt "#30338"
+msgid "Album"
+msgstr "אלבום"
+
+msgctxt "#30339"
+msgid "Person"
+msgstr "אדם"
+
+msgctxt "#30340"
+msgid "Group movies into collections"
+msgstr "קבץ סרטים לאוספים"
+
+msgctxt "#30341"
+msgid "Background image update interval (0 = disabled)"
+msgstr "מרווח זמן לעדכון תמונת רקע (0 = מושבת)"
+
+msgctxt "#30342"
+msgid "New content check interval (0 = disabled)"
+msgstr "מרווח זמן חדש לבדיקת תוכן (0 = מושבת)"
+
+msgctxt "#30343"
+msgid "Changes Require Kodi Restart"
+msgstr "שינויים דורשים הפעלה מחדש של קודי"
+
+msgctxt "#30344"
+msgid "Number of images removed from cache"
+msgstr "מספר התמונות שהוסרו מהמטמון"
+
+msgctxt "#30345"
+msgid "Cache Jellyfin server data requests"
+msgstr "אחסון בקשות נתונים של שרת Jellyfin במטמון"
+
+msgctxt "#30346"
+msgid "Deleteing Cached Images"
+msgstr "מחיקת תמונות במטמון"
+
+msgctxt "#30347"
+msgid "Getting Existing Images"
+msgstr "קבלת תמונות קיימות"
+
+msgctxt "#30348"
+msgid "Add user ratings"
+msgstr "הוסף דירוגי משתמשים"
+
+msgctxt "#30349"
+msgid " - Recently Played"
+msgstr "- נוגן לאחרונה"
+
+msgctxt "#30350"
+msgid "Music - Recently Added"
+msgstr "מוזיקה - נוסף לאחרונה"
+
+msgctxt "#30351"
+msgid "Music - Recently Played"
+msgstr "מוזיקה - נוגן לאחרונה"
+
+msgctxt "#30352"
+msgid "Music - Frequently Played"
+msgstr "מוזיקה - מושמעת לעתים קרובות"
+
+msgctxt "#30319"
+msgid "Music - All Album Artists"
+msgstr "מוזיקה - כל אמני האלבומים"
+
+msgctxt "#30321"
+msgid " - Album Artists"
+msgstr "- אמני אלבום"
+
+msgctxt "#30353"
+msgid " - Frequently Played"
+msgstr "- מושמע הרבה"
+
+msgctxt "#30354"
+msgid "Go To Series"
+msgstr "עבור לסדרה"
+
+msgctxt "#30355"
+msgid "Kodi Settings->Services->Allow remote control via HTTP"
+msgstr "הגדרות קודי -> שירותים -> אפשר שליטה מרחוק דרך HTTP"
+
+msgctxt "#30356"
+msgid "Loading existing image list"
+msgstr "טוען רשימת תמונות קיימת"
+
+msgctxt "#30357"
+msgid "Processing existing image list"
+msgstr "עיבוד רשימת התמונות הקיימת"
+
+msgctxt "#30358"
+msgid "Retreiving remote image list"
+msgstr "אחזור רשימת תמונות מרוחקות"
+
+msgctxt "#30359"
+msgid "Building full image list"
+msgstr "בניית רשימת תמונות מלאה"
+
+msgctxt "#30360"
+msgid " - Channels"
+msgstr "- ערוצים"
+
+msgctxt "#30361"
+msgid " - Programs"
+msgstr "- תוכניות"
+
+msgctxt "#30362"
+msgid " - Recordings"
+msgstr "- הקלטות"
+
+msgctxt "#30363"
+msgid "Save Password?"
+msgstr "שמור סיסמה?"
+
+msgctxt "#30364"
+msgid "Do you want to save the password?"
+msgstr "רוצה לשמור את הסיסמה?"
+
+msgctxt "#30365"
+msgid "Manual Login"
+msgstr "התחברות ידנית"
+
+msgctxt "#30366"
+msgid "Manually enter user details"
+msgstr "הכנס פרטים ידנית"
+
+msgctxt "#30367"
+msgid "Allow fast user switching password saving"
+msgstr "אפשר שמירה מהירה של סיסמת המשתמש שהוחלף"
+
+msgctxt "#30368"
+msgid "Clear Password?"
+msgstr "נקה סיסמה?"
+
+msgctxt "#30369"
+msgid "Do you want to clear your saved password?"
+msgstr "האם ברצונך למחוק את הסיסמה השמורה שלך?"
+
+msgctxt "#30370"
+msgid "Do you want to manually enter a server url?"
+msgstr "האם ברצונך להזין כתובת URL של שרת באופן ידני?"
+
+msgctxt "#30371"
+msgid "Could not connect to the URL you entered, do you want to try again?"
+msgstr "לא ניתן היה להתחבר לכתובת ה-URL שהזנת, האם ברצונך לנסות שוב?"
+
+msgctxt "#30372"
+msgid "Server URL"
+msgstr "כתובת האתר של השרת"
+
+msgctxt "#30373"
+msgid "Scanning for local servers"
+msgstr "סריקה אחר שרתים מקומיים"
+
+msgctxt "#30374"
+msgid "Sending request"
+msgstr "שולח בקשה"
+
+msgctxt "#30375"
+msgid "Receiving data packet"
+msgstr "מקבל חבילת נתונים"
+
+msgctxt "#30376"
+msgid "Checking server url"
+msgstr "בודק את כתובת ה-URL של השרת"
+
+msgctxt "#30377"
+msgid "Sending request"
+msgstr "שולח בקשה"
+
+msgctxt "#30378"
+msgid "Persist user details"
+msgstr "שמירה על פרטי המשתמש"
+
+msgctxt "#30379"
+msgid "External subtitle prompt"
+msgstr "בקשת כתוביות חיצונית"
+
+msgctxt "#30380"
+msgid "Never"
+msgstr "לעולם לא"
+
+msgctxt "#30381"
+msgid "More than one"
+msgstr "יותר מאחד"
+
+msgctxt "#30382"
+msgid "Always"
+msgstr "תמיד"
+
+msgctxt "#30383"
+msgid "System - "
+msgstr "מערכת -"
+
+msgctxt "#30384"
+msgid "Random movies interval minutes (0 = disabled)"
+msgstr "דקות של מרווח זמן של סרטים אקראיים (0 = מושבת)"
+
+msgctxt "#30385"
+msgid "Existing images before delete : "
+msgstr "תמונות קיימות לפני המחיקה:"
+
+msgctxt "#30386"
+msgid "Unused Jellyfin images : "
+msgstr "תמונות של ג'ליפין שלא נעשה בהן שימוש:"
+
+msgctxt "#30387"
+msgid "Unused images removed : "
+msgstr "תמונות שלא נעשה בהן שימוש הוסרו:"
+
+msgctxt "#30388"
+msgid "Server details"
+msgstr "פרטי שרת"
+
+msgctxt "#30389"
+msgid "User details"
+msgstr "פרטי משתמש"
+
+msgctxt "#30390"
+msgid "Protocol"
+msgstr "פרוטקול"
+
+msgctxt "#30391"
+msgid "HTTP"
+msgstr "HTTP"
+
+msgctxt "#30392"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgctxt "#30393"
+msgid "Clear Cache Result"
+msgstr "נקה תוצאת מטמון"
+
+msgctxt "#30394"
+msgid "Cache files deleted"
+msgstr "קבצי מטמון נמחקו"
+
+msgctxt "#30395"
+msgid "Clear cached server data"
+msgstr "נקה נתוני שרת שמאוחסנים במטמון"
+
+msgctxt "#30397"
+msgid " - Pages"
+msgstr "- דפים"
+
+msgctxt "#30398"
+msgid "Refresh Jellyfin Metadata"
+msgstr "רענן את המטא-נתונים של ג'ליפין"
+
+msgctxt "#30399"
+msgid "Hide"
+msgstr "החבא"
+
+msgctxt "#30400"
+msgid "Cache images interval minutes (0 = disabled)"
+msgstr "דקות של מרווח זמן של תמונות במטמון (0 = מושבת)"
+
+msgctxt "#30401"
+msgid "Info"
+msgstr "מידע"
+
+msgctxt "#30402"
+msgid "Add to Kodi Playlist"
+msgstr "הוסף לרשימת השמעה של קודי"
+
+msgctxt "#30403"
+msgid "Movies - Recommendations"
+msgstr "סרטים - מומלצים"
+
+msgctxt "#30404"
+msgid " - A-Z"
+msgstr "- א'-ת'"
+
+msgctxt "#30405"
+msgid " - Show All"
+msgstr "- תציג הכל"
+
+msgctxt "#30406"
+msgid "Jellyfin Libraries"
+msgstr "ספריות ג'ליפין"
+
+msgctxt "#30407"
+msgid "Global Lists"
+msgstr "רשימות גלובליות"
+
+msgctxt "#30408"
+msgid "Custom Widgets"
+msgstr "ווידג'טים מותאמים אישית"
+
+msgctxt "#30409"
+msgid "Add-on Actions"
+msgstr "פעולות תוספות"
+
+msgctxt "#30410"
+msgid " - Collections"
+msgstr "- אוספים"
+
+msgctxt "#30411"
+msgid " - Years"
+msgstr "- שנים"
+
+msgctxt "#30412"
+msgid " - Decades"
+msgstr "- עשורים"
+
+msgctxt "#30413"
+msgid " - Tags"
+msgstr "- תגיות"
+
+msgctxt "#30414"
+msgid " - Favorites"
+msgstr "- מועדפים"
+
+msgctxt "#30415"
+msgid " - Favorite Collections"
+msgstr "- אוספים מועדפים"
+
+msgctxt "#30416"
+msgid "HTTP timeout seconds"
+msgstr "פסק זמן של HTTP שניות"
+
+msgctxt "#30417"
+msgid "You do not have permision to delete this item"
+msgstr "אין לך הרשאה למחוק פריט זה"
+
+msgctxt "#30418"
+msgid "Audio bitrate (Kbits)"
+msgstr "קצב סיביות של אודיו (Kbps)"
+
+msgctxt "#30419"
+msgid "Audio codec"
+msgstr "Codec אודיו"
+
+msgctxt "#30420"
+msgid "Audio max channels"
+msgstr "ערוצי אודיו מקסימום"
+
+msgctxt "#30421"
+msgid "Views"
+msgstr "צפיות"
+
+msgctxt "#30422"
+msgid "Sorting"
+msgstr "מיון"
+
+msgctxt "#30423"
+msgid "NotSet"
+msgstr "לא הוגדר"
+
+msgctxt "#30424"
+msgid "Default"
+msgstr "בררית מחדל"
+
+msgctxt "#30425"
+msgid "Year"
+msgstr "שנה"
+
+msgctxt "#30426"
+msgid "Title"
+msgstr "כותרת"
+
+msgctxt "#30427"
+msgid "Added"
+msgstr "נוסף"
+
+msgctxt "#30428"
+msgid "Rating"
+msgstr "דרוג"
+
+msgctxt "#30429"
+msgid "Genre"
+msgstr "ז'אנר"
+
+msgctxt "#30431"
+msgid "Seasons"
+msgstr "עונות"
+
+msgctxt "#30432"
+msgid "Hide watched items in lists"
+msgstr "הסתר פריטים שנצפו ברשימות"
+
+msgctxt "#30433"
+msgid "Allow direct file playback"
+msgstr "אפשר הפעלה ישירה של קבצים"
+
+msgctxt "#30434"
+msgid "Force transcode stream bitrate (Kbits)"
+msgstr "קצב סיביות של זרם כפייה (Kbps)"
+
+msgctxt "#30435"
+msgid "Connection speed test"
+msgstr "בדיקת מהירות חיבור"
+
+msgctxt "#30436"
+msgid "Speed test data size (MB)"
+msgstr "גודל נתוני בדיקת מהירות (MB)"
+
+msgctxt "#30437"
+msgid "Playback options"
+msgstr "אפשרויות השמעה"
+
+msgctxt "#30438"
+msgid "Play cinema intros"
+msgstr "הפעלת פתיחים של סרטים"
+
+msgctxt "#30439"
+msgid "Show play next episode at time left in seconds"
+msgstr "הצג את הפרק הבא בזמן שנותר בשניות"
+
+msgctxt "#30440"
+msgid "Play next"
+msgstr "נגן הבא בתור"
+
+msgctxt "#30441"
+msgid "Use cached widget data"
+msgstr "השתמש בנתוני ווידג'ט המאוחסנים במטמון"
+
+msgctxt "#30442"
+msgid "Simple new content check"
+msgstr "בדיקת תוכן חדשה פשוטה"
+
+msgctxt "#30443"
+msgid "Quick Connect"
+msgstr "חיבור מהיר"
+
+msgctxt "#30444"
+msgid "Login using Quick Connect"
+msgstr "התחבר באמצעות חיבור מהיר"
+
+msgctxt "#30445"
+msgid "Continue Watching"
+msgstr "המשך בצפייה"
+
+msgctxt "#30446"
+msgid "There was an error logging in"
+msgstr "אירעה שגיאה בכניסה"
+
+msgctxt "#30121"
+msgid "On resume"
+msgstr "בהמשך"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "BoxSet"
+
+msgctxt "#30276"
+msgid "Extra Resume Prompt Detected"
+msgstr "זוהתה בקשת קורות חיים נוספת"
+
+msgctxt "#30430"
+msgid "Label"
+msgstr "תגית"
+
+msgctxt "#30666"
+msgid "Segment Skipper"
+msgstr "דלג חלק"
