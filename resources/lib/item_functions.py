@@ -142,6 +142,11 @@ def extract_item_info(item, gui_options):
     if not item_details.episode_number:
         item_details.episode_number = 0
 
+    if not item_details.season_sort_number:
+        item_details.season_sort_number = 0
+    if not item_details.episode_sort_number:
+        item_details.episode_sort_number = 0
+
     if item.get("Taglines", []):
         item_details.tagline = item.get("Taglines")[0]
 
