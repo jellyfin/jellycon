@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-25 03:53+0000\n"
+"PO-Revision-Date: 2026-05-25 03:56+0000\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ka/>\n"
@@ -14,3 +14,127 @@ msgstr ""
 msgctxt "#30000"
 msgid "Host"
 msgstr "ჰოსტი"
+
+msgctxt "#30001"
+msgid "Port"
+msgstr "პორტი"
+
+msgctxt "#30005"
+msgid "Username"
+msgstr "მომხმარებლის სახელი"
+
+msgctxt "#30006"
+msgid "Password"
+msgstr "პაროლი"
+
+msgctxt "#30014"
+msgid "Jellyfin"
+msgstr "Jellyfin"
+
+msgctxt "#30022"
+msgid "Advanced"
+msgstr "დამატებით"
+
+msgctxt "#30024"
+msgid "Username:"
+msgstr "მომხმარებლის სახელი:"
+
+msgctxt "#30025"
+msgid "Password:"
+msgstr "პაროლი:"
+
+msgctxt "#30052"
+msgid "Deleting"
+msgstr "იშლება"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "N/A"
+
+msgctxt "#30110"
+msgid "Interface"
+msgstr "ინტერფეისი"
+
+msgctxt "#30111"
+msgid "Services"
+msgstr "სერვისები"
+
+msgctxt "#30125"
+msgid "Done"
+msgstr "მზადაა"
+
+msgctxt "#30135"
+msgid "Error"
+msgstr "შეცდომა"
+
+msgctxt "#30169"
+msgid "Address: "
+msgstr "მისამართი:"
+
+msgctxt "#30207"
+msgid "Playback"
+msgstr "დაკვრა"
+
+msgctxt "#30214"
+msgid "Events"
+msgstr "მოვლენები"
+
+msgctxt "#30224"
+msgid "Interaction"
+msgstr "ურთიერთქმედება"
+
+msgctxt "#30226"
+msgid "Default"
+msgstr "ნაგულისხმევი"
+
+msgctxt "#30227"
+msgid "Simple"
+msgstr "მარტივი"
+
+msgctxt "#30231"
+msgid "Movies"
+msgstr "ფილმები"
+
+msgctxt "#30235"
+msgid "Episodes"
+msgstr "ეპიზოდები"
+
+msgctxt "#30246"
+msgid "Search"
+msgstr "ძებნა"
+
+msgctxt "#30250"
+msgid "Unknown"
+msgstr "უცნობი"
+
+msgctxt "#30256"
+msgid "Movies"
+msgstr "ფილმები"
+
+msgctxt "#30260"
+msgid "BoxSets"
+msgstr "კოლექციები"
+
+msgctxt "#30274"
+msgid "Delete"
+msgstr "წაშლა"
+
+msgctxt "#30290"
+msgid "All"
+msgstr "ყველა"
+
+msgctxt "#30294"
+msgid "Notice"
+msgstr "გაფრთხილება"
+
+msgctxt "#30296"
+msgid "Delete"
+msgstr "წაშლა"
+
+msgctxt "#30313"
+msgid "Menu"
+msgstr "მენიუ"
+
+msgctxt "#30314"
+msgid "Play"
+msgstr "დაკვრა"
