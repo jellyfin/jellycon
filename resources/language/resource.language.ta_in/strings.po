@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-25 07:26+0000\n"
-"Last-Translator: deepak r <deepak.r232629@gmail.com>\n"
+"PO-Revision-Date: 2026-05-29 09:26+0000\n"
+"Last-Translator: Kesavan Selvarajah <kesavan.selvarajah.dev@gmail.com>\n"
 "Language-Team: Tamil <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ta/>\n"
 "Language: ta_in\n"
@@ -13,11 +13,11 @@ msgstr ""
 
 msgctxt "#30000"
 msgid "Host"
-msgstr "சேவையகம்"
+msgstr "புரவன்"
 
 msgctxt "#30001"
 msgid "Port"
-msgstr "துறைமுகம்"
+msgstr "துறை"
 
 msgctxt "#30005"
 msgid "Username"
@@ -29,7 +29,7 @@ msgstr "கடவுச்சொல்"
 
 msgctxt "#30011"
 msgid "[Detect local server]"
-msgstr "[உள்ளூர் சேவையகத்தைக் கண்டறியவும்]"
+msgstr "[உள்ளூர் வழங்கியைக் கண்டறியவும்]"
 
 msgctxt "#30012"
 msgid "[Change user]"
@@ -285,11 +285,11 @@ msgstr "ஜெல்லிஃபின்"
 
 msgctxt "#30015"
 msgid "Log timing data"
-msgstr "பதிவு நேரத் தரவு"
+msgstr "நேரத்தரவை பதி"
 
 msgctxt "#30016"
 msgid "Device display name"
-msgstr "சாதனக் காட்சிப் பெயர்"
+msgstr "கருவிக் காட்சிப் பெயர்"
 
 msgctxt "#30017"
 msgid "Show connected clients"
