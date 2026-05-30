@@ -54,7 +54,7 @@ def clone_skin():
 
     kodi_path = translate_path("special://xbmc")
     kodi_skin_source = os.path.join(kodi_path, "addons", "skin.estuary")
-    log.debug("Kodi Skin Source: {0}".format(kodi_skin_source))
+    log.debug("Kodi Skin Source: %s", kodi_skin_source)
 
     pdialog = xbmcgui.DialogProgress()
     pdialog.create("JellyCon Skin Cloner", "")
@@ -62,13 +62,13 @@ def clone_skin():
     all_files = []
     walk_path(kodi_skin_source, "", all_files)
     for found in all_files:
-        log.debug("Found Path: {0}".format(found))
+        log.debug("Found Path: %s", found)
 
     kodi_home_path = translate_path("special://home")
     kodi_skin_destination = os.path.join(
         kodi_home_path, "addons", "skin.estuary_jellycon"
     )
-    log.debug("Kodi Skin Destination: {0}".format(kodi_skin_destination))
+    log.debug("Kodi Skin Destination: %s", kodi_skin_destination)
 
     # copy all skin files (clone)
     count = 0
@@ -98,7 +98,7 @@ def clone_skin():
         kodi_home_path, "addons", "plugin.video.jellycon"
     )
 
-    log.debug("Major Version: {0}".format(kodi_version()))
+    log.debug("Major Version: %s", kodi_version())
 
     file_list = ["Home.xml",
                  "Includes_Home.xml",
@@ -132,16 +132,12 @@ def clone_skin():
         'enabled': True
     }
     result = JsonRpc('Addons.SetAddonEnabled').execute(params)
-    log.debug("Addons.SetAddonEnabled : {0}".format(result))
+    log.debug("Addons.SetAddonEnabled : %s", result)
 
-    log.debug("SkinCloner : Current Skin : {}".format(
-        get_value("lookandfeel.skin"))
-    )
+    log.debug("SkinCloner : Current Skin : %s", get_value("lookandfeel.skin"))
     set_result = set_value("lookandfeel.skin", "skin.estuary_jellycon")
-    log.debug("Save Setting : lookandfeel.skin : {0}".format(set_result))
-    log.debug("SkinCloner : Current Skin : {}".format(
-        get_value("lookandfeel.skin"))
-    )
+    log.debug("Save Setting : lookandfeel.skin : %s", set_result)
+    log.debug("SkinCloner : Current Skin : %s", get_value("lookandfeel.skin"))
 
 
 def update_kodi_settings():
