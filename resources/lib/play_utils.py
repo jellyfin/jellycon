@@ -1180,6 +1180,11 @@ def stop_all_playback():
 
     home_window.set_property('played_information', json.dumps(played_information))
 
+    # Clear playlist data to prevent issues with subsequent playback
+    if len(played_information) == 0:
+        home_window.clear_property('playlist')
+        home_window.clear_property('now_playing')
+
 
 def get_playing_data():
     player = xbmc.Player()
