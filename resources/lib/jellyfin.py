@@ -37,23 +37,40 @@ class API:
 
         url = '{}{}'.format(self.server, path)
 
-        try:
-            r = requests.get(url, headers=self.headers, verify=self.verify_cert, timeout=(5,60))
+        # Retry logic for network issues after idle/sleep
+        max_retries = 2
+        for attempt in range(max_retries):
             try:
-                '''
-                The requests library defaults to using simplejson to handle
-                json decoding.  On low power devices and using Py3, this is
-                significantly slower than the builtin json library.  Skip that
-                and just parse the json ourselves.  Fall back to using
-                requests/simplejson if there's a parsing error.
-                '''
-                r.raise_for_status()
-                response_data = json.loads(r.text)
-            except ValueError:
-                response_data = r.json()
-        except Exception:
-            response_data = {}
-        return response_data
+                # Increase connection timeout to 15s for reverse proxy scenarios
+                r = requests.get(url, headers=self.headers, verify=self.verify_cert, timeout=(15,60))
+                try:
+                    '''
+                    The requests library defaults to using simplejson to handle
+                    json decoding.  On low power devices and using Py3, this is
+                    significantly slower than the builtin json library.  Skip that
+                    and just parse the json ourselves.  Fall back to using
+                    requests/simplejson if there's a parsing error.
+                    '''
+                    r.raise_for_status()
+                    response_data = json.loads(r.text)
+                    return response_data
+                except ValueError:
+                    response_data = r.json()
+                    return response_data
+            except requests.exceptions.ConnectionError as e:
+                log.debug("Connection error on attempt {}/{}: {}".format(attempt + 1, max_retries, e))
+                if attempt < max_retries - 1:
+                    # Wait briefly before retry to allow network/proxy to recover
+                    import time
+                    time.sleep(1)
+                    continue
+                else:
+                    log.error("Failed to connect after {} attempts".format(max_retries))
+                    return {}
+            except Exception as e:
+                log.debug("Request error: {}".format(e))
+                return {}
+        return {}
 
     def post(self, url, payload={}):
         if 'Authorization' not in self.headers or self.token not in self.headers:
@@ -61,16 +78,32 @@ class API:
 
         url = '{}{}'.format(self.server, url)
 
-        try:
-            r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert, timeout=5)
+        # Retry logic for network issues after idle/sleep
+        max_retries = 2
+        for attempt in range(max_retries):
             try:
-                # Much faster on low power devices, see above comment
-                response_data = json.loads(r.text)
-            except ValueError:
-                response_data = r.json()
-        except Exception:
-            response_data = {}
-        return response_data
+                # Increase connection timeout for reverse proxy scenarios
+                r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert, timeout=(15,60))
+                try:
+                    # Much faster on low power devices, see above comment
+                    response_data = json.loads(r.text)
+                    return response_data
+                except ValueError:
+                    response_data = r.json()
+                    return response_data
+            except requests.exceptions.ConnectionError as e:
+                log.debug("Connection error on attempt {}/{}: {}".format(attempt + 1, max_retries, e))
+                if attempt < max_retries - 1:
+                    import time
+                    time.sleep(1)
+                    continue
+                else:
+                    log.error("Failed to connect after {} attempts".format(max_retries))
+                    return {}
+            except Exception as e:
+                log.debug("Request error: {}".format(e))
+                return {}
+        return {}
 
     def delete(self, url):
         if 'Authorization' not in self.headers or self.token not in self.headers:
