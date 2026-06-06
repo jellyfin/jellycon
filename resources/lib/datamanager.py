@@ -251,7 +251,7 @@ class CacheManagerThread(threading.Thread):
         log.debug("CacheManagerThread : Exited")
 
 
-def clear_cached_server_data():
+def clear_cached_server_data(display=True):
     log.debug("clear_cached_server_data() called")
 
     addon_dir = translate_path(xbmcaddon.Addon().getAddonInfo('profile'))
@@ -265,8 +265,9 @@ def clear_cached_server_data():
             del_count += 1
 
     log.debug('Deleted {} files'.format(del_count))
-    msg = translate_string(30394)
-    xbmcgui.Dialog().ok(translate_string(30393), msg)
+    if display:
+        msg = translate_string(30394)
+        xbmcgui.Dialog().ok(translate_string(30393), msg)
 
 
 def clear_old_cache_data():
