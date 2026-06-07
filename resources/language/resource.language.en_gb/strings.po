@@ -1224,3 +1224,19 @@ msgstr "Recap Skipper"
 msgctxt "#30678"
 msgid "TV Shows per page"
 msgstr "TV Shows per page"
+
+msgctxt "#30679"
+msgid "Quick Connect: Enter code {} on another device to authorize"
+msgstr "Quick Connect: Enter code {} on another device to authorize"
+
+msgctxt "#30680"
+msgid "Waiting for authorization... ({}/{})"
+msgstr "Waiting for authorization... ({}/{})"
+
+msgctxt "#30681"
+msgid "Quick Connect authentication failed. Please try again."
+msgstr "Quick Connect authentication failed. Please try again."
+
+msgctxt "#30682"
+msgid "Quick Connect timed out. Please try again."
+msgstr "Quick Connect timed out. Please try again."
