@@ -16,7 +16,7 @@ from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
 from resources.lib.server_detect import check_server, check_connection_speed
 from resources.lib.monitors import LibraryChangeMonitor, ContextMonitor
-from resources.lib.datamanager import clear_old_cache_data
+from resources.lib.datamanager import clear_old_cache_data, clear_cached_server_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
 from resources.lib.playnext import PlayNextService
@@ -37,8 +37,17 @@ home_window.clear_property("Params")
 log = LazyLogger('service')
 monitor = xbmc.Monitor()
 
+addon_version = settings.getAddonInfo('version')
 try:
-    clear_old_cache_data()
+    """
+    The data structure has changed in version 1.0.0.
+    Clear all cached data to ensure a clean startup
+    TODO: Remove once we reach 1.1.0
+    """
+    if addon_version.startswith('1.0'):
+        clear_cached_server_data(False)
+    else:
+        clear_old_cache_data()
 except Exception as error:
     log.error("Error in clear_old_cache_data() : {0}".format(error))
 
@@ -130,7 +139,7 @@ while home_window.get_property('exit') == 'False':
                     user_changed = True
 
                 if user_changed or first_run:
-                    settings = xbmcaddon.Addon()                    
+                    settings = xbmcaddon.Addon()
                     server_speed_check_data = settings.getSetting("server_speed_check_data")
                     server_host = settings.getSetting('server_address')
                     if server_host is not None and server_host != "" and server_host != "<none>" and server_host not in server_speed_check_data:
