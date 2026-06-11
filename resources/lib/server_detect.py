@@ -218,11 +218,7 @@ def check_server(force=False, change_user=False, notify=False):
         auth = {}
 
         # Check if quick connect is active on the server, initiate connection
-        # Try GET first (older Jellyfin versions), fall back to POST (newer versions)
-        quick = api.get('/QuickConnect/Initiate')
-        if not quick or not quick.get('Code'):
-            log.debug('GET /QuickConnect/Initiate failed, trying POST for newer server versions')
-            quick = api.post('/QuickConnect/Initiate')
+        quick = api.post('/QuickConnect/Initiate')
 
         code = quick.get('Code') if quick else None
         secret = quick.get('Secret') if quick else None
