@@ -15,7 +15,8 @@ from resources.lib.intro_skipper_utils import get_setting_skip_action, set_corre
 
 from .lazylogger import LazyLogger
 from .dialogs import SkipDialog
-from .play_utils import get_playing_data
+from .kodi_utils import HomeWindow
+import json
 
 log = LazyLogger(__name__)
 
@@ -45,8 +46,15 @@ class IntroSkipperService(threading.Thread):
         while not xbmc.Monitor().abortRequested() and not self.stop_thread:
             player = xbmc.Player()
             if player.isPlaying():
-                play_data = get_playing_data()
-                item_id = play_data.get("item_id", None)
+                # Get currently playing Jellyfin item ID from window properties
+                home_window = HomeWindow()
+                play_data_string = home_window.get_property('now_playing')
+                try:
+                    play_data = json.loads(play_data_string)
+                    item_id = play_data.get("item_id", None)
+                except (ValueError, TypeError):
+                    item_id = None
+
                 if item_id is not None:
                     log.debug("SkipService: playing item is from jellyfin : {0}".format(item_id))
 
@@ -59,7 +67,8 @@ class IntroSkipperService(threading.Thread):
                     # Setting global playing item to current playing item
                     playing_item_id = item_id
 
-                    current_ticks = seconds_to_ticks(play_data.get("current_position"))
+                    # Get current playback position directly from player
+                    current_ticks = seconds_to_ticks(player.getTime())
 
                     for segment in segments:
                         segment_type = segment.get("Type")
