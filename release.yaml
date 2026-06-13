@@ -1,8 +1,27 @@
-version: '0.9.1'
+version: '1.0.0'
 changelog: |-
+  :tada: New features and improvements
+  ------------------------------------
+  + Fix and improve Quick Connect authentication (#432) @sopos
+
   Bug Fixes
   ---------
-  + Implement proper keepalives for websocket (#401) @mcarlton00
+  + Make profile file names easier to use (#433) @mcarlton00
+  + Clear cached data on kodi startup (#431) @mcarlton00
+  + Fix exception when setting season/episode sort number (#428) @jjlin
+  + Exclude br compression from requests (#424) @mcarlton00
+  + Fix logic errors in deprecated functions filtering (#425) @mcarlton00
+  + Add timeout to HTTP requests (#422) @rcorex
+  + Fix websocket authentication (#417) @mcarlton00
+  + Minor mediasegments refector (#411) @mcarlton00
+  + Stop using deprecated auth methods (#407) @mcarlton00
+  + Fix python 3 encoding error when enabling image caching (#412) @GoD-Tony
+  + Rename translations to correct language codes (#413) @mcarlton00
+
+  Code or Repo Maintenance
+  ------------------------
+  + Replace deprecated Kodi listitem setters (#416) @mcarlton00
+  + Fix SyntaxWarning in regex (#421) @jjlin
 dependencies:
   py2:
     - addon: 'xbmc.python'
