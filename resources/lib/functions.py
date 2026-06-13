@@ -162,7 +162,7 @@ def main_entry_point():
         pr.disable()
 
         file_time_stamp = time.strftime("%Y%m%d-%H%M%S")
-        tab_file_name = "{}-profile({}).txt".format(
+        tab_file_name = "{}jellycon-profile({}).txt".format(
             __addondir__, file_time_stamp
         )
         s = StringIO()
@@ -948,7 +948,7 @@ def play_item_trailer(item_id):
     handle = int(sys.argv[1]) if sys.argv and len(sys.argv) > 1 else -1
     if handle != -1:
         xbmcplugin.endOfDirectory(handle, succeeded=False, updateListing=False, cacheToDisc=False)
-        
+
     url = "/Users/{}/Items/{}/LocalTrailers?format=json".format(
         user_details.get('user_id'), item_id
     )
