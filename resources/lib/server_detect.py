@@ -218,9 +218,10 @@ def check_server(force=False, change_user=False, notify=False):
         auth = {}
 
         # Check if quick connect is active on the server, initiate connection
-        quick = api.get('/QuickConnect/Initiate')
-        code = quick.get('Code')
-        secret = quick.get('Secret')
+        quick = api.post('/QuickConnect/Initiate')
+
+        code = quick.get('Code') if quick else None
+        secret = quick.get('Secret') if quick else None
         users, user_selection = user_select(api, current_username, code)
 
         if user_selection > -1:
@@ -230,25 +231,52 @@ def check_server(force=False, change_user=False, notify=False):
             quick_connect = selected_user.getProperty("quickconnect") == "true"
             count = 0
             if quick_connect:
-                # Try to authenticate to server with secret code 10 times
-                while count < 10:
-                    log.debug('Checking for quick connect auth: attempt {}'.format(count))
+                # Show progress dialog with Quick Connect instructions
+                progress = xbmcgui.DialogProgress()
+                progress.create(__addon_name__, translate_string(30679).format(code))
+
+                # Try to authenticate to server with secret code for up to 60 seconds
+                max_attempts = 60
+                while count < max_attempts:
+                    if progress.iscanceled():
+                        log.debug('Quick Connect cancelled by user')
+                        progress.close()
+                        something_changed = False
+                        break
+
+                    log.debug('Checking for quick connect auth: attempt {}'.format(count + 1))
+                    progress.update(int((count / max_attempts) * 100),
+                                    translate_string(30680).format(count + 1, max_attempts))
+
                     check = api.get('/QuickConnect/Connect?secret={}'.format(secret))
                     if check.get('Authenticated'):
+                        log.debug('Quick Connect authenticated successfully')
                         break
                     count += 1
                     xbmc.sleep(1000)
 
-                auth = api.post('/Users/AuthenticateWithQuickConnect',
-                                {'secret': secret})
+                progress.close()
 
-                # If authentication was successful, save the username
-                if auth:
-                    selected_user_name = auth['User'].get('Name')
+                # Only try to authenticate if we broke out of the loop due to success
+                if count < max_attempts and not progress.iscanceled():
+                    auth = api.post('/Users/AuthenticateWithQuickConnect',
+                                    {'secret': secret})
+
+                    # If authentication was successful, save the username
+                    if auth and auth.get('User'):
+                        selected_user_name = auth['User'].get('Name')
+                        log.info("Quick Connect login successful for user: {}".format(selected_user_name))
+                    else:
+                        # Login failed, we don't want to change anything
+                        something_changed = False
+                        log.error("Quick Connect authentication failed")
+                        xbmcgui.Dialog().ok(__addon_name__, translate_string(30681))
                 else:
-                    # Login failed, we don't want to change anything
+                    # Timeout or cancelled
                     something_changed = False
-                    log.info("There was an error logging in with quick connect")
+                    if count >= max_attempts:
+                        log.info("Quick Connect timed out after {} seconds".format(max_attempts))
+                        xbmcgui.Dialog().ok(__addon_name__, translate_string(30682))
 
             else:
                 selected_user_name = selected_user.getLabel()
