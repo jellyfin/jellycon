@@ -56,7 +56,7 @@ def set_correct_skip_info(item_id: str, skip_dialog: SkipDialog, segment: dict):
         # If playback item has changed (or is new), sets its id and set media segments info
         log.debug("SkipDialogInfo : Media Id has changed to {0}, setting segments".format(item_id))
         skip_dialog.media_id = item_id
-        skip_dialog.has_been_dissmissed = False
+        skip_dialog.has_been_dismissed_or_skipped = False
         if segment is not None:
             # Find the intro and outro timings
             start = segment.get("StartTicks")

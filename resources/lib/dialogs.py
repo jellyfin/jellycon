@@ -216,7 +216,7 @@ class SkipDialog(xbmcgui.WindowXMLDialog):
     start = None
     end = None
     
-    has_been_dissmissed = False
+    has_been_dismissed_or_skipped = False
 
     def __init__(self, *args, **kwargs):
         log.debug("SkipDialog: __init__")
@@ -239,7 +239,7 @@ class SkipDialog(xbmcgui.WindowXMLDialog):
         log.debug("SkipDialog: onAction: {0}".format(action.getId()))
         if action.getId() == 10 or action.getId() == 92:  # ACTION_PREVIOUS_MENU & ACTION_NAV_BACK
             log.debug("SkipDialog: dismissing dialog so it does not open again")
-            self.has_been_dissmissed = True
+            self.has_been_dismissed_or_skipped = True
             self.close()
 
     def onClick(self, control_id):
@@ -250,7 +250,8 @@ class SkipDialog(xbmcgui.WindowXMLDialog):
             log.debug("SkipDialog: skipping segment because current ticks ({0}) is in range".format(current_ticks))
             # If click during segment, skip it
             player.seekTime(ticks_to_seconds(self.end))
-                                        
+            # mark dialog as skipped to avoid opening again
+            self.has_been_dismissed_or_skipped = True
         self.close()
 
     def get_play_called(self):
