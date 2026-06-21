@@ -1386,7 +1386,6 @@ class Service(xbmc.Player):
 
     def onPlayBackStarted(self):
         # Will be called when xbmc starts playing a file
-        stop_all_playback()
 
         if not xbmc.Player().isPlaying():
             log.debug("onPlayBackStarted: not playing file!")
