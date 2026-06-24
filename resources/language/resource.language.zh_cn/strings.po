@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-15 22:55+0000\n"
-"Last-Translator: 無情天 <kofzhanganguo@126.com>\n"
+"PO-Revision-Date: 2026-06-24 09:59+0000\n"
+"Last-Translator: ZZNYJIDI <zznyjidi@hotmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translate.jellyfin.org/projects/jellycon/jellycon/zh_Hans/>\n"
 "Language: zh_cn\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgctxt "#30442"
 msgid "Simple new content check"
@@ -497,7 +497,7 @@ msgstr "连接错误"
 
 msgctxt "#30315"
 msgid "Suppress notifications for connection errors"
-msgstr "抑制连接错误的通知"
+msgstr "不提示连接错误"
 
 msgctxt "#30314"
 msgid "Play"
@@ -837,7 +837,7 @@ msgstr "事件"
 
 msgctxt "#30213"
 msgid "Video force 8 bit"
-msgstr "视频强制 8 位"
+msgstr "强制 8 位视频"
 
 msgctxt "#30212"
 msgid "Video max width"
@@ -905,7 +905,7 @@ msgstr "选择服务器"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "如果字幕可用，添加 (cc)"
+msgstr "可用时添加隐藏式字幕"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -917,15 +917,15 @@ msgstr "错误"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "处理项目："
+msgstr "正在处理项目："
 
 msgctxt "#30125"
 msgid "Done"
-msgstr "完毕"
+msgstr "完成"
 
 msgctxt "#30121"
 msgid "On resume"
-msgstr "恢复中"
+msgstr "续看时"
 
 msgctxt "#30120"
 msgid "Show load progress"
@@ -933,15 +933,15 @@ msgstr "显示载入进度"
 
 msgctxt "#30118"
 msgid "Add resume percent to names"
-msgstr "将简历百分比添加到名称"
+msgstr "添加续看百分比至名称"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "为姓名添加未观看的计数"
+msgstr "添加未看数量至名称"
 
 msgctxt "#30114"
 msgid "Jump back seconds"
-msgstr "跳回秒"
+msgstr "按跳回秒"
 
 msgctxt "#30113"
 msgid "Retrieving Data"
@@ -981,7 +981,7 @@ msgstr "正在删除"
 
 msgctxt "#30045"
 msgid "Username not found"
-msgstr "用户名未找到"
+msgstr "找不到用户名"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
