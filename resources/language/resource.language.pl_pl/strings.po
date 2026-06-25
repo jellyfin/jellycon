@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-06-24 18:03+0000\n"
+"PO-Revision-Date: 2026-06-26 15:26+0000\n"
 "Last-Translator: Kityn <kitynska@gmail.com>\n"
 "Language-Team: Polish <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/pl/>\n"
@@ -1124,7 +1124,7 @@ msgstr "Tasuj"
 
 msgctxt "#30449"
 msgid "Instant Mix"
-msgstr "Natychmiastowe mieszanie"
+msgstr "Szybki miks"
 
 msgctxt "#30225"
 msgid "Interface Mode"
