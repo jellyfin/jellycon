@@ -20,22 +20,31 @@ from .utils import load_user_details
 
 log = LazyLogger(__name__)
 
+# Jellyfin replies to JSON KeepAlive messages; require replies to detect a
+# stale connection.
+KEEPALIVE_INTERVAL = 30
+KEEPALIVE_CHECK = 10
+KEEPALIVE_TIMEOUT = 45
+
 
 class WebSocketClient(threading.Thread):
 
-    _shared_state = {}
-
-    _client = None
-    _stop_websocket = False
-    _library_monitor = None
-
     def __init__(self, library_change_monitor):
 
-        self.__dict__ = self._shared_state
+        threading.Thread.__init__(self)
+
+        self._client = None
+        self._stop_websocket = False
+        self._library_monitor = library_change_monitor
         self.monitor = xbmc.Monitor()
 
-        self._library_monitor = library_change_monitor
         self.websocket_error = False
+        self.last_keepalive_response = time.time()
+        self._watchdog_timer = None
+        self._keepalive_timer = None
+        # Guards the check-and-reschedule of the timers so a timer thread
+        # cannot slip a new pending timer in behind stop_client().
+        self._timer_lock = threading.RLock()
         settings = xbmcaddon.Addon()
         user_details = load_user_details()
 
@@ -45,12 +54,14 @@ class WebSocketClient(threading.Thread):
             user_details.get('token')
         )
 
-        threading.Thread.__init__(self)
-
     def on_message(self, ws, message):
 
         result = json.loads(message)
         message_type = result['MessageType']
+
+        if message_type == "KeepAlive":
+            self.last_keepalive_response = time.time()
+            return
 
         if message_type == 'Play':
             data = result['Data']
@@ -236,12 +247,18 @@ class WebSocketClient(threading.Thread):
                 xbmc.executebuiltin(builtin[command])
 
     def on_open(self, ws):
-        # Wait to make sure previous keepalive cycle has ended
-        if self.websocket_error:
-            time.sleep(30)
-            self.websocket_error = False
         log.debug("Connected")
+        self.last_keepalive_response = time.time()
         self.api.post_capabilities()
+        # Cancel and reschedule as one atomic step, otherwise stop_client()
+        # could land in between and leave a watchdog pending at shutdown.
+        with self._timer_lock:
+            self._cancel_timers()
+            if self._stop_websocket:
+                return
+            self.schedule_keepalive_watchdog(ws)
+        # Outside the lock: ws.send() may block, and stop_client() should
+        # not have to wait for it.
         self.send_keepalive(ws)
 
     def on_error(self, ws, error):
@@ -265,19 +282,25 @@ class WebSocketClient(threading.Thread):
         websocket_url = "{}/socket".format(server)
         log.debug("websocket url: {0}".format(websocket_url))
 
-        headers = self.api.headers
-        self._client = websocket.WebSocketApp(
-            websocket_url,
-            header=headers,
-            on_open=lambda ws: self.on_open(ws),
-            on_message=lambda ws, message: self.on_message(ws, message),
-            on_error=lambda ws, error: self.on_error(ws, error))
-
         log.debug("Starting WebSocketClient")
 
         while not self.monitor.abortRequested():
 
-            self._client.run_forever(reconnect=30)
+            self.websocket_error = False
+            self._cancel_timers()
+
+            headers = self.api.headers
+            self._client = websocket.WebSocketApp(
+                websocket_url,
+                header=headers,
+                on_open=lambda ws: self.on_open(ws),
+                on_message=lambda ws, message: self.on_message(ws, message),
+                on_error=lambda ws, error: self.on_error(ws, error))
+
+            try:
+                self._client.run_forever()
+            except Exception as error:
+                log.error("WebSocket loop failed: {0}".format(error))
 
             if self._stop_websocket:
                 break
@@ -292,26 +315,93 @@ class WebSocketClient(threading.Thread):
 
     def stop_client(self):
 
-        self._stop_websocket = True
+        with self._timer_lock:
+            self._stop_websocket = True
+            self._cancel_timers()
         if self._client is not None:
             self._client.close()
         log.debug("Stopping WebSocket (stop_client called)")
 
     def send_keepalive(self, ws):
         # Stop the keepalive cycle if an error has been detected
-        if self.websocket_error:
-            return
-        keepalive_payload = json.dumps({"MessageType": "KeepAlive", "Data": 30})
+        with self._timer_lock:
+            if (self._stop_websocket or self.websocket_error or
+                    ws is not self._client):
+                return
+        keepalive_payload = json.dumps({
+            "MessageType": "KeepAlive",
+            "Data": KEEPALIVE_INTERVAL
+        })
         # Send the keepalive, or register an error
         try:
             ws.send(keepalive_payload)
-        except:
+        except Exception as error:
             self.websocket_error = True
+            log.error("WebSocket keepalive failed: {0}".format(error))
+            try:
+                ws.close()
+            except Exception:
+                pass
             return
-        # Schedule the next message
-        self.schedule_keepalive(ws)
+        # Schedule the next message. Re-check under the lock: stop_client()
+        # may have run while we were sending, and Timer.cancel() is a no-op
+        # once the thread has started, so scheduling now would leave a
+        # pending non-daemon thread blocking interpreter teardown.
+        with self._timer_lock:
+            if self._stop_websocket:
+                return
+            self.schedule_keepalive(ws)
 
     def schedule_keepalive(self, ws):
-        # Schedule a keepalive message in 30 seconds
-        timer = threading.Timer(30, self.send_keepalive, kwargs={'ws': ws})
-        timer.start()
+        # Schedule a keepalive message in 30 seconds. Cancel any pending
+        # timer first: overwriting the reference would orphan it, leaving an
+        # unreachable non-daemon thread that blocks interpreter teardown.
+        with self._timer_lock:
+            if self._keepalive_timer is not None:
+                self._keepalive_timer.cancel()
+            timer = threading.Timer(
+                KEEPALIVE_INTERVAL, self.send_keepalive, kwargs={'ws': ws})
+            self._keepalive_timer = timer
+            timer.start()
+
+    def _cancel_timers(self):
+        with self._timer_lock:
+            if self._watchdog_timer:
+                self._watchdog_timer.cancel()
+                self._watchdog_timer = None
+            if self._keepalive_timer:
+                self._keepalive_timer.cancel()
+                self._keepalive_timer = None
+
+    def schedule_keepalive_watchdog(self, ws):
+        # Check the server's application-level KeepAlive response.
+        with self._timer_lock:
+            if self._watchdog_timer is not None:
+                self._watchdog_timer.cancel()
+            timer = threading.Timer(
+                KEEPALIVE_CHECK,
+                self.check_keepalive_watchdog,
+                kwargs={'ws': ws})
+            self._watchdog_timer = timer
+            timer.start()
+
+    def check_keepalive_watchdog(self, ws):
+        # Stop stale timers from previous connections / after shutdown
+        with self._timer_lock:
+            if self._stop_websocket or ws is not self._client:
+                return
+        elapsed = time.time() - self.last_keepalive_response
+        if elapsed > KEEPALIVE_TIMEOUT:
+            log.debug(
+                "No KeepAlive response for {0:.0f}s, reconnecting".format(
+                    elapsed))
+            try:
+                ws.close()
+            except Exception:
+                pass
+            return
+        # Re-check under the lock so we cannot reschedule past stop_client().
+        with self._timer_lock:
+            if self._stop_websocket or ws is not self._client:
+                return
+            self.schedule_keepalive_watchdog(ws)
