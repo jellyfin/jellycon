@@ -16,6 +16,7 @@ from resources.lib.websocket_client import WebSocketClient
 from resources.lib.menu_functions import set_library_window_values
 from resources.lib.server_detect import check_server, check_connection_speed
 from resources.lib.monitors import LibraryChangeMonitor, ContextMonitor
+from resources.lib.info_monitor import InfoDialogMonitor
 from resources.lib.datamanager import clear_old_cache_data, clear_cached_server_data
 from resources.lib.tracking import set_timing_enabled
 from resources.lib.image_server import HttpImageServerThread
@@ -98,6 +99,12 @@ context_menu = settings.getSetting('override_contextmenu') == "true"
 if context_menu:
     context_monitor = ContextMonitor()
     context_monitor.start()
+
+include_people = settings.getSetting('include_people') == "false"
+# Start the info dialog monitor (lazy load data when the info dialog is opened)
+if include_people:
+    info_dialog_monitor = InfoDialogMonitor()
+    info_dialog_monitor.start()
 
 # Start the skip service monitor
 intro_skipper = IntroSkipperService(monitor)
@@ -209,6 +216,9 @@ if context_monitor:
 
 if intro_skipper:
     intro_skipper.stop_service()
+
+if include_people:
+    info_dialog_monitor.stop_monitor()
 
 # clear user and token when logging off
 home_window.clear_property("user_name")
