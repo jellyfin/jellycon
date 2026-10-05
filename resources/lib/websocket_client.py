@@ -4,7 +4,6 @@ from __future__ import (
 
 import json
 import threading
-import time
 
 import xbmc
 import xbmcaddon
@@ -28,6 +27,7 @@ class WebSocketClient(threading.Thread):
     _client = None
     _stop_websocket = False
     _library_monitor = None
+    _keepalive_timer = None
 
     def __init__(self, library_change_monitor):
 
@@ -238,7 +238,8 @@ class WebSocketClient(threading.Thread):
     def on_open(self, ws):
         # Wait to make sure previous keepalive cycle has ended
         if self.websocket_error:
-            time.sleep(30)
+            if self.monitor.waitForAbort(30):
+                return
             self.websocket_error = False
         log.debug("Connected")
         self.api.post_capabilities()
@@ -293,13 +294,15 @@ class WebSocketClient(threading.Thread):
     def stop_client(self):
 
         self._stop_websocket = True
+        if self._keepalive_timer is not None:
+            self._keepalive_timer.cancel()
         if self._client is not None:
             self._client.close()
         log.debug("Stopping WebSocket (stop_client called)")
 
     def send_keepalive(self, ws):
-        # Stop the keepalive cycle if an error has been detected
-        if self.websocket_error:
+        # Stop the keepalive cycle if an error has been detected or we are stopping
+        if self.websocket_error or self._stop_websocket:
             return
         keepalive_payload = json.dumps({"MessageType": "KeepAlive", "Data": 30})
         # Send the keepalive, or register an error
@@ -313,5 +316,6 @@ class WebSocketClient(threading.Thread):
 
     def schedule_keepalive(self, ws):
         # Schedule a keepalive message in 30 seconds
-        timer = threading.Timer(30, self.send_keepalive, kwargs={'ws': ws})
-        timer.start()
+        self._keepalive_timer = threading.Timer(
+            30, self.send_keepalive, kwargs={'ws': ws})
+        self._keepalive_timer.start()
