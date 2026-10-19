@@ -294,15 +294,15 @@ class WebSocketClient(threading.Thread):
     def stop_client(self):
 
         self._stop_websocket = True
-        if self._keepalive_timer is not None:
-            self._keepalive_timer.cancel()
         if self._client is not None:
             self._client.close()
+        if self._keepalive_timer is not None:
+            self._keepalive_timer.cancel()
         log.debug("Stopping WebSocket (stop_client called)")
 
     def send_keepalive(self, ws):
-        # Stop the keepalive cycle if an error has been detected or we are stopping
-        if self.websocket_error or self._stop_websocket:
+        # Stop the keepalive cycle if an error has been detected or ws is closed
+        if self.websocket_error or not ws.keep_running:
             return
         keepalive_payload = json.dumps({"MessageType": "KeepAlive", "Data": 30})
         # Send the keepalive, or register an error
@@ -319,3 +319,6 @@ class WebSocketClient(threading.Thread):
         self._keepalive_timer = threading.Timer(
             30, self.send_keepalive, kwargs={'ws': ws})
         self._keepalive_timer.start()
+        # Cancel it if ws was closed while sending
+        if not ws.keep_running:
+            self._keepalive_timer.cancel()
