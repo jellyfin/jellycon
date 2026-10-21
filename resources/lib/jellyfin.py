@@ -179,13 +179,14 @@ class API:
         self.post(url, data)
 
     def speedtest(self, test_data_size):
-        import requests
-
         self.create_headers()
 
         url = '{}/playback/bitratetest?size={}'.format(self.server, test_data_size)
-        # Because this needs the stream argument, this doesn't go through self.get()
-        response = requests.get(url, stream=True, headers=self.headers, verify=self.verify_cert)
+        # The caller reads the data in chunks, so this doesn't go through self.get()
+        # Uncompressed, so the number of bytes read matches the bytes transferred
+        headers = dict(self.headers)
+        headers.pop('Accept-Encoding', None)
+        response = http_client.open_url('GET', url, headers, verify_cert=self.verify_cert)
 
         return response
 

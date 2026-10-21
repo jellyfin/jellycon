@@ -2,7 +2,7 @@ pyyaml
 setuptools >= 44.1.1  # Old setuptools causes script.module.addon.signals to fail installing
 six >= 1.13
 python-dateutil >= 2.8.1
-requests >= 2.22
+certifi
 futures >= 2.2; python_version < '3.0'
 
 Kodistubs ~= 18.0; python_version < '3.0'

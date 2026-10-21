@@ -11,9 +11,9 @@ import xbmcgui
 import xbmcplugin
 import xbmc
 import xbmcaddon
-import requests
 from six.moves.urllib.parse import quote, unquote
 
+from . import http_client
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .jsonrpc import JsonRpc, get_value
@@ -337,11 +337,11 @@ class CacheArtwork(threading.Thread):
             progress.update(percentage, message)
 
             cache_url = "http://%s%s" % (kodi_http_server, kodi_texture_url)
-            data = requests.get(cache_url, timeout=20, headers=headers)
+            status, _ = http_client.request('GET', cache_url, headers, timeout=(20, 20))
 
-            if data.status_code == 200:
+            if status == 200:
                 count_done += 1
-            log.debug("Get Image Result: {0}".format(data.status_code))
+            log.debug("Get Image Result: {0}".format(status))
 
             if isinstance(progress, xbmcgui.DialogProgress) and progress.iscanceled():
                 break

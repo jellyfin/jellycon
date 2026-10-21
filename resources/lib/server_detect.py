@@ -48,16 +48,21 @@ def check_connection_speed():
 
     last_percentage_done = 0
     total_data_read = 0
-    if response.status_code == 200:
-        for data in response.iter_content(chunk_size=10240):
+    if response.status == 200:
+        data = response.read(10240)
+        while data:
             total_data_read += len(data)
             percentage_done = int(float(total_data_read) / float(test_data_size) * 100.0)
             if last_percentage_done != percentage_done:
                 progress_dialog.update(percentage_done)
                 last_percentage_done = percentage_done
+            data = response.read(10240)
+        response.close()
     else:
-        log.error("HTTP response error: {0} {1}".format(response.status_code, response.content))
-        error_message = "HTTP response error: %s\n%s" % (response.status_code, response.content)
+        content = response.read()
+        response.close()
+        log.error("HTTP response error: {0} {1}".format(response.status, content))
+        error_message = "HTTP response error: %s\n%s" % (response.status, content)
         xbmcgui.Dialog().ok("Speed Test Error", error_message)
         return -1
 

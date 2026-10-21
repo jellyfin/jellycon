@@ -15,7 +15,6 @@ import re
 from datetime import datetime
 from uuid import uuid4
 
-import requests
 from dateutil import tz
 import xbmcaddon
 import xbmc
@@ -24,6 +23,7 @@ from kodi_six.utils import py2_encode, py2_decode
 from six import ensure_text, ensure_binary, text_type
 from six.moves.urllib.parse import urlencode
 
+from . import http_client
 from .lazylogger import LazyLogger
 from .kodi_utils import HomeWindow
 
@@ -427,8 +427,9 @@ def download_external_sub(language, codec, url, title):
     verify_cert = addon_settings.getSetting('verify_cert') == 'true'
 
     # Download the subtitle file
-    r = requests.get(url, verify=verify_cert)
-    r.raise_for_status()
+    status, content = http_client.request('GET', url, verify_cert=verify_cert)
+    if status >= 400:
+        raise IOError('HTTP {} downloading subtitle {}'.format(status, url))
 
     # Write the subtitle file to the local filesystem
     file_name = 'Stream.{}.{}.{}'.format(title, language, codec)
@@ -436,7 +437,7 @@ def download_external_sub(language, codec, url, title):
         translate_path('special://temp/{}'.format(file_name))
     )
     with open(file_path, 'wb') as f:
-        f.write(r.content)
+        f.write(content)
 
     return file_path
 

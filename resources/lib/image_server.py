@@ -11,11 +11,11 @@ from random import shuffle
 import xbmcvfs
 import xbmc
 import xbmcaddon
-import requests
 from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from six.moves.urllib.parse import urlparse
 from six import ensure_text
 
+from . import http_client
 from .jellyfin import api
 from .lazylogger import LazyLogger
 from .item_functions import get_art
@@ -111,8 +111,7 @@ def build_image(path):
             log.debug("Loading image from : {0} {1} {2}".format(image_count, server, url_full_path))
 
             try:
-                image_response = requests.get(thumb_url)
-                image_data = image_response.content
+                _, image_data = http_client.request('GET', thumb_url)
 
                 loaded_image = Image.open(io.BytesIO(image_data))
                 image = ImageOps.fit(loaded_image, size, method=Image.ANTIALIAS, bleed=0.0, centering=(0.5, 0.5))
