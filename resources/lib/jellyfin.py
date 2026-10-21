@@ -4,10 +4,10 @@ from __future__ import (
 
 import json
 
-import requests
 import xbmcaddon
 from kodi_six.utils import py2_decode
 
+from . import http_client
 from .utils import get_device_id, get_version, load_user_details
 from .lazylogger import LazyLogger
 
@@ -38,19 +38,11 @@ class API:
         url = '{}{}'.format(self.server, path)
 
         try:
-            r = requests.get(url, headers=self.headers, verify=self.verify_cert, timeout=(5,60))
-            try:
-                '''
-                The requests library defaults to using simplejson to handle
-                json decoding.  On low power devices and using Py3, this is
-                significantly slower than the builtin json library.  Skip that
-                and just parse the json ourselves.  Fall back to using
-                requests/simplejson if there's a parsing error.
-                '''
-                r.raise_for_status()
-                response_data = json.loads(r.text)
-            except ValueError:
-                response_data = r.json()
+            status, data = http_client.request(
+                'GET', url, self.headers, verify_cert=self.verify_cert)
+            if status >= 400:
+                raise IOError('HTTP {} for {}'.format(status, path))
+            response_data = json.loads(data.decode('utf-8'))
         except Exception:
             response_data = {}
         return response_data
@@ -61,13 +53,15 @@ class API:
 
         url = '{}{}'.format(self.server, url)
 
+        headers = dict(self.headers)
+        headers['Content-Type'] = 'application/json'
+        body = json.dumps(payload).encode('utf-8')
+
         try:
-            r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert, timeout=5)
-            try:
-                # Much faster on low power devices, see above comment
-                response_data = json.loads(r.text)
-            except ValueError:
-                response_data = r.json()
+            status, data = http_client.request(
+                'POST', url, headers, body=body,
+                verify_cert=self.verify_cert, timeout=(5, 5))
+            response_data = json.loads(data.decode('utf-8'))
         except Exception:
             response_data = {}
         return response_data
@@ -79,7 +73,8 @@ class API:
         url = '{}{}'.format(self.server, url)
 
         try:
-            requests.delete(url, headers=self.headers, verify=self.verify_cert, timeout=5)
+            http_client.request('DELETE', url, self.headers,
+                                verify_cert=self.verify_cert, timeout=(5, 5))
         except Exception:
             pass
 
@@ -184,6 +179,8 @@ class API:
         self.post(url, data)
 
     def speedtest(self, test_data_size):
+        import requests
+
         self.create_headers()
 
         url = '{}/playback/bitratetest?size={}'.format(self.server, test_data_size)
