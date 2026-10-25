@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-09-23 16:39+0000\n"
-"Last-Translator: S H <translate@hayakawa.work>\n"
+"PO-Revision-Date: 2026-10-25 16:44+0000\n"
+"Last-Translator: INOUE Daisuke <inoue.daisuke@gmail.com>\n"
 "Language-Team: Japanese <https://translate.jellyfin.org/projects/jellycon/"
 "jellycon/ja/>\n"
 "Language: ja_jp\n"
@@ -9,11 +9,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgctxt "#30112"
 msgid "Loading Content"
-msgstr "コンテンツをロード中"
+msgstr "コンテンツを読み込み中"
 
 msgctxt "#30008"
 msgid "Samba password"
@@ -21,15 +21,15 @@ msgstr "Samba パスワード"
 
 msgctxt "#30016"
 msgid "Device display name"
-msgstr "デバイスディスプレイ名"
+msgstr "デバイス表示名"
 
 msgctxt "#30021"
 msgid "Show all episodes item"
-msgstr "全てのエピソードを見る"
+msgstr "すべてのエピソードを表示"
 
 msgctxt "#30044"
 msgid "Incorrect Username/Password"
-msgstr "誤ったユーザー名もしくはパスワード"
+msgstr "ユーザー名・パスワードが不正"
 
 msgctxt "#30000"
 msgid "Host"
@@ -77,39 +77,39 @@ msgstr "ログタイミングデータ"
 
 msgctxt "#30017"
 msgid "Show connected clients"
-msgstr "接続されたクライアントを表示"
+msgstr "接続したクライアントを表示"
 
 msgctxt "#30018"
 msgid "Number of items to show in filtered lists"
-msgstr "フィルターされたリストに表示するアイテムの数"
+msgstr "フィルターしたリストに表示するアイテム数"
 
 msgctxt "#30019"
 msgid "Filtered episode name format"
-msgstr "フィルターされたエピソードの名前フォーマット"
+msgstr "フィルターしたエピソード名書式"
 
 msgctxt "#30022"
 msgid "Advanced"
-msgstr "高度"
+msgstr "詳細"
 
 msgctxt "#30023"
 msgid "Hide unwatched episode details"
-msgstr "観ていないエピソードの詳細を隠す"
+msgstr "未視聴エピソードの詳細を非表示"
 
 msgctxt "#30024"
 msgid "Username:"
-msgstr "ユーザー名:"
+msgstr "ユーザー名 :"
 
 msgctxt "#30025"
 msgid "Password:"
-msgstr "パスワード:"
+msgstr "パスワード :"
 
 msgctxt "#30027"
 msgid "Enable debug logging"
-msgstr "デバッグロギングを有効化"
+msgstr "デバッグログを有効に"
 
 msgctxt "#30045"
 msgid "Username not found"
-msgstr "ユーザー名が見つからない"
+msgstr "ユーザー名が見つかりません"
 
 msgctxt "#30052"
 msgid "Deleting"
@@ -117,7 +117,7 @@ msgstr "削除中"
 
 msgctxt "#30053"
 msgid "Waiting for server to delete"
-msgstr "サーバーが削除するのを待機中"
+msgstr "サーバーの削除を待機中"
 
 msgctxt "#30091"
 msgid "Confirm delete?"
@@ -125,7 +125,7 @@ msgstr "削除しますか？"
 
 msgctxt "#30092"
 msgid "Warning: This action will delete the media files from the server."
-msgstr "警告: この操作はサーバーからメディアファイルを削除します。"
+msgstr "警告 : この操作でメディアファイルをサーバーから削除します。"
 
 msgctxt "#30110"
 msgid "Interface"
@@ -707,7 +707,7 @@ msgstr "数秒戻す"
 
 msgctxt "#30120"
 msgid "Show load progress"
-msgstr "読込み状況を表示"
+msgstr "読み込み状況を表示"
 
 msgctxt "#30125"
 msgid "Done"
@@ -719,11 +719,11 @@ msgstr "エラー"
 
 msgctxt "#30020"
 msgid "Flatten single season"
-msgstr "1シーズンを畳む"
+msgstr "シーズンをまとめる"
 
 msgctxt "#30116"
 msgid "Add unwatched counts to names"
-msgstr "名前に未視聴の数を追加"
+msgstr "名前に未視聴数を加える"
 
 msgctxt "#30121"
 msgid "On resume"
@@ -731,7 +731,7 @@ msgstr "再開時"
 
 msgctxt "#30126"
 msgid "Processing Item : "
-msgstr "次の項目を処理中:"
+msgstr "アイテムを処理中 :"
 
 msgctxt "#30139"
 msgid "No Media Type Set"
@@ -739,27 +739,27 @@ msgstr "メディアタイプ未設定"
 
 msgctxt "#30163"
 msgid "Add (cc) if subtitle is available"
-msgstr "字幕がある場合(cc)を追加する"
+msgstr "字幕があったら (cc) を加える"
 
 msgctxt "#30166"
 msgid "Select Server"
-msgstr "サーバーを選択する"
+msgstr "サーバーを選択してください"
 
 msgctxt "#30167"
 msgid "Selected Server Address"
-msgstr "選択されたサーバーアドレス"
+msgstr "選択したサーバーアドレス"
 
 msgctxt "#30169"
 msgid "Address: "
-msgstr "アドレス:"
+msgstr "アドレス :"
 
 msgctxt "#30180"
 msgid "Select User"
-msgstr "ユーザー選択"
+msgstr "ユーザーを選択してください"
 
 msgctxt "#30026"
 msgid "Widget item select action"
-msgstr "ウィジェット項目選択操作"
+msgstr "ウィジェットアイテム選択操作"
 
 msgctxt "#30200"
 msgid "URL error"
@@ -768,3 +768,23 @@ msgstr "URLエラー"
 msgctxt "#30201"
 msgid "Unable to connect to server"
 msgstr "サーバーに接続できません"
+
+msgctxt "#30063"
+msgid "N/A"
+msgstr "該当なし"
+
+msgctxt "#30118"
+msgid "Add resume percent to names"
+msgstr "名前に残り％を表示"
+
+msgctxt "#30181"
+msgid "Include plot"
+msgstr "あらすじを含める"
+
+msgctxt "#30182"
+msgid "Include media stream info"
+msgstr "メディアストリーム情報を含める"
+
+msgctxt "#30183"
+msgid "Include people"
+msgstr "人物を含める"
