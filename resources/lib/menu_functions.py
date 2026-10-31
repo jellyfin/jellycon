@@ -645,7 +645,8 @@ def display_homevideos_type(menu_params, view):
         "Recursive": False,
         "IsMissing": False,
         "Fields": get_default_filters(),
-        "ImageTypeLimit": 1
+        "ImageTypeLimit": 1,
+        "IncludeItemTypes": "Folder,Photo,PhotoAlbum,Video"
     }
     path = get_jellyfin_url("/Users/{userid}/Items", base_params)
     url = sys.argv[0] + "?url=" + quote(path) + "&mode=GET_CONTENT&media_type=homevideos"
