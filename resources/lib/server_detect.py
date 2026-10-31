@@ -219,9 +219,13 @@ def check_server(force=False, change_user=False, notify=False):
 
         # Check if quick connect is active on the server, initiate connection
         quick = api.post('/QuickConnect/Initiate')
+        # When Quick Connect is disabled the server answers 401 with a JSON
+        # string body, which api.post() returns as-is
+        if not isinstance(quick, dict):
+            quick = {}
 
-        code = quick.get('Code') if quick else None
-        secret = quick.get('Secret') if quick else None
+        code = quick.get('Code')
+        secret = quick.get('Secret')
         users, user_selection = user_select(api, current_username, code)
 
         if user_selection > -1:
