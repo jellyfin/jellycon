@@ -256,6 +256,8 @@ def set_sort(pluginhandle, view_type, default_sort):
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_NONE)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+    if view_type in ("Movies", "Episodes", "Music Videos"):
+        xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_VIDEO_RUNTIME)
     xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 
 
