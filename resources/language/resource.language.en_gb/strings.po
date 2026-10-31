@@ -218,8 +218,8 @@ msgid "Include media stream info"
 msgstr "Include media stream info"
 
 msgctxt "#30183"
-msgid "Include people"
-msgstr "Include people"
+msgid "Include people for all items for each list request"
+msgstr "Include people for all items for each list request"
 
 msgctxt "#30200"
 msgid "URL error"
