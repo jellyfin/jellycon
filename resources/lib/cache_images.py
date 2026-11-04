@@ -12,7 +12,7 @@ import xbmcplugin
 import xbmc
 import xbmcaddon
 import requests
-from six.moves.urllib.parse import unquote
+from six.moves.urllib.parse import quote, unquote
 
 from .jellyfin import api
 from .lazylogger import LazyLogger
@@ -320,13 +320,16 @@ class CacheArtwork(threading.Thread):
         headers = {}
         if xbmc_password:
             auth = "%s:%s" % (xbmc_username, xbmc_password)
-            headers = {'Authorization': 'Basic %s' % base64.b64encode(auth.encode("utf-8"))}
+            headers = {'Authorization': 'Basic %s' % base64.b64encode(auth.encode("utf-8")).decode("ascii")}
 
         total = len(missing_texture_urls)
 
         count_done = 0
         for index, get_url in enumerate(missing_texture_urls, 1):
-            kodi_texture_url = "/image/image://{0}".format(get_url)
+            # Kodi expects the image:// url (itself holding the encoded
+            # artwork url) url-encoded, as it appears in the texture db
+            kodi_texture_url = "/image/" + quote(
+                "image://{0}/".format(quote(get_url, safe='')), safe='')
             log.debug("kodi_texture_url: {0}".format(kodi_texture_url))
 
             percentage = int((float(index) / float(total)) * 100)
