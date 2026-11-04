@@ -100,11 +100,9 @@ if context_menu:
     context_monitor = ContextMonitor()
     context_monitor.start()
 
-include_people = settings.getSetting('include_people') == "false"
-# Start the info dialog monitor (lazy load data when the info dialog is opened)
-if include_people:
-    info_dialog_monitor = InfoDialogMonitor()
-    info_dialog_monitor.start()
+
+info_dialog_monitor = InfoDialogMonitor()
+info_dialog_monitor.start()
 
 # Start the skip service monitor
 intro_skipper = IntroSkipperService(monitor)
@@ -217,8 +215,7 @@ if context_monitor:
 if intro_skipper:
     intro_skipper.stop_service()
 
-if include_people:
-    info_dialog_monitor.stop_monitor()
+info_dialog_monitor.stop_monitor()
 
 # clear user and token when logging off
 home_window.clear_property("user_name")

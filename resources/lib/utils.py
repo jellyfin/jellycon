@@ -399,10 +399,7 @@ def get_default_filters():
     ]
 
     if include_media:
-        filer_list.append("MediaStreams")
-
-    if include_people:
-        filer_list.append("People")
+        filer_list.append("MediaStreams")    
 
     if include_overview:
         filer_list.append("Overview")
