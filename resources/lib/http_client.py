@@ -104,7 +104,10 @@ def request(method, url, headers=None, body=None, verify_cert=True,
         response.close()
 
     encoding = (response.getheader('Content-Encoding') or '').lower()
-    if encoding == 'gzip':
+    # Empty bodies (e.g. 204) can still carry a Content-Encoding header
+    if not data:
+        pass
+    elif encoding == 'gzip':
         data = zlib.decompress(data, 16 + zlib.MAX_WBITS)
     elif encoding == 'deflate':
         try:
