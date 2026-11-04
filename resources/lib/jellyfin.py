@@ -133,6 +133,9 @@ class API:
         # Kodi doesn't support br or zstd compression, exclude them
         headers['Accept-Encoding'] = 'gzip, deflate'
 
+        # http.client sends no User-Agent, which some proxies and firewalls block
+        headers['User-Agent'] = 'JellyCon/{}'.format(version)
+
         # Make headers available to api calls
         self.headers = headers
 
