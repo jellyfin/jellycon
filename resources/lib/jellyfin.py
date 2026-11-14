@@ -63,6 +63,7 @@ class API:
 
         try:
             r = requests.post(url, json=payload, headers=self.headers, verify=self.verify_cert, timeout=5)
+            r.raise_for_status()
             try:
                 # Much faster on low power devices, see above comment
                 response_data = json.loads(r.text)
