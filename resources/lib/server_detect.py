@@ -310,6 +310,9 @@ def check_server(force=False, change_user=False, notify=False):
                         kb.doModal()
                         if kb.isConfirmed():
                             password = kb.getText()
+                        else:
+                            # Don't send an empty password, it counts as a failed login
+                            return
 
                     auth_payload = {'username': selected_user_name, 'pw': password}
                     auth = api.authenticate(auth_payload)
