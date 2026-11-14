@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        py_version: [ 'py2', 'py3' ]
+        py_version: [ 'py3' ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python 3.x
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.14
 
       - name: Install dependencies
         run: |
