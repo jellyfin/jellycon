@@ -5,14 +5,11 @@ from __future__ import (
 import sys
 import os
 import time
-import cProfile
-import pstats
 
 import xbmcplugin
 import xbmcgui
 import xbmcaddon
 import xbmc
-from six import StringIO
 from six.moves.urllib.parse import quote, unquote, parse_qsl, urlencode
 
 from .jellyfin import api
@@ -63,6 +60,8 @@ def main_entry_point():
     if profile_count > 0:
         profile_count = profile_count - 1
         settings.setSetting('profile_count', str(profile_count))
+        # Imported here, the profiler modules delay every plugin call
+        import cProfile
         pr = cProfile.Profile()
         pr.enable()
 
@@ -164,6 +163,8 @@ def main_entry_point():
 
     if pr:
         pr.disable()
+        import pstats
+        from six import StringIO
 
         file_time_stamp = time.strftime("%Y%m%d-%H%M%S")
         tab_file_name = "{}jellycon-profile({}).txt".format(
