@@ -1,9 +1,26 @@
-version: '1.0.2'
+version: '1.1.0'
 changelog: |-
+  :tada: New features and improvements
+  ------------------------------------
+  + Add support for item information lazy loading (#459) @hagaygo
+  + Add duration as a sort option for video views (#460) @nonstatic
+
   Bug Fixes
   ---------
-  + Accurately report playback on back-to-back plays (#447) @mcarlton00
-  + intro-skipper: fix skip dialog showing after clicking (#440) @pwNBait
+  + Catch http response exceptions in posts (#466) @mcarlton00
+  + Fix uninterruptible keepalive timer blocking Kodi shutdown (#452) @kel-mo
+  + Don't log in with an empty password when the prompt is cancelled (#462) @6801318d8d
+  + Fix kodi webserver requests (#463) @Sab44
+  + fix: restore folder browsing for home video/photo libraries (#450) @zalaare
+
+  Code or Repo Maintenance
+  ------------------------
+  + Only import the profiler when profiling is enabled (#464) @Sab44
+
+  CI & build changes
+  ------------------
+  + Remove python2 from CI (#467) @mcarlton00
+  + Avoid potential script injection in the changelog (#453) @oddstr13
 dependencies:
   py3:
     - addon: 'xbmc.python'
