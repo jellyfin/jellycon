@@ -784,6 +784,14 @@ def set_list_item_props(item_id, list_item, result, server, extra_props, title):
             video_tag.setPlot(plot)
             video_tag.setTvShowTitle(tv_show_name)
 
+            # Pass IMDb ID from Jellyfin to Kodi
+            provider_ids = result.get("ProviderIds") or {}
+            imdb_id = provider_ids.get("Imdb")
+
+            if imdb_id:
+                video_tag.setUniqueID(imdb_id, "imdb", True)
+                video_tag.setIMDBNumber(imdb_id)
+
             if item_type == "episode":
                 episode_number = result.get("IndexNumber", -1)
                 video_tag.setEpisode(episode_number)
